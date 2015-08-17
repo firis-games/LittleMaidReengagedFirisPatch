@@ -13,9 +13,9 @@ public class ConfigList {
 	private List<ConfigKey> list;
 	
 	/**
-	 * Configƒtƒ@ƒCƒ‹‚Ìİ’è“à—e‚Ìˆê——‚ğŠi”[‚·‚é‚½‚ß‚ÌConfigList‚ÌV‚µ‚¢ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬‚µ‚Ü‚·B
-	 * ‚±‚ê‚ğs‚í‚¸‚ÉConfigList‚ğ‘€ì‚·‚é‚ÆNullPointerException‚ª”­¶‚µ‚Ü‚·B
-	 * ƒCƒ“ƒXƒ^ƒ“ƒX‚Í’Êí@ModƒAƒmƒe[ƒVƒ‡ƒ“‚Ì‚Â‚¢‚½ƒNƒ‰ƒX‚ÉstaticƒtƒB[ƒ‹ƒh‚Æ‚µ‚Ä—pˆÓ‚µ‚Ä‚­‚¾‚³‚¢B
+	 * Configãƒ•ã‚¡ã‚¤ãƒ«ã®è¨­å®šå†…å®¹ã®ä¸€è¦§ã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®ConfigListã®æ–°ã—ã„ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+	 * ã“ã‚Œã‚’è¡Œã‚ãšã«ConfigListã‚’æ“ä½œã™ã‚‹ã¨NullPointerExceptionãŒç™ºç”Ÿã—ã¾ã™ã€‚
+	 * ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯é€šå¸¸@Modã‚¢ãƒãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ã®ã¤ã„ãŸã‚¯ãƒ©ã‚¹ã«staticãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã¨ã—ã¦ç”¨æ„ã—ã¦ãã ã•ã„ã€‚
 	 */
 	public ConfigList(){
 		list = new ArrayList<ConfigKey>();
@@ -23,9 +23,9 @@ public class ConfigList {
 	
 	//get
 	/**
-	 * w’è‚µ‚½Key‚É‡’v‚·‚éConfigKey‚ğ•Ô‚µ‚Ü‚·B
+	 * æŒ‡å®šã—ãŸKeyã«åˆè‡´ã™ã‚‹ConfigKeyã‚’è¿”ã—ã¾ã™ã€‚
 	 * @param par1 Key
-	 * @exception IllegalStateException w’è‚µ‚½Key‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * @exception IllegalStateException æŒ‡å®šã—ãŸKeyãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 **/
 	public ConfigKey getConfigByKey(String par1){
 		if(!isExistKey(par1)) throw new IllegalStateException("Requested key is not found");
@@ -36,8 +36,8 @@ public class ConfigList {
 	}
 
 	/**
-	 * w’è‚µ‚½Key‚ªConfigList“à‚É‘¶İ‚·‚é‚©Šm”F‚µ‚Ü‚·B‘¶İ‚µ‚Ä‚¢‚ê‚Îtrue‚ğ•Ô‚µ‚Ü‚·B
-	 * ˆø”‚ªnull‚Ìê‡Afalse‚ğ•Ô‚µ‚Ü‚·B
+	 * æŒ‡å®šã—ãŸKeyãŒConfigListå†…ã«å­˜åœ¨ã™ã‚‹ã‹ç¢ºèªã—ã¾ã™ã€‚å­˜åœ¨ã—ã¦ã„ã‚Œã°trueã‚’è¿”ã—ã¾ã™ã€‚
+	 * å¼•æ•°ãŒnullã®å ´åˆã€falseã‚’è¿”ã—ã¾ã™ã€‚
 	 * @param par1 Key
 	 */
 	public boolean isExistKey(String par1){
@@ -59,10 +59,10 @@ public class ConfigList {
 
 	//add
 	/**
-	 * ConfigKey‚ğConfigList‚É’Ç‰Á‚µ‚Ü‚·B
+	 * ConfigKeyã‚’ConfigListã«è¿½åŠ ã—ã¾ã™ã€‚
 	 * @param par1 Key
-	 * @param par2 İ’è‚³‚ê‚é’l
-	 * @exception IllegalStateException Key‚ª‚·‚Å‚É‘¶İ‚·‚éê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * @param par2 è¨­å®šã•ã‚Œã‚‹å€¤
+	 * @exception IllegalStateException KeyãŒã™ã§ã«å­˜åœ¨ã™ã‚‹å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 * **/
 	public void putConfig(ConfigKey par1){
 		if(isExistKey(par1.getKey())) remove(par1.getKey());
@@ -70,51 +70,51 @@ public class ConfigList {
 	}
 
 	/**
-	 * •¶š—ñ‚Ì’l‚ğ‚ÂConfigKey‚ğConfigList‚É’Ç‰Á‚µ‚Ü‚·B
+	 * æ–‡å­—åˆ—ã®å€¤ã‚’æŒã¤ConfigKeyã‚’ConfigListã«è¿½åŠ ã—ã¾ã™ã€‚
 	 * @param par1 Key
-	 * @param par2 İ’è‚³‚ê‚é’l
-	 * @exception IllegalStateException Key‚ª‚·‚Å‚É‘¶İ‚·‚éê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * @param par2 è¨­å®šã•ã‚Œã‚‹å€¤
+	 * @exception IllegalStateException KeyãŒã™ã§ã«å­˜åœ¨ã™ã‚‹å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 * **/
 	public void putString(String par1,String par2){
 		putConfig(new ConfigKey(par1,par2));
 	}
 	
 	/**
-	 * ®”‚Ì’l‚ğ‚ÂConfigKey‚ğConfigList‚É’Ç‰Á‚µ‚Ü‚·B
+	 * æ•´æ•°ã®å€¤ã‚’æŒã¤ConfigKeyã‚’ConfigListã«è¿½åŠ ã—ã¾ã™ã€‚
 	 * @param par1 key
-	 * @param par2 İ’è‚³‚ê‚é’l
-	 * @exception IllegalStateException Key‚ª‚·‚Å‚É‘¶İ‚·‚éê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * @param par2 è¨­å®šã•ã‚Œã‚‹å€¤
+	 * @exception IllegalStateException KeyãŒã™ã§ã«å­˜åœ¨ã™ã‚‹å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 */
 	public void putInt(String par1,int par2){
 		putConfig(new ConfigKey(par1,String.valueOf(par2)));
 	}
 
 	/**
-	 * À”‚Ì’l‚ğ‚ÂConfigKey‚ğConfigList‚É’Ç‰Á‚µ‚Ü‚·B
+	 * å®Ÿæ•°ã®å€¤ã‚’æŒã¤ConfigKeyã‚’ConfigListã«è¿½åŠ ã—ã¾ã™ã€‚
 	 * @param par1 key
-	 * @param par2 İ’è‚³‚ê‚é’l
-	 * @exception IllegalStateException Key‚ª‚·‚Å‚É‘¶İ‚·‚éê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * @param par2 è¨­å®šã•ã‚Œã‚‹å€¤
+	 * @exception IllegalStateException KeyãŒã™ã§ã«å­˜åœ¨ã™ã‚‹å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 */
 	public void putFloat(String par1,float par2){
 		putConfig(new ConfigKey(par1,String.valueOf(par2)));
 	}
 
 	/**
-	 * ^‹U‚Ì’l‚ğ‚ÂConfigKey‚ğConfigList‚É’Ç‰Á‚µ‚Ü‚·B
+	 * çœŸå½ã®å€¤ã‚’æŒã¤ConfigKeyã‚’ConfigListã«è¿½åŠ ã—ã¾ã™ã€‚
 	 * @param par1 key
-	 * @param par2 İ’è‚³‚ê‚é’l
-	 * @exception IllegalStateException Key‚ª‚·‚Å‚É‘¶İ‚·‚éê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * @param par2 è¨­å®šã•ã‚Œã‚‹å€¤
+	 * @exception IllegalStateException KeyãŒã™ã§ã«å­˜åœ¨ã™ã‚‹å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 */
 	public void putBoolean(String par1,boolean par2){
 		putConfig(new ConfigKey(par1,String.valueOf(par2)));
 	}
 	
 	/**
-	 * w’è‚µ‚½Key‚É‡’v‚·‚éConfigKey‚ğQÆ‚µString‚Æ‚µ‚Ä’l‚ğ•Ô‚µ‚Ü‚·B
-	 * ConfigKey‚ª‘¶İ‚µ‚È‚¢ê‡AŠY“–‚·‚éKey‚É‘æ“ñˆø”‚Ì“à—e‚ğİ’è‚µ‚Ä‘æ“ñˆø”‚Ì“à—e‚ğ‚»‚Ì‚Ü‚Ü•Ô‚µ‚Ü‚·B
+	 * æŒ‡å®šã—ãŸKeyã«åˆè‡´ã™ã‚‹ConfigKeyã‚’å‚ç…§ã—Stringã¨ã—ã¦å€¤ã‚’è¿”ã—ã¾ã™ã€‚
+	 * ConfigKeyãŒå­˜åœ¨ã—ãªã„å ´åˆã€è©²å½“ã™ã‚‹Keyã«ç¬¬äºŒå¼•æ•°ã®å†…å®¹ã‚’è¨­å®šã—ã¦ç¬¬äºŒå¼•æ•°ã®å†…å®¹ã‚’ãã®ã¾ã¾è¿”ã—ã¾ã™ã€‚
 	 * @param par1 Key
-	 * @param defaultvalue ƒfƒtƒHƒ‹ƒg‚Å•Ô‚é’l
-	 * @exception IllegalStateException w’è‚µ‚½Key‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * @param defaultvalue ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§è¿”ã‚‹å€¤
+	 * @exception IllegalStateException æŒ‡å®šã—ãŸKeyãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 **/
 	public String getString(String par1, String defaultvalue){
 		if(isExistKey(par1)){
@@ -130,12 +130,12 @@ public class ConfigList {
 	}
 	
 	/**
-	 * w’è‚µ‚½Key‚É‡’v‚·‚éConfigKey‚ğQÆ‚µint‚Æ‚µ‚Ä’l‚ğ•Ô‚µ‚Ü‚·B
-	 * ConfigKey‚ª‘¶İ‚µ‚È‚¢ê‡AŠY“–‚·‚éKey‚É‘æ“ñˆø”‚Ì“à—e‚ğİ’è‚µ‚Ä‘æ“ñˆø”‚Ì“à—e‚ğ‚»‚Ì‚Ü‚Ü•Ô‚µ‚Ü‚·B
+	 * æŒ‡å®šã—ãŸKeyã«åˆè‡´ã™ã‚‹ConfigKeyã‚’å‚ç…§ã—intã¨ã—ã¦å€¤ã‚’è¿”ã—ã¾ã™ã€‚
+	 * ConfigKeyãŒå­˜åœ¨ã—ãªã„å ´åˆã€è©²å½“ã™ã‚‹Keyã«ç¬¬äºŒå¼•æ•°ã®å†…å®¹ã‚’è¨­å®šã—ã¦ç¬¬äºŒå¼•æ•°ã®å†…å®¹ã‚’ãã®ã¾ã¾è¿”ã—ã¾ã™ã€‚
 	 * @param par1 Key
-	 * @param defaultvalue ƒfƒtƒHƒ‹ƒg‚Å•Ô‚é’l
-	 * @throws NumberFormatException ConfigKey‚Ìæ“¾‚ª‚Å‚«‚½‚ª’l‚ª®”’l‚Å‚È‚¢ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
-	 * @exception IllegalStateException w’è‚µ‚½Key‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * @param defaultvalue ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§è¿”ã‚‹å€¤
+	 * @throws NumberFormatException ConfigKeyã®å–å¾—ãŒã§ããŸãŒå€¤ãŒæ•´æ•°å€¤ã§ãªã„å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
+	 * @exception IllegalStateException æŒ‡å®šã—ãŸKeyãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 **/
 	public int getInt(String par1, int defaultvalue) throws NumberFormatException{
 		System.out.println("SSS="+par1);
@@ -148,12 +148,12 @@ public class ConfigList {
 	}
 	
 	/**
-	 * w’è‚µ‚½Key‚É‡’v‚·‚éConfigKey‚ğQÆ‚µfloat‚Æ‚µ‚Ä’l‚ğ•Ô‚µ‚Ü‚·B
-	 * ConfigKey‚ª‘¶İ‚µ‚È‚¢ê‡AŠY“–‚·‚éKey‚É‘æ“ñˆø”‚Ì“à—e‚ğİ’è‚µ‚Ä‘æ“ñˆø”‚Ì“à—e‚ğ‚»‚Ì‚Ü‚Ü•Ô‚µ‚Ü‚·B
+	 * æŒ‡å®šã—ãŸKeyã«åˆè‡´ã™ã‚‹ConfigKeyã‚’å‚ç…§ã—floatã¨ã—ã¦å€¤ã‚’è¿”ã—ã¾ã™ã€‚
+	 * ConfigKeyãŒå­˜åœ¨ã—ãªã„å ´åˆã€è©²å½“ã™ã‚‹Keyã«ç¬¬äºŒå¼•æ•°ã®å†…å®¹ã‚’è¨­å®šã—ã¦ç¬¬äºŒå¼•æ•°ã®å†…å®¹ã‚’ãã®ã¾ã¾è¿”ã—ã¾ã™ã€‚
 	 * @param par1 Key
-	 * @param defaultvalue ƒfƒtƒHƒ‹ƒg‚Å•Ô‚é’l
-	 * @throws NumberFormatException ConfigKey‚Ìæ“¾‚ª‚Å‚«‚½‚ª’l‚ªÀ”’l‚Å‚È‚¢ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
-	 * @exception IllegalStateException w’è‚µ‚½Key‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * @param defaultvalue ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§è¿”ã‚‹å€¤
+	 * @throws NumberFormatException ConfigKeyã®å–å¾—ãŒã§ããŸãŒå€¤ãŒå®Ÿæ•°å€¤ã§ãªã„å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
+	 * @exception IllegalStateException æŒ‡å®šã—ãŸKeyãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 **/
 	public float getFloat(String par1, float defaultvalue) throws NumberFormatException{
 		if(isExistKey(par1)){
@@ -165,11 +165,11 @@ public class ConfigList {
 	}
 	
 	/**
-	 * w’è‚µ‚½Key‚É‡’v‚·‚éConfigKey‚ğQÆ‚µboolean‚Æ‚µ‚Ä’l‚ğ•Ô‚µ‚Ü‚·B
-	 * ConfigKey‚ª‘¶İ‚µ‚È‚¢ê‡AŠY“–‚·‚éKey‚É‘æ“ñˆø”‚Ì“à—e‚ğİ’è‚µ‚Ä‘æ“ñˆø”‚Ì“à—e‚ğ‚»‚Ì‚Ü‚Ü•Ô‚µ‚Ü‚·B
+	 * æŒ‡å®šã—ãŸKeyã«åˆè‡´ã™ã‚‹ConfigKeyã‚’å‚ç…§ã—booleanã¨ã—ã¦å€¤ã‚’è¿”ã—ã¾ã™ã€‚
+	 * ConfigKeyãŒå­˜åœ¨ã—ãªã„å ´åˆã€è©²å½“ã™ã‚‹Keyã«ç¬¬äºŒå¼•æ•°ã®å†…å®¹ã‚’è¨­å®šã—ã¦ç¬¬äºŒå¼•æ•°ã®å†…å®¹ã‚’ãã®ã¾ã¾è¿”ã—ã¾ã™ã€‚
 	 * @param par1 Key
-	 * @param defaultvalue ƒfƒtƒHƒ‹ƒg‚Å•Ô‚é’l
-	 * @exception IllegalStateException w’è‚µ‚½Key‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * @param defaultvalue ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§è¿”ã‚‹å€¤
+	 * @exception IllegalStateException æŒ‡å®šã—ãŸKeyãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 **/
 	public boolean getBoolean(String par1, boolean defaultvalue){
 		if(isExistKey(par1)){
@@ -181,13 +181,13 @@ public class ConfigList {
 	}
 	
 	/**
-	 * Configƒtƒ@ƒCƒ‹‚ğ“Ç‚İo‚µ‚Ü‚·B
-	 * "(‘æˆêˆø”‚Åw’è‚µ‚½–¼‘O).cfg"‚Ìî•ñ‚ğConfigList‚ÉŠi”[‚µ‚Ü‚·B
-	 * ‚±‚Ìƒƒ\ƒbƒh‚ÍPreInitializeƒCƒxƒ“ƒg“à‚ÅŒÄ‚Ño‚³‚ê‚é•K—v‚ª‚ ‚è‚Ü‚·B
-	 * configƒtƒ@ƒCƒ‹“à‚Ìkey‚Æİ’è’l‚Ì‹æØ‚è•¶š‚Í"="‚Å‚·B
-	 * @param configFileName ƒRƒ“ƒtƒBƒOƒtƒ@ƒCƒ‹‚Ì–¼‘O(.cfg‚ğœ‚¢‚Ä‹Lq‚µ‚Ü‚·)
-	 * @param event EventHandler‚É“n‚³‚ê‚éFMLPreInitializationEvent
-	 * @throws IOException  ‰½‚ç‚©‚Ì——R‚Åconfig‚Ìƒ[ƒh‚É¸”s‚µ‚½ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * Configãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿å‡ºã—ã¾ã™ã€‚
+	 * "(ç¬¬ä¸€å¼•æ•°ã§æŒ‡å®šã—ãŸåå‰).cfg"ã®æƒ…å ±ã‚’ConfigListã«æ ¼ç´ã—ã¾ã™ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯PreInitializeã‚¤ãƒ™ãƒ³ãƒˆå†…ã§å‘¼ã³å‡ºã•ã‚Œã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+	 * configãƒ•ã‚¡ã‚¤ãƒ«å†…ã®keyã¨è¨­å®šå€¤ã®åŒºåˆ‡ã‚Šæ–‡å­—ã¯"="ã§ã™ã€‚
+	 * @param configFileName ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®åå‰(.cfgã‚’é™¤ã„ã¦è¨˜è¿°ã—ã¾ã™)
+	 * @param event EventHandlerã«æ¸¡ã•ã‚Œã‚‹FMLPreInitializationEvent
+	 * @throws IOException  ä½•ã‚‰ã‹ã®ç†ç”±ã§configã®ãƒ­ãƒ¼ãƒ‰ã«å¤±æ•—ã—ãŸå ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 */
 	public void loadConfig(String configFileName,FMLPreInitializationEvent event) throws IOException{
 		File file = new File(event.getModConfigurationDirectory(), configFileName+".cfg");
@@ -195,23 +195,23 @@ public class ConfigList {
 	}
 
 	/**
-	 * Configƒtƒ@ƒCƒ‹‚ğ“Ç‚İo‚µ‚Ü‚·B
-	 * ‚±‚Ìƒƒ\ƒbƒh‚Å‚Íƒtƒ@ƒCƒ‹–¼‚ğw’è‚¹‚¸FMLPreInitializationEvent#getSuggestedConfigurationFile()‚Ìw‚·ƒtƒ@ƒCƒ‹‚ğg—p‚µ‚Ü‚·B
-	 * ‚±‚Ìƒƒ\ƒbƒh‚ÍPreInitializeƒCƒxƒ“ƒg“à‚ÅŒÄ‚Ño‚³‚ê‚é•K—v‚ª‚ ‚è‚Ü‚·B
-	 * configƒtƒ@ƒCƒ‹“à‚Ìkey‚Æİ’è’l‚Ì‹æØ‚è•¶š‚Í"="‚Å‚·B
-	 * @param event EventHandler‚É“n‚³‚ê‚éFMLPreInitializationEvent
-	 * @throws IOException  ‰½‚ç‚©‚Ì——R‚Åconfig‚Ìƒ[ƒh‚É¸”s‚µ‚½ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * Configãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿å‡ºã—ã¾ã™ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã§ã¯ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã›ãšFMLPreInitializationEvent#getSuggestedConfigurationFile()ã®æŒ‡ã™ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯PreInitializeã‚¤ãƒ™ãƒ³ãƒˆå†…ã§å‘¼ã³å‡ºã•ã‚Œã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+	 * configãƒ•ã‚¡ã‚¤ãƒ«å†…ã®keyã¨è¨­å®šå€¤ã®åŒºåˆ‡ã‚Šæ–‡å­—ã¯"="ã§ã™ã€‚
+	 * @param event EventHandlerã«æ¸¡ã•ã‚Œã‚‹FMLPreInitializationEvent
+	 * @throws IOException  ä½•ã‚‰ã‹ã®ç†ç”±ã§configã®ãƒ­ãƒ¼ãƒ‰ã«å¤±æ•—ã—ãŸå ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 */
 	public void loadConfig(FMLPreInitializationEvent event) throws IOException{
 		loadConfig(event.getSuggestedConfigurationFile());
 	}
 	
 	/**
-	 * Configƒtƒ@ƒCƒ‹‚ğ“Ç‚İo‚µ‚Ü‚·B
-	 * ‚±‚Ìƒƒ\ƒbƒh‚Å‚ÍFile‚ğ’¼Úw’è‚µ‚Ü‚·B
-	 * configƒtƒ@ƒCƒ‹“à‚Ìkey‚Æİ’è’l‚Ì‹æØ‚è•¶š‚Í"="‚Å‚·B
-	 * @param file FileƒIƒuƒWƒFƒNƒg
-	 * @throws IOException ‰½‚ç‚©‚Ì——R‚Åconfig‚Ìƒ[ƒh‚É¸”s‚µ‚½ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * Configãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿å‡ºã—ã¾ã™ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã§ã¯Fileã‚’ç›´æ¥æŒ‡å®šã—ã¾ã™ã€‚
+	 * configãƒ•ã‚¡ã‚¤ãƒ«å†…ã®keyã¨è¨­å®šå€¤ã®åŒºåˆ‡ã‚Šæ–‡å­—ã¯"="ã§ã™ã€‚
+	 * @param file Fileã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @throws IOException ä½•ã‚‰ã‹ã®ç†ç”±ã§configã®ãƒ­ãƒ¼ãƒ‰ã«å¤±æ•—ã—ãŸå ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 */
 	public void loadConfig(File file) throws IOException{
 		if(file.exists()&&file.canRead()){
@@ -228,13 +228,13 @@ public class ConfigList {
 	}
 	
 	/**
-	 * Configƒtƒ@ƒCƒ‹‚ğ‘‚«o‚µ‚Ü‚·B
-	 * "(‘æˆêˆø”‚Åw’è‚µ‚½–¼‘O).cfg"‚Ìî•ñ‚ğConfigList‚ÉŠi”[‚µ‚Ü‚·B
-	 * ‚±‚Ìƒƒ\ƒbƒh‚ÍPreInitializeƒCƒxƒ“ƒg“à‚ÅŒÄ‚Ño‚³‚ê‚é•K—v‚ª‚ ‚è‚Ü‚·B
-	 * configƒtƒ@ƒCƒ‹“à‚Ìkey‚Æİ’è’l‚Ì‹æØ‚è•¶š‚Í"="‚Å‚·B
-	 * @param configFileName ƒRƒ“ƒtƒBƒOƒtƒ@ƒCƒ‹‚Ì–¼‘O(.cfg‚ğœ‚¢‚Ä‹Lq‚µ‚Ü‚·)
-	 * @param event EventHandler‚É“n‚³‚ê‚éFMLPreInitializationEvent
-	 * @throws IOException  ‰½‚ç‚©‚Ì——R‚Åconfig‚ÌƒZ[ƒu‚É¸”s‚µ‚½ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * Configãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãå‡ºã—ã¾ã™ã€‚
+	 * "(ç¬¬ä¸€å¼•æ•°ã§æŒ‡å®šã—ãŸåå‰).cfg"ã®æƒ…å ±ã‚’ConfigListã«æ ¼ç´ã—ã¾ã™ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯PreInitializeã‚¤ãƒ™ãƒ³ãƒˆå†…ã§å‘¼ã³å‡ºã•ã‚Œã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+	 * configãƒ•ã‚¡ã‚¤ãƒ«å†…ã®keyã¨è¨­å®šå€¤ã®åŒºåˆ‡ã‚Šæ–‡å­—ã¯"="ã§ã™ã€‚
+	 * @param configFileName ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®åå‰(.cfgã‚’é™¤ã„ã¦è¨˜è¿°ã—ã¾ã™)
+	 * @param event EventHandlerã«æ¸¡ã•ã‚Œã‚‹FMLPreInitializationEvent
+	 * @throws IOException  ä½•ã‚‰ã‹ã®ç†ç”±ã§configã®ã‚»ãƒ¼ãƒ–ã«å¤±æ•—ã—ãŸå ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 */
 	public void saveConfig(String configFileName,FMLPreInitializationEvent event) throws IOException{
 		File file = new File(event.getModConfigurationDirectory(), configFileName+".cfg");
@@ -242,21 +242,21 @@ public class ConfigList {
 	}
 	
 	/**
-	 * Configƒtƒ@ƒCƒ‹‚ğ‘‚«o‚µ‚Ü‚·B
-	 * ‚±‚Ìƒƒ\ƒbƒh‚Å‚Íƒtƒ@ƒCƒ‹–¼‚ğw’è‚¹‚¸FMLPreInitializationEvent#getSuggestedConfigurationFile()‚Ìw‚·ƒtƒ@ƒCƒ‹‚ğg—p‚µ‚Ü‚·B
-	 * ‚±‚Ìƒƒ\ƒbƒh‚ÍPreInitializeƒCƒxƒ“ƒg“à‚ÅŒÄ‚Ño‚³‚ê‚é•K—v‚ª‚ ‚è‚Ü‚·B
-	 * configƒtƒ@ƒCƒ‹“à‚Ìkey‚Æİ’è’l‚Ì‹æØ‚è•¶š‚Í"="‚Å‚·B
-	 * @param event EventHandler‚É“n‚³‚ê‚éFMLPreInitializationEvent
-	 * @throws IOException  ‰½‚ç‚©‚Ì——R‚Åconfig‚ÌƒZ[ƒu‚É¸”s‚µ‚½ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * Configãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãå‡ºã—ã¾ã™ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã§ã¯ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã›ãšFMLPreInitializationEvent#getSuggestedConfigurationFile()ã®æŒ‡ã™ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯PreInitializeã‚¤ãƒ™ãƒ³ãƒˆå†…ã§å‘¼ã³å‡ºã•ã‚Œã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+	 * configãƒ•ã‚¡ã‚¤ãƒ«å†…ã®keyã¨è¨­å®šå€¤ã®åŒºåˆ‡ã‚Šæ–‡å­—ã¯"="ã§ã™ã€‚
+	 * @param event EventHandlerã«æ¸¡ã•ã‚Œã‚‹FMLPreInitializationEvent
+	 * @throws IOException  ä½•ã‚‰ã‹ã®ç†ç”±ã§configã®ã‚»ãƒ¼ãƒ–ã«å¤±æ•—ã—ãŸå ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 */
 	public void saveConfig(FMLPreInitializationEvent event) throws IOException{
 		saveConfig(event.getSuggestedConfigurationFile());
 	}
 
 	/**
-	 * Configƒtƒ@ƒCƒ‹‚ğ‘‚«o‚µ‚Ü‚·B‚±‚Ìƒƒ\ƒbƒh‚Å‚ÍFile‚ğ’¼Úw’è‚µ‚Ü‚·B
-	 * @param file FileƒIƒuƒWƒFƒNƒg
-	 * @throws IOException ‰½‚ç‚©‚Ì——R‚Åconfig‚ÌƒZ[ƒu‚É¸”s‚µ‚½ê‡‚ÉƒXƒ[‚³‚ê‚Ü‚·B
+	 * Configãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãå‡ºã—ã¾ã™ã€‚ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã§ã¯Fileã‚’ç›´æ¥æŒ‡å®šã—ã¾ã™ã€‚
+	 * @param file Fileã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @throws IOException ä½•ã‚‰ã‹ã®ç†ç”±ã§configã®ã‚»ãƒ¼ãƒ–ã«å¤±æ•—ã—ãŸå ´åˆã«ã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 */
 	public void saveConfig(File file) throws IOException{
 		List<CharSequence> temp = new ArrayList<CharSequence>();

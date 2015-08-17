@@ -5,9 +5,9 @@ public class ConfigKey {
 	private String value;
 	
 	/**
-	 * Config�̊e�ݒ荀�ڂ��i�[����ConfigKey�̐V�����C���X�^���X�𐶐����܂��BKey,�ݒ�l����String�^�Ŋi�[����܂��B
+	 * Configの各設定項目を格納するConfigKeyの新しいインスタンスを生成します。Key,設定値共にString型で格納されます。
 	 * @param par1 key
-	 * @param par2 �ݒ肷��l
+	 * @param par2 設定する値
 	 */
 	public ConfigKey(String par1, String par2){
 		key = par1;
@@ -15,14 +15,14 @@ public class ConfigKey {
 	}
 
 	/**
-	 * key,value���ɖ���`��ConfigKey�̃C���X�^���X�𐶐����܂��B
+	 * key,value共に未定義でConfigKeyのインスタンスを生成します。
 	 */
 	public ConfigKey(){
 		this("","");
 	}
 	
 	/**
-	 * Key���擾���܂��Bnull�ł���΁A��̕������Ԃ��܂��B
+	 * Keyを取得します。nullであれば、空の文字列を返します。
 	 * @return Key
 	 */
 	public String getKey(){
@@ -30,8 +30,8 @@ public class ConfigKey {
 	}
 	
 	/**
-	 * Key��ύX���܂��B
-	 * @param par1 �ύX���Key
+	 * Keyを変更します。
+	 * @param par1 変更後のKey
 	 */
 	public ConfigKey setKey(String par1){
 		key = par1;
@@ -40,16 +40,16 @@ public class ConfigKey {
 	
 	//get
 	/**
-	 * �ݒ�l��Ԃ��܂��B
-	 * @return �ݒ�l
+	 * 設定値を返します。
+	 * @return 設定値
 	 */
 	public String getValue(){
 		return value;
 	}
 	
 	/**
-	 * �ݒ�l��ύX���܂��B
-	 * @param par1 �ύX��̐ݒ�l
+	 * 設定値を変更します。
+	 * @param par1 変更後の設定値
 	 */
 	public ConfigKey setValue(String par1){
 		value = par1;
