@@ -1,6 +1,8 @@
 package net.blacklab.lib;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemUtil {
@@ -16,6 +18,17 @@ public class ItemUtil {
 		}
 		Item item = GameRegistry.findItem(modid, name);
 		return item;
+	}
+
+	public static boolean isHelm(ItemStack stack){
+		if(stack!=null){
+			if(stack.getItem() instanceof ItemArmor){
+				if(((ItemArmor)stack.getItem()).armorType==0){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }
