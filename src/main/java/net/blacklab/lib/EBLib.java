@@ -8,8 +8,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 @Mod(modid = "net.blacklab.lib",name="EBLib",version=EBLib.VERSION)
 public class EBLib {
 	
-	public static final String VERSION="EL1 Build 4";
-	public static final int VERSION_CODE=1;
+	public static final String VERSION="EL1 Build 5";
+	public static final int VERSION_CODE=2;
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
