@@ -9,7 +9,7 @@ public class ItemUtil {
 	
 	public static Item getItemByStringId(String id){
 		String modid,name = "";
-		if(name.indexOf(":")==-1){
+		if(id.indexOf(":")==-1){
 			modid= "minecraft";
 			name = id;
 		}else{
