@@ -41,15 +41,15 @@ public class VectorUtil {
 	/**
 	 * 基本的にcanBlockBeSeenに同じ。違いは足元基準で「通れるか」を判断するもの
 	 */
-	public static boolean canMoveThrough(Entity pEntity, double pX, double pY, double pZ, boolean toTop, boolean do1, boolean do2){
+	public static boolean canMoveThrough(Entity pEntity, double fixHeight, double pX, double pY, double pZ, boolean toTop, boolean do1, boolean do2){
 		Block lblock = pEntity.worldObj.getBlockState(new BlockPos(pX, pY, pZ)).getBlock();
 		if (lblock == null) {
 			return false;
 		}
 //		lblock.setBlockBoundsBasedOnState(pEntity.worldObj, new BlockPos(pX, pY, pZ));
 		
-		Vec3 vec3do = new Vec3(pEntity.posX, pEntity.posY+0.9D/* + owner.getEyeHeight()*/, pEntity.posZ);
-		Vec3 vec3dt = new Vec3(pX + 0.5D, pY + (toTop?1.9D:0.9D), pZ + 0.5D);
+		Vec3 vec3do = new Vec3(pEntity.posX, pEntity.posY+fixHeight, pEntity.posZ);
+		Vec3 vec3dt = new Vec3(pX, pY, pZ);
 		MovingObjectPosition movingobjectposition = pEntity.worldObj.rayTraceBlocks(vec3do, vec3dt, do1, do2, false);
 		
 		if (movingobjectposition != null && movingobjectposition.typeOfHit == MovingObjectType.BLOCK) {
