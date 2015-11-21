@@ -1,0 +1,16 @@
+[
+{
+  "modid": "net.blacklab.lib",
+  "name": "EBLib",
+  "description": "EBLib for MC 1.8",
+  "version": "EL2 Build 3",
+  "mcversion": "1.8",
+  "url": "http://el-blacklab.net/",
+  "updateUrl": "",
+  "authors": ["Verclene"],
+  "credits": "created by Verclene",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
