@@ -5,12 +5,15 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ConfigList {
 	private List<ConfigKey> list;
+	private Map<String, String> commentMap;
 	
 	/**
 	 * Configファイルの設定内容の一覧を格納するためのConfigListの新しいインスタンスを生成します。
@@ -19,6 +22,7 @@ public class ConfigList {
 	 */
 	public ConfigList(){
 		list = new ArrayList<ConfigKey>();
+		commentMap = new HashMap<String, String>();
 	}
 	
 	//get
@@ -119,10 +123,9 @@ public class ConfigList {
 	public String getString(String par1, String defaultvalue){
 		if(isExistKey(par1)){
 			return getConfigByKey(par1).getValue();
-		}else{
-			putString(par1,defaultvalue);
-			return defaultvalue;
 		}
+		putString(par1,defaultvalue);
+		return defaultvalue;
 	}
 	
 	private void remove(String par1){
@@ -141,10 +144,9 @@ public class ConfigList {
 		System.out.println("SSS="+par1);
 		if(isExistKey(par1)){
 			return Integer.parseInt(getConfigByKey(par1).getValue());
-		}else{
-			putInt(par1,defaultvalue);
-			return defaultvalue;
 		}
+		putInt(par1,defaultvalue);
+		return defaultvalue;
 	}
 	
 	/**
@@ -158,10 +160,9 @@ public class ConfigList {
 	public float getFloat(String par1, float defaultvalue) throws NumberFormatException{
 		if(isExistKey(par1)){
 			return Float.parseFloat(getConfigByKey(par1).getValue());
-		}else{
-			putFloat(par1,defaultvalue);
-			return defaultvalue;
 		}
+		putFloat(par1,defaultvalue);
+		return defaultvalue;
 	}
 	
 	/**
@@ -174,10 +175,18 @@ public class ConfigList {
 	public boolean getBoolean(String par1, boolean defaultvalue){
 		if(isExistKey(par1)){
 			return Boolean.parseBoolean(getConfigByKey(par1).getValue());
-		}else{
-			putBoolean(par1,defaultvalue);
-			return defaultvalue;
 		}
+		putBoolean(par1,defaultvalue);
+		return defaultvalue;
+	}
+	
+	/**
+	 * 指定したKeyにコメントを付加します．コメントはcfgファイルに出力されます．
+	 * @param key Key
+	 * @param comment 設定するコメント
+	 */
+	public void setComment(String key, String comment) {
+		commentMap.put(key, comment);
 	}
 	
 	/**
@@ -217,7 +226,7 @@ public class ConfigList {
 		if(file.exists()&&file.canRead()){
 			for(String line:Files.readAllLines(file.toPath(), Charset.forName("UTF-8"))){
 				try{
-					if(!line.contains("=")) continue;
+					if(!line.contains("=") || line.startsWith("#")) continue;
 					String[] sp = line.split("=",2);
 					putString(sp[0],sp[1]);
 				}catch(NullPointerException e){
@@ -261,6 +270,9 @@ public class ConfigList {
 	public void saveConfig(File file) throws IOException{
 		List<CharSequence> temp = new ArrayList<CharSequence>();
 		for(ConfigKey k:list){
+			if(commentMap.containsKey(k.getKey())) {
+				temp.add("#"+commentMap.get(k.getKey()));
+			}
 			temp.add(k.getKey()+"="+k.getValue());
 		}
 		Files.write(file.toPath(), temp, Charset.forName("UTF-8"));

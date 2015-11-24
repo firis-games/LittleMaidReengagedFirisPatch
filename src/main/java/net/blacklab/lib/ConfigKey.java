@@ -26,7 +26,8 @@ public class ConfigKey {
 	 * @return Key
 	 */
 	public String getKey(){
-		if(key!=null) return key; else return "";
+		if(key!=null) return key;
+		return "";
 	}
 	
 	/**
