@@ -1,5 +1,6 @@
 package net.blacklab.lib;
 
+import net.blacklab.lib.version.Version;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;

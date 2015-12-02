@@ -1,4 +1,4 @@
-package net.blacklab.lib;
+package net.blacklab.lib.config;
 
 import java.io.File;
 import java.io.IOException;

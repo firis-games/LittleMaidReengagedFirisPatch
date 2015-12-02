@@ -1,4 +1,4 @@
-package net.blacklab.lib;
+package net.blacklab.lib.minecraft.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;

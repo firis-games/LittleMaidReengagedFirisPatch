@@ -1,4 +1,4 @@
-package net.blacklab.lib;
+package net.blacklab.lib.classutil;
 
 public class FileClassUtil {
 	
