@@ -41,5 +41,10 @@ public class FileClassUtil {
 		if(path.endsWith("/")) path=path.substring(0,path.length()-1);
 		return path.substring(0,path.lastIndexOf("/"));
 	}
+	
+	public static String getFileName(String path) {
+		if (path.indexOf("/") == -1) return path;
+		return path.substring(path.indexOf("/")+1);
+	}
 
 }

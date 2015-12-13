@@ -2,6 +2,10 @@ package net.blacklab.lib.obj;
 
 import java.util.Map.Entry;
 
+import org.apache.logging.log4j.Level;
+
+import net.minecraftforge.fml.common.FMLLog;
+
 public class SinglePair<K, V> implements Pair<K, V> {
 	
 	private K key;
@@ -23,8 +27,9 @@ public class SinglePair<K, V> implements Pair<K, V> {
 	}
 
 	@Override
-	public void setKey(K s) {
+	public Pair<K, V> setKey(K s) {
 		this.key = s;
+		return this;
 	}
 
 	@Override
@@ -33,8 +38,9 @@ public class SinglePair<K, V> implements Pair<K, V> {
 	}
 
 	@Override
-	public void setValue(V v) {
+	public Pair<K, V> setValue(V v) {
 		this.value = v;
+		return this;
 	}
 
 	@SuppressWarnings("rawtypes")
