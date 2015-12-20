@@ -1,10 +1,6 @@
 package net.blacklab.lib.obj;
 
-import java.util.Map.Entry;
 
-import org.apache.logging.log4j.Level;
-
-import net.minecraftforge.fml.common.FMLLog;
 
 public class SinglePair<K, V> implements Pair<K, V> {
 	
@@ -19,6 +15,11 @@ public class SinglePair<K, V> implements Pair<K, V> {
 	public SinglePair(K key, V value) {
 		setKey(key);
 		setValue(value);
+	}
+
+	@Override
+	public int hashCode() {
+		return key.hashCode() ^ value.hashCode();
 	}
 
 	@Override
