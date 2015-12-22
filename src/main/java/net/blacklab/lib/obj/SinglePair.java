@@ -1,5 +1,8 @@
 package net.blacklab.lib.obj;
 
+import java.util.AbstractMap;
+
+
 
 
 public class SinglePair<K, V> implements Pair<K, V> {
@@ -44,13 +47,12 @@ public class SinglePair<K, V> implements Pair<K, V> {
 		return this;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof SinglePair) {
-			return key.equals(((SinglePair) obj).getKey()) && key.equals(((SinglePair) obj).getValue());
+			return key.equals(((SinglePair) obj).getKey()) && value.equals(((SinglePair) obj).getValue());
 		}
-		return super.equals(obj);
+		return false;
 	}
-	
+
 }
