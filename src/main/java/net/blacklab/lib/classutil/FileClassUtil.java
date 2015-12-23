@@ -1,7 +1,7 @@
 package net.blacklab.lib.classutil;
 
 public class FileClassUtil {
-	
+
 	/**
 	 * ファイルパスをLinux区切りに変換し、間に挟まった"."を除去します。
 	 * @param par1
@@ -12,7 +12,7 @@ public class FileClassUtil {
 		if(par1.endsWith("/.")) par1.substring(0, par1.lastIndexOf("/."));
 		return par1;
 	}
-	
+
 	/**
 	 * ファイルからクラスを読み取る時用。root以下にあるpathについてクラス名に変換する。
 	 * @param path
@@ -20,8 +20,8 @@ public class FileClassUtil {
 	 * @return
 	 */
 	public static String getClassName(String path, String root){
-		if(!path.endsWith(".class")) return null; 
-		
+		if(!path.endsWith(".class")) return null;
+
 		if(root!=null){
 			if(!root.isEmpty()&&path.startsWith(root)){
 				path = path.substring(root.length());
@@ -31,7 +31,7 @@ public class FileClassUtil {
 		if(path.endsWith(".class")) path = path.substring(0,path.lastIndexOf(".class"));
 		return path.replace("/", ".");
 	}
-	
+
 	/**与えるパスはgetLinuxAntiDotNameで正規化したものでなくてはならない
 	 * @param path
 	 * @return
@@ -41,10 +41,10 @@ public class FileClassUtil {
 		if(path.endsWith("/")) path=path.substring(0,path.length()-1);
 		return path.substring(0,path.lastIndexOf("/"));
 	}
-	
+
 	public static String getFileName(String path) {
 		if (path.indexOf("/") == -1) return path;
-		return path.substring(path.indexOf("/")+1);
+		return path.substring(path.lastIndexOf("/")+1);
 	}
 
 }
