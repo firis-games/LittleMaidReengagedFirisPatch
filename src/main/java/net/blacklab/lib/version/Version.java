@@ -1,4 +1,4 @@
-package net.blacklab.lib;
+package net.blacklab.lib.version;
 
 import java.io.BufferedReader;
 import java.io.IOException;

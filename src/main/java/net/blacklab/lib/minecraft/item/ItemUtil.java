@@ -1,4 +1,4 @@
-package net.blacklab.lib;
+package net.blacklab.lib.minecraft.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -9,7 +9,7 @@ public class ItemUtil {
 	
 	public static Item getItemByStringId(String id){
 		String modid,name = "";
-		if(id.indexOf(":")==-1){
+		if(name.indexOf(":")==-1){
 			modid= "minecraft";
 			name = id;
 		}else{
