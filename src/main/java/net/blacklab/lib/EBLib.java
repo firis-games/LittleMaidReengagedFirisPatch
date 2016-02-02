@@ -11,12 +11,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = "net.blacklab.lib",name="EBLib",version=EBLib.VERSION, acceptedMinecraftVersions="[1.8,1.8.9]")
 public class EBLib {
 
-	public static final String VERSION="3.2.11";
-	public static final String VERSION_FORSITE="EL3 Build 11";
+	public static final String VERSION="3.2.12";
+	public static final String VERSION_FORSITE="EL3 Build 12";
 	public static final int VERSION_CODE=5;
 	
 	public static final VersionData currentVersion = new VersionData(VERSION_CODE, VERSION, VERSION_FORSITE);
-	public static VersionData latestVersion = new VersionData(1, "1.0.11", "EL1");
+	public static VersionData latestVersion = new VersionData(1, "1.0.1", "EL1");
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

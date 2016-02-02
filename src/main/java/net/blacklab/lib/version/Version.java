@@ -31,25 +31,22 @@ public class Version {
 		 * @param data
 		 */
 		public int compareVersion(VersionData data) {
-			if (data.code < 0 || this.code < 0) {
-				String[] newVersionSplit = data.name.split("\\.");
-				String[] curVersionSplit = this.name.split("\\.");
-				int elements = Math.min(newVersionSplit.length, curVersionSplit.length);
-				for (int i = 0; i < elements; i++) {
-					try {
-						int compared = Integer.compare(Integer.parseInt(newVersionSplit[i]), Integer.parseInt(curVersionSplit[i]));
-						if (compared != 0) {
-							return compared;
-						}
-					} catch (NumberFormatException exception) {
-						System.err.println("Version check failed: Invalid number");
-						break;
+			int compared = 0;
+			String[] newVersionSplit = data.name.split("\\.");
+			String[] curVersionSplit = this.name.split("\\.");
+			int elements = Math.min(newVersionSplit.length, curVersionSplit.length);
+			for (int i = 0; i < elements; i++) {
+				try {
+					compared = Integer.compare(Integer.parseInt(newVersionSplit[i]), Integer.parseInt(curVersionSplit[i]));
+					if (compared != 0) {
+						return compared;
 					}
+				} catch (NumberFormatException exception) {
+					System.err.println("Version check failed: Invalid number");
+					break;
 				}
-			} else {
-				return Integer.compare(data.code, this.code);
 			}
-			return 0;
+			return Integer.compare(data.code, this.code);
 		}
 	}
 	
