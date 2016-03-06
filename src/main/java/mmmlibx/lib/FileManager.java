@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.blacklab.lib.classutil.FileClassUtil;
-import net.blacklab.lmmnx.util.LMMNX_DevMode;
+import net.blacklab.lmr.util.DevMode;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
@@ -55,7 +55,7 @@ public class FileManager {
 		minecraftDir = dirMinecraft.getPath();
 		dirMods = new File(dirMinecraft, "mods");
 		//開発モード
-		if(LMMNX_DevMode.DEVMODE != LMMNX_DevMode.NOT_IN_DEV){
+		if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
 			//Linux準拠の形式に変更
 			String path = FileClassUtil.getLinuxAntiDotName(dirMods.getAbsolutePath());
 			String pathd = path;
@@ -68,9 +68,9 @@ public class FileManager {
 				serverFlag = true;
 			}
 			if(path.endsWith(tail)){
-				if(LMMNX_DevMode.DEVMODE == LMMNX_DevMode.DEVMODE_ECLIPSE){
+				if(DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE){
 					pathd = path.substring(0, path.indexOf(tail))+"/bin";
-				}else if(LMMNX_DevMode.DEVMODE == LMMNX_DevMode.DEVMODE_NO_IDE){
+				}else if(DevMode.DEVMODE == DevMode.DEVMODE_NO_IDE){
 					pathd = path.substring(0, path.indexOf(tail))+"/build/classes/main";
 					patha = path.substring(0, path.indexOf(tail))+"/build/resources/main";
 					dirDevClassAssets = new File(patha);
@@ -79,11 +79,11 @@ public class FileManager {
 				if(!dirDevClasses.exists()||!dirDevClasses.isDirectory())
 					throw new IllegalStateException("Could not get dev class path: Maybe your source codes are out of src/main/java?");
 				
-				for(int i=0;i<LMMNX_DevMode.INCLUDEPROJECT.length&&!serverFlag;i++){
-					if(LMMNX_DevMode.DEVMODE == LMMNX_DevMode.DEVMODE_ECLIPSE){
-						String c = FileClassUtil.getParentDir(path.substring(0, path.indexOf(tail)))+"/"+LMMNX_DevMode.INCLUDEPROJECT[i]+"/bin";
+				for(int i=0;i<DevMode.INCLUDEPROJECT.length&&!serverFlag;i++){
+					if(DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE){
+						String c = FileClassUtil.getParentDir(path.substring(0, path.indexOf(tail)))+"/"+DevMode.INCLUDEPROJECT[i]+"/bin";
 						dirDevIncludeClasses.add(new File(c));
-					}else if(LMMNX_DevMode.DEVMODE == LMMNX_DevMode.DEVMODE_NO_IDE){
+					}else if(DevMode.DEVMODE == DevMode.DEVMODE_NO_IDE){
 					}
 				}
 			}else{
@@ -217,11 +217,11 @@ public class FileManager {
 		
 		MMMLib.Debug("getModFile:[%s]:%s", pname, dirMods.getAbsolutePath());
 		// ファイル・ディレクトリを検索
-		if(LMMNX_DevMode.DEVMODE != LMMNX_DevMode.NOT_IN_DEV){
+		if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
 			//開発モード時はそちらを優先
 			llist.add(dirDevClasses);
-			if(LMMNX_DevMode.DEVMODE == LMMNX_DevMode.DEVMODE_NO_IDE) llist.add(dirDevClassAssets);
-			if(LMMNX_DevMode.DEVMODE == LMMNX_DevMode.DEVMODE_ECLIPSE){
+			if(DevMode.DEVMODE == DevMode.DEVMODE_NO_IDE) llist.add(dirDevClassAssets);
+			if(DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE){
 				for(File f:dirDevIncludeClasses){
 					llist.add(f);
 				}

@@ -20,11 +20,11 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import littleMaidMobX.LMM_LittleMaidMobNX;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lib.classutil.FileClassUtil;
-import net.blacklab.lmmnx.client.LMMNX_OldZipTexturesLoader;
-import net.blacklab.lmmnx.util.LMMNX_DevMode;
+import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.client.resource.LMMNX_OldZipTexturesLoader;
+import net.blacklab.lmr.util.DevMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -124,16 +124,16 @@ public class MMM_TextureManager {
 	public void init() {
 		// 検索対象ファイル名を登録します。
 		// パターンを登録しない場合、独自名称のMODファイル、テクスチャディレクトリ、クラスが読み込まれません。
-		FileManager.getModFile("mmmlibx", "littleMaidMob");
-		FileManager.getModFile("mmmlibx", "mmmlibx");
-		FileManager.getModFile("mmmlibx", "ModelMulti");
-		FileManager.getModFile("mmmlibx", "LittleMaidMob");
+		FileManager.getModFile("littleMaidMob", "littleMaidMob");
+		FileManager.getModFile("littleMaidMob", "mmmlibx");
+		FileManager.getModFile("littleMaidMob", "ModelMulti");
+		FileManager.getModFile("littleMaidMob", "LittleMaidMob");
 		
-		addSearch("mmmlibx", "/assets/minecraft/textures/entity/ModelMulti/", "ModelMulti_");
-		addSearch("mmmlibx", "/assets/minecraft/textures/entity/littleMaid/", "ModelMulti_");
-		addSearch("mmmlibx", "/assets/minecraft/textures/entity/littleMaid/", "ModelLittleMaid_");
-		addSearch("mmmlibx", "/mob/ModelMulti/", "ModelMulti_");
-		addSearch("mmmlibx", "/mob/littleMaid/", "ModelLittleMaid_");
+		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/ModelMulti/", "ModelMulti_");
+		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littleMaid/", "ModelMulti_");
+		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littleMaid/", "ModelLittleMaid_");
+		addSearch("littleMaidMob", "/mob/ModelMulti/", "ModelMulti_");
+		addSearch("littleMaidMob", "/mob/littleMaid/", "ModelLittleMaid_");
 	}
 
 	protected String[] getSearch(String pName) {
@@ -229,10 +229,10 @@ public class MMM_TextureManager {
 		for (String[] lst : searchPrefix) {
 			// mods
 			searchFiles(FileManager.dirMods, lst);
-			if (LMMNX_DevMode.DEVMODE != LMMNX_DevMode.NOT_IN_DEV) {
+			if (DevMode.DEVMODE != DevMode.NOT_IN_DEV) {
 				searchFiles(FileManager.dirDevClasses, lst);
 			}
-			if (LMMNX_DevMode.DEVMODE == LMMNX_DevMode.DEVMODE_ECLIPSE) {
+			if (DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE) {
 				for (File ln: FileManager.dirDevIncludeClasses)
 					searchFiles(ln, lst);
 			}
@@ -471,11 +471,11 @@ public class MMM_TextureManager {
 			}
 			catch (Exception exception) {
 				MMMLib.Debug("getModelClass-Exception: %s", fname);
-				if(LMMNX_DevMode.DEVELOPMENT_DEBUG_MODE || LMM_LittleMaidMobNX.cfg_PrintDebugMessage) exception.printStackTrace();
+				if(DevMode.DEVELOPMENT_DEBUG_MODE || LittleMaidReengaged.cfg_PrintDebugMessage) exception.printStackTrace();
 			}
 			catch (Error error) {
 				MMMLib.Debug("getModelClass-Error: %s", fname);
-				if(LMMNX_DevMode.DEVELOPMENT_DEBUG_MODE || LMM_LittleMaidMobNX.cfg_PrintDebugMessage) error.printStackTrace();
+				if(DevMode.DEVELOPMENT_DEBUG_MODE || LittleMaidReengaged.cfg_PrintDebugMessage) error.printStackTrace();
 			}
 		}
 	}
@@ -581,7 +581,7 @@ public class MMM_TextureManager {
 					String tn = FileClassUtil.getLinuxAntiDotName(nfile.getAbsolutePath());
 					String rmn = FileClassUtil.getLinuxAntiDotName(FileManager.dirMods.getAbsolutePath());
 					ADDMODEL: if (nfile.getName().endsWith(".class")) {
-						if(LMMNX_DevMode.DEVMODE != LMMNX_DevMode.NOT_IN_DEV){
+						if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
 							String rdn = FileClassUtil.getLinuxAntiDotName(FileManager.dirDevClasses.getAbsolutePath());
 							if(tn.startsWith(rdn)){
 								addModelClass(FileClassUtil.getClassName(tn, rdn),pSearch);
@@ -601,7 +601,7 @@ public class MMM_TextureManager {
 						if (i > -1) {
 							// 対象はテクスチャディレクトリ
 							addTextureName(s.substring(i), pSearch);
-							if(LMMNX_DevMode.DEVMODE==LMMNX_DevMode.DEVMODE_ECLIPSE) for(File f:FileManager.dirDevIncludeClasses){
+							if(DevMode.DEVMODE==DevMode.DEVMODE_ECLIPSE) for(File f:FileManager.dirDevIncludeClasses){
 								String rin = FileClassUtil.getLinuxAntiDotName(f.getAbsolutePath());
 								if(tn.startsWith(rin)){
 									String cname = tn.substring(rin.length()+1);

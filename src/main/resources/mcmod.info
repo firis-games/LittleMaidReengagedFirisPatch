@@ -1,9 +1,9 @@
 [
 {
 	"modid": "lmmx",
-	"name": "LittleMaidMobNX",
+	"name": "LittleMaidReengaged",
 	"description": "Improved minecraft life with cute & little maids",
-	"version": "NX5 Build 84",
+	"version": "6.0.2",
 	"mcversion": "1.8.x",
 	"url": "http://el-blacklab.net/",
 	"authorList": ["Verclene"],

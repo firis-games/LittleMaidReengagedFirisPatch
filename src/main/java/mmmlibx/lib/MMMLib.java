@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import littleMaidMobX.LMM_LittleMaidMobNX;
 import mmmlibx.lib.FileManager.CommonClassLoaderWrapper;
 import mmmlibx.lib.multiModel.MMMLoader.MMMTransformer;
-import net.blacklab.lmmnx.util.LMMNX_DevMode;
+import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.network.LMRMessage;
+import net.blacklab.lmr.network.LMRNetwork;
+import net.blacklab.lmr.util.DevMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Mod;
@@ -20,13 +22,11 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
-import network.W_Message;
-import network.W_Network;
 
 @Mod(	modid	= "MMMLibX",
 		name	= "MMMLibX",
-		version	= LMM_LittleMaidMobNX.VERSION,
-		acceptedMinecraftVersions=LMM_LittleMaidMobNX.ACCEPTED_MCVERSION)
+		version	= LittleMaidReengaged.VERSION,
+		acceptedMinecraftVersions=LittleMaidReengaged.ACCEPTED_MCVERSION)
 public class MMMLib {
 
 	public static boolean cfg_isModelAlphaBlend = true;
@@ -41,7 +41,7 @@ public class MMMLib {
 
 	public static void Debug(String pText, Object... pData) {
 		// デバッグメッセージ
-		if (LMM_LittleMaidMobNX.cfg_PrintDebugMessage||LMMNX_DevMode.DEVELOPMENT_DEBUG_MODE) {
+		if (LittleMaidReengaged.cfg_PrintDebugMessage||DevMode.DEVELOPMENT_DEBUG_MODE) {
 			System.out.println(String.format("MMMLib-" + pText, pData));
 		}
 	}
@@ -58,7 +58,7 @@ public class MMMLib {
 			urls.add(FileManager.dirMods.toURI().toURL());
 		} catch (MalformedURLException e1) {
 		}
-		if(LMMNX_DevMode.DEVMODE==LMMNX_DevMode.DEVMODE_ECLIPSE){
+		if(DevMode.DEVMODE==DevMode.DEVMODE_ECLIPSE){
 			for(File f:FileManager.dirDevIncludeClasses){
 				try {
 					urls.add(f.toURI().toURL());
@@ -72,7 +72,7 @@ public class MMMLib {
 		MMMTransformer.isEnable = true;
 		
 		// コンフィグの解析・設定
-		isModelAlphaBlend	= LMM_LittleMaidMobNX.cfg_isModelAlphaBlend;
+		isModelAlphaBlend	= LittleMaidReengaged.cfg_isModelAlphaBlend;
 		cfg_isModelAlphaBlend = isModelAlphaBlend;
 		
 /*
@@ -99,6 +99,7 @@ public class MMMLib {
 		MMM_StabilizerManager.init();
 
 		// テクスチャパックの構築
+		MMM_TextureManager.instance.init();
 		MMM_TextureManager.instance.loadTextures();
 		// ロード
 		if (MMM_Helper.isClient) {
@@ -147,7 +148,7 @@ public class MMMLib {
 		
 	}
 
-	public static void serverCustomPayload(EntityPlayer playerEntity, W_Message var2)
+	public static void serverCustomPayload(EntityPlayer playerEntity, LMRMessage var2)
 	{
 		// サーバ側の動作
 		byte lmode = var2.data[0];
@@ -179,6 +180,6 @@ public class MMMLib {
 
 	public static void sendToClient(EntityPlayer player, byte[] ldata)
 	{
-		W_Network.sendPacketToPlayer(1, player, ldata);
+		LMRNetwork.sendPacketToPlayer(1, player, ldata);
 	}
 }

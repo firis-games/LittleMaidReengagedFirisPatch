@@ -1,8 +1,8 @@
 package mmmlibx.lib;
 
-import littleMaidMobX.LMM_EntityLittleMaid;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
+import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -140,8 +140,8 @@ public class MMM_TextureData  {
 			lbox = (MMM_TextureBox)textureBox[1];
 			for (int i = 0; i < 4; i++) {
 				ItemStack is = i==3?
-						(owner instanceof LMM_EntityLittleMaid?
-								((LMM_EntityLittleMaid)owner).getHeadMountStackCopy():null) :
+						(owner instanceof EntityLittleMaid?
+								((EntityLittleMaid)owner).getHeadMountStackCopy():null) :
 						owner.getInventory()[i+1];
 				textures[1][i] = lbox.getArmorTextureName(MMM_TextureManager.tx_armor1, is);
 				textures[2][i] = lbox.getArmorTextureName(MMM_TextureManager.tx_armor2, is);
@@ -258,9 +258,9 @@ public class MMM_TextureData  {
 		{
 			// サイズの変更
 	//		owner.setSize(textureBox[0].getWidth(entityCaps), textureBox[0].getHeight(entityCaps));
-			if(owner instanceof LMM_EntityLittleMaid)
+			if(owner instanceof EntityLittleMaid)
 			{
-				((LMM_EntityLittleMaid)owner).setSize2(textureBox[0].getWidth(entityCaps), textureBox[0].getHeight(entityCaps));
+				((EntityLittleMaid)owner).setSize2(textureBox[0].getWidth(entityCaps), textureBox[0].getHeight(entityCaps));
 			}
 			else if(owner instanceof MMM_EntitySelect)
 			{

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import littleMaidMobX.LMM_LittleMaidMobNX;
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 import org.objectweb.asm.ClassReader;
@@ -71,7 +71,7 @@ public class MMMTransformer implements IClassTransformer, Opcodes {
 
 	public static void Debug(String pText, Object... pData) {
 		// デバッグメッセージ
-		if(LMM_LittleMaidMobNX.cfg_PrintDebugMessage)
+		if(LittleMaidReengaged.cfg_PrintDebugMessage)
 		{
 			System.out.println(String.format("MMMTransformer-" + pText, pData));
 		}

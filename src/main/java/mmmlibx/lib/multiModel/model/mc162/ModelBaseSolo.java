@@ -2,8 +2,8 @@ package mmmlibx.lib.multiModel.model.mc162;
 
 import java.util.Map;
 
-import littleMaidMobX.LMM_LittleMaidMobNX;
 import mmmlibx.lib.Client;
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.client.model.TextureOffset;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
@@ -46,7 +46,7 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 			return;
 		}
 		if (isAlphablend) {
-			if (LMM_LittleMaidMobNX.cfg_isModelAlphaBlend) {
+			if (LittleMaidReengaged.cfg_isModelAlphaBlend) {
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			} else {

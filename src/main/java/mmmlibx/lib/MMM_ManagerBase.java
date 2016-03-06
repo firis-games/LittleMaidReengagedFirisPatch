@@ -7,9 +7,9 @@ import java.net.MalformedURLException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import littleMaidMobX.LMM_LittleMaidMobNX;
 import net.blacklab.lib.classutil.FileClassUtil;
-import net.blacklab.lmmnx.util.LMMNX_DevMode;
+import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.util.DevMode;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -28,9 +28,9 @@ public abstract class MMM_ManagerBase {
 		// ロード
 		
 		// 開発用
-		if(LMMNX_DevMode.DEVMODE != LMMNX_DevMode.NOT_IN_DEV){
+		if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
 			startSearch(FileManager.dirDevClasses, true);
-			if(LMMNX_DevMode.DEVMODE == LMMNX_DevMode.DEVMODE_ECLIPSE){
+			if(DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE){
 				for(File f:FileManager.dirDevIncludeClasses){
 					startSearch(f, true);
 				}
@@ -174,11 +174,11 @@ public abstract class MMM_ManagerBase {
 		}
 		catch (Exception exception) {
 			MMMLib.Debug("get%sClass-Exception.(%s)", getPreFix(), lclassname);
-			if(LMMNX_DevMode.DEVELOPMENT_DEBUG_MODE && LMM_LittleMaidMobNX.cfg_PrintDebugMessage) exception.printStackTrace();
+			if(DevMode.DEVELOPMENT_DEBUG_MODE && LittleMaidReengaged.cfg_PrintDebugMessage) exception.printStackTrace();
 		}
 		catch (Error error) {
 			MMMLib.Debug("get%sClass-Error: %s", getPreFix(), lclassname);
-			if(LMMNX_DevMode.DEVELOPMENT_DEBUG_MODE && LMM_LittleMaidMobNX.cfg_PrintDebugMessage) error.printStackTrace();
+			if(DevMode.DEVELOPMENT_DEBUG_MODE && LittleMaidReengaged.cfg_PrintDebugMessage) error.printStackTrace();
 		}
 		
 	}
