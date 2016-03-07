@@ -1,6 +1,6 @@
-entity.lmmx.LittleMaidX.name=リトルメイド
+entity.lmreengaged.LittleMaidX.name=リトルメイド
 
-item.lmmx:spawn_lmmx_egg.name=スポーン リトルメイド
+item.lmreengaged:spawn_littlemaid_egg.name=スポーン リトルメイド
 
 achievement.contract=悟り。
 achievement.contract.desc=リトルメイドを雇用する

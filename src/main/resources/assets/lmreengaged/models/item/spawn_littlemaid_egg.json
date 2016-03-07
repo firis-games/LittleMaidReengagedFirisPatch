@@ -1,7 +1,7 @@
 {
 	"parent": "builtin/generated",
 	"textures": {
-		"layer0": "lmmx:items/spawn_lmmx_egg"
+		"layer0": "lmreengaged:items/spawn_littlemaid_egg"
 	},
     "display": {
         "thirdperson": {

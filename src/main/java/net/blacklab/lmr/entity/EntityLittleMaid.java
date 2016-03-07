@@ -1,6 +1,27 @@
 package net.blacklab.lmr.entity;
 
-import static net.blacklab.lmr.util.Statics.*;
+import static net.blacklab.lmr.util.Statics.dataWatch_Absoption;
+import static net.blacklab.lmr.util.Statics.dataWatch_Color;
+import static net.blacklab.lmr.util.Statics.dataWatch_DominamtArm;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Aimebow;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Bloodsuck;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Freedom;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_LooksSugar;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_OverDrive;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Register;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Tracer;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Wait;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Working;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterest;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterestAXIS;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_remainsContract;
+import static net.blacklab.lmr.util.Statics.dataWatch_Free;
+import static net.blacklab.lmr.util.Statics.dataWatch_Gotcha;
+import static net.blacklab.lmr.util.Statics.dataWatch_ItemUse;
+import static net.blacklab.lmr.util.Statics.dataWatch_Mode;
+import static net.blacklab.lmr.util.Statics.dataWatch_Parts;
+import static net.blacklab.lmr.util.Statics.dataWatch_Texture;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -25,7 +46,6 @@ import mmmlibx.lib.multiModel.model.mc162.EquippedStabilizer;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.LMM_SoundManager;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.api.event.LMMNX_Event;
 import net.blacklab.lmr.api.item.LMMNX_API_Item;
@@ -4246,8 +4266,6 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 //				le.getValue().updateEquippedPoint(pEntity.textureModel0);
 //			}
 //		}
-		maidSoundRate = LMM_SoundManager.instance.getSoundRate(textureData.getTextureName(0), getColor());
-
 	}
 
 	/**

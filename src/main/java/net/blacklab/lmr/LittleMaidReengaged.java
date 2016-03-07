@@ -53,8 +53,8 @@ import net.minecraftforge.fml.relauncher.Side;
 		acceptedMinecraftVersions=LittleMaidReengaged.ACCEPTED_MCVERSION)
 public class LittleMaidReengaged {
 
-	public static final String DOMAIN = "lmmx";
-	public static final String VERSION = "6.0.2";
+	public static final String DOMAIN = "lmreengaged";
+	public static final String VERSION = "6.0.3";
 	public static final String ACCEPTED_MCVERSION = "1.8.9";
 	public static final int VERSION_CODE = 1;
 
@@ -237,8 +237,8 @@ public class LittleMaidReengaged {
 				"LittleMaidX", 0, instance, 80, 3, true);
 
 		spawnEgg = new ItemSpawnEgg();
-		spawnEgg.setUnlocalizedName(DOMAIN + ":spawn_lmmx_egg");
-		GameRegistry.registerItem(spawnEgg, "spawn_lmmx_egg");
+		spawnEgg.setUnlocalizedName(DOMAIN + ":spawn_littlemaid_egg");
+		GameRegistry.registerItem(spawnEgg, "spawn_littlemaid_egg");
 		if (cfg_enableSpawnEgg) {
 			GameRegistry.addRecipe(
 					new ItemStack(spawnEgg, 1),
@@ -250,7 +250,7 @@ public class LittleMaidReengaged {
 		}
 
 		registerKey = new ItemRegisterKey();
-		GameRegistry.registerItem(registerKey, "lmmnx_registerkey");
+		GameRegistry.registerItem(registerKey, "registerkey");
 		GameRegistry.addShapelessRecipe(new ItemStack(registerKey), Items.egg,
 				Items.sugar, Items.nether_wart);
 
@@ -267,12 +267,12 @@ public class LittleMaidReengaged {
 		if (evt.getSide() == Side.CLIENT) {
 			ModelLoader.setCustomModelResourceLocation(
 					LittleMaidReengaged.spawnEgg, 0, new ModelResourceLocation(
-							"lmmx:spawn_lmmx_egg", "inventory"));
+							DOMAIN+":spawn_littlemaid_egg", "inventory"));
 			ModelLoader.setCustomModelResourceLocation(registerKey, 0,
-					new ModelResourceLocation("lmmx:lmmnx_registerkey",
+					new ModelResourceLocation(DOMAIN+":registerkey",
 							"inventory"));
 			ModelLoader.setCustomModelResourceLocation(registerKey, 1,
-					new ModelResourceLocation("lmmx:lmmnx_registerkey",
+					new ModelResourceLocation(DOMAIN+":registerkey",
 							"inventory"));
 		}
 

@@ -1,7 +1,7 @@
-entity.lmmx.LittleMaidX.name=LittleMaid
+entity.lmreengaged.LittleMaidX.name=LittleMaid
 
-item.lmmx:spawn_lmmx_egg.name=Spawn LittleMaid
-item.lmmx:lmmnx_registerkey.name=§eTrigger Item Registerer
+item.lmreengaged:spawn_littlemaid_egg.name=Spawn LittleMaid
+item.lmreengaged:registerkey.name=§eTrigger Item Registerer
 
 achievement.contract=Realization
 achievement.contract.desc=Employ a LittleMaid

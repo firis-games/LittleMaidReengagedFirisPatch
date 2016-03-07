@@ -3,7 +3,6 @@ package net.blacklab.lmr.client.gui;
 
 import mmmlibx.lib.MMM_GuiMobSelect;
 import mmmlibx.lib.MMM_Helper;
-import net.blacklab.lmr.LMM_GuiTriggerSelect;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.network.NetworkSync;
@@ -15,7 +14,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
@@ -96,9 +94,6 @@ public class GuiIFF extends MMM_GuiMobSelect {
 		}
 		if (guibutton.id == 200) {
 			mc.displayGuiScreen(null);
-		}
-		if (guibutton.id == 201) {
-			mc.displayGuiScreen(new LMM_GuiTriggerSelect(thePlayer, this));
 		}
 	}
 

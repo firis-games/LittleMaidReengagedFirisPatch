@@ -1,7 +1,7 @@
 {
 	"parent": "builtin/generated",
 	"textures": {
-		"layer0": "lmmx:items/lmmnx_registerkey"
+		"layer0": "lmreengaged:items/registerkey"
 	},
     "display": {
         "thirdperson": {
