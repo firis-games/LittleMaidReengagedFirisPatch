@@ -37,7 +37,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import mmmlibx.lib.ITextureEntity;
 import mmmlibx.lib.MMMLib;
 import mmmlibx.lib.MMM_Counter;
-import mmmlibx.lib.MMM_Helper;
 import mmmlibx.lib.MMM_TextureBox;
 import mmmlibx.lib.MMM_TextureBoxBase;
 import mmmlibx.lib.MMM_TextureData;
@@ -83,8 +82,11 @@ import net.blacklab.lmr.item.ItemRegisterKey;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMMNX_NetSync;
 import net.blacklab.lmr.network.NetworkSync;
+import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
+import net.blacklab.lmr.util.MaidHelper;
+import net.blacklab.lmr.util.NetworkHelper;
 import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.manager.EntityModeManager;
@@ -753,7 +755,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 				isServerSave?LMMNX_NetSync.LMMNX_Sync_String_MT_RequestChangeRender:LMMNX_NetSync.LMMNX_Sync_String_MT_RecallParam
 		};
 		byte b1b[] = Arrays.copyOf(b1, b1.length+model.length());
-		MMM_Helper.setStr(b1b, 6, model);
+		NetworkHelper.setStrToPacket(b1b, 6, model);
 		syncNet(b1b);
 
 		// Armor側
@@ -766,7 +768,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 				isServerSave?LMMNX_NetSync.LMMNX_Sync_String_AT_RequestChangeRender:LMMNX_NetSync.LMMNX_Sync_String_AT_RecallParam
 		};
 		byte b2b[] = Arrays.copyOf(b2, b2.length+armor.length());
-		MMM_Helper.setStr(b2b, 6, armor);
+		NetworkHelper.setStrToPacket(b2b, 6, armor);
 		syncNet(b2b);
 	}
 
@@ -794,7 +796,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 				LMMNX_NetSync.LMMNX_Sync_Integer_SetExpBoost,
 				0, 0, 0, 0
 		};
-		MMM_Helper.setInt(b, 6, getExpBooster());
+		NetworkHelper.setIntToPacket(b, 6, getExpBooster());
 		syncNet(b);
 	}
 
@@ -1019,8 +1021,8 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 					0, 0, 0, 0,
 					0, 0, 0, 0
 			};
-			MMM_Helper.setInt(lbuf, 5, enumsound.index);
-			MMM_Helper.setInt(lbuf, 9, force?1:0);
+			NetworkHelper.setIntToPacket(lbuf, 5, enumsound.index);
+			NetworkHelper.setIntToPacket(lbuf, 9, force?1:0);
 			NetworkSync.sendToAllEClient(this, lbuf);
 		}
 	}
@@ -2827,7 +2829,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 		Entity lentity = source.getSourceOfDamage();
 		if (lentity != null) {
 			if (lentity instanceof EntityPlayer) {
-				ls += ":" + MMM_Helper.getPlayerName((EntityPlayer)lentity);
+				ls += ":" + CommonHelper.getPlayerName((EntityPlayer)lentity);
 			} else {
 				String lt = EntityList.getEntityString(lentity);
 				if (lt != null) {
@@ -3206,7 +3208,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 				// 紐で繋ぐ
 				setGotcha(par1EntityPlayer.getEntityId());
 				mstatgotcha = par1EntityPlayer;
-				MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
+				MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 				playSound("random.pop");
 				return true;
 			}
@@ -3221,7 +3223,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 						return true;
 					} else if (itemstack1.getItem() == Items.cake) {
 						// 再契約
-						MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
+						MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 						maidContractLimit = (24000 * 7);
 						setFreedom(false);
 						setTracer(false);
@@ -3229,7 +3231,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 						setMaidMode("Escorter");
 						if(!isMaidContractOwner(par1EntityPlayer)){
 							// あんなご主人なんか捨てて、僕のもとへおいで(洗脳)
-							W_Common.setOwner(this, MMM_Helper.getPlayerName(par1EntityPlayer));
+							W_Common.setOwner(this, CommonHelper.getPlayerName(par1EntityPlayer));
 							playLittleMaidSound(EnumSound.getCake, true);
 							worldObj.setEntityState(this, (byte)7);
 							maidContractLimit = (24000 * 7);
@@ -3262,7 +3264,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 								if(itemstack1.getItem() instanceof LMMNX_IItemSpecialSugar){
 									cmode = ((LMMNX_IItemSpecialSugar)itemstack1.getItem()).onSugarInteract(worldObj, par1EntityPlayer, itemstack1, this);
 								}
-								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								eatSugar(false, true, false);
 								if(!cmode) return true;
 								worldObj.setEntityState(this, (byte)11);
@@ -3333,7 +3335,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 
 								return true;
 							} else if (registerTick.isEnable() && !par1EntityPlayer.worldObj.isRemote) {
-								List list = TriggerSelect.getuserTriggerList(MMM_Helper.getPlayerName(par1EntityPlayer), registerMode);
+								List list = TriggerSelect.getuserTriggerList(CommonHelper.getPlayerName(par1EntityPlayer), registerMode);
 								Item item = itemstack1.getItem();
 								if (item != null) {
 									boolean flag = false;
@@ -3345,7 +3347,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 										par1EntityPlayer.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("littleMaidMob.chat.text.removetrigger") + " " + registerMode + "/-" + Item.itemRegistry.getNameForObject(item).toString()));
 									}
 								}
-								IFF.saveIFF(MMM_Helper.getPlayerName(par1EntityPlayer));
+								IFF.saveIFF(CommonHelper.getPlayerName(par1EntityPlayer));
 								registerTick.setEnable(false);
 								return true;
 							}
@@ -3354,7 +3356,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 								if (!worldObj.isRemote) {
 									setColor(15 - itemstack1.getItemDamage());
 								}
-								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								return true;
 							}
 							else if (itemstack1.getItem() == Items.feather) {
@@ -3385,7 +3387,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 								if (itemstack1.stackSize == 64) {
 									getMaidMasterEntity().triggerAchievement(LMMNX_Achievements.ac_Boost);
 								}
-								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, itemstack1.stackSize);
+								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, itemstack1.stackSize);
 								return true;
 							}
 							else if (itemstack1.getItem() == Items.book) {
@@ -3424,12 +3426,12 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 										}
 									}
 								}
-								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								return true;
 							}
 							else if (isFreedom() && itemstack1.getItem() == Items.redstone) {
 								// Tracer
-								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								setMaidWait(false);
 								setTracer(!isTracer());
 								if (isTracer()) {
@@ -3456,7 +3458,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 						}
 					}
 					// メイドインベントリ
-					W_Common.setOwner(this, MMM_Helper.getPlayerName(par1EntityPlayer));
+					W_Common.setOwner(this, CommonHelper.getPlayerName(par1EntityPlayer));
 					getNavigator().clearPathEntity();
 					isJumping = false;
 					if(!worldObj.isRemote){
@@ -3473,7 +3475,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 				if (itemstack1 != null) {
 					if (itemstack1.getItem() == Items.cake) {
 						// 契約
-						MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
+						MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 
 						deathTime = 0;
 						if (!worldObj.isRemote) {
@@ -3481,7 +3483,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 								par1EntityPlayer.triggerAchievement(LMMNX_Achievements.ac_Contract);
 							}
 							setContract(true);
-							W_Common.setOwner(this, MMM_Helper.getPlayerName(par1EntityPlayer));
+							W_Common.setOwner(this, CommonHelper.getPlayerName(par1EntityPlayer));
 							setHealth(20);
 							setMaidMode("Escorter");
 							setMaidWait(false);
@@ -3603,7 +3605,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 						|| clientPlayer == null) {
 					lname = getMaidMaster();
 				} else {
-					lname = MMM_Helper.getPlayerName(clientPlayer);
+					lname = CommonHelper.getPlayerName(clientPlayer);
 				}
 				entityplayer = worldObj.getPlayerEntityByName(lname);
 				// とりあえず主の名前を入れてみる
@@ -3621,7 +3623,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 	}
 
 	public boolean isMaidContractOwner(String pname) {
-		return pname.equalsIgnoreCase(MMM_Helper.getPlayerName(mstatMasterEntity));
+		return pname.equalsIgnoreCase(CommonHelper.getPlayerName(mstatMasterEntity));
 	}
 
 	public boolean isMaidContractOwner(EntityPlayer pentity) {
@@ -3719,8 +3721,8 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 				0, 0, 0, 0,
 				0, 0, 0, 0
 			};
-			MMM_Helper.setInt(lba, 6, enumsound.index);
-			MMM_Helper.setInt(lba, 10, force?1:0);
+			NetworkHelper.setIntToPacket(lba, 6, enumsound.index);
+			NetworkHelper.setIntToPacket(lba, 10, force?1:0);
 			NetworkSync.sendToAllEClient(this, lba);
 		}
 	}

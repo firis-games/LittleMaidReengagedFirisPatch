@@ -1,8 +1,8 @@
 package net.blacklab.lmr.network;
 
-import mmmlibx.lib.MMM_Helper;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.util.NetworkHelper;
 
 public class LMMNX_NetSync {
 
@@ -32,12 +32,12 @@ public class LMMNX_NetSync {
 		if(pData==null) return;
 		if((pData[5] & 0xf0) == 0x20){
 			// String
-			onPayLoad(pMaid, pData[5], MMM_Helper.getStr(pData, 6));
+			onPayLoad(pMaid, pData[5], NetworkHelper.getStrFromPacket(pData, 6));
 			return;
 		}
 		if ((pData[5] & 0xf0) == 0x10) {
 			// Integer
-			onPayLoad(pMaid, pData[5], MMM_Helper.getInt(pData, 6));
+			onPayLoad(pMaid, pData[5], NetworkHelper.getIntFromPacket(pData, 6));
 			return;
 		}
 		if((pData[5] & 0xf0)==0x00){

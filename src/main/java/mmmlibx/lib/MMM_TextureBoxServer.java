@@ -1,6 +1,7 @@
 package mmmlibx.lib;
 
 import mmmlibx.lib.multiModel.model.mc162.*;
+import net.blacklab.lmr.util.NetworkHelper;
 
 public class MMM_TextureBoxServer extends MMM_TextureBoxBase {
 
@@ -32,13 +33,13 @@ public class MMM_TextureBoxServer extends MMM_TextureBoxBase {
 	 * MMM_Statics.Server_GetTextureIndex
 	 */
 	public void setValue(byte[] pData) {
-		contractColor		= MMM_Helper.getShort(pData, 2);
-		wildColor			= MMM_Helper.getShort(pData, 4);
-		modelHeight			= MMM_Helper.getFloat(pData, 6);
-		modelWidth			= MMM_Helper.getFloat(pData, 10);
-		modelYOffset		= MMM_Helper.getFloat(pData, 14);
-		modelMountedYOffset	= MMM_Helper.getFloat(pData, 18);
-		textureName			= MMM_Helper.getStr(pData, 22);
+		contractColor		= NetworkHelper.getShortFromPacket(pData, 2);
+		wildColor			= NetworkHelper.getShortFromPacket(pData, 4);
+		modelHeight			= NetworkHelper.getFloatFromPacket(pData, 6);
+		modelWidth			= NetworkHelper.getFloatFromPacket(pData, 10);
+		modelYOffset		= NetworkHelper.getFloatFromPacket(pData, 14);
+		modelMountedYOffset	= NetworkHelper.getFloatFromPacket(pData, 18);
+		textureName			= NetworkHelper.getStrFromPacket(pData, 22);
 	}
 
 	@Override

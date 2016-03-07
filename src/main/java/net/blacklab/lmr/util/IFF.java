@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TreeMap;
 
-import mmmlibx.lib.MMM_Helper;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.wrapper.W_Common;
@@ -53,7 +52,7 @@ public class IFF {
 		if (pUsername == null) {
 			return DefaultIFF;
 		}
-		if (MMM_Helper.isLocalPlay()) {
+		if (CommonHelper.isLocalPlay()) {
 			pUsername = "";
 		}
 		
@@ -235,7 +234,7 @@ public class IFF {
 	}
 
 	public static void loadIFFs() {
-		if (!MMM_Helper.isClient) {
+		if (!CommonHelper.isClient) {
 			// サーバー側処理
 			loadIFF("");
 			File lfile = MinecraftServer.getServer().getFile("config");
@@ -256,7 +255,7 @@ public class IFF {
 	protected static File getFile(String pUsername) {
 		File lfile;
 		if (pUsername == null) {
-			lfile = new File(MMM_Helper.mc.mcDataDir, "config/littleMaidMob.iff");
+			lfile = new File(CommonHelper.mc.mcDataDir, "config/littleMaidMob.iff");
 		} else {
 			String lfilename;
 			if (pUsername.isEmpty()) {

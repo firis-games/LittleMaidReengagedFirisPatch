@@ -3,6 +3,8 @@ package mmmlibx.lib;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blacklab.lmr.util.CommonHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -77,7 +79,7 @@ public class MMM_EntityDummy extends Entity {
 	 */
 	public static void clearDummyEntity(Entity entity) {
 		if (!isEnable) return;
-		if (!MMM_Helper.isClient) return;
+		if (!CommonHelper.isClient) return;
 		
 		List<Entity> liste = entity.worldObj.loadedEntityList;
 		for (Entity entity1 : liste) {
@@ -92,14 +94,14 @@ public class MMM_EntityDummy extends Entity {
 	 */
 	public static void setDummyEntity(Entity owner, int color, double posx, double posy, double posz) {
 		if (!isEnable) return;
-		if (!MMM_Helper.isClient) return;
+		if (!CommonHelper.isClient) return;
 		
 		// サーバー側でしか呼ばれないっぽい
 		if (owner.worldObj.isRemote) {
 			MMMLib.Debug("L");
 		}
 		
-		MMM_EntityDummy ed = new MMM_EntityDummy(Client.getMCtheWorld(), color, owner);
+		MMM_EntityDummy ed = new MMM_EntityDummy(Minecraft.getMinecraft().theWorld, color, owner);
 		ed.setPosition(posx, posy, posz);
 		appendList.add(ed);
 	}

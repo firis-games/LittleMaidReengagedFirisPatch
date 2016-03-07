@@ -2,11 +2,11 @@ package net.blacklab.lmr.client.gui;
 
 
 import mmmlibx.lib.MMM_GuiMobSelect;
-import mmmlibx.lib.MMM_Helper;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.network.NetworkSync;
 import net.blacklab.lmr.util.IFF;
+import net.blacklab.lmr.util.NetworkHelper;
 import net.blacklab.lmr.util.Statics;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -41,8 +41,8 @@ public class GuiIFF extends MMM_GuiMobSelect {
 			for (String ls : IFF.DefaultIFF.keySet()) {
 				byte ldata[] = new byte[5 + ls.length()];
 				ldata[0] = Statics.LMN_Server_GetIFFValue;
-				MMM_Helper.setInt(ldata, 1, li);
-				MMM_Helper.setStr(ldata, 5, ls);
+				NetworkHelper.setIntToPacket(ldata, 1, li);
+				NetworkHelper.setStrToPacket(ldata, 5, ls);
 				LittleMaidReengaged.Debug("RequestIFF %s(%d)", ls, li);
 				NetworkSync.sendToServer(ldata);
 				li++;
@@ -125,8 +125,8 @@ public class GuiIFF extends MMM_GuiMobSelect {
 						byte[] ldata = new byte[pName.length() + 6];
 						ldata[0] = Statics.LMN_Server_SetIFFValue;
 						ldata[1] = (byte) tt;
-						MMM_Helper.setInt(ldata, 2, li);
-						MMM_Helper.setStr(ldata, 6, pName);
+						NetworkHelper.setIntToPacket(ldata, 2, li);
+						NetworkHelper.setStrToPacket(ldata, 6, pName);
 						LittleMaidReengaged.Debug("SendIFF %s(%d) = %d", pName, li, tt);
 						NetworkSync.sendToServer(ldata);
 					}

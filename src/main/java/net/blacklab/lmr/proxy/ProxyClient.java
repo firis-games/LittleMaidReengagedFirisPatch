@@ -6,7 +6,6 @@ import static net.blacklab.lmr.util.Statics.LMN_Client_SwingArm;
 
 import mmmlibx.lib.MMM_EntityDummy;
 import mmmlibx.lib.MMM_EntitySelect;
-import mmmlibx.lib.MMM_Helper;
 import mmmlibx.lib.MMM_RenderDummy;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.renderer.RenderLittleMaid;
@@ -16,8 +15,10 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.network.LMMNX_NetSync;
 import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.network.NetworkSync;
+import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
+import net.blacklab.lmr.util.NetworkHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityPickupFX;
 import net.minecraft.entity.Entity;
@@ -59,7 +60,7 @@ public class ProxyClient extends ProxyCommon
 		// アイテム回収のエフェクト
 		// TODO:こっちを使うか？
 //		mc.effectRenderer.addEffect(new EntityPickupFX(mc.theWorld, entity, avatar, -0.5F));
-		MMM_Helper.mc.effectRenderer.addEffect(new EntityPickupFX(MMM_Helper.mc.theWorld, entity, pAvatar, 0.1F));
+		CommonHelper.mc.effectRenderer.addEffect(new EntityPickupFX(CommonHelper.mc.theWorld, entity, pAvatar, 0.1F));
 	}
 
 	// TODO いらん？
@@ -84,8 +85,8 @@ public class ProxyClient extends ProxyCommon
 		int leid = 0;
 		EntityLittleMaid lemaid = null;
 		if ((lmode & 0x80) != 0) {
-			leid = MMM_Helper.getInt(pPayload.data, 1);
-			lemaid =NetworkSync.getLittleMaid(pPayload.data, 1, MMM_Helper.mc.theWorld);
+			leid = NetworkHelper.getIntFromPacket(pPayload.data, 1);
+			lemaid =NetworkSync.getLittleMaid(pPayload.data, 1, CommonHelper.mc.theWorld);
 			if (lemaid == null) return;
 		}
 		LittleMaidReengaged.Debug(String.format("LMM|Upd Clt Call[%2x:%d].", lmode, leid));
@@ -94,15 +95,15 @@ public class ProxyClient extends ProxyCommon
 		case LMN_Client_SwingArm : 
 			// 腕振り
 			byte larm = pPayload.data[5];
-			EnumSound lsound = EnumSound.getEnumSound(MMM_Helper.getInt(pPayload.data, 6));
-			lemaid.setSwinging(larm, lsound, MMM_Helper.getInt(pPayload.data, 10)==1);
+			EnumSound lsound = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(pPayload.data, 6));
+			lemaid.setSwinging(larm, lsound, NetworkHelper.getIntFromPacket(pPayload.data, 10)==1);
 //			mod_LMM_littleMaidMob.Debug(String.format("SwingSound:%s", lsound.name()));
 			break;
 			
 		case LMN_Client_SetIFFValue :
 			// IFFの設定値を受信
 			int lval = pPayload.data[1];
-			int lindex = MMM_Helper.getInt(pPayload.data, 2);
+			int lindex = NetworkHelper.getIntFromPacket(pPayload.data, 2);
 			String lname = (String)IFF.DefaultIFF.keySet().toArray()[lindex];
 			LittleMaidReengaged.Debug("setIFF-CL %s(%d)=%d", lname, lindex, lval);
 			IFF.setIFFValue(null, lname, lval);
@@ -110,7 +111,7 @@ public class ProxyClient extends ProxyCommon
 			
 		case LMN_Client_PlaySound : 
 			// 音声再生
-			EnumSound lsound9 = EnumSound.getEnumSound(MMM_Helper.getInt(pPayload.data, 5));
+			EnumSound lsound9 = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(pPayload.data, 5));
 			LittleMaidReengaged.Debug(String.format("playSound:%s", lsound9.name()));
 			lemaid.playSound(lsound9, true);
 			break;

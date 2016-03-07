@@ -3,7 +3,6 @@ package net.blacklab.lmr.entity.mode;
 import java.util.ArrayList;
 import java.util.List;
 
-import mmmlibx.lib.MMM_Helper;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.event.LMMNX_Event;
 import net.blacklab.lmr.entity.EntityLittleMaid;
@@ -11,6 +10,7 @@ import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest;
 import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest2;
 import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.MaidHelper;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -306,7 +306,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 					LittleMaidReengaged.Debug("Assert.");
 					lf = true;
 				} else {
-					lf = MMM_Helper.setPathToTile(owner, (TileEntity)myInventory, false);
+					lf = MaidHelper.setPathToTile(owner, (TileEntity)myInventory, false);
 				}
 			} else {
 				distance = 0;
@@ -506,7 +506,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 							if(!owner.worldObj.isRemote) {
 								owner.clearActivePotions();
 							}
-							MMM_Helper.decPlayerInventory(pentityplayer, -1, 1);
+							MaidHelper.decPlayerInventory(pentityplayer, -1, 1);
 							return true;
 						}
 					}

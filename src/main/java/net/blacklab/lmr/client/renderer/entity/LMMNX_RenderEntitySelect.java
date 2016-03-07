@@ -1,11 +1,14 @@
 package net.blacklab.lmr.client.renderer.entity;
 
-import mmmlibx.lib.Client;
+import org.lwjgl.opengl.GL11;
+
 import mmmlibx.lib.ITextureEntity;
 import mmmlibx.lib.MMM_EntitySelect;
 import mmmlibx.lib.multiModel.model.mc162.ModelBaseDuo;
 import mmmlibx.lib.multiModel.model.mc162.RenderModelMulti;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.util.RendererHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -15,8 +18,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 
@@ -97,7 +98,7 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 				if(mmodel.modelInner==null) break INNER;
 				ResourceLocation texInner = mmodel.textureInner[renderParts];
 				if(texInner!=null) try{
-					Client.setTexture(texInner);
+					Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
 				}catch(Exception e){}
 
 //				mmodel.modelInner.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
@@ -111,14 +112,14 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 				ResourceLocation texInnerLight = mmodel.textureInnerLight[renderParts];
 				if (texInnerLight != null) {
 					try{
-						Client.setTexture(texInnerLight);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(texInnerLight);
 					}catch(Exception e){ break INNERLIGHT; }
 					GL11.glEnable(GL11.GL_BLEND);
 					GL11.glEnable(GL11.GL_ALPHA_TEST);
 					GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 					GL11.glDepthFunc(GL11.GL_LEQUAL);
 
-					Client.setLightmapTextureCoords(0x00f000f0);//61680
+					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
 					if (mmodel.textureLightColor == null) {
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					} else {
@@ -130,7 +131,7 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 								mmodel.textureLightColor[3]);
 					}
 					mmodel.modelInner.mainFrame.render(0.0625F);
-					Client.setLightmapTextureCoords(mmodel.lighting);
+					RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_BLEND);
 					GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -146,7 +147,7 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 				//GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				ResourceLocation texOuter = mmodel.textureOuter[renderParts];
 				if(texOuter!=null) try{
-					Client.setTexture(texOuter);
+					Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
 				}catch(Exception e){}
 
 //				mmodel.modelOuter.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
@@ -160,14 +161,14 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 				ResourceLocation texOuterLight = mmodel.textureOuterLight[renderParts];
 				if (texOuterLight != null) {
 					try{
-						Client.setTexture(texOuterLight);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(texOuterLight);
 					}catch(Exception e){ break OUTERLIGHT; }
 					GL11.glEnable(GL11.GL_BLEND);
 					GL11.glEnable(GL11.GL_ALPHA_TEST);
 					GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 					GL11.glDepthFunc(GL11.GL_LEQUAL);
 
-					Client.setLightmapTextureCoords(0x00f000f0);//61680
+					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
 					if (mmodel.textureLightColor == null) {
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					} else {
@@ -179,7 +180,7 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 								mmodel.textureLightColor[3]);
 					}
 					mmodel.modelOuter.mainFrame.render(0.0625F);
-					Client.setLightmapTextureCoords(mmodel.lighting);
+					RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_BLEND);
 					GL11.glDisable(GL11.GL_ALPHA_TEST);

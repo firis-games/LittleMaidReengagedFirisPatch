@@ -1,6 +1,5 @@
 package net.blacklab.lmr.entity.ai;
 
-import mmmlibx.lib.MMM_Helper;
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
@@ -10,6 +9,7 @@ import net.blacklab.lmr.entity.mode.EntityMode_Archer;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.MaidHelper;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -201,7 +201,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 					boolean lcanattack = true;
 					boolean ldotarget = false;
 					double tpr = Math.sqrt(atl);
-					Entity lentity = MMM_Helper.getRayTraceEntity(fMaid.maidAvatar, tpr + 1.0F, 1.0F, 1.0F);
+					Entity lentity = MaidHelper.getRayTraceEntity(fMaid.maidAvatar, tpr + 1.0F, 1.0F, 1.0F);
 					Item helmid = !fMaid.isMaskedMaid() ? null : fInventory.armorInventory[3].getItem();
 					if (helmid == Items.diamond_helmet || helmid == Items.golden_helmet) {
 						// 射線軸の確認

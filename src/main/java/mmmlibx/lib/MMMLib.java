@@ -12,7 +12,9 @@ import mmmlibx.lib.multiModel.MMMLoader.MMMTransformer;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.network.LMRNetwork;
+import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
+import net.blacklab.lmr.util.NetworkHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Mod;
@@ -33,11 +35,6 @@ public class MMMLib {
 /**	public static final int cfg_startVehicleEntityID = 0;	Forgeには不要	*/
 	public static boolean isModelAlphaBlend = true;
 
-
-	@SidedProxy(
-			clientSide = "mmmlibx.lib.MMM_ProxyClient",
-			serverSide = "mmmlibx.lib.MMM_ProxyCommon")
-	public static MMM_ProxyCommon proxy;
 
 	public static void Debug(String pText, Object... pData) {
 		// デバッグメッセージ
@@ -102,7 +99,7 @@ public class MMMLib {
 		MMM_TextureManager.instance.init();
 		MMM_TextureManager.instance.loadTextures();
 		// ロード
-		if (MMM_Helper.isClient) {
+		if (CommonHelper.isClient) {
 			// テクスチャパックの構築
 //			MMM_TextureManager.loadTextures();
 //			MMM_StabilizerManager.loadStabilizer();
@@ -155,8 +152,8 @@ public class MMMLib {
 		int leid = 0;
 		Entity lentity = null;
 		if ((lmode & 0x80) != 0) {
-			leid = MMM_Helper.getInt(var2.data, 1);
-			lentity = MMM_Helper.getEntity(var2.data, 1, playerEntity.worldObj);
+			leid = NetworkHelper.getIntFromPacket(var2.data, 1);
+			lentity = CommonHelper.getEntity(var2.data, 1, playerEntity.worldObj);
 			if (lentity == null) return;
 		}
 		Debug("MMM|Upd Srv Call[%2x:%d].", lmode, leid);

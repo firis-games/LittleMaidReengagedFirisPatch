@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mmmlibx.lib.MMM_Helper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -26,7 +25,7 @@ public class TriggerSelect {
 		if (pUsername == null) {
 			return defaultTrigger;
 		}
-		if (MMM_Helper.isLocalPlay()) {
+		if (CommonHelper.isLocalPlay()) {
 			// シングル実行時は名称ブランクに。
 			pUsername = "";
 		}
@@ -92,7 +91,7 @@ public class TriggerSelect {
 		if (!selector.contains(pSelector)) {
 			return false;
 		}
-		if (MMM_Helper.isLocalPlay()) {
+		if (CommonHelper.isLocalPlay()) {
 			return getuserTriggerList(null, pSelector).contains(pItemStack.getItem());
 		}
 		if (!usersTrigger.containsKey(pUsername)) {

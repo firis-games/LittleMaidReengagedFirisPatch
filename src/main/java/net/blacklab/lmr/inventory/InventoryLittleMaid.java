@@ -17,6 +17,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
@@ -380,7 +381,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	}
 
 	public static boolean isItemSmelting(ItemStack pItemstack) {
-		return (pItemstack != null && MMM_Helper.getSmeltingResult(pItemstack) != null);
+		return (pItemstack != null && FurnaceRecipes.instance().getSmeltingResult(pItemstack) != null);
 	}
 
 	public boolean isItemExplord(int index) {

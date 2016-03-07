@@ -7,11 +7,13 @@ import static net.blacklab.lmr.util.Statics.LMN_Server_SaveIFF;
 import static net.blacklab.lmr.util.Statics.LMN_Server_SetIFFValue;
 import static net.blacklab.lmr.util.Statics.LMN_Server_UpdateSlots;
 
-import mmmlibx.lib.MMM_Helper;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.actionsp.SwingStatus;
+import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.IFF;
+import net.blacklab.lmr.util.MaidHelper;
+import net.blacklab.lmr.util.NetworkHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +29,7 @@ public class NetworkSync {
 	 */
 	public static void sendToAllEClient(EntityLittleMaid pEntity, byte[] pData)
 	{
-		MMM_Helper.setInt(pData, 1, pEntity.getEntityId());
+		NetworkHelper.setIntToPacket(pData, 1, pEntity.getEntityId());
 		
 		EntityTracker et = ((WorldServer)pEntity.worldObj).getEntityTracker();
 		for(EntityPlayer player : et.getTrackingPlayers(pEntity))
@@ -57,7 +59,7 @@ public class NetworkSync {
 	 * 0:Mode, 1-4:EntityID, 5-:Data
 	 */
 	public static void sendToEServer(EntityLittleMaid pEntity, byte[] pData) {
-		MMM_Helper.setInt(pData, 1, pEntity.getEntityId());
+		NetworkHelper.setIntToPacket(pData, 1, pEntity.getEntityId());
 		LMRNetwork.sendPacketToServer(2,pData);
 //		ModLoader.clientSendPacket(new Packet250CustomPayload("LMM|Upd", pData));
 		LittleMaidReengaged.Debug(String.format("LMM|Upd:send:%2x:%d", pData[0], pEntity.getEntityId()));
@@ -81,7 +83,7 @@ public class NetworkSync {
 	 */
 	public static EntityLittleMaid getLittleMaid(byte[] pData, int pIndex, World pWorld)
 	{
-		Entity lentity = MMM_Helper.getEntity(pData, pIndex, pWorld);
+		Entity lentity = CommonHelper.getEntity(pData, pIndex, pWorld);
 		if (lentity instanceof EntityLittleMaid)
 		{
 			return (EntityLittleMaid)lentity;
@@ -99,7 +101,7 @@ public class NetworkSync {
 		int leid = 0;
 		EntityLittleMaid lemaid = null;
 		if ((lmode & 0x80) != 0) {
-			leid = MMM_Helper.getInt(pPayload.data, 1);
+			leid = NetworkHelper.getIntFromPacket(pPayload.data, 1);
 			lemaid = getLittleMaid(pPayload.data, 1, playerEntity.worldObj);
 			if (lemaid == null) return;
 		}
@@ -127,7 +129,7 @@ public class NetworkSync {
 					ItemStack lis = playerEntity.inventory.mainInventory[li];
 					if (lis != null && lis.getItem() == Items.dye) {
 						if (lis.getItemDamage() == (15 - lcolor2)) {
-							MMM_Helper.decPlayerInventory(playerEntity, li, 1);
+							MaidHelper.decPlayerInventory(playerEntity, li, 1);
 						}
 					}
 				}
@@ -137,23 +139,23 @@ public class NetworkSync {
 		case LMN_Server_SetIFFValue :
 			// IFFの設定値を受信
 			lval = pPayload.data[1];
-			lindex = MMM_Helper.getInt(pPayload.data, 2);
-			lname = MMM_Helper.getStr(pPayload.data, 6);
-			LittleMaidReengaged.Debug("setIFF-SV user:%s %s(%d)=%d", MMM_Helper.getPlayerName(playerEntity), lname, lindex, lval);
-			IFF.setIFFValue(MMM_Helper.getPlayerName(playerEntity), lname, lval);
+			lindex = NetworkHelper.getIntFromPacket(pPayload.data, 2);
+			lname = NetworkHelper.getStrFromPacket(pPayload.data, 6);
+			LittleMaidReengaged.Debug("setIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerName(playerEntity), lname, lindex, lval);
+			IFF.setIFFValue(CommonHelper.getPlayerName(playerEntity), lname, lval);
 			sendIFFValue(playerEntity, lval, lindex);
 			break;
 		case LMN_Server_GetIFFValue :
 			// IFFGUI open
-			lindex = MMM_Helper.getInt(pPayload.data, 1);
-			lname = MMM_Helper.getStr(pPayload.data, 5);
-			lval = IFF.getIFF(MMM_Helper.getPlayerName(playerEntity), lname, playerEntity.worldObj);
-			LittleMaidReengaged.Debug("getIFF-SV user:%s %s(%d)=%d", MMM_Helper.getPlayerName(playerEntity), lname, lindex, lval);
+			lindex = NetworkHelper.getIntFromPacket(pPayload.data, 1);
+			lname = NetworkHelper.getStrFromPacket(pPayload.data, 5);
+			lval = IFF.getIFF(CommonHelper.getPlayerName(playerEntity), lname, playerEntity.worldObj);
+			LittleMaidReengaged.Debug("getIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerName(playerEntity), lname, lindex, lval);
 			sendIFFValue(playerEntity, lval, lindex);
 			break;
 		case LMN_Server_SaveIFF :
 			// IFFファイルの保存
-			IFF.saveIFF(MMM_Helper.getPlayerName(playerEntity));
+			IFF.saveIFF(CommonHelper.getPlayerName(playerEntity));
 			if (!playerEntity.worldObj.isRemote) {
 				IFF.saveIFF("");
 			}
@@ -177,7 +179,7 @@ public class NetworkSync {
 				0, 0, 0, 0
 		};
 		ldata[1] = (byte)pValue;
-		MMM_Helper.setInt(ldata, 2, pIndex);
+		NetworkHelper.setIntToPacket(ldata, 2, pIndex);
 		sendToClient(player, ldata);
 	}
 }

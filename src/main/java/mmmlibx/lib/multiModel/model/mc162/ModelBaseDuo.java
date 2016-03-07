@@ -2,15 +2,16 @@ package mmmlibx.lib.multiModel.model.mc162;
 
 import java.util.Map;
 
-import mmmlibx.lib.Client;
+import org.lwjgl.opengl.GL11;
+
+import net.blacklab.lmr.util.RendererHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.TextureOffset;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 /**
  * アーマーの二重描画用クラス。
@@ -73,7 +74,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 				if (textureInner[renderParts] != null) {
 					// 通常パーツ
 					try{
-						Client.setTexture(textureInner[renderParts]);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(textureInner[renderParts]);
 						modelInner.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
 					}catch(Exception e){
 					}
@@ -86,7 +87,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 				// 発光テクスチャ表示処理
 				if (textureInnerLight[renderParts] != null) {
 					try{
-						Client.setTexture(textureInnerLight[renderParts]);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(textureInnerLight[renderParts]);
 					}catch(Exception e){
 					}
 					GL11.glEnable(GL11.GL_BLEND);
@@ -94,7 +95,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 					GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 					GL11.glDepthFunc(GL11.GL_LEQUAL);
 					
-					Client.setLightmapTextureCoords(0x00f000f0);//61680
+					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
 					if (textureLightColor == null) {
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					} else {
@@ -106,7 +107,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 								textureLightColor[3]);
 					}
 					modelInner.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-					Client.setLightmapTextureCoords(lighting);
+					RendererHelper.setLightmapTextureCoords(lighting);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_BLEND);
 					GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -120,7 +121,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				if (textureOuter[renderParts] != null) {
 					try{
-						Client.setTexture(textureOuter[renderParts]);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(textureOuter[renderParts]);
 						modelOuter.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
 					}catch(Exception e){
 					}
@@ -133,7 +134,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 				// 発光テクスチャ表示処理
 				if (textureOuterLight[renderParts] != null) {
 					try{
-						Client.setTexture(textureOuterLight[renderParts]);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(textureOuterLight[renderParts]);
 					}catch(Exception e){
 					}
 					GL11.glEnable(GL11.GL_BLEND);
@@ -141,7 +142,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 					GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 					GL11.glDepthFunc(GL11.GL_LEQUAL);
 					
-					Client.setLightmapTextureCoords(0x00f000f0);//61680
+					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
 					if (textureLightColor == null) {
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					} else {
@@ -153,7 +154,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 								textureLightColor[3]);
 					}
 					modelOuter.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-					Client.setLightmapTextureCoords(lighting);
+					RendererHelper.setLightmapTextureCoords(lighting);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_BLEND);
 					GL11.glDisable(GL11.GL_ALPHA_TEST);

@@ -1,11 +1,11 @@
 package net.blacklab.lmr.entity.mode;
 
-import mmmlibx.lib.MMM_Helper;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
+import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -150,7 +150,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				// 攻撃力な高いものを記憶する
 				lld = 1;
 				try {
-					lld = MMM_Helper.getAttackVSEntity(litemstack);
+					lld = CommonHelper.getAttackVSEntity(litemstack);
 				}
 				catch (Exception e) {
 				}
@@ -173,7 +173,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				// 攻撃力な高いものを記憶する
 				lld = 1;
 				try {
-					lld = MMM_Helper.getAttackVSEntity(litemstack);
+					lld = CommonHelper.getAttackVSEntity(litemstack);
 				}
 				catch (Exception e) {
 				}

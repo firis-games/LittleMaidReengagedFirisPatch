@@ -24,7 +24,10 @@ import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.resource.LMMNX_OldZipTexturesLoader;
+import net.blacklab.lmr.network.LMRNetwork;
+import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
+import net.blacklab.lmr.util.NetworkHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -209,7 +212,7 @@ public class MMM_TextureManager {
 	public boolean loadTextures() {
 		MMMLib.Debug("loadTexturePacks.");
 		// アーマーのファイル名を識別するための文字列を獲得する
-		if (MMM_Helper.isClient) {
+		if (CommonHelper.isClient) {
 			getArmorPrefix();
 		}
 		
@@ -940,14 +943,14 @@ public class MMM_TextureManager {
 		if (pEntity instanceof Entity) {
 			byte ldata[] = new byte[6 + pIndex.length * 2];
 			ldata[0] = MMM_Statics.Server_SetTexturePackIndex;
-			MMM_Helper.setInt(ldata, 1, ((Entity)pEntity).getEntityId());
+			NetworkHelper.setIntToPacket(ldata, 1, ((Entity)pEntity).getEntityId());
 			ldata[5] = (byte)pColor;
 			int li = 6;
 			for (int ll  : pIndex) {
-				MMM_Helper.setShort(ldata, li, ll);
+				NetworkHelper.setShortToPacket(ldata, li, ll);
 				li += 2;
 			}
-			Client.sendToServer(ldata);
+			LMRNetwork.sendPacketToServer(1, ldata);
 		}
 	}
 
@@ -960,7 +963,7 @@ public class MMM_TextureManager {
 			int lindex[] = new int[lcount];
 			
 			for (int li = 0; li < lcount; li++) {
-				lindex[li] = MMM_Helper.getShort(pData, 6 + li * 2);
+				lindex[li] = NetworkHelper.getShortFromPacket(pData, 6 + li * 2);
 			}
 			MMMLib.Debug("reciveFromClientSetTexturePackIndex: %d, %4x", pData[5], lindex[0]);
 			((ITextureEntity)pEntity).setTexturePackIndex(pData[5], lindex);
@@ -975,21 +978,21 @@ public class MMM_TextureManager {
 		byte ldata[] = new byte[22 + pBox.textureName.length()];
 		ldata[0] = MMM_Statics.Server_GetTextureIndex;
 		ldata[1] = (byte)pBufIndex;
-		MMM_Helper.setShort(ldata, 2, pBox.getContractColorBits());
-		MMM_Helper.setShort(ldata, 4, pBox.getWildColorBits());
-		MMM_Helper.setFloat(ldata, 6, pBox.getHeight(null));
-		MMM_Helper.setFloat(ldata, 10, pBox.getWidth(null));
-		MMM_Helper.setFloat(ldata, 14, pBox.getYOffset(null));
-		MMM_Helper.setFloat(ldata, 18, pBox.getMountedYOffset(null));
-		MMM_Helper.setStr(ldata, 22, pBox.textureName);
-		Client.sendToServer(ldata);
+		NetworkHelper.setShortToPacket(ldata, 2, pBox.getContractColorBits());
+		NetworkHelper.setShortToPacket(ldata, 4, pBox.getWildColorBits());
+		NetworkHelper.setFloatToPacket(ldata, 6, pBox.getHeight(null));
+		NetworkHelper.setFloatToPacket(ldata, 10, pBox.getWidth(null));
+		NetworkHelper.setFloatToPacket(ldata, 14, pBox.getYOffset(null));
+		NetworkHelper.setFloatToPacket(ldata, 18, pBox.getMountedYOffset(null));
+		NetworkHelper.setStrToPacket(ldata, 22, pBox.textureName);
+		LMRNetwork.sendPacketToServer(1, ldata);
 		MMMLib.Debug("Server_GetTextureIndex: %s", pBox.textureName);
 	}
 
 	protected void reciveFromClientGetTexturePackIndex(EntityPlayer player, byte[] pData) {
 		// Server
 		// クライアント側へテクスチャパックの管理番号を返す。
-		String lpackname = MMM_Helper.getStr(pData, 22);
+		String lpackname = NetworkHelper.getStrFromPacket(pData, 22);
 		MMM_TextureBoxServer lboxsrv = getTextureBoxServer(lpackname);
 		int li;
 		if (lboxsrv == null) {
@@ -1004,7 +1007,7 @@ public class MMM_TextureManager {
 		byte ldata[] = new byte[4];
 		ldata[0] = MMM_Statics.Client_SetTextureIndex;
 		ldata[1] = pData[1];
-		MMM_Helper.setShort(ldata, 2, li);
+		NetworkHelper.setShortToPacket(ldata, 2, li);
 		MMMLib.Debug("reciveFromClientGetTexturePackIndex: %s, %04x", lpackname, li);
 		MMMLib.sendToClient(player, ldata);
 	}
@@ -1013,8 +1016,8 @@ public class MMM_TextureManager {
 		// Client
 		// サーバー側からテクスチャパックのインデックスを受け取ったので値を登録する。
 		MMM_TextureBox lbox = getTextureBox(getRequestString(pData[1]));
-		textureServerIndex.put(lbox, (int)MMM_Helper.getShort(pData, 2));
-		MMMLib.Debug("reciveFormServerSetTexturePackIndex: %s, %04x", lbox.textureName, (int)MMM_Helper.getShort(pData, 2));
+		textureServerIndex.put(lbox, (int)NetworkHelper.getShortFromPacket(pData, 2));
+		MMMLib.Debug("reciveFormServerSetTexturePackIndex: %s, %04x", lbox.textureName, (int)NetworkHelper.getShortFromPacket(pData, 2));
 		
 		// スタックされたジョブから処理可能な物があれば実行する。
 		Map<ITextureEntity, Object[]> lmap = new HashMap<ITextureEntity, Object[]>(stackSetTexturePack);
@@ -1072,27 +1075,27 @@ public class MMM_TextureManager {
 		}
 		byte ldata[] = new byte[3];
 		ldata[0] = MMM_Statics.Server_GetTexturePackName;
-		MMM_Helper.setShort(ldata, 1, pIndex);
-		Client.sendToServer(ldata);
+		NetworkHelper.setShortToPacket(ldata, 1, pIndex);
+		LMRNetwork.sendPacketToServer(1, ldata);
 	}
 
 	protected void reciveFromClientGetTexturePackName(EntityPlayer player, byte[] pData) {
 		// Server
 		// クライアントからテクスチャパックの名称が問い合わせられた。
-		int lindex = MMM_Helper.getShort(pData, 1);
+		int lindex = NetworkHelper.getShortFromPacket(pData, 1);
 		MMM_TextureBoxServer lboxserver = getTextureBoxServer(lindex);
 		
 		// Clientへ管理番号に登録されているテクスチャ名称をポストする
 		byte ldata[] = new byte[23 + lboxserver.textureName.length()];
 		ldata[0] = MMM_Statics.Client_SetTexturePackName;
-		MMM_Helper.setShort(ldata, 1, lindex);
-		MMM_Helper.setShort(ldata, 3, lboxserver.getContractColorBits());
-		MMM_Helper.setShort(ldata, 5, lboxserver.getWildColorBits());
-		MMM_Helper.setFloat(ldata, 7, lboxserver.getHeight(null));
-		MMM_Helper.setFloat(ldata, 11, lboxserver.getWidth(null));
-		MMM_Helper.setFloat(ldata, 15, lboxserver.getYOffset(null));
-		MMM_Helper.setFloat(ldata, 19, lboxserver.getMountedYOffset(null));
-		MMM_Helper.setStr(ldata, 23, lboxserver.textureName);
+		NetworkHelper.setShortToPacket(ldata, 1, lindex);
+		NetworkHelper.setShortToPacket(ldata, 3, lboxserver.getContractColorBits());
+		NetworkHelper.setShortToPacket(ldata, 5, lboxserver.getWildColorBits());
+		NetworkHelper.setFloatToPacket(ldata, 7, lboxserver.getHeight(null));
+		NetworkHelper.setFloatToPacket(ldata, 11, lboxserver.getWidth(null));
+		NetworkHelper.setFloatToPacket(ldata, 15, lboxserver.getYOffset(null));
+		NetworkHelper.setFloatToPacket(ldata, 19, lboxserver.getMountedYOffset(null));
+		NetworkHelper.setStrToPacket(ldata, 23, lboxserver.textureName);
 		MMMLib.sendToClient(player, ldata);
 		MMMLib.Debug("SetTexturePackName:%04x - %s", lindex, lboxserver.textureName);
 	}
@@ -1100,7 +1103,7 @@ public class MMM_TextureManager {
 	protected void reciveFromServerSetTexturePackName(byte[] pData) {
 		// Client
 		// サーバーからインデックスに対する名称の設定があった。
-		String lpackname = MMM_Helper.getStr(pData, 23);
+		String lpackname = NetworkHelper.getStrFromPacket(pData, 23);
 		MMM_TextureBox lbox = getTextureBox(lpackname);
 		if (lbox == null) {
 			// ローカルには存在しないテクスチャパック
@@ -1109,13 +1112,13 @@ public class MMM_TextureManager {
 			lbox.textureName = lpackname;
 //			lbox = new MMM_TextureBox(lpackname, null);
 			lbox.setModelSize(
-					MMM_Helper.getFloat(pData, 7),
-					MMM_Helper.getFloat(pData, 11),
-					MMM_Helper.getFloat(pData, 15),
-					MMM_Helper.getFloat(pData, 19));
+					NetworkHelper.getFloatFromPacket(pData, 7),
+					NetworkHelper.getFloatFromPacket(pData, 11),
+					NetworkHelper.getFloatFromPacket(pData, 15),
+					NetworkHelper.getFloatFromPacket(pData, 19));
 			textures.add(lbox);
 		}
-		int lindex = MMM_Helper.getShort(pData, 1);
+		int lindex = NetworkHelper.getShortFromPacket(pData, 1);
 		textureServerIndex.put(lbox, lindex);
 		clearRequestIndex(lindex);
 		

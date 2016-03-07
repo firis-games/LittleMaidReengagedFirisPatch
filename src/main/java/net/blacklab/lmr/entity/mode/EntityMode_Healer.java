@@ -3,9 +3,9 @@ package net.blacklab.lmr.entity.mode;
 import java.util.Iterator;
 import java.util.List;
 
-import mmmlibx.lib.MMM_Helper;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -57,7 +57,7 @@ public class EntityMode_Healer extends EntityModeBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemFood || (litemstack.getItem() instanceof ItemPotion && MMM_Helper.hasEffect(litemstack))) {
+			if (litemstack.getItem() instanceof ItemFood || (litemstack.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack))) {
 				owner.setMaidMode("Healer");
 				if (LMMNX_Achievements.ac_Healer != null) {
 					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_Healer);
@@ -90,7 +90,7 @@ public class EntityMode_Healer extends EntityModeBase {
 				ItemStack is = owner.maidInventory.getStackInSlot(i);
 				if (is == null) continue;
 				// 対象は食料かポーション
-				if (is.getItem() instanceof ItemFood || (is.getItem() instanceof ItemPotion && MMM_Helper.hasEffect(is))) {
+				if (is.getItem() instanceof ItemFood || (is.getItem() instanceof ItemPotion && CommonHelper.hasEffect(is))) {
 					return i;
 				}
 			}

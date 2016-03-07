@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
+import net.blacklab.lmr.util.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiSlot;
@@ -170,7 +171,7 @@ public class MMM_GuiTextureSlot extends GuiSlot {
 				}
 				entity.setTextureNames((String) lbox.armors.keySet().toArray()[0]);
 				Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-				Client.setLightmapTextureCoords(0x00f0);//61680
+				RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 			}
 		} else {
 			// テクスチャ表示
@@ -182,7 +183,7 @@ public class MMM_GuiTextureSlot extends GuiSlot {
 					entity.setTextureNames();
 //					entity.getTextures(0)[0] = lbox.getTextureName(li + (isContract ? 0 : MMM_TextureManager.tx_wild));
 					Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-					Client.setLightmapTextureCoords(0x00f0);//61680
+					RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 				}
 			}
 		}

@@ -7,7 +7,6 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import mmmlibx.lib.Client;
 import mmmlibx.lib.gui.GuiButtonNextPage;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
@@ -181,7 +180,7 @@ public class GuiInventory extends GuiContainer {
 		if (lrl == null) {
 			lrl = fguiTex;
 		}
-		Client.setTexture(lrl);
+		mc.getTextureManager().bindTexture(lrl);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		int lj = guiLeft;
 		int lk = guiTop;
@@ -294,7 +293,7 @@ public class GuiInventory extends GuiContainer {
 			var3 = false;
 		}
 
-		Client.setTexture(icons);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(icons);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		int lhealth = MathHelper.ceiling_float_int(entitylittlemaid.getHealth());
@@ -621,7 +620,7 @@ public class GuiInventory extends GuiContainer {
 			PotionEffect potioneffect = (PotionEffect) iterator.next();
 			Potion potion = Potion.potionTypes[potioneffect.getPotionID()];
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			Client.setTexture(new ResourceLocation("textures/gui/container/inventory.png"));
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
 			drawTexturedModalRect(lx, ly, 0, ySizebk, 140, 32);
 
 			if (potion.hasStatusIcon()) {

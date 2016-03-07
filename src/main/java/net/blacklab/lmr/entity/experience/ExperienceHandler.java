@@ -8,7 +8,7 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.mode.EntityMode_DeathWait;
 import net.blacklab.lmr.network.LMMNX_NetSync;
-import net.blacklab.lmr.util.NXCommonUtil;
+import net.blacklab.lmr.util.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -47,16 +47,16 @@ public class ExperienceHandler {
 		 * 報酬付与・固定アイテム
 		 */
 		if (level%20 == 0) {
-			NXCommonUtil.giveItem(new ItemStack(Items.name_tag), theMaid);
+			MaidHelper.giveItem(new ItemStack(Items.name_tag), theMaid);
 		}
 		if (level%50 == 0) {
-			NXCommonUtil.giveItem(new ItemStack(Items.emerald, level/50), theMaid);
+			MaidHelper.giveItem(new ItemStack(Items.emerald, level/50), theMaid);
 		}
 		if (level%100 == 0) {
-			NXCommonUtil.giveItem(new ItemStack(Items.diamond, level/100), theMaid);
+			MaidHelper.giveItem(new ItemStack(Items.diamond, level/100), theMaid);
 		}
 		if (level%150 == 0) {
-			NXCommonUtil.giveItem(new ItemStack(Items.nether_star, 1), theMaid);
+			MaidHelper.giveItem(new ItemStack(Items.nether_star, 1), theMaid);
 		}
 
 		/*

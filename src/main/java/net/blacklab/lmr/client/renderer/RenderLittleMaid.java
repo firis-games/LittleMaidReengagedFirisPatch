@@ -1,17 +1,17 @@
 package net.blacklab.lmr.client.renderer;
 
-import mmmlibx.lib.Client;
+import org.lwjgl.opengl.GL11;
+
+import com.sun.security.ntlm.Client;
+
 import mmmlibx.lib.ITextureEntity;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelBaseDuo;
 import mmmlibx.lib.multiModel.model.mc162.RenderModelMulti;
-import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.util.RendererHelper;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockSkull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,11 +27,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 @SuppressWarnings("deprecation")
 public class RenderLittleMaid extends RenderModelMulti {
@@ -144,7 +141,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 				if(mmodel.textureInner!=null){
 					ResourceLocation texInner = mmodel.textureInner[renderParts];
 					if(texInner!=null&&lmm.isArmorVisible(0)) try{
-						Client.setTexture(texInner);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
 						mmodel.modelInner.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
 						mmodel.modelInner.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
 						mmodel.modelInner.render(lmm.maidCaps, par2, par3, lmm.ticksExisted, par5, par6, renderScale, true);
@@ -159,13 +156,13 @@ public class RenderLittleMaid extends RenderModelMulti {
 				ResourceLocation texInnerLight = mmodel.textureInnerLight[renderParts];
 				if (texInnerLight != null&&lmm.isArmorVisible(1)) {
 					try{
-						Client.setTexture(texInnerLight);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(texInnerLight);
 						GL11.glEnable(GL11.GL_BLEND);
 						GL11.glEnable(GL11.GL_ALPHA_TEST);
 						GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 						GL11.glDepthFunc(GL11.GL_LEQUAL);
 
-						Client.setLightmapTextureCoords(0x00f000f0);//61680
+						RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
 						if (mmodel.textureLightColor == null) {
 							GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 						} else {
@@ -177,7 +174,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 									mmodel.textureLightColor[3]);
 						}
 						mmodel.modelInner.render(lmm.maidCaps, par2, par3, par4, par5, par6, renderScale, true);
-						Client.setLightmapTextureCoords(mmodel.lighting);
+						RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 						GL11.glDisable(GL11.GL_BLEND);
 						GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -194,7 +191,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 				if(mmodel.textureOuter!=null){
 					ResourceLocation texOuter = mmodel.textureOuter[renderParts];
 					if(texOuter!=null&&lmm.isArmorVisible(2)) try{
-						Client.setTexture(texOuter);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
 						mmodel.modelOuter.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
 						mmodel.modelOuter.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
 						mmodel.modelOuter.render(lmm.maidCaps, par2, par3, lmm.ticksExisted, par5, par6, renderScale, true);
@@ -209,13 +206,13 @@ public class RenderLittleMaid extends RenderModelMulti {
 				ResourceLocation texOuterLight = mmodel.textureOuterLight[renderParts];
 				if (texOuterLight != null&&lmm.isArmorVisible(3)) {
 					try{
-						Client.setTexture(texOuterLight);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(texOuterLight);
 						GL11.glEnable(GL11.GL_BLEND);
 						GL11.glEnable(GL11.GL_ALPHA_TEST);
 						GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 						GL11.glDepthFunc(GL11.GL_LEQUAL);
 
-						Client.setLightmapTextureCoords(0x00f000f0);//61680
+						RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
 						if (mmodel.textureLightColor == null) {
 							GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 						} else {
@@ -227,7 +224,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 									mmodel.textureLightColor[3]);
 						}
 						if(lmm.isArmorVisible(1)) mmodel.modelOuter.render(lmm.maidCaps, par2, par3, par4, par5, par6, renderScale, true);
-						Client.setLightmapTextureCoords(mmodel.lighting);
+						RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 						GL11.glDisable(GL11.GL_BLEND);
 						GL11.glDisable(GL11.GL_ALPHA_TEST);

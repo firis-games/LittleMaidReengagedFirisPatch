@@ -3,9 +3,9 @@ package mmmlibx.lib.multiModel.model.mc162;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import mmmlibx.lib.Client;
-
 import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.Minecraft;
 
 /**
  * MMMの実験コードを含む部分。
@@ -85,7 +85,7 @@ public abstract class ModelMultiMMMBase extends ModelMultiBase {
 			if (les != null && les.equipPoint != null) {
 				ModelStabilizerBase lsb = les.stabilizer;
 				if (lsb.isLoadAnotherTexture()) {
-					Client.setTexture(lsb.getTexture());
+					Minecraft.getMinecraft().getTextureManager().bindTexture(lsb.getTexture());
 				}
 				les.equipPoint.loadMatrix();
 				lsb.render(this, null, par2, par3, ticksExisted, pheadYaw, pheadPitch, par7);

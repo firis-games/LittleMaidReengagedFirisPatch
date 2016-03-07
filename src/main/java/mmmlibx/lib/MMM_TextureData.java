@@ -3,6 +3,7 @@ package mmmlibx.lib;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.util.CommonHelper;
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -165,7 +166,7 @@ public class MMM_TextureData  {
 			if (lbox.localBox != null) {
 				int lc = (color & 0x00ff) + (contract ? 0 : MMM_TextureManager.tx_wild);
 				if (lbox.localBox.hasColor(lc)) {
-					if (MMM_Helper.isClient) {
+					if (CommonHelper.isClient) {
 						textures[0][0] = lbox.localBox.getTextureName(lc);
 						lc = (color & 0x00ff) + (contract ? MMM_TextureManager.tx_eyecontract : MMM_TextureManager.tx_eyewild);
 						textures[0][1] = lbox.localBox.getTextureName(lc);
@@ -178,7 +179,7 @@ public class MMM_TextureData  {
 		if (textureBox[1] instanceof MMM_TextureBoxServer && owner != null) {
 			lbox = (MMM_TextureBoxServer)textureBox[1];
 			if (lbox.localBox != null) {
-				if (MMM_Helper.isClient) {
+				if (CommonHelper.isClient) {
 					for (int i = 0; i < 4; i++) {
 						ItemStack is = owner.getEquipmentInSlot(i + 1);
 						textures[1][i] = lbox.localBox.getArmorTextureName(MMM_TextureManager.tx_armor1, is);

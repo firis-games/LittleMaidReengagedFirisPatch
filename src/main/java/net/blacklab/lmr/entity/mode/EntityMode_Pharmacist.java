@@ -1,10 +1,10 @@
 package net.blacklab.lmr.entity.mode;
 
-import mmmlibx.lib.MMM_Helper;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.actionsp.SwingStatus;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
+import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,7 +55,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemPotion && !MMM_Helper.hasEffect(litemstack)) {
+			if (litemstack.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack)) {
 				owner.setMaidMode("Pharmacist");
 				if (LMMNX_Achievements.ac_Pharmacist != null) {
 					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_Pharmacist);
@@ -96,7 +96,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					litemstack = owner.maidInventory.getStackInSlot(li);
 					if (litemstack != null) {
 						// 対象は水ポーション
-						if (litemstack.getItem() instanceof ItemPotion && !MMM_Helper.hasEffect(litemstack)) {
+						if (litemstack.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack)) {
 							return li;
 						}
 					}
@@ -212,7 +212,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 			}
 			
 			litemstack1 = owner.maidInventory.getCurrentItem();
-			if (!lflag && (litemstack1 != null && litemstack1.getItem() instanceof ItemPotion && !MMM_Helper.hasEffect(litemstack1))) {
+			if (!lflag && (litemstack1 != null && litemstack1.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack1))) {
 				// 水瓶をげっとれでぃ
 				int li = 0;
 				for (li = 0; li < 3 && !lflag; li++) {
@@ -228,7 +228,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				}
 			}
 			if (!lflag && (ltile.getStackInSlot(0) != null || ltile.getStackInSlot(1) != null || ltile.getStackInSlot(2) != null)
-					&& (owner.maidInventory.currentItem == -1 || (litemstack1 != null && litemstack1.getItem() instanceof ItemPotion && !MMM_Helper.hasEffect(litemstack1)))) {
+					&& (owner.maidInventory.currentItem == -1 || (litemstack1 != null && litemstack1.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack1)))) {
 				// ポーション以外を検索
 //				for (inventryPos = 0; inventryPos < owner.maidInventory.mainInventory.length; inventryPos++) {
 				for (; inventryPos < owner.maidInventory.mainInventory.length; inventryPos++) {
@@ -251,7 +251,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					owner.addMaidExperience(4.5f);
 					lflag = true;
 				} 
-				else if (litemstack1 == null || (litemstack1.getItem() instanceof ItemPotion && MMM_Helper.hasEffect(litemstack1)) || !litemstack1.getItem().isPotionIngredient(litemstack1)) {
+				else if (litemstack1 == null || (litemstack1.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack1)) || !litemstack1.getItem().isPotionIngredient(litemstack1)) {
 					// 対象外アイテムを発見した時に終了
 					inventryPos = owner.maidInventory.mainInventory.length;
 					lflag = true;
