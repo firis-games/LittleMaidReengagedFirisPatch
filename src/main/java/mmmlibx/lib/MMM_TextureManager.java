@@ -25,9 +25,11 @@ import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.resource.LMMNX_OldZipTexturesLoader;
 import net.blacklab.lmr.network.LMRNetwork;
+import net.blacklab.lmr.network.NetworkSync;
 import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
-import net.blacklab.lmr.util.NetworkHelper;
+import net.blacklab.lmr.util.FileList;
+import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -127,10 +129,10 @@ public class MMM_TextureManager {
 	public void init() {
 		// 検索対象ファイル名を登録します。
 		// パターンを登録しない場合、独自名称のMODファイル、テクスチャディレクトリ、クラスが読み込まれません。
-		FileManager.getModFile("littleMaidMob", "littleMaidMob");
-		FileManager.getModFile("littleMaidMob", "mmmlibx");
-		FileManager.getModFile("littleMaidMob", "ModelMulti");
-		FileManager.getModFile("littleMaidMob", "LittleMaidMob");
+		FileList.getModFile("littleMaidMob", "littleMaidMob");
+		FileList.getModFile("littleMaidMob", "mmmlibx");
+		FileList.getModFile("littleMaidMob", "ModelMulti");
+		FileList.getModFile("littleMaidMob", "LittleMaidMob");
 		
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/ModelMulti/", "ModelMulti_");
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littleMaid/", "ModelMulti_");
@@ -231,12 +233,12 @@ public class MMM_TextureManager {
 		
 		for (String[] lst : searchPrefix) {
 			// mods
-			searchFiles(FileManager.dirMods, lst);
+			searchFiles(FileList.dirMods, lst);
 			if (DevMode.DEVMODE != DevMode.NOT_IN_DEV) {
-				searchFiles(FileManager.dirDevClasses, lst);
+				searchFiles(FileList.dirDevClasses, lst);
 			}
 			if (DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE) {
-				for (File ln: FileManager.dirDevIncludeClasses)
+				for (File ln: FileList.dirDevIncludeClasses)
 					searchFiles(ln, lst);
 			}
 		}
@@ -455,7 +457,7 @@ public class MMM_TextureManager {
 //					cn = (new StringBuilder("")).append(".").append(cn).toString();
 					cn = cn.replace("/", ".");
 					System.out.println("MMM_TextureManager.addModelClass : "+cn);
-					lclass = FileManager.COMMON_CLASS_LOADER.loadClass(cn);
+					lclass = FileList.COMMON_CLASS_LOADER.loadClass(cn);
 				} else {
 					lclass = Class.forName(cn);
 				}
@@ -527,7 +529,7 @@ public class MMM_TextureManager {
 			return false;
 		}
 		try {
-			FileManager.COMMON_CLASS_LOADER.addURL(file.toURI().toURL());
+			FileList.COMMON_CLASS_LOADER.addURL(file.toURI().toURL());
 		} catch (MalformedURLException e) {
 		}
 		try {
@@ -572,7 +574,7 @@ public class MMM_TextureManager {
 		}
 		
 		try {
-			FileManager.COMMON_CLASS_LOADER.addURL(file.toURI().toURL());
+			FileList.COMMON_CLASS_LOADER.addURL(file.toURI().toURL());
 		} catch (MalformedURLException e1) {
 		}
 		
@@ -582,15 +584,15 @@ public class MMM_TextureManager {
 					addTexturesDir(nfile, pSearch);
 				} else {
 					String tn = FileClassUtil.getLinuxAntiDotName(nfile.getAbsolutePath());
-					String rmn = FileClassUtil.getLinuxAntiDotName(FileManager.dirMods.getAbsolutePath());
+					String rmn = FileClassUtil.getLinuxAntiDotName(FileList.dirMods.getAbsolutePath());
 					ADDMODEL: if (nfile.getName().endsWith(".class")) {
 						if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
-							String rdn = FileClassUtil.getLinuxAntiDotName(FileManager.dirDevClasses.getAbsolutePath());
+							String rdn = FileClassUtil.getLinuxAntiDotName(FileList.dirDevClasses.getAbsolutePath());
 							if(tn.startsWith(rdn)){
 								addModelClass(FileClassUtil.getClassName(tn, rdn),pSearch);
 								break ADDMODEL;
 							}
-							for(File f:FileManager.dirDevIncludeClasses){
+							for(File f:FileList.dirDevIncludeClasses){
 								String rin = FileClassUtil.getLinuxAntiDotName(f.getAbsolutePath());
 								if(tn.startsWith(rin)){
 									addModelClass(FileClassUtil.getClassName(tn, rin),pSearch);
@@ -604,7 +606,7 @@ public class MMM_TextureManager {
 						if (i > -1) {
 							// 対象はテクスチャディレクトリ
 							addTextureName(s.substring(i), pSearch);
-							if(DevMode.DEVMODE==DevMode.DEVMODE_ECLIPSE) for(File f:FileManager.dirDevIncludeClasses){
+							if(DevMode.DEVMODE==DevMode.DEVMODE_ECLIPSE) for(File f:FileList.dirDevIncludeClasses){
 								String rin = FileClassUtil.getLinuxAntiDotName(f.getAbsolutePath());
 								if(tn.startsWith(rin)){
 									String cname = tn.substring(rin.length()+1);
@@ -942,7 +944,7 @@ public class MMM_TextureManager {
 		// サーバー側へテクスチャパックのインデックスが変更されたことを通知する。
 		if (pEntity instanceof Entity) {
 			byte ldata[] = new byte[6 + pIndex.length * 2];
-			ldata[0] = MMM_Statics.Server_SetTexturePackIndex;
+			ldata[0] = NetworkSync.Server_SetTexturePackIndex;
 			NetworkHelper.setIntToPacket(ldata, 1, ((Entity)pEntity).getEntityId());
 			ldata[5] = (byte)pColor;
 			int li = 6;
@@ -976,7 +978,7 @@ public class MMM_TextureManager {
 		// 呼び出し側のクライアントへのみ返す。
 		// 返すときはNameは不要、BufIndexのみで識別させる
 		byte ldata[] = new byte[22 + pBox.textureName.length()];
-		ldata[0] = MMM_Statics.Server_GetTextureIndex;
+		ldata[0] = NetworkSync.Server_GetTextureIndex;
 		ldata[1] = (byte)pBufIndex;
 		NetworkHelper.setShortToPacket(ldata, 2, pBox.getContractColorBits());
 		NetworkHelper.setShortToPacket(ldata, 4, pBox.getWildColorBits());
@@ -1005,7 +1007,7 @@ public class MMM_TextureManager {
 		lboxsrv.setValue(pData);
 		
 		byte ldata[] = new byte[4];
-		ldata[0] = MMM_Statics.Client_SetTextureIndex;
+		ldata[0] = NetworkSync.Client_SetTextureIndex;
 		ldata[1] = pData[1];
 		NetworkHelper.setShortToPacket(ldata, 2, li);
 		MMMLib.Debug("reciveFromClientGetTexturePackIndex: %s, %04x", lpackname, li);
@@ -1074,7 +1076,7 @@ public class MMM_TextureManager {
 			return;
 		}
 		byte ldata[] = new byte[3];
-		ldata[0] = MMM_Statics.Server_GetTexturePackName;
+		ldata[0] = NetworkSync.Server_GetTexturePackName;
 		NetworkHelper.setShortToPacket(ldata, 1, pIndex);
 		LMRNetwork.sendPacketToServer(1, ldata);
 	}
@@ -1087,7 +1089,7 @@ public class MMM_TextureManager {
 		
 		// Clientへ管理番号に登録されているテクスチャ名称をポストする
 		byte ldata[] = new byte[23 + lboxserver.textureName.length()];
-		ldata[0] = MMM_Statics.Client_SetTexturePackName;
+		ldata[0] = NetworkSync.Client_SetTexturePackName;
 		NetworkHelper.setShortToPacket(ldata, 1, lindex);
 		NetworkHelper.setShortToPacket(ldata, 3, lboxserver.getContractColorBits());
 		NetworkHelper.setShortToPacket(ldata, 5, lboxserver.getWildColorBits());

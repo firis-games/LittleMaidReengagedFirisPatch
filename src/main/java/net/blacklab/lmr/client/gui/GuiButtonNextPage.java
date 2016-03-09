@@ -1,4 +1,4 @@
-package mmmlibx.lib.gui;
+package net.blacklab.lmr.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

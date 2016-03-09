@@ -2,7 +2,7 @@ package net.blacklab.lmr.network;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.util.NetworkHelper;
+import net.blacklab.lmr.util.helper.NetworkHelper;
 
 public class LMMNX_NetSync {
 

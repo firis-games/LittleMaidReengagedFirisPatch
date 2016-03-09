@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import mmmlibx.lib.multiModel.model.mc162.*;
+import net.blacklab.lmr.util.FileList;
 
 /**
  * 追加パーツたるスタビライザーを管理する
@@ -17,7 +18,7 @@ public class MMM_StabilizerManager extends MMM_ManagerBase {
 	
 	public static void init() {
 		// 特定名称をプリフィックスに持つmodファイをを獲得
-		FileManager.getModFile("Stabilizer", preFix);
+		FileList.getModFile("Stabilizer", preFix);
 	}
 
 	public static void loadStabilizer() {

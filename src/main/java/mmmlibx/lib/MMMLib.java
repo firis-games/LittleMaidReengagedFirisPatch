@@ -7,14 +7,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import mmmlibx.lib.FileManager.CommonClassLoaderWrapper;
 import mmmlibx.lib.multiModel.MMMLoader.MMMTransformer;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.network.LMRNetwork;
+import net.blacklab.lmr.network.NetworkSync;
 import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
-import net.blacklab.lmr.util.NetworkHelper;
+import net.blacklab.lmr.util.FileList;
+import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
+import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Mod;
@@ -52,18 +54,18 @@ public class MMMLib {
 		// ClassLoaderを初期化
 		List<URL> urls = new ArrayList<URL>();
 		try {
-			urls.add(FileManager.dirMods.toURI().toURL());
+			urls.add(FileList.dirMods.toURI().toURL());
 		} catch (MalformedURLException e1) {
 		}
 		if(DevMode.DEVMODE==DevMode.DEVMODE_ECLIPSE){
-			for(File f:FileManager.dirDevIncludeClasses){
+			for(File f:FileList.dirDevIncludeClasses){
 				try {
 					urls.add(f.toURI().toURL());
 				} catch (MalformedURLException e) {
 				}
 			}
 		}
-		FileManager.COMMON_CLASS_LOADER = new CommonClassLoaderWrapper(urls.toArray(new URL[]{}), MMMLib.class.getClassLoader());
+		FileList.COMMON_CLASS_LOADER = new CommonClassLoaderWrapper(urls.toArray(new URL[]{}), MMMLib.class.getClassLoader());
 
 		// MMMLibが立ち上がった時点で旧モデル置き換えを開始
 		MMMTransformer.isEnable = true;
@@ -112,13 +114,6 @@ public class MMMLib {
 	}
 
 	@Mod.EventHandler
-	public void init(FMLInitializationEvent pEvent) {
-		if (pEvent.getSide() == Side.CLIENT) {
-// TODO ★			MoveWindow.setPosition();
-		}
-	}
-
-	@Mod.EventHandler
 	public void loaded(FMLPostInitializationEvent pEvent) {
 		// 独自スクリプトデコーダー
 //		EzRecipes.init();
@@ -130,14 +125,12 @@ public class MMMLib {
 //		MultiModelManager.instance.execute();
 		
 		// TODO test
-		List<File> llist = FileManager.getAllmodsFiles(FileManager.COMMON_CLASS_LOADER, true);
+		List<File> llist = FileList.getAllmodsFiles(FileList.COMMON_CLASS_LOADER, true);
 		for (File lf : llist) {
 			Debug("targetFiles: %s", lf.getAbsolutePath());
 		}
-		
-		
 		try {
-			Class<?> lc = ReflectionHelper.getClass(FileManager.COMMON_CLASS_LOADER, "net.minecraft.entity.EntityLivingBase");
+			Class<?> lc = ReflectionHelper.getClass(FileList.COMMON_CLASS_LOADER, "net.minecraft.entity.EntityLivingBase");
 			Debug("test-getClass: %s", lc.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -160,15 +153,15 @@ public class MMMLib {
 //		byte[] ldata;
 		
 		switch (lmode) {
-		case MMM_Statics.Server_SetTexturePackIndex:
+		case NetworkSync.Server_SetTexturePackIndex:
 			// サーバー側のEntityに対してテクスチャインデックスを設定する
 			MMM_TextureManager.instance.reciveFromClientSetTexturePackIndex(lentity, var2.data);
 			break;
-		case MMM_Statics.Server_GetTextureIndex:
+		case NetworkSync.Server_GetTextureIndex:
 			// サーバー側での管理番号の問い合わせに対して応答する
 			MMM_TextureManager.instance.reciveFromClientGetTexturePackIndex(playerEntity, var2.data);
 			break;
-		case MMM_Statics.Server_GetTexturePackName:
+		case NetworkSync.Server_GetTexturePackName:
 			// 管理番号に対応するテクスチャパック名を返す。
 			MMM_TextureManager.instance.reciveFromClientGetTexturePackName(playerEntity, var2.data);
 			break;

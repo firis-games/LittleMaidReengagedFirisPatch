@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.util.RendererHelper;
+import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.TextureOffset;
 import net.minecraft.client.renderer.entity.Render;

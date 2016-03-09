@@ -1,7 +1,7 @@
 package mmmlibx.lib;
 
 import mmmlibx.lib.multiModel.model.mc162.*;
-import net.blacklab.lmr.util.NetworkHelper;
+import net.blacklab.lmr.util.helper.NetworkHelper;
 
 public class MMM_TextureBoxServer extends MMM_TextureBoxBase {
 

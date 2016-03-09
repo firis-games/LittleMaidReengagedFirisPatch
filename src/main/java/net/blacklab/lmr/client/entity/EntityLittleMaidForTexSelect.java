@@ -1,13 +1,19 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.client.entity;
 
 import java.util.Map;
 
+import mmmlibx.lib.ITextureEntity;
+import mmmlibx.lib.MMM_EntityCaps;
+import mmmlibx.lib.MMM_TextureBox;
+import mmmlibx.lib.MMM_TextureBoxBase;
+import mmmlibx.lib.MMM_TextureData;
+import mmmlibx.lib.MMM_TextureManager;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class MMM_EntitySelect extends EntityLiving implements IModelCaps, ITextureEntity {
+public class EntityLittleMaidForTexSelect extends EntityLiving implements IModelCaps, ITextureEntity {
 
 //	public int color;
 //	public int textureIndex[] = new int[] { 0, 0 };
@@ -25,7 +31,7 @@ public class MMM_EntitySelect extends EntityLiving implements IModelCaps, ITextu
 	public MMM_TextureData textureData;
 	public boolean modeArmor = false;
 
-	public MMM_EntitySelect(World par1World) {
+	public EntityLittleMaidForTexSelect(World par1World) {
 		super(par1World);
 		entityCaps = new MMM_EntityCaps(this);
 		textureData = new MMM_TextureData(this, entityCaps);
@@ -102,7 +108,7 @@ public class MMM_EntitySelect extends EntityLiving implements IModelCaps, ITextu
 	/**
 	 * テクスチャのファイル名を獲得
 	 */
-	protected void setTextureNames() {
+	public void setTextureNames() {
 		textureData.setTextureNames();
 //		textures[0][0] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? 0 : MMM_TextureManager.tx_wild));
 //		textures[0][1] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? MMM_TextureManager.tx_eyecontract : MMM_TextureManager.tx_eyewild));
@@ -243,7 +249,8 @@ public class MMM_EntitySelect extends EntityLiving implements IModelCaps, ITextu
 		return 0x00f000f0;
 	}
 
-	protected void setSize2(float par1, float par2)
+	@Override
+	public void setSize(float par1, float par2)
 	{
 		super.setSize(par1, par2);
 	}

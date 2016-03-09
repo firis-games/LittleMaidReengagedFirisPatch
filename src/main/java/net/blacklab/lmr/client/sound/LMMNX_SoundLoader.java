@@ -20,12 +20,12 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
-import mmmlibx.lib.FileManager;
 import mmmlibx.lib.MMM_TextureBox;
 import mmmlibx.lib.MMM_TextureManager;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.FileList;
 import net.minecraftforge.fml.common.FMLLog;
 import scala.Char;
 
@@ -69,7 +69,7 @@ public class LMMNX_SoundLoader {
 			}
 		}
 
-		instance.searchDir(FileManager.dirMods);
+		instance.searchDir(FileList.dirMods);
 		LMMNX_SoundRegistry.copySoundsAdjust();
 		instance.appendPath();
 		instance.createJson();
@@ -90,7 +90,7 @@ public class LMMNX_SoundLoader {
 			}
 			if (t.getName().endsWith(".ogg")) {
 				String c1 = FileClassUtil.getLinuxAntiDotName(t.getAbsolutePath());
-				String c2 = FileClassUtil.getLinuxAntiDotName(FileManager.dirMods.getAbsolutePath());
+				String c2 = FileClassUtil.getLinuxAntiDotName(FileList.dirMods.getAbsolutePath());
 				String p = c1.substring(c2.length());
 				if (p.startsWith("/")) {
 					p = p.substring(1);
@@ -251,7 +251,7 @@ public class LMMNX_SoundLoader {
 	 * sounds.jsonの生成
 	 */
 	private void createJson() {
-		File jsonDir = new File(FileManager.dirMods, "LittleMaidMobNX");
+		File jsonDir = new File(FileList.dirMods, "LittleMaidMobNX");
 		if (jsonDir.isFile()) {
 			throw new IllegalStateException("Remove 'LittleMaidMobNX' file in the mods folder!");
 		}
@@ -314,7 +314,7 @@ public class LMMNX_SoundLoader {
 		}
 
 		try {
-			FileManager.COMMON_CLASS_LOADER.addURL(jsonDir.toURI().toURL());
+			FileList.COMMON_CLASS_LOADER.addURL(jsonDir.toURI().toURL());
 		} catch (MalformedURLException e) {
 		}
 	}

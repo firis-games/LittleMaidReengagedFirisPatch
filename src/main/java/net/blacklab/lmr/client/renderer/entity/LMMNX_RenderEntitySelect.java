@@ -3,11 +3,11 @@ package net.blacklab.lmr.client.renderer.entity;
 import org.lwjgl.opengl.GL11;
 
 import mmmlibx.lib.ITextureEntity;
-import mmmlibx.lib.MMM_EntitySelect;
 import mmmlibx.lib.multiModel.model.mc162.ModelBaseDuo;
 import mmmlibx.lib.multiModel.model.mc162.RenderModelMulti;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.util.RendererHelper;
+import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
+import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -31,7 +31,7 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 		public float field_177192_h;
 		public float field_177187_e;
 		public boolean field_177193_i;
-		public MMM_EntitySelect lmm;
+		public EntityLittleMaidForTexSelect lmm;
 		private int renderCount;
 
 		public MMMLayerArmor(RendererLivingEntity p_i46125_1_) {
@@ -59,7 +59,7 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 				float par2, float par3, float par4,
 				float par5, float par6, float par7,
 				float par8) {
-			lmm = (MMM_EntitySelect) par1EntityLiving;
+			lmm = (EntityLittleMaidForTexSelect) par1EntityLiving;
 			if(!lmm.modeArmor) return;
 			// TODO もっと手っ取り早い方法ない？
 			render(par1EntityLiving, par2, par3, par4, par6, par7, par8, 3);

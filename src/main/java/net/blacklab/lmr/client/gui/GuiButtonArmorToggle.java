@@ -1,5 +1,6 @@
 package net.blacklab.lmr.client.gui;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -28,7 +29,7 @@ public class GuiButtonArmorToggle extends GuiButton {
 
 	public boolean toggle = true;
 
-	public static final ResourceLocation GUI_TOPBUTTON_RESOURCE = new ResourceLocation("lmmx:textures/gui/container/buttons/topbuttons.png");
+	public static final ResourceLocation GUI_TOPBUTTON_RESOURCE = new ResourceLocation(LittleMaidReengaged.DOMAIN+":textures/gui/container/buttons/topbuttons.png");
 
 	public GuiButtonArmorToggle(int buttonId, int x, int y, String buttonText, boolean ison) {
 		super(buttonId, x, y, 16, 16, "");

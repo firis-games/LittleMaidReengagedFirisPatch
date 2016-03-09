@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util;
+package net.blacklab.lmr.util.helper;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.item.Item;

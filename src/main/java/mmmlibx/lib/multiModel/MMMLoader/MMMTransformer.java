@@ -24,6 +24,8 @@ import org.objectweb.asm.tree.TypeInsnNode;
 
 import com.google.common.collect.Lists;
 
+import mmmlibx.lib.MMMLib;
+
 
 /**
  * 古いマルチモデルのロード用。<br>
@@ -86,7 +88,6 @@ public class MMMTransformer implements IClassTransformer, Opcodes {
 
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] basicClass) {
-
 		//MMMLibが立ち上がった時点で旧モデル置き換えを開始
 		MMMTransformer.isEnable = true;
 

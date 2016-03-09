@@ -1,11 +1,18 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import mmmlibx.lib.MMM_TextureBox;
+import mmmlibx.lib.MMM_TextureBoxBase;
+import mmmlibx.lib.MMM_TextureManager;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
-import net.blacklab.lmr.util.RendererHelper;
+import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
+import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiSlot;
@@ -15,14 +22,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+public class GuiTextureSlot extends GuiSlot {
 
-public class MMM_GuiTextureSlot extends GuiSlot {
-
-	public MMM_GuiTextureSelect owner;
+	public GuiTextureSelect owner;
 	public int selected;
-	public MMM_EntitySelect entity;
+	public EntityLittleMaidForTexSelect entity;
 	public List<MMM_TextureBox> indexTexture;
 	public List<MMM_TextureBox> indexArmor;
 	public boolean mode;
@@ -39,10 +43,10 @@ public class MMM_GuiTextureSlot extends GuiSlot {
 	protected static MMM_TextureBox blankBox;
 
 
-	public MMM_GuiTextureSlot(MMM_GuiTextureSelect pOwner) {
+	public GuiTextureSlot(GuiTextureSelect pOwner) {
 		super(pOwner.mc, pOwner.width, pOwner.height, 16, pOwner.height - 64, 36);
 		owner = pOwner;
-		entity = new MMM_EntitySelect(owner.mc.theWorld);
+		entity = new EntityLittleMaidForTexSelect(owner.mc.theWorld);
 		color = owner.target.getColor();
 		selectColor = -1;
 		blankBox = new MMM_TextureBox();
@@ -82,6 +86,10 @@ public class MMM_GuiTextureSlot extends GuiSlot {
 	@Override
 	protected int getSize() {
 		return mode ? indexArmor.size() : indexTexture.size();
+	}
+	
+	public static MMM_TextureBox getBlankBox() {
+		return blankBox;
 	}
 
 	@Override

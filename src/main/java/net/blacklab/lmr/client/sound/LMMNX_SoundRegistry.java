@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import mmmlibx.lib.FileManager;
 import net.blacklab.lib.obj.Pair;
 import net.blacklab.lib.obj.SinglePair;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.FileList;
 
 public class LMMNX_SoundRegistry {
 
@@ -183,7 +183,7 @@ public class LMMNX_SoundRegistry {
 	public static InputStream getSoundStream(String name) {
 		String aString = getPathFromRegisteredName(name);
 		LittleMaidReengaged.Debug("GETSTREAM %s", aString);
-		return FileManager.COMMON_CLASS_LOADER.getResourceAsStream(aString);
+		return FileList.COMMON_CLASS_LOADER.getResourceAsStream(aString);
 	}
 
 	public static InputStream getSoundStream(EnumSound sound, String texture, Integer color) {

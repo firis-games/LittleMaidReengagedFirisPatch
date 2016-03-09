@@ -1,4 +1,4 @@
-package net.blacklab.lmr.client.gui;
+package net.blacklab.lmr.client.gui.inventory;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -7,8 +7,13 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import mmmlibx.lib.gui.GuiButtonNextPage;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.client.gui.GuiButtonArmorToggle;
+import net.blacklab.lmr.client.gui.GuiButtonBoostChange;
+import net.blacklab.lmr.client.gui.GuiButtonFreedomToggle;
+import net.blacklab.lmr.client.gui.GuiButtonNextPage;
+import net.blacklab.lmr.client.gui.GuiButtonSwimToggle;
+import net.blacklab.lmr.client.gui.GuiTextureSelect;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;

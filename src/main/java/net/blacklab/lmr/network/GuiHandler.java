@@ -1,7 +1,7 @@
 package net.blacklab.lmr.network;
 
 import net.blacklab.lmr.client.gui.GuiIFF;
-import net.blacklab.lmr.client.gui.GuiInventory;
+import net.blacklab.lmr.client.gui.inventory.GuiInventory;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;

@@ -3,11 +3,11 @@ package net.blacklab.lmr.util.manager;
 import java.util.ArrayList;
 import java.util.List;
 
-import mmmlibx.lib.FileManager;
 import mmmlibx.lib.MMM_ManagerBase;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
+import net.blacklab.lmr.util.FileList;
 
 public class EntityModeManager extends MMM_ManagerBase {
 
@@ -17,7 +17,7 @@ public class EntityModeManager extends MMM_ManagerBase {
 
 	public static void init() {
 		// 特定名称をプリフィックスに持つmodファイをを獲得
-		FileManager.getModFile("EntityMode", prefix);
+		FileList.getModFile("EntityMode", prefix);
 	}
 	
 	public static void loadEntityMode() {

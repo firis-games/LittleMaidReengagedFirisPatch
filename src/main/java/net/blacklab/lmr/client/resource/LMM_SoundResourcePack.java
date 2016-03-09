@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
-import mmmlibx.lib.FileManager;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.sound.LMMNX_SoundRegistry;
+import net.blacklab.lmr.util.FileList;
 import net.minecraft.client.resources.DefaultResourcePack;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
@@ -42,10 +42,10 @@ public class LMM_SoundResourcePack implements IResourcePack {
 	private InputStream getResourceStream(ResourceLocation resource) {
 		InputStream lis = null;
 		if (resource.getResourcePath().endsWith("sounds.json")) {
-			return FileManager.COMMON_CLASS_LOADER.getResourceAsStream("LittleMaidMobNX/sounds.json");
+			return FileList.COMMON_CLASS_LOADER.getResourceAsStream("LittleMaidMobNX/sounds.json");
 		}
 		if (resource.getResourcePath().endsWith(".ogg")) {
-			lis = FileManager.COMMON_CLASS_LOADER.getResourceAsStream(decodePathGetPath(resource));
+			lis = FileList.COMMON_CLASS_LOADER.getResourceAsStream(decodePathGetPath(resource));
 		}
 		return lis;
 	}

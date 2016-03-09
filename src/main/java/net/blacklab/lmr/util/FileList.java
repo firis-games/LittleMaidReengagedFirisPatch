@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.util;
 
 import java.io.File;
 import java.net.URL;
@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mmmlibx.lib.MMMLib;
 import net.blacklab.lib.classutil.FileClassUtil;
-import net.blacklab.lmr.util.DevMode;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
-public class FileManager {
+public class FileList {
 	
 	public static class CommonClassLoaderWrapper extends URLClassLoader{
 
@@ -50,7 +50,7 @@ public class FileManager {
 	public static CommonClassLoaderWrapper COMMON_CLASS_LOADER;
 
 	static {
-		Object[] lo = FMLInjectionData.data();
+		Object[] injectionData = FMLInjectionData.data();
 		dirMinecraft = (File) FMLInjectionData.data()[6];
 		minecraftDir = dirMinecraft.getPath();
 		dirMods = new File(dirMinecraft, "mods");
@@ -90,7 +90,7 @@ public class FileManager {
 				throw new IllegalStateException("Run Directory is incorrect: You must run at \"<PROJECT>/eclipse\"!");
 			}
 		}
-		dirModsVersion = new File(dirMods, (String)lo[4]);
+		dirModsVersion = new File(dirMods, (String)injectionData[4]);
 		MMMLib.Debug("init FileManager.");
 	}
 	

@@ -10,6 +10,7 @@ import java.util.zip.ZipInputStream;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.DevMode;
+import net.blacklab.lmr.util.FileList;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -29,15 +30,15 @@ public abstract class MMM_ManagerBase {
 		
 		// 開発用
 		if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
-			startSearch(FileManager.dirDevClasses, true);
+			startSearch(FileList.dirDevClasses, true);
 			if(DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE){
-				for(File f:FileManager.dirDevIncludeClasses){
+				for(File f:FileList.dirDevIncludeClasses){
 					startSearch(f, true);
 				}
 			}
 		}
 
-		startSearch(FileManager.dirMods, false);
+		startSearch(FileList.dirMods, false);
 	}
 	
 	private void startSearch(File root, boolean dev){
@@ -81,7 +82,7 @@ public abstract class MMM_ManagerBase {
 
 	private void decodeDirectory(File pfile, File pRoot) {
 		try {
-			FileManager.COMMON_CLASS_LOADER.addURL(pRoot.toURI().toURL());
+			FileList.COMMON_CLASS_LOADER.addURL(pRoot.toURI().toURL());
 		} catch (MalformedURLException e) {
 			return;
 		}
@@ -107,7 +108,7 @@ public abstract class MMM_ManagerBase {
 		// zipファイルを解析
 		try {
 			// 多分いらんと思う…
-			FileManager.COMMON_CLASS_LOADER.addURL(pfile.toURI().toURL());
+			FileList.COMMON_CLASS_LOADER.addURL(pfile.toURI().toURL());
 		} catch (MalformedURLException e) {
 			return;
 		}
@@ -149,7 +150,7 @@ public abstract class MMM_ManagerBase {
 	// TODO ★	lclassname = (new StringBuilder(String.valueOf(lpackage.getName()))).append(".").append(lclassname).toString();
 				lclassname = lclassname.replace("/", ".");
 // LMM_EntityModeManager でしか使ってないので暫定
-				lclass = FileManager.COMMON_CLASS_LOADER.loadClass(lclassname);
+				lclass = FileList.COMMON_CLASS_LOADER.loadClass(lclassname);
 			} else {
 				lclass = Class.forName(lclassname);
 			}

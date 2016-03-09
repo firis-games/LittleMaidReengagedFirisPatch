@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Set;
 
-import mmmlibx.lib.FileManager;
+import net.blacklab.lmr.util.FileList;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.IMetadataSerializer;
@@ -23,7 +23,7 @@ public class LMMNX_OldZipTexturesLoader implements IResourcePack {
 		if(resourceExists(arg0)){
 			String key = arg0.getResourcePath();
 			if(key.startsWith("/")) key = key.substring(1);
-			return FileManager.COMMON_CLASS_LOADER.getResourceAsStream(key);
+			return FileList.COMMON_CLASS_LOADER.getResourceAsStream(key);
 		}
 		return null;
 	}

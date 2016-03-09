@@ -2,6 +2,7 @@ package mmmlibx.lib;
 
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
+import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.util.CommonHelper;
 import net.minecraft.entity.DataWatcher;
@@ -263,9 +264,9 @@ public class MMM_TextureData  {
 			{
 				((EntityLittleMaid)owner).setSize2(textureBox[0].getWidth(entityCaps), textureBox[0].getHeight(entityCaps));
 			}
-			else if(owner instanceof MMM_EntitySelect)
+			else if(owner instanceof EntityLittleMaidForTexSelect)
 			{
-				((MMM_EntitySelect)owner).setSize2(textureBox[0].getWidth(entityCaps), textureBox[0].getHeight(entityCaps));
+				((EntityLittleMaidForTexSelect)owner).setSize(textureBox[0].getWidth(entityCaps), textureBox[0].getHeight(entityCaps));
 			}
 			
 			if (owner instanceof EntityAgeable) {

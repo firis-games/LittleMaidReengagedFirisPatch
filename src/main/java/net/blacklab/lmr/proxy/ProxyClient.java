@@ -5,9 +5,9 @@ import static net.blacklab.lmr.util.Statics.LMN_Client_SetIFFValue;
 import static net.blacklab.lmr.util.Statics.LMN_Client_SwingArm;
 
 import mmmlibx.lib.MMM_EntityDummy;
-import mmmlibx.lib.MMM_EntitySelect;
 import mmmlibx.lib.MMM_RenderDummy;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.RenderLittleMaid;
 import net.blacklab.lmr.client.renderer.entity.LMMNX_RenderEntitySelect;
 import net.blacklab.lmr.client.sound.LMMNX_SoundLoader;
@@ -18,7 +18,7 @@ import net.blacklab.lmr.network.NetworkSync;
 import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
-import net.blacklab.lmr.util.NetworkHelper;
+import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityPickupFX;
 import net.minecraft.entity.Entity;
@@ -36,7 +36,7 @@ public class ProxyClient extends ProxyCommon
 {
 	public void init() {
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class,new RenderLittleMaid(Minecraft.getMinecraft().getRenderManager(),0.3F));
-		RenderingRegistry.registerEntityRenderingHandler(MMM_EntitySelect.class,	new LMMNX_RenderEntitySelect(Minecraft.getMinecraft().getRenderManager(), 0.0F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class,	new LMMNX_RenderEntitySelect(Minecraft.getMinecraft().getRenderManager(), 0.0F));
 		RenderingRegistry.registerEntityRenderingHandler(MMM_EntityDummy.class,		new MMM_RenderDummy());
 	}
 
