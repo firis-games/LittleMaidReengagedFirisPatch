@@ -528,22 +528,18 @@ public class GuiInventory extends GuiContainer {
 		case 100 :
 			entitylittlemaid.setNextTexturePackege(0);
 			entitylittlemaid.setTextureNames();
-			entitylittlemaid.requestChangeRenderParamTextureName();
 			break;
 		case 101 :
 			entitylittlemaid.setPrevTexturePackege(0);
 			entitylittlemaid.setTextureNames();
-			entitylittlemaid.requestChangeRenderParamTextureName();
 			break;
 		case 110 :
 			entitylittlemaid.setNextTexturePackege(1);
 			entitylittlemaid.setTextureNames();
-			entitylittlemaid.requestChangeRenderParamTextureName();
 			break;
 		case 111 :
 			entitylittlemaid.setPrevTexturePackege(1);
 			entitylittlemaid.setTextureNames();
-			entitylittlemaid.requestChangeRenderParamTextureName();
 			break;
 		case 200 :
 			int ldye = 0;
@@ -578,19 +574,17 @@ public class GuiInventory extends GuiContainer {
 		case 310 :
 			swimbutton.toggle=!swimbutton.toggle;
 			entitylittlemaid.setSwimming(swimbutton.toggle);
-			entitylittlemaid.syncSwimming();
 			break;
 		case 311 :
 			frdmbutton.toggle=!frdmbutton.toggle;
 			entitylittlemaid.setFreedom(frdmbutton.toggle);
-			entitylittlemaid.syncFreedom();
 			entitylittlemaid.handleStatusUpdate((byte) (frdmbutton.toggle?12:13));
 			break;
 		case 320:
 			booster-=2;
 		case 321:
 			entitylittlemaid.setExpBooster(++booster);
-			entitylittlemaid.recallExpBoost();
+			entitylittlemaid.syncExpBoost();
 			break;
 		}
 	}

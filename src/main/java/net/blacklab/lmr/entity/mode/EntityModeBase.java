@@ -2,7 +2,7 @@ package net.blacklab.lmr.entity.mode;
 
 import java.util.List;
 
-import net.blacklab.lmr.client.renderer.RenderLittleMaid;
+import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAITasks;

@@ -12,7 +12,6 @@ public class ProxyCommon
 	public void onItemPickup(EntityPlayer lmm_EntityLittleMaidAvatar,Entity entity, int i) {}
 	public void onCriticalHit(EntityPlayer pAvatar, Entity par1Entity) {}
 	public void onEnchantmentCritical(EntityPlayer pAvatar, Entity par1Entity) {}
-	public void clientCustomPayload(LMRMessage var2) {}
 	public EntityPlayer getClientPlayer(){ return null; }
 	public void loadSounds(){}
 	public void runCountThread() {}

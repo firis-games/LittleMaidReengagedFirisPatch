@@ -4,7 +4,8 @@ package net.blacklab.lmr.client.gui;
 import mmmlibx.lib.MMM_GuiMobSelect;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.network.NetworkSync;
+import net.blacklab.lmr.network.EnumPacketMode;
+import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.util.helper.NetworkHelper;
@@ -39,12 +40,11 @@ public class GuiIFF extends MMM_GuiMobSelect {
 		if (!Minecraft.getMinecraft().isSingleplayer()) {
 			int li = 0;
 			for (String ls : IFF.DefaultIFF.keySet()) {
-				byte ldata[] = new byte[5 + ls.length()];
-				ldata[0] = Statics.LMN_Server_GetIFFValue;
-				NetworkHelper.setIntToPacket(ldata, 1, li);
-				NetworkHelper.setStrToPacket(ldata, 5, ls);
+				byte ldata[] = new byte[4 + ls.length()];
+				NetworkHelper.setIntToPacket(ldata, 0, li);
+				NetworkHelper.setStrToPacket(ldata, 4, ls);
 				LittleMaidReengaged.Debug("RequestIFF %s(%d)", ls, li);
-				NetworkSync.sendToServer(ldata);
+				LMRNetwork.sendToServer(EnumPacketMode.SERVER_REQUEST_IFF, ldata);
 				li++;
 			}
 		}
@@ -104,7 +104,7 @@ public class GuiIFF extends MMM_GuiMobSelect {
 
 	@Override
 	public void onGuiClosed() {
-		NetworkSync.saveIFF();
+		LMRNetwork.requestSavingIFF();
 		super.onGuiClosed();
 	}
 
@@ -122,13 +122,12 @@ public class GuiIFF extends MMM_GuiMobSelect {
 				int li = 0;
 				for (String ls : IFF.DefaultIFF.keySet()) {
 					if (ls.contains(pName)) {
-						byte[] ldata = new byte[pName.length() + 6];
-						ldata[0] = Statics.LMN_Server_SetIFFValue;
-						ldata[1] = (byte) tt;
-						NetworkHelper.setIntToPacket(ldata, 2, li);
-						NetworkHelper.setStrToPacket(ldata, 6, pName);
+						byte[] ldata = new byte[pName.length() + 5];
+						ldata[0] = (byte) tt;
+						NetworkHelper.setIntToPacket(ldata, 1, li);
+						NetworkHelper.setStrToPacket(ldata, 5, pName);
 						LittleMaidReengaged.Debug("SendIFF %s(%d) = %d", pName, li, tt);
-						NetworkSync.sendToServer(ldata);
+						LMRNetwork.sendToServer(EnumPacketMode.SERVER_CHANGE_IFF, ldata);
 					}
 					li++;
 				}

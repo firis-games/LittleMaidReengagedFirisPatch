@@ -28,12 +28,13 @@ public class Statics
 	public static final int dataWatch_Flags_remainsContract			= 0x00000020;
 	public static final int dataWatch_Flags_PlayingMode				= 0x00000040;
 	public static final int dataWatch_Flags_Working					= 0x00000080;
-	public static final int dataWatch_Flags_Wait						= 0x00000100;
+	public static final int dataWatch_Flags_Wait					= 0x00000100;
 	public static final int dataWatch_Flags_WaitEx					= 0x00000200;
 	public static final int dataWatch_Flags_LooksSugar				= 0x00000400;
 	public static final int dataWatch_Flags_Bloodsuck				= 0x00000800;
 	public static final int dataWatch_Flags_OverDrive				= 0x00001000;
-	public static final int dataWatch_Flags_Register					= 0x00002000;
+	public static final int dataWatch_Flags_Register				= 0x00002000;
+	public static final int dataWatch_Flags_Swimming				= 0x00004000;
 
 	/** 紐の持ち主のEntityID。 */
 	public static final int dataWatch_Gotcha			= 23;

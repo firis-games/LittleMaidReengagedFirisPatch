@@ -25,7 +25,6 @@ import static net.blacklab.lmr.util.Statics.dataWatch_Texture;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -79,9 +78,9 @@ import net.blacklab.lmr.entity.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.pathnavigate.LMMNX_PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.item.ItemRegisterKey;
+import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.GuiHandler;
-import net.blacklab.lmr.network.LMMNX_NetSync;
-import net.blacklab.lmr.network.NetworkSync;
+import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
@@ -160,9 +159,10 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.TempCategory;
 import net.minecraft.world.pathfinder.WalkNodeProcessor;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.reflect.internal.util.Statistics;
 
 public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 
@@ -290,8 +290,8 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 	public Profiler aiProfiler;
 
 	//モデル
-	public String textureModelNameForClient;
-	public String textureArmorNameForClient;
+	protected String modelNameMain;
+	protected String modelNameArmor;
 
 	public int playingTick = 0;
 
@@ -415,9 +415,9 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 		textureData.setTextureInitServer(ls);
 		LittleMaidReengaged.Debug("init-ID:%d, %s:%d", getEntityId(), textureData.textureBox[0].textureName, textureData.getColor());
 		setTexturePackIndex(textureData.getColor(), textureData.textureIndex);
-		textureModelNameForClient = textureData.textureBox[0].textureName;
-		textureArmorNameForClient = textureData.textureBox[1].textureName;
-		recallRenderParamTextureName(textureModelNameForClient, textureArmorNameForClient);
+		modelNameMain = textureData.textureBox[0].textureName;
+		modelNameArmor = textureData.textureBox[1].textureName;
+//		recallRenderParamTextureName(textureModelNameForClient, textureArmorNameForClient);
 		if(!isContract()) setMaidMode("Wild");
 	}
 
@@ -628,6 +628,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 
 	public void setSwimming(boolean flag){
 		swimmingEnabled = flag;
+		setMaidFlags(flag, Statics.dataWatch_Flags_Swimming);
 	}
 
 	public boolean isInWater() {
@@ -653,123 +654,8 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 		return ((maidArmorVisible>>(3-index)) & 0x1) != 0;
 	}
 
-	public void syncSwimming(){
-		byte[] b = new byte[]{
-				LMMNX_NetSync.LMMNX_Sync,
-				0, 0, 0, 0,
-				LMMNX_NetSync.LMMNX_Sync_UB_Swim, (byte)(swimmingEnabled?1:0)
-		};
-		syncNet(b);
-	}
-
 	public void syncMaidArmorVisible() {
-		byte[] b = new byte[]{
-				LMMNX_NetSync.LMMNX_Sync,
-				0, 0, 0, 0,
-				LMMNX_NetSync.LMMNX_Sync_UB_Armor, (byte)maidArmorVisible
-		};
-		syncNet(b);
-	}
-
-	/**
-	 * Client用。
-	 * ログイン時や描画更新時にパラメータの更新をリクエスト
-	 */
-	public void requestRenderParamRecall(){
-		if(FMLCommonHandler.instance().getSide()!=Side.CLIENT) return;
-		byte[] b = new byte[]{
-				LMMNX_NetSync.LMMNX_Sync,
-				0, 0, 0, 0,
-				LMMNX_NetSync.LMMNX_Sync_UB_RequestParamRecall, 0
-		};
-		syncNet(b);
-	}
-
-	/**
-	 * Server用。
-	 * ログイン時・変更時のリクエストに応答
-	 */
-	public void recallRenderParamTextureName(String model, String armor){
-		LittleMaidReengaged.Debug("RECALL %s %s", model, armor);
-//		if(model==null||armor==null) return;
-		textureModelNameForClient = model;
-		textureArmorNameForClient = armor;
-		if(!isMadeTextureNameFlag){
-			LittleMaidReengaged.Debug("NOT SAVED!");
-			String p1 = textureData.textureBox[0].textureName;
-			String p2 = textureData.textureBox[1].textureName;
-			if(p1==null || p2==null) return;
-			textureModelNameForClient = p1;
-			textureArmorNameForClient = p2;
-			isMadeTextureNameFlag = true;
-		}
-		syncMAString(textureModelNameForClient, textureArmorNameForClient, false);
-	}
-
-	private boolean isNotColorExistsWild = false;
-
-	/**
-	 * Client用。
-	 * Serverからの通知を受け取りパラメータを再設定
-	 */
-	public void returnedRecallParam(String model, String armor){
-		textureModelNameForClient = model;
-		textureArmorNameForClient = armor;
-
-		MMM_TextureBox p0 = referTextureBox(model);
-		MMM_TextureBox p1 = referTextureArmorBox(armor);
-		MMM_TextureBox pBox[] = new MMM_TextureBox[]{p0, p1};
-		pBox[0]= pBox[0]==null ? referTextureBox("default_Orign") : pBox[0];
-		pBox[1]= pBox[1]==null ? referTextureArmorBox("default_Orign") : pBox[1];
-
-		// 指定色がない場合
-		if(!isContract() && (pBox[0].getWildColorBits() & 1<<getColor()) == 0){
-			isNotColorExistsWild = true;
-		}
-		setTexturePackName(pBox);
-		if(isNotColorExistsWild){
-			textureData.setColor(12);
-		}
-		setTextureNames();
-	}
-
-	/**
-	 * Client用。
-	 * モデルパラメータの変更時にパラメータの更新をリクエスト
-	 */
-	public void requestChangeRenderParamTextureName(){
-		String p1 = textureData.textureBox[0].textureName;
-		String p2 = textureData.textureBox[1].textureName;
-		if(!isMadeTextureNameFlag) isMadeTextureNameFlag = true;
-		syncMAString(p1, p2, true);
-	}
-
-	protected void syncMAString(String model, String armor, boolean isServerSave) {
-		// Model側
-		if(model==null){
-			return;
-		}
-		byte b1[] = new byte[]{
-				LMMNX_NetSync.LMMNX_Sync,
-				0, 0, 0, 0,
-				isServerSave?LMMNX_NetSync.LMMNX_Sync_String_MT_RequestChangeRender:LMMNX_NetSync.LMMNX_Sync_String_MT_RecallParam
-		};
-		byte b1b[] = Arrays.copyOf(b1, b1.length+model.length());
-		NetworkHelper.setStrToPacket(b1b, 6, model);
-		syncNet(b1b);
-
-		// Armor側
-		if(armor==null){
-			return;
-		}
-		byte b2[] = new byte[]{
-				LMMNX_NetSync.LMMNX_Sync,
-				0, 0, 0, 0,
-				isServerSave?LMMNX_NetSync.LMMNX_Sync_String_AT_RequestChangeRender:LMMNX_NetSync.LMMNX_Sync_String_AT_RecallParam
-		};
-		byte b2b[] = Arrays.copyOf(b2, b2.length+armor.length());
-		NetworkHelper.setStrToPacket(b2b, 6, armor);
-		syncNet(b2b);
+		syncNet(EnumPacketMode.SYNC_ARMORFLAG, new byte[]{(byte) maidArmorVisible});
 	}
 
 	/**
@@ -777,27 +663,18 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 	 * 経験値ブースト値の取得
 	 */
 	public void requestExpBoost() {
-		byte b[] = new byte[] {
-				LMMNX_NetSync.LMMNX_Sync,
-				0, 0, 0, 0,
-				LMMNX_NetSync.LMMNX_Sync_UB_RequestExpBoost, 0
-		};
-		syncNet(b);
+		syncNet(EnumPacketMode.SERVER_REQUEST_BOOST, new byte[]{});
 	}
 
 	/**
-	 * Server用
-	 * 経験値ブーストを返す
+	 * 経験値ブーストの同期
 	 */
-	public void recallExpBoost() {
+	public void syncExpBoost() {
 		byte b[] = new byte[] {
-				LMMNX_NetSync.LMMNX_Sync,
-				0, 0, 0, 0,
-				LMMNX_NetSync.LMMNX_Sync_Integer_SetExpBoost,
 				0, 0, 0, 0
 		};
-		NetworkHelper.setIntToPacket(b, 6, getExpBooster());
-		syncNet(b);
+		NetworkHelper.setIntToPacket(b, 0, getExpBooster());
+		syncNet(EnumPacketMode.SYNC_EXPBOOST, b);
 	}
 
 	/**
@@ -823,11 +700,11 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 	}
 
 
-	public void syncNet(byte[] b) {
+	public void syncNet(EnumPacketMode pMode, byte[] contents) {
 		if(worldObj.isRemote){
-			NetworkSync.sendToEServer(this, b);
+			LMRNetwork.sendToServerWithEntityID(pMode, this, contents);
 		}else{
-			NetworkSync.sendToAllEClient(this, b);
+			LMRNetwork.sendToAllClientWithEntityID(pMode, this, contents);
 		}
 	}
 
@@ -1016,14 +893,12 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 //			if((LMM_LittleMaidMobNX.cfg_ignoreForceSound || !force) && new Random().nextInt(LMM_LittleMaidMobNX.cfg_soundPlayChance)!=0) return;
 			LittleMaidReengaged.Debug("id:%d-%s, seps:%04x-%s", getEntityId(), "Server",  enumsound.index, enumsound.name());
 			byte[] lbuf = new byte[] {
-					Statics.LMN_Client_PlaySound,
-					0, 0, 0, 0,
 					0, 0, 0, 0,
 					0, 0, 0, 0
 			};
-			NetworkHelper.setIntToPacket(lbuf, 5, enumsound.index);
-			NetworkHelper.setIntToPacket(lbuf, 9, force?1:0);
-			NetworkSync.sendToAllEClient(this, lbuf);
+			NetworkHelper.setIntToPacket(lbuf, 0, enumsound.index);
+			NetworkHelper.setIntToPacket(lbuf, 4, force?1:0);
+			syncNet(EnumPacketMode.CLIENT_PLAY_SOUND, lbuf);
 		}
 	}
 
@@ -1371,10 +1246,10 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 		par1nbtTagCompound.setString("texArmor", textureData.getTextureName(1));
 		par1nbtTagCompound.setBoolean("isSwimming", swimmingEnabled);
 		par1nbtTagCompound.setInteger("maidArmorVisible", maidArmorVisible);
-		if(textureModelNameForClient==null) textureModelNameForClient = "default_Orign";
-		par1nbtTagCompound.setString("textureModelNameForClient", textureModelNameForClient);
-		if(textureArmorNameForClient==null) textureArmorNameForClient = "default_Orign";
-		par1nbtTagCompound.setString("textureArmorNameForClient", textureArmorNameForClient);
+		if(modelNameMain==null) modelNameMain = "default_Orign";
+		par1nbtTagCompound.setString("textureModelNameForClient", modelNameMain);
+		if(modelNameArmor==null) modelNameArmor = "default_Orign";
+		par1nbtTagCompound.setString("textureArmorNameForClient", modelNameArmor);
 		par1nbtTagCompound.setBoolean("isMadeTextureNameFlag", isMadeTextureNameFlag);
 
 		NBTTagCompound prevtargettag = new NBTTagCompound();
@@ -1562,13 +1437,13 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 				maidEntityModeList.get(li).readEntityFromNBT(par1nbtTagCompound);
 			}
 		}
-		textureModelNameForClient = par1nbtTagCompound.getString("textureModelNameForClient");
-		if(textureModelNameForClient.equals("")){
-			textureModelNameForClient = "default_Orign";
+		modelNameMain = par1nbtTagCompound.getString("textureModelNameForClient");
+		if(modelNameMain.equals("")){
+			modelNameMain = "default_Orign";
 		}
-		textureArmorNameForClient = par1nbtTagCompound.getString("textureArmorNameForClient");
-		if(textureArmorNameForClient.equals("")){
-			textureArmorNameForClient = "default_Orign";
+		modelNameArmor = par1nbtTagCompound.getString("textureArmorNameForClient");
+		if(modelNameArmor.equals("")){
+			modelNameArmor = "default_Orign";
 		}
 
 		isMadeTextureNameFlag = par1nbtTagCompound.getBoolean("isMadeTextureNameFlag");
@@ -1577,16 +1452,13 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 		setExpBooster(par1nbtTagCompound.getInteger("LMMNX_EXP_BOOST"));
 		dataWatcher.updateObject(Statics.dataWatch_MaidExpValue, maidExperience);
 
-		LittleMaidReengaged.Debug("READ %s %s", textureModelNameForClient, textureArmorNameForClient);
-		if(!worldObj.isRemote) recallRenderParamTextureName(textureModelNameForClient, textureArmorNameForClient);
+		LittleMaidReengaged.Debug("READ %s %s", modelNameMain, modelNameArmor);
 
 		onInventoryChanged();
 		isWildSaved = par1nbtTagCompound.getBoolean("isWildSaved");
 		setSwimming(par1nbtTagCompound.getBoolean("isSwimming"));
-		syncSwimming();
 		setMaidArmorVisible(par1nbtTagCompound.hasKey("maidArmorVisible")?par1nbtTagCompound.getInteger("maidArmorVisible"):15);
 		syncMaidArmorVisible();
-		syncFreedom();
 
 		getExperienceHandler().readEntityFromNBT(par1nbtTagCompound);
 	}
@@ -2065,8 +1937,8 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 					continue;
 				}
 
-				String sname = LMMNX_SoundRegistry.getSoundRegisteredName(enumsound, textureModelNameForClient, getColor());
-				LittleMaidReengaged.Debug("STC %s,%d/FRS %s", textureModelNameForClient, getColor(), sname);
+				String sname = LMMNX_SoundRegistry.getSoundRegisteredName(enumsound, modelNameMain, getColor());
+				LittleMaidReengaged.Debug("STC %s,%d/FRS %s", modelNameMain, getColor(), sname);
 
 				if (sname == null || sname.isEmpty()) {
 					playingSound.remove(enumsound);
@@ -2502,7 +2374,6 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 
 	@Override
 	public void setLocationAndAngles(double x, double y, double z, float yaw, float pitch){
-		if(worldObj.isRemote) requestRenderParamRecall();
 		super.setLocationAndAngles(x, y, z, yaw, pitch);
 	}
 
@@ -2527,9 +2398,8 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 			// サーバーの方が先に起動しているので強制読み込みの手順が必要
 			if (--firstload == 0) {
 				if (worldObj.isRemote) {
-					NetworkSync.sendToEServer(this, new byte[] {Statics.LMN_Server_UpdateSlots, 0, 0, 0, 0});
-				} else {
-				}
+					syncNet(EnumPacketMode.SERVER_UPDATE_SLOTS, new byte[]{});
+				} 
 			}
 		}
 
@@ -2556,8 +2426,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 //			lupd |= updateTexturePack();
 			updateTexturePack();
 			if (lupd) {
-				requestRenderParamRecall();
-//				setTextureNames();
+				setTextureNames();
 			}
 			setMaidMode(dataWatcher.getWatchableObjectShort(dataWatch_Mode));
 			setDominantArm(dataWatcher.getWatchableObjectByte(dataWatch_DominamtArm));
@@ -3364,7 +3233,6 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 //								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								if(!worldObj.isRemote){
 									setFreedom(!isFreedom());
-									syncFreedom();
 									worldObj.setEntityState(this, isFreedom() ? (byte)12 : (byte)13);
 								}
 								return true;
@@ -3450,7 +3318,6 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 							}else if(itemstack1.getItem() == Items.fish){
 								if(!worldObj.isRemote){
 									setSwimming(!swimmingEnabled);
-									syncSwimming();
 									par1EntityPlayer.addChatComponentMessage(new ChatComponentText("Swimming mode was set to "+swimmingEnabled));
 								}
 								return true;
@@ -3462,10 +3329,8 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 					getNavigator().clearPathEntity();
 					isJumping = false;
 					if(!worldObj.isRemote){
-						syncSwimming();
 						syncMaidArmorVisible();
-						syncFreedom();
-						recallExpBoost();
+						syncExpBoost();
 					}
 					displayGUIMaidInventory(par1EntityPlayer);
 					return true;
@@ -3539,10 +3404,6 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 	public void setContract(boolean flag) {
 		super.setTamed(flag);
 		textureData.setContract(flag);
-		if (worldObj.isRemote&&flag) {
-			isNotColorExistsWild = false;
-		} else {
-		}
 	}
 
 	/**
@@ -3715,15 +3576,13 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 		}
 		if (!worldObj.isRemote) {
 			byte[] lba = new byte[] {
-				Statics.LMN_Client_SwingArm,
-				0, 0, 0, 0,
 				(byte)pArm,
 				0, 0, 0, 0,
 				0, 0, 0, 0
 			};
-			NetworkHelper.setIntToPacket(lba, 6, enumsound.index);
-			NetworkHelper.setIntToPacket(lba, 10, force?1:0);
-			NetworkSync.sendToAllEClient(this, lba);
+			NetworkHelper.setIntToPacket(lba, 1, enumsound.index);
+			NetworkHelper.setIntToPacket(lba, 5, force?1:0);
+			syncNet(EnumPacketMode.CLIENT_SWINGARM, lba);
 		}
 	}
 
@@ -3961,24 +3820,6 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 		return maidFreedom;
 	}
 
-	public void syncFreedom() {
-		byte[] b = new byte[]{
-			LMMNX_NetSync.LMMNX_Sync,
-			0, 0, 0, 0,
-			LMMNX_NetSync.LMMNX_Sync_UB_Freedom, (byte)(isFreedom()?1:0)
-		};
-		syncNet(b);
-	}
-
-	protected void requestChangeFreedom(boolean flag) {
-		byte[] b = new byte[]{
-			LMMNX_NetSync.LMMNX_Sync,
-			0, 0, 0, 0,
-			LMMNX_NetSync.LMMNX_Sync_UB_Freedom, (byte)(flag?1:0)
-		};
-		syncNet(b);
-	}
-
 	public void onWarp() {
 		getActiveModeClass().onWarp();
 	}
@@ -4117,7 +3958,6 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 		// TODO 移行準備:テクスチャ設定
 		if(!checkedTextureUpdate){
 			checkedTextureUpdate = true;
-			requestRenderParamRecall();
 		}
 		return false;
 	}
@@ -4136,8 +3976,6 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 
 	public boolean updateMaidColor() {
 		// 同一性のチェック
-		if(!isContract()&&isNotColorExistsWild) return false;
-
 		int lc = getColor();
 		if (textureData.getColor() != lc) {
 			textureData.setColor(lc);
@@ -4203,6 +4041,7 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 		maidOverDriveTime.updateClient((li & dataWatch_Flags_OverDrive) > 0);
 		workingCount.updateClient((li & dataWatch_Flags_Working) > 0);
 		registerTick.updateClient((li & dataWatch_Flags_Register) > 0);
+		swimmingEnabled = (li & Statics.dataWatch_Flags_Swimming) > 0;
 	}
 
 	/**
@@ -4525,4 +4364,5 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 	{
 		super.setSize(par1, par2);
 	}
+
 }

@@ -151,7 +151,7 @@ public class GuiTextureSlot extends GuiSlot {
 			entity.textureData.textureBox[0] = lbox;
 			entity.textureData.textureBox[1] = blankBox;
 		}
-		MMM_TextureManager.instance.checkTextureBoxServer(lbox);
+//		MMM_TextureManager.instance.checkTextureBoxServer(lbox);
 		GL11.glDisable(GL11.GL_BLEND);
 		
 		owner.drawString(this.owner.mc.fontRendererObj, lbox.textureName,

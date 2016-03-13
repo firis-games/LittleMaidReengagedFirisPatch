@@ -1,10 +1,14 @@
 package mmmlibx.lib;
 
+import javax.xml.validation.TypeInfoProvider;
+
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.util.CommonHelper;
+import net.blacklab.lmr.util.EnumArmor;
+import net.blacklab.lmr.util.EnumTextureType;
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,7 +29,53 @@ public class MMM_TextureData  {
 	
 	/**
 	 * 使用されるテクスチャリソースのコンテナ
+	 * 
 	 */
+	public static class TextureCompound {
+		private ResourceLocation[][] textures;
+		
+		public TextureCompound() {
+			textures = new ResourceLocation[][] {
+				/**
+				 * 基本、発光
+				 */
+				{ null, null },
+				/**
+				 * アーマー内：頭、胴、腰、足
+				 */
+				{ null, null, null, null },
+				/**
+				 * アーマー外：頭、胴、腰、足
+				 */
+				{ null, null, null, null },
+				/**
+				 * アーマー内発光：頭、胴、腰、足
+				 */
+				{ null, null, null, null },
+				/**
+				 * アーマー外発光：頭、胴、腰、足
+				 */
+				{ null, null, null, null }
+			};
+		}
+		
+		public ResourceLocation getMainTexture(EnumTextureType type) {
+			return textures[0][type.index];
+		}
+		
+		public void setMainTexture(EnumTextureType type, ResourceLocation resourceLocation) {
+			textures[0][type.index] = resourceLocation;
+		}
+		
+		public ResourceLocation getArmorTexture(EnumTextureType type, EnumArmor parts) {
+			return textures[type.index*2 + parts.layerIndex][parts.textureIndex];
+		}
+		
+		public void setArmorTexture(EnumTextureType type, EnumArmor parts, ResourceLocation pLocation) {
+			textures[type.index*2 + parts.layerIndex][parts.textureIndex] = pLocation;
+		}
+	}
+
 	public ResourceLocation textures[][];
 	/**
 	 * 選択色
@@ -136,7 +186,8 @@ public class MMM_TextureData  {
 				}
 			}
 		} else {
-			textureBox[0] = MMM_TextureManager.instance.getTextureBoxServerIndex(textureIndex[0]);
+//			textureBox[0] = MMM_TextureManager.instance.getTextureBoxServerIndex(textureIndex[0]);
+			throw new IllegalStateException("Texture setting error. Maybe ModelBoxServer is set?");
 		}
 		if (textureBox[1] instanceof MMM_TextureBox && owner != null) {
 			lbox = (MMM_TextureBox)textureBox[1];
@@ -153,7 +204,8 @@ public class MMM_TextureData  {
 			textureModel[1] = lbox.models[1];
 			textureModel[2] = lbox.models[2];
 		} else {
-			textureBox[0] = MMM_TextureManager.instance.getTextureBoxServerIndex(textureIndex[0]);
+//			textureBox[0] = MMM_TextureManager.instance.getTextureBoxServerIndex(textureIndex[0]);
+			throw new IllegalStateException("Texture setting error. Maybe ModelBoxServer is set?");
 		}
 		return lf;
 	}

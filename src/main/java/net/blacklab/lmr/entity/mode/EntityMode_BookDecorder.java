@@ -80,7 +80,7 @@ public class EntityMode_BookDecorder extends EntityModeBase {
 				}
 				if (pentityplayer.worldObj.isRemote) {
 					if (lflag) {
-						MMM_TextureManager.instance.postSetTexturePack(owner, lcolor, lboxs);
+//						MMM_TextureManager.instance.postSetTexturePack(owner, lcolor, lboxs);
 					}
 				}
 				return true;

@@ -10,7 +10,8 @@ import mmmlibx.lib.ITextureEntity;
 import mmmlibx.lib.MMM_TextureBox;
 import mmmlibx.lib.MMM_TextureManager;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.network.NetworkSync;
+import net.blacklab.lmr.network.EnumPacketMode;
+import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.Statics;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -63,6 +64,7 @@ public class GuiTextureSelect extends GuiScreen {
 				target.getTextureBox()[1] = selectPanel.getSelectedBox(true);
 			}
 			target.getTextureData().setTextureNames();
+/*
 			if (toServer) {
 				MMM_TextureManager.instance.postSetTexturePack(target, selectColor, target.getTextureBox());
 			} else {
@@ -71,25 +73,20 @@ public class GuiTextureSelect extends GuiScreen {
 				lboxs[1] = (MMM_TextureBox)target.getTextureBox()[1];
 				target.setTexturePackName(lboxs);
 			}
+*/
 			System.out.println(String.format("select: %d(%d/%s), %d(%d/%s)",
 					selectPanel.texsel[0], target.getTextureIndex()[0], target.getTextureBox()[0].textureName,
 					selectPanel.texsel[1], target.getTextureIndex()[1], target.getTextureBox()[1].textureName));
 			mc.displayGuiScreen(owner);
 			
 			if (toServer) {
-				MMM_TextureManager.instance.postSetTexturePack(target, selectColor, target.getTextureBox());
+//				MMM_TextureManager.instance.postSetTexturePack(target, selectColor, target.getTextureBox());
 				if (selectColor != selectPanel.color) {
 					// 色情報の設定
 //					theMaid.maidColor = selectPanel.color | 0x010000 | (selectColor << 8);
 					// サーバーへ染料の使用を通知
-					byte ldata[] = new byte[2];
-					ldata[0] = Statics.LMN_Server_DecDyePowder;
-					ldata[1] = (byte)selectColor;
-					NetworkSync.sendToServer(ldata);
+					LMRNetwork.sendToServer(EnumPacketMode.SERVER_DECREMENT_DYE, new byte[]{(byte) selectColor});
 				}
-			}
-			if(target instanceof EntityLittleMaid){
-				((EntityLittleMaid)target).requestChangeRenderParamTextureName();
 			}
 			break;
 		}

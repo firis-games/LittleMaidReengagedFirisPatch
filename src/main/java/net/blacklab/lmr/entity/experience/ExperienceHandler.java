@@ -7,7 +7,7 @@ import net.blacklab.lmr.api.item.LMMNX_API_Item;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.mode.EntityMode_DeathWait;
-import net.blacklab.lmr.network.LMMNX_NetSync;
+import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -176,12 +176,7 @@ public class ExperienceHandler {
 		if (isWaitRevive && deathCount > 0) {
 			return true;
 		} else if (!theMaid.worldObj.isRemote && theMaid.getHealth() <= 0f) {
-			byte b[] = new byte[] {
-					LMMNX_NetSync.LMMNX_Sync,
-					0, 0, 0, 0,
-					LMMNX_NetSync.LMMNX_Sync_UB_ManualOnDeath, 0
-			};
-			theMaid.syncNet(b);
+			theMaid.syncNet(EnumPacketMode.CLIENT_ONDEATH, new byte[]{});
 		}
 		return false;
 	}

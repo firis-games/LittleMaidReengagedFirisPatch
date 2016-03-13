@@ -4,28 +4,18 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import mmmlibx.lib.multiModel.MMMLoader.MMMTransformer;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.network.LMRMessage;
-import net.blacklab.lmr.network.LMRNetwork;
-import net.blacklab.lmr.network.NetworkSync;
 import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
-import net.blacklab.lmr.util.helper.NetworkHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(	modid	= "MMMLibX",
 		name	= "MMMLibX",
@@ -136,40 +126,5 @@ public class MMMLib {
 			e.printStackTrace();
 		}
 		
-	}
-
-	public static void serverCustomPayload(EntityPlayer playerEntity, LMRMessage var2)
-	{
-		// サーバ側の動作
-		byte lmode = var2.data[0];
-		int leid = 0;
-		Entity lentity = null;
-		if ((lmode & 0x80) != 0) {
-			leid = NetworkHelper.getIntFromPacket(var2.data, 1);
-			lentity = CommonHelper.getEntity(var2.data, 1, playerEntity.worldObj);
-			if (lentity == null) return;
-		}
-		Debug("MMM|Upd Srv Call[%2x:%d].", lmode, leid);
-//		byte[] ldata;
-		
-		switch (lmode) {
-		case NetworkSync.Server_SetTexturePackIndex:
-			// サーバー側のEntityに対してテクスチャインデックスを設定する
-			MMM_TextureManager.instance.reciveFromClientSetTexturePackIndex(lentity, var2.data);
-			break;
-		case NetworkSync.Server_GetTextureIndex:
-			// サーバー側での管理番号の問い合わせに対して応答する
-			MMM_TextureManager.instance.reciveFromClientGetTexturePackIndex(playerEntity, var2.data);
-			break;
-		case NetworkSync.Server_GetTexturePackName:
-			// 管理番号に対応するテクスチャパック名を返す。
-			MMM_TextureManager.instance.reciveFromClientGetTexturePackName(playerEntity, var2.data);
-			break;
-		}
-	}
-
-	public static void sendToClient(EntityPlayer player, byte[] ldata)
-	{
-		LMRNetwork.sendPacketToPlayer(1, player, ldata);
 	}
 }

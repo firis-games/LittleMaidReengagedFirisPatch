@@ -1,8 +1,6 @@
-package net.blacklab.lmr.client.renderer;
+package net.blacklab.lmr.client.renderer.entity;
 
 import org.lwjgl.opengl.GL11;
-
-import com.sun.security.ntlm.Client;
 
 import mmmlibx.lib.ITextureEntity;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
@@ -92,7 +90,6 @@ public class RenderLittleMaid extends RenderModelMulti {
 			//初回のみ指定値設定
 			if(renderCount==0){
 				this.setModelValues(lmm, lmm.maidCaps);
-				lmm.requestRenderParamRecall();
 			}
 
 			//LMM管理の装備スロットとEntityLiving標準の装備スロットがずれているので注意

@@ -2,16 +2,13 @@ package net.blacklab.lmr.util;
 
 import java.util.List;
 
-import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class CommonHelper {
 
@@ -41,13 +38,6 @@ public class CommonHelper {
 	public static String getPlayerName(EntityPlayer player)
 	{
 		return player.getGameProfile().getName();
-	}
-
-	/**
-	 * Entityを返す。
-	 */
-	public static Entity getEntity(byte[] pData, int pIndex, World pWorld) {
-		return pWorld.getEntityByID(NetworkHelper.getIntFromPacket(pData, pIndex));
 	}
 
 	/**

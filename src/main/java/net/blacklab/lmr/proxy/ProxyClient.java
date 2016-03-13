@@ -1,31 +1,20 @@
 package net.blacklab.lmr.proxy;
 
-import static net.blacklab.lmr.util.Statics.LMN_Client_PlaySound;
-import static net.blacklab.lmr.util.Statics.LMN_Client_SetIFFValue;
-import static net.blacklab.lmr.util.Statics.LMN_Client_SwingArm;
-
 import mmmlibx.lib.MMM_EntityDummy;
 import mmmlibx.lib.MMM_RenderDummy;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
-import net.blacklab.lmr.client.renderer.RenderLittleMaid;
 import net.blacklab.lmr.client.renderer.entity.LMMNX_RenderEntitySelect;
+import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.client.sound.LMMNX_SoundLoader;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.network.LMMNX_NetSync;
-import net.blacklab.lmr.network.LMRMessage;
-import net.blacklab.lmr.network.NetworkSync;
 import net.blacklab.lmr.util.CommonHelper;
-import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.IFF;
-import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityPickupFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.MCPDummyContainer;
 
 /**
  * クライアント専用処理。
@@ -76,51 +65,6 @@ public class ProxyClient extends ProxyCommon
 	}
 
 	
-// Network
-
-	@SuppressWarnings("null")
-	public void clientCustomPayload(LMRMessage pPayload) {
-		// クライアント側の特殊パケット受信動作
-		byte lmode = pPayload.data[0];
-		int leid = 0;
-		EntityLittleMaid lemaid = null;
-		if ((lmode & 0x80) != 0) {
-			leid = NetworkHelper.getIntFromPacket(pPayload.data, 1);
-			lemaid =NetworkSync.getLittleMaid(pPayload.data, 1, CommonHelper.mc.theWorld);
-			if (lemaid == null) return;
-		}
-		LittleMaidReengaged.Debug(String.format("LMM|Upd Clt Call[%2x:%d].", lmode, leid));
-		
-		switch (lmode) {
-		case LMN_Client_SwingArm : 
-			// 腕振り
-			byte larm = pPayload.data[5];
-			EnumSound lsound = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(pPayload.data, 6));
-			lemaid.setSwinging(larm, lsound, NetworkHelper.getIntFromPacket(pPayload.data, 10)==1);
-//			mod_LMM_littleMaidMob.Debug(String.format("SwingSound:%s", lsound.name()));
-			break;
-			
-		case LMN_Client_SetIFFValue :
-			// IFFの設定値を受信
-			int lval = pPayload.data[1];
-			int lindex = NetworkHelper.getIntFromPacket(pPayload.data, 2);
-			String lname = (String)IFF.DefaultIFF.keySet().toArray()[lindex];
-			LittleMaidReengaged.Debug("setIFF-CL %s(%d)=%d", lname, lindex, lval);
-			IFF.setIFFValue(null, lname, lval);
-			break;
-			
-		case LMN_Client_PlaySound : 
-			// 音声再生
-			EnumSound lsound9 = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(pPayload.data, 5));
-			LittleMaidReengaged.Debug(String.format("playSound:%s", lsound9.name()));
-			lemaid.playSound(lsound9, true);
-			break;
-		case LMMNX_NetSync.LMMNX_Sync:
-			LMMNX_NetSync.onPayLoad(lemaid, pPayload.data);
-			break;
-		}
-	}
-
 	public EntityPlayer getClientPlayer()
 	{
 		return Minecraft.getMinecraft().thePlayer;
