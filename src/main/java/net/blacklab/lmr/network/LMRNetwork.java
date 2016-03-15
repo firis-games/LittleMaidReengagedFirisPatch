@@ -204,6 +204,12 @@ public class LMRNetwork
 		case SERVER_REQUEST_BOOST :
 			lemaid.requestExpBoost();
 			break;
+		case SERVER_CHAMGE_FREEDOM :
+			lemaid.setFreedom(pPayload.data[5]==1);
+			break;
+		case SERVER_CHANGE_SWIMMING :
+			lemaid.setSwimming(pPayload.data[5]==1);
+			break;
 		default:
 			break;
 		}
@@ -216,7 +222,7 @@ public class LMRNetwork
 		EntityLittleMaid lemaid = null;
 		if (lmode.withEntity) {
 			leid = NetworkHelper.getIntFromPacket(pPayload.data, 1);
-			lemaid =LMRNetwork.getLittleMaid(pPayload.data, 1, CommonHelper.mc.theWorld);
+			lemaid = LMRNetwork.getLittleMaid(pPayload.data, 1, CommonHelper.mc.theWorld);
 			if (lemaid == null) return;
 			syncPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, 5, pPayload.data.length));
 		}

@@ -6,7 +6,8 @@ public enum EnumPacketMode {
 	 * 0x0*	:	Server-side general configures
 	 * 0x1*	:	Server-side maid operating
 	 * 0x2*	:	Client-side maid configures
-	 * 0x3*	:	Server-side operating without maid
+	 * 0x3*	:	Client-side maid GUI changes
+	 * 0x4*	:	Server-side operating without maid
 	 */
 	/** Notify server of changing IFF **/
 	SERVER_CHANGE_IFF		(0x00, false),
@@ -30,14 +31,18 @@ public enum EnumPacketMode {
 	CLIENT_SWINGARM			(0x21,  true),
 	/** Make all clients play sound **/
 	CLIENT_PLAY_SOUND		(0x22,  true),
-
 	/** Synchronize model name **/
 	SYNC_MODEL				(0x23,  true),
 	SYNC_ARMORFLAG			(0x24,  true),
 	SYNC_EXPBOOST			(0x25,  true),
 
+	/** Change Freedom Mode from GUI **/
+	SERVER_CHAMGE_FREEDOM	(0x30,  true),
+	/** Change Swimming Mode from GUI **/
+	SERVER_CHANGE_SWIMMING	(0x31,  true),
+
 	/** Notify server of using dye. Decrements dye powder. **/
-	SERVER_DECREMENT_DYE	(0x30, false);
+	SERVER_DECREMENT_DYE	(0x40, false);
 	
 	public byte modeByte;
 	public boolean withEntity;

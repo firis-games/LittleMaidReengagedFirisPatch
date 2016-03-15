@@ -628,7 +628,11 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 
 	public void setSwimming(boolean flag){
 		swimmingEnabled = flag;
-		setMaidFlags(flag, Statics.dataWatch_Flags_Swimming);
+		if (!worldObj.isRemote) {
+			setMaidFlags(flag, Statics.dataWatch_Flags_Swimming);
+		} else {
+			syncNet(EnumPacketMode.SERVER_CHANGE_SWIMMING, new byte[]{(byte) (flag?1:0)});
+		}
 	}
 
 	public boolean isInWater() {
@@ -3792,23 +3796,27 @@ public class EntityLittleMaid extends EntityTameable implements ITextureEntity {
 	public void setFreedom(boolean pFlag) {
 		// AI関連のリセットもここで。
 		maidFreedom = pFlag;
-		aiRestrictRain.setEnable(pFlag);
-		aiFreeRain.setEnable(pFlag);
-		aiWander.setEnable(pFlag);
-//		aiJumpTo.setEnable(!pFlag);
-		aiAvoidPlayer.setEnable(!pFlag);
-		aiFollow.setEnable(!pFlag);
-		aiTracer.setEnable(isTracer()&&pFlag);
-//		setAIMoveSpeed(pFlag ? moveSpeed_Nomal : moveSpeed_Max);
-//		setMoveForward(0.0F);
-		setPlayingRole(0);
-		if (maidFreedom && isContract()) {
-			setTracer(isTracer());
-			setHomePosAndDistance(getPosition(), (int) getMaximumHomeDistance());
+		if (!worldObj.isRemote) {
+			aiRestrictRain.setEnable(pFlag);
+			aiFreeRain.setEnable(pFlag);
+			aiWander.setEnable(pFlag);
+//			aiJumpTo.setEnable(!pFlag);
+			aiAvoidPlayer.setEnable(!pFlag);
+			aiFollow.setEnable(!pFlag);
+			aiTracer.setEnable(isTracer()&&pFlag);
+//			setAIMoveSpeed(pFlag ? moveSpeed_Nomal : moveSpeed_Max);
+//			setMoveForward(0.0F);
+			setPlayingRole(0);
+			if (maidFreedom && isContract()) {
+				setTracer(isTracer());
+				setHomePosAndDistance(getPosition(), (int) getMaximumHomeDistance());
+			} else {
+				detachHome();
+			}
+			setMaidFlags(maidFreedom, dataWatch_Flags_Freedom);
 		} else {
-			detachHome();
+			syncNet(EnumPacketMode.SERVER_CHAMGE_FREEDOM, new byte[]{(byte) (pFlag?1:0)});
 		}
-		setMaidFlags(maidFreedom, dataWatch_Flags_Freedom);
 	}
 
 	@Override
