@@ -11,7 +11,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class MMM_TextureBox extends MMM_TextureBoxBase {
+public class ModelBox extends ModelBoxBase {
 
 	/**
 	 * テクスチャパックの名称、モデル指定詞の前までの文字列。
@@ -44,7 +44,7 @@ public class MMM_TextureBox extends MMM_TextureBoxBase {
 
 
 
-	public MMM_TextureBox() {
+	public ModelBox() {
 		textures = new HashMap<Integer, ResourceLocation>();
 		armors = new TreeMap<String, Map<Integer, ResourceLocation>>();
 		modelHeight = modelWidth = modelYOffset = modelMountedYOffset = 0.0F;
@@ -52,7 +52,7 @@ public class MMM_TextureBox extends MMM_TextureBoxBase {
 		wildColor = -1;
 	}
 
-	public MMM_TextureBox(String pTextureName, String[] pSearch) {
+	public ModelBox(String pTextureName, String[] pSearch) {
 		this();
 		textureName = pTextureName;
 		fileName = pTextureName;
@@ -81,10 +81,10 @@ public class MMM_TextureBox extends MMM_TextureBoxBase {
 	public ResourceLocation getTextureName(int pIndex) {
 		if (textures.containsKey(pIndex)) {
 			return textures.get(pIndex);
-		} else if (pIndex >= MMM_TextureManager.tx_eyecontract && pIndex < (16 + MMM_TextureManager.tx_eyecontract)) {
-			return getTextureName(MMM_TextureManager.tx_oldeye);
-		} else if (pIndex >= MMM_TextureManager.tx_eyewild && pIndex < (16 + MMM_TextureManager.tx_eyewild)) {
-			return getTextureName(MMM_TextureManager.tx_oldeye);
+		} else if (pIndex >= ModelManager.tx_eyecontract && pIndex < (16 + ModelManager.tx_eyecontract)) {
+			return getTextureName(ModelManager.tx_oldeye);
+		} else if (pIndex >= ModelManager.tx_eyewild && pIndex < (16 + ModelManager.tx_eyewild)) {
+			return getTextureName(ModelManager.tx_oldeye);
 		}
 		return null;
 	}
@@ -105,11 +105,11 @@ public class MMM_TextureBox extends MMM_TextureBoxBase {
 		// 不具合修正
 		// 他MODの影響と思われるが、インデックスがarmorFilenamePrefixのサイズをオーバーしクラッシュすることがあるので丸める
 		// http://forum.minecraftuser.jp/viewtopic.php?f=13&t=23347&start=160#p211172
-		if(renderIndex >= MMM_TextureManager.armorFilenamePrefix.length && MMM_TextureManager.armorFilenamePrefix.length > 0)
+		if(renderIndex >= ModelManager.armorFilenamePrefix.length && ModelManager.armorFilenamePrefix.length > 0)
 		{
-			renderIndex = renderIndex % MMM_TextureManager.armorFilenamePrefix.length;
+			renderIndex = renderIndex % ModelManager.armorFilenamePrefix.length;
 		}
-		return getArmorTextureName(pIndex, MMM_TextureManager.armorFilenamePrefix[renderIndex], l);
+		return getArmorTextureName(pIndex, ModelManager.armorFilenamePrefix[renderIndex], l);
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ResourceLocation getArmorTextureName(int pIndex, String pArmorPrefix, int pDamage) {
@@ -157,7 +157,7 @@ public class MMM_TextureBox extends MMM_TextureBoxBase {
 		if (wildColor == -1) {
 			int li = 0;
 			for (Integer i : textures.keySet()) {
-				if (i >= MMM_TextureManager.tx_wild && i <= (MMM_TextureManager.tx_wild + 0x0f)) {
+				if (i >= ModelManager.tx_wild && i <= (ModelManager.tx_wild + 0x0f)) {
 					li |= 1 << (i & 0x0f);
 				}
 			}
@@ -171,7 +171,7 @@ public class MMM_TextureBox extends MMM_TextureBoxBase {
 	}
 
 	public boolean hasColor(int pIndex, boolean pContract) {
-		return textures.containsKey(pIndex + (pContract ? 0 : MMM_TextureManager.tx_wild));
+		return textures.containsKey(pIndex + (pContract ? 0 : ModelManager.tx_wild));
 	}
 
 	public boolean hasArmor() {
@@ -198,8 +198,8 @@ public class MMM_TextureBox extends MMM_TextureBoxBase {
 		return models != null ? models[0].getMountedYOffset(pEntityCaps) : modelMountedYOffset;
 	}
 
-	public MMM_TextureBox duplicate() {
-		MMM_TextureBox lbox = new MMM_TextureBox();
+	public ModelBox duplicate() {
+		ModelBox lbox = new ModelBox();
 		lbox.textureName = textureName;
 		lbox.packegeName = packegeName;
 		lbox.fileName = fileName;
@@ -220,12 +220,12 @@ public class MMM_TextureBox extends MMM_TextureBoxBase {
 		}
 		boolean lflag = false;
 		switch ((pIndex & 0xfff0)) {
-		case MMM_TextureManager.tx_armor1:
-		case MMM_TextureManager.tx_armor2:
-		case MMM_TextureManager.tx_armor1light:
-		case MMM_TextureManager.tx_armor2light:
-		case MMM_TextureManager.tx_oldarmor1:
-		case MMM_TextureManager.tx_oldarmor2:
+		case ModelManager.tx_armor1:
+		case ModelManager.tx_armor2:
+		case ModelManager.tx_armor1light:
+		case ModelManager.tx_armor2light:
+		case ModelManager.tx_oldarmor1:
+		case ModelManager.tx_oldarmor2:
 			ls = pLocation.substring(pLocation.lastIndexOf("/") + 1, pLocation.lastIndexOf("_"));
 			Map<Integer, ResourceLocation> lmap;
 			if (armors.containsKey(ls)) {

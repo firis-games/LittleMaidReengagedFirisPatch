@@ -6,7 +6,7 @@ import java.util.Random;
 
 import mmmlibx.lib.multiModel.model.mc162.*;
 
-public abstract class MMM_TextureBoxBase {
+public abstract class ModelBoxBase {
 
 	public String textureName;
 	protected int contractColor;

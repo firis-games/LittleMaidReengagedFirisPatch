@@ -1,6 +1,6 @@
 package mmmlibx.lib.multiModel.model.mc162;
 
-import mmmlibx.lib.ITextureEntity;
+import mmmlibx.lib.IModelMMMEntity;
 import mmmlibx.lib.MMMLib;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -54,11 +54,11 @@ public class RenderModelMulti extends RenderLiving {
 
 	public void setModelValues(EntityLivingBase par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
-		if (par1EntityLiving instanceof ITextureEntity) {
-			ITextureEntity ltentity = (ITextureEntity)par1EntityLiving;
-			modelMain.model = ltentity.getTextureData().textureModel[0];
-			modelFATT.modelInner = ltentity.getTextureData().textureModel[1];
-			modelFATT.modelOuter = ltentity.getTextureData().textureModel[2];
+		if (par1EntityLiving instanceof IModelMMMEntity) {
+			IModelMMMEntity ltentity = (IModelMMMEntity)par1EntityLiving;
+			modelMain.model = ltentity.getModelConfigCompound().textureModel[0];
+			modelFATT.modelInner = ltentity.getModelConfigCompound().textureModel[1];
+			modelFATT.modelOuter = ltentity.getModelConfigCompound().textureModel[2];
 //			modelMain.model = ((TextureBox)ltentity.getTextureBox()[0]).models[0];
 			modelMain.textures = ltentity.getTextures(0);
 //			modelFATT.modelInner = ((TextureBox)ltentity.getTextureBox()[1]).models[1];

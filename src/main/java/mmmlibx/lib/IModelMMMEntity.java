@@ -5,15 +5,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * MMM_Texture仕様のテクスチャパック設定に対応しているEntityへ継承させる。
  */
-public interface ITextureEntity {
-
-	/**
-	 * Server用。
-	 * TextureManagerがサーバー側のEntityへテクスチャ変更の通知を行う。
-	 * @param pIndex
-	 * 設定されるテクスチャパックのインデックス（TextureBoxServer）
-	 */
-	public void setTexturePackIndex(int pColor, int[] pIndex);
+public interface IModelMMMEntity {
 
 	/**
 	 * Client用。
@@ -21,7 +13,7 @@ public interface ITextureEntity {
 	 * @param pPackName
 	 * 設定されるテクスチャパックの名称（TextureBoxClient）
 	 */
-	public void setTexturePackName(MMM_TextureBox[] pTextureBox);
+	public void setTexturePackName(ModelBox[] pTextureBox);
 
 	/**
 	 * 現在のEntityに色を設定する。
@@ -38,11 +30,8 @@ public interface ITextureEntity {
 	public void setContract(boolean pContract);
 	public boolean isContract();
 
-	public void setTextureBox(MMM_TextureBoxBase[] pTextureBox);
-	public MMM_TextureBoxBase[] getTextureBox();
-
-	public void setTextureIndex(int[] pTextureIndex);
-	public int[] getTextureIndex();
+	public void setTextureBox(ModelBoxBase[] pTextureBox);
+	public ModelBoxBase[] getTextureBox();
 
 	public void setTextures(int pIndex, ResourceLocation[] pNames);
 	public ResourceLocation[] getTextures(int pIndex);
@@ -51,7 +40,7 @@ public interface ITextureEntity {
 	 * 仕様変更により、これ以外は必要無くなる予定。
 	 * @return
 	 */
-	public MMM_TextureData getTextureData();
+	public ModelConfigCompound getModelConfigCompound();
 
 
 }

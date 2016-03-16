@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-import mmmlibx.lib.MMM_TextureManager;
+import mmmlibx.lib.ModelManager;
 import net.blacklab.lib.config.ConfigList;
 import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
@@ -54,7 +54,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
-	public static final String VERSION = "6.0.7";
+	public static final String VERSION = "6.0.8";
 	public static final String ACCEPTED_MCVERSION = "1.8.9";
 	public static final int VERSION_CODE = 1;
 

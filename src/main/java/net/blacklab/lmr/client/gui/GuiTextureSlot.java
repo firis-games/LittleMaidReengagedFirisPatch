@@ -7,9 +7,9 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import mmmlibx.lib.MMM_TextureBox;
-import mmmlibx.lib.MMM_TextureBoxBase;
-import mmmlibx.lib.MMM_TextureManager;
+import mmmlibx.lib.ModelBox;
+import mmmlibx.lib.ModelBoxBase;
+import mmmlibx.lib.ModelManager;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.util.helper.RendererHelper;
@@ -27,8 +27,8 @@ public class GuiTextureSlot extends GuiSlot {
 	public GuiTextureSelect owner;
 	public int selected;
 	public EntityLittleMaidForTexSelect entity;
-	public List<MMM_TextureBox> indexTexture;
-	public List<MMM_TextureBox> indexArmor;
+	public List<ModelBox> indexTexture;
+	public List<ModelBox> indexArmor;
 	public boolean mode;
 	public int texsel[] = new int[2];
 	public int color;
@@ -40,7 +40,7 @@ public class GuiTextureSlot extends GuiSlot {
 			new ItemStack(Items.leather_helmet)
 	};
 	protected boolean isContract;
-	protected static MMM_TextureBox blankBox;
+	protected static ModelBox blankBox;
 
 
 	public GuiTextureSlot(GuiTextureSelect pOwner) {
@@ -49,18 +49,18 @@ public class GuiTextureSlot extends GuiSlot {
 		entity = new EntityLittleMaidForTexSelect(owner.mc.theWorld);
 		color = owner.target.getColor();
 		selectColor = -1;
-		blankBox = new MMM_TextureBox();
+		blankBox = new ModelBox();
 		blankBox.models = new ModelMultiBase[] {null, null, null};
 		
 		texsel[0] = 0;//-1;
 		texsel[1] = 0;//-1;
-		indexTexture = new ArrayList<MMM_TextureBox>();
-		indexArmor = new ArrayList<MMM_TextureBox>();
+		indexTexture = new ArrayList<ModelBox>();
+		indexArmor = new ArrayList<ModelBox>();
 		isContract = owner.target.isContract();
 		entity.setContract(isContract);
-		MMM_TextureBoxBase ltbox[] = owner.target.getTextureBox();
-		for (int li = 0; li < MMM_TextureManager.instance.getTextureCount(); li++) {
-			MMM_TextureBox lbox = MMM_TextureManager.getTextureList().get(li);
+		ModelBoxBase ltbox[] = owner.target.getTextureBox();
+		for (int li = 0; li < ModelManager.instance.getTextureCount(); li++) {
+			ModelBox lbox = ModelManager.getTextureList().get(li);
 			if (isContract) {
 				if (lbox.getContractColorBits() > 0) {
 					indexTexture.add(lbox);
@@ -88,7 +88,7 @@ public class GuiTextureSlot extends GuiSlot {
 		return mode ? indexArmor.size() : indexTexture.size();
 	}
 	
-	public static MMM_TextureBox getBlankBox() {
+	public static ModelBox getBlankBox() {
 		return blankBox;
 	}
 
@@ -98,7 +98,7 @@ public class GuiTextureSlot extends GuiSlot {
 			selected = var1;
 			texsel[1] = var1;
 		} else {
-			MMM_TextureBox lbox = getSelectedBox(var1);
+			ModelBox lbox = getSelectedBox(var1);
 			if (lbox.hasColor(selectColor, isContract) && (owner.canSelectColor & (1 << selectColor)) > 0) {
 				selected = var1;
 				texsel[0] = var1;
@@ -141,7 +141,7 @@ public class GuiTextureSlot extends GuiSlot {
 			}
 		}
 		
-		MMM_TextureBox lbox;
+		ModelBox lbox;
 		if (mode) {
 			lbox = indexArmor.get(var1);
 			entity.textureData.textureBox[0] = blankBox;
@@ -164,9 +164,9 @@ public class GuiTextureSlot extends GuiSlot {
 		entity.modeArmor = mode;
 		if (mode) {
 			GL11.glTranslatef(0f, 0.25F, 0f);
-			for (int li = 0; li < MMM_TextureManager.armorFilenamePrefix.length; li++) {
+			for (int li = 0; li < ModelManager.armorFilenamePrefix.length; li++) {
 				GL11.glTranslatef(1F, 0, 0);
-				Map<Integer, ResourceLocation> lmap = lbox.armors.get(MMM_TextureManager.armorFilenamePrefix[li]);
+				Map<Integer, ResourceLocation> lmap = lbox.armors.get(ModelManager.armorFilenamePrefix[li]);
 				if (lmap != null) {
 //				ltxname = entity.getTextures(1);
 //				ltxname[0] = ltxname[1] = ltxname[2] = ltxname[3] =
@@ -203,15 +203,15 @@ public class GuiTextureSlot extends GuiSlot {
 		GL11.glPopMatrix();
 	}
 
-	public MMM_TextureBox getSelectedBox() {
+	public ModelBox getSelectedBox() {
 		return getSelectedBox(selected);
 	}
 
-	public MMM_TextureBox getSelectedBox(int pIndex) {
+	public ModelBox getSelectedBox(int pIndex) {
 		return mode ? indexArmor.get(pIndex) : indexTexture.get(pIndex);
 	}
 
-	public MMM_TextureBox getSelectedBox(boolean pMode) {
+	public ModelBox getSelectedBox(boolean pMode) {
 		return pMode ? indexArmor.get(texsel[1]) : indexTexture.get(texsel[0]);
 	}
 

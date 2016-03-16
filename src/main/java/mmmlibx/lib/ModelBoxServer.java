@@ -3,16 +3,16 @@ package mmmlibx.lib;
 import mmmlibx.lib.multiModel.model.mc162.*;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 
-public class MMM_TextureBoxServer extends MMM_TextureBoxBase {
+public class ModelBoxServer extends ModelBoxBase {
 
 	// ローカルでモデルを保持している時にリンク
-	protected MMM_TextureBox localBox;
+	protected ModelBox localBox;
 
 
-	public MMM_TextureBoxServer() {
+	public ModelBoxServer() {
 	}
 
-	public MMM_TextureBoxServer(MMM_TextureBox pBox) {
+	public ModelBoxServer(ModelBox pBox) {
 		localBox		= pBox;
 		contractColor	= pBox.getContractColorBits();
 		wildColor		= pBox.getWildColorBits();

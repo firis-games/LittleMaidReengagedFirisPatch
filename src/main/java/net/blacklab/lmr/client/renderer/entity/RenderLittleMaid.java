@@ -2,7 +2,7 @@ package net.blacklab.lmr.client.renderer.entity;
 
 import org.lwjgl.opengl.GL11;
 
-import mmmlibx.lib.ITextureEntity;
+import mmmlibx.lib.IModelMMMEntity;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelBaseDuo;
 import mmmlibx.lib.multiModel.model.mc162.RenderModelMulti;
@@ -109,10 +109,10 @@ public class RenderLittleMaid extends RenderModelMulti {
 		}
 
 		public void setModelValues(EntityLivingBase par1EntityLiving, IModelCaps pEntityCaps) {
-			if (par1EntityLiving instanceof ITextureEntity) {
-				ITextureEntity ltentity = (ITextureEntity)par1EntityLiving;
-				mmodel.modelInner = ltentity.getTextureData().textureModel[1];
-				mmodel.modelOuter = ltentity.getTextureData().textureModel[2];
+			if (par1EntityLiving instanceof IModelMMMEntity) {
+				IModelMMMEntity ltentity = (IModelMMMEntity)par1EntityLiving;
+				mmodel.modelInner = ltentity.getModelConfigCompound().textureModel[1];
+				mmodel.modelOuter = ltentity.getModelConfigCompound().textureModel[2];
 				mmodel.textureInner = ltentity.getTextures(1);
 				mmodel.textureOuter = ltentity.getTextures(2);
 				mmodel.textureInnerLight = ltentity.getTextures(3);

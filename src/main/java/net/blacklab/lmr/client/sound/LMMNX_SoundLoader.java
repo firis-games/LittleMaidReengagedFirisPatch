@@ -20,8 +20,8 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
-import mmmlibx.lib.MMM_TextureBox;
-import mmmlibx.lib.MMM_TextureManager;
+import mmmlibx.lib.ModelBox;
+import mmmlibx.lib.ModelManager;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.EnumSound;
@@ -62,7 +62,7 @@ public class LMMNX_SoundLoader {
 	public static void load() {
 		// 読み込みを開始するstaticメソッド．
 		// 処理用のメソッドは全てインスタンス内に．
-		for (MMM_TextureBox box: MMM_TextureManager.getTextureList()) {
+		for (ModelBox box: ModelManager.getTextureList()) {
 			String s = box.textureName;
 			if (s!=null && !s.isEmpty()) {
 				instance.loadedTPNames.add(s);

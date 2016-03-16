@@ -1,7 +1,5 @@
 package mmmlibx.lib;
 
-import javax.xml.validation.TypeInfoProvider;
-
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
@@ -16,12 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-
-
 /**
  * テクスチャ管理用の変数群をまとめたもの。
  */
-public class MMM_TextureData  {
+public class ModelConfigCompound  {
 //public class MMM_TextureData implements MMM_ITextureEntity {
 
 	public EntityLivingBase owner;
@@ -86,8 +82,7 @@ public class MMM_TextureData  {
 	 */
 	public boolean contract;
 	
-	public MMM_TextureBoxBase textureBox[];
-	public int textureIndex[];
+	public ModelBoxBase textureBox[];
 	public ModelMultiBase textureModel[];
 	
 	/**
@@ -102,7 +97,7 @@ public class MMM_TextureData  {
 	public int data_Value	= 21;
 
 
-	public MMM_TextureData(EntityLivingBase pEntity, IModelCaps pCaps) {
+	public ModelConfigCompound(EntityLivingBase pEntity, IModelCaps pCaps) {
 		owner = pEntity;
 		entityCaps = pCaps;
 		textures = new ResourceLocation[][] {
@@ -129,9 +124,8 @@ public class MMM_TextureData  {
 		};
 		color = 12;
 		contract = false;
-		textureBox = new MMM_TextureBoxBase[2];
-		textureBox[0] = textureBox[1] = MMM_TextureManager.instance.getDefaultTexture(owner.getClass());
-		textureIndex = new int[] { 0, 0 };
+		textureBox = new ModelBoxBase[2];
+		textureBox[0] = textureBox[1] = ModelManager.instance.getDefaultTexture(owner.getClass());
 		textureModel = new ModelMultiBase[3];
 	}
 
@@ -155,14 +149,14 @@ public class MMM_TextureData  {
 	protected boolean setTextureNamesClient() {
 		// Client
 		boolean lf = false;
-		MMM_TextureBox lbox;
+		ModelBox lbox;
 		
-		if (textureBox[0] instanceof MMM_TextureBox) {
-			int lc = (color & 0x00ff) + (contract ? 0 : MMM_TextureManager.tx_wild);
-			lbox = (MMM_TextureBox)textureBox[0];
+		if (textureBox[0] instanceof ModelBox) {
+			int lc = (color & 0x00ff) + (contract ? 0 : ModelManager.tx_wild);
+			lbox = (ModelBox)textureBox[0];
 			if (lbox.hasColor(lc)) {
 				textures[0][0] = lbox.getTextureName(lc);
-				lc = (color & 0x00ff) + (contract ? MMM_TextureManager.tx_eyecontract : MMM_TextureManager.tx_eyewild);
+				lc = (color & 0x00ff) + (contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
 				textures[0][1] = lbox.getTextureName(lc);
 				lf = true;
 				textureModel[0] = lbox.models[0];
@@ -170,12 +164,12 @@ public class MMM_TextureData  {
 			// TODO ★ 暫定処置 クライアントに存在しないテクスチャが指定された場合、デフォルトを読み出す。
 			else
 			{
-				lbox = MMM_TextureManager.instance.getDefaultTexture((ITextureEntity)owner);
+				lbox = ModelManager.instance.getDefaultTexture((IModelMMMEntity)owner);
 				textureBox[0] = textureBox[1] = lbox;
 
 				if (lbox.hasColor(lc)) {
 					textures[0][0] = lbox.getTextureName(lc);
-					lc = (color & 0x00ff) + (contract ? MMM_TextureManager.tx_eyecontract : MMM_TextureManager.tx_eyewild);
+					lc = (color & 0x00ff) + (contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
 					textures[0][1] = lbox.getTextureName(lc);
 					lf = true;
 					textureModel[0] = lbox.models[0];
@@ -189,17 +183,17 @@ public class MMM_TextureData  {
 //			textureBox[0] = MMM_TextureManager.instance.getTextureBoxServerIndex(textureIndex[0]);
 			throw new IllegalStateException("Texture setting error. Maybe ModelBoxServer is set?");
 		}
-		if (textureBox[1] instanceof MMM_TextureBox && owner != null) {
-			lbox = (MMM_TextureBox)textureBox[1];
+		if (textureBox[1] instanceof ModelBox && owner != null) {
+			lbox = (ModelBox)textureBox[1];
 			for (int i = 0; i < 4; i++) {
 				ItemStack is = i==3?
 						(owner instanceof EntityLittleMaid?
 								((EntityLittleMaid)owner).getHeadMountStackCopy():null) :
 						owner.getInventory()[i+1];
-				textures[1][i] = lbox.getArmorTextureName(MMM_TextureManager.tx_armor1, is);
-				textures[2][i] = lbox.getArmorTextureName(MMM_TextureManager.tx_armor2, is);
-				textures[3][i] = lbox.getArmorTextureName(MMM_TextureManager.tx_armor1light, is);
-				textures[4][i] = lbox.getArmorTextureName(MMM_TextureManager.tx_armor2light, is);
+				textures[1][i] = lbox.getArmorTextureName(ModelManager.tx_armor1, is);
+				textures[2][i] = lbox.getArmorTextureName(ModelManager.tx_armor2, is);
+				textures[3][i] = lbox.getArmorTextureName(ModelManager.tx_armor1light, is);
+				textures[4][i] = lbox.getArmorTextureName(ModelManager.tx_armor2light, is);
 			}
 			textureModel[1] = lbox.models[1];
 			textureModel[2] = lbox.models[2];
@@ -213,15 +207,15 @@ public class MMM_TextureData  {
 	protected boolean setTextureNamesServer() {
 		// Server
 		boolean lf = false;
-		MMM_TextureBoxServer lbox;
-		if (textureBox[0] instanceof MMM_TextureBoxServer) {
-			lbox = (MMM_TextureBoxServer)textureBox[0];
+		ModelBoxServer lbox;
+		if (textureBox[0] instanceof ModelBoxServer) {
+			lbox = (ModelBoxServer)textureBox[0];
 			if (lbox.localBox != null) {
-				int lc = (color & 0x00ff) + (contract ? 0 : MMM_TextureManager.tx_wild);
+				int lc = (color & 0x00ff) + (contract ? 0 : ModelManager.tx_wild);
 				if (lbox.localBox.hasColor(lc)) {
 					if (CommonHelper.isClient) {
 						textures[0][0] = lbox.localBox.getTextureName(lc);
-						lc = (color & 0x00ff) + (contract ? MMM_TextureManager.tx_eyecontract : MMM_TextureManager.tx_eyewild);
+						lc = (color & 0x00ff) + (contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
 						textures[0][1] = lbox.localBox.getTextureName(lc);
 					}
 					lf = true;
@@ -229,16 +223,16 @@ public class MMM_TextureData  {
 				}
 			}
 		}
-		if (textureBox[1] instanceof MMM_TextureBoxServer && owner != null) {
-			lbox = (MMM_TextureBoxServer)textureBox[1];
+		if (textureBox[1] instanceof ModelBoxServer && owner != null) {
+			lbox = (ModelBoxServer)textureBox[1];
 			if (lbox.localBox != null) {
 				if (CommonHelper.isClient) {
 					for (int i = 0; i < 4; i++) {
 						ItemStack is = owner.getEquipmentInSlot(i + 1);
-						textures[1][i] = lbox.localBox.getArmorTextureName(MMM_TextureManager.tx_armor1, is);
-						textures[2][i] = lbox.localBox.getArmorTextureName(MMM_TextureManager.tx_armor2, is);
-						textures[3][i] = lbox.localBox.getArmorTextureName(MMM_TextureManager.tx_armor1light, is);
-						textures[4][i] = lbox.localBox.getArmorTextureName(MMM_TextureManager.tx_armor2light, is);
+						textures[1][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1, is);
+						textures[2][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2, is);
+						textures[3][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1light, is);
+						textures[4][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2light, is);
 					}
 				}
 				textureModel[1] = lbox.localBox.models[1];
@@ -250,11 +244,11 @@ public class MMM_TextureData  {
 
 	public void setNextTexturePackege(int pTargetTexture) {
 		if (pTargetTexture == 0) {
-			int lc = getColor() + (isContract() ? 0 : MMM_TextureManager.tx_wild);
+			int lc = getColor() + (isContract() ? 0 : ModelManager.tx_wild);
 			// TODO ★ 暫定処置
-			if(textureBox[0] instanceof MMM_TextureBox)
+			if(textureBox[0] instanceof ModelBox)
 			{
-				textureBox[0] = MMM_TextureManager.instance.getNextPackege((MMM_TextureBox)textureBox[0], lc);
+				textureBox[0] = ModelManager.instance.getNextPackege((ModelBox)textureBox[0], lc);
 			}
 			else
 			{
@@ -262,31 +256,31 @@ public class MMM_TextureData  {
 			}
 			if (textureBox[0] == null) {
 				// 指定色が無い場合は標準モデルに
-				textureBox[0] = textureBox[1] = MMM_TextureManager.instance.getDefaultTexture((ITextureEntity)owner);
+				textureBox[0] = textureBox[1] = ModelManager.instance.getDefaultTexture((IModelMMMEntity)owner);
 				setColor(12);
 			} else {
 				textureBox[1] = textureBox[0];
 			}
-			if (!((MMM_TextureBox)textureBox[1]).hasArmor()) {
+			if (!((ModelBox)textureBox[1]).hasArmor()) {
 				pTargetTexture = 1;
 			}
 		}
 		if (pTargetTexture == 1) {
-			textureBox[1] = MMM_TextureManager.instance.getNextArmorPackege((MMM_TextureBox)textureBox[1]);
+			textureBox[1] = ModelManager.instance.getNextArmorPackege((ModelBox)textureBox[1]);
 		}
 	}
 
 	public void setPrevTexturePackege(int pTargetTexture) {
 		if (pTargetTexture == 0) {
-			int lc = getColor() + (isContract() ? 0 : MMM_TextureManager.tx_wild);
-			textureBox[0] = MMM_TextureManager.instance.getPrevPackege((MMM_TextureBox)textureBox[0], lc);
+			int lc = getColor() + (isContract() ? 0 : ModelManager.tx_wild);
+			textureBox[0] = ModelManager.instance.getPrevPackege((ModelBox)textureBox[0], lc);
 			textureBox[1] = textureBox[0];
-			if (!((MMM_TextureBox)textureBox[1]).hasArmor()) {
+			if (!((ModelBox)textureBox[1]).hasArmor()) {
 				pTargetTexture = 1;
 			}
 		}
 		if (pTargetTexture == 1) {
-			textureBox[1] = MMM_TextureManager.instance.getPrevArmorPackege((MMM_TextureBox)textureBox[1]);
+			textureBox[1] = ModelManager.instance.getPrevArmorPackege((ModelBox)textureBox[1]);
 		}
 	}
 
@@ -330,18 +324,7 @@ public class MMM_TextureData  {
 
 
 //	@Override
-	public void setTexturePackIndex(int pColor, int[] pIndex) {
-		// Server
-		for (int li = 0; li < pIndex.length; li++) {
-			textureIndex[li] = pIndex[li];
-			textureBox[li] = MMM_TextureManager.instance.getTextureBoxServer(textureIndex[li]);
-		}
-		color = pColor;
-		setSize();
-	}
-
-//	@Override
-	public void setTexturePackName(MMM_TextureBox[] pTextureBox) {
+	public void setTexturePackName(ModelBox[] pTextureBox) {
 		// Client
 		for (int li = 0; li < pTextureBox.length; li++) {
 			textureBox[li] = pTextureBox[li];
@@ -372,23 +355,13 @@ public class MMM_TextureData  {
 	}
 
 //	@Override
-	public void setTextureBox(MMM_TextureBoxBase[] pTextureBox) {
+	public void setTextureBox(ModelBoxBase[] pTextureBox) {
 		textureBox = pTextureBox;
 	}
 
 //	@Override
-	public MMM_TextureBoxBase[] getTextureBox() {
+	public ModelBoxBase[] getTextureBox() {
 		return textureBox;
-	}
-
-//	@Override
-	public void setTextureIndex(int[] pTextureIndex) {
-		textureIndex = pTextureIndex;
-	}
-
-//	@Override
-	public int[] getTextureIndex() {
-		return textureIndex;
 	}
 
 //	@Override
@@ -415,16 +388,18 @@ public class MMM_TextureData  {
 	 */
 	public void setTextureInitServer(String pName) {
 		MMMLib.Debug("request Init Texture: %s", pName);
-		textureIndex[0] = textureIndex[1] =
-				MMM_TextureManager.instance.getIndexTextureBoxServer((ITextureEntity)owner, pName);
-		textureBox[0] = textureBox[1] = MMM_TextureManager.instance.getTextureBoxServer(textureIndex[0]);
+		textureBox[0] = textureBox[1] = ModelManager.instance.getTextureBoxServer(pName);
+//		setTextureNames();
+		if (textureBox[0] == null) {
+			throw new NullPointerException("TEXTURE BOX IS NULL");
+		}
 		color = textureBox[0].getRandomWildColor(owner.getRNG());
 	}
+
 	public void setTextureInitClient() {
-		MMM_TextureBox lbox = MMM_TextureManager.instance.getDefaultTexture(owner.getClass());
+		ModelBox lbox = ModelManager.instance.getDefaultTexture(owner.getClass());
 		for (int li = 0; li < textureBox.length; li++) {
 			textureBox[li] = lbox;
-			textureIndex[li] = MMM_TextureManager.instance.getIndexTextureBoxServerIndex(lbox);
 		}
 		color = textureBox[0].getRandomWildColor(owner.getRNG());
 	}
@@ -438,7 +413,7 @@ public class MMM_TextureData  {
 	}
 
 	public ResourceLocation getGUITexture() {
-		return ((MMM_TextureBox)textureBox[0]).getTextureName(MMM_TextureManager.tx_gui);
+		return ((ModelBox)textureBox[0]).getTextureName(ModelManager.tx_gui);
 	}
 
 	/**
@@ -459,86 +434,4 @@ public class MMM_TextureData  {
 		selectValue |= ((pFlag ? 1 : 0) << pIndex);
 	}
 
-	/**
-	 * 保有パラメーターの保存。<br>
-	 * サーバー用。
-	 * @param par1nbtTagCompound
-	 */
-	public void writeToNBT(NBTTagCompound par1nbtTagCompound) {
-		NBTTagCompound lnbt = new NBTTagCompound();
-		lnbt.setIntArray("Textures", textureIndex);
-		lnbt.setInteger("Color", color);
-		lnbt.setBoolean("Contract", contract);
-		lnbt.setInteger("SelectValue", selectValue);
-		par1nbtTagCompound.setTag("TextureData", lnbt);
-	}
-
-	/**
-	 * 保有パラメーターの読出。<br>
-	 * サーバー用。
-	 * @param par1nbtTagCompound
-	 */
-	public void readToNBT(NBTTagCompound par1nbtTagCompound) {
-		if (par1nbtTagCompound.hasKey("TextureData")) {
-			NBTTagCompound lnbt = par1nbtTagCompound.getCompoundTag("TextureData");
-			color = lnbt.getInteger("Color");
-			contract = lnbt.getBoolean("Contract");
-			selectValue = lnbt.getInteger("SelectValue");
-			int[] intList = lnbt.getIntArray("Textures");
-			
-			if (intList.length > 0) {
-				setTexturePackIndex(color, intList);
-			} else {
-				// ローカルに在るデフォルトのテクスチャを設定
-				MMM_TextureBox lbox = MMM_TextureManager.instance.getDefaultTexture((ITextureEntity)owner);
-				int li = MMM_TextureManager.instance.getIndexTextureBoxServerIndex(lbox);
-				setTexturePackIndex(color, new int[] {li, li});
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param pColor
-	 * @param pTextureIndex
-	 * @return
-	 */
-	public boolean updateTexture(int pColor, int[] pTextureIndex) {
-		boolean lf = false;
-		lf |= setColor(pColor);
-		for (int li = 0; li < pTextureIndex.length; li++) {
-			if (textureIndex[li] != pTextureIndex[li]) {
-				textureIndex[li] = pTextureIndex[li];
-				lf |= true;
-			}
-		}
-		if (lf) {
-			setTextureNames();
-		}
-		
-		return lf;
-	}
-
-	// パッケージ化用
-	/**
-	 * 監視用のdataWatcherを設定する。
-	 * @param pDataWatcher
-	 */
-	public void entityInit(DataWatcher pDataWatcher) {
-		// Color
-		pDataWatcher.addObject(data_Color, Byte.valueOf((byte)0));
-		// 選択テクスチャインデックス
-		pDataWatcher.addObject(data_Texture, Integer.valueOf(0));
-		// モデルパーツの表示フラグ
-		pDataWatcher.addObject(data_Value, Integer.valueOf(0));
-	}
-
-	protected void setWatchedColor(int pColor) {
-		owner.getDataWatcher().updateObject(data_Color, (byte)pColor);
-	}
-
-	protected int getWatchedColor() {
-		return owner.getDataWatcher().getWatchableObjectByte(data_Color);
-	}
-	
 }

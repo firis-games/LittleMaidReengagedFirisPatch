@@ -2,18 +2,18 @@ package net.blacklab.lmr.client.entity;
 
 import java.util.Map;
 
-import mmmlibx.lib.ITextureEntity;
+import mmmlibx.lib.IModelMMMEntity;
 import mmmlibx.lib.MMM_EntityCaps;
-import mmmlibx.lib.MMM_TextureBox;
-import mmmlibx.lib.MMM_TextureBoxBase;
-import mmmlibx.lib.MMM_TextureData;
-import mmmlibx.lib.MMM_TextureManager;
+import mmmlibx.lib.ModelBox;
+import mmmlibx.lib.ModelBoxBase;
+import mmmlibx.lib.ModelConfigCompound;
+import mmmlibx.lib.ModelManager;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class EntityLittleMaidForTexSelect extends EntityLiving implements IModelCaps, ITextureEntity {
+public class EntityLittleMaidForTexSelect extends EntityLiving implements IModelCaps, IModelMMMEntity {
 
 //	public int color;
 //	public int textureIndex[] = new int[] { 0, 0 };
@@ -28,13 +28,13 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 //			{ null, null , null , null }
 //	};
 	protected MMM_EntityCaps entityCaps;
-	public MMM_TextureData textureData;
+	public ModelConfigCompound textureData;
 	public boolean modeArmor = false;
 
 	public EntityLittleMaidForTexSelect(World par1World) {
 		super(par1World);
 		entityCaps = new MMM_EntityCaps(this);
-		textureData = new MMM_TextureData(this, entityCaps);
+		textureData = new ModelConfigCompound(this, entityCaps);
 	}
 
 	@Override
@@ -78,21 +78,7 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	// TextureEntity
 
 	@Override
-	public void setTexturePackIndex(int pColor, int[] pIndex) {
-		// Server
-		textureData.setTexturePackIndex(pColor, pIndex);
-//		color = pColor;
-//		textureIndex[0] = pIndex[0];
-//		textureIndex[1] = pIndex[1];
-		dataWatcher.updateObject(20, (Integer.valueOf(pIndex[0]) & 0xffff) | ((Integer.valueOf(pIndex[1]) & 0xffff) << 16));
-//		textureBox[0] = MMM_TextureManager.instance.getTextureBoxServer(textureIndex[0]);
-//		textureBox[1] = MMM_TextureManager.instance.getTextureBoxServer(textureIndex[1]);
-		// サイズの変更
-//		setSize(textureBox[0].getWidth(entityCaps), textureBox[0].getHeight(entityCaps));
-	}
-
-	@Override
-	public void setTexturePackName(MMM_TextureBox[] pTextureBox) {
+	public void setTexturePackName(ModelBox[] pTextureBox) {
 		// Client
 		textureData.setTexturePackName(pTextureBox);
 //		textureBox[0] = pTextureBox[0];
@@ -131,28 +117,28 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	}
 
 	public void setTextureNames(String pArmorName) {
-		MMM_TextureBox lbox;
+		ModelBox lbox;
 		textureData.textureModel[0] = null;
 		textureData.textureModel[1] = null;
 		textureData.textureModel[2] = null;
 		
-		if (textureData.textureBox[0] instanceof MMM_TextureBox) {
-			int lc = (textureData.color & 0x00ff) + (textureData.contract ? 0 : MMM_TextureManager.tx_wild);
-			lbox = (MMM_TextureBox)textureData.textureBox[0];
+		if (textureData.textureBox[0] instanceof ModelBox) {
+			int lc = (textureData.color & 0x00ff) + (textureData.contract ? 0 : ModelManager.tx_wild);
+			lbox = (ModelBox)textureData.textureBox[0];
 			if (lbox.hasColor(lc)) {
 				textureData.textures[0][0] = lbox.getTextureName(lc);
-				lc = (textureData.color & 0x00ff) + (textureData.contract ? MMM_TextureManager.tx_eyecontract : MMM_TextureManager.tx_eyewild);
+				lc = (textureData.color & 0x00ff) + (textureData.contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
 				textureData.textures[0][1] = lbox.getTextureName(lc);
 				textureData.textureModel[0] = lbox.models[0];
 			}
 		}
-		if (textureData.textureBox[1] instanceof MMM_TextureBox) {
-			lbox = (MMM_TextureBox)textureData.textureBox[1];
+		if (textureData.textureBox[1] instanceof ModelBox) {
+			lbox = (ModelBox)textureData.textureBox[1];
 			for (int i = 0; i < 4; i++) {
-				textureData.textures[1][i] = lbox.getArmorTextureName(MMM_TextureManager.tx_armor1, pArmorName, 0);
-				textureData.textures[2][i] = lbox.getArmorTextureName(MMM_TextureManager.tx_armor2, pArmorName, 0);
-				textureData.textures[3][i] = lbox.getArmorTextureName(MMM_TextureManager.tx_armor1light, pArmorName, 0);
-				textureData.textures[4][i] = lbox.getArmorTextureName(MMM_TextureManager.tx_armor2light, pArmorName, 0);
+				textureData.textures[1][i] = lbox.getArmorTextureName(ModelManager.tx_armor1, pArmorName, 0);
+				textureData.textures[2][i] = lbox.getArmorTextureName(ModelManager.tx_armor2, pArmorName, 0);
+				textureData.textures[3][i] = lbox.getArmorTextureName(ModelManager.tx_armor1light, pArmorName, 0);
+				textureData.textures[4][i] = lbox.getArmorTextureName(ModelManager.tx_armor2light, pArmorName, 0);
 			}
 			textureData.textureModel[1] = lbox.models[1];
 			textureData.textureModel[2] = lbox.models[2];
@@ -203,13 +189,13 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	}
 
 	@Override
-	public void setTextureBox(MMM_TextureBoxBase[] pTextureBox) {
+	public void setTextureBox(ModelBoxBase[] pTextureBox) {
 		textureData.setTextureBox(pTextureBox);
 //		textureBox = pTextureBox;
 	}
 
 	@Override
-	public MMM_TextureBoxBase[] getTextureBox() {
+	public ModelBoxBase[] getTextureBox() {
 		return textureData.getTextureBox();
 //		return textureBox;
 	}
@@ -227,19 +213,7 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	}
 
 	@Override
-	public void setTextureIndex(int[] pTextureIndex) {
-		textureData.setTextureIndex(pTextureIndex);
-//		textureIndex = pTextureIndex;
-	}
-
-	@Override
-	public int[] getTextureIndex() {
-		return textureData.getTextureIndex();
-//		return textureIndex;
-	}
-
-	@Override
-	public MMM_TextureData getTextureData() {
+	public ModelConfigCompound getModelConfigCompound() {
 		return textureData;
 	}
 

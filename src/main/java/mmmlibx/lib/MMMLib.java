@@ -88,8 +88,8 @@ public class MMMLib {
 		MMM_StabilizerManager.init();
 
 		// テクスチャパックの構築
-		MMM_TextureManager.instance.init();
-		MMM_TextureManager.instance.loadTextures();
+		ModelManager.instance.init();
+		ModelManager.instance.loadTextures();
 		// ロード
 		if (CommonHelper.isClient) {
 			// テクスチャパックの構築
@@ -97,9 +97,9 @@ public class MMMLib {
 //			MMM_StabilizerManager.loadStabilizer();
 			// テクスチャインデックスの構築
 			Debug("Localmode: InitTextureList.");
-			MMM_TextureManager.instance.initTextureList(true);
+			ModelManager.instance.initTextureList(true);
 		} else {
-			MMM_TextureManager.instance.loadTextureServer();
+			ModelManager.instance.loadTextureServer();
 		}
 	}
 
