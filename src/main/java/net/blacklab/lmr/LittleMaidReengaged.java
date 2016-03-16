@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-import mmmlibx.lib.ModelManager;
 import net.blacklab.lib.config.ConfigList;
 import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
@@ -19,9 +18,9 @@ import net.blacklab.lmr.item.ItemSpawnEgg;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.proxy.ProxyCommon;
-import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
+import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.manager.EntityModeManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourcePack;
@@ -54,7 +53,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
-	public static final String VERSION = "6.0.8";
+	public static final String VERSION = "6.0.9";
 	public static final String ACCEPTED_MCVERSION = "1.8.9";
 	public static final int VERSION_CODE = 1;
 
@@ -139,18 +138,9 @@ public class LittleMaidReengaged {
 	}
 
 	public String getName() {
-		return "littleMaidMobNX";
-	}
-/*
-	public String getPriorities() {
-		// MMMLibを要求
-		return "required-after:mod_MMM_MMMLib";
+		return "LittleMaidReengaged";
 	}
 
-	public String getVersion() {
-		return "1.8";
-	}
-*/
 	public static Random randomSoundChance;
 
 	@EventHandler

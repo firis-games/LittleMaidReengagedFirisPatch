@@ -12,6 +12,7 @@ import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
+import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;

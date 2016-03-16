@@ -8,6 +8,7 @@ import mmmlibx.lib.multiModel.model.mc162.ModelBaseDuo;
 import mmmlibx.lib.multiModel.model.mc162.RenderModelMulti;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -30,8 +31,6 @@ import net.minecraft.util.ResourceLocation;
 
 @SuppressWarnings("deprecation")
 public class RenderLittleMaid extends RenderModelMulti {
-
-	// Feilds
 
 	// Method
 	public RenderLittleMaid(RenderManager manager,float f) {
@@ -426,6 +425,10 @@ public class RenderLittleMaid extends RenderModelMulti {
 	@Override
 	public void doRender(EntityLiving par1EntityLiving,
 			double par2, double par4, double par6, float par8, float par9) {
+		if (!(par1EntityLiving instanceof EntityLittleMaid)) {
+			return;
+		}
+
 		EntityLittleMaid lmm = (EntityLittleMaid)par1EntityLiving;
 
 		fcaps = lmm.maidCaps;

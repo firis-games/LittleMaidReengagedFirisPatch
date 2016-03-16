@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.entity.maidmodel;
 
 import java.util.ArrayList;
 import java.util.List;

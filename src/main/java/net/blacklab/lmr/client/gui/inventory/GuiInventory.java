@@ -528,18 +528,22 @@ public class GuiInventory extends GuiContainer {
 		case 100 :
 			entitylittlemaid.setNextTexturePackege(0);
 			entitylittlemaid.setTextureNames();
+			entitylittlemaid.syncModelNames();
 			break;
 		case 101 :
 			entitylittlemaid.setPrevTexturePackege(0);
 			entitylittlemaid.setTextureNames();
+			entitylittlemaid.syncModelNames();
 			break;
 		case 110 :
 			entitylittlemaid.setNextTexturePackege(1);
 			entitylittlemaid.setTextureNames();
+			entitylittlemaid.syncModelNames();
 			break;
 		case 111 :
 			entitylittlemaid.setPrevTexturePackege(1);
 			entitylittlemaid.setTextureNames();
+			entitylittlemaid.syncModelNames();
 			break;
 		case 200 :
 			int ldye = 0;
@@ -588,7 +592,7 @@ public class GuiInventory extends GuiContainer {
 			break;
 		}
 	}
-
+	
 	protected void setArmorVisible() {
 		entitylittlemaid.setMaidArmorVisible(visarmorbutton[0].toggle, visarmorbutton[1].toggle, visarmorbutton[2].toggle, visarmorbutton[3].toggle);
 		entitylittlemaid.syncMaidArmorVisible();

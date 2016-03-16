@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import mmmlibx.lib.IModelMMMEntity;
-import mmmlibx.lib.ModelBox;
+import net.blacklab.lmr.entity.maidmodel.ModelBox;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.minecraft.client.gui.GuiButton;

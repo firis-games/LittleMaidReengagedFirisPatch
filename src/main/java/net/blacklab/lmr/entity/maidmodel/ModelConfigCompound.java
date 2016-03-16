@@ -1,5 +1,7 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.entity.maidmodel;
 
+import mmmlibx.lib.IModelMMMEntity;
+import mmmlibx.lib.MMMLib;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
@@ -7,6 +9,7 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.EnumArmor;
 import net.blacklab.lmr.util.EnumTextureType;
+import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;

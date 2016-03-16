@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.util.manager;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,10 +19,15 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import mmmlibx.lib.IModelMMMEntity;
+import mmmlibx.lib.MMMLib;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.resource.LMMNX_OldZipTexturesLoader;
+import net.blacklab.lmr.entity.maidmodel.ModelBox;
+import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
+import net.blacklab.lmr.entity.maidmodel.ModelBoxServer;
 import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
@@ -396,7 +401,7 @@ public class ModelManager {
 	/**
 	 * テクスチャインデックスを構築。
 	 */
-	protected void initTextureList(boolean pFlag) {
+	public void initTextureList(boolean pFlag) {
 		MMMLib.Debug("Clear TextureBoxServer.");
 		textureServerIndex.clear();
 		textureServer.clear();

@@ -36,10 +36,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import mmmlibx.lib.IModelMMMEntity;
 import mmmlibx.lib.MMMLib;
 import mmmlibx.lib.MMM_Counter;
-import mmmlibx.lib.ModelBox;
-import mmmlibx.lib.ModelBoxBase;
-import mmmlibx.lib.ModelConfigCompound;
-import mmmlibx.lib.ModelManager;
 import mmmlibx.lib.multiModel.model.mc162.EquippedStabilizer;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import net.blacklab.lib.minecraft.item.ItemUtil;
@@ -73,6 +69,9 @@ import net.blacklab.lmr.entity.ai.LMMNX_EntityAIRestrictOpenDoor;
 import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest;
 import net.blacklab.lmr.entity.experience.ExperienceHandler;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
+import net.blacklab.lmr.entity.maidmodel.ModelBox;
+import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
+import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.pathnavigate.LMMNX_PathNavigatorLittleMaid;
@@ -89,6 +88,7 @@ import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.blacklab.lmr.util.manager.EntityModeManager;
+import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoublePlant;
@@ -140,6 +140,7 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.profiler.Profiler;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -343,13 +344,17 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 		// モデルレンダリング用のフラグ獲得用ヘルパー関数
 		maidCaps = new EntityCaps(this);
+		
+		modelNameMain = modelNameArmor = "default_"+ModelManager.defaultModelName;
 
-		// 形態形成場
 		textureData = new ModelConfigCompound(this, maidCaps);
-		textureData.setColor(12);
-		ModelBox ltb[] = new ModelBox[2];
-		ltb[0] = ltb[1] = ModelManager.instance.getDefaultTexture(this);
-		setTexturePackName(ltb);
+//		if (worldObj.isRemote) {
+			// 形態形成場
+			textureData.setColor(12);
+			ModelBox ltb[] = new ModelBox[2];
+			ltb[0] = ltb[1] = ModelManager.instance.getDefaultTexture(this);
+			setTexturePackName(ltb);
+//		}
 
 		entityIdFactor = getEntityId() * 70;
 		// 腕振り
@@ -695,28 +700,17 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		syncNet(EnumPacketMode.SYNC_EXPBOOST, b);
 	}
 
-	/**
-	 * Client専用。
-	 */
-	public static ModelBox referTextureBox(String string) {
-		for (Iterator iterator = ModelManager.getTextureList().iterator(); iterator.hasNext();) {
-			ModelBox lBox = (ModelBox) iterator.next();
-			if(lBox.textureName.equals(string)) return lBox;
-		}
-		return null;
+	public void syncModelNames() {
+		byte main[] = new byte[getModelNameMain().length()+1];
+		main[0] = 0;
+		NetworkHelper.setStrToPacket(main, 1, getModelNameMain());
+		syncNet(EnumPacketMode.SYNC_MODEL, main);
+		
+		byte armor[] = new byte[getModelNameArmor().length()+1];
+		armor[0] = 1;
+		NetworkHelper.setStrToPacket(armor, 1, getModelNameArmor());
+		syncNet(EnumPacketMode.SYNC_MODEL, armor);
 	}
-
-	/**
-	 * Client専用。
-	 */
-	public static ModelBox referTextureArmorBox(String string){
-		for (Iterator iterator = ModelManager.getTextureList().iterator(); iterator.hasNext();) {
-			ModelBox lBox = (ModelBox) iterator.next();
-			if(lBox.hasArmor()&&lBox.textureName.equals(string)) return lBox;
-		}
-		return null;
-	}
-
 
 	public void syncNet(EnumPacketMode pMode, byte[] contents) {
 		if(worldObj.isRemote){
@@ -1338,10 +1332,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		}
 //		textureData.textureIndex[0] = ModelManager.instance.getIndexTextureBoxServer(this, par1nbtTagCompound.getString("texName"));
 //		textureData.textureIndex[1] = ModelManager.instance.getIndexTextureBoxServer(this, par1nbtTagCompound.getString("texArmor"));
-		textureData.textureBox[0] = ModelManager.instance.getTextureBoxServer(ModelManager.defaultModelName);
-		textureData.textureBox[1] = ModelManager.instance.getTextureBoxServer(ModelManager.defaultModelName);
-		setColor(par1nbtTagCompound.getInteger("Color"));
-		setTextureNames();
+//		textureData.textureBox[0] = ModelManager.instance.getTextureBoxServer("default_"+ModelManager.defaultModelName);
+//		textureData.textureBox[1] = ModelManager.instance.getTextureBoxServer("default_"+ModelManager.defaultModelName);
 
 		// HomePosition
 		int lhx = par1nbtTagCompound.getInteger("homeX");
@@ -1363,12 +1355,18 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		}
 
 		modelNameMain = par1nbtTagCompound.getString("textureModelNameForClient");
-		if(modelNameMain.equals("")){
-			modelNameMain = "default_Orign";
+		if(modelNameMain.isEmpty()){
+			modelNameMain = "default_"+ModelManager.defaultModelName;
 		}
+		
 		modelNameArmor = par1nbtTagCompound.getString("textureArmorNameForClient");
-		if(modelNameArmor.equals("")){
-			modelNameArmor = "default_Orign";
+		if(modelNameArmor.isEmpty()){
+			modelNameArmor = "default_"+ModelManager.defaultModelName;
+		}
+		setColor(par1nbtTagCompound.getInteger("Color"));
+		refreshModels();
+		if (MinecraftServer.getServer().isSinglePlayer()) {
+			syncModelNames();
 		}
 
 		isMadeTextureNameFlag = par1nbtTagCompound.getBoolean("isMadeTextureNameFlag");
@@ -2324,6 +2322,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			if (--firstload == 0) {
 				if (worldObj.isRemote) {
 					syncNet(EnumPacketMode.SERVER_UPDATE_SLOTS, new byte[]{});
+					syncNet(EnumPacketMode.SERVER_REQUEST_MODEL, new byte[]{});
 				} 
 			}
 		}
@@ -4032,6 +4031,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	 */
 	public void setTextureNames() {
 		textureData.setTextureNames();
+		if (worldObj.isRemote) {
+			modelNameMain = textureData.getTextureName(0);
+			modelNameArmor = textureData.getTextureName(1);
+		}
 	}
 
 	public void setNextTexturePackege(int pTargetTexture) {
@@ -4044,12 +4047,49 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 
 	// textureEntity
-
 	@Override
 	public void setTextureBox(ModelBoxBase[] pTextureBox) {
 		textureData.setTextureBox(pTextureBox);
 	}
+	
+	public String getModelNameMain() {
+		return modelNameMain;
+	}
+	
+	public String getModelNameArmor() {
+		return modelNameArmor;
+	}
+	
+	public void setModelNameMain(String modelNameMain) {
+		this.modelNameMain = modelNameMain;
+		refreshModels();
+	}
+	
+	public void setModelNameArmor(String modelNameArmor) {
+		this.modelNameArmor = modelNameArmor;
+		refreshModels();
+	}
+	
+	protected void refreshModels() {
+		String defName = ModelManager.instance.getRandomTextureString(rand);
+		ModelBoxBase mainModel  = modelBoxAutoSelect(modelNameMain);
+		if (mainModel == null) {
+			mainModel = modelBoxAutoSelect(defName);
+		}
 
+		ModelBoxBase armorModel = modelBoxAutoSelect(modelNameArmor);
+		if (armorModel == null) {
+			armorModel = modelBoxAutoSelect(defName);
+		}
+		
+		setTextureBox(new ModelBoxBase[]{mainModel, armorModel});
+		setTextureNames();
+	}
+	
+	private ModelBoxBase modelBoxAutoSelect(String pName) {
+		return worldObj.isRemote ? ModelManager.instance.getTextureBox(pName) : ModelManager.instance.getTextureBoxServer(pName);
+	}
+	
 	@Override
 	public ModelBoxBase[] getTextureBox() {
 		return textureData.getTextureBox();

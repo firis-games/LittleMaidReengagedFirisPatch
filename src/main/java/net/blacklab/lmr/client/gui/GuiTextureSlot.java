@@ -7,12 +7,12 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import mmmlibx.lib.ModelBox;
-import mmmlibx.lib.ModelBoxBase;
-import mmmlibx.lib.ModelManager;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
+import net.blacklab.lmr.entity.maidmodel.ModelBox;
+import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
 import net.blacklab.lmr.util.helper.RendererHelper;
+import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiSlot;

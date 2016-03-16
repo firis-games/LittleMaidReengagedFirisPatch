@@ -1,5 +1,8 @@
 package mmmlibx.lib;
 
+import net.blacklab.lmr.entity.maidmodel.ModelBox;
+import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
+import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -14,7 +17,7 @@ public interface IModelMMMEntity {
 	 * 設定されるテクスチャパックの名称（TextureBoxClient）
 	 */
 	public void setTexturePackName(ModelBox[] pTextureBox);
-
+	
 	/**
 	 * 現在のEntityに色を設定する。
 	 * @param pColor

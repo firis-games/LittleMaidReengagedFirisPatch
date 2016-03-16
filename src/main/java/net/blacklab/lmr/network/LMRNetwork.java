@@ -210,6 +210,9 @@ public class LMRNetwork
 		case SERVER_CHANGE_SWIMMING :
 			lemaid.setSwimming(pPayload.data[5]==1);
 			break;
+		case SERVER_REQUEST_MODEL :
+			lemaid.syncModelNames();
+			break;
 		default:
 			break;
 		}
@@ -268,6 +271,15 @@ public class LMRNetwork
 		case SYNC_EXPBOOST:
 			pMaid.setExpBooster(NetworkHelper.getIntFromPacket(contents, 0));
 			break;
+		case SYNC_MODEL :
+			LittleMaidReengaged.Debug("CLIENT=%5s, INDEX:%d, name=%s", pMaid.worldObj.isRemote, contents[0], NetworkHelper.getStrFromPacket(contents, 1));
+			if (contents[0] == 0) {
+				// main
+				pMaid.setModelNameMain(NetworkHelper.getStrFromPacket(contents, 1));
+			} else {
+				// armor
+				pMaid.setModelNameArmor(NetworkHelper.getStrFromPacket(contents, 1));
+			}
 		default:
 			break;
 		}

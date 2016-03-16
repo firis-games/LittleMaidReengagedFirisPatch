@@ -20,12 +20,12 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
-import mmmlibx.lib.ModelBox;
-import mmmlibx.lib.ModelManager;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.entity.maidmodel.ModelBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.FileList;
+import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraftforge.fml.common.FMLLog;
 import scala.Char;
 

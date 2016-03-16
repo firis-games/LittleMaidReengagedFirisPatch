@@ -1,8 +1,8 @@
 package net.blacklab.lmr.entity.mode;
 
-import mmmlibx.lib.ModelBoxBase;
-import mmmlibx.lib.ModelManager;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
+import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

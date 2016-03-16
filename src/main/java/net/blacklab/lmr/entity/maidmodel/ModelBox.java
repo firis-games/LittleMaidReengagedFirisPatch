@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.entity.maidmodel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelCapsHelper;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
+import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
