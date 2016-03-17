@@ -7,7 +7,10 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.ibm.icu.text.Normalizer.Mode;
+
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
@@ -163,23 +166,26 @@ public class GuiTextureSlot extends GuiSlot {
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 		entity.modeArmor = mode;
 		if (mode) {
-			GL11.glTranslatef(0f, 0.25F, 0f);
+			//デフォルトアーマー
+			GL11.glTranslatef(1f, 0.25F, 0f);
+			entity.setTextureNames("default");
+			Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+			RendererHelper.setLightmapTextureCoords(0x00f0);//61680
+
+			// 素材別アーマー
 			for (int li = 0; li < ModelManager.armorFilenamePrefix.length; li++) {
 				GL11.glTranslatef(1F, 0, 0);
-				Map<Integer, ResourceLocation> lmap = lbox.armors.get(ModelManager.armorFilenamePrefix[li]);
-				if (lmap != null) {
-//				ltxname = entity.getTextures(1);
-//				ltxname[0] = ltxname[1] = ltxname[2] = ltxname[3] =
-//						lbox.getArmorTextureName(MMM_TextureManager.tx_armor1, "default", 0);
-//				ltxname = entity.getTextures(2);
-//				ltxname[0] = ltxname[1] = ltxname[2] = ltxname[3] =
-//						lbox.getArmorTextureName(MMM_TextureManager.tx_armor2, "default", 0);
-					entity.setTextureNames("default");
+				if (lbox.armors.containsKey(ModelManager.armorFilenamePrefix[li])) {
+//					ltxname = entity.getTextures(1);
+//					ltxname[0] = ltxname[1] = ltxname[2] = ltxname[3] =
+//							lbox.getArmorTextureName(MMM_TextureManager.tx_armor1, "default", 0);
+//					ltxname = entity.getTextures(2);
+//					ltxname[0] = ltxname[1] = ltxname[2] = ltxname[3] =
+//							lbox.getArmorTextureName(MMM_TextureManager.tx_armor2, "default", 0);
+					entity.setTextureNames(ModelManager.armorFilenamePrefix[li]);
 					Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+					RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 				}
-				entity.setTextureNames((String) lbox.armors.keySet().toArray()[0]);
-				Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-				RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 			}
 		} else {
 			// テクスチャ表示
