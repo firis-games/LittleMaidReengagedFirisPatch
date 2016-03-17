@@ -1,20 +1,20 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.entity.maidmodel;
 
 import mmmlibx.lib.multiModel.model.mc162.*;
 
-public class MMM_ModelMulti_Stef extends MMM_ModelMulti_Steve {
+public class ModelMulti_Stef extends ModelMulti_Steve {
 
 	public ModelRenderer bust;
 
-	public MMM_ModelMulti_Stef() {
+	public ModelMulti_Stef() {
 		super();
 	}
 
-	public MMM_ModelMulti_Stef(float psize) {
+	public ModelMulti_Stef(float psize) {
 		super(psize);
 	}
 
-	public MMM_ModelMulti_Stef(float psize, float pyoffset, int pTextureWidth,
+	public ModelMulti_Stef(float psize, float pyoffset, int pTextureWidth,
 			int pTextureHeight) {
 		super(psize, pyoffset, 64, 32);
 	}

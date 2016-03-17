@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.entity.maidmodel;
 
 import mmmlibx.lib.multiModel.model.mc162.*;
 
@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 
 @SuppressWarnings("deprecation")
-public class MMM_ModelMulti_Steve extends ModelMultiBase {
+public class ModelMulti_Steve extends ModelMultiBase {
 
 	public ModelRenderer bipedHead;
 	public ModelRenderer bipedHeadwear;
@@ -25,13 +25,13 @@ public class MMM_ModelMulti_Steve extends ModelMultiBase {
 	public ModelRenderer eyeL;
 
 
-	public MMM_ModelMulti_Steve() {
+	public ModelMulti_Steve() {
 		super();
 	}
-	public MMM_ModelMulti_Steve(float psize) {
+	public ModelMulti_Steve(float psize) {
 		super(psize);
 	}
-	public MMM_ModelMulti_Steve(float psize, float pyoffset, int pTextureWidth, int pTextureHeight) {
+	public ModelMulti_Steve(float psize, float pyoffset, int pTextureWidth, int pTextureHeight) {
 		super(psize, pyoffset, pTextureWidth, pTextureHeight);
 	}
 
