@@ -5,8 +5,8 @@ import java.util.Map;
 import mmmlibx.lib.IModelMMMEntity;
 import mmmlibx.lib.MMM_EntityCaps;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
-import net.blacklab.lmr.entity.maidmodel.ModelBox;
-import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
+import net.blacklab.lmr.entity.maidmodel.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.EntityLiving;
@@ -78,7 +78,7 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	// TextureEntity
 
 	@Override
-	public void setTexturePackName(ModelBox[] pTextureBox) {
+	public void setTexturePackName(TextureBox[] pTextureBox) {
 		// Client
 		textureData.setTexturePackName(pTextureBox);
 //		textureBox[0] = pTextureBox[0];
@@ -117,14 +117,14 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	}
 
 	public void setTextureNames(String pArmorName) {
-		ModelBox lbox;
+		TextureBox lbox;
 		textureData.textureModel[0] = null;
 		textureData.textureModel[1] = null;
 		textureData.textureModel[2] = null;
 		
-		if (textureData.textureBox[0] instanceof ModelBox) {
+		if (textureData.textureBox[0] instanceof TextureBox) {
 			int lc = (textureData.color & 0x00ff) + (textureData.contract ? 0 : ModelManager.tx_wild);
-			lbox = (ModelBox)textureData.textureBox[0];
+			lbox = (TextureBox)textureData.textureBox[0];
 			if (lbox.hasColor(lc)) {
 				textureData.textures[0][0] = lbox.getTextureName(lc);
 				lc = (textureData.color & 0x00ff) + (textureData.contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
@@ -132,8 +132,8 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 				textureData.textureModel[0] = lbox.models[0];
 			}
 		}
-		if (textureData.textureBox[1] instanceof ModelBox) {
-			lbox = (ModelBox)textureData.textureBox[1];
+		if (textureData.textureBox[1] instanceof TextureBox) {
+			lbox = (TextureBox)textureData.textureBox[1];
 			for (int i = 0; i < 4; i++) {
 				textureData.textures[1][i] = lbox.getArmorTextureName(ModelManager.tx_armor1, pArmorName, 0);
 				textureData.textures[2][i] = lbox.getArmorTextureName(ModelManager.tx_armor2, pArmorName, 0);
@@ -189,13 +189,13 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	}
 
 	@Override
-	public void setTextureBox(ModelBoxBase[] pTextureBox) {
+	public void setTextureBox(TextureBoxBase[] pTextureBox) {
 		textureData.setTextureBox(pTextureBox);
 //		textureBox = pTextureBox;
 	}
 
 	@Override
-	public ModelBoxBase[] getTextureBox() {
+	public TextureBoxBase[] getTextureBox() {
 		return textureData.getTextureBox();
 //		return textureBox;
 	}

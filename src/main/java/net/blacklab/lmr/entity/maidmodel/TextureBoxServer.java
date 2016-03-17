@@ -3,16 +3,16 @@ package net.blacklab.lmr.entity.maidmodel;
 import mmmlibx.lib.multiModel.model.mc162.*;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 
-public class ModelBoxServer extends ModelBoxBase {
+public class TextureBoxServer extends TextureBoxBase {
 
 	// ローカルでモデルを保持している時にリンク
-	protected ModelBox localBox;
+	protected TextureBox localBox;
 
 
-	public ModelBoxServer() {
+	public TextureBoxServer() {
 	}
 
-	public ModelBoxServer(ModelBox pBox) {
+	public TextureBoxServer(TextureBox pBox) {
 		localBox		= pBox;
 		contractColor	= pBox.getContractColorBits();
 		wildColor		= pBox.getWildColorBits();

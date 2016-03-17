@@ -173,6 +173,8 @@ public class LMRNetwork
 			// カラー番号をクライアントから受け取る
 			// インベントリから染料を減らす。
 			int lcolor2 = contents[0];
+			// Synchronizing
+			lemaid.setColor(lcolor2);
 			if (!sender.capabilities.isCreativeMode) {
 				for (int li = 0; li < sender.inventory.mainInventory.length; li++) {
 					ItemStack lis = sender.inventory.mainInventory[li];
@@ -271,10 +273,10 @@ public class LMRNetwork
 			LittleMaidReengaged.Debug("CLIENT=%5s, INDEX:%d, name=%s", pMaid.worldObj.isRemote, contents[0], NetworkHelper.getStrFromPacket(contents, 1));
 			if (contents[0] == 0) {
 				// main
-				pMaid.setModelNameMain(NetworkHelper.getStrFromPacket(contents, 1));
+				pMaid.setTextureNameMain(NetworkHelper.getStrFromPacket(contents, 1));
 			} else {
 				// armor
-				pMaid.setModelNameArmor(NetworkHelper.getStrFromPacket(contents, 1));
+				pMaid.setTextureNameArmor(NetworkHelper.getStrFromPacket(contents, 1));
 			}
 		default:
 			break;

@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL12;
 
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
-import net.blacklab.lmr.entity.maidmodel.ModelBox;
-import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
+import net.blacklab.lmr.entity.maidmodel.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.client.Minecraft;
@@ -27,8 +27,8 @@ public class GuiTextureSlot extends GuiSlot {
 	public GuiTextureSelect owner;
 	public int selected;
 	public EntityLittleMaidForTexSelect entity;
-	public List<ModelBox> indexTexture;
-	public List<ModelBox> indexArmor;
+	public List<TextureBox> indexTexture;
+	public List<TextureBox> indexArmor;
 	public boolean mode;
 	public int texsel[] = new int[2];
 	public int color;
@@ -40,7 +40,7 @@ public class GuiTextureSlot extends GuiSlot {
 			new ItemStack(Items.leather_helmet)
 	};
 	protected boolean isContract;
-	protected static ModelBox blankBox;
+	protected static TextureBox blankBox;
 
 
 	public GuiTextureSlot(GuiTextureSelect pOwner) {
@@ -49,18 +49,18 @@ public class GuiTextureSlot extends GuiSlot {
 		entity = new EntityLittleMaidForTexSelect(owner.mc.theWorld);
 		color = owner.target.getColor();
 		selectColor = -1;
-		blankBox = new ModelBox();
+		blankBox = new TextureBox();
 		blankBox.models = new ModelMultiBase[] {null, null, null};
 		
 		texsel[0] = 0;//-1;
 		texsel[1] = 0;//-1;
-		indexTexture = new ArrayList<ModelBox>();
-		indexArmor = new ArrayList<ModelBox>();
+		indexTexture = new ArrayList<TextureBox>();
+		indexArmor = new ArrayList<TextureBox>();
 		isContract = owner.target.isContract();
 		entity.setContract(isContract);
-		ModelBoxBase ltbox[] = owner.target.getTextureBox();
+		TextureBoxBase ltbox[] = owner.target.getTextureBox();
 		for (int li = 0; li < ModelManager.instance.getTextureCount(); li++) {
-			ModelBox lbox = ModelManager.getTextureList().get(li);
+			TextureBox lbox = ModelManager.getTextureList().get(li);
 			if (isContract) {
 				if (lbox.getContractColorBits() > 0) {
 					indexTexture.add(lbox);
@@ -88,7 +88,7 @@ public class GuiTextureSlot extends GuiSlot {
 		return mode ? indexArmor.size() : indexTexture.size();
 	}
 	
-	public static ModelBox getBlankBox() {
+	public static TextureBox getBlankBox() {
 		return blankBox;
 	}
 
@@ -98,7 +98,7 @@ public class GuiTextureSlot extends GuiSlot {
 			selected = var1;
 			texsel[1] = var1;
 		} else {
-			ModelBox lbox = getSelectedBox(var1);
+			TextureBox lbox = getSelectedBox(var1);
 			if (lbox.hasColor(selectColor, isContract) && (owner.canSelectColor & (1 << selectColor)) > 0) {
 				selected = var1;
 				texsel[0] = var1;
@@ -141,7 +141,7 @@ public class GuiTextureSlot extends GuiSlot {
 			}
 		}
 		
-		ModelBox lbox;
+		TextureBox lbox;
 		if (mode) {
 			lbox = indexArmor.get(var1);
 			entity.textureData.textureBox[0] = blankBox;
@@ -203,15 +203,15 @@ public class GuiTextureSlot extends GuiSlot {
 		GL11.glPopMatrix();
 	}
 
-	public ModelBox getSelectedBox() {
+	public TextureBox getSelectedBox() {
 		return getSelectedBox(selected);
 	}
 
-	public ModelBox getSelectedBox(int pIndex) {
+	public TextureBox getSelectedBox(int pIndex) {
 		return mode ? indexArmor.get(pIndex) : indexTexture.get(pIndex);
 	}
 
-	public ModelBox getSelectedBox(boolean pMode) {
+	public TextureBox getSelectedBox(boolean pMode) {
 		return pMode ? indexArmor.get(texsel[1]) : indexTexture.get(texsel[0]);
 	}
 

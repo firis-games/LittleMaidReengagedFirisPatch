@@ -22,7 +22,7 @@ import java.util.zip.ZipInputStream;
 
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.entity.maidmodel.ModelBox;
+import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.manager.ModelManager;
@@ -62,7 +62,7 @@ public class LMMNX_SoundLoader {
 	public static void load() {
 		// 読み込みを開始するstaticメソッド．
 		// 処理用のメソッドは全てインスタンス内に．
-		for (ModelBox box: ModelManager.getTextureList()) {
+		for (TextureBox box: ModelManager.getTextureList()) {
 			String s = box.textureName;
 			if (s!=null && !s.isEmpty()) {
 				instance.loadedTPNames.add(s);

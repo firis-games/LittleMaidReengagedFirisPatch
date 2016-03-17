@@ -25,9 +25,9 @@ import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.resource.LMMNX_OldZipTexturesLoader;
-import net.blacklab.lmr.entity.maidmodel.ModelBox;
-import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
-import net.blacklab.lmr.entity.maidmodel.ModelBoxServer;
+import net.blacklab.lmr.entity.maidmodel.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
+import net.blacklab.lmr.entity.maidmodel.TextureBoxServer;
 import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
@@ -84,20 +84,20 @@ public class ModelManager {
 	/**
 	 * ローカルで保持しているテクスチャパック
 	 */
-	private List<ModelBox> textures = new ArrayList<ModelBox>();
+	private List<TextureBox> textures = new ArrayList<TextureBox>();
 	/**
 	 * サーバー側での管理番号を識別するのに使う、クライアント用。
 	 */
-	public Map<ModelBox, Integer> textureServerIndex = new HashMap<ModelBox, Integer>();
+	public Map<TextureBox, Integer> textureServerIndex = new HashMap<TextureBox, Integer>();
 	/**
 	 * サーバー・クライアント間でテクスチャパックの名称リストの同期を取るのに使う、サーバー用。
 	 */
-	public List<ModelBoxServer> textureServer = new ArrayList<ModelBoxServer>();
+	public List<TextureBoxServer> textureServer = new ArrayList<TextureBoxServer>();
 	/**
 	 * Entity毎にデフォルトテクスチャを参照。
 	 * 構築方法はEntityListを参照のこと。
 	 */
-	protected Map<Class, ModelBox> defaultTextures = new HashMap<Class, ModelBox>();
+	protected Map<Class, TextureBox> defaultTextures = new HashMap<Class, TextureBox>();
 	
 	protected Map<IModelMMMEntity, int[]> stackGetTexturePack = new HashMap<IModelMMMEntity, int[]>();
 	protected Map<IModelMMMEntity, Object[]> stackSetTexturePack = new HashMap<IModelMMMEntity, Object[]>();
@@ -140,8 +140,8 @@ public class ModelManager {
 	/**
 	 * テクスチャ名称の一致する物を返す。
 	 */
-	public ModelBox getTextureBox(String pName) {
-		for (ModelBox ltb : getTextureList()) {
+	public TextureBox getTextureBox(String pName) {
+		for (TextureBox ltb : getTextureList()) {
 			if (ltb.textureName.equals(pName)) {
 				return ltb;
 			}
@@ -149,7 +149,7 @@ public class ModelManager {
 		return null;
 	}
 	
-	public static List<ModelBox> getTextureList()
+	public static List<TextureBox> getTextureList()
 	{
 		return instance.textures;
 	}
@@ -159,17 +159,17 @@ public class ModelManager {
 	 * @param pBoxBase
 	 * @return
 	 */
-	public ModelBox getTextureBox(ModelBoxBase pBoxBase) {
-		if (pBoxBase instanceof ModelBox) {
-			return (ModelBox)pBoxBase;
-		} else if (pBoxBase instanceof ModelBoxServer) {
+	public TextureBox getTextureBox(TextureBoxBase pBoxBase) {
+		if (pBoxBase instanceof TextureBox) {
+			return (TextureBox)pBoxBase;
+		} else if (pBoxBase instanceof TextureBoxServer) {
 			return getTextureBox(pBoxBase.textureName);
 		}
 		return null;
 	}
 
-	public ModelBoxServer getTextureBoxServer(String pName) {
-		for (ModelBoxServer lbox : textureServer) {
+	public TextureBoxServer getTextureBoxServer(String pName) {
+		for (TextureBoxServer lbox : textureServer) {
 			if (lbox.textureName.equals(pName)) {
 				return lbox;
 			}
@@ -177,7 +177,7 @@ public class ModelManager {
 		return null;
 	}
 
-	public ModelBoxServer getTextureBoxServer(int pIndex) {
+	public TextureBoxServer getTextureBoxServer(int pIndex) {
 //		MMMLib.Debug("getTextureBoxServer: %d / %d", pIndex, textureServer.size());
 		if (textureServer.size() > pIndex) {
 			return textureServer.get(pIndex);
@@ -231,7 +231,7 @@ public class ModelManager {
 		if (ldm == null && !modelMap.isEmpty()) {
 			ldm = (ModelMultiBase[])modelMap.values().toArray()[0];
 		}
-		for (ModelBox ltb : textures) {
+		for (TextureBox ltb : textures) {
 			if (ltb.modelName.isEmpty()) {
 				ltb.setModels(defaultModelName, null, ldm);
 			} else {
@@ -244,8 +244,8 @@ public class ModelManager {
 			String ls = le.getValue()[0].getUsingTexture();
 			if (ls != null) {
 				if (getTextureBox(ls + "_" + le.getKey()) == null) {
-					ModelBox lbox = null;
-					for (ModelBox ltb : textures) {
+					TextureBox lbox = null;
+					for (TextureBox ltb : textures) {
 						if (ltb.packegeName.equals(ls)) {
 							lbox = ltb;
 							break;
@@ -260,7 +260,7 @@ public class ModelManager {
 			}
 		}
 		MMMLib.Debug("Loaded Texture Lists.(%d)", textures.size());
-		for (ModelBox lbox : textures) {
+		for (TextureBox lbox : textures) {
 			MMMLib.Debug("texture: %s(%s) - hasModel:%b", lbox.textureName, lbox.fileName, lbox.models != null);
 		}
 		for (int li = textures.size() - 1; li >= 0; li--) {
@@ -269,7 +269,7 @@ public class ModelManager {
 			}
 		}
 		MMMLib.Debug("Rebuild Texture Lists.(%d)", textures.size());
-		for (ModelBox lbox : textures) {
+		for (TextureBox lbox : textures) {
 			if(lbox.getWildColorBits()>0){
 				setDefaultTexture(EntityLivingBase.class, lbox);
 			}
@@ -299,7 +299,7 @@ public class ModelManager {
 
 	public void buildCrafterTexture() {
 		// TODO:実験コード標準モデルテクスチャで構築
-		ModelBox lbox = new ModelBox("Crafter_Steve", new String[] {"", "", ""});
+		TextureBox lbox = new TextureBox("Crafter_Steve", new String[] {"", "", ""});
 		lbox.fileName = "";
 		
 		lbox.addTexture(0x0c, "/assets/minecraft/textures/entity/steve.png");
@@ -322,8 +322,8 @@ public class ModelManager {
 		// サーバー用テクスチャ名称のインデクッスローダー
 		// 先ずは手持ちのテクスチャパックを追加する。
 		textureServer.clear();
-		for (ModelBox lbox : getTextureList()) {
-			textureServer.add(new ModelBoxServer(lbox));
+		for (TextureBox lbox : getTextureList()) {
+			textureServer.add(new TextureBoxServer(lbox));
 		}
 		// ファイルからロード
 /*
@@ -378,7 +378,7 @@ public class ModelManager {
 			FileWriter fw = new FileWriter(lfile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
-			for (ModelBoxServer lbox : textureServer) {
+			for (TextureBoxServer lbox : textureServer) {
 				bw.write(String.format(
 						"%04x,%04x,%f,%f,%f,%f,%s",
 						lbox.getContractColorBits(),
@@ -407,8 +407,8 @@ public class ModelManager {
 		textureServer.clear();
 		if (pFlag) {
 			int li = 0;
-			for (ModelBox lbc : getTextureList()) {
-				ModelBoxServer lbs = new ModelBoxServer(lbc);
+			for (TextureBox lbc : getTextureList()) {
+				TextureBoxServer lbs = new TextureBoxServer(lbc);
 				textureServer.add(lbs);
 				textureServerIndex.put(lbc, li++);
 			}
@@ -489,9 +489,9 @@ public class ModelManager {
 					if (lindex == tx_oldwild) {
 						lindex = tx_wild + 12;
 					}
-					ModelBox lts = getTextureBox(pn);
+					TextureBox lts = getTextureBox(pn);
 					if (lts == null) {
-						lts = new ModelBox(pn, pSearch);
+						lts = new TextureBox(pn, pSearch);
 						textures.add(lts);
 						MMMLib.Debug("getTextureName-append-texturePack-%s", pn);
 					}
@@ -628,11 +628,11 @@ public class ModelManager {
 		return -1;
 	}
 
-	public ModelBox getNextPackege(ModelBox pNowBox, int pColor) {
+	public TextureBox getNextPackege(TextureBox pNowBox, int pColor) {
 		// 次のテクスチャパッケージの名前を返す
 		boolean f = false;
-		ModelBox lreturn = null;
-		for (ModelBox ltb : getTextureList()) {
+		TextureBox lreturn = null;
+		for (TextureBox ltb : getTextureList()) {
 			if (ltb.hasColor(pColor)) {
 				if (f) {
 					return ltb;
@@ -648,10 +648,10 @@ public class ModelManager {
 		return lreturn == null ? null : lreturn;
 	}
 
-	public ModelBox getPrevPackege(ModelBox pNowBox, int pColor) {
+	public TextureBox getPrevPackege(TextureBox pNowBox, int pColor) {
 		// 前のテクスチャパッケージの名前を返す
-		ModelBox lreturn = null;
-		for (ModelBox ltb : getTextureList()) {
+		TextureBox lreturn = null;
+		for (TextureBox ltb : getTextureList()) {
 			if (ltb == pNowBox) {
 				if (lreturn != null) {
 					break;
@@ -671,11 +671,11 @@ public class ModelManager {
 		return getTextureList().size();
 	}
 
-	public ModelBox getNextArmorPackege(ModelBox pNowBox) {
+	public TextureBox getNextArmorPackege(TextureBox pNowBox) {
 		// 次のテクスチャパッケージの名前を返す
 		boolean f = false;
-		ModelBox lreturn = null;
-		for (ModelBox ltb : getTextureList()) {
+		TextureBox lreturn = null;
+		for (TextureBox ltb : getTextureList()) {
 			if (ltb.hasArmor()) {
 				if (f) {
 					return ltb;
@@ -691,10 +691,10 @@ public class ModelManager {
 		return lreturn;
 	}
 
-	public ModelBox getPrevArmorPackege(ModelBox pNowBox) {
+	public TextureBox getPrevArmorPackege(TextureBox pNowBox) {
 		// 前のテクスチャパッケージの名前を返す
-		ModelBox lreturn = null;
-		for (ModelBox ltb : getTextureList()) {
+		TextureBox lreturn = null;
+		for (TextureBox ltb : getTextureList()) {
 			if (ltb == pNowBox) {
 				if (lreturn != null) {
 					break;
@@ -711,13 +711,13 @@ public class ModelManager {
 		return getRandomTexture(pRand).textureName;
 	}
 
-	public ModelBoxServer getRandomTexture(Random pRand) {
+	public TextureBoxServer getRandomTexture(Random pRand) {
 		if (textureServer.isEmpty()) {
 			return null;
 		}
 		// 野生色があるものをリストアップ
-		List<ModelBoxServer> llist = new ArrayList<ModelBoxServer>();
-		for (ModelBoxServer lbox : textureServer) {
+		List<TextureBoxServer> llist = new ArrayList<TextureBoxServer>();
+		for (TextureBoxServer lbox : textureServer) {
 			if (lbox.getWildColorBits() > 0) {
 				llist.add(lbox);
 			}
@@ -740,7 +740,7 @@ public class ModelManager {
 		}
 		// 見当たらなかったのでEntityに対応するデフォルトを返す
 //		int li = textureServerIndex.get(getDefaultTexture(pEntity));
-		ModelBox lbox = getDefaultTexture(pEntity);
+		TextureBox lbox = getDefaultTexture(pEntity);
 		if (lbox != null) {
 			pPackName = lbox.textureName;
 			for (int li = 0; li < textureServer.size(); li++) {
@@ -757,17 +757,17 @@ public class ModelManager {
 	 * @param pBox
 	 * @return
 	 */
-	public int getIndexTextureBoxServerIndex(ModelBox pBox) {
+	public int getIndexTextureBoxServerIndex(TextureBox pBox) {
 		return textureServerIndex.get(pBox);
 	}
 
 	/**
 	 * Entityに対応するデフォルトのテクスチャを設定する。
 	 */
-	public void setDefaultTexture(IModelMMMEntity pEntity, ModelBox pBox) {
+	public void setDefaultTexture(IModelMMMEntity pEntity, TextureBox pBox) {
 		setDefaultTexture(pEntity.getClass(), pBox);
 	}
-	public void setDefaultTexture(Class pEntityClass, ModelBox pBox) {
+	public void setDefaultTexture(Class pEntityClass, TextureBox pBox) {
 		defaultTextures.put(pEntityClass, pBox);
 		MMMLib.Debug("appendDefaultTexture:%s(%s)",
 				pEntityClass.getSimpleName(), pBox == null ? "NULL" : pBox.textureName);
@@ -776,16 +776,16 @@ public class ModelManager {
 	/**
 	 * Entityに対応するデフォルトモデルを返す。
 	 */
-	public ModelBox getDefaultTexture(IModelMMMEntity pEntity) {
+	public TextureBox getDefaultTexture(IModelMMMEntity pEntity) {
 		return getDefaultTexture(pEntity.getClass());
 	}
-	public ModelBox getDefaultTexture(Class pEntityClass) {
+	public TextureBox getDefaultTexture(Class pEntityClass) {
 		if (defaultTextures.containsKey(pEntityClass)) {
 			return defaultTextures.get(pEntityClass);
 		}
 		Class lsuper = pEntityClass.getSuperclass();
 		if (lsuper != null) {
-			ModelBox lbox = getDefaultTexture(lsuper);
+			TextureBox lbox = getDefaultTexture(lsuper);
 			if (lbox != null) {
 				setDefaultTexture(pEntityClass, lbox);
 			}

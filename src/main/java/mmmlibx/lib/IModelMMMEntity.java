@@ -1,7 +1,7 @@
 package mmmlibx.lib;
 
-import net.blacklab.lmr.entity.maidmodel.ModelBox;
-import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
+import net.blacklab.lmr.entity.maidmodel.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.minecraft.util.ResourceLocation;
 
@@ -16,7 +16,7 @@ public interface IModelMMMEntity {
 	 * @param pPackName
 	 * 設定されるテクスチャパックの名称（TextureBoxClient）
 	 */
-	public void setTexturePackName(ModelBox[] pTextureBox);
+	public void setTexturePackName(TextureBox[] pTextureBox);
 	
 	/**
 	 * 現在のEntityに色を設定する。
@@ -33,8 +33,8 @@ public interface IModelMMMEntity {
 	public void setContract(boolean pContract);
 	public boolean isContract();
 
-	public void setTextureBox(ModelBoxBase[] pTextureBox);
-	public ModelBoxBase[] getTextureBox();
+	public void setTextureBox(TextureBoxBase[] pTextureBox);
+	public TextureBoxBase[] getTextureBox();
 
 	public void setTextures(int pIndex, ResourceLocation[] pNames);
 	public ResourceLocation[] getTextures(int pIndex);

@@ -69,9 +69,9 @@ import net.blacklab.lmr.entity.ai.LMMNX_EntityAIRestrictOpenDoor;
 import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest;
 import net.blacklab.lmr.entity.experience.ExperienceHandler;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
-import net.blacklab.lmr.entity.maidmodel.ModelBox;
-import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
+import net.blacklab.lmr.entity.maidmodel.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.pathnavigate.LMMNX_PathNavigatorLittleMaid;
@@ -289,8 +289,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	public Profiler aiProfiler;
 
 	//モデル
-	protected String modelNameMain;
-	protected String modelNameArmor;
+	protected String textureNameMain;
+	protected String textureNameArmor;
 
 	public int playingTick = 0;
 
@@ -345,13 +345,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		// モデルレンダリング用のフラグ獲得用ヘルパー関数
 		maidCaps = new EntityCaps(this);
 		
-		modelNameMain = modelNameArmor = "default_"+ModelManager.defaultModelName;
+		textureNameMain = textureNameArmor = "default_"+ModelManager.defaultModelName;
 
 		textureData = new ModelConfigCompound(this, maidCaps);
 //		if (worldObj.isRemote) {
 			// 形態形成場
 			textureData.setColor(12);
-			ModelBox ltb[] = new ModelBox[2];
+			TextureBox ltb[] = new TextureBox[2];
 			ltb[0] = ltb[1] = ModelManager.instance.getDefaultTexture(this);
 			setTexturePackName(ltb);
 //		}
@@ -418,8 +418,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		textureData.setTextureInitServer(ls);
 		LittleMaidReengaged.Debug("init-ID:%d, %s:%d", getEntityId(), textureData.textureBox[0].textureName, textureData.getColor());
 //		setTexturePackIndex(textureData.getColor(), textureData.textureIndex);
-		modelNameMain = textureData.textureBox[0].textureName;
-		modelNameArmor = textureData.textureBox[1].textureName;
+		textureNameMain = textureData.textureBox[0].textureName;
+		textureNameArmor = textureData.textureBox[1].textureName;
 //		recallRenderParamTextureName(textureModelNameForClient, textureArmorNameForClient);
 		if(!isContract()) {
 			setMaidMode("Wild");
@@ -431,7 +431,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		// 野生メイドの色設定処理
 		int nsize = 0;
 		int avaliableColor[] = new int[16];
-		ModelBoxBase box = getModelConfigCompound().textureBox[0];
+		TextureBoxBase box = getModelConfigCompound().textureBox[0];
 		for (int i=0; i<16; i++) {
 			if ((box.wildColor & 1<<i) > 0) {
 				avaliableColor[nsize++] = i;
@@ -1258,10 +1258,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		par1nbtTagCompound.setString("texArmor", textureData.getTextureName(1));
 		par1nbtTagCompound.setBoolean("isSwimming", swimmingEnabled);
 		par1nbtTagCompound.setInteger("maidArmorVisible", maidArmorVisible);
-		if(modelNameMain==null) modelNameMain = "default_Orign";
-		par1nbtTagCompound.setString("textureModelNameForClient", modelNameMain);
-		if(modelNameArmor==null) modelNameArmor = "default_Orign";
-		par1nbtTagCompound.setString("textureArmorNameForClient", modelNameArmor);
+		if(textureNameMain==null) textureNameMain = "default_Orign";
+		par1nbtTagCompound.setString("textureModelNameForClient", textureNameMain);
+		if(textureNameArmor==null) textureNameArmor = "default_Orign";
+		par1nbtTagCompound.setString("textureArmorNameForClient", textureNameArmor);
 		par1nbtTagCompound.setBoolean("isMadeTextureNameFlag", isMadeTextureNameFlag);
 
 		NBTTagCompound prevtargettag = new NBTTagCompound();
@@ -1354,14 +1354,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			maidEntityModeList.get(li).readEntityFromNBT(par1nbtTagCompound);
 		}
 
-		modelNameMain = par1nbtTagCompound.getString("textureModelNameForClient");
-		if(modelNameMain.isEmpty()){
-			modelNameMain = "default_"+ModelManager.defaultModelName;
+		textureNameMain = par1nbtTagCompound.getString("textureModelNameForClient");
+		if(textureNameMain.isEmpty()){
+			textureNameMain = "default_"+ModelManager.defaultModelName;
 		}
 		
-		modelNameArmor = par1nbtTagCompound.getString("textureArmorNameForClient");
-		if(modelNameArmor.isEmpty()){
-			modelNameArmor = "default_"+ModelManager.defaultModelName;
+		textureNameArmor = par1nbtTagCompound.getString("textureArmorNameForClient");
+		if(textureNameArmor.isEmpty()){
+			textureNameArmor = "default_"+ModelManager.defaultModelName;
 		}
 		setColor(par1nbtTagCompound.getInteger("Color"));
 		refreshModels();
@@ -1375,7 +1375,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		setExpBooster(par1nbtTagCompound.getInteger("LMMNX_EXP_BOOST"));
 		dataWatcher.updateObject(Statics.dataWatch_MaidExpValue, maidExperience);
 
-		LittleMaidReengaged.Debug("READ %s %s", modelNameMain, modelNameArmor);
+		LittleMaidReengaged.Debug("READ %s %s", textureNameMain, textureNameArmor);
 
 		onInventoryChanged();
 		isWildSaved = par1nbtTagCompound.getBoolean("isWildSaved");
@@ -1860,8 +1860,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 					continue;
 				}
 
-				String sname = LMMNX_SoundRegistry.getSoundRegisteredName(enumsound, modelNameMain, getColor());
-				LittleMaidReengaged.Debug("STC %s,%d/FRS %s", modelNameMain, getColor(), sname);
+				String sname = LMMNX_SoundRegistry.getSoundRegisteredName(enumsound, textureNameMain, getColor());
+				LittleMaidReengaged.Debug("STC %s,%d/FRS %s", textureNameMain, getColor(), sname);
 
 				if (sname == null || sname.isEmpty()) {
 					playingSound.remove(enumsound);
@@ -4011,13 +4011,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	@Override
-	public void setTexturePackName(ModelBox[] pTextureBox) {
+	public void setTexturePackName(TextureBox[] pTextureBox) {
 		// Client
 		textureData.setTexturePackName(pTextureBox);
 		setTextureNames();
 		LittleMaidReengaged.Debug("ID:%d, TextureModel:%s", getEntityId(), textureData.getTextureName(0));
 		// モデルの初期化
-		((ModelBox)textureData.textureBox[0]).models[0].setCapsValue(IModelCaps.caps_changeModel, maidCaps);
+		((TextureBox)textureData.textureBox[0]).models[0].setCapsValue(IModelCaps.caps_changeModel, maidCaps);
 		// スタビの付け替え
 //		for (Entry<String, MMM_EquippedStabilizer> le : pEntity.maidStabilizer.entrySet()) {
 //			if (le.getValue() != null) {
@@ -4032,8 +4032,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	public void setTextureNames() {
 		textureData.setTextureNames();
 		if (worldObj.isRemote) {
-			modelNameMain = textureData.getTextureName(0);
-			modelNameArmor = textureData.getTextureName(1);
+			textureNameMain = textureData.getTextureName(0);
+			textureNameArmor = textureData.getTextureName(1);
 		}
 	}
 
@@ -4048,50 +4048,50 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 	// textureEntity
 	@Override
-	public void setTextureBox(ModelBoxBase[] pTextureBox) {
+	public void setTextureBox(TextureBoxBase[] pTextureBox) {
 		textureData.setTextureBox(pTextureBox);
 	}
 	
 	public String getModelNameMain() {
-		return modelNameMain;
+		return textureNameMain;
 	}
 	
 	public String getModelNameArmor() {
-		return modelNameArmor;
+		return textureNameArmor;
 	}
 	
-	public void setModelNameMain(String modelNameMain) {
-		this.modelNameMain = modelNameMain;
+	public void setTextureNameMain(String modelNameMain) {
+		this.textureNameMain = modelNameMain;
 		refreshModels();
 	}
 	
-	public void setModelNameArmor(String modelNameArmor) {
-		this.modelNameArmor = modelNameArmor;
+	public void setTextureNameArmor(String modelNameArmor) {
+		this.textureNameArmor = modelNameArmor;
 		refreshModels();
 	}
 	
 	protected void refreshModels() {
 		String defName = ModelManager.instance.getRandomTextureString(rand);
-		ModelBoxBase mainModel  = modelBoxAutoSelect(modelNameMain);
+		TextureBoxBase mainModel  = modelBoxAutoSelect(textureNameMain);
 		if (mainModel == null) {
 			mainModel = modelBoxAutoSelect(defName);
 		}
 
-		ModelBoxBase armorModel = modelBoxAutoSelect(modelNameArmor);
+		TextureBoxBase armorModel = modelBoxAutoSelect(textureNameArmor);
 		if (armorModel == null) {
 			armorModel = modelBoxAutoSelect(defName);
 		}
 		
-		setTextureBox(new ModelBoxBase[]{mainModel, armorModel});
+		setTextureBox(new TextureBoxBase[]{mainModel, armorModel});
 		setTextureNames();
 	}
 	
-	private ModelBoxBase modelBoxAutoSelect(String pName) {
+	private TextureBoxBase modelBoxAutoSelect(String pName) {
 		return worldObj.isRemote ? ModelManager.instance.getTextureBox(pName) : ModelManager.instance.getTextureBoxServer(pName);
 	}
 	
 	@Override
-	public ModelBoxBase[] getTextureBox() {
+	public TextureBoxBase[] getTextureBox() {
 		return textureData.getTextureBox();
 	}
 

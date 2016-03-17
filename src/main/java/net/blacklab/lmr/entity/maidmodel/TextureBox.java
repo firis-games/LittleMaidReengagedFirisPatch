@@ -12,7 +12,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class ModelBox extends ModelBoxBase {
+public class TextureBox extends TextureBoxBase {
 
 	/**
 	 * テクスチャパックの名称、モデル指定詞の前までの文字列。
@@ -45,7 +45,7 @@ public class ModelBox extends ModelBoxBase {
 
 
 
-	public ModelBox() {
+	public TextureBox() {
 		textures = new HashMap<Integer, ResourceLocation>();
 		armors = new TreeMap<String, Map<Integer, ResourceLocation>>();
 		modelHeight = modelWidth = modelYOffset = modelMountedYOffset = 0.0F;
@@ -53,7 +53,7 @@ public class ModelBox extends ModelBoxBase {
 		wildColor = -1;
 	}
 
-	public ModelBox(String pTextureName, String[] pSearch) {
+	public TextureBox(String pTextureName, String[] pSearch) {
 		this();
 		textureName = pTextureName;
 		fileName = pTextureName;
@@ -199,8 +199,8 @@ public class ModelBox extends ModelBoxBase {
 		return models != null ? models[0].getMountedYOffset(pEntityCaps) : modelMountedYOffset;
 	}
 
-	public ModelBox duplicate() {
-		ModelBox lbox = new ModelBox();
+	public TextureBox duplicate() {
+		TextureBox lbox = new TextureBox();
 		lbox.textureName = textureName;
 		lbox.packegeName = packegeName;
 		lbox.fileName = fileName;

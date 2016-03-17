@@ -7,7 +7,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import mmmlibx.lib.IModelMMMEntity;
-import net.blacklab.lmr.entity.maidmodel.ModelBox;
+import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.minecraft.client.gui.GuiButton;
@@ -26,12 +27,12 @@ public class GuiTextureSelect extends GuiScreen {
 	protected GuiScreen owner;
 	protected GuiTextureSlot selectPanel;
 	protected GuiButton modeButton[] = new GuiButton[2];
-	public IModelMMMEntity target;
+	public EntityLittleMaid target;
 	public int canSelectColor;
 	public int selectColor;
 	protected boolean toServer;
 
-	public GuiTextureSelect(GuiScreen pOwner, IModelMMMEntity pTarget, int pColor, boolean pToServer) {
+	public GuiTextureSelect(GuiScreen pOwner, EntityLittleMaid pTarget, int pColor, boolean pToServer) {
 		owner = pOwner;
 		target = pTarget;
 		canSelectColor = pColor;
@@ -55,12 +56,15 @@ public class GuiTextureSelect extends GuiScreen {
 		case 200:
 			target.setColor(selectColor);
 			if (selectPanel.texsel[0] > -1) {
-				target.getTextureBox()[0] = selectPanel.getSelectedBox(false);
+				target.setTextureNameMain(selectPanel.getSelectedBox(false).textureName);
+//				target.getTextureBox()[0] = selectPanel.getSelectedBox(false);
 			}
 			if (selectPanel.texsel[1] > -1) {
-				target.getTextureBox()[1] = selectPanel.getSelectedBox(true);
+				target.setTextureNameArmor(selectPanel.getSelectedBox(true).textureName);
+//				target.getTextureBox()[1] = selectPanel.getSelectedBox(true);
 			}
-			target.getModelConfigCompound().setTextureNames();
+			target.syncModelNames();
+//			target.getModelConfigCompound().setTextureNames();
 /*
 			if (toServer) {
 				MMM_TextureManager.instance.postSetTexturePack(target, selectColor, target.getTextureBox());
@@ -82,7 +86,7 @@ public class GuiTextureSelect extends GuiScreen {
 					// 色情報の設定
 //					theMaid.maidColor = selectPanel.color | 0x010000 | (selectColor << 8);
 					// サーバーへ染料の使用を通知
-					LMRNetwork.sendToServer(EnumPacketMode.SERVER_DECREMENT_DYE, new byte[]{(byte) selectColor});
+					target.syncNet(EnumPacketMode.SERVER_DECREMENT_DYE, new byte[]{(byte) selectColor});
 				}
 			}
 			break;
@@ -138,7 +142,7 @@ public class GuiTextureSelect extends GuiScreen {
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
 		RenderHelper.enableGUIStandardItemLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
-		ModelBox lbox = selectPanel.getSelectedBox();
+		TextureBox lbox = selectPanel.getSelectedBox();
 		GL11.glTranslatef(width / 2 - 115F, height - 5F, 100F);
 		GL11.glScalef(60F, -60F, 60F);
 		selectPanel.entity.renderYawOffset = -25F;

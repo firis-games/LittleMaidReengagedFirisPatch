@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.mode;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.maidmodel.ModelBoxBase;
+import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +37,7 @@ public class EntityMode_BookDecorder extends EntityModeBase {
 				
 				String lcommands[] = ls.split(";");
 				String lcom[];
-				ModelBoxBase lboxs[] = new ModelBoxBase[] {
+				TextureBoxBase lboxs[] = new TextureBoxBase[] {
 						owner.textureData.textureBox[0],
 						owner.textureData.textureBox[1]
 				};
@@ -55,14 +55,14 @@ public class EntityMode_BookDecorder extends EntityModeBase {
 								lflag = true;
 							}
 							else if (lcom[0].equals("texture")) {
-								ModelBoxBase lbox = ModelManager.instance.getTextureBox(lcom[1]);
+								TextureBoxBase lbox = ModelManager.instance.getTextureBox(lcom[1]);
 								if (lbox != null) {
 									lboxs[0] = lbox;
 									lflag = true;
 								}
 							}
 							else if (lcom[0].equals("armor")) {
-								ModelBoxBase lbox = ModelManager.instance.getTextureBox(lcom[1]);
+								TextureBoxBase lbox = ModelManager.instance.getTextureBox(lcom[1]);
 								if (lbox != null) {
 									lboxs[1] = lbox;
 									lflag = true;

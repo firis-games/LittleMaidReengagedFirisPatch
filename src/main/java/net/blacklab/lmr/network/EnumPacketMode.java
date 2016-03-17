@@ -35,15 +35,14 @@ public enum EnumPacketMode {
 	SYNC_MODEL				(0x23,  true),
 	SYNC_ARMORFLAG			(0x24,  true),
 	SYNC_EXPBOOST			(0x25,  true),
+	/** Notify server of using dye. Decrements dye powder. **/
+	SERVER_DECREMENT_DYE	(0x26,  true),
 
 	/** Change Freedom Mode from GUI **/
 	SERVER_CHAMGE_FREEDOM	(0x30,  true),
 	/** Change Swimming Mode from GUI **/
-	SERVER_CHANGE_SWIMMING	(0x31,  true),
+	SERVER_CHANGE_SWIMMING	(0x31,  true);
 
-	/** Notify server of using dye. Decrements dye powder. **/
-	SERVER_DECREMENT_DYE	(0x40, false);
-	
 	public byte modeByte;
 	public boolean withEntity;
 	

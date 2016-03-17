@@ -85,7 +85,7 @@ public class ModelConfigCompound  {
 	 */
 	public boolean contract;
 	
-	public ModelBoxBase textureBox[];
+	public TextureBoxBase textureBox[];
 	public ModelMultiBase textureModel[];
 	
 	/**
@@ -127,7 +127,7 @@ public class ModelConfigCompound  {
 		};
 		color = 12;
 		contract = false;
-		textureBox = new ModelBoxBase[2];
+		textureBox = new TextureBoxBase[2];
 		textureBox[0] = textureBox[1] = ModelManager.instance.getDefaultTexture(owner.getClass());
 		textureModel = new ModelMultiBase[3];
 	}
@@ -152,11 +152,11 @@ public class ModelConfigCompound  {
 	protected boolean setTextureNamesClient() {
 		// Client
 		boolean lf = false;
-		ModelBox lbox;
+		TextureBox lbox;
 		
-		if (textureBox[0] instanceof ModelBox) {
+		if (textureBox[0] instanceof TextureBox) {
 			int lc = (color & 0x00ff) + (contract ? 0 : ModelManager.tx_wild);
-			lbox = (ModelBox)textureBox[0];
+			lbox = (TextureBox)textureBox[0];
 			if (lbox.hasColor(lc)) {
 				textures[0][0] = lbox.getTextureName(lc);
 				lc = (color & 0x00ff) + (contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
@@ -186,8 +186,8 @@ public class ModelConfigCompound  {
 //			textureBox[0] = MMM_TextureManager.instance.getTextureBoxServerIndex(textureIndex[0]);
 			throw new IllegalStateException("Texture setting error. Maybe ModelBoxServer is set?");
 		}
-		if (textureBox[1] instanceof ModelBox && owner != null) {
-			lbox = (ModelBox)textureBox[1];
+		if (textureBox[1] instanceof TextureBox && owner != null) {
+			lbox = (TextureBox)textureBox[1];
 			for (int i = 0; i < 4; i++) {
 				ItemStack is = i==3?
 						(owner instanceof EntityLittleMaid?
@@ -210,9 +210,9 @@ public class ModelConfigCompound  {
 	protected boolean setTextureNamesServer() {
 		// Server
 		boolean lf = false;
-		ModelBoxServer lbox;
-		if (textureBox[0] instanceof ModelBoxServer) {
-			lbox = (ModelBoxServer)textureBox[0];
+		TextureBoxServer lbox;
+		if (textureBox[0] instanceof TextureBoxServer) {
+			lbox = (TextureBoxServer)textureBox[0];
 			if (lbox.localBox != null) {
 				int lc = (color & 0x00ff) + (contract ? 0 : ModelManager.tx_wild);
 				if (lbox.localBox.hasColor(lc)) {
@@ -226,8 +226,8 @@ public class ModelConfigCompound  {
 				}
 			}
 		}
-		if (textureBox[1] instanceof ModelBoxServer && owner != null) {
-			lbox = (ModelBoxServer)textureBox[1];
+		if (textureBox[1] instanceof TextureBoxServer && owner != null) {
+			lbox = (TextureBoxServer)textureBox[1];
 			if (lbox.localBox != null) {
 				if (CommonHelper.isClient) {
 					for (int i = 0; i < 4; i++) {
@@ -249,9 +249,9 @@ public class ModelConfigCompound  {
 		if (pTargetTexture == 0) {
 			int lc = getColor() + (isContract() ? 0 : ModelManager.tx_wild);
 			// TODO ★ 暫定処置
-			if(textureBox[0] instanceof ModelBox)
+			if(textureBox[0] instanceof TextureBox)
 			{
-				textureBox[0] = ModelManager.instance.getNextPackege((ModelBox)textureBox[0], lc);
+				textureBox[0] = ModelManager.instance.getNextPackege((TextureBox)textureBox[0], lc);
 			}
 			else
 			{
@@ -264,26 +264,26 @@ public class ModelConfigCompound  {
 			} else {
 				textureBox[1] = textureBox[0];
 			}
-			if (!((ModelBox)textureBox[1]).hasArmor()) {
+			if (!((TextureBox)textureBox[1]).hasArmor()) {
 				pTargetTexture = 1;
 			}
 		}
 		if (pTargetTexture == 1) {
-			textureBox[1] = ModelManager.instance.getNextArmorPackege((ModelBox)textureBox[1]);
+			textureBox[1] = ModelManager.instance.getNextArmorPackege((TextureBox)textureBox[1]);
 		}
 	}
 
 	public void setPrevTexturePackege(int pTargetTexture) {
 		if (pTargetTexture == 0) {
 			int lc = getColor() + (isContract() ? 0 : ModelManager.tx_wild);
-			textureBox[0] = ModelManager.instance.getPrevPackege((ModelBox)textureBox[0], lc);
+			textureBox[0] = ModelManager.instance.getPrevPackege((TextureBox)textureBox[0], lc);
 			textureBox[1] = textureBox[0];
-			if (!((ModelBox)textureBox[1]).hasArmor()) {
+			if (!((TextureBox)textureBox[1]).hasArmor()) {
 				pTargetTexture = 1;
 			}
 		}
 		if (pTargetTexture == 1) {
-			textureBox[1] = ModelManager.instance.getPrevArmorPackege((ModelBox)textureBox[1]);
+			textureBox[1] = ModelManager.instance.getPrevArmorPackege((TextureBox)textureBox[1]);
 		}
 	}
 
@@ -327,7 +327,7 @@ public class ModelConfigCompound  {
 
 
 //	@Override
-	public void setTexturePackName(ModelBox[] pTextureBox) {
+	public void setTexturePackName(TextureBox[] pTextureBox) {
 		// Client
 		for (int li = 0; li < pTextureBox.length; li++) {
 			textureBox[li] = pTextureBox[li];
@@ -358,12 +358,12 @@ public class ModelConfigCompound  {
 	}
 
 //	@Override
-	public void setTextureBox(ModelBoxBase[] pTextureBox) {
+	public void setTextureBox(TextureBoxBase[] pTextureBox) {
 		textureBox = pTextureBox;
 	}
 
 //	@Override
-	public ModelBoxBase[] getTextureBox() {
+	public TextureBoxBase[] getTextureBox() {
 		return textureBox;
 	}
 
@@ -400,7 +400,7 @@ public class ModelConfigCompound  {
 	}
 
 	public void setTextureInitClient() {
-		ModelBox lbox = ModelManager.instance.getDefaultTexture(owner.getClass());
+		TextureBox lbox = ModelManager.instance.getDefaultTexture(owner.getClass());
 		for (int li = 0; li < textureBox.length; li++) {
 			textureBox[li] = lbox;
 		}
@@ -416,7 +416,7 @@ public class ModelConfigCompound  {
 	}
 
 	public ResourceLocation getGUITexture() {
-		return ((ModelBox)textureBox[0]).getTextureName(ModelManager.tx_gui);
+		return ((TextureBox)textureBox[0]).getTextureName(ModelManager.tx_gui);
 	}
 
 	/**
