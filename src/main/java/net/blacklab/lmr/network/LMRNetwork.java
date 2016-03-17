@@ -5,6 +5,8 @@ import static net.blacklab.lmr.util.Statics.LMN_Server_SaveIFF;
 
 import java.util.Arrays;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.actionsp.SwingStatus;
@@ -13,6 +15,7 @@ import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -132,26 +135,31 @@ public class LMRNetwork
 		}
 		return null;
 	}
+	
+	public static void onCustomPayload(EntityPlayer sender, LMRMessage pPayload) {
+		// Turn true if the packet is sent from server
+		boolean fromServer = sender==null;
 
-	// 受信パケットの処理
-	public static void serverCustomPayload(EntityPlayer playerEntity, LMRMessage pPayload)
-	{
-		// サーバ側の動作
 		EnumPacketMode lmode = EnumPacketMode.getEnumPacketMode(pPayload.data[0]);
-		int leid = 0;
 		EntityLittleMaid lemaid = null;
 		if (lmode.withEntity) {
-			leid = NetworkHelper.getIntFromPacket(pPayload.data, 1);
-			lemaid = getLittleMaid(pPayload.data, 1, playerEntity.worldObj);
+			lemaid = getLittleMaid(pPayload.data, 1, sender!=null?sender.worldObj:Minecraft.getMinecraft().theWorld);
 			if (lemaid == null) return;
 			syncPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, 5, pPayload.data.length));
 		}
-		LittleMaidReengaged.Debug(String.format("LMM|Upd Srv Call[%2x:%d].", lmode.modeByte, leid));
+		if (fromServer) {
+			clientPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
+		} else {
+			serverPayLoad(lmode, sender, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
+		}
+	}
+
+	private static void serverPayLoad(EnumPacketMode pMode, EntityPlayer sender, EntityLittleMaid lemaid, byte[] contents) {
 		int lindex;
 		int lval;
 		String lname;
 		
-		switch (lmode) {
+		switch (pMode) {
 		case SERVER_UPDATE_SLOTS : 
 			// 初回更新とか
 			// インベントリの更新
@@ -164,13 +172,13 @@ public class LMRNetwork
 		case SERVER_DECREMENT_DYE :
 			// カラー番号をクライアントから受け取る
 			// インベントリから染料を減らす。
-			int lcolor2 = pPayload.data[1];
-			if (!playerEntity.capabilities.isCreativeMode) {
-				for (int li = 0; li < playerEntity.inventory.mainInventory.length; li++) {
-					ItemStack lis = playerEntity.inventory.mainInventory[li];
+			int lcolor2 = contents[0];
+			if (!sender.capabilities.isCreativeMode) {
+				for (int li = 0; li < sender.inventory.mainInventory.length; li++) {
+					ItemStack lis = sender.inventory.mainInventory[li];
 					if (lis != null && lis.getItem() == Items.dye) {
 						if (lis.getItemDamage() == (15 - lcolor2)) {
-							MaidHelper.decPlayerInventory(playerEntity, li, 1);
+							MaidHelper.decPlayerInventory(sender, li, 1);
 						}
 					}
 				}
@@ -179,25 +187,25 @@ public class LMRNetwork
 			
 		case SERVER_CHANGE_IFF :
 			// IFFの設定値を受信
-			lval = pPayload.data[1];
-			lindex = NetworkHelper.getIntFromPacket(pPayload.data, 2);
-			lname = NetworkHelper.getStrFromPacket(pPayload.data, 6);
-			LittleMaidReengaged.Debug("setIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerName(playerEntity), lname, lindex, lval);
-			IFF.setIFFValue(CommonHelper.getPlayerName(playerEntity), lname, lval);
-			sendIFFValue(playerEntity, lval, lindex);
+			lval = contents[0];
+			lindex = NetworkHelper.getIntFromPacket(contents, 1);
+			lname = NetworkHelper.getStrFromPacket(contents, 5);
+			LittleMaidReengaged.Debug("setIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerName(sender), lname, lindex, lval);
+			IFF.setIFFValue(CommonHelper.getPlayerName(sender), lname, lval);
+			sendIFFValue(sender, lval, lindex);
 			break;
 		case SERVER_REQUEST_IFF :
 			// IFFGUI open
-			lindex = NetworkHelper.getIntFromPacket(pPayload.data, 1);
-			lname = NetworkHelper.getStrFromPacket(pPayload.data, 5);
-			lval = IFF.getIFF(CommonHelper.getPlayerName(playerEntity), lname, playerEntity.worldObj);
-			LittleMaidReengaged.Debug("getIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerName(playerEntity), lname, lindex, lval);
-			sendIFFValue(playerEntity, lval, lindex);
+			lindex = NetworkHelper.getIntFromPacket(contents, 0);
+			lname = NetworkHelper.getStrFromPacket(contents, 4);
+			lval = IFF.getIFF(CommonHelper.getPlayerName(sender), lname, sender.worldObj);
+			LittleMaidReengaged.Debug("getIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerName(sender), lname, lindex, lval);
+			sendIFFValue(sender, lval, lindex);
 			break;
 		case SERVER_SAVE_IFF :
 			// IFFファイルの保存
-			IFF.saveIFF(CommonHelper.getPlayerName(playerEntity));
-			if (!playerEntity.worldObj.isRemote) {
+			IFF.saveIFF(CommonHelper.getPlayerName(sender));
+			if (!sender.worldObj.isRemote) {
 				IFF.saveIFF("");
 			}
 			break;
@@ -205,10 +213,10 @@ public class LMRNetwork
 			lemaid.requestExpBoost();
 			break;
 		case SERVER_CHAMGE_FREEDOM :
-			lemaid.setFreedom(pPayload.data[5]==1);
+			lemaid.setFreedom(contents[0]==1);
 			break;
 		case SERVER_CHANGE_SWIMMING :
-			lemaid.setSwimming(pPayload.data[5]==1);
+			lemaid.setSwimming(contents[0]==1);
 			break;
 		case SERVER_REQUEST_MODEL :
 			lemaid.syncModelNames();
@@ -218,32 +226,20 @@ public class LMRNetwork
 		}
 	}
 	
-	public static void clientCustomPayload(LMRMessage pPayload) {
-		// クライアント側の特殊パケット受信動作
-		EnumPacketMode lmode = EnumPacketMode.getEnumPacketMode(pPayload.data[0]);
-		int leid = 0;
-		EntityLittleMaid lemaid = null;
-		if (lmode.withEntity) {
-			leid = NetworkHelper.getIntFromPacket(pPayload.data, 1);
-			lemaid = LMRNetwork.getLittleMaid(pPayload.data, 1, CommonHelper.mc.theWorld);
-			if (lemaid == null) return;
-			syncPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, 5, pPayload.data.length));
-		}
-		LittleMaidReengaged.Debug(String.format("LMM|Upd Clt Call[%2x:%d].", lmode.modeByte, leid));
-		
-		switch (lmode) {
+	private static void clientPayLoad(EnumPacketMode pMode, EntityLittleMaid lemaid, byte[] contents) {
+		switch (pMode) {
 		case CLIENT_SWINGARM : 
 			// 腕振り
-			byte larm = pPayload.data[5];
-			EnumSound lsound = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(pPayload.data, 6));
-			lemaid.setSwinging(larm, lsound, NetworkHelper.getIntFromPacket(pPayload.data, 10)==1);
+			byte larm = contents[0];
+			EnumSound lsound = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(contents, 1));
+			lemaid.setSwinging(larm, lsound, NetworkHelper.getIntFromPacket(contents, 5)==1);
 //			mod_LMM_littleMaidMob.Debug(String.format("SwingSound:%s", lsound.name()));
 			break;
 			
 		case CLIENT_RESPOND_IFF :
 			// IFFの設定値を受信
-			int lval = pPayload.data[1];
-			int lindex = NetworkHelper.getIntFromPacket(pPayload.data, 2);
+			int lval = contents[0];
+			int lindex = NetworkHelper.getIntFromPacket(contents, 1);
 			String lname = (String)IFF.DefaultIFF.keySet().toArray()[lindex];
 			LittleMaidReengaged.Debug("setIFF-CL %s(%d)=%d", lname, lindex, lval);
 			IFF.setIFFValue(null, lname, lval);
@@ -251,7 +247,7 @@ public class LMRNetwork
 			
 		case CLIENT_PLAY_SOUND : 
 			// 音声再生
-			EnumSound lsound9 = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(pPayload.data, 5));
+			EnumSound lsound9 = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(contents, 0));
 			LittleMaidReengaged.Debug(String.format("playSound:%s", lsound9.name()));
 			lemaid.playSound(lsound9, true);
 			break;

@@ -9,13 +9,8 @@ public class LMRMessageHandler implements IMessageHandler<LMRMessage, IMessage>
 	@Override//IMessageHandlerのメソッド
 	public IMessage onMessage(LMRMessage message, MessageContext ctx)
 	{
-		if(message.data != null)
-		{
-			if(ctx.side.isClient()) {
-				LMRNetwork.clientCustomPayload(message);
-			} else {
-				LMRNetwork.serverCustomPayload(ctx.getServerHandler().playerEntity, message);
-			}
+		if(message.data != null) {
+			LMRNetwork.onCustomPayload(ctx.side.isServer() ? ctx.getServerHandler().playerEntity : null, message);
 		}
 		return null;//本来は返答用IMessageインスタンスを返すのだが、旧来のパケットの使い方をするなら必要ない。
 	}
