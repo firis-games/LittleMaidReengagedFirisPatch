@@ -131,34 +131,26 @@ import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.server.S04PacketEntityEquipment;
-import net.minecraft.network.play.server.S1DPacketEntityEffect;
-import net.minecraft.network.play.server.S1EPacketRemoveEntityEffect;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.TempCategory;
-import net.minecraft.world.pathfinder.WalkNodeProcessor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -444,11 +436,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		// 初期パラメーター
 		super.applyEntityAttributes();
 		// 対象移動可能範囲
-		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(20.0D);
+		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
 		// 基本移動速度
-		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
+		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
 		// 標準攻撃力１
-		getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D);
+		getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
 	}
 
 	@Override
@@ -1405,7 +1397,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	// おんぶおばけは無敵
 	@Override
 	public boolean canBeCollidedWith() {
-		if (ridingEntity != null && ridingEntity == mstatMasterEntity) {
+		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
 			ItemStack litemstack = mstatMasterEntity.getCurrentEquippedItem();
 			return (litemstack == null) || (litemstack.getItem() == Items.saddle);
 		}
@@ -1414,7 +1406,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 	@Override
 	public boolean canAttackWithItem() {
-		if (ridingEntity != null && ridingEntity == mstatMasterEntity) {
+		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
 			return false;
 		}
 		return super.canAttackWithItem();
@@ -1422,11 +1414,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 	@Override
 	public double getMountedYOffset() {
-		// TODO:ここは要調整
-		if (riddenByEntity instanceof EntityChicken) {
+		// TODO: Changed from 'riddenByEntity'. Is it correct?
+		if (getControllingPassenger() instanceof EntityChicken) {
 			return height + 0.03D;
 		}
-		if (riddenByEntity instanceof EntitySquid) {
+		if (getControllingPassenger() instanceof EntitySquid) {
 			return height - 0.2D;
 		}
 		return super.getMountedYOffset() + 0.35D;
@@ -2400,7 +2392,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				setMaidWait(false);
 			}
 			// 移動速度の変更
-			IAttributeInstance latt = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+			IAttributeInstance latt = getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 			// 属性を解除
 			latt.removeModifier(attCombatSpeed);
 			if (isContract()) {

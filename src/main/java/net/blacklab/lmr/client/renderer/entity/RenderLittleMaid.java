@@ -8,21 +8,21 @@ import mmmlibx.lib.multiModel.model.mc162.ModelBaseDuo;
 import mmmlibx.lib.multiModel.model.mc162.RenderModelMulti;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
@@ -47,9 +47,9 @@ public class RenderLittleMaid extends RenderModelMulti {
 
 		//レイヤーと化した防具描画
 
-		public RendererLivingEntity p1;
+		public RenderLivingBase p1;
 		public ModelBaseDuo mmodel;
-		public RendererLivingEntity field_177190_a;
+		public RenderLivingBase field_177190_a;
 		public float field_177184_f;
 		public float field_177185_g;
 		public float field_177192_h;
@@ -60,22 +60,22 @@ public class RenderLittleMaid extends RenderModelMulti {
 
 		public static final float renderScale = 0.0625F;
 
-		public MMMLayerArmor(RendererLivingEntity p_i46125_1_) {
+		public MMMLayerArmor(RenderLivingBase p_i46125_1_) {
 			super(p_i46125_1_);
 			p1 = p_i46125_1_;
 			mmodel = modelFATT;
-			this.field_177189_c = mmodel;
-			this.field_177186_d = mmodel;
+//			this.modelLeggings = mmodel;
+//			this.modelArmor = mmodel;
 		}
 
 		@Override
 		protected void initArmor() {
-			this.field_177189_c = mmodel;
-			this.field_177186_d = mmodel;
+			this.modelLeggings = mmodel;
+			this.modelArmor = mmodel;
 		}
 
 		@Override
-		protected void func_177179_a(ModelBase paramModelBase, int paramInt) {
+		protected void setModelSlotVisible(ModelBase paramModelBase, EntityEquipmentSlot paramInt) {
 			ModelBaseDuo model = (ModelBaseDuo) paramModelBase;
 			model.showArmorParts(paramInt);
 		}
@@ -239,8 +239,8 @@ public class RenderLittleMaid extends RenderModelMulti {
 
 		//レイヤーと化したアイテム描画
 
-		protected RendererLivingEntity renderer;
-		public MMMLayerHeldItem(RendererLivingEntity p_i46115_1_) {
+		protected RenderLivingBase renderer;
+		public MMMLayerHeldItem(RenderLivingBase p_i46115_1_) {
 			super(p_i46115_1_);
 			renderer = p_i46115_1_;
 		}

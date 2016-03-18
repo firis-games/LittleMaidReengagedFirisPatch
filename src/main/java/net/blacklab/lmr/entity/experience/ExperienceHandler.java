@@ -17,11 +17,11 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 
 public class ExperienceHandler {
 
@@ -76,7 +76,7 @@ public class ExperienceHandler {
 		if (level > 150) {
 			modifyamount += (Math.min(level, 300)-150)/15;
 		}
-		IAttributeInstance maxHPattr = theMaid.getEntityAttribute(SharedMonsterAttributes.maxHealth);
+		IAttributeInstance maxHPattr = theMaid.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
 		AttributeModifier existedMod = maxHPattr.getModifier(NX_EXP_HP_BOOSTER);
 		if (existedMod != null) {
 			prevamount = existedMod.getAmount();
@@ -124,8 +124,8 @@ public class ExperienceHandler {
 				theMaid.playSound("mob.ghast.death");
 				theMaid.playSound("dig.glass");
 				if (theMaid.getMaidMasterEntity() != null) {
-					theMaid.getMaidMasterEntity().addChatComponentMessage(new ChatComponentText(
-							theMaid.sprintfDeadCause(StatCollector.translateToLocal("littleMaidMob.chat.text.timedeath"), deadCause)));
+					theMaid.getMaidMasterEntity().addChatComponentMessage(new TextComponentString(
+							theMaid.sprintfDeadCause(I18n.translateToLocal("littleMaidMob.chat.text.timedeath"), deadCause)));
 				}
 			}
 

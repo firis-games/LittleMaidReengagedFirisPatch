@@ -11,21 +11,22 @@ import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 
 public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 
 	public class MMMLayerArmor extends LayerArmorBase{
 
-		public RendererLivingEntity p1;
+		public RenderLivingBase p1;
 		public ModelBaseDuo mmodel;
-		public RendererLivingEntity field_177190_a;
+		public RenderLivingBase field_177190_a;
 		public float field_177184_f;
 		public float field_177185_g;
 		public float field_177192_h;
@@ -34,22 +35,22 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 		public EntityLittleMaidForTexSelect lmm;
 		private int renderCount;
 
-		public MMMLayerArmor(RendererLivingEntity p_i46125_1_) {
+		public MMMLayerArmor(RenderLivingBase p_i46125_1_) {
 			super(p_i46125_1_);
 			p1 = p_i46125_1_;
 			mmodel = modelFATT;
-			this.field_177189_c = mmodel;
-			this.field_177186_d = mmodel;
+//			this.modelLeggings = mmodel;
+//			this.modelArmor = mmodel;
 		}
 
 		@Override
 		protected void initArmor() {
-			this.field_177189_c = mmodel;
-			this.field_177186_d = mmodel;
+			this.modelLeggings = mmodel;
+			this.modelArmor = mmodel;
 		}
 
 		@Override
-		protected void func_177179_a(ModelBase paramModelBase, int paramInt) {
+		protected void setModelSlotVisible(ModelBase paramModelBase, EntityEquipmentSlot paramInt) {
 			ModelBaseDuo model = (ModelBaseDuo) paramModelBase;
 			model.showArmorParts(paramInt);
 		}

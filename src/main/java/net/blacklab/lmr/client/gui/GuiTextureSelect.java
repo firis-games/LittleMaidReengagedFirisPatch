@@ -6,17 +6,15 @@ import org.lwjgl.opengl.EXTRescaleNormal;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import mmmlibx.lib.IModelMMMEntity;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.network.EnumPacketMode;
-import net.blacklab.lmr.network.LMRNetwork;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 /**
  * 選択時にサーバーへ染料の使用を通知するための処理。
@@ -131,7 +129,7 @@ public class GuiTextureSelect extends GuiScreen {
 	public void drawScreen(int par1, int par2, float par3) {
 		drawDefaultBackground();
 		selectPanel.drawScreen(par1, par2, par3);
-		drawCenteredString(mc.fontRendererObj, StatCollector.translateToLocal(screenTitle), width / 2, 4, 0xffffff);
+		drawCenteredString(mc.fontRendererObj, I18n.translateToLocal(screenTitle), width / 2, 4, 0xffffff);
 		
 		super.drawScreen(par1, par2, par3);
 		

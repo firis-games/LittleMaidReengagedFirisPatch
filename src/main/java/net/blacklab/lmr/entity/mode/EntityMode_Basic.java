@@ -7,7 +7,6 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.event.LMMNX_Event;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
-import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest;
 import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest2;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.TriggerSelect;
@@ -19,7 +18,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemAppleGold;
@@ -28,7 +26,7 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 
 public class EntityMode_Basic extends EntityModeBlockBase {

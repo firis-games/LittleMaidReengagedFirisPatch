@@ -10,13 +10,10 @@ import java.util.TreeMap;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.BossStatus;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public abstract class MMM_GuiMobSelect extends GuiScreen {
@@ -105,7 +102,7 @@ public abstract class MMM_GuiMobSelect extends GuiScreen {
 		
 		drawDefaultBackground();
 		selectPanel.drawScreen(px, py, pf);
-		drawCenteredString(this.mc.fontRendererObj, StatCollector.translateToLocal(screenTitle), width / 2, 20, 0xffffff);
+		drawCenteredString(this.mc.fontRendererObj, I18n.translateToLocal(screenTitle), width / 2, 20, 0xffffff);
 		super.drawScreen(px, py, pf);
 		
 		// GUIで表示した分のボスのステータスを表示しない

@@ -23,13 +23,14 @@ import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.manager.EntityModeManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -47,14 +48,14 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(
 		modid = LittleMaidReengaged.DOMAIN,
-		name = "LittleMaidMobNX",
+		name = "LittleMaidReengaged",
 		version = LittleMaidReengaged.VERSION,
 		acceptedMinecraftVersions=LittleMaidReengaged.ACCEPTED_MCVERSION)
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
-	public static final String VERSION = "6.0.13";
-	public static final String ACCEPTED_MCVERSION = "1.8.9";
+	public static final String VERSION = "7.0.0.1";
+	public static final String ACCEPTED_MCVERSION = "[1.9,)";
 	public static final int VERSION_CODE = 1;
 
 	public static final VersionData currentVersion = new VersionData(VERSION_CODE, VERSION, VERSION);
@@ -301,15 +302,16 @@ public class LittleMaidReengaged {
 		// Dominant
 		BiomeGenBase[] biomeList = null;
 		if (cfg_spawnWeight > 0) {
-			if (cfg_Dominant) {
-				biomeList = BiomeGenBase.getBiomeGenArray();
-			} else {
-				biomeList = new BiomeGenBase[] { BiomeGenBase.desert,
+//			if (cfg_Dominant) {
+//				biomeList = BiomeGenBase.bio();
+//			} else {
+			// TODO BiomeDictionaryからの登録に切り替えようそうしよう．
+				biomeList = new BiomeGenBase[] { BiomeDictionary.getBiomesForType(BiomeDictionary.Type.HOT),
 						BiomeGenBase.plains, BiomeGenBase.savanna,
 						BiomeGenBase.mushroomIsland, BiomeGenBase.forest,
 						BiomeGenBase.birchForest, BiomeGenBase.swampland,
 						BiomeGenBase.taiga, BiomeGenBase.icePlains };
-			}
+//			}
 			for (BiomeGenBase biome : biomeList) {
 				if (biome != null) {
 					EntityRegistry.addSpawn(EntityLittleMaid.class,

@@ -6,9 +6,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.EnumHand;
 
 public class CommonHelper {
 
@@ -51,7 +54,7 @@ public class CommonHelper {
 		if (pItemStack != null) {
 			Item litem = pItemStack.getItem();
 			if (litem instanceof ItemPotion) {
-				List llist = ((ItemPotion)litem).getEffects(pItemStack);
+				List llist = PotionUtils.getEffectsFromStack(pItemStack);
 				return llist != null && !llist.isEmpty();
 			}
 		}
@@ -64,7 +67,7 @@ public class CommonHelper {
 	 * @return
 	 */
 	public static double getAttackVSEntity(ItemStack pItemStack) {
-		AttributeModifier lam = (AttributeModifier)pItemStack.getAttributeModifiers().get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
+		AttributeModifier lam = (AttributeModifier)pItemStack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND).get(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName());
 		return lam == null ? 0 : lam.getAmount();
 	}
 

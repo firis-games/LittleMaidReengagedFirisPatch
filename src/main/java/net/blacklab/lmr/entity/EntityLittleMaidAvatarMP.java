@@ -8,8 +8,8 @@ import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -18,10 +18,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatisticsFile;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 
 
@@ -40,7 +41,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	public EntityLittleMaidAvatarMP(World par1World)
 	{
-		super(MinecraftServer.getServer().worldServerForDimension(par1World == null ? 0 : par1World.provider.getDimensionId()),
+		super(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(par1World == null ? 0 : par1World.provider.getDimension()),
 				W_Common.newGameProfile("1", "LMM_EntityLittleMaidAvatar"));
 	}
 
@@ -49,7 +50,8 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 		// 初期設定
 		avatar = par2EntityLittleMaid;
-		dataWatcher = avatar.getDataWatcher();
+		// TODO dataWatcher has been taken over.
+		dataWatcher = avatar.getDataManager();
 
 		this.dataWatcher.addObject(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
 
@@ -62,8 +64,8 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	public StatisticsFile getStatFile() {
 		// ご主人様がいれば、ご主人様の実績を返す。
 		if (this.avatar != null && this.avatar.getMaidMasterEntity() != null) {
-			return MinecraftServer.getServer()
-					.getConfigurationManager().getPlayerStatsFile(avatar.getMaidMasterEntity());
+			// TODO Server only, so picking up from vanilla method. Is it correct?
+			return ((EntityPlayerMP)avatar.getMaidMasterEntity()).getStatFile();
 		}
 		return super.getStatFile();
 	}

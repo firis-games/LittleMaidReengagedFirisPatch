@@ -3,7 +3,6 @@ package net.blacklab.lmr.inventory;
 import java.util.Iterator;
 import java.util.List;
 
-import mmmlibx.lib.MMM_Helper;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;
@@ -11,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
@@ -23,11 +23,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.Explosion;
 
-public class InventoryLittleMaid extends InventoryPlayer {
+public class InventoryLittleMaid implements IInventory {
 
 	/**
 	 * 最大インベントリ数
@@ -43,9 +44,10 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	public ItemStack prevItems[];
 
 	public InventoryLittleMaid(EntityLittleMaid par1EntityLittleMaid) {
-		super(par1EntityLittleMaid.maidAvatar);
+//		super(par1EntityLittleMaid.maidAvatar);
 
 		entityLittleMaid = par1EntityLittleMaid;
+		// TODO InventoryPlayer.mainInventory became 'final'. S**t 
 		mainInventory = new ItemStack[maxInventorySize];
 		prevItems = new ItemStack[mainInventory.length + armorInventory.length];
 	}
@@ -423,5 +425,83 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		for (int li = 0; li < prevItems.length; li++) {
 			prevItems[li] = lis;
 		}
+	}
+
+	@Override
+	public boolean hasCustomName() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ItemStack decrStackSize(int index, int count) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void markDirty() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getField(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getFieldCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
 	}
 }

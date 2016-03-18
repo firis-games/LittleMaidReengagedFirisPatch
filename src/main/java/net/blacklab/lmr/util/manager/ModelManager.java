@@ -32,7 +32,6 @@ import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -373,7 +372,7 @@ public class ModelManager {
 
 	public void saveTextureServer() {
 		// サーバー用テクスチャ名称のインデクッスセーバー
-		File lfile = MinecraftServer.getServer().getFile(nameTextureIndex);
+		File lfile = FMLCommonHandler.instance().getMinecraftServerInstance().getFile(nameTextureIndex);
 		try {
 			FileWriter fw = new FileWriter(lfile);
 			BufferedWriter bw = new BufferedWriter(fw);

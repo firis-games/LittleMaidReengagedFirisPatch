@@ -11,9 +11,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -27,11 +30,11 @@ public class ItemSpawnEgg extends Item
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos par46X, EnumFacing par7, float par8, float par9, float par10)
+	public EnumActionResult onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos par46X, EnumHand pHand, EnumFacing par7, float par8, float par9, float par10)
 	{
 		if (par3World.isRemote)
 		{
-			return true;
+			return EnumActionResult.SUCCESS;
 		}
 		Block block = par3World.getBlockState(par46X).getBlock();
 		int par4 = par46X.getX(); int par5 = par46X.getY() + 1; int par6 = par46X.getZ();
@@ -42,10 +45,10 @@ public class ItemSpawnEgg extends Item
 		*/
 		double d0 = 0.0D;
 
-		if (par7 == EnumFacing.UP && block.getRenderType() == 11)
-		{
-			d0 = 0.5D;
-		}
+//		if (par7 == EnumFacing.UP && block.getRenderType(par3World.getBlockState(par46X)) == EnumBlockRenderType)
+//		{
+//			d0 = 0.5D;
+//		}
 
 		Entity entity = spawnMaid(par3World, par4 + 0.5D, par5 + d0, par6 + 0.5D);
 
@@ -62,7 +65,7 @@ public class ItemSpawnEgg extends Item
 			}
 		}
 
-		return true;
+		return EnumActionResult.SUCCESS;
 	}
 
 	public static Entity spawnMaid(World par0World, double par2, double par4, double par6)

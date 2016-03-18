@@ -1,10 +1,9 @@
 package net.blacklab.lmr.proxy;
 
-import net.blacklab.lmr.network.LMRMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 public class ProxyCommon
 {
 	public int OFFSET_COUNT = 0;
@@ -18,7 +17,7 @@ public class ProxyCommon
 	
 	public boolean isSinglePlayer()
 	{
-		return MinecraftServer.getServer().isSinglePlayer();
+		return FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer();
 	}
 	public void playLittleMaidSound(World worldObj, double posX, double posY,
 			double posZ, String s, float soundVolume, float lpitch, boolean b) {

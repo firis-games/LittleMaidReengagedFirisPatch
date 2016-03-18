@@ -1,6 +1,6 @@
 package net.blacklab.lmr.entity.experience;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class ExperienceUtil {
 

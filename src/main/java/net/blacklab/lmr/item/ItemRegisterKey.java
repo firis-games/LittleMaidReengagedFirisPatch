@@ -10,8 +10,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class ItemRegisterKey extends Item {
@@ -27,8 +30,8 @@ public class ItemRegisterKey extends Item {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn,
-			EntityPlayer playerIn) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn,
+			EntityPlayer playerIn, EnumHand pHand) {
 		NBTTagCompound tagCompound = itemStackIn.getTagCompound();
 		if(tagCompound==null) {
 			tagCompound = new NBTTagCompound();
@@ -46,9 +49,9 @@ public class ItemRegisterKey extends Item {
 		tagCompound.setString(RK_MODE_TAG, modeString);
 		
 		if(worldIn.isRemote)
-			playerIn.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("littleMaidMob.chat.text.changeregistermode") + modeString));
+			playerIn.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.changeregistermode") + modeString));
 
-		return itemStackIn;
+		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 	}
 
 	@Override

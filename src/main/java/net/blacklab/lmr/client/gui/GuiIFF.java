@@ -7,7 +7,6 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.IFF;
-import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -15,8 +14,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
-import net.minecraft.util.StringTranslate;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class GuiIFF extends MMM_GuiMobSelect {
@@ -32,7 +33,7 @@ public class GuiIFF extends MMM_GuiMobSelect {
 
 	public GuiIFF(World world, EntityPlayer player, EntityLittleMaid pEntity) {
 		super(world);
-		screenTitle = StatCollector.translateToLocal("littleMaidMob.gui.iff.title");
+		screenTitle = I18n.translateToLocal("littleMaidMob.gui.iff.title");
 		target = pEntity;
 		thePlayer = player;
 		
@@ -79,10 +80,9 @@ public class GuiIFF extends MMM_GuiMobSelect {
 	public void initGui() {
 		super.initGui();
 		
-		StringTranslate stringtranslate = new StringTranslate();
+//		StringTranslate stringtranslate = new StringTranslate();
 		
-		buttonList.add(new GuiButton(200, width / 2 - 60, height - 40, 120, 20,
-				stringtranslate.translateKey("gui.done")));
+		buttonList.add(new GuiButton(200, width / 2 - 60, height - 40, 120, 20, "Done"));
 //		buttonList.add(new GuiButton(201, width / 2 + 10, height - 40, 120, 20,
 //				"Trigger Select"));
 	}
@@ -136,7 +136,8 @@ public class GuiIFF extends MMM_GuiMobSelect {
 			}
 			
 			Entity player = mc.thePlayer;
-			pEntity.worldObj.playSound(player.posX+0.5, player.posY+0.5, player.posZ+0.5, "random.click", 1, 1, false);
+			pEntity.worldObj.playSound(player.posX+0.5, player.posY+0.5, player.posZ+0.5, SoundEvent.soundEventRegistry.getObject(new ResourceLocation("random.click")),
+					SoundCategory.MASTER,  1, 1, false);
 		}
 	}
 

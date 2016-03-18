@@ -18,7 +18,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityMode_Archer extends EntityModeBase {
@@ -90,12 +90,12 @@ public class EntityMode_Archer extends EntityModeBase {
 				if (owner.maidInventory.getInventorySlotContainItem(ItemFlintAndSteel.class) > -1) {
 					owner.setMaidMode("Blazingstar");
 					if (LMMNX_Achievements.ac_BlazingStar != null) {
-						pentityplayer.triggerAchievement(LMMNX_Achievements.ac_BlazingStar);
+						pentityplayer.addStat(LMMNX_Achievements.ac_BlazingStar);
 					}
 				} else {
 					owner.setMaidMode("Archer");
 					if (LMMNX_Achievements.ac_Archer != null) {
-						pentityplayer.triggerAchievement(LMMNX_Achievements.ac_Archer);
+						pentityplayer.addStat(LMMNX_Achievements.ac_Archer);
 					}
 				}
 				return true;

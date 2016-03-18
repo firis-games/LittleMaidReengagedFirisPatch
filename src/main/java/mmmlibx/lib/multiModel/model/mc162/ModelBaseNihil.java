@@ -1,12 +1,13 @@
 package mmmlibx.lib.multiModel.model.mc162;
 
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.renderer.entity.RenderEntity;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
 
 public class ModelBaseNihil extends ModelBase {
 
-	public RendererLivingEntity rendererLivingEntity;
+	public RenderLivingBase rendererLivingEntity;
 
 	public boolean isAlphablend;
 	public boolean isModelAlphablend;

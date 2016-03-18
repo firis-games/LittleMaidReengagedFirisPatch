@@ -25,6 +25,7 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
  * IFFを管理するためのクラス、ほぼマルチ用。
@@ -237,7 +238,7 @@ public class IFF {
 		if (!CommonHelper.isClient) {
 			// サーバー側処理
 			loadIFF("");
-			File lfile = MinecraftServer.getServer().getFile("config");
+			File lfile = FMLCommonHandler.instance().getMinecraftServerInstance().getFile("config");
 			for (File lf : lfile.listFiles()) {
 				LittleMaidReengaged.Debug("FIND FILE %s", lf.getName());
 				if (lf.getName().startsWith("littleMaidMob_")&&lf.getName().endsWith(".iff")) {
@@ -263,7 +264,7 @@ public class IFF {
 			} else {
 				lfilename = "config/littleMaidMob_".concat(pUsername).concat(".iff");
 			}
-			lfile = MinecraftServer.getServer().getFile(lfilename);
+			lfile = FMLCommonHandler.instance().getMinecraftServerInstance().getFile(lfilename);
 		}
 		LittleMaidReengaged.Debug(lfile.getAbsolutePath());
 		return lfile;

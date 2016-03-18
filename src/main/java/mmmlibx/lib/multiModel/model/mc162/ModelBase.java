@@ -9,7 +9,7 @@ import java.util.Random;
 import mmmlibx.lib.multiModel.model.AbstractModelBase;
 import net.minecraft.client.model.TextureOffset;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public abstract class ModelBase extends AbstractModelBase {
 	

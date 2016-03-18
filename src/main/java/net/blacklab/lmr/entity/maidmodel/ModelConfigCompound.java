@@ -1,5 +1,7 @@
 package net.blacklab.lmr.entity.maidmodel;
 
+import java.util.List;
+
 import mmmlibx.lib.IModelMMMEntity;
 import mmmlibx.lib.MMMLib;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
@@ -10,11 +12,9 @@ import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.EnumArmor;
 import net.blacklab.lmr.util.EnumTextureType;
 import net.blacklab.lmr.util.manager.ModelManager;
-import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -192,7 +192,7 @@ public class ModelConfigCompound  {
 				ItemStack is = i==3?
 						(owner instanceof EntityLittleMaid?
 								((EntityLittleMaid)owner).getHeadMountStackCopy():null) :
-						owner.getInventory()[i+1];
+						((List<ItemStack>)owner.getArmorInventoryList()).get(i+1); // TODO Not Recommended.
 				textures[1][i] = lbox.getArmorTextureName(ModelManager.tx_armor1, is);
 				textures[2][i] = lbox.getArmorTextureName(ModelManager.tx_armor2, is);
 				textures[3][i] = lbox.getArmorTextureName(ModelManager.tx_armor1light, is);
@@ -231,7 +231,7 @@ public class ModelConfigCompound  {
 			if (lbox.localBox != null) {
 				if (CommonHelper.isClient) {
 					for (int i = 0; i < 4; i++) {
-						ItemStack is = owner.getEquipmentInSlot(i + 1);
+						ItemStack is = ((List<ItemStack>)owner.getArmorInventoryList()).get(i+1); // TODO Not Recommended.
 						textures[1][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1, is);
 						textures[2][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2, is);
 						textures[3][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1light, is);

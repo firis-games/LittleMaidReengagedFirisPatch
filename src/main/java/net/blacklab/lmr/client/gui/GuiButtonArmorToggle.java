@@ -6,7 +6,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -106,7 +106,7 @@ public class GuiButtonArmorToggle extends GuiButton {
 			GlStateManager.colorMask(true, true, true, false);
 			FontRenderer fRenderer = mcMinecraft.getRenderManager().getFontRenderer();
 			int lcolor = 0xc0000000;
-			String viewString = StatCollector.translateToLocal(showText+getTaleString());
+			String viewString = I18n.translateToLocal(showText+getTaleString());
 			int fx = fRenderer.getStringWidth(viewString);
 			drawGradientRect(mx+4, my+4, mx+4+fx+4, my+4+8+4, lcolor, lcolor);
 			drawCenteredString(fRenderer, viewString, mx+fx/2+6, my+6, 0xffffffff);

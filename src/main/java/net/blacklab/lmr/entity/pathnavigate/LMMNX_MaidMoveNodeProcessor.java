@@ -1,13 +1,10 @@
 package net.blacklab.lmr.entity.pathnavigate;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.BlockPos;
+import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.pathfinder.WalkNodeProcessor;
+import net.minecraft.util.math.MathHelper;
 
 public class LMMNX_MaidMoveNodeProcessor extends WalkNodeProcessor {
 	

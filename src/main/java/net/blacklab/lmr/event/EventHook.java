@@ -16,12 +16,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
@@ -66,10 +65,10 @@ public class EventHook
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event){
 		if (!event.player.worldObj.isRemote && LittleMaidReengaged.currentVersion.compareVersion(LittleMaidReengaged.latestVersion) > 0) {
-			event.player.addChatComponentMessage(new ChatComponentText(String.format("[LittleMaidMobNX]%s : %s",
-					StatCollector.translateToLocal("system.lmmnx.chat.text.newverstion"), LittleMaidReengaged.latestVersion.shownName)));
-			event.player.addChatComponentMessage(new ChatComponentText(String.format("[LittleMaidMobNX]%s",
-					StatCollector.translateToLocal("system.lmmnx.chat.text.checkversion"))));
+			event.player.addChatComponentMessage(new TextComponentString(String.format("[LittleMaidMobNX]%s : %s",
+					I18n.translateToLocal("system.lmmnx.chat.text.newverstion"), LittleMaidReengaged.latestVersion.shownName)));
+			event.player.addChatComponentMessage(new TextComponentString(String.format("[LittleMaidMobNX]%s",
+					I18n.translateToLocal("system.lmmnx.chat.text.checkversion"))));
 		}
 	}
 
