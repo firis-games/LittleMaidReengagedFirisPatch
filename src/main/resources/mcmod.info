@@ -2,8 +2,8 @@
 {
   "modid": "net.blacklab.lib",
   "name": "EBLib",
-  "description": "EBLib for MC 1.8.x",
-  "version": "EL3 Build 13",
+  "description": "",
+  "version": "4.0.1",
   "mcversion": "1.8.x",
   "url": "http://el-blacklab.net/",
   "updateUrl": "",

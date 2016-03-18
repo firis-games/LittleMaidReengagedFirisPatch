@@ -8,14 +8,13 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = "net.blacklab.lib",name="EBLib",version=EBLib.VERSION, acceptedMinecraftVersions="[1.8,1.8.9]")
+@Mod(modid = "net.blacklab.lib",name="EBLib",version=EBLib.VERSION, acceptedMinecraftVersions="[1.9,)")
 public class EBLib {
 
-	public static final String VERSION="3.3.13";
-	public static final String VERSION_FORSITE="EL3 Build 13";
-	public static final int VERSION_CODE=7;
+	public static final String VERSION="4.0.1";
+	public static final int VERSION_CODE=8;
 	
-	public static final VersionData currentVersion = new VersionData(VERSION_CODE, VERSION, VERSION_FORSITE);
+	public static final VersionData currentVersion = new VersionData(VERSION_CODE, VERSION, VERSION);
 	public static VersionData latestVersion = new VersionData(1, "1.0.1", "EL1");
 	
 	@EventHandler

@@ -1,11 +1,12 @@
 package net.blacklab.lib.minecraft.vector;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class VectorUtil {
@@ -17,17 +18,20 @@ public class VectorUtil {
 	public static boolean canBlockBeSeen(Entity entity,int pX, int pY, int pZ, boolean toTop, boolean do1, boolean do2) {
 		// ブロックの可視判定
 		World worldObj = entity.worldObj;
-		Block lblock = worldObj.getBlockState(new BlockPos(pX, pY, pZ)).getBlock();
+		BlockPos pos = new BlockPos(pX, pY, pZ);
+		IBlockState state = worldObj.getBlockState(pos);
+		Block lblock = state.getBlock();
 		if (lblock == null) {
 			return false;
 		}
-		lblock.setBlockBoundsBasedOnState(worldObj, new BlockPos(pX, pY, pZ));
+//		lblock.setBlockBoundsBasedOnState(worldObj, new BlockPos(pX, pY, pZ));
+		AxisAlignedBB boundingBox = lblock.getBoundingBox(state, worldObj, pos);
 		
-		Vec3 vec3do = new Vec3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
-		Vec3 vec3dt = new Vec3(pX + 0.5D, pY + ((lblock.getBlockBoundsMaxY() + lblock.getBlockBoundsMinY()) * (toTop ? 0.9D : 0.5D)), pZ + 0.5D);
-		MovingObjectPosition movingobjectposition = worldObj.rayTraceBlocks(vec3do, vec3dt, do1, do2, false);
+		Vec3d vec3do = new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
+		Vec3d vec3dt = new Vec3d(pX + 0.5D, pY + ((boundingBox.maxY + boundingBox.minY) * (toTop ? 0.9D : 0.5D)), pZ + 0.5D);
+		RayTraceResult movingobjectposition = worldObj.rayTraceBlocks(vec3do, vec3dt, do1, do2, false);
 		
-		if (movingobjectposition != null && movingobjectposition.typeOfHit == MovingObjectType.BLOCK) {
+		if (movingobjectposition != null && movingobjectposition.typeOfHit == RayTraceResult.Type.BLOCK) {
 			// 接触ブロックが指定したものならば
 			if (movingobjectposition.getBlockPos().getX() == pX && 
 					movingobjectposition.getBlockPos().getY() == pY &&
@@ -48,11 +52,11 @@ public class VectorUtil {
 		}
 //		lblock.setBlockBoundsBasedOnState(pEntity.worldObj, new BlockPos(pX, pY, pZ));
 		
-		Vec3 vec3do = new Vec3(pEntity.posX, pEntity.posY+fixHeight, pEntity.posZ);
-		Vec3 vec3dt = new Vec3(pX, pY, pZ);
-		MovingObjectPosition movingobjectposition = pEntity.worldObj.rayTraceBlocks(vec3do, vec3dt, do1, do2, false);
+		Vec3d vec3do = new Vec3d(pEntity.posX, pEntity.posY+fixHeight, pEntity.posZ);
+		Vec3d vec3dt = new Vec3d(pX, pY, pZ);
+		RayTraceResult movingobjectposition = pEntity.worldObj.rayTraceBlocks(vec3do, vec3dt, do1, do2, false);
 		
-		if (movingobjectposition != null && movingobjectposition.typeOfHit == MovingObjectType.BLOCK) {
+		if (movingobjectposition != null && movingobjectposition.typeOfHit == RayTraceResult.Type.BLOCK) {
 			if (movingobjectposition.getBlockPos().getX() == (int)pX && 
 					movingobjectposition.getBlockPos().getY() == (int)pY &&
 					movingobjectposition.getBlockPos().getZ() == (int)pZ) {

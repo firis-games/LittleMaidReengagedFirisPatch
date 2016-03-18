@@ -1,5 +1,6 @@
 package net.blacklab.lib.minecraft.item;
 
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,7 @@ public class ItemUtil {
 	public static boolean isHelm(ItemStack stack){
 		if(stack!=null){
 			if(stack.getItem() instanceof ItemArmor){
-				if(((ItemArmor)stack.getItem()).armorType==0){
+				if(((ItemArmor)stack.getItem()).armorType == EntityEquipmentSlot.HEAD){
 					return true;
 				}
 			}
