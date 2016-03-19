@@ -225,7 +225,7 @@ public class LittleMaidReengaged {
 				new GuiHandler());
 
 		EntityRegistry.registerModEntity(EntityLittleMaid.class,
-				"LittleMaidX", 0, instance, 80, 3, true);
+				"LittleMaid", 0, instance, 80, 3, true);
 
 		spawnEgg = new ItemSpawnEgg();
 		spawnEgg.setUnlocalizedName(DOMAIN + ":spawn_littlemaid_egg");

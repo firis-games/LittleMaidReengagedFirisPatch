@@ -169,7 +169,7 @@ public class GuiTextureSlot extends GuiSlot {
 			//デフォルトアーマー
 			GL11.glTranslatef(1f, 0.25F, 0f);
 			entity.setTextureNames("default");
-			Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+			Minecraft.getMinecraft().getRenderManager().doRenderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 			RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 
 			// 素材別アーマー
@@ -183,7 +183,7 @@ public class GuiTextureSlot extends GuiSlot {
 //					ltxname[0] = ltxname[1] = ltxname[2] = ltxname[3] =
 //							lbox.getArmorTextureName(MMM_TextureManager.tx_armor2, "default", 0);
 					entity.setTextureNames(ModelManager.armorFilenamePrefix[li]);
-					Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+					Minecraft.getMinecraft().getRenderManager().doRenderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 					RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 				}
 			}
@@ -196,7 +196,7 @@ public class GuiTextureSlot extends GuiSlot {
 					entity.setContract(isContract);
 					entity.setTextureNames();
 //					entity.getTextures(0)[0] = lbox.getTextureName(li + (isContract ? 0 : MMM_TextureManager.tx_wild));
-					Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+					Minecraft.getMinecraft().getRenderManager().doRenderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 					RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 				}
 			}

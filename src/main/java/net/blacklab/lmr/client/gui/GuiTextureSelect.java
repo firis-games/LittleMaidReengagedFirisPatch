@@ -156,7 +156,7 @@ public class GuiTextureSelect extends GuiScreen {
 			selectPanel.entity.setColor(selectColor);
 			selectPanel.entity.setTextureNames();
 		}
-		mc.getRenderManager().renderEntityWithPosYaw(selectPanel.entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+		mc.getRenderManager().doRenderEntity(selectPanel.entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		for (int li = 0; li < 16; li++) {
 			if (lbox.hasColor(li)) {
 				break;

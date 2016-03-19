@@ -20,7 +20,7 @@ public class ContainerInventoryLittleMaid extends Container {
 	protected final EntityLittleMaid owner;
 
 
-	public ContainerInventoryLittleMaid(IInventory iinventory, EntityLittleMaid pEntity) {
+	public ContainerInventoryLittleMaid(IInventory playerInventory, EntityLittleMaid pEntity) {
 		// >
 		// Forge対策、ContainerPlayer継承でなければ要らない、SlotArmor用
 		// TODO なんて書いてあるけどInventoryPlayer.mainInventoryがfinalにされたコノヤロウなのでなんとかごまかしてみよう
@@ -30,35 +30,35 @@ public class ContainerInventoryLittleMaid extends Container {
 		inventoryItemStacks.clear();
 		// <
 		
-		InventoryLittleMaid linventory = pEntity.maidInventory;
+		InventoryLittleMaid maidInventory = pEntity.maidInventory;
 		owner = pEntity;
-		numRows = linventory.getSizeInventory() / 9;
-		littlemaidInventory = linventory;
+		numRows = maidInventory.getSizeInventory() / 9;
+		littlemaidInventory = maidInventory;
 		littlemaidInventory.openInventory(owner.maidAvatar);
 		
 		for (int ly = 0; ly < numRows; ly++) {
 			for (int lx = 0; lx < 9; lx++) {
-				addSlotToContainer(new Slot(linventory, lx + ly * 9, 8 + lx * 18, 76 + ly * 18));
+				addSlotToContainer(new Slot(maidInventory, lx + ly * 9, 8 + lx * 18, 76 + ly * 18));
 			}
 		}
 		
 		int lyoffset = (numRows - 4) * 18 + 59;
 		for (int ly = 0; ly < 3; ly++) {
 			for (int lx = 0; lx < 9; lx++) {
-				addSlotToContainer(new Slot(iinventory, lx + ly * 9 + 9, 8 + lx * 18, 103 + ly * 18 + lyoffset));
+				addSlotToContainer(new Slot(playerInventory, lx + ly * 9 + 9, 8 + lx * 18, 103 + ly * 18 + lyoffset));
 			}
 		}
 		
 		for (int lx = 0; lx < 9; lx++) {
-			addSlotToContainer(new Slot(iinventory, lx, 8 + lx * 18, 161 + lyoffset));
+			addSlotToContainer(new Slot(playerInventory, lx, 8 + lx * 18, 161 + lyoffset));
 		}
 		
-		for (int j = 0; j < 3; j++) {
+		for (int j = 0; j < 4; j++) {
 //			int j1 = j + 1;
 //			addSlotToContainer(new SlotArmor(this, linventory, linventory.getSizeInventory() - 2 - j, 8, 8 + j * 18, j1));
 
-			final int armorIndex = 1 + j; // ヘルメットはない
-			this.addSlotToContainer(new Slot(linventory, linventory.getSizeInventory() - 2 - j, 8, 8 + j * 18)
+			final int armorIndex = j; // ヘルメットはないと思っていたのか！
+			this.addSlotToContainer(new Slot(maidInventory, maidInventory.getSizeInventory() - 1 - j, 8 + 72*j/2, 8 + (j%2)*36)
 			{
 				/**
 				 * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1
@@ -74,7 +74,7 @@ public class ContainerInventoryLittleMaid extends Container {
 				public boolean isItemValid(ItemStack par1ItemStack)
 				{
 					if (par1ItemStack == null) return false;
-					return par1ItemStack.getItem().isValidArmor(par1ItemStack, armorIndex, owner);
+					return littlemaidInventory.isItemValidForSlot(littlemaidInventory.maxInventorySize+armorIndex, par1ItemStack);
 				}
 				/**
 				 * Returns the icon index on items.png that is used as background image of the slot.
@@ -119,7 +119,7 @@ public class ContainerInventoryLittleMaid extends Container {
 				((ItemArmor)item).getArmorMaterial() == ArmorMaterial.DIAMOND;
 
 		if (flag && !owner.worldObj.isRemote)
-			owner.getMaidMasterEntity().triggerAchievement(LMMNX_Achievements.ac_Overprtct);
+			owner.getMaidMasterEntity().addStat(LMMNX_Achievements.ac_Overprtct);
 	}
 
 	@Override

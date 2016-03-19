@@ -8,8 +8,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -22,10 +22,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.Explosion;
 
 public class InventoryLittleMaid implements IInventory {
@@ -34,10 +36,32 @@ public class InventoryLittleMaid implements IInventory {
 	 * 最大インベントリ数
 	 */
 	public static final int maxInventorySize = 18;
+
+	/**
+	 * Inventory "inside skirt"
+	 */
+	private ItemStack mainInventory[] = new ItemStack[maxInventorySize];
+	
+	/**
+	 * Armor Inventory
+	 */
+	private ItemStack armorInventory[] = new ItemStack[4];
+	
 	/**
 	 * オーナー
 	 */
 	public EntityLittleMaid entityLittleMaid;
+	
+	/**
+	 * Owner's Avatar
+	 */
+	private EntityPlayer player;
+	
+	/**
+	 * Current Item Index
+	 */
+	private int currentItem;
+
 	/**
 	 * スロット変更チェック用
 	 */
@@ -52,7 +76,6 @@ public class InventoryLittleMaid implements IInventory {
 		prevItems = new ItemStack[mainInventory.length + armorInventory.length];
 	}
 
-	@Override
 	public void readFromNBT(NBTTagList par1nbtTagList) {
 		mainInventory = new ItemStack[maxInventorySize];
 		armorInventory = new ItemStack[4];
@@ -97,7 +120,6 @@ public class InventoryLittleMaid implements IInventory {
 		entityLittleMaid.onGuiClosed();
 	}
 
-	@Override
 	public void decrementAnimations() {
 		for (int li = 0; li < this.mainInventory.length; ++li) {
 			if (this.mainInventory[li] != null) {
@@ -112,6 +134,7 @@ public class InventoryLittleMaid implements IInventory {
 		}
 	}
 
+/*
 	@Override
 	public int getTotalArmorValue() {
 		// 身に着けているアーマーの防御力の合算
@@ -130,16 +153,21 @@ public class InventoryLittleMaid implements IInventory {
 		armorInventory[3] = lis;
 		return li;
 	}
+*/
 
-	@Override
+	// From InventoryPlayer
 	public void damageArmor(float pDamage) {
-		// 装備アーマーに対するダメージ
-		// 頭部は除外
-		//ItemStack lis = armorInventory[3];
-		//armorInventory[3] = null;
-		super.damageArmor(pDamage);
-		//armorInventory[3] = lis;
+		pDamage = Math.max(pDamage/4, 1);
 
+		for (int i = 0; i < armorInventory.length; ++i) {
+			if (armorInventory[i] != null && armorInventory[i].getItem() instanceof ItemArmor) {
+				armorInventory[i].damageItem((int)pDamage, player);
+
+				if (armorInventory[i].stackSize == 0) {
+					armorInventory[i] = null;
+				}
+			}
+		}
 	}
 /*
 	@Override
@@ -204,7 +232,6 @@ public class InventoryLittleMaid implements IInventory {
 		}
 	}
 
-	@Override
 	public void dropAllItems() {
 		dropAllItems(false);
 	}
@@ -217,7 +244,6 @@ public class InventoryLittleMaid implements IInventory {
 		return entityplayer.getDistanceSqToEntity(entityLittleMaid) <= 64D;
 	}
 
-	@Override
 	public ItemStack getCurrentItem() {
 		if (currentItem >= 0 && currentItem < mainInventory.length) {
 			return mainInventory[currentItem];
@@ -225,17 +251,42 @@ public class InventoryLittleMaid implements IInventory {
 		return null;
 	}
 
-	@Override
 	public boolean addItemStackToInventory(ItemStack par1ItemStack) {
+		if (par1ItemStack == null) {
+			return false;
+		}
 		markDirty();
-		return super.addItemStackToInventory(par1ItemStack);
-	}
-
-	/**
-	 * 頭部の追加アイテムを返す。
-	 */
-	public ItemStack getHeadMount() {
-		return mainInventory[mainInventory.length - 1];
+		ItemStack bufferStack = par1ItemStack;
+		if (bufferStack.isItemDamaged()) {
+			int empty = getFirstEmptyStack();
+			if (empty >= 0) {
+				mainInventory[empty] = ItemStack.copyItemStack(bufferStack);
+			}
+		} else {
+			for (int i=0; i<mainInventory.length; i++) {
+				if (mainInventory[i] == null) {
+					mainInventory[i] = ItemStack.copyItemStack(bufferStack);
+					bufferStack = null;
+					break;
+				}
+				if (mainInventory[i].getItem()==bufferStack.getItem() && !mainInventory[i].isItemDamaged()) {
+					int maxSize = mainInventory[i].getItem().getItemStackLimit(mainInventory[i]);
+					mainInventory[i].stackSize += bufferStack.stackSize;
+					if (mainInventory[i].stackSize > maxSize) {
+						bufferStack.stackSize = maxSize - mainInventory[i].stackSize;
+						mainInventory[i].stackSize = maxSize;
+					}
+				}
+				if (bufferStack.stackSize == 0) {
+					bufferStack = null;
+					break;
+				}
+			}
+			if (bufferStack != null && bufferStack.stackSize > 0) {
+				entityLittleMaid.entityDropItem(bufferStack, 0);
+			}
+		}
+		return true;
 	}
 
 	public void setInventoryCurrentSlotContents(ItemStack itemstack) {
@@ -255,7 +306,7 @@ public class InventoryLittleMaid implements IInventory {
 		return -1;
 	}
 
-	public int getInventorySlotContainItem(Class itemClass) {
+	public int getInventorySlotContainItem(Class<Item> itemClass) {
 		// 指定されたアイテムクラスの物を持っていれば返す
 		for (int j = 0; j < mainInventory.length; j++) {
 			// if (mainInventory[j] != null &&
@@ -331,22 +382,22 @@ public class InventoryLittleMaid implements IInventory {
 			if (mainInventory[j] != null
 					&& mainInventory[j].getItem() instanceof ItemPotion) {
 				ItemStack is = mainInventory[j];
-				List list = ((ItemPotion) is.getItem()).getEffects(is);
+				List list = PotionUtils.getEffectsFromStack(is);
 				nextPotion: if (list != null) {
 					PotionEffect potioneffect;
 					for (Iterator iterator = list.iterator(); iterator
 							.hasNext();) {
 						potioneffect = (PotionEffect) iterator.next();
-						if (potioneffect.getPotionID() == potionID) break;
-						if (potioneffect.getPotionID() == Potion.heal.id) {
+						if (Potion.getIdFromPotion(potioneffect.getPotion()) == potionID) break;
+						if (Potion.getIdFromPotion(potioneffect.getPotion()) == 6) {
 							if ((!flag && isUndead) || (flag && !isUndead)) {
 								break nextPotion;
 							}
-						} else if (potioneffect.getPotionID() == Potion.harm.id) {
+						} else if (Potion.getIdFromPotion(potioneffect.getPotion()) == 7) {
 							if ((flag && isUndead) || (!flag && !isUndead)) {
 								break nextPotion;
 							}
-						} else if (Potion.potionTypes[potioneffect.getPotionID()].isBadEffect() != flag) {
+						} else if (potioneffect.getPotion().isBadEffect() != flag) {
 							break nextPotion;
 						}
 					}
@@ -395,7 +446,7 @@ public class InventoryLittleMaid implements IInventory {
 		if (pItemstack == null)
 			return false;
 		Item li = pItemstack.getItem();
-		return (pItemstack != null && li instanceof ItemBlock && Block.getBlockFromItem(li).getMaterial() == Material.tnt);
+		return (pItemstack != null && li instanceof ItemBlock && Block.getBlockFromItem(li).getMaterial(Block.getBlockFromItem(li).getDefaultState()) == Material.tnt);
 	}
 
 	// インベントリの転送関連
@@ -429,67 +480,88 @@ public class InventoryLittleMaid implements IInventory {
 
 	@Override
 	public boolean hasCustomName() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public ITextComponent getDisplayName() {
-		// TODO Auto-generated method stub
-		return null;
+		return new TextComponentString("MaidInventory");
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		if (index >= maxInventorySize) {
+			return armorInventory[index-maxInventorySize];
+		}
+		return mainInventory[index];
 	}
 
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
-		// TODO Auto-generated method stub
+		ItemStack returned = null;
+		if (mainInventory[index] != null) {
+			returned = mainInventory[index].splitStack(count);
+			if (mainInventory[index].stackSize == 0) {
+				mainInventory[index] = null;
+			}
+			return returned;
+		}
 		return null;
 	}
 
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		ItemStack aStack = ItemStack.copyItemStack(mainInventory[index]);
+		mainInventory[index] = null;
+		return aStack;
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
-		// TODO Auto-generated method stub
-		
+		if (isItemValidForSlot(index, stack)) {
+			if (index >= maxInventorySize) {
+				armorInventory[index - maxInventorySize] = stack;
+			} else {
+				mainInventory[index] = stack;
+			}
+		}
 	}
 
 	@Override
 	public int getInventoryStackLimit() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 64;
 	}
 
 	@Override
 	public void markDirty() {
-		// TODO Auto-generated method stub
+		// TODO Currently there's no task
 		
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		// TODO Auto-generated method stub
+		if (stack != null && index >= maxInventorySize && index < getSizeInventory()) {
+			int armorSlotIndex = index - maxInventorySize;
+			for (EntityEquipmentSlot slot: EntityEquipmentSlot.values()) {
+				if (slot.getSlotType()==EntityEquipmentSlot.Type.ARMOR && slot.getIndex()==armorSlotIndex) {
+					if (stack != null && stack.getItem().isValidArmor(stack, slot, entityLittleMaid)) {
+						return true;
+					}
+				}
+			}
+		} else if (index >= 0 && index < getSizeInventory()) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public int getField(int id) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setField(int id, int value) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -501,7 +573,8 @@ public class InventoryLittleMaid implements IInventory {
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		for (int i=0; i<getSizeInventory(); i++) {
+			setInventorySlotContents(i, null);
+		}
 	}
 }

@@ -28,13 +28,14 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.translation.I18n;
 
 public class GuiInventory extends GuiContainer {
 	// Field
@@ -55,7 +56,7 @@ public class GuiInventory extends GuiContainer {
 	public boolean isChangeTexture;
 
 	protected static final ResourceLocation fguiTex =
-			new ResourceLocation(LittleMaidReengaged.DOMAIN, "textures/gui/container/littlemaidinventory.png");
+			new ResourceLocation(LittleMaidReengaged.DOMAIN, "textures/gui/container/littlemaidinventory2.png");
 
 	// Method
 	public GuiInventory(EntityPlayer pPlayer, EntityLittleMaid elmaid) {
@@ -97,14 +98,14 @@ public class GuiInventory extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		mc.fontRendererObj.drawString(StatCollector.translateToLocal(
+		mc.fontRendererObj.drawString(I18n.translateToLocal(
 				lowerChestInventory.getName()), 8, 64, 0x404040);
-		mc.fontRendererObj.drawString(StatCollector.translateToLocal(
+		mc.fontRendererObj.drawString(I18n.translateToLocal(
 				upperChestInventory.getName()), 8, 114, 0x404040);
 		//fontRenderer.drawString(StatCollector.translateToLocal("littleMaidMob.text.Health"), 86, 8, 0x404040);
 		//fontRenderer.drawString(StatCollector.translateToLocal("littleMaidMob.text.AP"), 86, 32, 0x404040);
 
-		mc.fontRendererObj.drawString(StatCollector.translateToLocal(
+		mc.fontRendererObj.drawString(I18n.translateToLocal(
 				"littleMaidMob.mode.".concat(entitylittlemaid.getMaidModeString())), 86, 61, 0x404040);
 
 //	      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -151,7 +152,8 @@ public class GuiInventory extends GuiContainer {
 		GlStateManager.translate(0.0F, 0.0F/*entitylittlemaid.yOffset*/, 0.0F);
 		Minecraft.getMinecraft().getRenderManager().setPlayerViewY(180F);
 		Minecraft.getMinecraft().getRenderManager().setRenderShadow(false);
-		Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(entitylittlemaid, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+		// TODO この最後の引数もヨクワカンネ
+		Minecraft.getMinecraft().getRenderManager().doRenderEntity(entitylittlemaid, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		Minecraft.getMinecraft().getRenderManager().setRenderShadow(true);
 		entitylittlemaid.renderYawOffset = f2;
 		entitylittlemaid.rotationYaw = f3;
@@ -307,7 +309,7 @@ public class GuiInventory extends GuiContainer {
 		//		FoodStats var7 = entitylittlemaid.getFoodStats();
 //		int var8 = var7.getFoodLevel();
 //		int var9 = var7.getPrevFoodLevel();
-		IAttributeInstance var10 = entitylittlemaid.getEntityAttribute(SharedMonsterAttributes.maxHealth);
+		IAttributeInstance var10 = entitylittlemaid.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
 		float var14 = (float) var10.getAttributeValue();
 		float var15 = entitylittlemaid.getAbsorptionAmount();
 		int var16 = MathHelper.ceiling_float_int((var14 + var15) / 2.0F / 10.0F);
@@ -315,7 +317,7 @@ public class GuiInventory extends GuiContainer {
 		float var19 = var15;
 		int var21 = -1;
 
-		if (entitylittlemaid.isPotionActive(Potion.regeneration)) {
+		if (entitylittlemaid.isPotionActive(Potion.getPotionById(10))) {
 			var21 = updateCounter % MathHelper.ceiling_float_int(var14 + 5.0F);
 		}
 
@@ -344,9 +346,9 @@ public class GuiInventory extends GuiContainer {
 		// LP
 		for (int li = MathHelper.ceiling_float_int((var14 + var15) / 2.0F) - 1; li >= 0; --li) {
 			int var23 = 16;
-			if (entitylittlemaid.isPotionActive(Potion.poison)) {
+			if (entitylittlemaid.isPotionActive(Potion.getPotionById(19))) {
 				var23 += 36;
-			} else if (entitylittlemaid.isPotionActive(Potion.wither)) {
+			} else if (entitylittlemaid.isPotionActive(Potion.getPotionById(20))) {
 				var23 += 72;
 			}
 
@@ -476,7 +478,7 @@ public class GuiInventory extends GuiContainer {
 			GlStateManager.disableLighting();
 			GlStateManager.disableDepth();
 			GlStateManager.colorMask(true, true, true, false);
-			String str = StatCollector.translateToLocal("littleMaidMob.gui.text.expboost");
+			String str = I18n.translateToLocal("littleMaidMob.gui.text.expboost");
 			int width = fontRendererObj.getStringWidth(str);
 			int centerx = guiLeft + 48 + xSize/2;
 			drawGradientRect(centerx - width/2 - 4, guiTop, centerx + width/2 + 4, guiTop + fontRendererObj.FONT_HEIGHT, 0xc0202020, 0xc0202020);
@@ -621,7 +623,7 @@ public class GuiInventory extends GuiContainer {
 		}
 		for (Iterator iterator = entitylittlemaid.getActivePotionEffects().iterator(); iterator.hasNext();) {
 			PotionEffect potioneffect = (PotionEffect) iterator.next();
-			Potion potion = Potion.potionTypes[potioneffect.getPotionID()];
+			Potion potion = potioneffect.getPotion();//Potion.potionTypes[potioneffect.getPotionID()];
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
 			drawTexturedModalRect(lx, ly, 0, ySizebk, 140, 32);
@@ -631,16 +633,17 @@ public class GuiInventory extends GuiContainer {
 				drawTexturedModalRect(lx + 6, ly + 7, 0 + (i1 % 8) * 18,
 						ySizebk + 32 + (i1 / 8) * 18, 18, 18);
 			}
-			String ls = StatCollector.translateToLocal(potion.getName());
+			String ls = I18n.translateToLocal(potion.getName());
 			if (potioneffect.getAmplifier() > 0) {
 				ls = (new StringBuilder()).append(ls).append(" ")
-						.append(StatCollector.translateToLocal((new StringBuilder())
+						.append(I18n.translateToLocal((new StringBuilder())
 								.append("potion.potency.")
 								.append(potioneffect.getAmplifier())
 								.toString())).toString();
 			}
 			mc.fontRendererObj.drawString(ls, lx + 10 + 18, ly + 6, 0xffffff);
-			String s1 = Potion.getDurationString(potioneffect);
+			// TODO ここもよく分からん
+			String s1 = Potion.getPotionDurationString(potioneffect, 1);
 			mc.fontRendererObj.drawString(s1, lx + 10 + 18, ly + 6 + 10, 0x7f7f7f);
 			ly += lh;
 		}
