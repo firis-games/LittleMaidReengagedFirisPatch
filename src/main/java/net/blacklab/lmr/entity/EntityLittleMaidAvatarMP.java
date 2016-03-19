@@ -53,8 +53,19 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		// TODO dataWatcher has been taken over.
 		dataWatcher = avatar.getDataManager();
 
-		this.dataWatcher.addObject(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
+		this.dataWatcher.register(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
 
+		/*
+		 * TODO インベントリの何が面倒って
+		 * 都合上AvatarからEventが飛ぶときにInventoryを取得される可能性があること
+		 * 取得させて普通に処理させるべきか，空のインベントリを返すか
+		 * 従来は前者で簡単に対応出来たので，メイドをほぼ完全に独立Playerとして振る舞わせることができた．
+		 * 
+		 * 今回の変更で，メイドインベントリにInventoryPlayerを使わなくなったので，
+		 * これは地味に対応が大変そうな案件．
+		 * 前者の場合は上手くやらないと，大本のメイドインベントリに変更が反映させられない．
+		 * 後者の場合は，旧版LMMの特性を一つ犠牲にすることになり，おまけにアドオンが作りづらい．
+		 */
 		inventory = avatar.maidInventory;
 		inventory.player = this;
 	}

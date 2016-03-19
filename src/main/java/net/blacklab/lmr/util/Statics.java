@@ -1,25 +1,33 @@
 package net.blacklab.lmr.util;
 
+import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.EntityLittleMaidAvatarMP;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+
 public class Statics
 {
 
 	/** Absoption効果をクライアント側へ転送するのに使う */
-	public static final int dataWatch_Absoption		= 18;
+	// TODO DataManagerは手探り
+	public static final DataParameter<Float> dataWatch_Absoption		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.FLOAT);
 
 	/** メイドカラー(byte) */
-	public static final int dataWatch_Color			= 19;
+	public static final DataParameter<Byte> dataWatch_Color			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.BYTE);
 	/**
 	 * MSB|0x0000 0000|LSB<br>
 	 *       |    |本体のテクスチャインデックス<br>
 	 *       |アーマーのテクスチャインデックス<br>
 	 */
-	public static final int dataWatch_Texture		= 20;
+	public static final DataParameter<Integer> dataWatch_Texture		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	/** モデルパーツの表示フラグ(Integer) */
-	public static final int dataWatch_Parts			= 21;
+	public static final DataParameter<Integer> dataWatch_Parts			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	/**
 	 * 各種フラグを一纏めにしたもの。
 	 */
-	public static final int dataWatch_Flags			= 22;
+	// TODO VARって何
+	public static final DataParameter<Integer> dataWatch_Flags			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	public static final int dataWatch_Flags_looksWithInterest		= 0x00000001;
 	public static final int dataWatch_Flags_looksWithInterestAXIS	= 0x00000002;
 	public static final int dataWatch_Flags_Aimebow					= 0x00000004;
@@ -37,24 +45,25 @@ public class Statics
 	public static final int dataWatch_Flags_Swimming				= 0x00004000;
 
 	/** 紐の持ち主のEntityID。 */
-	public static final int dataWatch_Gotcha			= 23;
+	public static final DataParameter<Integer> dataWatch_Gotcha			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 
 	/** メイドモード(Short) */
-	public static final int dataWatch_Mode			= 24;
+	public static final DataParameter<Integer> dataWatch_Mode			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	/** 利き腕(Byte) */
-	public static final int dataWatch_DominamtArm	= 25;
+	public static final DataParameter<Byte> dataWatch_DominamtArm	= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.BYTE);
 	/** アイテムの使用判定、腕毎(Integer) */
-	public static final int dataWatch_ItemUse		= 26;
+	public static final DataParameter<Integer> dataWatch_ItemUse		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	/** 保持経験値→メイド経験値で上書きな */
-	public static final int dataWatch_MaidExpValue		= 27;
+	public static final DataParameter<Float> dataWatch_MaidExpValue		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.FLOAT);
 
+	// TODO この処遇は何とするか．EntityPlayer#ABSORPTIONはprivateだし
 	/** EntityPlayer と EntityTameable で17番がかぶっているため、EntityPlayer側を28へ移動。 */
-	public static final int dataWatch_AbsorptionAmount	= 28;
+	public static final DataParameter<Float> dataWatch_AbsorptionAmount	= EntityDataManager.createKey(EntityLittleMaidAvatarMP.class, DataSerializers.FLOAT);
 
 	/**
 	 * 自由設定値。
 	 */
-	public static final int dataWatch_Free			= 31;
+	public static final DataParameter<Integer> dataWatch_Free			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 
 	public static final int dataFlags_ForceUpdateInventory	= 0x80000000;
 

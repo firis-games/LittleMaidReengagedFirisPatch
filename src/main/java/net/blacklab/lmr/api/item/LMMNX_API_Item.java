@@ -13,7 +13,7 @@ public class LMMNX_API_Item {
 	
 	public static boolean hasSugar(EntityLittleMaid maid){
 		boolean flag = false;
-		for(ItemStack stack:maid.maidInventory.mainInventory){
+		for(ItemStack stack: maid.maidInventory.mainInventory){
 			if(stack==null) continue;
 			if(isSugar(stack.getItem())){
 				flag = false;

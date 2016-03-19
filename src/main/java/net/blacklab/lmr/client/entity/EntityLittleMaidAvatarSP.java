@@ -11,12 +11,14 @@ import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatBase;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -47,11 +49,12 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		
 		// 初期設定
 		avatar = par2EntityLittleMaid;
-		dataWatcher = avatar.getDataWatcher();
+		dataWatcher = avatar.getDataManager();
 		
-		this.dataWatcher.addObject(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
+		this.dataWatcher.register(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
 		
-		inventory = avatar.maidInventory;
+		// TODO Client限定ゴマカシ
+		inventory = new InventoryPlayer(this);
 		inventory.player = this;
 	}
 
@@ -60,22 +63,6 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	protected void entityInit()
 	{
 		super.entityInit();
-	}
-	public void readEntityFromNBT(NBTTagCompound var1)
-	{
-		super.readEntityFromNBT(var1);
-	}
-	public void writeEntityToNBT(NBTTagCompound var1)
-	{
-		super.writeEntityToNBT(var1);
-	}
-	public ItemStack getHeldItem()
-	{
-		return super.getHeldItem();
-	}
-	public void setCurrentItemOrArmor(int var1, ItemStack var2)
-	{
-		super.setCurrentItemOrArmor(var1, var2);
 	}
 	public Entity getCommandSenderEntity(){ return super.getCommandSenderEntity(); }
 	public World getEntityWorld(){ return super.getEntityWorld(); }
@@ -95,12 +82,12 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	}
 
 	@Override
-	protected String getHurtSound() {
+	protected SoundEvent getHurtSound() {
 		return null;
 	}
 
 	@Override
-	protected String getDeathSound() {
+	protected SoundEvent getDeathSound() {
 		return null;
 	}
 
