@@ -192,7 +192,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				}
 			}
 			// 完成品
-			if (!lflag && inventryPos > owner.maidInventory.mainInventory.length) {
+			if (!lflag && inventryPos > owner.maidInventory.InventoryLittleMaid.maxInventorySize) {
 				// ポーションの回収
 				for (int li = 0; li < 3 && !lflag; li ++) {
 					litemstack1 = ltile.getStackInSlot(li);
@@ -230,8 +230,8 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 			if (!lflag && (ltile.getStackInSlot(0) != null || ltile.getStackInSlot(1) != null || ltile.getStackInSlot(2) != null)
 					&& (owner.maidInventory.currentItem == -1 || (litemstack1 != null && litemstack1.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack1)))) {
 				// ポーション以外を検索
-//				for (inventryPos = 0; inventryPos < owner.maidInventory.mainInventory.length; inventryPos++) {
-				for (; inventryPos < owner.maidInventory.mainInventory.length; inventryPos++) {
+//				for (inventryPos = 0; inventryPos < owner.maidInventory.InventoryLittleMaid.maxInventorySize; inventryPos++) {
+				for (; inventryPos < owner.maidInventory.InventoryLittleMaid.maxInventorySize; inventryPos++) {
 					litemstack1 = owner.maidInventory.getStackInSlot(inventryPos);
 					if (litemstack1 != null && !(litemstack1.getItem() instanceof ItemPotion)) {
 						owner.setEquipItem(inventryPos);
@@ -253,7 +253,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				} 
 				else if (litemstack1 == null || (litemstack1.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack1)) || !litemstack1.getItem().isPotionIngredient(litemstack1)) {
 					// 対象外アイテムを発見した時に終了
-					inventryPos = owner.maidInventory.mainInventory.length;
+					inventryPos = owner.maidInventory.InventoryLittleMaid.maxInventorySize;
 					lflag = true;
 				}
 				inventryPos++;

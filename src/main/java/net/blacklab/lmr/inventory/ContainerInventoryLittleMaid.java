@@ -4,6 +4,7 @@ import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -13,19 +14,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerInventoryLittleMaid extends Container {
+public class ContainerInventoryLittleMaid extends ContainerPlayer {
 	
 	protected final InventoryLittleMaid littlemaidInventory;
 	protected final int numRows;
 	protected final EntityLittleMaid owner;
 
-
 	public ContainerInventoryLittleMaid(IInventory playerInventory, EntityLittleMaid pEntity) {
 		// >
-		// Forge対策、ContainerPlayer継承でなければ要らない、SlotArmor用
-		// TODO なんて書いてあるけどInventoryPlayer.mainInventoryがfinalにされたコノヤロウなのでなんとかごまかしてみよう
-		super();
-//		super(pEntity.maidInventory, !pEntity.worldObj.isRemote, pEntity.maidAvatar);
+//		super();
+		super(pEntity.maidInventory, !pEntity.worldObj.isRemote, pEntity.maidAvatar);
 		inventorySlots.clear();
 		inventoryItemStacks.clear();
 		// <

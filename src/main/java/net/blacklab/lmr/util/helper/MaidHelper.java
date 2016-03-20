@@ -25,7 +25,7 @@ public class MaidHelper {
 	public static void giveItem(ItemStack stack, EntityLittleMaid maid) {
 		int stacksize = stack.stackSize;
 		
-		for (int i=0; i<maid.maidInventory.mainInventory.length; i++) {
+		for (int i=0; i<maid.maidInventory.InventoryLittleMaid.maxInventorySize; i++) {
 			ItemStack stack1 = maid.maidInventory.mainInventory[i];
 	
 			if (stack1 != null && stack != null) {

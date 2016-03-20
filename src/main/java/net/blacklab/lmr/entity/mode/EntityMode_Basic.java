@@ -360,7 +360,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			// 砂糖、時計、被っているヘルム以外のアイテムを突っ込む
 			ItemStack is;
 			LittleMaidReengaged.Debug(String.format("getChest:%d", maidSearchCount));
-			while ((is = owner.maidInventory.getStackInSlot(maidSearchCount)) == null && maidSearchCount < owner.maidInventory.mainInventory.length) {
+			while ((is = owner.maidInventory.getStackInSlot(maidSearchCount)) == null && maidSearchCount < owner.maidInventory.InventoryLittleMaid.maxInventorySize) {
 				maidSearchCount++;
 			}
 			LMMNX_Event.LMMNX_ItemPutChestEvent event =
@@ -405,7 +405,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 				}
 			}
 //			mod_littleMaidMob.Debug(String.format("getchest3:%d", maidSearchCount));
-			if (++maidSearchCount >= owner.maidInventory.mainInventory.length) {
+			if (++maidSearchCount >= owner.maidInventory.InventoryLittleMaid.maxInventorySize) {
 				// 検索済みの対象をスタック
 //				serchedChest.add(myChest);
 				clearMy();
