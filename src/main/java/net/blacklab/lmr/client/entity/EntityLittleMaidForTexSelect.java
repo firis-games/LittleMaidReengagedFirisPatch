@@ -10,6 +10,9 @@ import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -30,6 +33,9 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	protected MMM_EntityCaps entityCaps;
 	public ModelConfigCompound textureData;
 	public boolean modeArmor = false;
+	
+	private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(EntityLittleMaidForTexSelect.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> INDEX = EntityDataManager.createKey(EntityLittleMaidForTexSelect.class, DataSerializers.VARINT);
 
 	public EntityLittleMaidForTexSelect(World par1World) {
 		super(par1World);
@@ -42,9 +48,9 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 		// Select用だから、これ別にいらんけどな。
 		super.entityInit();
 		// color
-		dataWatcher.addObject(19, Integer.valueOf(0));
+		dataWatcher.register(COLOR, Integer.valueOf(0));
 		// 20:選択テクスチャインデックス
-		dataWatcher.addObject(20, Integer.valueOf(0));
+		dataWatcher.register(INDEX, Integer.valueOf(0));
 	}
 
 /*

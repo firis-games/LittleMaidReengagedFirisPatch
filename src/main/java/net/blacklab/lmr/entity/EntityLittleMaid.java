@@ -38,7 +38,6 @@ import mmmlibx.lib.MMMLib;
 import mmmlibx.lib.MMM_Counter;
 import mmmlibx.lib.multiModel.model.mc162.EquippedStabilizer;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
-import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.api.event.LMMNX_Event;
@@ -121,10 +120,11 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPotion;
@@ -138,10 +138,11 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.profiler.Profiler;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -154,8 +155,10 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.TempCategory;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.actors.threadpool.Arrays;
 
 public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity {
 
@@ -1363,7 +1366,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		}
 		setColor(par1nbtTagCompound.getInteger("Color"));
 		refreshModels();
-		if (MinecraftServer.getServer().isSinglePlayer()) {
+		if (FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer()) {
 			syncModelNames();
 		}
 
@@ -1389,8 +1392,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		// --------------------------------------------
 		// 肩車状態でプレイヤーが馬に乗っているときは、当たり判定をなくす。
 		if(isMaidWait()) return false;
-		if (ridingEntity != null && ridingEntity == mstatMasterEntity) {
-			if(ridingEntity.ridingEntity instanceof EntityHorse)
+		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
+			if(getRidingEntity().getRidingEntity() instanceof EntityHorse)
 			{
 				return false;
 			}
@@ -1403,8 +1406,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	// おんぶおばけは無敵
 	@Override
 	public boolean canBeCollidedWith() {
-		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
-			ItemStack litemstack = mstatMasterEntity.getCurrentEquippedItem();
+		if (getRidingEntity() != null && getRidingEntity().equals(mstatMasterEntity)) {
+			ItemStack litemstack = mstatMasterEntity.getHeldItem(mstatMasterEntity.getActiveHand());
 			return (litemstack == null) || (litemstack.getItem() == Items.saddle);
 		}
 		return super.canBeCollidedWith();
@@ -1471,8 +1474,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		++ticksExisted;
 		//
 
-		if(ridingEntity instanceof EntityPlayer) {
-			EntityPlayer lep = (EntityPlayer)ridingEntity;
+		if(getRidingEntity() instanceof EntityPlayer) {
+			EntityPlayer lep = (EntityPlayer)getRidingEntity();
 
 			// ヘッドハガー
 			renderYawOffset = lep.renderYawOffset;
@@ -1502,9 +1505,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			// --------------------------------------------
 			// プレイヤーが馬に乗っているときは、肩車ではなく馬の後ろに乗る
 			// ridingEntity はsuper.updateRidden();によってNULLになる事があるので注意
-			if(lep.ridingEntity instanceof EntityHorse)
+			if(lep.getRidingEntity() instanceof EntityHorse)
 			{
-				EntityHorse horse = (EntityHorse)lep.ridingEntity;
+				EntityHorse horse = (EntityHorse)lep.getRidingEntity();
 				if(worldObj.isRemote)
 				{
 					dx = Math.sin((horse.renderYawOffset * Math.PI) / 180D) * 0.5;
@@ -1530,11 +1533,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		} else {
 			super.updateRidden();
 		}
-	}
-
-	@Override
-	public void updateRiderPosition() {
-		super.updateRiderPosition();
 	}
 
 	@Override
@@ -1565,11 +1563,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	public float getInterestedAngle(float f) {
-		if(maidInventory.mainInventory[17]!=null){
-			if(maidInventory.mainInventory[17].getItem() instanceof ItemArmor){
-				if(((ItemArmor)maidInventory.mainInventory[17].getItem()).armorType==0)
-					return 0f;
-			}
+		if(maidInventory.armorInventory[3] != null){
+			return 0f;
 		}
 		return (prevRotateAngleHead + (rotateAngleHead - prevRotateAngleHead) * f) * ((looksWithInterestAXIS ? 0.08F : -0.08F) * (float)Math.PI);
 	}
@@ -1611,7 +1606,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			if (isContractEX() && par2>=19 && par2<getHealth()) {
 				EntityPlayer player;
 				if ((player = getMaidMasterEntity()) != null)
-					player.triggerAchievement(LMMNX_Achievements.ac_Ashikubi);
+					player.addStat(LMMNX_Achievements.ac_Ashikubi);
 			}
 		}
 		if(!par1DamageSource.isUnblockable() && isBlocking()) {
@@ -1753,7 +1748,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		if (itemstack != null && itemstack.getItem() instanceof ItemPotion) {
 			// ポーション効果の発動
 			itemstack.stackSize--;
-			List list = ((ItemPotion)itemstack.getItem()).getEffects(itemstack);
+			List list = PotionUtils.getEffectsFromStack(itemstack);
 			if (list != null) {
 				PotionEffect potioneffect;
 				for (Iterator iterator = list.iterator(); iterator.hasNext(); entityliving.addPotionEffect(new PotionEffect(potioneffect))) {
@@ -2000,10 +1995,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 		// 水中関連
 		if (swimmingEnabled || !isContract()) {
-			((PathNavigateGround)navigator).setAvoidsWater(false);
+//			((PathNavigateGround)navigator).setAvoidsWater(false);
 			((PathNavigateGround)navigator).setCanSwim(true);
 		} else {
-			((PathNavigateGround)navigator).setAvoidsWater(true);
+//			((PathNavigateGround)navigator).setAvoidsWater(true);
 			((PathNavigateGround)navigator).setCanSwim(false);
 		}
 
@@ -2048,24 +2043,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			}
 		}
 
-		ItemStack itemstack = getInventory()[0];
-
-		if (itemstack != null)
-		{
-			if (itemstack.isItemStackDamageable())
-			{
-				itemstack.setItemDamage(itemstack.getItemDamage() + rand.nextInt(2));
-
-				if (itemstack.getItemDamage() >= itemstack.getMaxDamage())
-				{
-					renderBrokenItemStack(itemstack);
-					// setCurrentItemOrArmor(4, (ItemStack)null);
-				}
-			}
-
-			//flag = false;
-		}
-
 		if(lhealth > 0) {
 			// 近接監視の追加はここ
 			// アイテムの回収
@@ -2077,7 +2054,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 						if (!entity.isDead) {
 							if (entity instanceof EntityArrow) {
 								// 特殊回収
-								((EntityArrow)entity).canBePickedUp = 1;
+								((EntityArrow)entity).canBePickedUp = PickupStatus.ALLOWED;
 							}
 							entity.onCollideWithPlayer(maidAvatar);
 						}
@@ -2778,28 +2755,35 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		return maidInventory.getCurrentItem();
 	}
 
-
 	@Override
-	public ItemStack getHeldItem() {
-		return maidInventory.getCurrentItem();
+	public ItemStack getHeldItem(EnumHand pHand) {
+		if (pHand == EnumHand.MAIN_HAND) {
+			return getCurrentEquippedItem();
+		}
+		return null;
 	}
 
 	@Override
-	public ItemStack getEquipmentInSlot(int par1) {
-		if (par1 == 0) {
-			return getHeldItem();
-		} else if (par1 < 5) {
-			return maidInventory.armorItemInSlot(par1 - 1);
-		} else {
-			return maidInventory.getStackInSlot(par1 - 5);
+	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
+		if (slotIn == EntityEquipmentSlot.MAINHAND) {
+			return getCurrentEquippedItem();
+		}
+		if (slotIn.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+			return maidInventory.getStackInSlot(InventoryLittleMaid.maxInventorySize + slotIn.getIndex());
+		}
+		return null;
+	}
+	
+	@Override
+	public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
+		if (slotIn == EntityEquipmentSlot.MAINHAND) {
+			setHeldItem(EnumHand.MAIN_HAND, stack);
+		}
+		if (slotIn.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+			maidInventory.setInventorySlotContents(InventoryLittleMaid.maxInventorySize + slotIn.getIndex(), stack); 
 		}
 	}
-
-	@Override
-	public ItemStack getCurrentArmor(int par1) {
-		return maidInventory.armorItemInSlot(par1);
-	}
-
+/*
 	@Override
 	public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack) {
 		par1 &= 0x0000ffff;
@@ -2844,15 +2828,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			LittleMaidReengaged.Debug(String.format("ID:%d Slot(%2d:%d):%s", getEntityId(), lslotindex, lequip, s == null ? "NoItem" : s));
 		}
 	}
-
+*/
 	@Override
-	public ItemStack[] getInventory() {
-		ItemStack[] tmp = new ItemStack[5];
-		tmp[0] = null;
-		for(int i=0;i<4;i++){
-			tmp[i+1] = maidInventory.armorInventory[i];
-		}
-		return tmp;
+	public Iterable<ItemStack> getArmorInventoryList() {
+		return Arrays.asList(maidInventory.armorInventory);
 	}
 
 	@Override

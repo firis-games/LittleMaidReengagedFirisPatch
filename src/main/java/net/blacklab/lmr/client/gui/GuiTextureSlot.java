@@ -22,6 +22,7 @@ import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -227,17 +228,17 @@ public class GuiTextureSlot extends GuiSlot {
 		if (pFlag) {
 			selected = texsel[1];
 			mode = true;
-			entity.setCurrentItemOrArmor(1, armors[0]);
-			entity.setCurrentItemOrArmor(2, armors[1]);
-			entity.setCurrentItemOrArmor(3, armors[2]);
-			entity.setCurrentItemOrArmor(4, armors[3]);
+			entity.setItemStackToSlot(EntityEquipmentSlot.FEET,  armors[0]);
+			entity.setItemStackToSlot(EntityEquipmentSlot.LEGS,  armors[1]);
+			entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, armors[2]);
+			entity.setItemStackToSlot(EntityEquipmentSlot.HEAD,  armors[3]);
 		} else {
 			selected = texsel[0];
 			mode = false;
-			entity.setCurrentItemOrArmor(1, null);
-			entity.setCurrentItemOrArmor(2, null);
-			entity.setCurrentItemOrArmor(3, null);
-			entity.setCurrentItemOrArmor(4, null);
+			entity.setItemStackToSlot(EntityEquipmentSlot.FEET,  null);
+			entity.setItemStackToSlot(EntityEquipmentSlot.LEGS,  null);
+			entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
+			entity.setItemStackToSlot(EntityEquipmentSlot.HEAD,  null);
 		}
 		scrollBy(slotHeight * selected);
 	}

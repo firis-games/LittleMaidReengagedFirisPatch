@@ -60,7 +60,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	/**
 	 * Current Item Index
 	 */
-	private int currentItem;
+	public int currentItem;
 
 	/**
 	 * スロット変更チェック用
