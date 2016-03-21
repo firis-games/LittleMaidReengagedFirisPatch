@@ -573,4 +573,10 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	public EntityLittleMaid getMaid() {
 		return avatar;
 	}
+
+	@Override
+	public boolean isCreative() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
