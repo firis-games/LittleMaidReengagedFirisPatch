@@ -98,8 +98,8 @@ public class MMM_GuiSlotMobSelect extends GuiSlot {
 		//GL11.glTranslatef(0.0F, entityliving.yOffset, 0.0F);
 		Minecraft.getMinecraft().getRenderManager().playerViewY = 180F;
 		try {
-			Minecraft.getMinecraft().getRenderManager().rerenderEntityWithPosYaw(entityliving,
-					0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+			Minecraft.getMinecraft().getRenderManager().doRenderEntity(entityliving,
+					0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		} catch (Exception e) {
 			MMM_GuiMobSelect.exclusionList.add(s);
 		}

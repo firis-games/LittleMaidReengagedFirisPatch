@@ -1,6 +1,7 @@
 package mmmlibx.lib;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
@@ -8,6 +9,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -94,9 +96,10 @@ public class MMM_EntityCaps implements IModelCaps {
 			return owner.ticksExisted;
 		case caps_heldItems:
 		case caps_currentEquippedItem:
-			return owner.getHeldItem();
+			return owner.getHeldItemMainhand();
 		case caps_currentArmor:
-			return owner.getEquipmentInSlot((Integer)pArg[0] + 1);
+			return ((List<ItemStack>)owner.getArmorInventoryList()).get((Integer) pArg[0]);
+			//return owner.getEquipmentInSlot((Integer)pArg[0] + 1);
 		case caps_posX:
 			return owner.posX;
 		case caps_posY:
@@ -136,7 +139,7 @@ public class MMM_EntityCaps implements IModelCaps {
 		case caps_isRiding:
 			return owner.isRiding();
 		case caps_isRidingPlayer:
-			return owner.ridingEntity instanceof EntityPlayer;
+			return owner.getRidingEntity() instanceof EntityPlayer;
 		case caps_isChild:
 			return owner.isChild();
 		case caps_isWet:
@@ -207,7 +210,7 @@ public class MMM_EntityCaps implements IModelCaps {
 		case caps_isLeeding:
 			return (owner instanceof EntityLiving) && ((EntityLiving)owner).getLeashed();
 		case caps_getRidingName:
-			return owner.ridingEntity == null ? "" : EntityList.getEntityString(owner.ridingEntity);
+			return owner.getRidingEntity() == null ? "" : EntityList.getEntityString(owner.getRidingEntity());
 		
 		// World
 		case caps_WorldTotalTime:
@@ -234,10 +237,20 @@ public class MMM_EntityCaps implements IModelCaps {
 			return true;
 		case caps_heldItems:
 		case caps_currentEquippedItem:
-			owner.setCurrentItemOrArmor((Integer)pArg[0], (ItemStack)pArg[1]);
+			for (EntityEquipmentSlot fSlot : EntityEquipmentSlot.values()) {
+				if (fSlot.func_188452_c() == (Integer)pArg[0]) {
+					owner.setItemStackToSlot(fSlot, (ItemStack) pArg[1]);
+				}
+			}
+//			owner.setCurrentItemOrArmor((Integer)pArg[0], (ItemStack)pArg[1]);
 			return true;
 		case caps_currentArmor:
-			owner.setCurrentItemOrArmor((Integer)pArg[0] + 1, (ItemStack)pArg[1]);
+			for (EntityEquipmentSlot fSlot : EntityEquipmentSlot.values()) {
+				if (fSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && fSlot.getIndex() == (Integer)pArg[0]) {
+					owner.setItemStackToSlot(fSlot, (ItemStack) pArg[1]);
+				}
+			}
+//			owner.setCurrentItemOrArmor((Integer)pArg[0] + 1, (ItemStack)pArg[1]);
 			return true;
 		case caps_posX:
 			owner.posX = (Double)pArg[0];

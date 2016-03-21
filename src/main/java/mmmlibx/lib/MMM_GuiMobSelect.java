@@ -95,21 +95,25 @@ public abstract class MMM_GuiMobSelect extends GuiScreen {
 
 	@Override
 	public void drawScreen(int px, int py, float pf) {
+/*
 		float lhealthScale = BossStatus.healthScale;
 		int lstatusBarLength = BossStatus.statusBarTime;
 		String lbossName = BossStatus.bossName;
 		boolean lfield_82825_d = BossStatus.hasColorModifier;
+*/
 		
 		drawDefaultBackground();
 		selectPanel.drawScreen(px, py, pf);
 		drawCenteredString(this.mc.fontRendererObj, I18n.translateToLocal(screenTitle), width / 2, 20, 0xffffff);
 		super.drawScreen(px, py, pf);
-		
+	
+/*
 		// GUIで表示した分のボスのステータスを表示しない
 		BossStatus.healthScale = lhealthScale;
 		BossStatus.statusBarTime = lstatusBarLength;
 		BossStatus.bossName = lbossName;
 		BossStatus.hasColorModifier = lfield_82825_d;
+*/
 	}
 
 	/**

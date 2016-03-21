@@ -11,6 +11,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 public class RenderModelMulti extends RenderLiving {
@@ -35,7 +37,7 @@ public class RenderModelMulti extends RenderLiving {
 		// アーマーの表示設定
 		modelFATT.renderParts = par2;
 		modelFATT.renderCount = 0;
-		ItemStack is = par1EntityLiving.getEquipmentInSlot(par2 + 1);
+		ItemStack is = ((List<ItemStack>)par1EntityLiving.getArmorInventoryList()).get(par2);
 		if (is != null && is.stackSize > 0) {
 			modelFATT.showArmorParts(par2);
 			return is.isItemEnchanted() ? 15 : 1;

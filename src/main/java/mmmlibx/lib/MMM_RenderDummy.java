@@ -1,15 +1,15 @@
 package mmmlibx.lib;
 
+import org.lwjgl.opengl.EXTRescaleNormal;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.EXTRescaleNormal;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.util.math.MathHelper;
 
 public class MMM_RenderDummy extends Render {
 
@@ -37,7 +37,7 @@ public class MMM_RenderDummy extends Render {
 		Tessellator tessellator = Tessellator.getInstance();
 		
 		// TODO 1.8.8検証
-		tessellator.getWorldRenderer().begin(GL11.GL_QUADS, tessellator.getWorldRenderer().getVertexFormat());
+		tessellator.getBuffer().begin(GL11.GL_QUADS, tessellator.getBuffer().getVertexFormat());
 		
 		GL11.glColor3f(1F, 1F, 1F);
 		if (entity instanceof MMM_EntityDummy) {
@@ -45,12 +45,12 @@ public class MMM_RenderDummy extends Render {
 			int ca = MathHelper.floor_float(((MMM_EntityDummy) entity)
 					.getAlpha(1.0F) * 256);
 
-			int i = tessellator.getWorldRenderer().getColorIndex(ca);
+			int i = tessellator.getBuffer().getColorIndex(ca);
 			int j = cc >> 16 & 255;
 			int k = cc >> 8 & 255;
 			int l = cc & 255;
 			int i1 = cc >> 24 & 255;
-			tessellator.getWorldRenderer().putColorRGBA(i, j, k, l, i1);
+			tessellator.getBuffer().putColorRGBA(i, j, k, l, i1);
 		}
 		double xa = 0.3D;
 		double xb = 0.7D;
@@ -59,10 +59,10 @@ public class MMM_RenderDummy extends Render {
 		double za = 0.3D;
 		double zb = 0.7D;
 		
-		tessellator.getWorldRenderer().putPosition(xa, yy, za);
-		tessellator.getWorldRenderer().putPosition(xa, yy, zb);
-		tessellator.getWorldRenderer().putPosition(xb, yy, zb);
-		tessellator.getWorldRenderer().putPosition(xb, yy, za);
+		tessellator.getBuffer().putPosition(xa, yy, za);
+		tessellator.getBuffer().putPosition(xa, yy, zb);
+		tessellator.getBuffer().putPosition(xb, yy, zb);
+		tessellator.getBuffer().putPosition(xb, yy, za);
 		
 		
 		tessellator.draw();

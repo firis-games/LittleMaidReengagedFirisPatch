@@ -85,32 +85,6 @@ public class MMM_Helper {
 	}
 
 	/**
-	 * バイオームの設定Entityを置き換えられたEntityへ置き換える。
-	 * 基本的にMMMLib以外からは呼ばれない。
-	 */
-	@Deprecated
-	protected static void replaceBaiomeSpawn() {
-		// バイオームの発生処理をのっとる
-		if (replaceEntitys.isEmpty()) return;
-		BiomeGenBase[] biomeList = BiomeGenBase.getBiomeGenArray();
-		for (int i = 0; i < biomeList.length; i++) {
-			if (biomeList[i] == null) continue;
-			MMMLib.Debug("ReplaceBaiomeSpawn:%s", biomeList[i].biomeName);
-			MMMLib.Debug("[Creature]");
-			replaceCreatureList(biomeList[i].getSpawnableList(EnumCreatureType.CREATURE));//.spawnableCreatureList);
-			MMMLib.Debug("[WaterCreature]");
-			replaceCreatureList(biomeList[i].getSpawnableList(EnumCreatureType.WATER_CREATURE));//.spawnableWaterCreatureList);
-			MMMLib.Debug("[CaveCreature]");
-			replaceCreatureList(biomeList[i].getSpawnableList(EnumCreatureType.AMBIENT));//.spawnableCaveCreatureList);
-			MMMLib.Debug("[Monster]");
-			replaceCreatureList(biomeList[i].getSpawnableList(EnumCreatureType.MONSTER));//.spawnableMonsterList);
-		}
-	}
-
-	
-
-
-	/**
 	 * Blockのインスタンスを置き換える。
 	 * static finalの変数に対して行うのでForgeでは無効。
 	 * @param pOriginal
