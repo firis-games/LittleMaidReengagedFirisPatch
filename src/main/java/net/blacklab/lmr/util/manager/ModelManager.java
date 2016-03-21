@@ -326,7 +326,7 @@ public class ModelManager {
 		}
 		// ファイルからロード
 /*
-		File lfile = FMLCommonHandler.instance().getMinecraftServerInstance().getFile(nameTextureIndex);
+		File lfile = MinecraftServer.getServer().getFile(nameTextureIndex);
 		if (lfile.exists() && lfile.isFile()) {
 			try {
 				FileReader fr = new FileReader(lfile);

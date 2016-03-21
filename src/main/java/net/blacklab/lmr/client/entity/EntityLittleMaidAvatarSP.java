@@ -24,6 +24,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
+
+
 public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLittleMaidAvatar
 {
 	public EntityLittleMaid avatar;
@@ -570,10 +572,5 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	@Override
 	public EntityLittleMaid getMaid() {
 		return avatar;
-	}
-
-	@Override
-	public boolean isCreative() {
-		return false;
 	}
 }

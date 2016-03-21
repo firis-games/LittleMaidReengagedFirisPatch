@@ -90,6 +90,11 @@ import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.blacklab.lmr.util.manager.EntityModeManager;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.wrapper.W_Common;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoublePlant;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockPumpkin;
+import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -116,52 +121,41 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPotion;
+import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.server.SPacketEntityEffect;
-import net.minecraft.network.play.server.SPacketEntityEquipment;
-import net.minecraft.network.play.server.SPacketRemoveEntityEffect;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.profiler.Profiler;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.TempCategory;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.actors.threadpool.Arrays;
 
 public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity {
 
@@ -1003,7 +997,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		if (LittleMaidReengaged.cfg_Dominant) {
 			// ドミナント
 			return worldObj.checkNoEntityCollision(getEntityBoundingBox())
-					&& worldObj.getCollisionBoxes(getEntityBoundingBox()).isEmpty()
+					&& worldObj.getCollidingBoundingBoxes(this, getEntityBoundingBox()).isEmpty()
 					&& !worldObj.isAnyLiquid(getEntityBoundingBox())
 					/*&& getBlockPathWeight(lx, ly, lz) >= 0.0F*/;
 		}
@@ -1369,7 +1363,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		}
 		setColor(par1nbtTagCompound.getInteger("Color"));
 		refreshModels();
-		if (FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer()) {
+		if (MinecraftServer.getServer().isSinglePlayer()) {
 			syncModelNames();
 		}
 
@@ -1395,8 +1389,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		// --------------------------------------------
 		// 肩車状態でプレイヤーが馬に乗っているときは、当たり判定をなくす。
 		if(isMaidWait()) return false;
-		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
-			if(getRidingEntity().getRidingEntity() instanceof EntityHorse)
+		if (ridingEntity != null && ridingEntity == mstatMasterEntity) {
+			if(ridingEntity.ridingEntity instanceof EntityHorse)
 			{
 				return false;
 			}
@@ -1409,8 +1403,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	// おんぶおばけは無敵
 	@Override
 	public boolean canBeCollidedWith() {
-		if (getRidingEntity() != null && getRidingEntity().equals(mstatMasterEntity)) {
-			ItemStack litemstack = mstatMasterEntity.getHeldItem(mstatMasterEntity.getActiveHand());
+		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
+			ItemStack litemstack = mstatMasterEntity.getCurrentEquippedItem();
 			return (litemstack == null) || (litemstack.getItem() == Items.saddle);
 		}
 		return super.canBeCollidedWith();
@@ -1426,7 +1420,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 	@Override
 	public double getMountedYOffset() {
-		// TODO: Changed from 'getControllingPassenger()'. Is it correct?
+		// TODO: Changed from 'riddenByEntity'. Is it correct?
 		if (getControllingPassenger() instanceof EntityChicken) {
 			return height + 0.03D;
 		}
@@ -1477,8 +1471,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		++ticksExisted;
 		//
 
-		if(getRidingEntity() instanceof EntityPlayer) {
-			EntityPlayer lep = (EntityPlayer)getRidingEntity();
+		if(ridingEntity instanceof EntityPlayer) {
+			EntityPlayer lep = (EntityPlayer)ridingEntity;
 
 			// ヘッドハガー
 			renderYawOffset = lep.renderYawOffset;
@@ -1508,9 +1502,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			// --------------------------------------------
 			// プレイヤーが馬に乗っているときは、肩車ではなく馬の後ろに乗る
 			// ridingEntity はsuper.updateRidden();によってNULLになる事があるので注意
-			if(lep.getRidingEntity() instanceof EntityHorse)
+			if(lep.ridingEntity instanceof EntityHorse)
 			{
-				EntityHorse horse = (EntityHorse)lep.getRidingEntity();
+				EntityHorse horse = (EntityHorse)lep.ridingEntity;
 				if(worldObj.isRemote)
 				{
 					dx = Math.sin((horse.renderYawOffset * Math.PI) / 180D) * 0.5;
@@ -1536,6 +1530,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		} else {
 			super.updateRidden();
 		}
+	}
+
+	@Override
+	public void updateRiderPosition() {
+		super.updateRiderPosition();
 	}
 
 	@Override
@@ -1566,8 +1565,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	public float getInterestedAngle(float f) {
-		if(maidInventory.armorInventory[3] != null){
-			return 0f;
+		if(maidInventory.mainInventory[17]!=null){
+			if(maidInventory.mainInventory[17].getItem() instanceof ItemArmor){
+				if(((ItemArmor)maidInventory.mainInventory[17].getItem()).armorType==0)
+					return 0f;
+			}
 		}
 		return (prevRotateAngleHead + (rotateAngleHead - prevRotateAngleHead) * f) * ((looksWithInterestAXIS ? 0.08F : -0.08F) * (float)Math.PI);
 	}
@@ -1609,7 +1611,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			if (isContractEX() && par2>=19 && par2<getHealth()) {
 				EntityPlayer player;
 				if ((player = getMaidMasterEntity()) != null)
-					player.addStat(LMMNX_Achievements.ac_Ashikubi);
+					player.triggerAchievement(LMMNX_Achievements.ac_Ashikubi);
 			}
 		}
 		if(!par1DamageSource.isUnblockable() && isBlocking()) {
@@ -1751,7 +1753,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		if (itemstack != null && itemstack.getItem() instanceof ItemPotion) {
 			// ポーション効果の発動
 			itemstack.stackSize--;
-			List list = PotionUtils.getEffectsFromStack(itemstack);
+			List list = ((ItemPotion)itemstack.getItem()).getEffects(itemstack);
 			if (list != null) {
 				PotionEffect potioneffect;
 				for (Iterator iterator = list.iterator(); iterator.hasNext(); entityliving.addPotionEffect(new PotionEffect(potioneffect))) {
@@ -1889,8 +1891,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	 * 埋葬対策コピー
 	 */
 	private boolean isBlockTranslucent(int par1, int par2, int par3) {
-		IBlockState state = worldObj.getBlockState(new BlockPos(par1, par2, par3));
-		return state.getBlock().isNormalCube(state);
+		return worldObj.getBlockState(new BlockPos(par1, par2, par3)).getBlock().isNormalCube();
 	}
 
 	/**
@@ -1999,10 +2000,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 		// 水中関連
 		if (swimmingEnabled || !isContract()) {
-//			((PathNavigateGround)navigator).setAvoidsWater(false);
+			((PathNavigateGround)navigator).setAvoidsWater(false);
 			((PathNavigateGround)navigator).setCanSwim(true);
 		} else {
-//			((PathNavigateGround)navigator).setAvoidsWater(true);
+			((PathNavigateGround)navigator).setAvoidsWater(true);
 			((PathNavigateGround)navigator).setCanSwim(false);
 		}
 
@@ -2047,6 +2048,24 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			}
 		}
 
+		ItemStack itemstack = getInventory()[0];
+
+		if (itemstack != null)
+		{
+			if (itemstack.isItemStackDamageable())
+			{
+				itemstack.setItemDamage(itemstack.getItemDamage() + rand.nextInt(2));
+
+				if (itemstack.getItemDamage() >= itemstack.getMaxDamage())
+				{
+					renderBrokenItemStack(itemstack);
+					// setCurrentItemOrArmor(4, (ItemStack)null);
+				}
+			}
+
+			//flag = false;
+		}
+
 		if(lhealth > 0) {
 			// 近接監視の追加はここ
 			// アイテムの回収
@@ -2058,7 +2077,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 						if (!entity.isDead) {
 							if (entity instanceof EntityArrow) {
 								// 特殊回収
-								((EntityArrow)entity).canBePickedUp = PickupStatus.ALLOWED;
+								((EntityArrow)entity).canBePickedUp = 1;
 							}
 							entity.onCollideWithPlayer(maidAvatar);
 						}
@@ -2120,7 +2139,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 						if (pe != null) {
 							pe.incrementPathIndex();
 							if (!pe.isFinished()) {
-								Vec3d v = pe.getPosition(this);
+								Vec3 v = pe.getPosition(this);
 								setPosition(v.xCoord, v.yCoord, v.zCoord);
 							}
 						}
@@ -2161,12 +2180,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 		if (newPosRotationIncrements > 0)
 		{
-			double d0 = posX + (interpTargetX - posX) / newPosRotationIncrements;
-			double d1 = posY + (interpTargetY - posY) / newPosRotationIncrements;
-			double d2 = posZ + (interpTargetZ - posZ) / newPosRotationIncrements;
-			double d3 = MathHelper.wrapAngleTo180_double(interpTargetYaw - rotationYaw);
+			double d0 = posX + (newPosX - posX) / newPosRotationIncrements;
+			double d1 = posY + (newPosY - posY) / newPosRotationIncrements;
+			double d2 = posZ + (newPosZ - posZ) / newPosRotationIncrements;
+			double d3 = MathHelper.wrapAngleTo180_double(newRotationYaw - rotationYaw);
 			rotationYaw = (float)(rotationYaw + d3 / newPosRotationIncrements);
-			rotationPitch = (float)(rotationPitch + (newPosX - rotationPitch) / newPosRotationIncrements);
+			rotationPitch = (float)(rotationPitch + (newRotationPitch - rotationPitch) / newPosRotationIncrements);
 			--newPosRotationIncrements;
 			setPosition(d0, d1, d2);
 			setRotation(rotationYaw, rotationPitch);
@@ -2288,8 +2307,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			registerTick.onUpdate();
 
 			if (!registerTick.isEnable() && registerTick.getValue() == 0 && !worldObj.isRemote) {
-				getOwner().addChatMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.cancelregistration"))
-						.setChatStyle(new Style().setColor(TextFormatting.DARK_RED)));
+				getOwner().addChatMessage(new ChatComponentText(StatCollector.translateToLocal("littleMaidMob.chat.text.cancelregistration"))
+						.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
 			}
 		}
 
@@ -2471,7 +2490,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			// インベントリの更新
 //			if (!mstatOpenInventory) {
 				for (int li = 0 ;li < maidInventory.getSizeInventory(); li++) {
-					/*
 					boolean lchange = false;
 					int lselect = 0xff;
 					// 選択装備が変わった
@@ -2481,32 +2499,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 							lselect = lj;
 						}
 					}
-					*/
 					// インベントリの中身が変わった
-					if (maidInventory.isChanged(li)) {
+					if (lchange || maidInventory.isChanged(li)) {
 						ItemStack st = maidInventory.getStackInSlot(li);
-						if (li >= InventoryLittleMaid.maxInventorySize) {
-							EntityEquipmentSlot lSlot = null;
-							switch(li - InventoryLittleMaid.maxInventorySize) {
-							case 0:
-								lSlot = EntityEquipmentSlot.FEET;
-								break;
-							case 1:
-								lSlot = EntityEquipmentSlot.LEGS;
-								break;
-							case 2:
-								lSlot = EntityEquipmentSlot.CHEST;
-								break;
-							case 3:
-								lSlot = EntityEquipmentSlot.HEAD;
-								break;
-							}
-							if (lSlot != null) {
-								((WorldServer)worldObj).getEntityTracker().func_151248_b(this, new SPacketEntityEquipment(getEntityId(), lSlot, st));
-							}
-						}
+						((WorldServer)worldObj).getEntityTracker().func_151248_b(this, new S04PacketEntityEquipment(getEntityId(), (li | lselect << 8) + 5, st));
 						maidInventory.resetChanged(li);
-						LittleMaidReengaged.Debug(String.format("ID:%d-%s - Slot(%d-%d,%d) Update.", getEntityId(), worldObj.isRemote ? "Client" : "Server", li, mstatSwingStatus[0].index, mstatSwingStatus[1].index));
+						LittleMaidReengaged.Debug(String.format("ID:%d-%s - Slot(%x:%d-%d,%d) Update.", getEntityId(), worldObj.isRemote ? "Client" : "Server", lselect, li, mstatSwingStatus[0].index, mstatSwingStatus[1].index));
 					}
 //				}
 			}
@@ -2517,18 +2515,18 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			updateAimebow();
 
 			// 自分より大きなものは乗っけない（イカ除く）
-			if (getControllingPassenger() != null && !(getControllingPassenger() instanceof EntitySquid)) {
-				if (height * width < getControllingPassenger().height * getControllingPassenger().width) {
-					if (getControllingPassenger() instanceof EntityLivingBase) {
-						attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase)getControllingPassenger()), 0);
+			if (riddenByEntity != null && !(riddenByEntity instanceof EntitySquid)) {
+				if (height * width < riddenByEntity.height * riddenByEntity.width) {
+					if (riddenByEntity instanceof EntityLivingBase) {
+						attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase)riddenByEntity), 0);
 					}
-					getControllingPassenger().dismountRidingEntity();
+					riddenByEntity.mountEntity(null);
 					return;
 				}
 			}
 
 			// 斧装備時は攻撃力が上がる
-			IAttributeInstance latt = getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+			IAttributeInstance latt = getEntityAttribute(SharedMonsterAttributes.attackDamage);
 			// 属性を解除
 			latt.removeModifier(attAxeAmp);
 			ItemStack lis = getCurrentEquippedItem();
@@ -2611,7 +2609,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		// 死因を表示
 //		if (!worldObj.isRemote) {
 			if (LittleMaidReengaged.cfg_DeathMessage && getMaidMasterEntity() != null) {
-				TextComponentString text = new TextComponentString(sprintfDeadCause("your %s killed, by %s", par1DamageSource));
+				ChatComponentText text = new ChatComponentText(sprintfDeadCause("your %s killed, by %s", par1DamageSource));
 				getMaidMasterEntity().addChatMessage(text);
 			}
 //		}
@@ -2671,7 +2669,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	protected void onNewPotionEffect(PotionEffect par1PotionEffect) {
 		super.onNewPotionEffect(par1PotionEffect);
 		if (mstatMasterEntity instanceof EntityPlayerMP) {
-			((EntityPlayerMP)mstatMasterEntity).playerNetServerHandler.sendPacket(new SPacketEntityEffect(getEntityId(), par1PotionEffect));
+			((EntityPlayerMP)mstatMasterEntity).playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(getEntityId(), par1PotionEffect));
 		}
 	}
 
@@ -2688,7 +2686,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	protected void onFinishedPotionEffect(PotionEffect par1PotionEffect) {
 		super.onFinishedPotionEffect(par1PotionEffect);
 		if (mstatMasterEntity instanceof EntityPlayerMP) {
-			((EntityPlayerMP)mstatMasterEntity).playerNetServerHandler.sendPacket(new SPacketRemoveEntityEffect(getEntityId(), par1PotionEffect.getPotion()));
+			((EntityPlayerMP)mstatMasterEntity).playerNetServerHandler.sendPacket(new S1EPacketRemoveEntityEffect(getEntityId(), par1PotionEffect));
 		}
 	}
 
@@ -2780,35 +2778,28 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		return maidInventory.getCurrentItem();
 	}
 
+
 	@Override
-	public ItemStack getHeldItem(EnumHand pHand) {
-		if (pHand == EnumHand.MAIN_HAND) {
-			return getCurrentEquippedItem();
-		}
-		return null;
+	public ItemStack getHeldItem() {
+		return maidInventory.getCurrentItem();
 	}
 
 	@Override
-	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
-		if (slotIn == EntityEquipmentSlot.MAINHAND) {
-			return getCurrentEquippedItem();
+	public ItemStack getEquipmentInSlot(int par1) {
+		if (par1 == 0) {
+			return getHeldItem();
+		} else if (par1 < 5) {
+			return maidInventory.armorItemInSlot(par1 - 1);
+		} else {
+			return maidInventory.getStackInSlot(par1 - 5);
 		}
-		if (slotIn.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
-			return maidInventory.getStackInSlot(InventoryLittleMaid.maxInventorySize + slotIn.getIndex());
-		}
-		return null;
 	}
-	
+
 	@Override
-	public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
-		if (slotIn == EntityEquipmentSlot.MAINHAND) {
-			setHeldItem(EnumHand.MAIN_HAND, stack);
-		}
-		if (slotIn.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
-			maidInventory.setInventorySlotContents(InventoryLittleMaid.maxInventorySize + slotIn.getIndex(), stack); 
-		}
+	public ItemStack getCurrentArmor(int par1) {
+		return maidInventory.armorItemInSlot(par1);
 	}
-/*
+
 	@Override
 	public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack) {
 		par1 &= 0x0000ffff;
@@ -2853,10 +2844,15 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			LittleMaidReengaged.Debug(String.format("ID:%d Slot(%2d:%d):%s", getEntityId(), lslotindex, lequip, s == null ? "NoItem" : s));
 		}
 	}
-*/
+
 	@Override
-	public Iterable<ItemStack> getArmorInventoryList() {
-		return Arrays.asList(maidInventory.armorInventory);
+	public ItemStack[] getInventory() {
+		ItemStack[] tmp = new ItemStack[5];
+		tmp[0] = null;
+		for(int i=0;i<4;i++){
+			tmp[i+1] = maidInventory.armorInventory[i];
+		}
+		return tmp;
 	}
 
 	@Override
@@ -2907,9 +2903,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		return mstatMaskSelect > -1;
 	}
 
-	// TODO 再び後回し
 	protected void checkHeadMount() {
-/*
 		// 追加の頭部装備の判定
 		ItemStack lis = maidInventory.getHeadMount();
 		mstatPlanter = false;
@@ -2925,7 +2919,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				mstatCamouflage = true;
 			}
 		}
-*/
 	}
 	/**
 	 * カモフラージュ！
@@ -2944,12 +2937,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	 * ポーション等による腕振りモーションの速度補正
 	 */
 	public int getSwingSpeedModifier() {
-		if (isPotionActive(Potion.getPotionFromResourceLocation("haste"))) {
-			return 6 - (1 + getActivePotionEffect(Potion.getPotionFromResourceLocation("haste")).getAmplifier()) * 1;
+		if (isPotionActive(Potion.digSpeed)) {
+			return 6 - (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1;
 		}
 
-		if (isPotionActive(Potion.getPotionFromResourceLocation("mining_fatigue"))) {
-			return 6 + (1 + getActivePotionEffect(Potion.getPotionFromResourceLocation("mining_fatigue")).getAmplifier()) * 2;
+		if (isPotionActive(Potion.digSlowdown)) {
+			return 6 + (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
 		}
 		return 6;
 	}
@@ -2978,26 +2971,27 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	@Override
-	public EnumActionResult applyPlayerInteraction(EntityPlayer par1EntityPlayer, Vec3d vec, ItemStack stack, EnumHand hand) {
+	public boolean interact(EntityPlayer par1EntityPlayer)
+	{
 		MMMLib.Debug(worldObj.isRemote, "LMM_EntityLittleMaid.interact:"+par1EntityPlayer.getGameProfile().getName());
 		float lhealth = getHealth();
-		ItemStack itemstack1 = stack;
+		ItemStack itemstack1 = par1EntityPlayer.getCurrentEquippedItem();
 
 		// プラグインでの処理を先に行う
 		for (int li = 0; li < maidEntityModeList.size(); li++) {
 			if (maidEntityModeList.get(li).preInteract(par1EntityPlayer, itemstack1)) {
-				return EnumActionResult.SUCCESS;
+				return true;
 			}
 		}
 		// しゃがみ時は処理無効
 		if (par1EntityPlayer.isSneaking()) {
-			return EnumActionResult.FAIL;
+			return false;
 		}
 		// ナデリ判定
-		if (lhealth > 0F && par1EntityPlayer.getControllingPassenger() != null && !(par1EntityPlayer.getControllingPassenger() instanceof EntityLittleMaid)) {
+		if (lhealth > 0F && par1EntityPlayer.riddenByEntity != null && !(par1EntityPlayer.riddenByEntity instanceof EntityLittleMaid)) {
 			// 載せ替え
-			par1EntityPlayer.getControllingPassenger().startRiding(this);
-			return EnumActionResult.SUCCESS;
+			par1EntityPlayer.riddenByEntity.mountEntity(this);
+			return true;
 		}
 
 		if (mstatgotcha == null && par1EntityPlayer.fishEntity == null) {
@@ -3007,7 +3001,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				mstatgotcha = par1EntityPlayer;
 				MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 				playSound("random.pop");
-				return EnumActionResult.SUCCESS;
+				return true;
 			}
 
 			if (isContract()) {
@@ -3017,7 +3011,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 					if (itemstack1.getItem() == Items.sugar) {
 						// 受取拒否
 						worldObj.setEntityState(this, (byte)10);
-						return EnumActionResult.SUCCESS;
+						return true;
 					} else if (itemstack1.getItem() == Items.cake) {
 						// 再契約
 						MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
@@ -3039,7 +3033,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 							playLittleMaidSound(EnumSound.Recontract, true);
 
 						}
-						return EnumActionResult.SUCCESS;
+						return true;
 					}
 
 				}
@@ -3050,7 +3044,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 						// プラグインでの処理を先に行う
 						for (int li = 0; li < maidEntityModeList.size(); li++) {
 							if (maidEntityModeList.get(li).interact(par1EntityPlayer, itemstack1)) {
-								return EnumActionResult.SUCCESS;
+								return true;
 							}
 						}
 						if (isRemainsContract()) {
@@ -3063,7 +3057,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								}
 								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								eatSugar(false, true, false);
-								if(!cmode) return EnumActionResult.SUCCESS;
+								if(!cmode) return true;
 								worldObj.setEntityState(this, (byte)11);
 
 								// TODO 口開くよ…
@@ -3092,44 +3086,45 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 										setMaidWait(true);
 									}
 								}
-								return EnumActionResult.SUCCESS;
+								return true;
 							}
 							else if (itemstack1.getItem()==LittleMaidReengaged.registerKey &&
 									!par1EntityPlayer.worldObj.isRemote) {
 								// トリガーセット
 								if (registerTick.isEnable()) {
 									registerTick.setEnable(false);
-									par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.cancelregistration"))
-											.setChatStyle(new Style().setColor(TextFormatting.DARK_RED)));
-									return EnumActionResult.SUCCESS;
+									par1EntityPlayer.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("littleMaidMob.chat.text.cancelregistration"))
+											.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
+									return true;
 								}
 
 								NBTTagCompound tagCompound = itemstack1.getTagCompound();
-								if (tagCompound == null) return EnumActionResult.PASS;
+								if (tagCompound == null) return false;
 
 								String modeString = tagCompound.getString(ItemRegisterKey.RK_MODE_TAG);
-								if (modeString.isEmpty()) return EnumActionResult.PASS;
+								if (modeString.isEmpty()) return false;
 
 								registerMode = modeString;
 								registerTick.setValue(200);
 
 								int count = tagCompound.getInteger(ItemRegisterKey.RK_COUNT);
 								if(++count >= ItemRegisterKey.RK_MAX_COUNT) {
-									par1EntityPlayer.setHeldItem(hand, null);
+									par1EntityPlayer.destroyCurrentEquippedItem();
 								}
 								tagCompound.setInteger(ItemRegisterKey.RK_COUNT, count);
 
-								par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.readyregistration") + registerMode));
+								par1EntityPlayer.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("littleMaidMob.chat.text.readyregistration") + registerMode));
 								if(count >= ItemRegisterKey.RK_MAX_COUNT-10){
 									if(count<ItemRegisterKey.RK_MAX_COUNT){
-										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.warningcount") +
-												(ItemRegisterKey.RK_MAX_COUNT-count)).setChatStyle(new Style().setColor(TextFormatting.YELLOW)));
+										par1EntityPlayer.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("littleMaidMob.chat.text.warningcount") +
+												(ItemRegisterKey.RK_MAX_COUNT-count)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 									} else {
-										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.endcount"))
-												.setChatStyle(new Style().setColor(TextFormatting.DARK_RED)));
+										par1EntityPlayer.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("littleMaidMob.chat.text.endcount"))
+												.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
 									}
 								}
-								return EnumActionResult.SUCCESS;
+
+								return true;
 							} else if (registerTick.isEnable() && !par1EntityPlayer.worldObj.isRemote) {
 								List list = TriggerSelect.getuserTriggerList(CommonHelper.getPlayerName(par1EntityPlayer), registerMode);
 								Item item = itemstack1.getItem();
@@ -3138,14 +3133,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 									while(list.remove(item)) flag = true;
 									if (!flag) {
 										list.add(item);
-										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.addtrigger") + " " + registerMode + "/+" + Item.itemRegistry.getNameForObject(item).toString()));
+										par1EntityPlayer.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("littleMaidMob.chat.text.addtrigger") + " " + registerMode + "/+" + Item.itemRegistry.getNameForObject(item).toString()));
 									} else {
-										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.removetrigger") + " " + registerMode + "/-" + Item.itemRegistry.getNameForObject(item).toString()));
+										par1EntityPlayer.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("littleMaidMob.chat.text.removetrigger") + " " + registerMode + "/-" + Item.itemRegistry.getNameForObject(item).toString()));
 									}
 								}
 								IFF.saveIFF(CommonHelper.getPlayerName(par1EntityPlayer));
 								registerTick.setEnable(false);
-								return EnumActionResult.SUCCESS;
+								return true;
 							}
 							else if (itemstack1.getItem() == Items.dye) {
 								// カラーメイド
@@ -3153,7 +3148,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 									setColor(15 - itemstack1.getItemDamage());
 								}
 								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
-								return EnumActionResult.SUCCESS;
+								return true;
 							}
 							else if (itemstack1.getItem() == Items.feather) {
 								// 自由行動
@@ -3162,17 +3157,17 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 									setFreedom(!isFreedom());
 									worldObj.setEntityState(this, isFreedom() ? (byte)12 : (byte)13);
 								}
-								return EnumActionResult.SUCCESS;
+								return true;
 							}
 							else if (itemstack1.getItem() == Items.saddle) {
 								// 肩車
 								if (!worldObj.isRemote) {
-									if (getControllingPassenger() == par1EntityPlayer) {
-										dismountRidingEntity();
+									if (ridingEntity == par1EntityPlayer) {
+										mountEntity(null);
 									} else {
-										startRiding(par1EntityPlayer);
+										mountEntity(par1EntityPlayer);
 									}
-									return EnumActionResult.SUCCESS;
+									return true;
 								}
 							}
 							else if (itemstack1.getItem() == Items.gunpowder) {
@@ -3180,10 +3175,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								maidOverDriveTime.setValue(itemstack1.stackSize * 10);
 								playSound("mob.zombie.infect");
 								if (itemstack1.stackSize == 64) {
-									getMaidMasterEntity().addStat(LMMNX_Achievements.ac_Boost);
+									getMaidMasterEntity().triggerAchievement(LMMNX_Achievements.ac_Boost);
 								}
 								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, itemstack1.stackSize);
-								return EnumActionResult.SUCCESS;
+								return true;
 							}
 							else if (itemstack1.getItem() == Items.book) {
 								// IFFのオープン
@@ -3196,7 +3191,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 											(int)posY,
 											(int)posZ);
 //								}
-								return EnumActionResult.SUCCESS;
+								return true;
 							}/*
 							else if ((itemstack1.getItem() == Items.glass_bottle) && (experienceValue >= 5)) {
 								// Expボトル
@@ -3213,7 +3208,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 							else if (itemstack1.getItem() instanceof ItemPotion) {
 								// ポーション
 								if(!worldObj.isRemote) {
-									List list = PotionUtils.getEffectsFromStack(itemstack1);
+									List list = ((ItemPotion)itemstack1.getItem()).getEffects(itemstack1);
 									if (list != null) {
 										PotionEffect potioneffect;
 										for (Iterator iterator = list.iterator(); iterator.hasNext(); addPotionEffect(new PotionEffect(potioneffect))) {
@@ -3222,7 +3217,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 									}
 								}
 								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
-								return EnumActionResult.SUCCESS;
+								return true;
 							}
 							else if (isFreedom() && itemstack1.getItem() == Items.redstone) {
 								// Tracer
@@ -3234,20 +3229,20 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								} else {
 									worldObj.setEntityState(this, (byte)12);
 								}
-								return EnumActionResult.SUCCESS;
+								return true;
 							}else if(itemstack1.getItem() == Items.stick){
 								if(getDominantArm()==0){
 									setDominantArm(1);
 								}else{
 									setDominantArm(0);
 								}
-								return EnumActionResult.SUCCESS;
+								return true;
 							}else if(itemstack1.getItem() == Items.fish){
 								if(!worldObj.isRemote){
 									setSwimming(!swimmingEnabled);
-									par1EntityPlayer.addChatComponentMessage(new TextComponentString("Swimming mode was set to "+swimmingEnabled));
+									par1EntityPlayer.addChatComponentMessage(new ChatComponentText("Swimming mode was set to "+swimmingEnabled));
 								}
-								return EnumActionResult.SUCCESS;
+								return true;
 							}
 						}
 					}
@@ -3260,7 +3255,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 						syncExpBoost();
 					}
 					displayGUIMaidInventory(par1EntityPlayer);
-					return EnumActionResult.SUCCESS;
+					return true;
 				}
 			} else {
 				// 未契約
@@ -3272,7 +3267,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 						deathTime = 0;
 						if (!worldObj.isRemote) {
 							if (LMMNX_Achievements.ac_Contract != null) {
-								par1EntityPlayer.addStat(LMMNX_Achievements.ac_Contract);
+								par1EntityPlayer.triggerAchievement(LMMNX_Achievements.ac_Contract);
 							}
 							setContract(true);
 							W_Common.setOwner(this, CommonHelper.getPlayerName(par1EntityPlayer));
@@ -3292,7 +3287,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 //							LMM_Net.sendToAllEClient(this, new byte[] {LMM_Net.LMN_Client_UpdateTexture, 0, 0, 0, 0});
 
 						}
-						return EnumActionResult.SUCCESS;
+						return true;
 					}
 //					worldObj.setEntityState(this, (byte)6);
 				}
@@ -3304,10 +3299,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				setGotcha(0);
 				mstatgotcha = null;
 			}
-			return EnumActionResult.SUCCESS;
+			return true;
 		}
 
-		return EnumActionResult.PASS;
+		return false;
 	}
 
 	// メイドの契約設定
@@ -3638,7 +3633,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			if (worldObj.getTotalWorldTime() - maidAnniversary > 24000 * 365) {
 				EntityPlayer player;
 				if ((player = getMaidMasterEntity()) != null)
-					player.addStat(LMMNX_Achievements.ac_MyFavorite);
+					player.triggerAchievement(LMMNX_Achievements.ac_MyFavorite);
 			}
 		}
 
@@ -3755,9 +3750,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		getActiveModeClass().onWarp();
 	}
 
-	@Deprecated
 	public boolean isHeadMount(){
-		return ItemUtil.isHelm(maidInventory.armorInventory[3]);
+		return ItemUtil.isHelm(maidInventory.mainInventory[17]);
+	}
+
+	public ItemStack getHeadMountStackCopy(){
+		ItemStack stack = maidInventory.mainInventory[17];
+		if(ItemUtil.isHelm(stack)) return stack.copy();
+		return null;
 	}
 
 	/**

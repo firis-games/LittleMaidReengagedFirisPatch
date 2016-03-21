@@ -52,7 +52,7 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 		@Override
 		protected void setModelSlotVisible(ModelBase paramModelBase, EntityEquipmentSlot paramInt) {
 			ModelBaseDuo model = (ModelBaseDuo) paramModelBase;
-			model.showArmorParts(paramInt.getIndex());
+			model.showArmorParts(paramInt);
 		}
 
 		@Override
