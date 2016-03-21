@@ -199,10 +199,10 @@ public class EntityMode_Archer extends EntityModeBase {
 		if (owner.getAttackTarget() == null || !owner.getAttackTarget().isEntityAlive()) {
 			// 対象が死んだ
 			if (!owner.weaponReload) {
-				if (owner.maidAvatar.isUsingItem()) {
+				if (owner.maidAvatar.isHandActive()) {
 					// ターゲットが死んでいる時はアイテムの使用をクリア
 					if (owner.getAvatarIF().getIsItemReload()) {
-						owner.maidAvatar.stopUsingItem();
+						owner.maidAvatar.stopActiveHand();
 						LittleMaidReengaged.Debug(String.format("id:%d cancel reload.", owner.getEntityId()));
 					} else {
 						owner.maidAvatar.clearItemInUse();
@@ -213,7 +213,7 @@ public class EntityMode_Archer extends EntityModeBase {
 				owner.mstatAimeBow = true;
 			}
 		}
-		if (owner.weaponReload && !owner.maidAvatar.isUsingItem()) {
+		if (owner.weaponReload && !owner.maidAvatar.isHandActive()) {
 			// 特殊リロード
 			owner.maidInventory.getCurrentItem().useItemRightClick(owner.worldObj, owner.maidAvatar);
 			LittleMaidReengaged.Debug("id:%d force reload.", owner.getEntityId());

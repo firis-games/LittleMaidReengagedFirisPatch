@@ -25,6 +25,7 @@ import static net.blacklab.lmr.util.Statics.dataWatch_Texture;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -90,11 +91,6 @@ import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.blacklab.lmr.util.manager.EntityModeManager;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.wrapper.W_Common;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockPumpkin;
-import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -125,11 +121,8 @@ import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPotion;
-import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -159,7 +152,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.actors.threadpool.Arrays;
 
 public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity {
 
@@ -1408,7 +1400,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	@Override
 	public boolean canBeCollidedWith() {
 		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
-			ItemStack litemstack = mstatMasterEntity.getCurrentEquippedItem();
+			ItemStack litemstack = mstatMasterEntity.getHeldItemMainhand();
 			return (litemstack == null) || (litemstack.getItem() == Items.saddle);
 		}
 		return super.canBeCollidedWith();
@@ -2785,6 +2777,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			return maidInventory.getCurrentItem();
 		}
 		return null;
+	}
+	
+	@Override
+	public Iterable<ItemStack> getArmorInventoryList() {
+		return Arrays.asList(maidInventory.armorInventory);
 	}
 	
 	@Override

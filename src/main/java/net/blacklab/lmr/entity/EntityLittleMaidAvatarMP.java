@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -18,6 +19,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatisticsFile;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -87,10 +89,13 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	{
 		super.writeEntityToNBT(var1);
 	}
-	public ItemStack getHeldItem()
+
+	@Override
+	public ItemStack getHeldItem(EnumHand pHand)
 	{
-		return super.getHeldItem();
+		return avatar.getHeldItem(pHand);
 	}
+	
 	public void setCurrentItemOrArmor(int var1, ItemStack var2)
 	{
 		super.setCurrentItemOrArmor(var1, var2);
@@ -191,21 +196,20 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 			LittleMaidReengaged.Debug(String.format("ID:%d Given Damege:%f", avatar.getEntityId(), ll - ((EntityLivingBase)par1Entity).getHealth()));
 		}
 	}
-
+	
 	@Override
-	public ItemStack getCurrentEquippedItem() {
-		return avatar.getCurrentEquippedItem();
+	public Iterable<ItemStack> getArmorInventoryList() {
+		return avatar.getArmorInventoryList();
+	}
+	
+	@Override
+	public Iterable<ItemStack> getHeldEquipment() {
+		return avatar.getHeldEquipment();
 	}
 
 	@Override
-	public ItemStack getCurrentArmor(int par1) {
-		//TODO GGG		return avatar.func_130225_q(par1);
-		return avatar.getCurrentArmor(par1);
-	}
-
-	@Override
-	public ItemStack getEquipmentInSlot(int par1) {
-		return avatar.getEquipmentInSlot(par1);
+	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
+		return avatar.getItemStackFromSlot(slotIn);
 	}
 
 	/*
@@ -220,11 +224,11 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		// ここを設定しちゃうと通常ではぬるぽ落ちする
 	}
 */
-	@Override
+
+//	@Override
 	public void destroyCurrentEquippedItem() {
 		// アイテムが壊れたので次の装備を選択
-		/* TODO:但し、Forge等でプレーヤーイベントを設定しているものだとぬるぽ落ちするので、何らかの対策が必要。
-		 * ↑FakePlayerでスキップしてくれない？ */
+		// TODO Maybe will not be called
 //		super.destroyCurrentEquippedItem();
 		inventory.setInventorySlotContents(inventory.currentItem, (ItemStack)null);
 		avatar.getNextEquipItem();
@@ -244,17 +248,12 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	public int getItemInUseDuration(int pIndex) {
 		return avatar.getSwingStatus(pIndex).getItemInUseDuration();
 	}
-//	@Deprecated
-	@Override
-	public int getItemInUseDuration() {
-		return getItemInUseDuration(avatar.getDominantArm());
-	}
 
 	public ItemStack getItemInUse(int pIndex) {
 		return avatar.getSwingStatus(pIndex).getItemInUse();
 	}
-//	@Deprecated
-	@Override
+
+//	@Override
 	public ItemStack getItemInUse() {
 		return getItemInUse(avatar.getDominantArm());
 	}
@@ -271,13 +270,19 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	public boolean isUsingItem(int pIndex) {
 		return avatar.getSwingStatus(pIndex).isUsingItem();
 	}
-//	@Deprecated
+
 	@Override
-	public boolean isUsingItem() {
+	public boolean isHandActive() {
 		return isUsingItem(avatar.getDominantArm());
 	}
+	
+	@Override
+	public EnumHand getActiveHand() {
+		return EnumHand.MAIN_HAND;
+	}
+
 	public boolean isUsingItemLittleMaid() {
-		return isUsingItem() | isItemTrigger;
+		return isHandActive() | isItemTrigger;
 	}
 
 	@Override
@@ -290,20 +295,6 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		return isItemReload;
 	}
 
-	public void clearItemInUse(int pIndex) {
-		isItemTrigger = false;
-		isItemReload = isItemPreReload = false;
-		avatar.getSwingStatus(pIndex).clearItemInUse(getEntityServer());
-	}
-//	@Deprecated
-	@Override
-	public void clearItemInUse() {
-//		super.clearItemInUse();
-		isItemTrigger = false;
-		isItemReload = isItemPreReload = false;
-		clearItemInUse(avatar.getDominantArm());
-	}
-
 	public void stopUsingItem(int pIndex) {
 		isItemTrigger = false;
 		isItemReload = isItemPreReload = false;
@@ -311,7 +302,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	}
 //	@Deprecated
 	@Override
-	public void stopUsingItem() {
+	public void stopActiveHand() {
 //		super.stopUsingItem();
 		isItemTrigger = false;
 		isItemReload = isItemPreReload = false;
@@ -323,23 +314,18 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		isItemReload = isItemPreReload;
 		avatar.getSwingStatus(pIndex).setItemInUse(itemstack, i, getEntityServer());
 	}
-//	@Deprecated
+
 	@Override
+	public void setActiveHand(EnumHand p_184598_1_) {
+		avatar.setActiveHand(EnumHand.MAIN_HAND);
+	}
+	
+//	@Override
 	public void setItemInUse(ItemStack itemstack, int i) {
 //		super.setItemInUse(itemstack, i);
 		isItemTrigger = true;
 		isItemReload = isItemPreReload;
 		setItemInUse(avatar.getDominantArm(), itemstack, i);
-	}
-
-	@Override
-	public void setEating(boolean par1) {
-		avatar.setEating(par1);
-	}
-
-	@Override
-	public boolean isEating() {
-		return avatar.isEating();
 	}
 
 	@Override

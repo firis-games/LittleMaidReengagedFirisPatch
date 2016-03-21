@@ -242,7 +242,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 						// シュート
 						// フルオート武器は射撃停止
 						LittleMaidReengaged.Debug("id:%d shoot.", fMaid.getEntityId());
-						fAvatar.stopUsingItem();
+						fAvatar.stopActiveHand();
 						fMaid.setSwing(30, EnumSound.shoot, !fMaid.isPlaying());
 						if (fMaid.isPlaying()) {
 							resetTask();
@@ -269,7 +269,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 						} 
 						else if (litemstack.getMaxItemUseDuration() == 0) {
 							// 通常投擲兵装
-							if (swingState.canAttack() && !fAvatar.isUsingItem()) {
+							if (swingState.canAttack() && !fAvatar.isHandActive()) {
 								if (lcanattack) {
 									litemstack = litemstack.useItemRightClick(worldObj, fAvatar);
 									// 意図的にショートスパンで音が鳴るようにしてある
@@ -360,7 +360,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 //				fMaid.setAttackTarget(null);
 			}
 			if (fMaid.weaponFullAuto && getAvatarIF().getIsItemTrigger()) {
-				fAvatar.stopUsingItem();
+				fAvatar.stopActiveHand();
 			} else {
 				fAvatar.clearItemInUse();
 			}
