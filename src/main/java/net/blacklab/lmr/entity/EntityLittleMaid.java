@@ -138,6 +138,7 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -1565,11 +1566,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	public float getInterestedAngle(float f) {
-		if(maidInventory.mainInventory[17]!=null){
-			if(maidInventory.mainInventory[17].getItem() instanceof ItemArmor){
-				if(((ItemArmor)maidInventory.mainInventory[17].getItem()).armorType==0)
-					return 0f;
-			}
+		if (maidInventory.armorInventory[3] != null) {
+			return 0f;
 		}
 		return (prevRotateAngleHead + (rotateAngleHead - prevRotateAngleHead) * f) * ((looksWithInterestAXIS ? 0.08F : -0.08F) * (float)Math.PI);
 	}
@@ -1753,7 +1751,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		if (itemstack != null && itemstack.getItem() instanceof ItemPotion) {
 			// ポーション効果の発動
 			itemstack.stackSize--;
-			List list = ((ItemPotion)itemstack.getItem()).getEffects(itemstack);
+			List list = PotionUtils.getEffectsFromStack(itemstack);
 			if (list != null) {
 				PotionEffect potioneffect;
 				for (Iterator iterator = list.iterator(); iterator.hasNext(); entityliving.addPotionEffect(new PotionEffect(potioneffect))) {
@@ -3208,7 +3206,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 							else if (itemstack1.getItem() instanceof ItemPotion) {
 								// ポーション
 								if(!worldObj.isRemote) {
-									List list = ((ItemPotion)itemstack1.getItem()).getEffects(itemstack1);
+									List list = PotionUtils.getEffectsFromStack(itemstack1);
 									if (list != null) {
 										PotionEffect potioneffect;
 										for (Iterator iterator = list.iterator(); iterator.hasNext(); addPotionEffect(new PotionEffect(potioneffect))) {

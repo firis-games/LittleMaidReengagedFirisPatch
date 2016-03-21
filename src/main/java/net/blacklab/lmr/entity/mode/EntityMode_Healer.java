@@ -15,6 +15,7 @@ import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionUtils;
 
 public class EntityMode_Healer extends EntityModeBase {
 
@@ -167,7 +168,7 @@ public class EntityMode_Healer extends EntityModeBase {
 						else if (itemstack1.getItem() instanceof ItemPotion) {
 							boolean lswing = true;
 							// ポーションの効果が重複しないように使う
-							List list = ((ItemPotion)itemstack1.getItem()).getEffects(itemstack1);
+							List list = PotionUtils.getEffectsFromStack(itemstack1);
 							if (list != null) {
 								PotionEffect potioneffect;
 								for(Iterator iterator = list.iterator(); iterator.hasNext();) {
