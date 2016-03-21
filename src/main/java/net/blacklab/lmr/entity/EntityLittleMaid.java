@@ -139,7 +139,6 @@ import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.profiler.Profiler;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -154,6 +153,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.TempCategory;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -997,7 +997,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		if (LittleMaidReengaged.cfg_Dominant) {
 			// ドミナント
 			return worldObj.checkNoEntityCollision(getEntityBoundingBox())
-					&& worldObj.getCollidingBoundingBoxes(this, getEntityBoundingBox()).isEmpty()
+					&& worldObj.getCollisionBoxes(getEntityBoundingBox()).isEmpty()
 					&& !worldObj.isAnyLiquid(getEntityBoundingBox())
 					/*&& getBlockPathWeight(lx, ly, lz) >= 0.0F*/;
 		}
@@ -1363,7 +1363,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		}
 		setColor(par1nbtTagCompound.getInteger("Color"));
 		refreshModels();
-		if (MinecraftServer.getServer().isSinglePlayer()) {
+		if (FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer()) {
 			syncModelNames();
 		}
 
