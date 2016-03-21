@@ -123,6 +123,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemAxe;
@@ -142,6 +143,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -157,6 +159,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.actors.threadpool.Arrays;
 
 public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity {
 
@@ -2776,50 +2779,47 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		return maidInventory.getCurrentItem();
 	}
 
-
 	@Override
-	public ItemStack getHeldItem() {
-		return maidInventory.getCurrentItem();
+	public ItemStack getHeldItem(EnumHand hand) {
+		if (hand == EnumHand.MAIN_HAND) {
+			return maidInventory.getCurrentItem();
+		}
+		return null;
+	}
+	
+	@Override
+	public Iterable<ItemStack> getHeldEquipment() {
+		return Arrays.asList(new ItemStack[]{getCurrentEquippedItem(), null});
 	}
 
 	@Override
-	public ItemStack getEquipmentInSlot(int par1) {
-		if (par1 == 0) {
-			return getHeldItem();
-		} else if (par1 < 5) {
-			return maidInventory.armorItemInSlot(par1 - 1);
+	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
+		if (slotIn.func_188452_c() == 0) {
+			return getHeldItem(EnumHand.MAIN_HAND);
+		} else if (slotIn.func_188452_c() < 5) {
+			return maidInventory.armorInventory[slotIn.getIndex()];
 		} else {
-			return maidInventory.getStackInSlot(par1 - 5);
+			return null;
 		}
 	}
-
+	
 	@Override
-	public ItemStack getCurrentArmor(int par1) {
-		return maidInventory.armorItemInSlot(par1);
-	}
-
-	@Override
-	public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack) {
-		par1 &= 0x0000ffff;
-		if (par1 == 0) {
-			maidInventory.setInventoryCurrentSlotContents(par2ItemStack);
-		} else if (par1 > 0 && par1 < 4) {
-			maidInventory.armorInventory[par1 - 1] = par2ItemStack;
-			setTextureNames();
-		} else if (par1 == 4) {
-//			maidInventory.mainInventory[mstatMaskSelect] = mstatMaskSelect > -1 ? par2ItemStack : null;
-			if (mstatMaskSelect > -1) {
-				maidInventory.mainInventory[mstatMaskSelect] = par2ItemStack;
-			}
+	public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
+		if (slotIn.func_188452_c() == 0) {
+			maidInventory.setInventoryCurrentSlotContents(stack);
+		} else if (slotIn.func_188452_c() < 5) {
+			maidInventory.setInventorySlotContents(slotIn.getIndex() + InventoryLittleMaid.maxInventorySize, stack);
 			setTextureNames();
 		} else {
+			// TODO What was this used for?
+/*
 			par1 -= 5;
 			// 持ち物のアップデート
 			// 独自拡張:普通にスロット番号の通り、上位８ビットは装備スロット
 			// par1はShortで渡されるのでそのように。
 			int lslotindex = par1 & 0x7f;
 			int lequip = (par1 >>> 8) & 0xff;
-			maidInventory.setInventorySlotContents(lslotindex, par2ItemStack);
+			maidInventory.setInventorySlotContents(lslotindex, stack);
 			maidInventory.resetChanged(lslotindex);	// これは意味ないけどな。
 			maidInventory.inventoryChanged = true;
 //			if (par1 >= maidInventory.mainInventory.length) {
@@ -2838,19 +2838,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			if (lslotindex >= InventoryLittleMaid.maxInventorySize) {
 				setTextureNames();
 			}
-			String s = par2ItemStack == null ? null : par2ItemStack.getDisplayName();
+			String s = stack == null ? null : stack.getDisplayName();
 			LittleMaidReengaged.Debug(String.format("ID:%d Slot(%2d:%d):%s", getEntityId(), lslotindex, lequip, s == null ? "NoItem" : s));
+*/
 		}
-	}
-
-	@Override
-	public ItemStack[] getInventory() {
-		ItemStack[] tmp = new ItemStack[5];
-		tmp[0] = null;
-		for(int i=0;i<4;i++){
-			tmp[i+1] = maidInventory.armorInventory[i];
-		}
-		return tmp;
 	}
 
 	@Override
@@ -2903,6 +2894,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 	protected void checkHeadMount() {
 		// 追加の頭部装備の判定
+		// TODO Render Head.
+/*
 		ItemStack lis = maidInventory.getHeadMount();
 		mstatPlanter = false;
 		mstatCamouflage = false;
@@ -2917,6 +2910,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				mstatCamouflage = true;
 			}
 		}
+*/
 	}
 	/**
 	 * カモフラージュ！
