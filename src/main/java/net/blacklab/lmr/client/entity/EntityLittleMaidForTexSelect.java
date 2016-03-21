@@ -39,12 +39,12 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 
 	@Override
 	protected void entityInit() {
-		// Select用だから、これ別にいらんけどな。
+		// TODO 作者が使う意志を見せなければ，俺はソースをコメントアウトし尽くすだけだぁ！
 		super.entityInit();
 		// color
-		dataWatcher.addObject(19, Integer.valueOf(0));
+//		dataWatcher.addObject(19, Integer.valueOf(0));
 		// 20:選択テクスチャインデックス
-		dataWatcher.addObject(20, Integer.valueOf(0));
+//		dataWatcher.addObject(20, Integer.valueOf(0));
 	}
 
 /*
