@@ -10,16 +10,18 @@ import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
 public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLittleMaidAvatar
@@ -158,38 +160,16 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	}
 	
 	@Override
-	public ItemStack getCurrentEquippedItem() {
-		return avatar.getCurrentEquippedItem();
+	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
+		return avatar.getItemStackFromSlot(slotIn);
 	}
-
-	@Override
-	public ItemStack getCurrentArmor(int par1) {
-		return avatar.getCurrentArmor(par1);
-	}
-
-	@Override
-	public ItemStack getEquipmentInSlot(int par1) {
-		return avatar.getEquipmentInSlot(par1);
-	}
-
-	public ItemStack[] getLastActiveItems() {
-		return avatar.getInventory();
-	}
+	
 /*
 	@Override
 	protected void alertWolves(EntityLivingBase par1EntityLiving, boolean par2) {
 		// ここを設定しちゃうと通常ではぬるぽ落ちする
 	}
 */
-	@Override
-	public void destroyCurrentEquippedItem() {
-		// アイテムが壊れたので次の装備を選択
-		/* TODO 但し、Forge等でプレーヤーイベントを設定しているものだとぬるぽ落ちするので、何らかの対策が必要。
-		 * ↑FakePlayerでスキップしてくれない？ */
-//		super.destroyCurrentEquippedItem();
-		inventory.setInventorySlotContents(inventory.currentItem, (ItemStack)null);
-		avatar.getNextEquipItem();
-	}
 
 	@Override
 	public void onKillEntity(EntityLivingBase entityliving) {
@@ -206,16 +186,19 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		return avatar.getSwingStatus(pIndex).getItemInUseDuration();
 	}
 //	@Deprecated
+	/*
 	@Override
 	public int getItemInUseDuration() {
+		
 		return getItemInUseDuration(avatar.getDominantArm());
 	}
+	*/
 
 	public ItemStack getItemInUse(int pIndex) {
 		return avatar.getSwingStatus(pIndex).getItemInUse();
 	}
 //	@Deprecated
-	@Override
+//	@Override
 	public ItemStack getItemInUse() {
 		return getItemInUse(avatar.getDominantArm());
 	}
@@ -233,12 +216,12 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		return avatar.getSwingStatus(pIndex).isUsingItem();
 	}
 //	@Deprecated
-	@Override
+//	@Override
 	public boolean isUsingItem() {
 		return isUsingItem(avatar.getDominantArm());
 	}
 	public boolean isUsingItemLittleMaid() {
-		return super.isUsingItem() | isItemTrigger;
+		return isUsingItem() | isItemTrigger;
 	}
 
 	@Override
@@ -256,8 +239,9 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		isItemReload = isItemPreReload = false;
 		avatar.getSwingStatus(pIndex).clearItemInUse(getEntityServer());
 	}
+	
 //	@Deprecated
-	@Override
+//	@Override
 	public void clearItemInUse() {
 //		super.clearItemInUse();
 		isItemTrigger = false;
@@ -272,7 +256,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	}
 //	@Deprecated
 	@Override
-	public void stopUsingItem() {
+	public void stopActiveHand() {
 //		super.stopUsingItem();
 		isItemTrigger = false;
 		isItemReload = isItemPreReload = false;
@@ -285,7 +269,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		avatar.getSwingStatus(pIndex).setItemInUse(itemstack, i, getEntityServer());
 	}
 //	@Deprecated
-	@Override
+//	@Override
 	public void setItemInUse(ItemStack itemstack, int i) {
 //		super.setItemInUse(itemstack, i);
 		isItemTrigger = true;
@@ -293,6 +277,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		setItemInUse(avatar.getDominantArm(), itemstack, i);
 	}
 
+/*
 	@Override
 	public void setEating(boolean par1) {
 		avatar.setEating(par1);
@@ -302,6 +287,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	public boolean isEating() {
 		return avatar.isEating();
 	}
+*/
 
 	@Override
 	public void setAir(int par1) {
@@ -328,13 +314,15 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		avatar.setFlag(par1, par2);
 	}
 
+/*
 	@Override
 	public boolean isBlocking() {
 		return avatar.isBlocking();
 	}
+*/
 
 	@Override
-	public void playSound(String par1Str, float par2, float par3) {
+	public void playSound(SoundEvent par1Str, float par2, float par3) {
 		avatar.playSound(par1Str, par2, par3);
 	}
 	
@@ -350,7 +338,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 //	}
 
 	@Override
-	public void addChatMessage(IChatComponent var1) {
+	public void addChatMessage(ITextComponent var1) {
 		// チャットメッセージは使わない。
 	}
 
@@ -381,7 +369,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	/**
 	 * 属性値リストを取得
 	 */
-	public BaseAttributeMap getAttributeMap() {
+	public AbstractAttributeMap getAttributeMap() {
 //		return super.func_110140_aT();
 		return avatar == null ? super.getAttributeMap() : avatar.getAttributeMap();
 	}

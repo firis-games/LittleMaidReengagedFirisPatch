@@ -24,9 +24,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 
 @SuppressWarnings("deprecation")
@@ -77,7 +77,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 		@Override
 		protected void setModelSlotVisible(ModelBase paramModelBase, EntityEquipmentSlot paramInt) {
 			ModelBaseDuo model = (ModelBaseDuo) paramModelBase;
-			model.showArmorParts(paramInt);
+			model.showArmorParts(paramInt.getIndex());
 		}
 
 		@Override
@@ -91,17 +91,11 @@ public class RenderLittleMaid extends RenderModelMulti {
 				this.setModelValues(lmm, lmm.maidCaps);
 			}
 
-			//LMM管理の装備スロットとEntityLiving標準の装備スロットがずれているので注意
-			if(lmm.maidInventory.mainInventory[17]!=null){
-				if(lmm.maidInventory.mainInventory[17].getItem() instanceof ItemArmor){
-					if(((ItemArmor)lmm.maidInventory.mainInventory[17].getItem()).armorType==0){
-						render(par1EntityLiving, par2, par3, par4, par6, par7, par8, 3);
-					}
+			for (int i=0; i<4; i++) {
+				if (lmm.maidInventory.armorInventory[i] != null) {
+					render(par1EntityLiving, par2, par3, par4, par5, par6, par7, i);
 				}
 			}
-			if(lmm.getInventory()[3]!=null) render(par1EntityLiving, par2, par3, par4, par6, par7, par8, 2);
-			if(lmm.getInventory()[2]!=null) render(par1EntityLiving, par2, par3, par4, par6, par7, par8, 1);
-			if(lmm.getInventory()[1]!=null) render(par1EntityLiving, par2, par3, par4, par6, par7, par8, 0);
 
 			//カウントインクリメント
 			renderCount++;
@@ -263,21 +257,22 @@ public class RenderLittleMaid extends RenderModelMulti {
 
 					Item item = itemstack.getItem();
 
-					if (item instanceof ItemBlock && Block.getBlockFromItem(item).getRenderType() == 2)
-					{
+					Block lBlock = Block.getBlockFromItem(item);
+					if (item instanceof ItemBlock && lBlock.getRenderType(lBlock.getDefaultState()) == EnumBlockRenderType.MODEL) {
 						GlStateManager.translate(0.0F, 0.1875F, -0.3125F);
 						GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
 						GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
 						float f8 = 0.375F;
 						GlStateManager.scale(-f8, -f8, f8);
-					}else if (item==Items.bow) {
+					} else if (item==Items.bow) {
 						GlStateManager.translate(lmm.getDominantArm()==1?-0.1125f:-0.05f, -0.0375F, -0.15F);
 						GlStateManager.rotate(10f, 0f, 1f, 0f);
-					}else{
+					} else{
 						GlStateManager.translate(0.0F, -0.0375F, 0.15F);
 					}
 
-					minecraft.getItemRenderer().renderItem(lmm, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON);
+					minecraft.getItemRenderer().renderItem(lmm, itemstack,
+							lmm.getDominantArm()==0 ? ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND);
 					GlStateManager.popMatrix();
 
 				}
