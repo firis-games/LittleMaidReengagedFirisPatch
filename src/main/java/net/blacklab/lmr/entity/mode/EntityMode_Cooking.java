@@ -54,7 +54,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 			if (owner.maidInventory.isItemBurned(0)) {
 				owner.setMaidMode("Cooking");
 				if (LMMNX_Achievements.ac_Cook != null) {
-					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_Cook);
+					pentityplayer.addStat(LMMNX_Achievements.ac_Cook);
 				}
 				return true;
 			}

@@ -180,7 +180,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 			if (litemstack.getItem() instanceof ItemShears) {
 				owner.setMaidMode("Ripper");
 				if (LMMNX_Achievements.ac_Shearer != null) {
-					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_Shearer);
+					pentityplayer.addStat(LMMNX_Achievements.ac_Shearer);
 				}
 				return true;
 			}

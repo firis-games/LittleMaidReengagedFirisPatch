@@ -1609,7 +1609,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			if (isContractEX() && par2>=19 && par2<getHealth()) {
 				EntityPlayer player;
 				if ((player = getMaidMasterEntity()) != null)
-					player.triggerAchievement(LMMNX_Achievements.ac_Ashikubi);
+					player.addStat(LMMNX_Achievements.ac_Ashikubi);
 			}
 		}
 		if(!par1DamageSource.isUnblockable() && isBlocking()) {
@@ -3173,7 +3173,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								maidOverDriveTime.setValue(itemstack1.stackSize * 10);
 								playSound("mob.zombie.infect");
 								if (itemstack1.stackSize == 64) {
-									getMaidMasterEntity().triggerAchievement(LMMNX_Achievements.ac_Boost);
+									getMaidMasterEntity().addStat(LMMNX_Achievements.ac_Boost);
 								}
 								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, itemstack1.stackSize);
 								return true;
@@ -3265,7 +3265,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 						deathTime = 0;
 						if (!worldObj.isRemote) {
 							if (LMMNX_Achievements.ac_Contract != null) {
-								par1EntityPlayer.triggerAchievement(LMMNX_Achievements.ac_Contract);
+								par1EntityPlayer.addStat(LMMNX_Achievements.ac_Contract);
 							}
 							setContract(true);
 							W_Common.setOwner(this, CommonHelper.getPlayerName(par1EntityPlayer));
@@ -3631,7 +3631,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			if (worldObj.getTotalWorldTime() - maidAnniversary > 24000 * 365) {
 				EntityPlayer player;
 				if ((player = getMaidMasterEntity()) != null)
-					player.triggerAchievement(LMMNX_Achievements.ac_MyFavorite);
+					player.addStat(LMMNX_Achievements.ac_MyFavorite);
 			}
 		}
 

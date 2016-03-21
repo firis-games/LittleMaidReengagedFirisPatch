@@ -74,7 +74,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 			if (LMMNX_API_Farmer.isHoe(owner, litemstack)) {
 				owner.setMaidMode("Farmer");
 				if (LMMNX_Achievements.ac_Farmer != null) {
-					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_Farmer);
+					pentityplayer.addStat(LMMNX_Achievements.ac_Farmer);
 				}
 				return true;
 			}

@@ -66,7 +66,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 			if (litemstack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Torch", litemstack)) {
 				owner.setMaidMode("Torcher");
 				if (LMMNX_Achievements.ac_TorchLayer != null) {
-					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_TorchLayer);
+					pentityplayer.addStat(LMMNX_Achievements.ac_TorchLayer);
 				}
 				return true;
 			}

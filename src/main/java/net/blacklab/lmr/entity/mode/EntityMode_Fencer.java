@@ -90,19 +90,19 @@ public class EntityMode_Fencer extends EntityModeBase {
 			if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Sword", litemstack)) {
 				owner.setMaidMode("Fencer");
 				if (LMMNX_Achievements.ac_Fencer != null) {
-					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_Fencer);
+					pentityplayer.addStat(LMMNX_Achievements.ac_Fencer);
 				}
 				if (litemstack.getItem() instanceof ItemSpade && LMMNX_Achievements.ac_Buster != null) {
-					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_Buster);
+					pentityplayer.addStat(LMMNX_Achievements.ac_Buster);
 				}
 				return true;
 			} else  if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Axe", litemstack)) {
 				owner.setMaidMode("Bloodsucker");
 				if (LMMNX_Achievements.ac_RandomKiller != null) {
-					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_RandomKiller);
+					pentityplayer.addStat(LMMNX_Achievements.ac_RandomKiller);
 				}
 				if (litemstack.getItem() instanceof ItemSpade && LMMNX_Achievements.ac_Buster != null) {
-					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_Buster);
+					pentityplayer.addStat(LMMNX_Achievements.ac_Buster);
 				}
 				return true;
 			}

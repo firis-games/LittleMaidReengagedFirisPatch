@@ -61,7 +61,7 @@ public class EntityMode_Healer extends EntityModeBase {
 			if (litemstack.getItem() instanceof ItemFood || (litemstack.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack))) {
 				owner.setMaidMode("Healer");
 				if (LMMNX_Achievements.ac_Healer != null) {
-					pentityplayer.triggerAchievement(LMMNX_Achievements.ac_Healer);
+					pentityplayer.addStat(LMMNX_Achievements.ac_Healer);
 				}
 				return true;
 			}
