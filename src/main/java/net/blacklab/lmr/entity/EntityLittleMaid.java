@@ -1389,8 +1389,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		// --------------------------------------------
 		// 肩車状態でプレイヤーが馬に乗っているときは、当たり判定をなくす。
 		if(isMaidWait()) return false;
-		if (ridingEntity != null && ridingEntity == mstatMasterEntity) {
-			if(ridingEntity.ridingEntity instanceof EntityHorse)
+		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
+			if(getRidingEntity().getRidingEntity() instanceof EntityHorse)
 			{
 				return false;
 			}
@@ -1433,7 +1433,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	/*
 	@Override
 	public double getYOffset() {
-		if(ridingEntity instanceof EntityPlayer) {
+		if(getRidingEntity() instanceof EntityPlayer) {
 			// 姿勢制御
 //			setSneaking(true);
 //			mstatAimeBow = true;
@@ -1442,7 +1442,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 			// --------------------------------------------
 			// プレイヤーが馬に乗っているときは、肩車ではなく馬の後ろに乗る
-			if(ridingEntity.ridingEntity instanceof EntityHorse)
+			if(getRidingEntity().getRidingEntity() instanceof EntityHorse)
 			{
 				if(worldObj.isRemote)
 				{
@@ -1471,8 +1471,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		++ticksExisted;
 		//
 
-		if(ridingEntity instanceof EntityPlayer) {
-			EntityPlayer lep = (EntityPlayer)ridingEntity;
+		if(getRidingEntity() instanceof EntityPlayer) {
+			EntityPlayer lep = (EntityPlayer)getRidingEntity();
 
 			// ヘッドハガー
 			renderYawOffset = lep.renderYawOffset;
@@ -1481,7 +1481,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			double llpy = lastTickPosY;
 			double llpz = lastTickPosZ;
 
-			// ★注意：水に触れると ridingEntity はnullになる ★
+			// ★注意：水に触れると getRidingEntity() はnullになる ★
 			super.updateRidden();
 
 			renderYawOffset = lep.renderYawOffset;
@@ -1501,10 +1501,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			double dx, dz;
 			// --------------------------------------------
 			// プレイヤーが馬に乗っているときは、肩車ではなく馬の後ろに乗る
-			// ridingEntity はsuper.updateRidden();によってNULLになる事があるので注意
-			if(lep.ridingEntity instanceof EntityHorse)
+			// getRidingEntity() はsuper.updateRidden();によってNULLになる事があるので注意
+			if(lep.getRidingEntity() instanceof EntityHorse)
 			{
-				EntityHorse horse = (EntityHorse)lep.ridingEntity;
+				EntityHorse horse = (EntityHorse)lep.getRidingEntity();
 				if(worldObj.isRemote)
 				{
 					dx = Math.sin((horse.renderYawOffset * Math.PI) / 180D) * 0.5;
@@ -2515,12 +2515,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			updateAimebow();
 
 			// 自分より大きなものは乗っけない（イカ除く）
-			if (riddenByEntity != null && !(riddenByEntity instanceof EntitySquid)) {
-				if (height * width < riddenByEntity.height * riddenByEntity.width) {
-					if (riddenByEntity instanceof EntityLivingBase) {
-						attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase)riddenByEntity), 0);
+			if (getControllingPassenger() != null && !(getControllingPassenger() instanceof EntitySquid)) {
+				if (height * width < getControllingPassenger().height * getControllingPassenger().width) {
+					if (getControllingPassenger() instanceof EntityLivingBase) {
+						attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase)getControllingPassenger()), 0);
 					}
-					riddenByEntity.mountEntity(null);
+					getControllingPassenger().mountEntity(null);
 					return;
 				}
 			}
@@ -2988,9 +2988,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			return false;
 		}
 		// ナデリ判定
-		if (lhealth > 0F && par1EntityPlayer.riddenByEntity != null && !(par1EntityPlayer.riddenByEntity instanceof EntityLittleMaid)) {
+		if (lhealth > 0F && par1EntityPlayer.getControllingPassenger() != null && !(par1EntityPlayer.getControllingPassenger() instanceof EntityLittleMaid)) {
 			// 載せ替え
-			par1EntityPlayer.riddenByEntity.mountEntity(this);
+			par1EntityPlayer.getControllingPassenger().mountEntity(this);
 			return true;
 		}
 
@@ -3162,7 +3162,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 							else if (itemstack1.getItem() == Items.saddle) {
 								// 肩車
 								if (!worldObj.isRemote) {
-									if (ridingEntity == par1EntityPlayer) {
+									if (getRidingEntity() == par1EntityPlayer) {
 										mountEntity(null);
 									} else {
 										mountEntity(par1EntityPlayer);

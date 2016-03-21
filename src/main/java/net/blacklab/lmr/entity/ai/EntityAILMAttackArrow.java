@@ -122,7 +122,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 		
 		// プレイヤーに乗っていると射線にプレイヤーが入り、撃てなくなるため僅かに目標エンティティに近づける
 		// 関数を抜ける前に元に戻す必要があるので途中で return しないこと
-		if(fMaid.ridingEntity instanceof EntityPlayer)
+		if(fMaid.getRidingEntity() instanceof EntityPlayer)
 		{
 			double dtx = fTarget.posX - fMaid.posX;
 			double dtz = fTarget.posZ - fMaid.posZ;
