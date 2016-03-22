@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class EntityMode_Shearer extends EntityModeBase {
@@ -275,7 +276,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 				owner.setSwing(20, EnumSound.attack_bloodsuck, !owner.isPlaying());
 				owner.addMaidExperience(4.5f);
 			} else {
-				owner.maidAvatar.interactWith(pEntity);
+				owner.maidAvatar.interact(pEntity, owner.getCurrentEquippedItem(), EnumHand.MAIN_HAND);
 				owner.setSwing(20, EnumSound.attack, !owner.isPlaying());
 				owner.addMaidExperience(2.1f);
 			}
