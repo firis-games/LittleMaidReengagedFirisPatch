@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -164,7 +165,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 				if (lel == theMaid) {
 					ItemStack li = theMaid.getCurrentEquippedItem();
 					if (li != null && li.getItemUseAction() == EnumAction.BLOCK) {
-						li.useItemRightClick(worldObj, theMaid.maidAvatar);
+						li.useItemRightClick(worldObj, theMaid.maidAvatar, EnumHand.MAIN_HAND);
 						lguard = true;
 					}
 				}
