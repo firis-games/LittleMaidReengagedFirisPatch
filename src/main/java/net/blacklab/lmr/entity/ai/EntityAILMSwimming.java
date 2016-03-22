@@ -2,6 +2,7 @@ package net.blacklab.lmr.entity.ai;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.pathfinding.PathEntity;
@@ -61,8 +62,9 @@ public class EntityAILMSwimming extends EntityAISwimming {
 					
 				}
 				if(theMaid.isSwimmingEnabled() && theMaid.isInWater()){
+					IBlockState iState;
 					if (pathPoint != null && Math.abs(pathPoint.yCoord - yd) < 3d && Math.pow(pathPoint.xCoord - xd, 2) + Math.pow(pathPoint.zCoord - zd, 2) < 9d &&
-							theMaid.worldObj.getBlockState(new BlockPos(pathPoint.xCoord,pathPoint.yCoord,pathPoint.zCoord)).getBlock().getMaterial() != Material.water) {
+							(iState = theMaid.worldObj.getBlockState(new BlockPos(pathPoint.xCoord,pathPoint.yCoord,pathPoint.zCoord))).getBlock().getMaterial(iState) != Material.water) {
 						totalmotionY += 0.1D;
 						theMaid.motionX *= 2d;
 						theMaid.motionZ *= 2d;
