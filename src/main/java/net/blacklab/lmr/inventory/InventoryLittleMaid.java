@@ -14,6 +14,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
@@ -306,7 +307,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		return -1;
 	}
 
-	public int getInventorySlotContainItem(Class<Item> itemClass) {
+	public int getInventorySlotContainItem(Class<? extends Item> itemClass) {
 		// 指定されたアイテムクラスの物を持っていれば返す
 		for (int j = 0; j < InventoryLittleMaid.maxInventorySize; j++) {
 			// if (mainInventory[j] != null &&
@@ -577,4 +578,5 @@ public class InventoryLittleMaid extends InventoryPlayer {
 			setInventorySlotContents(i, null);
 		}
 	}
+
 }
