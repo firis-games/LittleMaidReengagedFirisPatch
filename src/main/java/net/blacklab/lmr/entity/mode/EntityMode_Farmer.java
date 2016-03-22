@@ -20,7 +20,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
@@ -177,7 +179,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		boolean haveNothing = !LMMNX_API_Farmer.isHoe(owner,curStack);
 		
 		if (!haveNothing && isUnfarmedLand(px,py,pz) &&
-				curStack.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px, py, pz), EnumFacing.UP, 0.5F, 1.0F, 0.5F)) {
+				curStack.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
 			owner.setSwing(10, EnumSound.Null, false);
 			owner.playLittleMaidSound(EnumSound.farmer_farm, false);
 			
@@ -198,7 +200,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 			if(index!=-1){
 				ItemStack stack = owner.maidInventory.getStackInSlot(index);
 				int li = stack.stackSize;
-				stack.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px,py,pz), EnumFacing.UP, 0.5F, 1.0F, 0.5F);
+				stack.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px,py,pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F);
 				owner.playLittleMaidSound(EnumSound.farmer_plant, false);
 				if (owner.maidAvatar.capabilities.isCreativeMode) {
 					stack.stackSize = li;
