@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.util.math.BlockPos;
@@ -91,7 +92,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		switch (pMode) {
 		case mmode_Pharmacist :
 			litemstack = owner.getCurrentEquippedItem();
-			if (!(inventryPos > 0 && litemstack != null && !litemstack.getItem().isPotionIngredient(litemstack))) {
+			if (!(inventryPos > 0 && litemstack != null && !PotionUtils.getEffectsFromStack(litemstack).isEmpty())) {
 				for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
 					litemstack = owner.maidInventory.getStackInSlot(li);
 					if (litemstack != null) {
@@ -243,7 +244,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 			
 			if (!lflag && litemstack2 == null && (ltile.getStackInSlot(0) != null || ltile.getStackInSlot(1) != null || ltile.getStackInSlot(2) != null)) {
 				// 手持ちのアイテムをぽーい
-				if (litemstack1 != null && !(litemstack1.getItem() instanceof ItemPotion) && litemstack1.getItem().isPotionIngredient(litemstack1)) {
+				if (litemstack1 != null && !(litemstack1.getItem() instanceof ItemPotion) && !PotionUtils.getEffectsFromStack(litemstack1).isEmpty()) {
 					ltile.setInventorySlotContents(3, litemstack1);
 					owner.maidInventory.setInventorySlotContents(inventryPos, null);
 					owner.playSound("random.pop");
@@ -251,7 +252,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					owner.addMaidExperience(4.5f);
 					lflag = true;
 				} 
-				else if (litemstack1 == null || (litemstack1.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack1)) || !litemstack1.getItem().isPotionIngredient(litemstack1)) {
+				else if (litemstack1 == null || (litemstack1.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack1)) || !PotionUtils.getEffectsFromStack(litemstack1).isEmpty()) {
 					// 対象外アイテムを発見した時に終了
 					inventryPos = InventoryLittleMaid.maxInventorySize;
 					lflag = true;
