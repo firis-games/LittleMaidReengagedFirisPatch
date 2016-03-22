@@ -297,6 +297,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 				pos.add(WATER_RADIUS, 1, WATER_RADIUS)).iterator();
 		BlockPos.MutableBlockPos mutableblockpos;
 
+		IBlockState iState;
 		do
 		{
 			if (!iterator.hasNext())
@@ -306,7 +307,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 			
 			mutableblockpos = (BlockPos.MutableBlockPos)iterator.next();
 		}
-		while (owner.worldObj.getBlockState(mutableblockpos).getBlock().getMaterial() != Material.water);
+		while ((iState = owner.worldObj.getBlockState(mutableblockpos)).getBlock().getMaterial(iState) != Material.water);
 
 		return true;
 	}
