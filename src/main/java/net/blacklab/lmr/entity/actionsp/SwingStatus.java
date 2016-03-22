@@ -183,10 +183,11 @@ public class SwingStatus {
 	public void clearItemInUse(Entity pEntity) {
 		itemInUse = null;
 		itemInUseCount = 0;
-		
+		/*
 		if (pEntity != null) {
 			pEntity.setEating(false);
 		}
+		*/
 	}
 
 	public boolean isBlocking() {
@@ -204,10 +205,11 @@ public class SwingStatus {
 		if (par1ItemStack != itemInUse) {
 			itemInUse = par1ItemStack;
 			itemInUseCount = par2;
-			
+			/*
 			if (pEntity != null) {
 				pEntity.setEating(true);
 			}
+			*/
 		}
 	}
 
