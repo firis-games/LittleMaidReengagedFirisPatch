@@ -5,7 +5,7 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 
@@ -13,7 +13,6 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 	protected EntityLittleMaid theMaid;
 	protected EntityModeBase fmodeBase;
 //	protected MovingObjectPosition theBlock;
-//	protected int tileX;
 //	protected int tileY;
 //	protected int tileZ;
 //	protected boolean isFind;
