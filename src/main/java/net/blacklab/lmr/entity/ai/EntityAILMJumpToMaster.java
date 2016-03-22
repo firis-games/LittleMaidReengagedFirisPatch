@@ -24,7 +24,7 @@ public class EntityAILMJumpToMaster extends EntityAIBase implements IEntityAI {
 		theMaid = pEntityLittleMaid;
 		theWorld = pEntityLittleMaid.worldObj;
 		isEnable = true;
-		boundingBox = AxisAlignedBB.fromBounds(0, 0, 0, 0, 0, 0);
+		boundingBox = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class EntityAILMJumpToMaster extends EntityAIBase implements IEntityAI {
 			// 自由行動の子は基点へジャンプ
 			if (theMaid.homeWorld != theMaid.dimension) {
 				LittleMaidReengaged.Debug(String.format("ID:%d, %d -> %d, Change HomeWorld. reset HomePosition.",
-						theMaid.getEntityId(),theMaid.homeWorld, theMaid.worldObj.provider.getDimensionId()));
+						theMaid.getEntityId(),theMaid.homeWorld, theMaid.worldObj.provider.getDimension()));
 //				theMaid.func_110171_b(
 				theMaid.setHomePosAndDistance(theMaid.getPosition(), (int) theMaid.getMaximumHomeDistance());
 				return false;
