@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityAILMFleeRain extends EntityAIBase implements IEntityAI {
@@ -51,7 +52,7 @@ public class EntityAILMFleeRain extends EntityAIBase implements IEntityAI {
 			return false;
 		}
 
-		Vec3 vec3d = findPossibleShelter();
+		Vec3d vec3d = findPossibleShelter();
 
 		if (vec3d == null) {
 			return false;
@@ -75,7 +76,7 @@ public class EntityAILMFleeRain extends EntityAIBase implements IEntityAI {
 		theMaid.getNavigator().tryMoveToXYZ(shelterX, shelterY, shelterZ, movespeed);
 	}
 
-	private Vec3 findPossibleShelter() {
+	private Vec3d findPossibleShelter() {
 		Random random = theMaid.getRNG();
 		
 		for (int i = 0; i < 10; i++) {
@@ -92,7 +93,7 @@ public class EntityAILMFleeRain extends EntityAIBase implements IEntityAI {
 			
 			if (!theWorld.canBlockSeeSky(new BlockPos(j, k, l))/*
 					&& theMaid.getBlockPathWeight(j, k, l) > -0.5F*/) {
-				return new Vec3(j, k, l);
+				return new Vec3d(j, k, l);
 			}
 		}
 		

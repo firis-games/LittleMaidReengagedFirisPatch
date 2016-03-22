@@ -6,7 +6,7 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAILMAvoidPlayer extends EntityAIBase implements
 		IEntityAI {
@@ -56,8 +56,8 @@ public class EntityAILMAvoidPlayer extends EntityAIBase implements
 		}
 
 		// 移動先を策定
-		Vec3 vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(
-				theMaid, minDist, 7, new Vec3(theMaster.posX,
+		Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(
+				theMaid, minDist, 7, new Vec3d(theMaster.posX,
 						theMaster.posY, theMaster.posZ));
 
 		// 移動先が無い

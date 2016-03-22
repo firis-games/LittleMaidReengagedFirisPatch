@@ -2132,7 +2132,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 						if (pe != null) {
 							pe.incrementPathIndex();
 							if (!pe.isFinished()) {
-								Vec3 v = pe.getPosition(this);
+								Vec3d v = pe.getPosition(this);
 								setPosition(v.xCoord, v.yCoord, v.zCoord);
 							}
 						}

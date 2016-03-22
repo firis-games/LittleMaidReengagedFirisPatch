@@ -329,7 +329,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 			double d5 = MathHelper.cos(f9);
 			float f11 = lel.getSwingProgress(f1);
 			float f12 = MathHelper.sin(MathHelper.sqrt_float(f11) * 3.141593F);
-			Vec3 vec3d = new Vec3(-0.5D, 0.029999999999999999D, 0.55D);
+			Vec3 vec3d = new Vec3d(-0.5D, 0.029999999999999999D, 0.55D);
 
 			vec3d.rotatePitch((-(lel.prevRotationPitch + (lel.rotationPitch - lel.prevRotationPitch) * f1) * 3.141593F) / 180F);
 			vec3d.rotateYaw((-(lel.prevRotationYaw + (lel.rotationYaw - lel.prevRotationYaw) * f1) * 3.141593F) / 180F);

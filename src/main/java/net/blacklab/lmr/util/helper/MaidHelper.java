@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 public class MaidHelper {
 
@@ -127,11 +128,11 @@ public class MaidHelper {
 		 * @return
 		 */
 		public static Entity getRayTraceEntity(EntityLivingBase pEntity, double pRange, float pDelta, float pExpand) {
-			Vec3 lvpos = new Vec3(
+			Vec3d lvpos = new Vec3d(
 					pEntity.posX, pEntity.posY + pEntity.getEyeHeight(), pEntity.posZ);
 	//		Vec3 lvpos = pEntity.getPosition(pDelta).addVector(0D, pEntity.getEyeHeight(), 0D);
-			Vec3 lvlook = pEntity.getLook(pDelta);
-			Vec3 lvview = lvpos.addVector(lvlook.xCoord * pRange, lvlook.yCoord * pRange, lvlook.zCoord * pRange);
+			Vec3d lvlook = pEntity.getLook(pDelta);
+			Vec3d lvview = lvpos.addVector(lvlook.xCoord * pRange, lvlook.yCoord * pRange, lvlook.zCoord * pRange);
 			Entity ltarget = null;
 			List llist = pEntity.worldObj.getEntitiesWithinAABBExcludingEntity(pEntity, pEntity.getEntityBoundingBox().addCoord(lvlook.xCoord * pRange, lvlook.yCoord * pRange, lvlook.zCoord * pRange).expand(pExpand, pExpand, pExpand));
 			double ltdistance = pRange * pRange;
