@@ -3,6 +3,7 @@ package net.blacklab.lmr.util.helper;
 import java.util.List;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -27,7 +28,7 @@ public class MaidHelper {
 	public static void giveItem(ItemStack stack, EntityLittleMaid maid) {
 		int stacksize = stack.stackSize;
 		
-		for (int i=0; i<maid.maidInventory.InventoryLittleMaid.maxInventorySize; i++) {
+		for (int i=0; i<InventoryLittleMaid.maxInventorySize; i++) {
 			ItemStack stack1 = maid.maidInventory.mainInventory[i];
 	
 			if (stack1 != null && stack != null) {
