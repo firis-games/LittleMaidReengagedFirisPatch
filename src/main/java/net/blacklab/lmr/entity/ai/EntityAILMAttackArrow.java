@@ -19,6 +19,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -110,7 +111,8 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 	public void resetTask() {
 		fTarget = null;
 //		fAvatar.stopUsingItem();
-		fAvatar.clearItemInUse();
+		fAvatar.stopActiveHand();
+//		fAvatar.clearItemInUse();
 		fForget=0;
 	}
 
@@ -258,7 +260,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 									int at = ((helmid == Items.iron_helmet) || (helmid == Items.diamond_helmet)) ? 26 : 16;
 									if (swingState.attackTime < at) {
 										fMaid.setSwing(at, EnumSound.sighting, !fMaid.isPlaying());
-										litemstack = litemstack.useItemRightClick(worldObj, fAvatar);
+										litemstack = litemstack.useItemRightClick(worldObj, fAvatar, EnumHand.MAIN_HAND).getResult();
 										LittleMaidReengaged.Debug("id:%d redygun.", fMaid.getEntityId());
 									}
 								} else {
@@ -271,7 +273,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 							// 通常投擲兵装
 							if (swingState.canAttack() && !fAvatar.isHandActive()) {
 								if (lcanattack) {
-									litemstack = litemstack.useItemRightClick(worldObj, fAvatar);
+									litemstack = litemstack.useItemRightClick(worldObj, fAvatar, EnumHand.MAIN_HAND).getResult();
 									// 意図的にショートスパンで音が鳴るようにしてある
 									fMaid.mstatAimeBow = false;
 									fMaid.setSwing(10, (litemstack.stackSize == itemcount) ? EnumSound.shoot_burst : EnumSound.Null, !fMaid.isPlaying());
@@ -289,7 +291,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 						} else {
 							// リロード有りの特殊兵装
 							if (!getAvatarIF().isUsingItemLittleMaid()) {
-								litemstack = litemstack.useItemRightClick(worldObj, fAvatar);
+								litemstack = litemstack.useItemRightClick(worldObj, fAvatar, EnumHand.MAIN_HAND).getResult();
 								LittleMaidReengaged.Debug(String.format("%d reload.", fMaid.getEntityId()));
 							}
 							// リロード終了まで強制的に構える
@@ -359,11 +361,11 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 				fMaid.getNavigator().tryMoveToEntityLiving(fTarget, 1.0);
 //				fMaid.setAttackTarget(null);
 			}
-			if (fMaid.weaponFullAuto && getAvatarIF().getIsItemTrigger()) {
+//			if (fMaid.weaponFullAuto && getAvatarIF().getIsItemTrigger()) {
 				fAvatar.stopActiveHand();
-			} else {
-				fAvatar.clearItemInUse();
-			}
+//			} else {
+//				fAvatar.clearItemInUse();
+//			}
 			resetTask();
 		}
 		
