@@ -9,8 +9,8 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI {
