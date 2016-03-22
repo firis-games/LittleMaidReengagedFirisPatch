@@ -3,6 +3,7 @@ package net.blacklab.lmr.entity.ai;
 import mmmlibx.lib.MMM_EntityDummy;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -154,7 +155,8 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAI {
 	 * 指定座標のブロックは探しているものか？
 	 */
 	protected boolean checkBlock(int px, int py, int pz) {
-		return world.isBlockPowered(new BlockPos(px,py,pz)) && (world.getBlockState(new BlockPos(px, py + 1, pz)).getBlock().getMaterial() == Material.air);
+		IBlockState iState = world.getBlockState(new BlockPos(px, py + 1, pz));
+		return world.isBlockPowered(new BlockPos(px,py,pz)) && (iState.getBlock().getMaterial(iState) == Material.air);
 	}
 
 	/**
