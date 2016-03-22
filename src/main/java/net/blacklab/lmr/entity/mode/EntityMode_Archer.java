@@ -18,6 +18,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -201,13 +202,13 @@ public class EntityMode_Archer extends EntityModeBase {
 			if (!owner.weaponReload) {
 				if (owner.maidAvatar.isHandActive()) {
 					// ターゲットが死んでいる時はアイテムの使用をクリア
-					if (owner.getAvatarIF().getIsItemReload()) {
+//					if (owner.getAvatarIF().getIsItemReload()) {
 						owner.maidAvatar.stopActiveHand();
-						LittleMaidReengaged.Debug(String.format("id:%d cancel reload.", owner.getEntityId()));
-					} else {
-						owner.maidAvatar.clearItemInUse();
+//						LittleMaidReengaged.Debug(String.format("id:%d cancel reload.", owner.getEntityId()));
+//					} else {
+//						owner.maidAvatar.clearItemInUse();
 						LittleMaidReengaged.Debug(String.format("id:%d clear.", owner.getEntityId()));
-					}
+//					}
 				}
 			} else {
 				owner.mstatAimeBow = true;
@@ -215,7 +216,7 @@ public class EntityMode_Archer extends EntityModeBase {
 		}
 		if (owner.weaponReload && !owner.maidAvatar.isHandActive()) {
 			// 特殊リロード
-			owner.maidInventory.getCurrentItem().useItemRightClick(owner.worldObj, owner.maidAvatar);
+			owner.maidInventory.getCurrentItem().useItemRightClick(owner.worldObj, owner.maidAvatar, EnumHand.MAIN_HAND);
 			LittleMaidReengaged.Debug("id:%d force reload.", owner.getEntityId());
 			owner.mstatAimeBow = true;
 		}
