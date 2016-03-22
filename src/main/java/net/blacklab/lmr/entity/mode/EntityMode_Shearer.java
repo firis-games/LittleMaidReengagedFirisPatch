@@ -144,9 +144,9 @@ public class EntityMode_Shearer extends EntityModeBase {
 		if (pMode == mmode_Detonator && owner.isEntityAlive()) {
 			if (timeSinceIgnited < 0) {
 				if (lastTimeSinceIgnited != timeSinceIgnited) {
-					owner.getDataWatcher().updateObject(Statics.dataWatch_Free, Integer.valueOf(0));
+					owner.getDataManager().set(Statics.dataWatch_Free, Integer.valueOf(0));
 				}
-				else if (owner.getDataWatcher().getWatchableObjectInt(Statics.dataWatch_Free) == 1) {
+				else if (owner.getDataManager().get(Statics.dataWatch_Free) == 1) {
 					lastTimeSinceIgnited = timeSinceIgnited = 0;
 				}
 			}
@@ -358,7 +358,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 		if (pMode == mmode_Detonator && InventoryLittleMaid.isItemExplord(owner.getCurrentEquippedItem())) {
 			if (timeSinceIgnited == -1) {
 				owner.playSound("random.fuse", 1.0F, 0.5F);
-				owner.getDataWatcher().updateObject(Statics.dataWatch_Free, Integer.valueOf(1));
+				owner.getDataManager().set(Statics.dataWatch_Free, Integer.valueOf(1));
 			}
 //        	if (owner.entityToAttack == null)
 			owner.setMaidWait(true);
