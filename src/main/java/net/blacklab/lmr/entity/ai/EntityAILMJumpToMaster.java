@@ -1,7 +1,9 @@
 package net.blacklab.lmr.entity.ai;
 
+import akka.actor.FSM.State;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -84,12 +86,13 @@ public class EntityAILMJumpToMaster extends EntityAIBase implements IEntityAI {
 			int j = theOwner.getPosition().getZ() - 2;
 			int k = MathHelper.floor_double(theOwner.getEntityBoundingBox().minY);
 			
+			IBlockState iState;
 			for (int l = 0; l <= 4; l++) {
 				for (int i1 = 0; i1 <= 4; i1++) {
 					if ((l < 1 || i1 < 1 || l > 3 || i1 > 3)
-							&& theWorld.getBlockState(new BlockPos(i + l, k - 1, j + i1)).getBlock().isNormalCube()
-							&& !theWorld.getBlockState(new BlockPos(i + l, k, j + i1)).getBlock().isNormalCube()
-							&& !theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1)).getBlock().isNormalCube()) {
+							&& (iState = theWorld.getBlockState(new BlockPos(i + l, k - 1, j + i1))).getBlock().isNormalCube(iState)
+							&& !(iState = theWorld.getBlockState(new BlockPos(i + l, k, j + i1))).getBlock().isNormalCube(iState)
+							&& !(iState = theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1))).getBlock().isNormalCube(iState)) {
 						// 主の前に跳ばない
 						double dd = theOwner.getDistanceSq(
 								i + l + 0.5D + MathHelper.sin(theOwner.rotationYaw * 0.01745329252F) * 2.0D,
@@ -200,7 +203,8 @@ public class EntityAILMJumpToMaster extends EntityAIBase implements IEntityAI {
 	 * 転移先のチェック
 	 */
 	protected boolean isCanJump(double px, double py, double pz) {
-		return theWorld.getBlockState(new BlockPos(px, py - 1, pz)).getBlock().getMaterial().isSolid()/*
+		IBlockState iState = theWorld.getBlockState(new BlockPos(px, py - 1, pz));
+		return iState.getBlock().getMaterial(iState).isSolid()/*
 				&& theWorld.func_147461_a(boundingBox).isEmpty()*/;
 	}
 
