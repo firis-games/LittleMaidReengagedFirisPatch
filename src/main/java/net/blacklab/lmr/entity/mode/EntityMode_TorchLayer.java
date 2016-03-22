@@ -7,8 +7,8 @@ import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -230,8 +230,8 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 			}
 		}
 		
-		Material lmat = par1World.getBlockState(new BlockPos(par2, par3, par4)).getBlock().getMaterial();
-		if (lmat instanceof MaterialLiquid) {
+		IBlockState iState = par1World.getBlockState(new BlockPos(par2, par3, par4));
+		if (iState.getBlock().getMaterial(iState) instanceof MaterialLiquid) {
 			return false;
 		}
 		
