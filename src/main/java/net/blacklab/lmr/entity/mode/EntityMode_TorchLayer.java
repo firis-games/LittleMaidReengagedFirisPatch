@@ -18,7 +18,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -159,9 +161,9 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 			return false;
 		}
 		// アイテムを置けない場合
-		Item heldItem = owner.getHeldItem().getItem();
+		Item heldItem = owner.getHeldItem(EnumHand.MAIN_HAND).getItem();
 		if (heldItem instanceof ItemBlock) {
-			if (!canPlaceItemBlockOnSide(owner.worldObj, px, py - 1, pz, EnumFacing.UP, owner.maidAvatar, owner.getHeldItem(), (ItemBlock) heldItem)) {
+			if (!canPlaceItemBlockOnSide(owner.worldObj, px, py - 1, pz, EnumFacing.UP, owner.maidAvatar, owner.getHeldItem(EnumHand.MAIN_HAND), (ItemBlock) heldItem)) {
 				return false;
 			}
 		}
@@ -185,7 +187,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		
 		int li = lis.stackSize;
 		// TODO:当たり判定をどうするか
-		if (lis.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px, py - 1, pz), EnumFacing.UP, 0.5F, 1.0F, 0.5F)) {
+		if (lis.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px, py - 1, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
 			owner.setSwing(10, EnumSound.installation, false);
 			owner.addMaidExperience(0.32f);
 			if (owner.maidAvatar.capabilities.isCreativeMode) {
