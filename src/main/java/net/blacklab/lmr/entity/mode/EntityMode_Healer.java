@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.ResourceLocation;
 
 public class EntityMode_Healer extends EntityModeBase {
 
@@ -173,7 +174,7 @@ public class EntityMode_Healer extends EntityModeBase {
 								PotionEffect potioneffect;
 								for(Iterator iterator = list.iterator(); iterator.hasNext();) {
 									potioneffect = (PotionEffect)iterator.next();
-									if (potioneffect.getPotionID() == Potion.heal.id) {
+									if (potioneffect.getPotion() == Potion.potionRegistry.getObject(new ResourceLocation("heal"))) {
 										if ((6 << potioneffect.getAmplifier()) <= (lmaster.getMaxHealth() - lmaster.getHealth())) {
 //	                                    	mod_littleMaidMob.Debug(String.format("%d <= %d", (6 << potioneffect.getAmplifier()), (masterEntity.func_40117_c() - masterEntity.health)));
 											lswing = true;
@@ -182,8 +183,8 @@ public class EntityMode_Healer extends EntityModeBase {
 										}
 										break;
 									}
-									if (Potion.potionTypes[potioneffect.getPotionID()].isBadEffect()
-											|| lmaster.isPotionActive(potioneffect.getPotionID())) {
+									if (potioneffect.getPotion().isBadEffect()
+											|| lmaster.isPotionActive(potioneffect.getPotion())) {
 										lswing = false;
 										break;
 									}
