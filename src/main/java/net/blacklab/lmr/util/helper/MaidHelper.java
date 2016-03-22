@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 
 public class MaidHelper {
@@ -143,7 +144,7 @@ public class MaidHelper {
 				if (lentity.canBeCollidedWith()) {
 					float lexpand = lentity.getCollisionBorderSize() + 0.3F;
 					AxisAlignedBB laabb = lentity.getEntityBoundingBox().expand(lexpand, lexpand, lexpand);
-					MovingObjectPosition lmop = laabb.calculateIntercept(lvpos, lvview);
+					RayTraceResult lmop = laabb.calculateIntercept(lvpos, lvview);
 					
 					if (laabb.isVecInside(lvpos)) {
 						if (0.0D < ltdistance || ltdistance == 0.0D) {
