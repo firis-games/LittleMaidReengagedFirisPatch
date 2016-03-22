@@ -9,6 +9,7 @@ import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.TriggerSelect;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -186,7 +187,9 @@ public class EntityMode_Archer extends EntityModeBase {
 					int lx = (int)owner.posX;
 					int ly = (int)owner.posY;
 					int lz = (int)owner.posZ;
-					if (lworld.isAirBlock(new BlockPos(lx, ly, lz)) || lworld.getBlockState(new BlockPos(lx, ly, lz)).getBlock().getMaterial().getCanBurn()) {
+
+					IBlockState iState;
+					if (lworld.isAirBlock(new BlockPos(lx, ly, lz)) || (iState = lworld.getBlockState(new BlockPos(lx, ly, lz))).getBlock().getMaterial(iState).getCanBurn()) {
 						lworld.playSoundEffect(lx + 0.5D, ly + 0.5D, lz + 0.5D, "fire.ignite", 1.0F, owner.getRNG().nextFloat() * 0.4F + 0.8F);
 						lworld.setBlockState(new BlockPos(lx, ly, lz), Blocks.fire.getDefaultState());
 					}
