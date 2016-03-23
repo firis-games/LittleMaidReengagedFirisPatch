@@ -144,6 +144,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -1851,7 +1852,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				LittleMaidReengaged.Debug("REQ %s", enumsound);
 
 				if (!LMMNX_SoundLoader.isFoundSoundpack()) {
-					worldObj.playSound(posX, posY, posZ, enumsound.DefaultValue, getSoundVolume(), lpitch, false);
+					worldObj.playSound(posX, posY, posZ, SoundEvent.soundEventRegistry.getObject(new ResourceLocation(enumsound.DefaultValue)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
 					playingSound.remove(enumsound);
 					continue;
 				}
@@ -1877,7 +1878,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 				LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", getEntityId(), enumsound.index, enumsound.name(), sname));
 
-				worldObj.playSound(posX, posY, posZ, "lmmnx:"+sname, getSoundVolume(), lpitch, false);
+				worldObj.playSound(posX, posY, posZ, SoundEvent.soundEventRegistry.getObject(new ResourceLocation(LittleMaidReengaged.DOMAIN+":"+sname)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
 				playingSound.remove(enumsound);
 			}
 //			LMM_LittleMaidMobNX.proxy.playLittleMaidSound(worldObj, posX, posY, posZ, playingSound, getSoundVolume(), lpitch, false);

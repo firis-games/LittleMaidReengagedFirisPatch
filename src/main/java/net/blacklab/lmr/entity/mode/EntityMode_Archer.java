@@ -21,6 +21,9 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -191,7 +194,7 @@ public class EntityMode_Archer extends EntityModeBase {
 
 					IBlockState iState;
 					if (lworld.isAirBlock(new BlockPos(lx, ly, lz)) || (iState = lworld.getBlockState(new BlockPos(lx, ly, lz))).getBlock().getMaterial(iState).getCanBurn()) {
-						lworld.playSoundEffect(lx + 0.5D, ly + 0.5D, lz + 0.5D, "fire.ignite", 1.0F, owner.getRNG().nextFloat() * 0.4F + 0.8F);
+						lworld.playSound(lx + 0.5D, ly + 0.5D, lz + 0.5D, SoundEvent.soundEventRegistry.getObject(new ResourceLocation("fire.ignite")), SoundCategory.NEUTRAL, 1.0F, owner.getRNG().nextFloat() * 0.4F + 0.8F, false);
 						lworld.setBlockState(new BlockPos(lx, ly, lz), Blocks.fire.getDefaultState());
 					}
 				}

@@ -8,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public class SwingStatus {
 
@@ -215,7 +217,7 @@ public class SwingStatus {
 
 	protected void updateItemUse(Entity pEntity, int par2) {
 		if (itemInUse.getItemUseAction() == EnumAction.DRINK) {
-			pEntity.playSound("random.drink", 0.5F, pEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+			pEntity.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("random.drink")), 0.5F, pEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 		}
 		
 		Random rand = new Random();
@@ -236,7 +238,7 @@ public class SwingStatus {
 			}
 			
 			
-			pEntity.playSound("random.eat", 0.5F + 0.5F * rand.nextInt(2), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+			pEntity.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("random.eat")), 0.5F + 0.5F * rand.nextInt(2), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 		}
 	}
 
