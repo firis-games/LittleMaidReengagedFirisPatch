@@ -2179,12 +2179,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 		if (newPosRotationIncrements > 0)
 		{
-			double d0 = posX + (newPosX - posX) / newPosRotationIncrements;
-			double d1 = posY + (newPosY - posY) / newPosRotationIncrements;
-			double d2 = posZ + (newPosZ - posZ) / newPosRotationIncrements;
-			double d3 = MathHelper.wrapAngleTo180_double(newRotationYaw - rotationYaw);
+			double d0 = posX + (interpTargetX - posX) / newPosRotationIncrements;
+			double d1 = posY + (interpTargetY - posY) / newPosRotationIncrements;
+			double d2 = posZ + (interpTargetZ - posZ) / newPosRotationIncrements;
+			double d3 = MathHelper.wrapAngleTo180_double(interpTargetYaw - rotationYaw);
 			rotationYaw = (float)(rotationYaw + d3 / newPosRotationIncrements);
-			rotationPitch = (float)(rotationPitch + (newRotationPitch - rotationPitch) / newPosRotationIncrements);
+			rotationPitch = (float)(rotationPitch + (newPosX - rotationPitch) / newPosRotationIncrements);
 			--newPosRotationIncrements;
 			setPosition(d0, d1, d2);
 			setRotation(rotationYaw, rotationPitch);
