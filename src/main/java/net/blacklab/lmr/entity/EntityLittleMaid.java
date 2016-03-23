@@ -118,6 +118,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -1537,11 +1538,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	@Override
-	public void updateRiderPosition() {
-		super.updateRiderPosition();
-	}
-
-	@Override
 	public float getSwingProgress(float par1) {
 		for (SwingStatus lswing : mstatSwingStatus) {
 			lswing.getSwingProgress(par1);
@@ -1892,7 +1888,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	 * 埋葬対策コピー
 	 */
 	private boolean isBlockTranslucent(int par1, int par2, int par3) {
-		return worldObj.getBlockState(new BlockPos(par1, par2, par3)).getBlock().isNormalCube();
+		IBlockState iState = worldObj.getBlockState(new BlockPos(par1, par2, par3));
+		return iState.getBlock().isNormalCube(iState);
 	}
 
 	/**
@@ -2049,24 +2046,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			}
 		}
 
-		ItemStack itemstack = getInventory()[0];
-
-		if (itemstack != null)
-		{
-			if (itemstack.isItemStackDamageable())
-			{
-				itemstack.setItemDamage(itemstack.getItemDamage() + rand.nextInt(2));
-
-				if (itemstack.getItemDamage() >= itemstack.getMaxDamage())
-				{
-					renderBrokenItemStack(itemstack);
-					// setCurrentItemOrArmor(4, (ItemStack)null);
-				}
-			}
-
-			//flag = false;
-		}
-
 		if(lhealth > 0) {
 			// 近接監視の追加はここ
 			// アイテムの回収
@@ -2078,7 +2057,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 						if (!entity.isDead) {
 							if (entity instanceof EntityArrow) {
 								// 特殊回収
-								((EntityArrow)entity).canBePickedUp = 1;
+								((EntityArrow)entity).canBePickedUp = PickupStatus.ALLOWED;
 							}
 							entity.onCollideWithPlayer(maidAvatar);
 						}
@@ -2514,13 +2493,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 					if (getControllingPassenger() instanceof EntityLivingBase) {
 						attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase)getControllingPassenger()), 0);
 					}
-					getControllingPassenger().mountEntity(null);
+					getControllingPassenger().dismountRidingEntity();
 					return;
 				}
 			}
 
 			// 斧装備時は攻撃力が上がる
-			IAttributeInstance latt = getEntityAttribute(SharedMonsterAttributes.attackDamage);
+			IAttributeInstance latt = getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
 			// 属性を解除
 			latt.removeModifier(attAxeAmp);
 			ItemStack lis = getCurrentEquippedItem();
