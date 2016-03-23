@@ -3363,7 +3363,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		if (isContract()) {
 			EntityPlayer entityplayer = mstatMasterEntity;
 			if (mstatMasterEntity == null || mstatMasterEntity.isDead) {
-				String lname;
+				UUID lname;
 				// サーバー側ならちゃんとオーナ判定する
 
 				// Minecraftクラスのプレイヤーを取得していたが、サーバには存在しないためプロキシをかませる。サーバならNULL固定
@@ -3374,9 +3374,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 						|| clientPlayer == null) {
 					lname = getMaidMasterUUID();
 				} else {
-					lname = CommonHelper.getPlayerName(clientPlayer);
+					lname = CommonHelper.getPlayerUUID(clientPlayer);
 				}
-				entityplayer = worldObj.getPlayerEntityByName(lname);
+				entityplayer = worldObj.getPlayerEntityByUUID(lname);
 				// とりあえず主の名前を入れてみる
 				// TODO:再設定は不可になったので経過観察
 //				maidAvatar.username = lname;
@@ -3391,8 +3391,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		return null;
 	}
 
-	public boolean isMaidContractOwner(String pname) {
-		return pname.equalsIgnoreCase(CommonHelper.getPlayerName(mstatMasterEntity));
+	public boolean isMaidContractOwner(UUID pname) {
+		return pname.equals(CommonHelper.getPlayerUUID(mstatMasterEntity));
 	}
 
 	public boolean isMaidContractOwner(EntityPlayer pentity) {
