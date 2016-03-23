@@ -8,6 +8,7 @@ import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -20,7 +21,9 @@ import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatisticsFile;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -96,10 +99,6 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		return avatar.getHeldItem(pHand);
 	}
 	
-	public void setCurrentItemOrArmor(int var1, ItemStack var2)
-	{
-		super.setCurrentItemOrArmor(var1, var2);
-	}
 	public World getEntityWorld(){ return super.getEntityWorld(); }
 	////////////////////////////////////////////////////////////////////////////////////
 
@@ -117,12 +116,12 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	}
 
 	@Override
-	protected String getHurtSound() {
+	protected SoundEvent getHurtSound() {
 		return null;
 	}
 
 	@Override
-	protected String getDeathSound() {
+	protected SoundEvent getDeathSound() {
 		return null;
 	}
 
@@ -354,12 +353,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	}
 
 	@Override
-	public boolean isBlocking() {
-		return avatar.isBlocking();
-	}
-
-	@Override
-	public void playSound(String par1Str, float par2, float par3) {
+	public void playSound(SoundEvent par1Str, float par2, float par3) {
 		avatar.playSound(par1Str, par2, par3);
 	}
 	/*
@@ -375,7 +369,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 //	}
 
 	@Override
-	public void addChatMessage(IChatComponent var1) {
+	public void addChatMessage(ITextComponent var1) {
 		// チャットメッセージは使わない。
 	}
 
@@ -410,7 +404,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	/**
 	 * 属性値リストを取得
 	 */
-	public BaseAttributeMap getAttributeMap() {
+	public AbstractAttributeMap getAttributeMap() {
 //		return super.func_110140_aT();
 		return avatar == null ? super.getAttributeMap() : avatar.getAttributeMap();
 	}
