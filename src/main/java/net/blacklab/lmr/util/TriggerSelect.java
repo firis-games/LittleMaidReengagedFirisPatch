@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,34 +18,25 @@ import net.minecraft.util.ResourceLocation;
 public class TriggerSelect {
 
 	public static List<String> selector = new ArrayList<String>();
-	public static Map<String, Map<Integer, List<Item>>> usersTrigger = new HashMap<String, Map<Integer,List<Item>>>();
+	public static Map<UUID, Map<Integer, List<Item>>> usersTrigger = new HashMap<UUID, Map<Integer,List<Item>>>();
 	public static Map<Integer, List<Item>> defaultTrigger = new HashMap<Integer,List<Item>>();
 
 
-	public static Map<Integer, List<Item>> getUserTrigger(String pUsername) {
+	public static Map<Integer, List<Item>> getUserTrigger(UUID pUsername) {
 		if (pUsername == null) {
 			return defaultTrigger;
 		}
-		if (CommonHelper.isLocalPlay()) {
-			// シングル実行時は名称ブランクに。
-			pUsername = "";
-		}
 		// 存在チェック、無かったら追加
 		if (!usersTrigger.containsKey(pUsername)) {
-			if (pUsername.isEmpty()) {
-				// 名称がブランクの時はデフォルトのものへリンク。
-				usersTrigger.put(pUsername, defaultTrigger);
-			} else {
-				Map<Integer, List<Item>> lmap = new HashMap<Integer, List<Item>>();
-				lmap.putAll(defaultTrigger);
-				usersTrigger.put(pUsername, lmap);
-			}
+			Map<Integer, List<Item>> lmap = new HashMap<Integer, List<Item>>();
+			lmap.putAll(defaultTrigger);
+			usersTrigger.put(pUsername, lmap);
 		}
 		
 		return usersTrigger.get(pUsername);
 	}
 
-	public static List<Item> getuserTriggerList(String pUsername, String pSelector) {
+	public static List<Item> getuserTriggerList(UUID pUsername, String pSelector) {
 		if (!selector.contains(pSelector)) {
 			selector.add(pSelector);
 		}
@@ -64,7 +56,7 @@ public class TriggerSelect {
 	/**
 	 * ユーザー毎にトリガーアイテムを設定する。
 	 */
-	public static void appendTriggerItem(String pUsername, String pSelector, String pIndexstr) {
+	public static void appendTriggerItem(UUID pUsername, String pSelector, String pIndexstr) {
 		// トリガーアイテムの追加
 		appendWeaponsIndex(pIndexstr, getuserTriggerList(pUsername, pSelector));
 	}
@@ -87,7 +79,7 @@ public class TriggerSelect {
 	/**
 	 * アイテムが指定されたトリガーに登録されているかを判定
 	 */
-	public static boolean checkWeapon(String pUsername, String pSelector, ItemStack pItemStack) {
+	public static boolean checkWeapon(UUID pUsername, String pSelector, ItemStack pItemStack) {
 		if (!selector.contains(pSelector)) {
 			return false;
 		}

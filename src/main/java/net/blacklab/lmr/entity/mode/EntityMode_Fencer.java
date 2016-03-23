@@ -87,7 +87,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Sword", litemstack)) {
+			if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Sword", litemstack)) {
 				owner.setMaidMode("Fencer");
 				if (LMMNX_Achievements.ac_Fencer != null) {
 					pentityplayer.addStat(LMMNX_Achievements.ac_Fencer);
@@ -96,7 +96,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 					pentityplayer.addStat(LMMNX_Achievements.ac_Buster);
 				}
 				return true;
-			} else  if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Axe", litemstack)) {
+			} else  if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Axe", litemstack)) {
 				owner.setMaidMode("Bloodsucker");
 				if (LMMNX_Achievements.ac_RandomKiller != null) {
 					pentityplayer.addStat(LMMNX_Achievements.ac_RandomKiller);
@@ -143,7 +143,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				if (litemstack == null) continue;
 				
 				// 剣
-				if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Sword", litemstack)) {
+				if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Sword", litemstack)) {
 					return li;
 				}
 				
@@ -166,7 +166,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				if (litemstack == null) continue;
 				
 				// 斧
-				if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Axe", litemstack)) {
+				if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Axe", litemstack)) {
 					return li;
 				}
 				

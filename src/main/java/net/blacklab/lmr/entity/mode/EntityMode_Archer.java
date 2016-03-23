@@ -88,7 +88,7 @@ public class EntityMode_Archer extends EntityModeBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemBow || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Bow", litemstack)) {
+			if (litemstack.getItem() instanceof ItemBow || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Bow", litemstack)) {
 				if (owner.maidInventory.getInventorySlotContainItem(ItemFlintAndSteel.class) > -1) {
 					owner.setMaidMode("Blazingstar");
 					if (LMMNX_Achievements.ac_BlazingStar != null) {
@@ -138,7 +138,7 @@ public class EntityMode_Archer extends EntityModeBase {
 				if (litemstack == null) continue;
 
 				// 射手
-				if (litemstack.getItem() instanceof ItemBow || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Bow", litemstack)) {
+				if (litemstack.getItem() instanceof ItemBow || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Bow", litemstack)) {
 					return li;
 				}
 			}
@@ -150,7 +150,7 @@ public class EntityMode_Archer extends EntityModeBase {
 	
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
-		String ls = owner.getMaidMaster();
+		String ls = owner.getMaidMasterUUID();
 		return (pItemStack.getItem() instanceof ItemBow) || (pItemStack.getItem() == Items.arrow) 
 				|| TriggerSelect.checkWeapon(ls, "Bow", pItemStack) || TriggerSelect.checkWeapon(ls, "Arrow", pItemStack);
 	}

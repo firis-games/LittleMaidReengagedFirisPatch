@@ -114,7 +114,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
 		if (litemstack != null) {
 			if (litemstack.getItem() instanceof ItemHoe ||
-					TriggerSelect.checkWeapon(owner.getMaidMaster(), "Hoe", litemstack)) {
+					TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Hoe", litemstack)) {
 				owner.setMaidMode("FarmPorter");
 				return true;
 			}

@@ -64,7 +64,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
 		if (litemstack != null) {
-			if (litemstack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Torch", litemstack)) {
+			if (litemstack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Torch", litemstack)) {
 				owner.setMaidMode("Torcher");
 				if (LMMNX_Achievements.ac_TorchLayer != null) {
 					pentityplayer.addStat(LMMNX_Achievements.ac_TorchLayer);
@@ -101,7 +101,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 				if (litemstack == null) continue;
 				
 				// 松明
-				if (litemstack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkWeapon(owner.getMaidMaster(), "Torch", litemstack)) {
+				if (litemstack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Torch", litemstack)) {
 					return li;
 				}
 			}

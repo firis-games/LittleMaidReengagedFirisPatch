@@ -83,7 +83,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 		if (fMaid.getMaidModeInt() == EntityMode_Archer.mmode_Archer ||
 				fMaid.getMaidModeInt() == EntityMode_Archer.mmode_Blazingstar)
 			for (ItemStack stack: fMaid.maidInventory.mainInventory) {
-			if (stack != null && stack.getItem()==Items.arrow || TriggerSelect.checkWeapon(fMaid.getMaidMaster(), "Arrow", stack)) {
+			if (stack != null && stack.getItem()==Items.arrow || TriggerSelect.checkWeapon(fMaid.getMaidMasterUUID(), "Arrow", stack)) {
 				fTarget = entityliving;
 				return true;
 			}

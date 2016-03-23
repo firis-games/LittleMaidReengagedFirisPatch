@@ -73,7 +73,7 @@ public class LMMNX_API_Farmer {
 		if(pItemStack==null) return false;
 		if(pItemStack.getItem()==null) return false;
 		return pItemStack.getItem() instanceof ItemHoe ||
-				TriggerSelect.checkWeapon(owner.getMaidMaster(), "Hoe", pItemStack);
+				TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Hoe", pItemStack);
 	}
 
 }

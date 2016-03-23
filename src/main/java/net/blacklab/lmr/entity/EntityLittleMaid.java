@@ -1157,7 +1157,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			return true;
 		}
 
-		int tt = IFF.getIFF(getMaidMaster(), pEntity);
+		int tt = IFF.getIFF(getMaidMasterUUID(), pEntity);
 		switch (tt) {
 		case IFF.iff_Enemy:
 			return false;
@@ -3354,7 +3354,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		return getMaidMasterEntity();
 	}
 
-	public UUID getMaidMaster() {
+	public UUID getMaidMasterUUID() {
 		return W_Common.getOwnerUUID(this);
 	}
 
@@ -3372,7 +3372,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				if (!LittleMaidReengaged.proxy.isSinglePlayer()
 						|| LittleMaidReengaged.cfg_checkOwnerName
 						|| clientPlayer == null) {
-					lname = getMaidMaster();
+					lname = getMaidMasterUUID();
 				} else {
 					lname = CommonHelper.getPlayerName(clientPlayer);
 				}

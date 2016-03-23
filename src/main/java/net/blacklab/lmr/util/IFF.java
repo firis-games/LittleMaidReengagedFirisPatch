@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
@@ -22,8 +23,8 @@ import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -44,34 +45,30 @@ public class IFF {
 	/**
 	 * ユーザ毎のIFF
 	 */
-	public static Map<String, Map<String, Integer>> UserIFF = new HashMap<String, Map<String, Integer>>();
+	public static Map<UUID, Map<String, Integer>> UserIFF = new HashMap<UUID, Map<String, Integer>>();
 
 	/**
 	 * IFFのゲット
 	 */
-	public static Map<String, Integer> getUserIFF(String pUsername) {
+	public static Map<String, Integer> getUserIFF(UUID pUsername) {
 		if (pUsername == null) {
 			return DefaultIFF;
 		}
 		if (CommonHelper.isLocalPlay()) {
-			pUsername = "";
+			pUsername = EntityPlayer.getOfflineUUID("Player");
 		}
 		
 		if (!UserIFF.containsKey(pUsername)) {
 			// IFFがないので作成
-			if (pUsername.isEmpty()) {
-				UserIFF.put(pUsername, DefaultIFF);
-			} else {
-				Map<String, Integer> lmap = new HashMap<String, Integer>();
-				lmap.putAll(DefaultIFF);
-				UserIFF.put(pUsername, lmap);
-			}
+			Map<String, Integer> lmap = new HashMap<String, Integer>();
+			lmap.putAll(DefaultIFF);
+			UserIFF.put(pUsername, lmap);
 		}
 		// 既にある
 		return UserIFF.get(pUsername);
 	}
 
-	public static void setIFFValue(String pUsername, String pName, int pValue) {
+	public static void setIFFValue(UUID pUsername, String pName, int pValue) {
 		Map<String, Integer> lmap = getUserIFF(pUsername);
 		lmap.put(pName, pValue);
 	}
@@ -148,7 +145,7 @@ public class IFF {
 	/**
 	 * 敵味方識別判定
 	 */
-	public static int getIFF(String pUsername, String entityname, World world) {
+	public static int getIFF(UUID pUsername, String entityname, World world) {
 		if (entityname == null) {
 			return LittleMaidReengaged.cfg_Aggressive ? iff_Enemy : iff_Friendry;
 		}
@@ -189,7 +186,7 @@ public class IFF {
 	/**
 	 * 敵味方識別判定
 	 */
-	public static int getIFF(String pUsername, Entity entity) {
+	public static int getIFF(UUID pUsername, Entity entity) {
 		if (entity == null || !(entity instanceof EntityLivingBase)) {
 			return LittleMaidReengaged.cfg_Aggressive ? iff_Enemy : iff_Friendry;
 		}
@@ -204,7 +201,7 @@ public class IFF {
 		int li = 0;
 		if (entity instanceof EntityLittleMaid) {
 			if (((EntityLittleMaid) entity).isContract()) {
-				if (((EntityLittleMaid) entity).getMaidMaster().contentEquals(pUsername)) {
+				if (((EntityLittleMaid) entity).getMaidMasterUUID().equals(pUsername)) {
 					// 自分の
 					lcname = (new StringBuilder()).append(lename).append(":Contract").toString();
 					li = 1;
@@ -215,17 +212,15 @@ public class IFF {
 				}
 			}
 		} else if (entity instanceof IEntityOwnable) {
-			String loname = W_Common.getOwnerUUID((IEntityOwnable)entity);
-			if (!loname.isEmpty()) {
-				if (loname.contentEquals(pUsername)) {
-					// 自分の
-					lcname = (new StringBuilder()).append(lename).append(":Taim").toString();
-					li = 1;
-				} else {
-					// 他人の
-					lcname = (new StringBuilder()).append(lename).append(":Others").toString();
-					li = 2;
-				}
+			UUID loname = W_Common.getOwnerUUID((IEntityOwnable)entity);
+			if (loname.equals(pUsername)) {
+				// 自分の
+				lcname = (new StringBuilder()).append(lename).append(":Taim").toString();
+				li = 1;
+			} else {
+				// 他人の
+				lcname = (new StringBuilder()).append(lename).append(":Others").toString();
+				li = 2;
 			}
 		}
 		if (!getUserIFF(pUsername).containsKey(lcname)) {
@@ -237,14 +232,14 @@ public class IFF {
 	public static void loadIFFs() {
 		if (!CommonHelper.isClient) {
 			// サーバー側処理
-			loadIFF("");
+//			loadIFF("");
 			File lfile = FMLCommonHandler.instance().getMinecraftServerInstance().getFile("config");
 			for (File lf : lfile.listFiles()) {
 				LittleMaidReengaged.Debug("FIND FILE %s", lf.getName());
 				if (lf.getName().startsWith("littleMaidMob_")&&lf.getName().endsWith(".iff")) {
 					String ls = lf.getName().substring(14, lf.getName().length() - 4);
 					LittleMaidReengaged.Debug(ls);
-					loadIFF(ls);
+					loadIFF(UUID.fromString(ls));
 				}
 			}
 		} else {
@@ -253,24 +248,20 @@ public class IFF {
 		}
 	}
 
-	protected static File getFile(String pUsername) {
+	protected static File getFile(UUID pUsername) {
 		File lfile;
 		if (pUsername == null) {
 			lfile = new File(CommonHelper.mc.mcDataDir, "config/littleMaidMob.iff");
 		} else {
 			String lfilename;
-			if (pUsername.isEmpty()) {
-				lfilename = "config/littleMaidMob.iff";
-			} else {
-				lfilename = "config/littleMaidMob_".concat(pUsername).concat(".iff");
-			}
+			lfilename = "config/littleMaidMob_".concat(pUsername.toString()).concat(".iff");
 			lfile = FMLCommonHandler.instance().getMinecraftServerInstance().getFile(lfilename);
 		}
 		LittleMaidReengaged.Debug(lfile.getAbsolutePath());
 		return lfile;
 	}
 
-	public static void loadIFF(String pUsername) {
+	public static void loadIFF(UUID pUsername) {
 		// IFF ファイルの読込み
 		// 動作はサーバー側で想定
 		File lfile = getFile(pUsername);
@@ -306,9 +297,9 @@ public class IFF {
 		}
 	}
 
-	public static void saveIFF(String pUsername) {
+	public static void saveIFF(UUID pUsername) {
 		// IFF ファイルの書込み
-		File lfile = getFile(LittleMaidReengaged.proxy.isSinglePlayer() ? null : pUsername);
+		File lfile = getFile(pUsername);
 		Map<String, Integer> lmap = getUserIFF(pUsername);
 		
 		try {
