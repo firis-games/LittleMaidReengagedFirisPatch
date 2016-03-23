@@ -3076,7 +3076,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 								int count = tagCompound.getInteger(ItemRegisterKey.RK_COUNT);
 								if(++count >= ItemRegisterKey.RK_MAX_COUNT) {
-									par1EntityPlayer.destroyCurrentEquippedItem();
+									par1EntityPlayer.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
 								}
 								tagCompound.setInteger(ItemRegisterKey.RK_COUNT, count);
 
@@ -3093,7 +3093,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 								return true;
 							} else if (registerTick.isEnable() && !par1EntityPlayer.worldObj.isRemote) {
-								List list = TriggerSelect.getuserTriggerList(CommonHelper.getPlayerName(par1EntityPlayer), registerMode);
+								List list = TriggerSelect.getuserTriggerList(CommonHelper.getPlayerUUID(par1EntityPlayer), registerMode);
 								Item item = par3ItemStack.getItem();
 								if (item != null) {
 									boolean flag = false;
@@ -3105,7 +3105,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.removetrigger") + " " + registerMode + "/-" + Item.itemRegistry.getNameForObject(item).toString()));
 									}
 								}
-								IFF.saveIFF(CommonHelper.getPlayerName(par1EntityPlayer));
+								IFF.saveIFF(CommonHelper.getPlayerUUID(par1EntityPlayer));
 								registerTick.setEnable(false);
 								return true;
 							}
@@ -3130,9 +3130,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								// 肩車
 								if (!worldObj.isRemote) {
 									if (getRidingEntity() == par1EntityPlayer) {
-										mountEntity(null);
+										dismountRidingEntity();
 									} else {
-										mountEntity(par1EntityPlayer);
+										startRiding(par1EntityPlayer);
 									}
 									return true;
 								}
