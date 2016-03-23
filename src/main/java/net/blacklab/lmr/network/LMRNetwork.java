@@ -190,24 +190,24 @@ public class LMRNetwork
 			lval = contents[0];
 			lindex = NetworkHelper.getIntFromPacket(contents, 1);
 			lname = NetworkHelper.getStrFromPacket(contents, 5);
-			LittleMaidReengaged.Debug("setIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerName(sender), lname, lindex, lval);
-			IFF.setIFFValue(CommonHelper.getPlayerName(sender), lname, lval);
+			LittleMaidReengaged.Debug("setIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerUUID(sender), lname, lindex, lval);
+			IFF.setIFFValue(CommonHelper.getPlayerUUID(sender), lname, lval);
 			sendIFFValue(sender, lval, lindex);
 			break;
 		case SERVER_REQUEST_IFF :
 			// IFFGUI open
 			lindex = NetworkHelper.getIntFromPacket(contents, 0);
 			lname = NetworkHelper.getStrFromPacket(contents, 4);
-			lval = IFF.getIFF(CommonHelper.getPlayerName(sender), lname, sender.worldObj);
-			LittleMaidReengaged.Debug("getIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerName(sender), lname, lindex, lval);
+			lval = IFF.getIFF(CommonHelper.getPlayerUUID(sender), lname, sender.worldObj);
+			LittleMaidReengaged.Debug("getIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerUUID(sender), lname, lindex, lval);
 			sendIFFValue(sender, lval, lindex);
 			break;
 		case SERVER_SAVE_IFF :
 			// IFFファイルの保存
-			IFF.saveIFF(CommonHelper.getPlayerName(sender));
-			if (!sender.worldObj.isRemote) {
-				IFF.saveIFF("");
-			}
+			IFF.saveIFF(CommonHelper.getPlayerUUID(sender));
+//			if (!sender.worldObj.isRemote) {
+//				IFF.saveIFF("");
+//			}
 			break;
 		case SERVER_REQUEST_BOOST :
 			lemaid.requestExpBoost();
