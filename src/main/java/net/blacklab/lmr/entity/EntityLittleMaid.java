@@ -126,6 +126,9 @@ import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.play.server.SPacketEntityEffect;
+import net.minecraft.network.play.server.SPacketEntityEquipment;
+import net.minecraft.network.play.server.SPacketRemoveEntityEffect;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
@@ -2486,21 +2489,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			// インベントリの更新
 //			if (!mstatOpenInventory) {
 				for (int li = 0 ;li < maidInventory.getSizeInventory(); li++) {
-					boolean lchange = false;
-					int lselect = 0xff;
-					// 選択装備が変わった
-					for (int lj = 0; lj < mstatSwingStatus.length; lj++) {
-						lchange = mstatSwingStatus[lj].checkChanged();
-						if (mstatSwingStatus[lj].index == li) {
-							lselect = lj;
-						}
-					}
 					// インベントリの中身が変わった
-					if (lchange || maidInventory.isChanged(li)) {
+					if (maidInventory.isChanged(li)) {
 						ItemStack st = maidInventory.getStackInSlot(li);
-						((WorldServer)worldObj).getEntityTracker().func_151248_b(this, new S04PacketEntityEquipment(getEntityId(), (li | lselect << 8) + 5, st));
+						if (li >= InventoryLittleMaid.maxInventorySize) for(EntityEquipmentSlot lSlot: EntityEquipmentSlot.values())
+							if (lSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && lSlot.getIndex() == li-InventoryLittleMaid.maxInventorySize) 
+								((WorldServer)worldObj).getEntityTracker().func_151248_b(this, new SPacketEntityEquipment(getEntityId(), lSlot, st));
 						maidInventory.resetChanged(li);
-						LittleMaidReengaged.Debug(String.format("ID:%d-%s - Slot(%x:%d-%d,%d) Update.", getEntityId(), worldObj.isRemote ? "Client" : "Server", lselect, li, mstatSwingStatus[0].index, mstatSwingStatus[1].index));
+						LittleMaidReengaged.Debug(String.format("ID:%d-%s - Slot(%d-%d,%d) Update.", getEntityId(), worldObj.isRemote ? "Client" : "Server", li, mstatSwingStatus[0].index, mstatSwingStatus[1].index));
 					}
 //				}
 			}
@@ -2665,7 +2661,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	protected void onNewPotionEffect(PotionEffect par1PotionEffect) {
 		super.onNewPotionEffect(par1PotionEffect);
 		if (mstatMasterEntity instanceof EntityPlayerMP) {
-			((EntityPlayerMP)mstatMasterEntity).playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(getEntityId(), par1PotionEffect));
+			((EntityPlayerMP)mstatMasterEntity).playerNetServerHandler.sendPacket(new SPacketEntityEffect(getEntityId(), par1PotionEffect));
 		}
 	}
 
@@ -2682,7 +2678,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	protected void onFinishedPotionEffect(PotionEffect par1PotionEffect) {
 		super.onFinishedPotionEffect(par1PotionEffect);
 		if (mstatMasterEntity instanceof EntityPlayerMP) {
-			((EntityPlayerMP)mstatMasterEntity).playerNetServerHandler.sendPacket(new S1EPacketRemoveEntityEffect(getEntityId(), par1PotionEffect));
+			((EntityPlayerMP)mstatMasterEntity).playerNetServerHandler.sendPacket(new SPacketRemoveEntityEffect(getEntityId(), par1PotionEffect.getPotion()));
 		}
 	}
 
