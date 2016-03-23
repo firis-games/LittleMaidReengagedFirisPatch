@@ -32,7 +32,7 @@ public class CommonHelper {
 	}
 	
 	public static UUID getPlayerUUID(EntityPlayer par1EntityPlayer) {
-		return EntityPlayer.getUUID(par1EntityPlayer.getGameProfile());
+		return par1EntityPlayer.getUniqueID();//EntityPlayer.getUUID(par1EntityPlayer.getGameProfile());
 	}
 
 	/**
