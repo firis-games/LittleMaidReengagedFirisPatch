@@ -20,7 +20,7 @@ public class LMMNX_PathNavigatorLittleMaid extends PathNavigateGround {
 
 	@Override
 	protected PathFinder getPathFinder() {
-		nodeProcessor = new LMMNX_MaidMoveNodeProcessor();
+		nodeProcessor = new MaidMoveNodeProcessor();
 		nodeProcessor.setCanEnterDoors(true);
 		return new PathFinder(nodeProcessor);
 	}
