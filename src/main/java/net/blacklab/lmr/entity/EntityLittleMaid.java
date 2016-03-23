@@ -147,7 +147,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -2307,7 +2309,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 			if (!registerTick.isEnable() && registerTick.getValue() == 0 && !worldObj.isRemote) {
 				getOwner().addChatMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.cancelregistration"))
-						.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
+						.setChatStyle(new Style().setColor(TextFormatting.DARK_RED)));
 			}
 		}
 
@@ -3080,7 +3082,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								if (registerTick.isEnable()) {
 									registerTick.setEnable(false);
 									par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.cancelregistration"))
-											.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
+											.setChatStyle(new Style().setColor(TextFormatting.DARK_RED)));
 									return true;
 								}
 
@@ -3103,10 +3105,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								if(count >= ItemRegisterKey.RK_MAX_COUNT-10){
 									if(count<ItemRegisterKey.RK_MAX_COUNT){
 										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.warningcount") +
-												(ItemRegisterKey.RK_MAX_COUNT-count)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+												(ItemRegisterKey.RK_MAX_COUNT-count)).setChatStyle(new Style().setColor(TextFormatting.YELLOW)));
 									} else {
 										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.endcount"))
-												.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
+												.setChatStyle(new Style().setColor(TextFormatting.DARK_RED)));
 									}
 								}
 
