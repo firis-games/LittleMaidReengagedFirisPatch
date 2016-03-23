@@ -21,13 +21,14 @@ import net.blacklab.lmr.proxy.ProxyCommon;
 import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.IFF;
-import net.blacklab.lmr.util.manager.EntityModeManager;
+import net.blacklab.lmr.util.manager.EntityModeManager;import net.minecraft.block.BlockBrewingStand;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.BiomeDictionary;
@@ -305,12 +306,9 @@ public class LittleMaidReengaged {
 //			if (cfg_Dominant) {
 //				biomeList = BiomeGenBase.bio();
 //			} else {
-			// TODO BiomeDictionaryからの登録に切り替えようそうしよう．
-				biomeList = new BiomeGenBase[] { BiomeDictionary.getBiomesForType(BiomeDictionary.Type.HOT),
-						BiomeGenBase.plains, BiomeGenBase.savanna,
-						BiomeGenBase.mushroomIsland, BiomeGenBase.forest,
-						BiomeGenBase.birchForest, BiomeGenBase.swampland,
-						BiomeGenBase.taiga, BiomeGenBase.icePlains };
+				String biomeNameList[] = new String[] { "desert", "plains", "savanna", "mushroom_island", "forest", "birch_forest", "swampland", "taiga", "ice_flats", "mutated_ice_flats" };
+				biomeList = new BiomeGenBase[biomeNameList.length];
+				for (int i=0; i<biomeNameList.length; i++) biomeList[i] = BiomeGenBase.biomeRegistry.getObject(new ResourceLocation(biomeNameList[i]));
 //			}
 			for (BiomeGenBase biome : biomeList) {
 				if (biome != null) {
