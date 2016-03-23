@@ -136,6 +136,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -143,6 +144,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -2960,15 +2962,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	@Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
-	{
+	public boolean processInteract(EntityPlayer par1EntityPlayer, EnumHand par2Hand, ItemStack par3ItemStack) {
 		MMMLib.Debug(worldObj.isRemote, "LMM_EntityLittleMaid.interact:"+par1EntityPlayer.getGameProfile().getName());
 		float lhealth = getHealth();
-		ItemStack itemstack1 = par1EntityPlayer.getCurrentEquippedItem();
 
 		// プラグインでの処理を先に行う
 		for (int li = 0; li < maidEntityModeList.size(); li++) {
-			if (maidEntityModeList.get(li).preInteract(par1EntityPlayer, itemstack1)) {
+			if (maidEntityModeList.get(li).preInteract(par1EntityPlayer, par3ItemStack)) {
 				return true;
 			}
 		}
@@ -2984,7 +2984,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		}
 
 		if (mstatgotcha == null && par1EntityPlayer.fishEntity == null) {
-			if(itemstack1 != null && itemstack1.getItem() == Items.lead) {
+			if(par3ItemStack != null && par3ItemStack.getItem() == Items.lead) {
 				// 紐で繋ぐ
 				setGotcha(par1EntityPlayer.getEntityId());
 				mstatgotcha = par1EntityPlayer;
@@ -2995,13 +2995,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 			if (isContract()) {
 				// Issue #35: 契約失効時の処理を優先化
-				if(!isRemainsContract() && itemstack1 != null){
+				if(!isRemainsContract() && par3ItemStack != null){
 					// ストライキ
-					if (itemstack1.getItem() == Items.sugar) {
+					if (par3ItemStack.getItem() == Items.sugar) {
 						// 受取拒否
 						worldObj.setEntityState(this, (byte)10);
 						return true;
-					} else if (itemstack1.getItem() == Items.cake) {
+					} else if (par3ItemStack.getItem() == Items.cake) {
 						// 再契約
 						MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 						maidContractLimit = (24000 * 7);
@@ -3028,21 +3028,21 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				}
 				// 契約状態
 				if (/*lhealth > 0F && */isMaidContractOwner(par1EntityPlayer)) {
-					if (itemstack1 != null) {
+					if (par3ItemStack != null) {
 						// 追加分の処理
 						// プラグインでの処理を先に行う
 						for (int li = 0; li < maidEntityModeList.size(); li++) {
-							if (maidEntityModeList.get(li).interact(par1EntityPlayer, itemstack1)) {
+							if (maidEntityModeList.get(li).interact(par1EntityPlayer, par3ItemStack)) {
 								return true;
 							}
 						}
 						if (isRemainsContract()) {
 							// 通常
-							if (LMMNX_API_Item.isSugar(itemstack1.getItem())) {
+							if (LMMNX_API_Item.isSugar(par3ItemStack.getItem())) {
 								// モード切替
 								boolean cmode = true;
-								if(itemstack1.getItem() instanceof LMMNX_IItemSpecialSugar){
-									cmode = ((LMMNX_IItemSpecialSugar)itemstack1.getItem()).onSugarInteract(worldObj, par1EntityPlayer, itemstack1, this);
+								if(par3ItemStack.getItem() instanceof LMMNX_IItemSpecialSugar){
+									cmode = ((LMMNX_IItemSpecialSugar)par3ItemStack.getItem()).onSugarInteract(worldObj, par1EntityPlayer, par3ItemStack, this);
 								}
 								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								eatSugar(false, true, false);
@@ -3077,7 +3077,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								}
 								return true;
 							}
-							else if (itemstack1.getItem()==LittleMaidReengaged.registerKey &&
+							else if (par3ItemStack.getItem()==LittleMaidReengaged.registerKey &&
 									!par1EntityPlayer.worldObj.isRemote) {
 								// トリガーセット
 								if (registerTick.isEnable()) {
@@ -3087,7 +3087,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 									return true;
 								}
 
-								NBTTagCompound tagCompound = itemstack1.getTagCompound();
+								NBTTagCompound tagCompound = par3ItemStack.getTagCompound();
 								if (tagCompound == null) return false;
 
 								String modeString = tagCompound.getString(ItemRegisterKey.RK_MODE_TAG);
@@ -3116,7 +3116,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								return true;
 							} else if (registerTick.isEnable() && !par1EntityPlayer.worldObj.isRemote) {
 								List list = TriggerSelect.getuserTriggerList(CommonHelper.getPlayerName(par1EntityPlayer), registerMode);
-								Item item = itemstack1.getItem();
+								Item item = par3ItemStack.getItem();
 								if (item != null) {
 									boolean flag = false;
 									while(list.remove(item)) flag = true;
@@ -3131,15 +3131,15 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								registerTick.setEnable(false);
 								return true;
 							}
-							else if (itemstack1.getItem() == Items.dye) {
+							else if (par3ItemStack.getItem() == Items.dye) {
 								// カラーメイド
 								if (!worldObj.isRemote) {
-									setColor(15 - itemstack1.getItemDamage());
+									setColor(15 - par3ItemStack.getItemDamage());
 								}
 								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								return true;
 							}
-							else if (itemstack1.getItem() == Items.feather) {
+							else if (par3ItemStack.getItem() == Items.feather) {
 								// 自由行動
 //								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								if(!worldObj.isRemote){
@@ -3148,7 +3148,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								}
 								return true;
 							}
-							else if (itemstack1.getItem() == Items.saddle) {
+							else if (par3ItemStack.getItem() == Items.saddle) {
 								// 肩車
 								if (!worldObj.isRemote) {
 									if (getRidingEntity() == par1EntityPlayer) {
@@ -3159,17 +3159,17 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 									return true;
 								}
 							}
-							else if (itemstack1.getItem() == Items.gunpowder) {
+							else if (par3ItemStack.getItem() == Items.gunpowder) {
 								// test TNT-D
-								maidOverDriveTime.setValue(itemstack1.stackSize * 10);
+								maidOverDriveTime.setValue(par3ItemStack.stackSize * 10);
 								playSound("mob.zombie.infect");
-								if (itemstack1.stackSize == 64) {
+								if (par3ItemStack.stackSize == 64) {
 									getMaidMasterEntity().addStat(LMMNX_Achievements.ac_Boost);
 								}
-								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, itemstack1.stackSize);
+								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, par3ItemStack.stackSize);
 								return true;
 							}
-							else if (itemstack1.getItem() == Items.book) {
+							else if (par3ItemStack.getItem() == Items.book) {
 								// IFFのオープン
 //								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
 //								if (worldObj.isRemote) {
@@ -3194,10 +3194,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								}
 								return true;
 							}*/
-							else if (itemstack1.getItem() instanceof ItemPotion) {
+							else if (par3ItemStack.getItem() instanceof ItemPotion) {
 								// ポーション
 								if(!worldObj.isRemote) {
-									List list = PotionUtils.getEffectsFromStack(itemstack1);
+									List list = PotionUtils.getEffectsFromStack(par3ItemStack);
 									if (list != null) {
 										PotionEffect potioneffect;
 										for (Iterator iterator = list.iterator(); iterator.hasNext(); addPotionEffect(new PotionEffect(potioneffect))) {
@@ -3208,7 +3208,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								return true;
 							}
-							else if (isFreedom() && itemstack1.getItem() == Items.redstone) {
+							else if (isFreedom() && par3ItemStack.getItem() == Items.redstone) {
 								// Tracer
 								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								setMaidWait(false);
@@ -3219,14 +3219,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 									worldObj.setEntityState(this, (byte)12);
 								}
 								return true;
-							}else if(itemstack1.getItem() == Items.stick){
+							}else if(par3ItemStack.getItem() == Items.stick){
 								if(getDominantArm()==0){
 									setDominantArm(1);
 								}else{
 									setDominantArm(0);
 								}
 								return true;
-							}else if(itemstack1.getItem() == Items.fish){
+							}else if(par3ItemStack.getItem() == Items.fish){
 								if(!worldObj.isRemote){
 									setSwimming(!swimmingEnabled);
 									par1EntityPlayer.addChatComponentMessage(new ChatComponentText("Swimming mode was set to "+swimmingEnabled));
@@ -3248,8 +3248,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				}
 			} else {
 				// 未契約
-				if (itemstack1 != null) {
-					if (itemstack1.getItem() == Items.cake) {
+				if (par3ItemStack != null) {
+					if (par3ItemStack.getItem() == Items.cake) {
 						// 契約
 						MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 
