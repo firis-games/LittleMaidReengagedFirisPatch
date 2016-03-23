@@ -2593,7 +2593,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		Entity lentity = source.getSourceOfDamage();
 		if (lentity != null) {
 			if (lentity instanceof EntityPlayer) {
-				ls += ":" + CommonHelper.getPlayerName((EntityPlayer)lentity);
+				ls += ":" + lentity.getName();
 			} else {
 				String lt = EntityList.getEntityString(lentity);
 				if (lt != null) {
@@ -2906,12 +2906,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	 * ポーション等による腕振りモーションの速度補正
 	 */
 	public int getSwingSpeedModifier() {
-		if (isPotionActive(Potion.digSpeed)) {
-			return 6 - (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1;
+		if (isPotionActive(Potion.getPotionFromResourceLocation("haste"))) {
+			return 6 - (1 + getActivePotionEffect(Potion.getPotionFromResourceLocation("haste")).getAmplifier()) * 1;
 		}
 
-		if (isPotionActive(Potion.digSlowdown)) {
-			return 6 + (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
+		if (isPotionActive(Potion.getPotionFromResourceLocation("mining_fatigue"))) {
+			return 6 + (1 + getActivePotionEffect(Potion.getPotionFromResourceLocation("mining_fatigue")).getAmplifier()) * 2;
 		}
 		return 6;
 	}
@@ -2957,7 +2957,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		// ナデリ判定
 		if (lhealth > 0F && par1EntityPlayer.getControllingPassenger() != null && !(par1EntityPlayer.getControllingPassenger() instanceof EntityLittleMaid)) {
 			// 載せ替え
-			par1EntityPlayer.getControllingPassenger().mountEntity(this);
+			par1EntityPlayer.getControllingPassenger().startRiding(this);
 			return true;
 		}
 
