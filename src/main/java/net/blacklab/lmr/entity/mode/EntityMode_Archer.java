@@ -1,6 +1,7 @@
 package net.blacklab.lmr.entity.mode;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
@@ -150,7 +151,7 @@ public class EntityMode_Archer extends EntityModeBase {
 	
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
-		String ls = owner.getMaidMasterUUID();
+		UUID ls = owner.getMaidMasterUUID();
 		return (pItemStack.getItem() instanceof ItemBow) || (pItemStack.getItem() == Items.arrow) 
 				|| TriggerSelect.checkWeapon(ls, "Bow", pItemStack) || TriggerSelect.checkWeapon(ls, "Arrow", pItemStack);
 	}
