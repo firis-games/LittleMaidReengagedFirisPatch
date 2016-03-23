@@ -11,13 +11,13 @@ import com.mojang.authlib.GameProfile;
 
 public class W_CCommon implements W_ICommon
 {
-	public void setOwner(EntityTameable entity, String name)
-	{
+	@Override
+	public void setOwner(EntityTameable entity, UUID name) {
 		entity.setOwnerId(name);
 	}
 	
-	public String getOwnerName(IEntityOwnable entity)
-	{
+	@Override
+	public UUID getOwnerUUID(IEntityOwnable entity) {
 		return entity.getOwnerId();
 	}
 	

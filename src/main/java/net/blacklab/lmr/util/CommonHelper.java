@@ -1,6 +1,7 @@
 package net.blacklab.lmr.util;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -11,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.EnumHand;
 
 public class CommonHelper {
 
@@ -30,17 +30,16 @@ public class CommonHelper {
 		mc = lm;
 		isClient = mc != null;
 	}
+	
+	public static UUID getPlayerUUID(EntityPlayer par1EntityPlayer) {
+		return EntityPlayer.getUUID(par1EntityPlayer.getGameProfile());
+	}
 
 	/**
 	 * 現在の実行環境がローカルかどうかを判定する。
 	 */
 	public static boolean isLocalPlay() {
 		return isClient && mc.isIntegratedServerRunning();
-	}
-
-	public static String getPlayerName(EntityPlayer player)
-	{
-		return player.getGameProfile().getName();
 	}
 
 	/**

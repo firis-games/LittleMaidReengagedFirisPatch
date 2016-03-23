@@ -4,6 +4,10 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.player.EntityPlayer;
+
+import java.util.UUID;
+
 import com.mojang.authlib.GameProfile;
 
 
@@ -30,19 +34,19 @@ public class W_Common
 		//return null;
 	}
 	
-	public static void setOwner(EntityTameable entity, String name)
-	{
+	public static void setOwner(EntityTameable entity, UUID name) {
 		instance.setOwner(entity, name);
 	}
-	public static String getOwnerName(IEntityOwnable entity)
+
+	public static UUID getOwnerUUID(IEntityOwnable entity)
 	{
-		String ownerName = instance.getOwnerName(entity);
+		UUID ownerUUID = instance.getOwnerUUID(entity);
 
 		// メイドがターゲットを探す際に、狼などのテイム可能なモブのオーナー名を取得してチェックする
 		// この時オーナー名が NULL だと NULL.isEmpty() と呼び出してしまいクラッシュする。
 		// ここにNULLチェックを入れてクラッシュを防ぐ
 		// http://forum.minecraftuser.jp/viewtopic.php?f=13&t=23347&p=212078#p212038
-		return ownerName!=null? ownerName : "";
+		return ownerUUID!=null ? ownerUUID : EntityPlayer.getOfflineUUID("Player");
 	}
 	
 	public static GameProfile newGameProfile(String UUIDid, String name)

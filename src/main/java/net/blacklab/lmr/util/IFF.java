@@ -215,7 +215,7 @@ public class IFF {
 				}
 			}
 		} else if (entity instanceof IEntityOwnable) {
-			String loname = W_Common.getOwnerName((IEntityOwnable)entity);
+			String loname = W_Common.getOwnerUUID((IEntityOwnable)entity);
 			if (!loname.isEmpty()) {
 				if (loname.contentEquals(pUsername)) {
 					// 自分の
