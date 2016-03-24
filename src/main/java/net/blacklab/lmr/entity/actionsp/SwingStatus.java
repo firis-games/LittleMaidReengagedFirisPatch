@@ -55,7 +55,7 @@ public class SwingStatus {
 		if (attackTime > 0) {
 			attackTime--;
 		}
-		
+
 		// 腕振り
 		int li = pEntity.getSwingSpeedModifier();
 		if (isSwingInProgress) {
@@ -68,14 +68,14 @@ public class SwingStatus {
 			swingProgressInt = 0;
 		}
 		swingProgress = (float)swingProgressInt / (float)li;
-		
+
 		if (isUsingItem()) {
 			ItemStack itemstack;
 			try{
 				itemstack = pEntity.maidInventory.getStackInSlot(index);
 			}catch(Exception e){ return; }
 			Entity lrentity = pEntity.worldObj.isRemote ? null : pEntity;
-			
+
 			if (itemstack != itemInUse) {
 				clearItemInUse(lrentity);
 			} else {
@@ -119,11 +119,11 @@ public class SwingStatus {
 
 	public float getSwingProgress(float ltime) {
 		float lf = swingProgress - prevSwingProgress;
-		
+
 		if (lf < 0.0F) {
 			++lf;
 		}
-		
+
 		return onGround = prevSwingProgress + lf * ltime;
 	}
 
@@ -165,7 +165,7 @@ public class SwingStatus {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param pEntity
 	 * サーバーの時はEntityを設定する。
 	 */
@@ -173,12 +173,12 @@ public class SwingStatus {
 		if (itemInUse != null && pEntity instanceof EntityPlayer) {
 			itemInUse.onPlayerStoppedUsing(pEntity.worldObj, (EntityPlayer)pEntity, itemInUseCount);
 		}
-		
+
 		clearItemInUse(pEntity);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param pEntity
 	 * サーバーの時はEntityを設定する。
 	 */
@@ -197,7 +197,7 @@ public class SwingStatus {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param par1ItemStack
 	 * @param par2
 	 * @param pEntity
@@ -217,13 +217,13 @@ public class SwingStatus {
 
 	protected void updateItemUse(Entity pEntity, int par2) {
 		if (itemInUse.getItemUseAction() == EnumAction.DRINK) {
-			pEntity.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("random.drink")), 0.5F, pEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+			pEntity.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.generic.drink")), 0.5F, pEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 		}
-		
+
 		Random rand = new Random();
-		
+
 		if (itemInUse.getItemUseAction() == EnumAction.EAT) {
-			
+
 			for (int var3 = 0; var3 < par2; ++var3) {
 				/*
 				Vec3 var4 = new Vec3(((double)rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
@@ -236,9 +236,9 @@ public class SwingStatus {
 				*/
 				pEntity.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, pEntity.posX, pEntity.posY, pEntity.posZ, (rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
 			}
-			
-			
-			pEntity.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("random.eat")), 0.5F + 0.5F * rand.nextInt(2), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+
+
+			pEntity.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.generic.eat")), 0.5F + 0.5F * rand.nextInt(2), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 		}
 	}
 
@@ -247,10 +247,10 @@ public class SwingStatus {
 		if (this.itemInUse != null) {
 			this.updateItemUse(pEntityPlayer, 16);
 			int var1 = this.itemInUse.stackSize;
-			
+
 			// TODO いる？
 			ItemStack var2 = itemInUse.onItemUseFinish(pEntityPlayer.worldObj, pEntityPlayer);
-			
+
 			if (var2 != this.itemInUse || var2 != null && var2.stackSize != var1) {
 				if (var2.stackSize == 0) {
 					pEntityPlayer.inventory.setInventorySlotContents(index, null);
@@ -258,7 +258,7 @@ public class SwingStatus {
 					pEntityPlayer.inventory.setInventorySlotContents(index, var2);
 				}
 			}
-			
+
 			clearItemInUse(pEntityPlayer);
 		}
 	}

@@ -19,7 +19,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 
 public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 

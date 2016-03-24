@@ -31,8 +31,8 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	public static final int mmode_Archer		= 0x0083;
 	public static final int mmode_Blazingstar	= 0x00c3;
-	
-	
+
+
 	@Override
 	public int priority() {
 		return 3200;
@@ -68,23 +68,23 @@ public class EntityMode_Archer extends EntityModeBase {
 		EntityAITasks[] ltasks = new EntityAITasks[2];
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = new EntityAITasks(owner.aiProfiler);
-		
+
 //		ltasks[1].addTask(1, new EntityAIOwnerHurtByTarget(owner));
 //		ltasks[1].addTask(2, new EntityAIOwnerHurtTarget(owner));
 		ltasks[1].addTask(3, new EntityAILMHurtByTarget(owner, true));
 		ltasks[1].addTask(4, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
-		
+
 		owner.addMaidMode(ltasks, "Archer", mmode_Archer);
-		
-		
+
+
 		// Blazingstar:0x00c3
 		EntityAITasks[] ltasks2 = new EntityAITasks[2];
 		ltasks2[0] = pDefaultMove;
 		ltasks2[1] = new EntityAITasks(owner.aiProfiler);
-		
+
 		ltasks2[1].addTask(1, new EntityAILMHurtByTarget(owner, true));
 		ltasks2[1].addTask(2, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
-		
+
 		owner.addMaidMode(ltasks2, "Blazingstar", mmode_Blazingstar);
 	}
 
@@ -124,10 +124,10 @@ public class EntityMode_Archer extends EntityModeBase {
 			owner.setBloodsuck(true);
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public int getNextEquipItem(int pMode) {
 		int li;
@@ -151,11 +151,11 @@ public class EntityMode_Archer extends EntityModeBase {
 
 		return -1;
 	}
-	
+
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
 		UUID ls = owner.getMaidMasterUUID();
-		return (pItemStack.getItem() instanceof ItemBow) || (pItemStack.getItem() == Items.arrow) 
+		return (pItemStack.getItem() instanceof ItemBow) || (pItemStack.getItem() == Items.arrow)
 				|| TriggerSelect.checkWeapon(ls, "Bow", pItemStack) || TriggerSelect.checkWeapon(ls, "Arrow", pItemStack);
 	}
 
@@ -185,7 +185,7 @@ public class EntityMode_Archer extends EntityModeBase {
 			World lworld = owner.worldObj;
 			List<Entity> llist = lworld.getEntitiesWithinAABB(Entity.class, owner.getEntityBoundingBox().expand(16D, 16D, 16D));
 			for (int li = 0; li < llist.size(); li++) {
-				Entity lentity = llist.get(li); 
+				Entity lentity = llist.get(li);
 				if (lentity.isEntityAlive() && lentity.isBurning() && owner.getRNG().nextFloat() > 0.9F) {
 					// 発火！
 					int lx = (int)owner.posX;
@@ -194,7 +194,7 @@ public class EntityMode_Archer extends EntityModeBase {
 
 					IBlockState iState;
 					if (lworld.isAirBlock(new BlockPos(lx, ly, lz)) || (iState = lworld.getBlockState(new BlockPos(lx, ly, lz))).getBlock().getMaterial(iState).getCanBurn()) {
-						lworld.playSound(lx + 0.5D, ly + 0.5D, lz + 0.5D, SoundEvent.soundEventRegistry.getObject(new ResourceLocation("fire.ignite")), SoundCategory.NEUTRAL, 1.0F, owner.getRNG().nextFloat() * 0.4F + 0.8F, false);
+						lworld.playSound(lx + 0.5D, ly + 0.5D, lz + 0.5D, SoundEvent.soundEventRegistry.getObject(new ResourceLocation("item.firecharge.use")), SoundCategory.NEUTRAL, 1.0F, owner.getRNG().nextFloat() * 0.4F + 0.8F, false);
 						lworld.setBlockState(new BlockPos(lx, ly, lz), Blocks.fire.getDefaultState());
 					}
 				}
@@ -229,5 +229,5 @@ public class EntityMode_Archer extends EntityModeBase {
 		}
 
 	}
-	
+
 }

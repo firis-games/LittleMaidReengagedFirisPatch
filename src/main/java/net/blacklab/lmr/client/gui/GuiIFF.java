@@ -15,7 +15,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -23,9 +22,9 @@ import net.minecraft.world.World;
 public class GuiIFF extends MMM_GuiMobSelect {
 
 	public static final String IFFString[] = {
-		"ENEMY", 
-		"NEUTRAL", 
-		"FRIENDLY" 
+		"ENEMY",
+		"NEUTRAL",
+		"FRIENDLY"
 	};
 
 	protected EntityLittleMaid target;
@@ -36,7 +35,7 @@ public class GuiIFF extends MMM_GuiMobSelect {
 		screenTitle = I18n.translateToLocal("littleMaidMob.gui.iff.title");
 		target = pEntity;
 		thePlayer = player;
-		
+
 		// IFFをサーバーから取得
 		if (!Minecraft.getMinecraft().isSingleplayer()) {
 			int li = 0;
@@ -72,16 +71,16 @@ public class GuiIFF extends MMM_GuiMobSelect {
 				}
 			}
 		}
-		
+
 		return lf;
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
-		
+
 //		StringTranslate stringtranslate = new StringTranslate();
-		
+
 		buttonList.add(new GuiButton(200, width / 2 - 60, height - 40, 120, 20, "Done"));
 //		buttonList.add(new GuiButton(201, width / 2 + 10, height - 40, 120, 20,
 //				"Trigger Select"));
@@ -116,7 +115,7 @@ public class GuiIFF extends MMM_GuiMobSelect {
 			if (tt > 2) {
 				tt = 0;
 			}
-			
+
 			if (!mc.isSingleplayer()) {
 				// サーバーへ変更値を送る。
 				int li = 0;
@@ -134,10 +133,9 @@ public class GuiIFF extends MMM_GuiMobSelect {
 			} else {
 				IFF.setIFFValue(null, pName, tt);
 			}
-			
+
 			Entity player = mc.thePlayer;
-			pEntity.worldObj.playSound(player.posX+0.5, player.posY+0.5, player.posZ+0.5, SoundEvent.soundEventRegistry.getObject(new ResourceLocation("random.click")),
-					SoundCategory.MASTER,  1, 1, false);
+			player.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("ui.button.click")), 1, 1);
 		}
 	}
 
