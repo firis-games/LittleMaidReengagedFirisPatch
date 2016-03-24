@@ -3,7 +3,6 @@ package net.blacklab.lmr.inventory;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -15,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerInventoryLittleMaid extends ContainerPlayer {
-	
+
 	protected final InventoryLittleMaid littlemaidInventory;
 	protected final int numRows;
 	protected final EntityLittleMaid owner;
@@ -27,36 +26,36 @@ public class ContainerInventoryLittleMaid extends ContainerPlayer {
 		inventorySlots.clear();
 		inventoryItemStacks.clear();
 		// <
-		
+
 		InventoryLittleMaid maidInventory = pEntity.maidInventory;
 		owner = pEntity;
 		numRows = maidInventory.getSizeInventory() / 9;
 		littlemaidInventory = maidInventory;
 		littlemaidInventory.openInventory(owner.maidAvatar);
-		
+
 		for (int ly = 0; ly < numRows; ly++) {
 			for (int lx = 0; lx < 9; lx++) {
 				addSlotToContainer(new Slot(maidInventory, lx + ly * 9, 8 + lx * 18, 76 + ly * 18));
 			}
 		}
-		
+
 		int lyoffset = (numRows - 4) * 18 + 59;
 		for (int ly = 0; ly < 3; ly++) {
 			for (int lx = 0; lx < 9; lx++) {
 				addSlotToContainer(new Slot(playerInventory, lx + ly * 9 + 9, 8 + lx * 18, 103 + ly * 18 + lyoffset));
 			}
 		}
-		
+
 		for (int lx = 0; lx < 9; lx++) {
 			addSlotToContainer(new Slot(playerInventory, lx, 8 + lx * 18, 161 + lyoffset));
 		}
-		
+
 		for (int j = 0; j < 4; j++) {
 //			int j1 = j + 1;
 //			addSlotToContainer(new SlotArmor(this, linventory, linventory.getSizeInventory() - 2 - j, 8, 8 + j * 18, j1));
 
 			final int armorIndex = j; // ヘルメットはないと思っていたのか！
-			this.addSlotToContainer(new Slot(maidInventory, maidInventory.getSizeInventory() - 1 - j, 8 + 72*j/2, 8 + (j%2)*36)
+			this.addSlotToContainer(new Slot(maidInventory, maidInventory.getSizeInventory() - 1 - j, 8 + 72*((3-j)/2), 8 + ((3-j)%2)*36)
 			{
 				/**
 				 * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1
@@ -104,7 +103,7 @@ public class ContainerInventoryLittleMaid extends ContainerPlayer {
 		super.putStacksInSlots(p_75131_1_);
 		checkAchievements();
 	}
-	
+
 	protected void checkAchievements() {
 		boolean flag = true;
 		Slot slot;
@@ -123,7 +122,7 @@ public class ContainerInventoryLittleMaid extends ContainerPlayer {
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		// 開けるかどうかの判定
-		EntityLittleMaid entitylittlemaid = littlemaidInventory.entityLittleMaid; 
+		EntityLittleMaid entitylittlemaid = littlemaidInventory.entityLittleMaid;
 		if(entitylittlemaid.isDead) {
 //		if(entitylittlemaid.isDead || entitylittlemaid.isOpenInventory()) {
 			return false;
@@ -137,7 +136,7 @@ public class ContainerInventoryLittleMaid extends ContainerPlayer {
 		Slot slot = (Slot)inventorySlots.get(pIndex);
 		if (slot != null && slot.getHasStack()) {
 			ItemStack itemstack1 = slot.getStack();
-			
+
 			litemstack = itemstack1.copy();
 			int lline = numRows * 9;
 			if (pIndex < lline) {
