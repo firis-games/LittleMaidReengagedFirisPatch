@@ -6,7 +6,6 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.IEntityLittleMaidAvatar;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -45,16 +44,16 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	{
 		super(par1World, W_Common.newGameProfile("1", "LMM_EntityLittleMaidAvatar"));
 	}
-	
+
 	public EntityLittleMaidAvatarSP(World par1World, EntityLittleMaid par2EntityLittleMaid) {
 		super(par1World, W_Common.newGameProfile("1", "LMM_EntityLittleMaidAvatar"));
-		
+
 		// 初期設定
 		avatar = par2EntityLittleMaid;
 		dataWatcher = avatar.getDataManager();
-		
-		this.dataWatcher.register(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
-		
+
+//		this.dataWatcher.register(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
+
 		// TODO Client限定ゴマカシ
 		inventory = new InventoryPlayer(this);
 		inventory.player = this;
@@ -69,7 +68,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	public Entity getCommandSenderEntity(){ return super.getCommandSenderEntity(); }
 	public World getEntityWorld(){ return super.getEntityWorld(); }
 	////////////////////////////////////////////////////////////////////////////////////
-	
+
 	@Override
 	protected void applyEntityAttributes() {
 		// 初期設定殺し
@@ -109,11 +108,11 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 //		posX = avatar.posX;
 		EntityPlayer lep = avatar.getMaidMasterEntity();
 		setEntityId(avatar.getEntityId());
-		
+
 		if (lep != null) {
 			capabilities.isCreativeMode = lep.capabilities.isCreativeMode;
 		}
-		
+
 		if (xpCooldown > 0) {
 			xpCooldown--;
 		}
@@ -155,17 +154,17 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 			ll = ((EntityLivingBase)par1Entity).getHealth();
 		}
 		super.attackTargetEntityWithCurrentItem(par1Entity);
-		
+
 		if (ll > 0) {
 			LittleMaidReengaged.Debug(String.format("ID:%d Given Damege:%f", avatar.getEntityId(), ll - ((EntityLivingBase)par1Entity).getHealth()));
 		}
 	}
-	
+
 	@Override
 	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
 		return avatar.getItemStackFromSlot(slotIn);
 	}
-	
+
 /*
 	@Override
 	protected void alertWolves(EntityLivingBase par1EntityLiving, boolean par2) {
@@ -191,7 +190,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	/*
 	@Override
 	public int getItemInUseDuration() {
-		
+
 		return getItemInUseDuration(avatar.getDominantArm());
 	}
 	*/
@@ -241,7 +240,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		isItemReload = isItemPreReload = false;
 		avatar.getSwingStatus(pIndex).clearItemInUse(getEntityServer());
 	}
-	
+
 //	@Deprecated
 //	@Override
 	public void clearItemInUse() {
@@ -327,7 +326,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	public void playSound(SoundEvent par1Str, float par2, float par3) {
 		avatar.playSound(par1Str, par2, par3);
 	}
-	
+
 	/*
 	public ChunkCoordinates getPlayerCoordinates() {
 		return null;
@@ -512,7 +511,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		avatar.motionY = motionY;
 		avatar.motionZ = motionZ;
 		if (isSwingInProgress) avatar.setSwinging(EnumSound.Null, false);
-		
+
 	}
 
 	public void setValueVector() {
@@ -538,7 +537,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	public void W_damageArmor(float par1){
 		super.damageArmor(par1);
 	}
-	
+
 	public float applyArmorCalculations(DamageSource par1DamageSource, float par2)
 	{
 		return super.applyArmorCalculations(par1DamageSource, par2);

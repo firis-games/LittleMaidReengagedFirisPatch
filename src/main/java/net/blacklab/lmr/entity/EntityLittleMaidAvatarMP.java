@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatisticsFile;
 import net.minecraft.util.DamageSource;
@@ -25,7 +23,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -58,7 +55,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		// TODO dataWatcher has been taken over.
 		dataWatcher = avatar.getDataManager();
 
-		this.dataWatcher.register(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
+//		this.dataWatcher.register(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
 
 		/*
 		 * TODO 要調整
@@ -98,7 +95,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	{
 		return avatar.getHeldItem(pHand);
 	}
-	
+
 	public World getEntityWorld(){ return super.getEntityWorld(); }
 	////////////////////////////////////////////////////////////////////////////////////
 
@@ -180,8 +177,8 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		} else {
 		}
 	}
-	
-	
+
+
 
 	@Override
 	public void attackTargetEntityWithCurrentItem(Entity par1Entity) {
@@ -195,12 +192,12 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 			LittleMaidReengaged.Debug(String.format("ID:%d Given Damege:%f", avatar.getEntityId(), ll - ((EntityLivingBase)par1Entity).getHealth()));
 		}
 	}
-	
+
 	@Override
 	public Iterable<ItemStack> getArmorInventoryList() {
 		return avatar.getArmorInventoryList();
 	}
-	
+
 	@Override
 	public Iterable<ItemStack> getHeldEquipment() {
 		return avatar.getHeldEquipment();
@@ -274,7 +271,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	public boolean isHandActive() {
 		return isUsingItem(avatar.getDominantArm());
 	}
-	
+
 	@Override
 	public EnumHand getActiveHand() {
 		return EnumHand.MAIN_HAND;
@@ -318,7 +315,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	public void setActiveHand(EnumHand p_184598_1_) {
 		avatar.setActiveHand(EnumHand.MAIN_HAND);
 	}
-	
+
 //	@Override
 	public void setItemInUse(ItemStack itemstack, int i) {
 //		super.setItemInUse(itemstack, i);
@@ -584,7 +581,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	{
 		super.damageEntity(par1DamageSource, par2);
 	}
-	
+
 	@Override
 	public boolean isEntityInvulnerable(DamageSource source){
 		return false;
@@ -607,7 +604,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	public float W_applyPotionDamageCalculations(DamageSource par1DamageSource, float par2) {
 		return applyPotionDamageCalculations(par1DamageSource, par2);
 	}
-	
+
 	@Override
 	public EntityLittleMaid getMaid() {
 		return avatar;
