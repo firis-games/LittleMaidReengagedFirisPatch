@@ -79,6 +79,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIPanic;
@@ -759,36 +760,18 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	protected void setMaidModeAITasks(EntityAITasks pTasksSRC, EntityAITasks pTasksDEST) {
 		// 既存のAIを削除して置き換える。
 		// 動作をクリア
-		try {
-			ArrayList<EntityAITaskEntry> ltasksDoDEST = getEntityAITasks_taskEntries(pTasksDEST);
-			ArrayList<EntityAITaskEntry> ltasksExeDEST = getEntityAITasks_executingTaskEntries(pTasksDEST);
+		List<EntityAIBase> originAIs = new ArrayList<EntityAIBase>();
+		for (Iterator<EntityAITaskEntry> iterator = pTasksDEST.taskEntries.iterator(); iterator.hasNext(); ) {
+			EntityAITaskEntry lEntry = iterator.next();
+			originAIs.add(lEntry.action);
+		}
+		for (EntityAIBase pAiBase: originAIs) {
+			pTasksDEST.removeTask(pAiBase);
+		}
 
-			if (pTasksSRC == null) {
-				ltasksDoDEST.clear();
-				ltasksExeDEST.clear();
-			} else {
-				ArrayList<EntityAITaskEntry> ltasksDoSRC = getEntityAITasks_taskEntries(pTasksSRC);
-				getEntityAITasks_executingTaskEntries(pTasksSRC);
-
-				Iterator iterator;
-				iterator = ltasksExeDEST.iterator();
-				while (iterator.hasNext()) {
-					EntityAITaskEntry ltaskentory = (EntityAITaskEntry)iterator.next();
-					ltaskentory.action.resetTask();
-				}
-				ltasksExeDEST.clear();
-
-				ltasksDoDEST.clear();
-				ltasksDoDEST.addAll(ltasksDoSRC);
-				// TODO: 未実装の機能、モードチェンジ時の初期化を行う。
-//				for (EntityAITaskEntry ltask : ltasksDoSRC) {
-//					if (ltask instanceof LMM_IEntityAI)
-//					{
-//						((LMM_IEntityAI)ltask).setDefaultEnable();
-//					}
-//				}
-			}
-		} catch (Exception s) {
+		// 動作追加
+		for (Iterator<EntityAITaskEntry> iterator = pTasksSRC.taskEntries.iterator(); iterator.hasNext(); ) {
+			pTasksDEST.taskEntries.add(iterator.next());
 		}
 	}
 	public static ArrayList<EntityAITaskEntry> getEntityAITasks_taskEntries(EntityAITasks task)
