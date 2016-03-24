@@ -360,7 +360,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 		// 起爆
 		if (pMode == mmode_Detonator && InventoryLittleMaid.isItemExplord(owner.getCurrentEquippedItem())) {
 			if (timeSinceIgnited == -1) {
-				owner.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("random.fuse")), 1.0F, 0.5F);
+				owner.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.tnt.primed")), 1.0F, 0.5F);
 				owner.getDataManager().set(Statics.dataWatch_Free, Integer.valueOf(1));
 			}
 //        	if (owner.entityToAttack == null)

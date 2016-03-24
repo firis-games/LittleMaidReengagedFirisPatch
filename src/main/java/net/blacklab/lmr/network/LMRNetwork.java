@@ -1,7 +1,6 @@
 package net.blacklab.lmr.network;
 
-import static net.blacklab.lmr.util.Statics.LMN_Client_SetIFFValue;
-import static net.blacklab.lmr.util.Statics.LMN_Server_SaveIFF;
+import static net.blacklab.lmr.util.Statics.*;
 
 import java.util.Arrays;
 
@@ -19,7 +18,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -65,12 +63,12 @@ public class LMRNetwork
 	//		ModLoader.serverSendPacket(pHandler, new Packet250CustomPayload("LMM|Upd", pData));
 		}
 		*/
-	
+
 	private static void sendToClient(EntityPlayer player, byte[] pData) {
 		sendPacketToPlayer(2, player, pData);
 //		ModLoader.serverSendPacket(pHandler, new Packet250CustomPayload("LMM|Upd", pData));
 	}
-	
+
 	public static void sendToClient(EnumPacketMode pMode, EntityPlayer player, byte[] contents) {
 		byte dst[] = new byte[contents.length+1];
 		dst[0] = pMode.modeByte;
@@ -100,21 +98,21 @@ public class LMRNetwork
 //		ModLoader.clientSendPacket(new Packet250CustomPayload("LMM|Upd", pData));
 		LittleMaidReengaged.Debug(String.format("LMM|Upd:%2x:NOEntity", pData[0]));
 	}
-	
+
 	public static void sendToServer(EnumPacketMode pMode, byte[] contents) {
 		byte[] dst = new byte[contents.length + 1];
 		dst[0] = pMode.modeByte;
 		System.arraycopy(contents, 0, dst, 1, contents.length);
 		sendToServer(dst);
 	}
-	
+
 	public static void sendToServerWithEntityID(EnumPacketMode pMode, EntityLittleMaid pMaid, byte[] contents) {
 		byte[] dst = new byte[contents.length + 4];
 		System.arraycopy(contents, 0, dst, 4, contents.length);
 		NetworkHelper.setIntToPacket(dst, 0, pMaid.getEntityId());
 		sendToServer(pMode, dst);
 	}
-	
+
 	/**
 	 * サーバーへIFFのセーブをリクエスト
 	 */
@@ -134,7 +132,7 @@ public class LMRNetwork
 		}
 		return null;
 	}
-	
+
 	public static void onCustomPayload(EntityPlayer sender, LMRMessage pPayload) {
 		// Turn true if the packet is sent from server
 		boolean fromServer = sender==null;
@@ -157,9 +155,9 @@ public class LMRNetwork
 		int lindex;
 		int lval;
 		String lname;
-		
+
 		switch (pMode) {
-		case SERVER_UPDATE_SLOTS : 
+		case SERVER_UPDATE_SLOTS :
 			// 初回更新とか
 			// インベントリの更新
 			lemaid.maidInventory.clearChanged();
@@ -167,7 +165,7 @@ public class LMRNetwork
 				lswing.lastIndex = -1;
 			}
 			break;
-			
+
 		case SERVER_DECREMENT_DYE :
 			// カラー番号をクライアントから受け取る
 			// インベントリから染料を減らす。
@@ -185,7 +183,7 @@ public class LMRNetwork
 				}
 			}
 			break;
-			
+
 		case SERVER_CHANGE_IFF :
 			// IFFの設定値を受信
 			lval = contents[0];
@@ -226,17 +224,17 @@ public class LMRNetwork
 			break;
 		}
 	}
-	
+
 	private static void clientPayLoad(EnumPacketMode pMode, EntityLittleMaid lemaid, byte[] contents) {
 		switch (pMode) {
-		case CLIENT_SWINGARM : 
+		case CLIENT_SWINGARM :
 			// 腕振り
 			byte larm = contents[0];
 			EnumSound lsound = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(contents, 1));
 			lemaid.setSwinging(larm, lsound, NetworkHelper.getIntFromPacket(contents, 5)==1);
 //			mod_LMM_littleMaidMob.Debug(String.format("SwingSound:%s", lsound.name()));
 			break;
-			
+
 		case CLIENT_RESPOND_IFF :
 			// IFFの設定値を受信
 			int lval = contents[0];
@@ -245,8 +243,8 @@ public class LMRNetwork
 			LittleMaidReengaged.Debug("setIFF-CL %s(%d)=%d", lname, lindex, lval);
 			IFF.setIFFValue(null, lname, lval);
 			break;
-			
-		case CLIENT_PLAY_SOUND : 
+
+		case CLIENT_PLAY_SOUND :
 			// 音声再生
 			EnumSound lsound9 = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(contents, 0));
 			LittleMaidReengaged.Debug(String.format("playSound:%s", lsound9.name()));
@@ -259,7 +257,7 @@ public class LMRNetwork
 			break;
 		}
 	}
-	
+
 	private static void syncPayLoad(EnumPacketMode pMode, EntityLittleMaid pMaid, byte[] contents) {
 		switch (pMode) {
 		case SYNC_ARMORFLAG:

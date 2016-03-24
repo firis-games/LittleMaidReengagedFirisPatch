@@ -123,7 +123,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -852,11 +851,23 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	/**
-	 * 簡易音声再生、標準の音声のみ使用すること。
+	 * 文字列指定による音声再生
 	 */
 	public void playSound(String pname) {
 		// TODO SoundEventに関しては，FMLで登録方法を提供してけれみたいなissueがあった気がするのでしばらく保留．
-		if(!worldObj.isRemote) playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation(pname)), 0.5F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+		playSound(pname, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+	}
+
+	/**
+	 * 文字列指定による音声再生
+	 */
+	public void playSound(String pName, float pitch) {
+		if(!worldObj.isRemote) {
+			SoundEvent sEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation(pName));
+			if (sEvent != null) {
+				playSound(sEvent, 1, pitch);
+			}
+		}
 	}
 
 	/**
@@ -1831,7 +1842,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				LittleMaidReengaged.Debug("REQ %s", enumsound);
 
 				if (!LMMNX_SoundLoader.isFoundSoundpack()) {
-					worldObj.playSound(posX, posY, posZ, SoundEvent.soundEventRegistry.getObject(new ResourceLocation(enumsound.DefaultValue)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
+					playSound(enumsound.DefaultValue, lpitch);
+//					worldObj.playSound(posX, posY, posZ, SoundEvent.soundEventRegistry.getObject(new ResourceLocation(enumsound.DefaultValue)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
 					playingSound.remove(enumsound);
 					continue;
 				}
@@ -1857,7 +1869,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 				LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", getEntityId(), enumsound.index, enumsound.name(), sname));
 
-				worldObj.playSound(posX, posY, posZ, SoundEvent.soundEventRegistry.getObject(new ResourceLocation(LittleMaidReengaged.DOMAIN+":"+sname)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
+				playSound(LittleMaidReengaged.DOMAIN+":"+sname, lpitch);
+//				worldObj.playSound(posX, posY, posZ, SoundEvent.soundEventRegistry.getObject(new ResourceLocation(LittleMaidReengaged.DOMAIN+":"+sname)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
 				playingSound.remove(enumsound);
 			}
 //			LMM_LittleMaidMobNX.proxy.playLittleMaidSound(worldObj, posX, posY, posZ, playingSound, getSoundVolume(), lpitch, false);
