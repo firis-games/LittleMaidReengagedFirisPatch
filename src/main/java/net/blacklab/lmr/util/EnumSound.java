@@ -1,15 +1,13 @@
 package net.blacklab.lmr.util;
 
-import org.omg.CORBA.portable.ValueOutputStream;
-
 public enum EnumSound {
 
-	death(0x100,			"Deid Voice. Null is no Voice",							"minecraft:mob.ghast.death"),
-	attack(0x110,			"Attack Voice. Null is no Voice",						"minecraft:mob.ghast.charge"),
+	death(0x100,			"Deid Voice. Null is no Voice",							"entity.ghast.death"),
+	attack(0x110,			"Attack Voice. Null is no Voice",						"entity.ghast.shoot"),
 	attack_bloodsuck(0x111, "Attack Bloodsucker Voice. Null is no Voice",			""),
 	laughter(0x120,			"Laughter Voice. Null is no Voice",						""),
-	shoot(0x130,			"shoot Voice. Null is no Voice",						"minecraft:mob.ghast.charge"),
-	shoot_burst(0x131,		"burst shoot Voice. Null is no Voice",					"minecraft:mob.ghast.charge"),
+	shoot(0x130,			"shoot Voice. Null is no Voice",						"entity.ghast.shoot"),
+	shoot_burst(0x131,		"burst shoot Voice. Null is no Voice",					"entity.ghast.shoot"),
 	sighting(0x140,			"Adopt a fire Voice. Null is no Voice",					""),
 	healing(0x150,			"Healing Voice. Null is no Voice",						""),
 	healing_potion(0x151, 	"Healing with potion Voice. Null is no Voice",			""),
@@ -29,19 +27,19 @@ public enum EnumSound {
 	farmer_harvest(0x242,	"Harvesting crops Voice. Null is no Voice",				""),
 	collect_snow(0x250,		"Collecting snow Voice. Null is no Voice",				""),
 
-	hurt(0x300,				"Dameged Voice. Null is no Voice",						"minecraft:mob.ghast.scream"),
+	hurt(0x300,				"Dameged Voice. Null is no Voice",						"entity.ghast.scream"),
 	hurt_snow(0x301,		"Dameged Voice from snowball. Null is no Voice",		""),
 	hurt_fire(0x302,		"Dameged Voice from fire. Null is no Voice",			""),
-	hurt_guard(0x303,		"Dameged Voice on Guard. Null is no Voice",				"minecraft:mob.blaze.hit"),
+	hurt_guard(0x303,		"Dameged Voice on Guard. Null is no Voice",				"entity.blaze.hurt"),
 	hurt_fall(0x304,		"Dameged Voice from Fall. Null is no Voice",			""),
-	hurt_nodamege(0x309,	"No Dameged Voice. Null is no Voice",					"minecraft:mob.blaze.hit"),
+	hurt_nodamege(0x309,	"No Dameged Voice. Null is no Voice",					"entity.blaze.hurt"),
 
 	findTarget_N(0x400,		"Find target Normal Voice. Null is no Voice",			""),
 	findTarget_B(0x401,		"Find target Bloodsuck Voice. Null is no Voice",		""),
 	findTarget_I(0x402,		"Find target Item Voice. Null is no Voice",				""),
 	findTarget_D(0x403,		"Find target Darkness Voice. Null is no Voice",			""),
 
-	living_daytime(0x500,	"Living Voice(Default) in Daytime. Null is no Voice",	"minecraft:mob.ghast.moan"),
+	living_daytime(0x500,	"Living Voice(Default) in Daytime. Null is no Voice",	"entity.ghast.ambient"),
 	living_morning(0x501,	"Living Voice in Mornig. Null is no Voice",				""),
 	living_night(0x502,		"Living Voice in Night. Null is no Voice",				""),
 	living_whine(0x503,		"Living Voice at Whine. Null is no Voice",				""),
@@ -49,13 +47,13 @@ public enum EnumSound {
 	living_snow(0x505,		"Living Voice at Snow. Null is no Voice",				""),
 	living_cold(0x506,		"Living Voice at Cold. Null is no Voice",				""),
 	living_hot(0x507,		"Living Voice at Hot. Null is no Voice",				""),
-	goodmorning(0x551,		"Goodmorning Voice. Null is no Voice",					"minecraft:mob.wolf.bark"),
-	goodnight(0x561,		"Goodnight Voice. Null is no Voice",					"minecraft:mob.ghast.affectionate_scream"),
+	goodmorning(0x551,		"Goodmorning Voice. Null is no Voice",					"entity.wolf.howl"),
+	goodnight(0x561,		"Goodnight Voice. Null is no Voice",					"entity.ghast.warn"),
 
 
 	Null(0, "", null);
-	
-	
+
+
 	public final int index;
 	public final String info;
 	public final String DefaultValue;
@@ -79,5 +77,5 @@ public enum EnumSound {
 		}
 		return Null;
 	}
-	
+
 }
