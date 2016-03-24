@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;

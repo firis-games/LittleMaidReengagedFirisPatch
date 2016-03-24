@@ -8,7 +8,7 @@ import net.blacklab.lmr.client.renderer.entity.LMMNX_RenderEntitySelect;
 import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.client.sound.LMMNX_SoundLoader;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.util.CommonHelper;
+import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityPickupFX;
 import net.minecraft.entity.Entity;

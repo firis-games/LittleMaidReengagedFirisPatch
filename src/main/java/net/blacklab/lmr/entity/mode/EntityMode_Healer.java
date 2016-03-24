@@ -5,8 +5,8 @@ import java.util.List;
 
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.util.CommonHelper;
 import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;

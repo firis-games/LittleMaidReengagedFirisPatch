@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util;
+package net.blacklab.lmr.util.helper;
 
 import java.util.List;
 import java.util.UUID;

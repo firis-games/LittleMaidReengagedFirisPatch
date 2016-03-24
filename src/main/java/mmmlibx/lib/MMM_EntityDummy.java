@@ -3,7 +3,7 @@ package mmmlibx.lib;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.blacklab.lmr.util.CommonHelper;
+import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
