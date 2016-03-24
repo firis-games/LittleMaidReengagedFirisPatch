@@ -14,6 +14,7 @@ import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -25,14 +26,14 @@ public class ModelConfigCompound  {
 
 	public EntityLivingBase owner;
 	public IModelCaps entityCaps;
-	
+
 	/**
 	 * 使用されるテクスチャリソースのコンテナ
-	 * 
+	 *
 	 */
 	public static class TextureCompound {
 		private ResourceLocation[][] textures;
-		
+
 		public TextureCompound() {
 			textures = new ResourceLocation[][] {
 				/**
@@ -57,19 +58,19 @@ public class ModelConfigCompound  {
 				{ null, null, null, null }
 			};
 		}
-		
+
 		public ResourceLocation getMainTexture(EnumTextureType type) {
 			return textures[0][type.index];
 		}
-		
+
 		public void setMainTexture(EnumTextureType type, ResourceLocation resourceLocation) {
 			textures[0][type.index] = resourceLocation;
 		}
-		
+
 		public ResourceLocation getArmorTexture(EnumTextureType type, EnumArmor parts) {
 			return textures[type.index*2 + parts.layerIndex][parts.textureIndex];
 		}
-		
+
 		public void setArmorTexture(EnumTextureType type, EnumArmor parts, ResourceLocation pLocation) {
 			textures[type.index*2 + parts.layerIndex][parts.textureIndex] = pLocation;
 		}
@@ -84,10 +85,10 @@ public class ModelConfigCompound  {
 	 * 契約テクスチャを選択するかどうか
 	 */
 	public boolean contract;
-	
+
 	public TextureBoxBase textureBox[];
 	public ModelMultiBase textureModel[];
-	
+
 	/**
 	 * 表示制御に使うフラグ群<br>
 	 * int型32bitで保存。
@@ -139,7 +140,7 @@ public class ModelConfigCompound  {
 		textureModel[0] = null;
 		textureModel[1] = null;
 		textureModel[2] = null;
-		
+
 		if (owner.worldObj.isRemote) {
 			return setTextureNamesClient();
 		}
@@ -153,7 +154,7 @@ public class ModelConfigCompound  {
 		// Client
 		boolean lf = false;
 		TextureBox lbox;
-		
+
 		if (textureBox[0] instanceof TextureBox) {
 			int lc = (color & 0x00ff) + (contract ? 0 : ModelManager.tx_wild);
 			lbox = (TextureBox)textureBox[0];
@@ -231,11 +232,16 @@ public class ModelConfigCompound  {
 			if (lbox.localBox != null) {
 				if (CommonHelper.isClient) {
 					for (int i = 0; i < 4; i++) {
-						ItemStack is = ((List<ItemStack>)owner.getArmorInventoryList()).get(i+1); // TODO Not Recommended.
-						textures[1][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1, is);
-						textures[2][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2, is);
-						textures[3][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1light, is);
-						textures[4][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2light, is);
+						for (EntityEquipmentSlot pSlot: EntityEquipmentSlot.values()) {
+							if (pSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && pSlot.getIndex() == i) {
+								ItemStack is = owner.getItemStackFromSlot(pSlot);
+								textures[1][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1, is);
+								textures[2][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2, is);
+								textures[3][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1light, is);
+								textures[4][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2light, is);
+								break;
+							}
+						}
 					}
 				}
 				textureModel[1] = lbox.localBox.models[1];
@@ -291,7 +297,7 @@ public class ModelConfigCompound  {
 	 * 毎時処理
 	 */
 	public void onUpdate() {
-		
+
 		// 不具合対応
 		// http://forum.minecraftuser.jp/viewtopic.php?f=13&t=23347&start=160#p210319
 		if(textureBox!=null && textureBox.length>0 && textureBox[0]!=null)
@@ -304,7 +310,7 @@ public class ModelConfigCompound  {
 	}
 
 	protected void setSize() {
-		
+
 		if(textureBox!=null && textureBox.length>0 && textureBox[0]!=null)
 		{
 			// サイズの変更
@@ -317,7 +323,7 @@ public class ModelConfigCompound  {
 			{
 				((EntityLittleMaidForTexSelect)owner).setSize(textureBox[0].getWidth(entityCaps), textureBox[0].getHeight(entityCaps));
 			}
-			
+
 			if (owner instanceof EntityAgeable) {
 				// EntityAgeableはこれをしないと大きさ変更しないようになってる、くそう。
 				((EntityAgeable)owner).setScaleForAge(owner.isChild());
@@ -420,7 +426,7 @@ public class ModelConfigCompound  {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param pIndex 0-31
 	 * @return
 	 */
@@ -429,7 +435,7 @@ public class ModelConfigCompound  {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param pIndex 0-31
 	 * @param pFlag
 	 */

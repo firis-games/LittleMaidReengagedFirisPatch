@@ -30,7 +30,7 @@ public class CommonHelper {
 		mc = lm;
 		isClient = mc != null;
 	}
-	
+
 	public static UUID getPlayerUUID(EntityPlayer par1EntityPlayer) {
 		return par1EntityPlayer.getUniqueID();
 	}
