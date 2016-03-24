@@ -1,27 +1,6 @@
 package net.blacklab.lmr.entity;
 
-import static net.blacklab.lmr.util.Statics.dataWatch_Absoption;
-import static net.blacklab.lmr.util.Statics.dataWatch_Color;
-import static net.blacklab.lmr.util.Statics.dataWatch_DominamtArm;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Aimebow;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Bloodsuck;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Freedom;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_LooksSugar;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_OverDrive;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Register;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Tracer;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Wait;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Working;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterest;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterestAXIS;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_remainsContract;
-import static net.blacklab.lmr.util.Statics.dataWatch_Free;
-import static net.blacklab.lmr.util.Statics.dataWatch_Gotcha;
-import static net.blacklab.lmr.util.Statics.dataWatch_ItemUse;
-import static net.blacklab.lmr.util.Statics.dataWatch_Mode;
-import static net.blacklab.lmr.util.Statics.dataWatch_Parts;
-import static net.blacklab.lmr.util.Statics.dataWatch_Texture;
+import static net.blacklab.lmr.util.Statics.*;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -117,8 +96,8 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
+import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -345,7 +324,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 		// モデルレンダリング用のフラグ獲得用ヘルパー関数
 		maidCaps = new EntityCaps(this);
-		
+
 		textureNameMain = textureNameArmor = "default_"+ModelManager.defaultModelName;
 
 		textureData = new ModelConfigCompound(this, maidCaps);
@@ -427,7 +406,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			onSpawnWild();
 		}
 	}
-	
+
 	protected void onSpawnWild() {
 		// 野生メイドの色設定処理
 		int nsize = 0;
@@ -660,7 +639,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		IBlockState state = worldObj.getBlockState(getPosition());
 		return inWater ? true : state.getBlock().getMaterial(state) == Material.water;
 	}
-	
+
 	public int[][] getMaidTiles() {
 		return maidTiles;
 	}
@@ -708,7 +687,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		main[0] = 0;
 		NetworkHelper.setStrToPacket(main, 1, getModelNameMain());
 		syncNet(EnumPacketMode.SYNC_MODEL, main);
-		
+
 		byte armor[] = new byte[getModelNameArmor().length()+1];
 		armor[0] = 1;
 		NetworkHelper.setStrToPacket(armor, 1, getModelNameArmor());
@@ -836,7 +815,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	public boolean isActiveModeClass() {
 		return getMaidActiveModeClass() != null;
 	}
-	
+
 	public MMM_Counter getWorkingCount() {
 		return workingCount;
 	}
@@ -1363,7 +1342,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		if(textureNameMain.isEmpty()){
 			textureNameMain = "default_"+ModelManager.defaultModelName;
 		}
-		
+
 		textureNameArmor = par1nbtTagCompound.getString("textureArmorNameForClient");
 		if(textureNameArmor.isEmpty()){
 			textureNameArmor = "default_"+ModelManager.defaultModelName;
@@ -1823,7 +1802,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	protected PathEntity prevPathEntity = null;
-	
+
 	public PathEntity getPrevPathEntity() {
 		return prevPathEntity;
 	}
@@ -1864,7 +1843,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 					playingSound.remove(enumsound);
 					continue;
 				}
-				
+
 				if ((enumsound.index & 0xf00) == EnumSound.living_daytime.index) {
 					// LivingSound LivingVoiceRateを確認
 					Float ratio = LMMNX_SoundRegistry.getLivingVoiceRatio(sname);
@@ -2000,10 +1979,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 		// 水中関連
 		if (swimmingEnabled || !isContract()) {
-			((PathNavigateGround)navigator).setAvoidsWater(false);
+//			((PathNavigateGround)navigator).setAvoidsWater(false);
 			((PathNavigateGround)navigator).setCanSwim(true);
 		} else {
-			((PathNavigateGround)navigator).setAvoidsWater(true);
+//			((PathNavigateGround)navigator).setAvoidsWater(true);
 			((PathNavigateGround)navigator).setCanSwim(false);
 		}
 
@@ -2152,7 +2131,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			}
 		}
 	}
-	
+
 	public MMM_Counter getMaidOverDriveTime() {
 		return maidOverDriveTime;
 	}
@@ -2303,7 +2282,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				if (worldObj.isRemote) {
 					syncNet(EnumPacketMode.SERVER_UPDATE_SLOTS, new byte[]{});
 					syncNet(EnumPacketMode.SERVER_REQUEST_MODEL, new byte[]{});
-				} 
+				}
 			}
 		}
 
@@ -2476,7 +2455,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 					if (maidInventory.isChanged(li)) {
 						ItemStack st = maidInventory.getStackInSlot(li);
 						if (li >= InventoryLittleMaid.maxInventorySize) for(EntityEquipmentSlot lSlot: EntityEquipmentSlot.values())
-							if (lSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && lSlot.getIndex() == li-InventoryLittleMaid.maxInventorySize) 
+							if (lSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && lSlot.getIndex() == li-InventoryLittleMaid.maxInventorySize)
 								((WorldServer)worldObj).getEntityTracker().func_151248_b(this, new SPacketEntityEquipment(getEntityId(), lSlot, st));
 						maidInventory.resetChanged(li);
 						LittleMaidReengaged.Debug(String.format("ID:%d-%s - Slot(%d-%d,%d) Update.", getEntityId(), worldObj.isRemote ? "Client" : "Server", li, mstatSwingStatus[0].index, mstatSwingStatus[1].index));
@@ -2589,7 +2568,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			}
 //		}
 	}
-	
+
 	public String sprintfDeadCause(String format, DamageSource source) {
 		String ls = source.getDamageType();
 		Entity lentity = source.getSourceOfDamage();
@@ -2760,12 +2739,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Iterable<ItemStack> getArmorInventoryList() {
 		return Arrays.asList(maidInventory.armorInventory);
 	}
-	
+
 	@Override
 	public Iterable<ItemStack> getHeldEquipment() {
 		return Arrays.asList(new ItemStack[]{getCurrentEquippedItem(), null});
@@ -2781,7 +2760,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			return null;
 		}
 	}
-	
+
 	@Override
 	public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
 		if (slotIn.func_188452_c() == 0) {
@@ -2827,7 +2806,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	public boolean isMovementBlocked() {
 		return super.isMovementBlocked();
 	}
-	
+
 	public double getDistanceSqToMaster() {
 		return mstatMasterDistanceSq;
 	}
@@ -4018,25 +3997,25 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	public void setTextureBox(TextureBoxBase[] pTextureBox) {
 		textureData.setTextureBox(pTextureBox);
 	}
-	
+
 	public String getModelNameMain() {
 		return textureNameMain;
 	}
-	
+
 	public String getModelNameArmor() {
 		return textureNameArmor;
 	}
-	
+
 	public void setTextureNameMain(String modelNameMain) {
 		this.textureNameMain = modelNameMain;
 		refreshModels();
 	}
-	
+
 	public void setTextureNameArmor(String modelNameArmor) {
 		this.textureNameArmor = modelNameArmor;
 		refreshModels();
 	}
-	
+
 	protected void refreshModels() {
 		String defName = ModelManager.instance.getRandomTextureString(rand);
 		TextureBoxBase mainModel  = modelBoxAutoSelect(textureNameMain);
@@ -4048,15 +4027,15 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		if (armorModel == null) {
 			armorModel = modelBoxAutoSelect(defName);
 		}
-		
+
 		setTextureBox(new TextureBoxBase[]{mainModel, armorModel});
 		setTextureNames();
 	}
-	
+
 	private TextureBoxBase modelBoxAutoSelect(String pName) {
 		return worldObj.isRemote ? ModelManager.instance.getTextureBox(pName) : ModelManager.instance.getTextureBoxServer(pName);
 	}
-	
+
 	@Override
 	public TextureBoxBase[] getTextureBox() {
 		return textureData.getTextureBox();
