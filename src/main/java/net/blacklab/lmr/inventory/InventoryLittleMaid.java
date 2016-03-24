@@ -14,7 +14,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
@@ -42,26 +41,16 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	 * Inventory "inside skirt"
 	 */
 //	public ItemStack mainInventory[] = new ItemStack[maxInventorySize];
-	
+
 	/**
 	 * Armor Inventory
 	 */
 //	private ItemStack armorInventory[] = new ItemStack[4];
-	
+
 	/**
 	 * オーナー
 	 */
 	public EntityLittleMaid entityLittleMaid;
-	
-	/**
-	 * Owner's Avatar
-	 */
-	private EntityPlayer player;
-	
-	/**
-	 * Current Item Index
-	 */
-	public int currentItem;
 
 	/**
 	 * スロット変更チェック用
@@ -72,7 +61,8 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		super(par1EntityLittleMaid.maidAvatar);
 
 		entityLittleMaid = par1EntityLittleMaid;
-		// TODO InventoryPlayer.mainInventory became 'final'. S**t 
+//		player = entityLittleMaid.maidAvatar;
+		// TODO InventoryPlayer.mainInventory became 'final'. S**t
 //		mainInventory = new ItemStack[maxInventorySize];
 		prevItems = new ItemStack[maxInventorySize + armorInventory.length];
 	}
@@ -536,7 +526,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	@Override
 	public void markDirty() {
 		// TODO Currently there's no task
-		
+
 	}
 
 	@Override
@@ -563,7 +553,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	@Override
 	public void setField(int id, int value) {
-		
+
 	}
 
 	@Override

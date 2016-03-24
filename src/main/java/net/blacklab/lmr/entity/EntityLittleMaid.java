@@ -1999,7 +1999,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			((PathNavigateGround)navigator).setCanSwim(false);
 		}
 
-		maidInventory.decrementAnimations();
+		if(!worldObj.isRemote) maidInventory.decrementAnimations();
 
 		//壁衝突判定
 		//pitchはデフォルト+-180度が北方向(Z負)
