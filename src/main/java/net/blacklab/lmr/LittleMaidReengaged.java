@@ -21,7 +21,7 @@ import net.blacklab.lmr.proxy.ProxyCommon;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
-import net.blacklab.lmr.util.manager.EntityModeManager;import net.minecraft.block.BlockBrewingStand;
+import net.blacklab.lmr.util.manager.EntityModeManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourcePack;
@@ -31,7 +31,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -112,7 +111,7 @@ public class LittleMaidReengaged {
 	public static boolean cfg_isModelAlphaBlend = false;
 	// 野生テクスチャ
 	public static boolean cfg_isFixedWildMaid = false;
-	
+
 	// LivingSoundRate
 	public static float cfg_voiceRate = 0.1f;
 
@@ -226,7 +225,7 @@ public class LittleMaidReengaged {
 				new GuiHandler());
 
 		EntityRegistry.registerModEntity(EntityLittleMaid.class,
-				"LittleMaid", 0, instance, 80, 3, true);
+				"LittleMaid", 0, instance, 80, 1, true);
 
 		spawnEgg = new ItemSpawnEgg();
 		spawnEgg.setUnlocalizedName(DOMAIN + ":spawn_littlemaid_egg");

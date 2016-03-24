@@ -72,6 +72,7 @@ import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityCreature;
@@ -138,7 +139,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.TempCategory;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -239,7 +239,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	private CopyOnWriteArrayList<EnumSound> playingSound = new CopyOnWriteArrayList<EnumSound>();
 
 	// 実験用
-	private int firstload = 1;
+	private int firstload = 100;
 	public String statusMessage = "";
 
 	// AI
@@ -1360,9 +1360,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		}
 		setColor(par1nbtTagCompound.getInteger("Color"));
 		refreshModels();
-		if (FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer()) {
-			syncModelNames();
-		}
+//		if (FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer()) {
+//			syncModelNames();
+//		}
 
 		isMadeTextureNameFlag = par1nbtTagCompound.getBoolean("isMadeTextureNameFlag");
 
@@ -2286,19 +2286,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			}
 		}
 
-		// Entity初回生成時のインベントリ更新用
-		// サーバーの方が先に起動するのでクライアント側が更新を受け取れない
-		if (firstload > 0) {
-			// 初回更新用
-			// サーバーの方が先に起動しているので強制読み込みの手順が必要
-			if (--firstload == 0) {
-				if (worldObj.isRemote) {
-					syncNet(EnumPacketMode.SERVER_UPDATE_SLOTS, new byte[]{});
-					syncNet(EnumPacketMode.SERVER_REQUEST_MODEL, new byte[]{});
-				}
-			}
-		}
-
 		// 飛び道具用
 		weaponFullAuto = false;
 		weaponReload = false;
@@ -2342,6 +2329,17 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 					mstatSwingStatus[li].setItemInUse(lis, lis.getMaxItemUseDuration(), this);
 				} else {
 					mstatSwingStatus[li].stopUsingItem(this);
+				}
+			}
+
+			// Entity初回生成時のインベントリ更新用
+			// ClientサイドにおいてthePlayerが取得できるまでに時間がかかる？ので待機
+			// サーバーの方が先に起動するのでクライアント側が更新を受け取れない
+			if (firstload > 0) {
+				if (Minecraft.getMinecraft().theWorld != null && Minecraft.getMinecraft().thePlayer != null) {
+					syncNet(EnumPacketMode.SERVER_UPDATE_SLOTS, new byte[]{});
+					syncNet(EnumPacketMode.SERVER_REQUEST_MODEL, new byte[]{});
+					firstload = 0;
 				}
 			}
 		} else {

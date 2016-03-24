@@ -138,9 +138,10 @@ public class LMRNetwork
 		boolean fromServer = sender==null;
 
 		EnumPacketMode lmode = EnumPacketMode.getEnumPacketMode(pPayload.data[0]);
+		LittleMaidReengaged.Debug("MODE: %s", lmode.toString());
 		EntityLittleMaid lemaid = null;
 		if (lmode.withEntity) {
-			lemaid = getLittleMaid(pPayload.data, 1, sender!=null?sender.worldObj:Minecraft.getMinecraft().theWorld);
+			lemaid = getLittleMaid(pPayload.data, 1, fromServer?Minecraft.getMinecraft().theWorld:sender.worldObj);
 			if (lemaid == null) return;
 			syncPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, 5, pPayload.data.length));
 		}
