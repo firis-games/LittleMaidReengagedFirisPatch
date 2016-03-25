@@ -138,6 +138,7 @@ public class LMRNetwork
 		boolean fromServer = sender==null;
 
 		EnumPacketMode lmode = EnumPacketMode.getEnumPacketMode(pPayload.data[0]);
+		if (lmode == null) return;
 		LittleMaidReengaged.Debug("MODE: %s", lmode.toString());
 		EntityLittleMaid lemaid = null;
 		if (lmode.withEntity) {
