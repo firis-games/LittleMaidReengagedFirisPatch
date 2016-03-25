@@ -33,9 +33,9 @@ public class EventHook
 	@SubscribeEvent
 	public void onEntityItemPickupEvent(EntityItemPickupEvent event)
 	{
-		if(event.entityPlayer instanceof EntityLittleMaidAvatarSP)
+		if(event.getEntityPlayer() instanceof EntityLittleMaidAvatarSP)
 		{
-			if(event.item!=null)
+			if(event.getItem()!=null)
 			{
 				event.setCanceled(true);
 			}
@@ -44,8 +44,8 @@ public class EventHook
 
 	@SubscribeEvent
 	public void onEntitySpawn(LivingSpawnEvent event){
-		if(event.entityLiving instanceof EntityLittleMaid){
-			EntityLittleMaid maid = (EntityLittleMaid) event.entityLiving;
+		if(event.getEntityLiving() instanceof EntityLittleMaid){
+			EntityLittleMaid maid = (EntityLittleMaid) event.getEntityLiving();
 			if(maid.isContract()||maid.isWildSaved) return;
 			maid.onSpawnWithEgg();
 //			int c = maid.getTextureBox()[0].getWildColorBits();
@@ -58,7 +58,7 @@ public class EventHook
 //			NBTTagCompound t = new NBTTagCompound();
 //			maid.writeEntityToNBT(t);
 //			maid.readEntityFromNBT(t);
-			if(event.world.isRemote) maid.setTextureNames();
+			if(event.getWorld().isRemote) maid.setTextureNames();
 		}
 	}
 
@@ -74,13 +74,13 @@ public class EventHook
 
 	@SubscribeEvent
 	public void onEntitySpawned(EntityJoinWorldEvent event){
-		if(event.entity instanceof EntityLivingBase){
-			event.setCanceled(deleteDoppelganger(true, event.world, event.entity));
+		if(event.getEntity() instanceof EntityLivingBase){
+			event.setCanceled(deleteDoppelganger(true, event.getWorld(), event.getEntity()));
 		}
 
 		// TODO issue #9 merge from LittleMaidMobAX(https://github.com/asiekierka/littleMaidMobX/commit/92b2850b1bc4a70b69629cfc84c92748174c8bc6)
-		if (event.entity instanceof EntityArrow) {
-				EntityArrow arrow = (EntityArrow) event.entity;
+		if (event.getEntity() instanceof EntityArrow) {
+				EntityArrow arrow = (EntityArrow) event.getEntity();
 				if (arrow.shootingEntity instanceof IEntityLittleMaidAvatar) {
 					IEntityLittleMaidAvatar avatar = (IEntityLittleMaidAvatar) arrow.shootingEntity;
 					/* if (arrow.isDead) {
@@ -94,24 +94,24 @@ public class EventHook
 						}
 					} */
 					arrow.shootingEntity = avatar.getMaid();
-					LittleMaidReengaged.Debug("Set "+event.entity.getClass()+" field shootingEntity from avator to maid");
+					LittleMaidReengaged.Debug("Set "+event.getEntity().getClass()+" field shootingEntity from avator to maid");
 			}
 		}
 	}
 
 	@SubscribeEvent
 	public void onLivingAttack(LivingAttackEvent event) {
-		Entity entity = event.source.getEntity();
+		Entity entity = event.getSource().getEntity();
 		if (entity instanceof EntityLittleMaidAvatarMP) {
-			((EntityLittleMaidAvatarMP) entity).avatar.addMaidExperience(0.16f * event.ammount);
+			((EntityLittleMaidAvatarMP) entity).avatar.addMaidExperience(0.16f * event.getAmount());
 		}
 	}
 
 	@SubscribeEvent
 	public void onLivingHurt(LivingHurtEvent event) {
-		Entity entity = event.source.getSourceOfDamage();
+		Entity entity = event.getSource().getSourceOfDamage();
 		if (entity instanceof EntityArrow && ((EntityArrow) entity).shootingEntity instanceof EntityLittleMaid) {
-			((EntityLittleMaid)((EntityArrow) entity).shootingEntity).addMaidExperience(0.18f * event.ammount);
+			((EntityLittleMaid)((EntityArrow) entity).shootingEntity).addMaidExperience(0.18f * event.getAmount());
 		}
 	}
 	
@@ -138,12 +138,12 @@ public class EventHook
 
 	@SubscribeEvent
 	public void onPickUpXP(PlayerPickupXpEvent event) {
-		EntityPlayer player = event.entityPlayer;
+		EntityPlayer player = event.getEntityPlayer();
 		if (player instanceof EntityLittleMaidAvatarMP) {
 			EntityLittleMaid maid = ((EntityLittleMaidAvatarMP) player).avatar;
-			maid.addMaidExperience(event.orb.getXpValue()/(maid.getExpBooster()*10f));
+			maid.addMaidExperience(event.getOrb().getXpValue()/(maid.getExpBooster()*10f));
 			maid.playSound("random.orb");
-			event.orb.setDead();
+			event.getOrb().setDead();
 			event.setCanceled(true);
 		}
 	}
