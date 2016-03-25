@@ -1410,9 +1410,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		return super.getMountedYOffset() + 0.35D;
 	}
 
-	/*
 	@Override
 	public double getYOffset() {
+		double yOffset = super.getYOffset();
 		if(getRidingEntity() instanceof EntityPlayer) {
 			// 姿勢制御
 //			setSneaking(true);
@@ -1442,7 +1442,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		}
 		return (double)(yOffset - 0.25F);
 	}
-	*/
 
 
 	@Override
