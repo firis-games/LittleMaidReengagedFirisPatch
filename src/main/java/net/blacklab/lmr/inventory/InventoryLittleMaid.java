@@ -242,42 +242,24 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		return null;
 	}
 
-	public boolean addItemStackToInventory(ItemStack par1ItemStack) {
+	@Override
+	public boolean addItemStackToInventory(final ItemStack par1ItemStack) {
 		if (par1ItemStack == null) {
 			return false;
 		}
 		markDirty();
-		ItemStack bufferStack = par1ItemStack;
-		if (bufferStack.isItemDamaged()) {
+
+//		if (bufferStack.isItemDamaged()) {
 			int empty = getFirstEmptyStack();
 			if (empty >= 0) {
-				mainInventory[empty] = ItemStack.copyItemStack(bufferStack);
+				mainInventory[empty] = ItemStack.copyItemStack(par1ItemStack);
+				mainInventory[empty].animationsToGo = 5;
+				par1ItemStack.stackSize = 0;
+				return true;
 			}
-		} else {
-			for (int i=0; i<InventoryLittleMaid.maxInventorySize; i++) {
-				if (mainInventory[i] == null) {
-					mainInventory[i] = ItemStack.copyItemStack(bufferStack);
-					bufferStack = null;
-					break;
-				}
-				if (mainInventory[i].getItem()==bufferStack.getItem() && !mainInventory[i].isItemDamaged()) {
-					int maxSize = mainInventory[i].getItem().getItemStackLimit(mainInventory[i]);
-					mainInventory[i].stackSize += bufferStack.stackSize;
-					if (mainInventory[i].stackSize > maxSize) {
-						bufferStack.stackSize = maxSize - mainInventory[i].stackSize;
-						mainInventory[i].stackSize = maxSize;
-					}
-				}
-				if (bufferStack.stackSize == 0) {
-					bufferStack = null;
-					break;
-				}
-			}
-			if (bufferStack != null && bufferStack.stackSize > 0) {
-				entityLittleMaid.entityDropItem(bufferStack, 0);
-			}
-		}
-		return true;
+//		} else {
+//		}
+		return false;
 	}
 
 	public void setInventoryCurrentSlotContents(ItemStack itemstack) {
@@ -521,12 +503,6 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	@Override
 	public int getInventoryStackLimit() {
 		return 64;
-	}
-
-	@Override
-	public void markDirty() {
-		// TODO Currently there's no task
-
 	}
 
 	@Override
