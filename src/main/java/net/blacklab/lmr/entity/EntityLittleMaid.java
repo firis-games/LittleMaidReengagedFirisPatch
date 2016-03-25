@@ -2655,8 +2655,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	 */
 	public boolean getNextEquipItem() {
 		if (worldObj.isRemote) {
-			// クライアント側は処理しない
-			return false;
+//			return false;
 		}
 
 		int li;
@@ -2670,9 +2669,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	public void setEquipItem(int pArm, int pIndex) {
-		if (pArm == getDominantArm()) {
+//		if (pArm == getDominantArm()) {
 			maidInventory.currentItem = pIndex;
-		}
+//		}
 		int li = mstatSwingStatus[pArm].index;
 		if (li != pIndex) {
 			if (li > -1) {
