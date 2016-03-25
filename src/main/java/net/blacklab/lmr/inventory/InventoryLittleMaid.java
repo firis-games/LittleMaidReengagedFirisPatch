@@ -192,7 +192,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 					entityLittleMaid.posX, entityLittleMaid.posY, entityLittleMaid.posZ, 3F, false, entityLittleMaid.worldObj.getGameRules().getBoolean("mobGriefing"));
 		}
 
-		armorInventory[3] = null;
+//		armorInventory[3] = null;
 		for (int i = 0; i < getSizeInventory(); i++) {
 			ItemStack it = getStackInSlot(i);
 			if (it != null) {

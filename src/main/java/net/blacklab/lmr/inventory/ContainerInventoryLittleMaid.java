@@ -1,5 +1,6 @@
 package net.blacklab.lmr.inventory;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,7 +56,7 @@ public class ContainerInventoryLittleMaid extends ContainerPlayer {
 //			addSlotToContainer(new SlotArmor(this, linventory, linventory.getSizeInventory() - 2 - j, 8, 8 + j * 18, j1));
 
 			final int armorIndex = j; // ヘルメットはないと思っていたのか！
-			this.addSlotToContainer(new Slot(maidInventory, maidInventory.getSizeInventory() - 1 - j, 8 + 72*((3-j)/2), 8 + ((3-j)%2)*36)
+			this.addSlotToContainer(new Slot(maidInventory, InventoryLittleMaid.maxInventorySize+armorIndex, 8 + 72*((3-j)/2), 8 + ((3-j)%2)*36)
 			{
 				/**
 				 * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1
@@ -71,7 +72,9 @@ public class ContainerInventoryLittleMaid extends ContainerPlayer {
 				public boolean isItemValid(ItemStack par1ItemStack)
 				{
 					if (par1ItemStack == null) return false;
-					return littlemaidInventory.isItemValidForSlot(littlemaidInventory.maxInventorySize+armorIndex, par1ItemStack);
+					boolean flag = littlemaidInventory.isItemValidForSlot(littlemaidInventory.maxInventorySize+armorIndex, par1ItemStack);
+					LittleMaidReengaged.Debug("SLOT-INDEX: %d; VALID? %s", getSlotIndex(), flag);
+					return flag;
 				}
 				/**
 				 * Returns the icon index on items.png that is used as background image of the slot.
