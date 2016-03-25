@@ -534,8 +534,8 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		if (stack != null && index >= maxInventorySize && index < getSizeInventory()) {
 			int armorSlotIndex = index - maxInventorySize;
 			for (EntityEquipmentSlot slot: EntityEquipmentSlot.values()) {
-				if (slot.getSlotType()==EntityEquipmentSlot.Type.ARMOR && slot.getIndex()==armorSlotIndex) {
-					if (stack != null && stack.getItem().isValidArmor(stack, slot, entityLittleMaid)) {
+				if (slot.getSlotType()==EntityEquipmentSlot.Type.ARMOR && slot.getIndex() == armorSlotIndex) {
+					if (stack.getItem().isValidArmor(stack, slot, entityLittleMaid)) {
 						return true;
 					}
 				}

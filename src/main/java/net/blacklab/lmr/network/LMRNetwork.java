@@ -220,6 +220,7 @@ public class LMRNetwork
 			break;
 		case SERVER_REQUEST_MODEL :
 			lemaid.syncModelNames();
+			lemaid.syncMaidArmorVisible();
 			break;
 		default:
 			break;

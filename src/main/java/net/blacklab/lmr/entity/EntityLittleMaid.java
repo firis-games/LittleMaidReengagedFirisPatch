@@ -1359,7 +1359,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		isWildSaved = par1nbtTagCompound.getBoolean("isWildSaved");
 		setSwimming(par1nbtTagCompound.getBoolean("isSwimming"));
 		setMaidArmorVisible(par1nbtTagCompound.hasKey("maidArmorVisible")?par1nbtTagCompound.getInteger("maidArmorVisible"):15);
-		syncMaidArmorVisible();
+//		syncMaidArmorVisible();
 
 		getExperienceHandler().readEntityFromNBT(par1nbtTagCompound);
 	}
