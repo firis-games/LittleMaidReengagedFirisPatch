@@ -82,10 +82,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 		}
 
 		@Override
-		public void doRenderLayer(EntityLivingBase par1EntityLiving,
-				float par2, float par3, float par4,
-				float par5, float par6, float par7,
-				float par8) {
+		public void doRenderLayer(EntityLivingBase par1EntityLiving, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 			lmm = (EntityLittleMaid) par1EntityLiving;
 			//初回のみ指定値設定
 			if(renderCount==0){
@@ -94,7 +91,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 
 			for (int i=0; i<4; i++) {
 				if (lmm.maidInventory.getStackInSlot(InventoryLittleMaid.maxInventorySize+i) != null) {
-					render(par1EntityLiving, par2, par3, par4, par5, par6, par7, i);
+					render(par1EntityLiving, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, i);
 				}
 			}
 
@@ -122,7 +119,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 			mmodel.lighting = par1EntityLiving.getBrightnessForRender(renderScale);
 		}
 
-		public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7, int renderParts) {
+		public void render(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, int renderParts) {
 //			boolean lri = (renderCount & 0x0f) == 0;
 			//総合
 			mmodel.showArmorParts(renderParts);
@@ -133,9 +130,9 @@ public class RenderLittleMaid extends RenderModelMulti {
 					ResourceLocation texInner = mmodel.textureInner[renderParts];
 					if(texInner!=null&&lmm.isArmorVisible(0)) try{
 						Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
-						mmodel.modelInner.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
-						mmodel.modelInner.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
-						mmodel.modelInner.render(lmm.maidCaps, par2, par3, lmm.ticksExisted, par5, par6, renderScale, true);
+						mmodel.modelInner.setLivingAnimations(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks);
+						mmodel.modelInner.setRotationAngles(limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, renderScale, lmm.maidCaps);
+						mmodel.modelInner.render(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, renderScale, true);
 					}catch(Exception e){ break INNER; }
 				} else {
 //					mmodel.modelInner.render(lmm.maidCaps, par2, par3, lmm.ticksExisted, par5, par6, renderScale, true);
@@ -164,7 +161,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 									mmodel.textureLightColor[2],
 									mmodel.textureLightColor[3]);
 						}
-						mmodel.modelInner.render(lmm.maidCaps, par2, par3, par4, par5, par6, renderScale, true);
+						mmodel.modelInner.render(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, renderScale, true);
 						RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 						GL11.glDisable(GL11.GL_BLEND);
@@ -183,12 +180,12 @@ public class RenderLittleMaid extends RenderModelMulti {
 					ResourceLocation texOuter = mmodel.textureOuter[renderParts];
 					if(texOuter!=null&&lmm.isArmorVisible(2)) try{
 						Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
-						mmodel.modelOuter.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
-						mmodel.modelOuter.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
-						mmodel.modelOuter.render(lmm.maidCaps, par2, par3, lmm.ticksExisted, par5, par6, renderScale, true);
+						mmodel.modelOuter.setLivingAnimations(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks);
+						mmodel.modelOuter.setRotationAngles(limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, renderScale, lmm.maidCaps);
+						mmodel.modelOuter.render(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, renderScale, true);
 					}catch(Exception e){break OUTER;}
 				}else{
-//					mmodel.modelOuter.render(lmm.maidCaps, par2, par3, lmm.ticksExisted, par5, par6, renderScale, true);
+//					mmodel.modelOuter.render(lmm.maidCaps, limbSwing, par3, lmm.ticksExisted, par5, par6, renderScale, true);
 				}
 			}
 
@@ -214,7 +211,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 									mmodel.textureLightColor[2],
 									mmodel.textureLightColor[3]);
 						}
-						if(lmm.isArmorVisible(1)) mmodel.modelOuter.render(lmm.maidCaps, par2, par3, par4, par5, par6, renderScale, true);
+						if(lmm.isArmorVisible(1)) mmodel.modelOuter.render(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, renderScale, true);
 						RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 						GL11.glDisable(GL11.GL_BLEND);
