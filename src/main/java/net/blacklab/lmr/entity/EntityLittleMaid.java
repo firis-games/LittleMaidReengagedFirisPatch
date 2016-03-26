@@ -2437,20 +2437,24 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			onInventoryChanged();
 			maidInventory.inventoryChanged = false;
 		}
+
 		if (!worldObj.isRemote) {
 			// サーバー側処理
 			// アイテム使用状態の更新
 			dataWatcher.set(dataWatch_ItemUse, litemuse);
 			// インベントリの更新
 //			if (!mstatOpenInventory) {
-				for (int li = 0 ;li < maidInventory.getSizeInventory(); li++) {
+				// TODO メインインベントリに対する処理は既に行っているので，そこまで再チェックする必要がない・・・たぶん．
+				for (int li = InventoryLittleMaid.maxInventorySize; li < maidInventory.getSizeInventory(); li++) {
 					// インベントリの中身が変わった
 					if (maidInventory.isChanged(li)) {
 						ItemStack st = maidInventory.getStackInSlot(li);
-						if (li >= InventoryLittleMaid.maxInventorySize) for(EntityEquipmentSlot lSlot: EntityEquipmentSlot.values())
-							if (lSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && lSlot.getIndex() == li-InventoryLittleMaid.maxInventorySize)
+						for(EntityEquipmentSlot lSlot: EntityEquipmentSlot.values()) {
+							if (lSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR &&
+							lSlot.getIndex() == li-InventoryLittleMaid.maxInventorySize)
 								((WorldServer)worldObj).getEntityTracker().func_151248_b(this, new SPacketEntityEquipment(getEntityId(), lSlot, st));
-						maidInventory.resetChanged(li);
+							maidInventory.resetChanged(li);
+						}
 						LittleMaidReengaged.Debug(String.format("ID:%d-%s - Slot(%d-%d,%d) Update.", getEntityId(), worldObj.isRemote ? "Client" : "Server", li, mstatSwingStatus[0].index, mstatSwingStatus[1].index));
 					}
 //				}
@@ -2743,9 +2747,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 	@Override
 	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
-		if (slotIn.func_188452_c() == 0) {
+		if (slotIn == EntityEquipmentSlot.MAINHAND) {
 			return getHeldItem(EnumHand.MAIN_HAND);
-		} else if (slotIn.func_188452_c() < 5) {
+		} else if (slotIn.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
 			return maidInventory.armorInventory[slotIn.getIndex()];
 		} else {
 			return null;
@@ -3669,13 +3673,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	}
 
 	public boolean isHeadMount(){
-		return ItemUtil.isHelm(maidInventory.mainInventory[17]);
-	}
-
-	public ItemStack getHeadMountStackCopy(){
-		ItemStack stack = maidInventory.mainInventory[17];
-		if(ItemUtil.isHelm(stack)) return stack.copy();
-		return null;
+		return ItemUtil.isHelm(maidInventory.armorInventory[3]);
 	}
 
 	/**

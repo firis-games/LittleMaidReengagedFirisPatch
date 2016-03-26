@@ -254,7 +254,6 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		if (par1ItemStack == null) {
 			return false;
 		}
-		markDirty();
 
 //		if (bufferStack.isItemDamaged()) {
 			int empty = getFirstEmptyStack();
@@ -262,6 +261,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 				mainInventory[empty] = ItemStack.copyItemStack(par1ItemStack);
 				mainInventory[empty].animationsToGo = 5;
 				par1ItemStack.stackSize = 0;
+				markDirty();
 				return true;
 			}
 //		} else {
@@ -491,8 +491,15 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
-		ItemStack aStack = ItemStack.copyItemStack(mainInventory[index]);
-		mainInventory[index] = null;
+		markDirty();
+		ItemStack aStack;
+		if (index >= maxInventorySize) {
+			aStack = ItemStack.copyItemStack(armorInventory[index-maxInventorySize]);
+			armorInventory[index-maxInventorySize] = null;
+		} else {
+			aStack = ItemStack.copyItemStack(mainInventory[index]);
+			mainInventory[index] = null;
+		}
 		return aStack;
 	}
 

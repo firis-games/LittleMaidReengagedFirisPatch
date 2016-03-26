@@ -1,7 +1,5 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import java.util.List;
-
 import mmmlibx.lib.IModelMMMEntity;
 import mmmlibx.lib.MMMLib;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
@@ -190,10 +188,13 @@ public class ModelConfigCompound  {
 		if (textureBox[1] instanceof TextureBox && owner != null) {
 			lbox = (TextureBox)textureBox[1];
 			for (int i = 0; i < 4; i++) {
-				ItemStack is = i==3?
-						(owner instanceof EntityLittleMaid?
-								((EntityLittleMaid)owner).getHeadMountStackCopy():null) :
-						((List<ItemStack>)owner.getArmorInventoryList()).get(i+1); // TODO Not Recommended.
+				EntityEquipmentSlot lSlot = null;
+				for (EntityEquipmentSlot pSlot: EntityEquipmentSlot.values()) {
+					if (pSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && pSlot.getIndex() == i) {
+						lSlot = pSlot;
+					}
+				}
+				ItemStack is = owner.getItemStackFromSlot(lSlot);
 				textures[1][i] = lbox.getArmorTextureName(ModelManager.tx_armor1, is);
 				textures[2][i] = lbox.getArmorTextureName(ModelManager.tx_armor2, is);
 				textures[3][i] = lbox.getArmorTextureName(ModelManager.tx_armor1light, is);

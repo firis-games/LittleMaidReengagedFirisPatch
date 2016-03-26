@@ -8,6 +8,7 @@ import mmmlibx.lib.multiModel.model.mc162.ModelBaseDuo;
 import mmmlibx.lib.multiModel.model.mc162.RenderModelMulti;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -92,7 +93,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 			}
 
 			for (int i=0; i<4; i++) {
-				if (lmm.maidInventory.armorInventory[i] != null) {
+				if (lmm.maidInventory.getStackInSlot(InventoryLittleMaid.maxInventorySize+i) != null) {
 					render(par1EntityLiving, par2, par3, par4, par5, par6, par7, i);
 				}
 			}
@@ -276,7 +277,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 					GlStateManager.popMatrix();
 
 				}
-				
+
 			}
 
 		}

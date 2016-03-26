@@ -34,7 +34,7 @@ public interface IModelCaps {
 	public static final int caps_currentArmor			= 0x0024;
 	public static final int caps_healthFloat			= 0x0025;
 	public static final int caps_TextureEntity			= 0x0026;
-	
+
 	public static final int caps_isWet					= 0x0030;
 	public static final int caps_isDead					= 0x0031;
 	public static final int caps_isJumping				= 0x0032;
@@ -49,7 +49,7 @@ public interface IModelCaps {
 	public static final int caps_isLeeding				= 0x003a;
 	/** 乗っかているEntityの名前を返す; return String; **/
 	public static final int caps_getRidingName			= 0x003b;
-	
+
 	public static final int caps_posX					= 0x0060;
 	public static final int caps_posY					= 0x0061;
 	public static final int caps_posZ					= 0x0062;
@@ -64,7 +64,7 @@ public interface IModelCaps {
 	public static final int caps_prevRotationYaw		= 0x006b;
 	public static final int caps_prevRotationPitch		= 0x006c;
 	public static final int caps_renderYawOffset		= 0x006d;
-	
+
 	/** Entityの位置にオフセットした座標のBlockを取得する [0]:offsetX, [1]:offsetY, [2]:offsetZ **/
 //	public static final int caps_PosBlock				= 0x0080;
 	/** Entityの位置にオフセットした座標のBlockIDを取得する [0]:offsetX, [1]:offsetY, [2]:offsetZ **/
@@ -116,6 +116,7 @@ public interface IModelCaps {
 	public static final int caps_dominantArm		= 0x0125;
 	public static final int caps_render				= 0x0130;
 	public static final int caps_Arms				= 0x0131;
+	@Deprecated
 	public static final int caps_HeadMount			= 0x0132;
 	/** モデルに設定されているハードポイントを配列で返します **/
 	public static final int caps_HardPoint			= 0x0133;
@@ -131,7 +132,7 @@ public interface IModelCaps {
 	public static final int caps_Inventory			= 0x0138;
 	public static final int caps_Ground				= 0x0139;
 	public static final int caps_interestedAngle	= 0x0150;
-	
+
 	// PlayerFormLittleMaid
 	public static final int caps_ScaleFactor	= 0x0200;
 	public static final int caps_PartsVisible	= 0x0201;

@@ -35,7 +35,7 @@ public class ContainerInventoryLittleMaid extends Container {
 		// Maid's inventory
 		for (int ly = 0; ly < numRows; ly++) {
 			for (int lx = 0; lx < 9; lx++) {
-				addSlotToContainer(new Slot(maidInventory, lx + ly * 9, 8 + lx * 18, 76 + ly * 18));
+				addSlotToContainer(new Slot(littlemaidInventory, lx + ly * 9, 8 + lx * 18, 76 + ly * 18));
 			}
 		}
 
@@ -58,7 +58,7 @@ public class ContainerInventoryLittleMaid extends Container {
 		// Maid's equipment slots
 		for (int j = 0; j < 4; j++) {
 			final int armorIndex = j; // ヘルメットはないと思っていたのか！
-			this.addSlotToContainer(new Slot(maidInventory, InventoryLittleMaid.maxInventorySize+armorIndex, 8 + 72*((3-j)/2), 8 + ((3-j)%2)*36) {
+			this.addSlotToContainer(new Slot(littlemaidInventory, InventoryLittleMaid.maxInventorySize+armorIndex, 8 + 72*((3-j)/2), 8 + ((3-j)%2)*36) {
 				/**
 				 * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1
 				 * in the case of armor slots)

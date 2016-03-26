@@ -77,7 +77,7 @@ public class EntityCaps extends MMM_EntityCaps {
 	@Override
 	public Object getCapsValue(int pIndex, Object ...pArg) {
 		int li = 0;
-		
+
 		switch (pIndex) {
 //		case caps_Entity:
 //			return owner;
@@ -142,7 +142,8 @@ public class EntityCaps extends MMM_EntityCaps {
 //		case caps_render:
 //		case caps_Arms:
 		case caps_HeadMount:
-			return owner.maidInventory.getStackInSlot(17);
+			// TODO 従来HeadMountとか使ってた部分は全部削除した方がすっきりすると思う．
+			return owner.maidInventory.armorInventory[3];
 //		case caps_HardPoint:
 		case caps_stabiliser:
 			return owner.maidStabilizer;
@@ -183,7 +184,7 @@ public class EntityCaps extends MMM_EntityCaps {
 		case caps_textureData:
 			return owner.textureData;
 		}
-		
+
 		return super.getCapsValue(pIndex, pArg);
 	}
 
