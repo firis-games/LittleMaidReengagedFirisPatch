@@ -2644,7 +2644,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	 */
 	public void onInventoryChanged() {
 		checkClockMaid();
-		checkMaskedMaid();
 		checkHeadMount();
 		getNextEquipItem();
 //		setArmorTextureValue();
@@ -2814,27 +2813,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		return mstatClockMaid;
 	}
 
-	protected void checkMaskedMaid() {
-		// インベントリにヘルムがあるか？
-		/*
-		for (int i = maidInventory.mainInventory.length - 1; i >= 0; i--) {
-			ItemStack is = maidInventory.getStackInSlot(i);
-			if (is != null && is.getItem() instanceof ItemArmor && ((ItemArmor)is.getItem()).armorType == 0) {
-				// ヘルムを持ってる
-				mstatMaskSelect = i;
-				maidInventory.armorInventory[3] = is;
-				if (worldObj.isRemote) {
-					setTextureNames();
-				}
-				return;
-			}
-		}
-		*/
-
-		mstatMaskSelect = -1;
-		maidInventory.armorInventory[3] = null;
-		return;
-	}
 	/**
 	 * メットを被ってるか
 	 */

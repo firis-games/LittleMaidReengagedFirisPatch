@@ -4,7 +4,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ContainerPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -14,19 +14,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerInventoryLittleMaid extends ContainerPlayer {
+public class ContainerInventoryLittleMaid extends Container {
 
 	protected final InventoryLittleMaid littlemaidInventory;
 	protected final int numRows;
 	protected final EntityLittleMaid owner;
 
 	public ContainerInventoryLittleMaid(IInventory playerInventory, EntityLittleMaid pEntity) {
-		// >
-//		super();
-		super(pEntity.maidInventory, !pEntity.worldObj.isRemote, pEntity.maidAvatar);
+//		super(pEntity.maidInventory, !pEntity.worldObj.isRemote, pEntity.maidAvatar);
 		inventorySlots.clear();
 		inventoryItemStacks.clear();
-		// <
 
 		InventoryLittleMaid maidInventory = pEntity.maidInventory;
 		owner = pEntity;
@@ -34,12 +31,16 @@ public class ContainerInventoryLittleMaid extends ContainerPlayer {
 		littlemaidInventory = maidInventory;
 		littlemaidInventory.openInventory(owner.maidAvatar);
 
+		// ここがメイドの持ち物スロット
+		// Maid's inventory
 		for (int ly = 0; ly < numRows; ly++) {
 			for (int lx = 0; lx < 9; lx++) {
 				addSlotToContainer(new Slot(maidInventory, lx + ly * 9, 8 + lx * 18, 76 + ly * 18));
 			}
 		}
 
+		// ここがプレイヤーのインベントリ
+		// Player's inventory
 		int lyoffset = (numRows - 4) * 18 + 59;
 		for (int ly = 0; ly < 3; ly++) {
 			for (int lx = 0; lx < 9; lx++) {
@@ -47,17 +48,17 @@ public class ContainerInventoryLittleMaid extends ContainerPlayer {
 			}
 		}
 
+		// プレイヤーの手持ちアイテム
+		// Player's quick slots
 		for (int lx = 0; lx < 9; lx++) {
 			addSlotToContainer(new Slot(playerInventory, lx, 8 + lx * 18, 161 + lyoffset));
 		}
 
+		// メイドの装備
+		// Maid's equipment slots
 		for (int j = 0; j < 4; j++) {
-//			int j1 = j + 1;
-//			addSlotToContainer(new SlotArmor(this, linventory, linventory.getSizeInventory() - 2 - j, 8, 8 + j * 18, j1));
-
 			final int armorIndex = j; // ヘルメットはないと思っていたのか！
-			this.addSlotToContainer(new Slot(maidInventory, InventoryLittleMaid.maxInventorySize+armorIndex, 8 + 72*((3-j)/2), 8 + ((3-j)%2)*36)
-			{
+			this.addSlotToContainer(new Slot(maidInventory, InventoryLittleMaid.maxInventorySize+armorIndex, 8 + 72*((3-j)/2), 8 + ((3-j)%2)*36) {
 				/**
 				 * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1
 				 * in the case of armor slots)
@@ -79,13 +80,6 @@ public class ContainerInventoryLittleMaid extends ContainerPlayer {
 				/**
 				 * Returns the icon index on items.png that is used as background image of the slot.
 				 */
-				/*
-				@SideOnly(Side.CLIENT)
-				public IIcon getBackgroundIconIndex()
-				{
-					return ItemArmor.func_94602_b(armorIndex);
-				}
-				*/
 				@SideOnly(Side.CLIENT)
 				public String getSlotTexture()
 				{

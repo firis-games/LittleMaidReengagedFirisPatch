@@ -67,6 +67,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		prevItems = new ItemStack[maxInventorySize + armorInventory.length];
 	}
 
+	@Override
 	public void readFromNBT(NBTTagList par1nbtTagList) {
 //		mainInventory = new ItemStack[maxInventorySize];
 //		armorInventory = new ItemStack[4];
@@ -88,6 +89,12 @@ public class InventoryLittleMaid extends InventoryPlayer {
 				armorInventory[j - 100] = itemstack;
 			}
 		}
+	}
+
+	@Override
+	public NBTTagList writeToNBT(NBTTagList nbtTagListIn) {
+		// TODO 自動生成されたメソッド・スタブ
+		return super.writeToNBT(nbtTagListIn);
 	}
 
 	@Override
