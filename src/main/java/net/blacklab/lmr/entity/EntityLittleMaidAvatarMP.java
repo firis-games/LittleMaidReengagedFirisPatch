@@ -79,9 +79,6 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////
-	// TODO ちなみに
-	// super.(同じ名前のメソッド)と書いているだけのメソッドは
-	// Overrideする意味がないので書くだけ無駄．
 	@Override
 	protected void entityInit()
 	{
@@ -108,7 +105,6 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	@Override
 	protected void applyEntityAttributes() {
-		// TODO Avatar側はsuperメソッドをスキップしてみて大丈夫じゃない、問題だ。
 		super.applyEntityAttributes();
 		try {
 			getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(20d);
@@ -120,11 +116,6 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	@Override
 	public IAttributeInstance getEntityAttribute(IAttribute attribute) {
-		// 発想を転換させてみる．
-		// 需要無いかもしれないけど解説
-		// メイドさんは「プレイヤーの皮をかぶって」あたかもプレイヤーが行動しているかのように装っている。
-		// これは，被っている皮ではなくて、メイドさん本体側で処理させるための記述。
-		// てか普通に既存の処理にあったね
 		return avatar==null? super.getEntityAttribute(attribute) : avatar.getEntityAttribute(attribute);
 	}
 
@@ -168,6 +159,9 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 			xpCooldown--;
 		}
 		avatar.setExperienceValue(experienceTotal);
+
+		// TODO EntityPlayerをOverrideしていないばっかりにこの値が変わっていなかった？
+		ticksSinceLastSwing++;
 	}
 
 	@Override
