@@ -195,7 +195,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			//1.8検討
 			if (owner.arrowHitTimer <= 0) {
 				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.snowball))) {
-					owner.playSound("random.pop");
+					owner.playSound("entity.item.pickup");
 					if (owner.getPlayingRole() == mpr_StockShooter) {
 						owner.setSwing(5, EnumSound.collect_snow, false);
 						fcounter = 0;
@@ -224,7 +224,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			if (owner.arrowHitTimer <= 0) {
 				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.snowball))) {
 					owner.setSwing(5, EnumSound.collect_snow, false);
-					owner.playSound("random.pop");
+					owner.playSound("entity.item.pickup");
 					fcounter = 0;
 				} else {
 					owner.setPlayingRole(mpr_NULL);

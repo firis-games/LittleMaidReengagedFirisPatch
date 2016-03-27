@@ -400,7 +400,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 							owner.maidInventory.setInventorySlotContents(maidSearchCount, null);
 						}
 						if (f) {
-							owner.playSound("random.pop");
+							owner.playSound("entity.item.pickup");
 							owner.setSwing(2, EnumSound.Null, false);
 						}
 				}

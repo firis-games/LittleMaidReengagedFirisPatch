@@ -2922,7 +2922,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				setGotcha(par1EntityPlayer.getEntityId());
 				mstatgotcha = par1EntityPlayer;
 				MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
-				playSound("random.pop");
+				playSound("entity.item.pickup");
 				return true;
 			}
 
@@ -3542,7 +3542,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 			heal(1);
 		}
 		hurtResistantTime = h;
-		playSound("random.pop");
+		playSound("entity.item.pickup");
 		LittleMaidReengaged.Debug(("eat Sugar." + worldObj.isRemote));
 
 		if (recontract) {

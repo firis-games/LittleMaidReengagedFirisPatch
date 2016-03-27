@@ -162,7 +162,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 					li = litemstack.stackSize;
 					if (owner.maidInventory.addItemStackToInventory(litemstack)) {
 						dropExpOrb(litemstack, li - litemstack.stackSize);
-						owner.playSound("random.pop");
+						owner.playSound("entity.item.pickup");
 						owner.setSwing(5, EnumSound.cookingOver, false);
 						owner.addMaidExperience(4.2f);
 //                    	if (!pEntityLittleMaid.maidInventory.isItemBurned(pEntityLittleMaid.maidInventory.currentItem)) {
@@ -190,7 +190,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 					if (litemstack.stackSize <= 0) {
 						owner.maidInventory.setInventorySlotContents(li, null);
 					}
-					owner.playSound("random.pop");
+					owner.playSound("entity.item.pickup");
 					owner.setSwing(5, EnumSound.cookingStart, false);
 					lflag = true;
 				}
@@ -210,7 +210,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 						owner.maidInventory.setInventoryCurrentSlotContents(null);
 					}
 					owner.getNextEquipItem();
-					owner.playSound("random.pop");
+					owner.playSound("entity.item.pickup");
 					owner.setSwing(5, EnumSound.addFuel, false);
 					lflag = true;
 				} else {
@@ -220,7 +220,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 						// 燃やせるアイテムを持ってないので調理可能品を回収
 						ItemStack litemstack2 = ltile.removeStackFromSlot(0);
 						if (owner.maidInventory.addItemStackToInventory(litemstack2)) {
-							owner.playSound("random.pop");
+							owner.playSound("entity.item.pickup");
 							owner.setSwing(5, EnumSound.Null, false);
 							owner.getNextEquipItem();
 							lflag = false;
@@ -235,7 +235,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 			if (!lflag && !ltile.isBurning() && ltile.getStackInSlot(1) != null) {
 				ItemStack litemstack2 = ltile.removeStackFromSlot(1);
 				if (owner.maidInventory.addItemStackToInventory(litemstack2)) {
-					owner.playSound("random.pop");
+					owner.playSound("entity.item.pickup");
 					owner.setSwing(5, EnumSound.Null, false);
 					owner.getNextEquipItem();
 					lflag = InventoryLittleMaid.isItemBurned(owner.getCurrentEquippedItem());

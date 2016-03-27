@@ -20,6 +20,9 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.logging.log4j.Level;
+
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
@@ -27,10 +30,6 @@ import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraftforge.fml.common.FMLLog;
-import scala.Char;
-
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.logging.log4j.Level;
 
 /**
  * 新サウンドローディング(from 4.3)
@@ -185,7 +184,7 @@ public class LMMNX_SoundLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		// 先にlivingVoiceRateのみを読み込み
 		float livingVoiceRate = LittleMaidReengaged.cfg_voiceRate;
 		for (String buf: readLines) {
@@ -199,7 +198,7 @@ public class LMMNX_SoundLoader {
 
 		// 登録処理
 		for (String buf: readLines) {
-			
+
 			int a = buf.indexOf("=");
 			if (buf.startsWith("se_") && a != -1) {
 				EnumSound sound = EnumSound.valueOf(buf.substring(3, a));
@@ -251,13 +250,13 @@ public class LMMNX_SoundLoader {
 	 * sounds.jsonの生成
 	 */
 	private void createJson() {
-		File jsonDir = new File(FileList.dirMods, "LittleMaidMobNX");
+		File jsonDir = new File(FileList.dirMods, "LittleMaidReengaged");
 		if (jsonDir.isFile()) {
-			throw new IllegalStateException("Remove 'LittleMaidMobNX' file in the mods folder!");
+			throw new IllegalStateException("Remove 'LittleMaidReengaged' file in the mods folder!");
 		}
 		if (!jsonDir.exists()) {
 			if (!jsonDir.mkdir()) {
-				FMLLog.log(Level.ERROR, "[LittleMaidMobNX]Making LittleMaidMobNX directory failed.");
+				FMLLog.log(Level.ERROR, "[LittleMaidReengaged]Making LittleMaidReengaged directory failed.");
 				found = false;
 				return;
 			}
@@ -266,7 +265,7 @@ public class LMMNX_SoundLoader {
 		// JSON書き込み
 		File jsonFile = new File(jsonDir, "sounds.json");
 		if (jsonFile.isDirectory()) {
-			FMLLog.log(Level.ERROR, "[LittleMaidMobNX]There is sounds.json folder?");
+			FMLLog.log(Level.ERROR, "[LittleMaidReengaged]There is sounds.json folder?");
 			found = false;
 			return;
 		}

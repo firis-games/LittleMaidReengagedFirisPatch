@@ -188,7 +188,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				lflag = true;
 				if (owner.maidInventory.addItemStackToInventory(litemstack2)) {
 					ltile.setInventorySlotContents(3, null);
-					owner.playSound("random.pop");
+					owner.playSound("entity.item.pickup");
 					owner.setSwing(5, EnumSound.Null, false);
 				}
 			}
@@ -199,7 +199,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					litemstack1 = ltile.getStackInSlot(li);
 					if (litemstack1 != null && owner.maidInventory.addItemStackToInventory(litemstack1)) {
 						ltile.setInventorySlotContents(li, null);
-						owner.playSound("random.pop");
+						owner.playSound("entity.item.pickup");
 						owner.setSwing(5, EnumSound.cookingOver, false);
 						owner.addMaidExperience(0.2f);
 						lflag = true;
@@ -220,7 +220,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					if (ltile.getStackInSlot(li) == null) {
 						ltile.setInventorySlotContents(li, litemstack1);
 						owner.maidInventory.setInventoryCurrentSlotContents(null);
-						owner.playSound("random.pop");
+						owner.playSound("entity.item.pickup");
 						owner.setSwing(5, EnumSound.cookingStart, false);
 						owner.getNextEquipItem();
 						owner.addMaidExperience(0.25f);
@@ -247,7 +247,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				if (litemstack1 != null && !(litemstack1.getItem() instanceof ItemPotion) && !PotionUtils.getEffectsFromStack(litemstack1).isEmpty()) {
 					ltile.setInventorySlotContents(3, litemstack1);
 					owner.maidInventory.setInventorySlotContents(inventryPos, null);
-					owner.playSound("random.pop");
+					owner.playSound("entity.item.pickup");
 					owner.setSwing(15, EnumSound.Null, false);
 					owner.addMaidExperience(4.5f);
 					lflag = true;

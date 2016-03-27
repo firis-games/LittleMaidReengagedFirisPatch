@@ -65,9 +65,9 @@ public class EventHook
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event){
 		if (!event.player.worldObj.isRemote && LittleMaidReengaged.currentVersion.compareVersion(LittleMaidReengaged.latestVersion) > 0) {
-			event.player.addChatComponentMessage(new TextComponentString(String.format("[LittleMaidMobNX]%s : %s",
+			event.player.addChatComponentMessage(new TextComponentString(String.format("[LittleMaidReengaged]%s : %s",
 					I18n.translateToLocal("system.lmmnx.chat.text.newverstion"), LittleMaidReengaged.latestVersion.shownName)));
-			event.player.addChatComponentMessage(new TextComponentString(String.format("[LittleMaidMobNX]%s",
+			event.player.addChatComponentMessage(new TextComponentString(String.format("[LittleMaidReengaged]%s",
 					I18n.translateToLocal("system.lmmnx.chat.text.checkversion"))));
 		}
 	}
@@ -114,7 +114,7 @@ public class EventHook
 			((EntityLittleMaid)((EntityArrow) entity).shootingEntity).addMaidExperience(0.18f * event.getAmount());
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onItemPutChest(LMMNX_Event.LMMNX_ItemPutChestEvent event){
 		EntityLittleMaid maid = event.maid;

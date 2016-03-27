@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
+import com.google.common.collect.ImmutableSet;
+
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.sound.LMMNX_SoundRegistry;
 import net.blacklab.lmr.util.FileList;
@@ -18,13 +20,11 @@ import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.ResourceLocation;
 
-import com.google.common.collect.ImmutableSet;
-
 /**
  * サウンドパック用
  */
 public class LMM_SoundResourcePack implements IResourcePack {
-	
+
 	public LMM_SoundResourcePack() {
 	}
 
@@ -42,14 +42,14 @@ public class LMM_SoundResourcePack implements IResourcePack {
 	private InputStream getResourceStream(ResourceLocation resource) {
 		InputStream lis = null;
 		if (resource.getResourcePath().endsWith("sounds.json")) {
-			return FileList.COMMON_CLASS_LOADER.getResourceAsStream("LittleMaidMobNX/sounds.json");
+			return FileList.COMMON_CLASS_LOADER.getResourceAsStream("LittleMaidReengaged/sounds.json");
 		}
 		if (resource.getResourcePath().endsWith(".ogg")) {
 			lis = FileList.COMMON_CLASS_LOADER.getResourceAsStream(decodePathGetPath(resource));
 		}
 		return lis;
 	}
-	
+
 	@Override
 	public boolean resourceExists(ResourceLocation resource) {
 		LittleMaidReengaged.Debug("RESOURCE CHECK %s", resource.getResourcePath());
@@ -62,7 +62,7 @@ public class LMM_SoundResourcePack implements IResourcePack {
 		}
 		return false;
 	}
-	
+
 	private String decodePathSplicePathStr(ResourceLocation rl) {
 		String path = rl.getResourcePath();
 		Pattern pattern = Pattern.compile("^/*?sounds/(.+)\\.ogg");
@@ -72,13 +72,13 @@ public class LMM_SoundResourcePack implements IResourcePack {
 		}
 		return null;
 	}
-	
+
 	private String decodePathGetName(ResourceLocation rl) {
 		String f = decodePathSplicePathStr(rl);
 		String[] gs = f.split("//");
 		return gs[0];
 	}
-	
+
 	private String decodePathGetPath(ResourceLocation rl) {
 		String f = decodePathSplicePathStr(rl);
 		String[] gs = f.split("//");
