@@ -291,7 +291,7 @@ public class LMMNX_SoundLoader {
 						Iterator n = m.iterator();
 						while (n.hasNext()) {
 							String path = (String) n.next();
-							output.add("      \"" + soundName + "//" + path + "\"" + (n.hasNext() ? "," : ""));
+							output.add("      \""+LittleMaidReengaged.DOMAIN+":" + soundName + "//" + path + "\"" + (n.hasNext() ? "," : ""));
 						}
 					}
 

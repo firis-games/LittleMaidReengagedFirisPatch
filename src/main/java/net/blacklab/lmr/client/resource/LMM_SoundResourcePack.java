@@ -86,7 +86,7 @@ public class LMM_SoundResourcePack implements IResourcePack {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static final Set lmmxResourceDomains = ImmutableSet.of("lmmnx");
+	public static final Set lmmxResourceDomains = ImmutableSet.of(LittleMaidReengaged.DOMAIN);
 
 	@Override
 	@SuppressWarnings("rawtypes")

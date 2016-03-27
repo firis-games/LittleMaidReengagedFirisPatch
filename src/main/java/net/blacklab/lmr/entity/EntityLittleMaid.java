@@ -845,12 +845,22 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 	 * 文字列指定による音声再生
 	 */
 	public void playSound(String pName, float pitch) {
-		if(!worldObj.isRemote) {
+		LittleMaidReengaged.Debug("REQUESTED PLAYING SOUND: %s", pName);
+//		if(!worldObj.isRemote) {
 			SoundEvent sEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation(pName));
 			if (sEvent != null) {
+				if (worldObj.isRemote)
+					LittleMaidReengaged.Debug("PLAYING SOUND EVENT-%s", sEvent.getSoundName().toString());
 				playSound(sEvent, 1, pitch);
+			} else if (worldObj.isRemote) {
+				// ClientOnlyなダメ元
+				sEvent = new SoundEvent(new ResourceLocation(pName));
+				LittleMaidReengaged.Debug("PLAYING SOUND EVENT-%s", sEvent.getSoundName().toString());
+				try {
+					playSound(sEvent, 1, pitch);
+				} catch (Exception exception) {}
 			}
-		}
+//		}
 	}
 
 	/**
@@ -1851,8 +1861,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 				LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", getEntityId(), enumsound.index, enumsound.name(), sname));
 
-				playSound(LittleMaidReengaged.DOMAIN+":"+sname, lpitch);
-//				worldObj.playSound(posX, posY, posZ, SoundEvent.soundEventRegistry.getObject(new ResourceLocation(LittleMaidReengaged.DOMAIN+":"+sname)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
+//				playSound(LittleMaidReengaged.DOMAIN+":"+sname, lpitch);
+				worldObj.playSound(posX, posY, posZ, new SoundEvent(new ResourceLocation(LittleMaidReengaged.DOMAIN+":"+sname)), getSoundCategory(), getSoundVolume(), lpitch, false);
 				playingSound.remove(enumsound);
 			}
 //			LMM_LittleMaidMobNX.proxy.playLittleMaidSound(worldObj, posX, posY, posZ, playingSound, getSoundVolume(), lpitch, false);
