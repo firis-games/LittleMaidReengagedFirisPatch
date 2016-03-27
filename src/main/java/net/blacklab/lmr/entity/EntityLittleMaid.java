@@ -309,6 +309,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				try{
 					maidAvatar = new EntityLittleMaidAvatarMP(par1World, this);
 				}catch(Throwable throwable){
+					throwable.printStackTrace();
 					maidAvatar = null;
 					setDead();
 					return;
@@ -429,6 +430,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
 		// 標準攻撃力１
 		getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+		// 攻撃速度
+		getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(20D);
+
 	}
 
 	@Override

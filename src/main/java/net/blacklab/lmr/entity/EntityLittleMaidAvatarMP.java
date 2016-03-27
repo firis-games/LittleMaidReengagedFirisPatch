@@ -7,7 +7,10 @@ import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -76,10 +79,14 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////
+	// TODO ちなみに
+	// super.(同じ名前のメソッド)と書いているだけのメソッドは
+	// Overrideする意味がないので書くだけ無駄．
 	@Override
 	protected void entityInit()
 	{
 		super.entityInit();
+
 	}
 	public void readEntityFromNBT(NBTTagCompound var1)
 	{
@@ -101,10 +108,24 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	@Override
 	protected void applyEntityAttributes() {
-		// 初期設定殺し
-		// 初期設定値はダミーに設定される。
+		// TODO Avatar側はsuperメソッドをスキップしてみて大丈夫じゃない、問題だ。
 		super.applyEntityAttributes();
+		try {
+			getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(20d);
+		} catch (Exception exception){
+			exception.printStackTrace();
+		}
 //		this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.13000000417232513D);
+	}
+
+	@Override
+	public IAttributeInstance getEntityAttribute(IAttribute attribute) {
+		// 発想を転換させてみる．
+		// 需要無いかもしれないけど解説
+		// メイドさんは「プレイヤーの皮をかぶって」あたかもプレイヤーが行動しているかのように装っている。
+		// これは，被っている皮ではなくて、メイドさん本体側で処理させるための記述。
+		// てか普通に既存の処理にあったね
+		return avatar==null? super.getEntityAttribute(attribute) : avatar.getEntityAttribute(attribute);
 	}
 
 	@Override
