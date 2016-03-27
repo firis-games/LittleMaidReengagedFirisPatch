@@ -10,7 +10,6 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.helper.RendererHelper;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -22,12 +21,8 @@ import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 
 @SuppressWarnings("deprecation")
@@ -253,26 +248,25 @@ public class RenderLittleMaid extends RenderModelMulti {
 
 					modelMain.model.Arms[lmm.getDominantArm()].postRender(0.0625F);
 
-					Item item = itemstack.getItem();
-
-					Block lBlock = Block.getBlockFromItem(item);
-					if (item instanceof ItemBlock && lBlock.getRenderType(lBlock.getDefaultState()) == EnumBlockRenderType.MODEL) {
-						GlStateManager.translate(0.0F, 0.1875F, -0.3125F);
-						GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
-						GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
-						float f8 = 0.375F;
-						GlStateManager.scale(-f8, -f8, f8);
-					} else if (item==Items.bow) {
-						GlStateManager.translate(lmm.getDominantArm()==1?-0.1125f:-0.05f, -0.0375F, -0.15F);
-						GlStateManager.rotate(10f, 0f, 1f, 0f);
-					} else{
-						GlStateManager.translate(0.0F, -0.0375F, 0.15F);
+					if (lmm.isSneaking()) {
+						GlStateManager.translate(0.0F, 0.2F, 0.0F);
 					}
+					boolean flag = lmm.getDominantArm() == 1;
 
-					minecraft.getItemRenderer().renderItem(lmm, itemstack,
-							lmm.getDominantArm()==0 ? ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND);
+					GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+					GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+					/* 初期モデル構成で
+					 * x: 手の甲に垂直な方向(-で向かって右に移動)
+					 * y: 体の面に垂直な方向(-で向かって背面方向に移動)
+					 * z: 腕に平行な方向(-で向かって手の先方向に移動)
+					 */
+					GlStateManager.translate(flag ? -0.0125F : 0.0125F, 0.05f, -0.15f);
+					Minecraft.getMinecraft().getItemRenderer().renderItemSide(lmm, itemstack,
+							flag ?
+									ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND :
+									ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND,
+							flag);
 					GlStateManager.popMatrix();
-
 				}
 
 			}
