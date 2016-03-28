@@ -22,13 +22,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -111,13 +108,12 @@ public class GuiInventory extends GuiContainer {
 //	      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-		// キャラ
-		int lj = 0;
-		int lk = 0;
 //		      GL11.glEnable(EXTRescaleNormal.GL_RESCALE_NORMAL_EXT);
 //	      GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 //	      GL11.glPushMatrix();
 //	      GL11.glTranslatef(lj + 51, lk + 57, 50F);
+		// TODO use vanilla method at Background to render maid
+/*
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableColorMaterial();
 		GlStateManager.pushMatrix();
@@ -147,9 +143,9 @@ public class GuiInventory extends GuiContainer {
 		entitylittlemaid.renderYawOffset = (float) Math.atan(f8 / 40F) * 20F;
 		entitylittlemaid.rotationYawHead = entitylittlemaid.rotationYaw = (float) Math.atan(f8 / 40F) * 40F;
 		entitylittlemaid.rotationPitch = -(float) Math.atan(f9 / 40F) * 20F;
-//		GL11.glTranslatef(0.0F, 0.0F/*entitylittlemaid.yOffset*/, 0.0F);
+//		GL11.glTranslatef(0.0F, entitylittlemaid.yOffset, 0.0F);
 //		Minecraft.getMinecraft().getRenderManager().playerViewY = 180F;
-		GlStateManager.translate(0.0F, 0.0F/*entitylittlemaid.yOffset*/, 0.0F);
+		GlStateManager.translate(0.0F, entitylittlemaid.yOffset, 0.0F);
 		Minecraft.getMinecraft().getRenderManager().setPlayerViewY(180F);
 		Minecraft.getMinecraft().getRenderManager().setRenderShadow(false);
 		// TODO この最後の引数もヨクワカンネ
@@ -178,6 +174,7 @@ public class GuiInventory extends GuiContainer {
 		GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
 		GlStateManager.disableTexture2D();
 		GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+*/
 	}
 
 	@Override
@@ -198,6 +195,11 @@ public class GuiInventory extends GuiContainer {
 
 		// LP/AP
 		drawHeathArmor(0, 0);
+
+		// Mob
+		net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen(
+				lj + 51, lk + 57, 30,
+				(float)(lj + 51) - i, (float)(lk + 57 - 50) - j, entitylittlemaid);
 /*
 		MMM_Client.setTexture(field_110324_m);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -279,7 +281,7 @@ public class GuiInventory extends GuiContainer {
 		//経験値ブースト
 		drawGradientRect(guiLeft+112, guiTop-16, guiLeft+xSize-16, guiTop, 0x80202020, 0x80202020);
 		drawCenteredString(fontRendererObj, String.format("x%d", booster), guiLeft+112+(xSize-128)/2, guiTop-12, 0xffffff);
-		
+
 		// LV数値
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(guiLeft, guiTop, 0);
@@ -594,7 +596,7 @@ public class GuiInventory extends GuiContainer {
 			break;
 		}
 	}
-	
+
 	protected void setArmorVisible() {
 		entitylittlemaid.setMaidArmorVisible(visarmorbutton[0].toggle, visarmorbutton[1].toggle, visarmorbutton[2].toggle, visarmorbutton[3].toggle);
 		entitylittlemaid.syncMaidArmorVisible();
