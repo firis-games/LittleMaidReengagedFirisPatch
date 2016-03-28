@@ -293,7 +293,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	}
 
 	public boolean isUsingItemLittleMaid() {
-		return isHandActive() | isItemTrigger;
+		return isHandActive() || getIsItemTrigger();
 	}
 
 	@Override
@@ -318,6 +318,8 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		isItemTrigger = false;
 		isItemReload = isItemPreReload = false;
 		stopUsingItem(avatar.getDominantArm());
+		avatar.stopActiveHand();
+		super.stopActiveHand();
 	}
 
 	public void setItemInUse(int pIndex, ItemStack itemstack, int i) {
@@ -328,7 +330,9 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	@Override
 	public void setActiveHand(EnumHand p_184598_1_) {
-		avatar.setActiveHand(EnumHand.MAIN_HAND);
+		isItemTrigger = true;
+		avatar.setActiveHand(p_184598_1_);
+		super.setActiveHand(p_184598_1_);
 	}
 
 //	@Override

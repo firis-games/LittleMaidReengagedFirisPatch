@@ -19,6 +19,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -114,6 +115,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 		fAvatar.stopActiveHand();
 //		fAvatar.clearItemInUse();
 		fForget=0;
+		LittleMaidReengaged.Debug("RESETTING ARCHER TASK");
 	}
 
 	@Override
@@ -260,8 +262,9 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 									int at = ((helmid == Items.iron_helmet) || (helmid == Items.diamond_helmet)) ? 26 : 16;
 									if (swingState.attackTime < at) {
 										fMaid.setSwing(at, EnumSound.sighting, !fMaid.isPlaying());
-										litemstack = litemstack.useItemRightClick(worldObj, fAvatar, EnumHand.MAIN_HAND).getResult();
-										LittleMaidReengaged.Debug("id:%d redygun.", fMaid.getEntityId());
+										ActionResult<ItemStack> result = litemstack.useItemRightClick(worldObj, fAvatar, EnumHand.MAIN_HAND);
+										litemstack = result.getResult();
+										LittleMaidReengaged.Debug("id:%d redygun./ resultType= %s", fMaid.getEntityId(), result.getType());
 									}
 								} else {
 									if(fMaid.maidMode!=EntityMode_Playing.mmode_Playing)

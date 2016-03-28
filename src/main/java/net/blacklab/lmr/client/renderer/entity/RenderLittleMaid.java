@@ -125,8 +125,8 @@ public class RenderLittleMaid extends RenderModelMulti {
 					ResourceLocation texInner = mmodel.textureInner[renderParts];
 					if(texInner!=null&&lmm.isArmorVisible(0)) try{
 						Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
-						mmodel.modelInner.setLivingAnimations(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks);
 						mmodel.modelInner.setRotationAngles(limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, renderScale, lmm.maidCaps);
+						mmodel.modelInner.setLivingAnimations(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks);
 						mmodel.modelInner.render(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, renderScale, true);
 					}catch(Exception e){ break INNER; }
 				} else {
@@ -175,8 +175,8 @@ public class RenderLittleMaid extends RenderModelMulti {
 					ResourceLocation texOuter = mmodel.textureOuter[renderParts];
 					if(texOuter!=null&&lmm.isArmorVisible(2)) try{
 						Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
-						mmodel.modelOuter.setLivingAnimations(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks);
 						mmodel.modelOuter.setRotationAngles(limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, renderScale, lmm.maidCaps);
+						mmodel.modelOuter.setLivingAnimations(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks);
 						mmodel.modelOuter.render(lmm.maidCaps, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, renderScale, true);
 					}catch(Exception e){break OUTER;}
 				}else{
