@@ -16,7 +16,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
@@ -59,7 +58,7 @@ public class EntityMode_Archer extends EntityModeBase {
 //		ModLoader.addLocalization("littleMaidMob.mode.Blazingstar", "ja_JP", "刃鳴散らす者");
 		*/
 		TriggerSelect.appendTriggerItem(null, "Bow", "");
-		TriggerSelect.appendTriggerItem(null, "Arrow", "");
+//		TriggerSelect.appendTriggerItem(null, "Arrow", "");
 	}
 
 	@Override
@@ -155,8 +154,7 @@ public class EntityMode_Archer extends EntityModeBase {
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
 		UUID ls = owner.getMaidMasterUUID();
-		return (pItemStack.getItem() instanceof ItemBow) || (pItemStack.getItem() == Items.arrow)
-				|| TriggerSelect.checkWeapon(ls, "Bow", pItemStack) || TriggerSelect.checkWeapon(ls, "Arrow", pItemStack);
+		return (pItemStack.getItem() instanceof ItemBow) || TriggerSelect.checkWeapon(ls, "Bow", pItemStack);
 	}
 
 	@Override

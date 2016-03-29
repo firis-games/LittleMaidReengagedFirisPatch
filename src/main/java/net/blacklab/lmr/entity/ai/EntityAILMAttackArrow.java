@@ -9,7 +9,6 @@ import net.blacklab.lmr.entity.mode.EntityMode_Archer;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -82,12 +82,13 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 			return false;
 		}
 		if (fMaid.getMaidModeInt() == EntityMode_Archer.mmode_Archer ||
-				fMaid.getMaidModeInt() == EntityMode_Archer.mmode_Blazingstar)
-			for (ItemStack stack: fMaid.maidInventory.mainInventory) {
-			if (stack != null && stack.getItem()==Items.arrow || TriggerSelect.checkWeapon(fMaid.getMaidMasterUUID(), "Arrow", stack)) {
-				fTarget = entityliving;
-				return true;
-			}
+				fMaid.getMaidModeInt() == EntityMode_Archer.mmode_Blazingstar) {
+//			for (ItemStack stack: fMaid.maidInventory.mainInventory) {
+//				if (stack != null && stack.getItem()==Items.arrow || TriggerSelect.checkWeapon(fMaid.getMaidMasterUUID(), "Arrow", stack)) {
+					fTarget = entityliving;
+					return true;
+//				}
+//			}
 		}
 		if (fMaid.isPlaying()) {
 			fTarget = entityliving;
@@ -115,7 +116,6 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 		fAvatar.stopActiveHand();
 //		fAvatar.clearItemInUse();
 		fForget=0;
-		LittleMaidReengaged.Debug("RESETTING ARCHER TASK");
 	}
 
 	@Override
@@ -262,10 +262,15 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 								if (!fMaid.weaponFullAuto || lcanattack) {
 									int at = ((helmid == Items.iron_helmet) || (helmid == Items.diamond_helmet)) ? 26 : 16;
 									if (swingState.attackTime < at) {
-										fMaid.setSwing(at, EnumSound.sighting, !fMaid.isPlaying());
 										ActionResult<ItemStack> result = litemstack.useItemRightClick(worldObj, fAvatar, EnumHand.MAIN_HAND);
+										if (result.getType() != EnumActionResult.SUCCESS) {
+											LittleMaidReengaged.Debug("id:%d bow trigger failed.", fMaid.getEntityId());
+											resetTask();
+											return;
+										}
+										fMaid.setSwing(at, EnumSound.sighting, !fMaid.isPlaying());
 										litemstack = result.getResult();
-										LittleMaidReengaged.Debug("id:%d redygun./ resultType= %s", fMaid.getEntityId(), result.getType());
+										LittleMaidReengaged.Debug("id:%d redygun.", fMaid.getEntityId());
 									}
 								} else {
 									if(fMaid.maidMode!=EntityMode_Playing.mmode_Playing)
@@ -366,7 +371,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 //				fMaid.setAttackTarget(null);
 			}
 //			if (fMaid.weaponFullAuto && getAvatarIF().getIsItemTrigger()) {
-				fAvatar.stopActiveHand();
+//				fAvatar.stopActiveHand();
 //			} else {
 //				fAvatar.clearItemInUse();
 //			}
