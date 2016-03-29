@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -33,7 +32,7 @@ public class TriggerSelect {
 			lmap.putAll(defaultTrigger);
 			usersTrigger.put(pUsername, lmap);
 		}
-		
+
 		return usersTrigger.get(pUsername);
 	}
 
@@ -84,9 +83,9 @@ public class TriggerSelect {
 		if (!selector.contains(pSelector)) {
 			return false;
 		}
-		if (CommonHelper.isLocalPlay()) {
-			return getuserTriggerList(null, pSelector).contains(pItemStack.getItem());
-		}
+//		if (CommonHelper.isLocalPlay()) {
+//			return getuserTriggerList(null, pSelector).contains(pItemStack.getItem());
+//		}
 		if (!usersTrigger.containsKey(pUsername)) {
 			return false;
 		}
