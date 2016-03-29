@@ -24,7 +24,6 @@ import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -55,10 +54,10 @@ public class IFF {
 		if (pUsername == null) {
 			return DefaultIFF;
 		}
-		if (CommonHelper.isLocalPlay()) {
-			pUsername = EntityPlayer.getOfflineUUID("Player");
-		}
-		
+//		if (CommonHelper.isLocalPlay()) {
+//			pUsername = EntityPlayer.getOfflineUUID("Player");
+//		}
+
 		if (!UserIFF.containsKey(pUsername)) {
 			// IFFがないので作成
 			Map<String, Integer> lmap = new HashMap<String, Integer>();
@@ -130,7 +129,7 @@ public class IFF {
 				pMap.put(pName, pEntity);
 				LittleMaidReengaged.Debug(pName + " added.");
 			}
-			
+
 			// IFFの初期値
 			if (!DefaultIFF.containsKey(pName)) {
 				if (pEntity instanceof IMob) {
@@ -139,7 +138,7 @@ public class IFF {
 				DefaultIFF.put(pName, liff);
 			}
 		}
-		
+
 		return liff;
 	}
 
@@ -171,7 +170,7 @@ public class IFF {
 			li = 0;
 			if (entityname.indexOf(":Contract") > -1) {
 				li = 1;
-			} else 
+			} else
 			if (entityname.indexOf(":Taim") > -1) {
 				li = 1;
 			} else
@@ -270,11 +269,11 @@ public class IFF {
 			return;
 		}
 		Map<String, Integer> lmap = getUserIFF(pUsername);
-		
+
 		try {
 			FileReader fr = new FileReader(lfile);
 			BufferedReader br = new BufferedReader(fr);
-			
+
 			String s;
 			while ((s = br.readLine()) != null) {
 				String t[] = s.split("=");
@@ -290,7 +289,7 @@ public class IFF {
 					lmap.put(t[0], i);
 				}
 			}
-			
+
 			br.close();
 			fr.close();
 		} catch (Exception e) {
@@ -302,12 +301,12 @@ public class IFF {
 		// IFF ファイルの書込み
 		File lfile = getFile(pUsername);
 		Map<String, Integer> lmap = getUserIFF(pUsername);
-		
+
 		try {
 			if ((lfile.exists() || lfile.createNewFile()) && lfile.canWrite()) {
 				FileWriter fw = new FileWriter(lfile);
 				BufferedWriter bw = new BufferedWriter(fw);
-				
+
 				// トリガーアイテムのリスト
 				for (Entry<Integer, List<Item>> le : TriggerSelect.getUserTrigger(pUsername).entrySet())
 				{
@@ -326,12 +325,12 @@ public class IFF {
 					sb.append("\r\n");
 					bw.write(sb.toString());
 				}
-				
+
 				for (Map.Entry<String, Integer> me : lmap.entrySet()) {
 					bw.write(String.format("%s=%d\r\n", me.getKey(),
 							me.getValue()));
 				}
-				
+
 				bw.close();
 				fw.close();
 			}
