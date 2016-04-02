@@ -25,7 +25,7 @@ public class ItemTriggerRegisterKey extends Item {
 	public static final int RK_MAX_COUNT = 32;
 	
 	public ItemTriggerRegisterKey() {
-		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":lmmnx_registerkey");
+		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":registerkey");
 		setCreativeTab(CreativeTabs.tabMisc);
 		setRegistryName("registerkey");
 	}
