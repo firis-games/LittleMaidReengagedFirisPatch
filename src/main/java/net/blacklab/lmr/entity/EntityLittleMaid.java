@@ -25,8 +25,8 @@ import net.blacklab.lmr.api.event.LMMNX_Event;
 import net.blacklab.lmr.api.item.LMMNX_API_Item;
 import net.blacklab.lmr.api.item.LMMNX_IItemSpecialSugar;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
-import net.blacklab.lmr.client.sound.LMMNX_SoundLoader;
-import net.blacklab.lmr.client.sound.LMMNX_SoundRegistry;
+import net.blacklab.lmr.client.sound.SoundLoader;
+import net.blacklab.lmr.client.sound.SoundRegistry;
 import net.blacklab.lmr.entity.actionsp.EntityCaps;
 import net.blacklab.lmr.entity.actionsp.SwingStatus;
 import net.blacklab.lmr.entity.ai.EntityAILMAttackArrow;
@@ -1837,14 +1837,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				EnumSound enumsound = iterator.next();
 				LittleMaidReengaged.Debug("REQ %s", enumsound);
 
-				if (!LMMNX_SoundLoader.isFoundSoundpack()) {
+				if (!SoundLoader.isFoundSoundpack()) {
 					playSound(enumsound.DefaultValue, lpitch);
 //					worldObj.playSound(posX, posY, posZ, SoundEvent.soundEventRegistry.getObject(new ResourceLocation(enumsound.DefaultValue)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
 					playingSound.remove(enumsound);
 					continue;
 				}
 
-				String sname = LMMNX_SoundRegistry.getSoundRegisteredName(enumsound, textureNameMain, getColor());
+				String sname = SoundRegistry.getSoundRegisteredName(enumsound, textureNameMain, getColor());
 				LittleMaidReengaged.Debug("STC %s,%d/FRS %s", textureNameMain, getColor(), sname);
 
 				if (sname == null || sname.isEmpty()) {
@@ -1854,7 +1854,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 				if ((enumsound.index & 0xf00) == EnumSound.living_daytime.index) {
 					// LivingSound LivingVoiceRateを確認
-					Float ratio = LMMNX_SoundRegistry.getLivingVoiceRatio(sname);
+					Float ratio = SoundRegistry.getLivingVoiceRatio(sname);
 					if (ratio == null) ratio = LittleMaidReengaged.cfg_voiceRate;
 					// カットオフ
 					if (rand.nextFloat() > ratio) {

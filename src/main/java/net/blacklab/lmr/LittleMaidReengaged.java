@@ -9,8 +9,8 @@ import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.api.mode.LMMNX_API_Farmer;
-import net.blacklab.lmr.client.resource.LMMNX_OldZipTexturesLoader;
-import net.blacklab.lmr.client.resource.LMM_SoundResourcePack;
+import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
+import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.event.EventHook;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
@@ -277,8 +277,8 @@ public class LittleMaidReengaged {
 			List<IResourcePack> defaultResourcePacks = ObfuscationReflectionHelper
 					.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(),
 							"defaultResourcePacks", "field_110449_ao");
-			defaultResourcePacks.add(new LMM_SoundResourcePack());
-			defaultResourcePacks.add(new LMMNX_OldZipTexturesLoader());
+			defaultResourcePacks.add(new SoundResourcePack());
+			defaultResourcePacks.add(new OldZipTexturesWrapper());
 
 			// デフォルトモデルの設定
 			proxy.init();

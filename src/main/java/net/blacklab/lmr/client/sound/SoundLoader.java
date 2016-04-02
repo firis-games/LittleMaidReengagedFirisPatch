@@ -35,9 +35,9 @@ import net.minecraftforge.fml.common.FMLLog;
  * 新サウンドローディング(from 4.3)
  *
  */
-public class LMMNX_SoundLoader {
+public class SoundLoader {
 
-	protected static LMMNX_SoundLoader instance = new LMMNX_SoundLoader();
+	protected static SoundLoader instance = new SoundLoader();
 	private boolean found = false;
 	private boolean sound = false;
 
@@ -45,7 +45,7 @@ public class LMMNX_SoundLoader {
 
 	private List<String> pathStore;
 
-	public LMMNX_SoundLoader() {
+	public SoundLoader() {
 		pathStore = new ArrayList<String>();
 		loadedTPNames = new ArrayList<String>();
 	}
@@ -69,7 +69,7 @@ public class LMMNX_SoundLoader {
 		}
 
 		instance.searchDir(FileList.dirMods);
-		LMMNX_SoundRegistry.copySoundsAdjust();
+		SoundRegistry.copySoundsAdjust();
 		instance.appendPath();
 		instance.createJson();
 	}
@@ -158,19 +158,15 @@ public class LMMNX_SoundLoader {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			// 文字コード違反
-			if (charset.equals(Charset.forName("UTF-8")) && Charset.isSupported("Shift_JIS")) {
-				System.err.println("Sound Loading Failed. Trying S-JIS Loading.");
-				searchZip(f, Charset.forName("Shift_JIS"));
-			} else {
-				System.err.println("Errors occured during loading soundpack.");
-			}
+			System.err.println("Loading sound: Unexpected error occured. Maybe sound archive contains "+ charset.name() +" characters?");
+			e.printStackTrace();
 		}
 
 	}
 
 	private void decodeConfig(InputStream inputStream, String texture) {
 		if (texture != null) {
-			LMMNX_SoundRegistry.markTexVoiceReserved(texture);
+			SoundRegistry.markTexVoiceReserved(texture);
 		}
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 		List<String> readLines = new ArrayList<String>();
@@ -213,7 +209,7 @@ public class LMMNX_SoundLoader {
 					// サウンド名
 					String name = vlStrings[vlStrings.length - 1];
 					// テクスチャネーム
-					String texname = LMMNX_SoundRegistry.DEFAULT_TEXTURE_REGISTRATION_KEY;
+					String texname = SoundRegistry.DEFAULT_TEXTURE_REGISTRATION_KEY;
 					switch (vlStrings.length) {
 					case 3:
 						texname = vlStrings[0];
@@ -226,19 +222,19 @@ public class LMMNX_SoundLoader {
 						}
 					case 1:
 						String tString = texture!=null ? texture : texname;
-						if (texture == null && LMMNX_SoundRegistry.isTexVoiceMarked(texname)) {
+						if (texture == null && SoundRegistry.isTexVoiceMarked(texname)) {
 							LittleMaidReengaged.Debug("TEXTURE %s is marked by cfg", texname);
 							break;
 						}
 						LittleMaidReengaged.Debug("REGISTER NAME %s, %s, %s", tString, col, name);
-						LMMNX_SoundRegistry.registerSoundName(sound, tString, col, name);
+						SoundRegistry.registerSoundName(sound, tString, col, name);
 						break;
 					default:
 						break;
 					}
 					if ((sound.index & 0xf00) == EnumSound.living_daytime.index) {
 						// LivingSound
-						LMMNX_SoundRegistry.setLivingVoiceRatio(name, livingVoiceRate);
+						SoundRegistry.setLivingVoiceRatio(name, livingVoiceRate);
 					}
 				}
 			}
@@ -276,11 +272,11 @@ public class LMMNX_SoundLoader {
 			// トップブロック
 			output.add("{");
 
-				Iterator iterator = LMMNX_SoundRegistry.getRegisteredNamesList().iterator();
+				Iterator iterator = SoundRegistry.getRegisteredNamesList().iterator();
 				while (iterator.hasNext()) {
 					String soundName = (String) iterator.next();
 
-					List m = LMMNX_SoundRegistry.getPathListFromRegisteredName(soundName);
+					List m = SoundRegistry.getPathListFromRegisteredName(soundName);
 					// サウンド登録名
 					output.add("  \"" + soundName + "\": {");
 
@@ -346,9 +342,9 @@ public class LMMNX_SoundLoader {
 		do {
 			String p3 = prefix + str.substring(++i);
 			LittleMaidReengaged.Debug("NAME CHECK %s", p3);
-			if (LMMNX_SoundRegistry.isSoundNameRegistered(p3)) {
+			if (SoundRegistry.isSoundNameRegistered(p3)) {
 				LittleMaidReengaged.Debug("APPEND SOUND PATH %s as %s", path, p3);
-				LMMNX_SoundRegistry.registerSoundPath(p3, path);
+				SoundRegistry.registerSoundPath(p3, path);
 			}
 			i=str.indexOf(".", i);
 		} while (i!=-1 && i!=str.lastIndexOf("."));

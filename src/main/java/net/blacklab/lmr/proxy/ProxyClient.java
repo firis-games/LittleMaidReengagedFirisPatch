@@ -6,7 +6,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.entity.LMMNX_RenderEntitySelect;
 import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
-import net.blacklab.lmr.client.sound.LMMNX_SoundLoader;
+import net.blacklab.lmr.client.sound.SoundLoader;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.client.Minecraft;
@@ -83,7 +83,7 @@ public class ProxyClient extends ProxyCommon
 //		LMM_SoundManager.instance.init();
 		// サウンドパック
 //		LMM_SoundManager.instance.loadDefaultSoundPack();
-		LMMNX_SoundLoader.load();
+		SoundLoader.load();
 	}
 
 	public boolean isSinglePlayer()

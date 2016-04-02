@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 import com.google.common.collect.ImmutableSet;
 
-public class LMMNX_OldZipTexturesLoader implements IResourcePack {
+public class OldZipTexturesWrapper implements IResourcePack {
 	
 	public static ArrayList<String> keys = new ArrayList<String>();
 
