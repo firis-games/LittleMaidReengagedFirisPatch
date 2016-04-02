@@ -21,12 +21,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemSpawnEgg extends Item
+public class ItemMaidSpawnEgg extends Item
 {
-	public ItemSpawnEgg()
+	
+	public ItemMaidSpawnEgg()
 	{
 		this.setHasSubtypes(true);
 		this.setCreativeTab(CreativeTabs.tabMisc);
+		setRegistryName("spawn_littlemaid_egg");
 	}
 
 	@Override

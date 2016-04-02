@@ -25,8 +25,8 @@ import net.blacklab.lmr.api.event.LMMNX_Event;
 import net.blacklab.lmr.api.item.LMMNX_API_Item;
 import net.blacklab.lmr.api.item.LMMNX_IItemSpecialSugar;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
-import net.blacklab.lmr.client.sound.LMMNX_SoundLoader;
-import net.blacklab.lmr.client.sound.LMMNX_SoundRegistry;
+import net.blacklab.lmr.client.sound.SoundLoader;
+import net.blacklab.lmr.client.sound.SoundRegistry;
 import net.blacklab.lmr.entity.actionsp.EntityCaps;
 import net.blacklab.lmr.entity.actionsp.SwingStatus;
 import net.blacklab.lmr.entity.ai.EntityAILMAttackArrow;
@@ -56,7 +56,7 @@ import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.pathnavigate.LMMNX_PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
-import net.blacklab.lmr.item.ItemRegisterKey;
+import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
@@ -1837,14 +1837,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 				EnumSound enumsound = iterator.next();
 				LittleMaidReengaged.Debug("REQ %s", enumsound);
 
-				if (!LMMNX_SoundLoader.isFoundSoundpack()) {
+				if (!SoundLoader.isFoundSoundpack()) {
 					playSound(enumsound.DefaultValue, lpitch);
 //					worldObj.playSound(posX, posY, posZ, SoundEvent.soundEventRegistry.getObject(new ResourceLocation(enumsound.DefaultValue)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
 					playingSound.remove(enumsound);
 					continue;
 				}
 
-				String sname = LMMNX_SoundRegistry.getSoundRegisteredName(enumsound, textureNameMain, getColor());
+				String sname = SoundRegistry.getSoundRegisteredName(enumsound, textureNameMain, getColor());
 				LittleMaidReengaged.Debug("STC %s,%d/FRS %s", textureNameMain, getColor(), sname);
 
 				if (sname == null || sname.isEmpty()) {
@@ -1854,7 +1854,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 				if ((enumsound.index & 0xf00) == EnumSound.living_daytime.index) {
 					// LivingSound LivingVoiceRateを確認
-					Float ratio = LMMNX_SoundRegistry.getLivingVoiceRatio(sname);
+					Float ratio = SoundRegistry.getLivingVoiceRatio(sname);
 					if (ratio == null) ratio = LittleMaidReengaged.cfg_voiceRate;
 					// カットオフ
 					if (rand.nextFloat() > ratio) {
@@ -3037,23 +3037,23 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								NBTTagCompound tagCompound = par3ItemStack.getTagCompound();
 								if (tagCompound == null) return false;
 
-								String modeString = tagCompound.getString(ItemRegisterKey.RK_MODE_TAG);
+								String modeString = tagCompound.getString(ItemTriggerRegisterKey.RK_MODE_TAG);
 								if (modeString.isEmpty()) return false;
 
 								registerMode = modeString;
 								registerTick.setValue(200);
 
-								int count = tagCompound.getInteger(ItemRegisterKey.RK_COUNT);
-								if(++count >= ItemRegisterKey.RK_MAX_COUNT) {
+								int count = tagCompound.getInteger(ItemTriggerRegisterKey.RK_COUNT);
+								if(++count >= ItemTriggerRegisterKey.RK_MAX_COUNT) {
 									par1EntityPlayer.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
 								}
-								tagCompound.setInteger(ItemRegisterKey.RK_COUNT, count);
+								tagCompound.setInteger(ItemTriggerRegisterKey.RK_COUNT, count);
 
 								par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.readyregistration") + registerMode));
-								if(count >= ItemRegisterKey.RK_MAX_COUNT-10){
-									if(count<ItemRegisterKey.RK_MAX_COUNT){
+								if(count >= ItemTriggerRegisterKey.RK_MAX_COUNT-10){
+									if(count<ItemTriggerRegisterKey.RK_MAX_COUNT){
 										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.warningcount") +
-												(ItemRegisterKey.RK_MAX_COUNT-count)).setChatStyle(new Style().setColor(TextFormatting.YELLOW)));
+												(ItemTriggerRegisterKey.RK_MAX_COUNT-count)).setChatStyle(new Style().setColor(TextFormatting.YELLOW)));
 									} else {
 										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.endcount"))
 												.setChatStyle(new Style().setColor(TextFormatting.DARK_RED)));

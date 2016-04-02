@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import com.google.common.collect.ImmutableSet;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.client.sound.LMMNX_SoundRegistry;
+import net.blacklab.lmr.client.sound.SoundRegistry;
 import net.blacklab.lmr.util.FileList;
 import net.minecraft.client.resources.DefaultResourcePack;
 import net.minecraft.client.resources.IResourcePack;
@@ -23,9 +23,9 @@ import net.minecraft.util.ResourceLocation;
 /**
  * サウンドパック用
  */
-public class LMM_SoundResourcePack implements IResourcePack {
+public class SoundResourcePack implements IResourcePack {
 
-	public LMM_SoundResourcePack() {
+	public SoundResourcePack() {
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class LMM_SoundResourcePack implements IResourcePack {
 		}
 		if (resource.getResourcePath().endsWith(".ogg")) {
 			String f = decodePathGetName(resource);
-			return LMMNX_SoundRegistry.isSoundNameRegistered(f) ? LMMNX_SoundRegistry.getPathListFromRegisteredName(f)!=null : false;
+			return SoundRegistry.isSoundNameRegistered(f) ? SoundRegistry.getPathListFromRegisteredName(f)!=null : false;
 		}
 		return false;
 	}

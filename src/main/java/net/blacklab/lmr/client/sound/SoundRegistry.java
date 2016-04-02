@@ -15,7 +15,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.FileList;
 
-public class LMMNX_SoundRegistry {
+public class SoundRegistry {
 
 	public static final String DEFAULT_TEXTURE_REGISTRATION_KEY = "!#DEFAULT#!";
 
@@ -30,9 +30,9 @@ public class LMMNX_SoundRegistry {
 	// ロックされたテクスチャ
 	private List<String> markedTexture = new ArrayList<String>();
 
-	private static LMMNX_SoundRegistry instR = new LMMNX_SoundRegistry();
+	private static SoundRegistry instR = new SoundRegistry();
 
-	private LMMNX_SoundRegistry() {
+	private SoundRegistry() {
 		registerMap = new EnumMap<EnumSound, HashMap<Pair<String,Integer>,String>>(EnumSound.class);
 		pathMap = new HashMap<String, List<String>>();
 		ratioMap = new HashMap<String, Float>();

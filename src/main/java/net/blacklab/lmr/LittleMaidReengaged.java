@@ -9,12 +9,12 @@ import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.api.mode.LMMNX_API_Farmer;
-import net.blacklab.lmr.client.resource.LMMNX_OldZipTexturesLoader;
-import net.blacklab.lmr.client.resource.LMM_SoundResourcePack;
+import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
+import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.event.EventHook;
-import net.blacklab.lmr.item.ItemRegisterKey;
-import net.blacklab.lmr.item.ItemSpawnEgg;
+import net.blacklab.lmr.item.ItemTriggerRegisterKey;
+import net.blacklab.lmr.item.ItemMaidSpawnEgg;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.proxy.ProxyCommon;
@@ -127,9 +127,9 @@ public class LittleMaidReengaged {
 	@Instance(DOMAIN)
 	public static LittleMaidReengaged instance;
 
-	public static ItemSpawnEgg spawnEgg;
+	public static ItemMaidSpawnEgg spawnEgg;
 
-	public static ItemRegisterKey registerKey;
+	public static ItemTriggerRegisterKey registerKey;
 
 	public static void Debug(String pText, Object... pVals) {
 		// デバッグメッセージ
@@ -227,9 +227,9 @@ public class LittleMaidReengaged {
 		EntityRegistry.registerModEntity(EntityLittleMaid.class,
 				"LittleMaid", 0, instance, 80, 1, true);
 
-		spawnEgg = new ItemSpawnEgg();
+		spawnEgg = new ItemMaidSpawnEgg();
 		spawnEgg.setUnlocalizedName(DOMAIN + ":spawn_littlemaid_egg");
-		GameRegistry.registerItem(spawnEgg, "spawn_littlemaid_egg");
+		GameRegistry.registerItem(spawnEgg, spawnEgg.getRegistryName());
 		if (cfg_enableSpawnEgg) {
 			GameRegistry.addRecipe(
 					new ItemStack(spawnEgg, 1),
@@ -240,8 +240,8 @@ public class LittleMaidReengaged {
 							Character.valueOf('e'), Items.egg, });
 		}
 
-		registerKey = new ItemRegisterKey();
-		GameRegistry.registerItem(registerKey, "registerkey");
+		registerKey = new ItemTriggerRegisterKey();
+		GameRegistry.registerItem(registerKey, registerKey.getRegistryName());
 		GameRegistry.addShapelessRecipe(new ItemStack(registerKey), Items.egg,
 				Items.sugar, Items.nether_wart);
 
@@ -277,8 +277,8 @@ public class LittleMaidReengaged {
 			List<IResourcePack> defaultResourcePacks = ObfuscationReflectionHelper
 					.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(),
 							"defaultResourcePacks", "field_110449_ao");
-			defaultResourcePacks.add(new LMM_SoundResourcePack());
-			defaultResourcePacks.add(new LMMNX_OldZipTexturesLoader());
+			defaultResourcePacks.add(new SoundResourcePack());
+			defaultResourcePacks.add(new OldZipTexturesWrapper());
 
 			// デフォルトモデルの設定
 			proxy.init();
