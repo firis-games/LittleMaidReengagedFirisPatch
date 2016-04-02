@@ -56,7 +56,7 @@ import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.pathnavigate.LMMNX_PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
-import net.blacklab.lmr.item.ItemRegisterKey;
+import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
@@ -3037,23 +3037,23 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 								NBTTagCompound tagCompound = par3ItemStack.getTagCompound();
 								if (tagCompound == null) return false;
 
-								String modeString = tagCompound.getString(ItemRegisterKey.RK_MODE_TAG);
+								String modeString = tagCompound.getString(ItemTriggerRegisterKey.RK_MODE_TAG);
 								if (modeString.isEmpty()) return false;
 
 								registerMode = modeString;
 								registerTick.setValue(200);
 
-								int count = tagCompound.getInteger(ItemRegisterKey.RK_COUNT);
-								if(++count >= ItemRegisterKey.RK_MAX_COUNT) {
+								int count = tagCompound.getInteger(ItemTriggerRegisterKey.RK_COUNT);
+								if(++count >= ItemTriggerRegisterKey.RK_MAX_COUNT) {
 									par1EntityPlayer.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
 								}
-								tagCompound.setInteger(ItemRegisterKey.RK_COUNT, count);
+								tagCompound.setInteger(ItemTriggerRegisterKey.RK_COUNT, count);
 
 								par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.readyregistration") + registerMode));
-								if(count >= ItemRegisterKey.RK_MAX_COUNT-10){
-									if(count<ItemRegisterKey.RK_MAX_COUNT){
+								if(count >= ItemTriggerRegisterKey.RK_MAX_COUNT-10){
+									if(count<ItemTriggerRegisterKey.RK_MAX_COUNT){
 										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.warningcount") +
-												(ItemRegisterKey.RK_MAX_COUNT-count)).setChatStyle(new Style().setColor(TextFormatting.YELLOW)));
+												(ItemTriggerRegisterKey.RK_MAX_COUNT-count)).setChatStyle(new Style().setColor(TextFormatting.YELLOW)));
 									} else {
 										par1EntityPlayer.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.endcount"))
 												.setChatStyle(new Style().setColor(TextFormatting.DARK_RED)));
