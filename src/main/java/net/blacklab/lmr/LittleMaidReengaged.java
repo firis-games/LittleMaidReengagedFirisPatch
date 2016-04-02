@@ -229,8 +229,7 @@ public class LittleMaidReengaged {
 				"LittleMaid", 0, instance, 80, 1, true);
 
 		spawnEgg = new ItemMaidSpawnEgg();
-		spawnEgg.setUnlocalizedName(DOMAIN + ":spawn_littlemaid_egg");
-		GameRegistry.<Item>register(spawnEgg, spawnEgg.getRegistryName());
+		GameRegistry.<Item>register(spawnEgg, new ResourceLocation(DOMAIN, "spawn_littlemaid_egg"));
 		if (cfg_enableSpawnEgg) {
 			GameRegistry.addRecipe(
 					new ItemStack(spawnEgg, 1),
@@ -242,7 +241,7 @@ public class LittleMaidReengaged {
 		}
 
 		registerKey = new ItemTriggerRegisterKey();
-		GameRegistry.<Item>register(registerKey, registerKey.getRegistryName());
+		GameRegistry.<Item>register(registerKey, new ResourceLocation(DOMAIN, "registerkey"));
 		GameRegistry.addShapelessRecipe(new ItemStack(registerKey), Items.egg,
 				Items.sugar, Items.nether_wart);
 

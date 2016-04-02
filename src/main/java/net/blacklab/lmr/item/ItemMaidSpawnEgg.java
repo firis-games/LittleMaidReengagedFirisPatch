@@ -2,6 +2,7 @@ package net.blacklab.lmr.item;
 
 import java.util.List;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -23,12 +23,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMaidSpawnEgg extends Item
 {
-	
+
 	public ItemMaidSpawnEgg()
 	{
-		this.setHasSubtypes(true);
-		this.setCreativeTab(CreativeTabs.tabMisc);
-		setRegistryName("spawn_littlemaid_egg");
+		setHasSubtypes(true);
+		setCreativeTab(CreativeTabs.tabMisc);
+		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":spawn_littlemaid_egg");
 	}
 
 	@Override

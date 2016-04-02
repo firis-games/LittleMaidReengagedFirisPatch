@@ -18,16 +18,15 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class ItemTriggerRegisterKey extends Item {
-	
+
 	public static final String RK_MODE_TAG = "LMMNX_RK_MODE";
 	public static final String RK_COUNT = "LMMNX_RK_COUNT";
-	
+
 	public static final int RK_MAX_COUNT = 32;
-	
+
 	public ItemTriggerRegisterKey() {
 		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":registerkey");
 		setCreativeTab(CreativeTabs.tabMisc);
-		setRegistryName("registerkey");
 	}
 
 	@Override
@@ -38,17 +37,17 @@ public class ItemTriggerRegisterKey extends Item {
 			tagCompound = new NBTTagCompound();
 			itemStackIn.setTagCompound(tagCompound);
 		}
-		
+
 		int index = 0;
 		String modeString = tagCompound.getString(RK_MODE_TAG);
-		
+
 		// 登録モードを切り替える．
 		index = TriggerSelect.selector.indexOf(modeString) + 1;
 		if(index >= TriggerSelect.selector.size()) index = 0;
 
 		modeString = TriggerSelect.selector.get(index);
 		tagCompound.setString(RK_MODE_TAG, modeString);
-		
+
 		if(worldIn.isRemote)
 			playerIn.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.changeregistermode") + modeString));
 
