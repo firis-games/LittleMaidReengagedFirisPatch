@@ -13,8 +13,8 @@ import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.event.EventHook;
-import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.item.ItemMaidSpawnEgg;
+import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.proxy.ProxyCommon;
@@ -27,6 +27,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -229,7 +230,7 @@ public class LittleMaidReengaged {
 
 		spawnEgg = new ItemMaidSpawnEgg();
 		spawnEgg.setUnlocalizedName(DOMAIN + ":spawn_littlemaid_egg");
-		GameRegistry.registerItem(spawnEgg, spawnEgg.getRegistryName());
+		GameRegistry.<Item>register(spawnEgg, spawnEgg.getRegistryName());
 		if (cfg_enableSpawnEgg) {
 			GameRegistry.addRecipe(
 					new ItemStack(spawnEgg, 1),
@@ -241,7 +242,7 @@ public class LittleMaidReengaged {
 		}
 
 		registerKey = new ItemTriggerRegisterKey();
-		GameRegistry.registerItem(registerKey, registerKey.getRegistryName());
+		GameRegistry.<Item>register(registerKey, registerKey.getRegistryName());
 		GameRegistry.addShapelessRecipe(new ItemStack(registerKey), Items.egg,
 				Items.sugar, Items.nether_wart);
 
