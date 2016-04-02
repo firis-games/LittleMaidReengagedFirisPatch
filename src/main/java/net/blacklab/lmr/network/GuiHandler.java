@@ -1,7 +1,7 @@
 package net.blacklab.lmr.network;
 
 import net.blacklab.lmr.client.gui.GuiIFF;
-import net.blacklab.lmr.client.gui.inventory.GuiInventory;
+import net.blacklab.lmr.client.gui.inventory.GuiMaidInventory;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,7 +55,7 @@ public class GuiHandler implements IGuiHandler
 			case GUI_ID_INVVENTORY:
 				if(maidClient!=null)
 				{
-					o = new GuiInventory(player, maidClient);
+					o = new GuiMaidInventory(player, maidClient);
 					maidClient = null;
 				}
 				break;

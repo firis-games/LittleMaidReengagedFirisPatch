@@ -16,6 +16,7 @@ import net.blacklab.lmr.client.gui.GuiButtonSwimToggle;
 import net.blacklab.lmr.client.gui.GuiTextureSelect;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
+import net.blacklab.lmr.entity.mode.EntityMode_Basic;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -34,11 +35,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.translation.I18n;
 
-public class GuiInventory extends GuiContainer {
+public class GuiMaidInventory extends GuiContainer {
 	// Field
 	private Random rand;
-	private IInventory upperChestInventory;
-	private IInventory lowerChestInventory;
+	private IInventory playerInventory;
+	private IInventory maidInventory;
 	private int ySizebk;
 	private int updateCounter;
 	public EntityLittleMaid entitylittlemaid;
@@ -52,15 +53,77 @@ public class GuiInventory extends GuiContainer {
 	public GuiButtonBoostChange boostPlus;
 	public boolean isChangeTexture;
 
+	private static class RenderInfoPart {
+		private static boolean shiftLock;
+
+		/**
+		 * 0: Health, 1: Armor, 2: Mode, 3: Free
+		 */
+		private static boolean renderInfo[] = new boolean[] {
+				true, false, true, false
+		};
+
+		private static int renderingPart = 0;
+
+		public static int getEnabledCounts() {
+			int count = 0;
+			for (boolean s: renderInfo) {
+				if (s) ++count;
+			}
+			return count;
+		}
+
+		public static void setEnabled(int index, boolean flag) {
+			renderInfo[index] = flag;
+			// 体力だけはtrueを維持
+			renderInfo[0] = true;
+			if (renderingPart == index && !flag) {
+				shiftPart();
+			}
+		}
+
+		public static boolean isEnabled(int index) {
+			try {
+				return renderInfo[index];
+			} catch (IndexOutOfBoundsException exception) {
+				return false;
+			}
+		}
+
+		public static void shiftPart() {
+			while (!isEnabled(++renderingPart)) {
+				if (renderingPart >= renderInfo.length) {
+					renderingPart = -1;
+				}
+			}
+		}
+
+		public static int getRenderingPart() {
+			return renderingPart;
+		}
+
+		public static void lock() {
+			shiftLock = true;
+		}
+
+		public static void unlock() {
+			shiftLock = false;
+		}
+
+		public static boolean islocked() {
+			return shiftLock;
+		}
+	}
+
 	protected static final ResourceLocation fguiTex =
 			new ResourceLocation(LittleMaidReengaged.DOMAIN, "textures/gui/container/littlemaidinventory2.png");
 
 	// Method
-	public GuiInventory(EntityPlayer pPlayer, EntityLittleMaid elmaid) {
+	public GuiMaidInventory(EntityPlayer pPlayer, EntityLittleMaid elmaid) {
 		super(new ContainerInventoryLittleMaid(pPlayer.inventory, elmaid));
 		rand = new Random();
-		upperChestInventory = pPlayer.inventory;
-		lowerChestInventory = elmaid.maidInventory;
+		playerInventory = pPlayer.inventory;
+		maidInventory = elmaid.maidInventory;
 		allowUserInput = false;
 		updateCounter = 0;
 		ySizebk = ySize;
@@ -82,7 +145,7 @@ public class GuiInventory extends GuiContainer {
 		buttonList.add(txbutton[1] = new GuiButtonNextPage(101, guiLeft + 55, guiTop + 7, true));
 		buttonList.add(txbutton[2] = new GuiButtonNextPage(110, guiLeft + 25, guiTop + 47, false));
 		buttonList.add(txbutton[3] = new GuiButtonNextPage(111, guiLeft + 55, guiTop + 47, true));
-		buttonList.add(selectbutton = new GuiButton(200, guiLeft + 25, guiTop + 25, 53, 17, "select"));
+		buttonList.add(selectbutton = new GuiButton(200, guiLeft + 26, guiTop + 25, 53, 18, "select"));
 		buttonList.add(visarmorbutton[0] = new GuiButtonArmorToggle  (300, guiLeft     , guiTop - 14, "littleMaidMob.gui.toggle.inner"     , true).setNode(0).setLight(0));
 		buttonList.add(visarmorbutton[1] = new GuiButtonArmorToggle  (301, guiLeft + 16, guiTop - 14, "littleMaidMob.gui.toggle.innerlight", true).setNode(0).setLight(1));
 		buttonList.add(visarmorbutton[2] = new GuiButtonArmorToggle  (302, guiLeft + 32, guiTop - 14, "littleMaidMob.gui.toggle.outer"     , true).setNode(1).setLight(0));
@@ -95,15 +158,22 @@ public class GuiInventory extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+		String mInventoryString = I18n.translateToLocal(maidInventory.getName());
+		mc.fontRendererObj.drawString(mInventoryString, 168 - mc.fontRendererObj.getStringWidth(mInventoryString), 64, 0x404040);
 		mc.fontRendererObj.drawString(I18n.translateToLocal(
-				lowerChestInventory.getName()), 8, 64, 0x404040);
-		mc.fontRendererObj.drawString(I18n.translateToLocal(
-				upperChestInventory.getName()), 8, 114, 0x404040);
+				playerInventory.getName()), 8, 114, 0x404040);
 		//fontRenderer.drawString(StatCollector.translateToLocal("littleMaidMob.text.Health"), 86, 8, 0x404040);
 		//fontRenderer.drawString(StatCollector.translateToLocal("littleMaidMob.text.AP"), 86, 32, 0x404040);
 
-		mc.fontRendererObj.drawString(I18n.translateToLocal(
-				"littleMaidMob.mode.".concat(entitylittlemaid.getMaidModeString())), 86, 61, 0x404040);
+		if (entitylittlemaid.getMaidModeInt() == EntityMode_Basic.mmode_Escorter && !entitylittlemaid.isTracer()) {
+			RenderInfoPart.setEnabled(2, false);
+		} else {
+			RenderInfoPart.setEnabled(2, true);
+		}
+		if (RenderInfoPart.getRenderingPart() == 2) {
+			mc.fontRendererObj.drawString(I18n.translateToLocal(
+					"littleMaidMob.mode.".concat(entitylittlemaid.getMaidModeString())), 7, 64, 0x404040);
+		}
 
 //	      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -275,20 +345,29 @@ public class GuiInventory extends GuiContainer {
 		}
 		float currentxp = entitylittlemaid.getMaidExperience() - ExperienceUtil.getRequiredExpToLevel(level);
 		float nextxp = ExperienceUtil.getRequiredExpToLevel(level+1) - ExperienceUtil.getRequiredExpToLevel(level);
-		drawGradientRect(guiLeft+86, guiTop+4, guiLeft+166, guiTop+5+mc.fontRendererObj.FONT_HEIGHT, 0x80202020, 0x80202020);
-		drawGradientRect(guiLeft+86, guiTop+4, guiLeft+86+(int)(80*currentxp/nextxp), guiTop+5+mc.fontRendererObj.FONT_HEIGHT, 0xf0008000, 0xf000f000);
+		drawGradientRect(guiLeft+97, guiTop+7, guiLeft+168, guiTop+18, 0x80202020, 0x80202020);
+		drawGradientRect(guiLeft+98, guiTop+8, guiLeft+98+(int)(69*currentxp/nextxp), guiTop+17, 0xf0008000, 0xf000f000);
 
 		//経験値ブースト
 		drawGradientRect(guiLeft+112, guiTop-16, guiLeft+xSize-16, guiTop, 0x80202020, 0x80202020);
 		drawCenteredString(fontRendererObj, String.format("x%d", booster), guiLeft+112+(xSize-128)/2, guiTop-12, 0xffffff);
 
 		// LV数値
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(guiLeft, guiTop, 0);
+//		GlStateManager.pushMatrix();
 		String lvString = String.format("Lv. %d", entitylittlemaid.getMaidLevel());
-		mc.fontRendererObj.drawString(lvString, 90, 6, 0xff404040);
-		mc.fontRendererObj.drawString(lvString, 89, 5, 0xfff0f0f0);
-		GlStateManager.popMatrix();
+		mc.fontRendererObj.drawString(lvString, guiLeft + 108, guiTop + 13 - mc.fontRendererObj.FONT_HEIGHT/2, 0xff303030);
+//		mc.fontRendererObj.drawString(lvString, guiLeft + 109, guiTop + 13 - mc.fontRendererObj.FONT_HEIGHT/2, 0xfff0f0f0);
+//		GlStateManager.popMatrix();
+
+		// HP stack
+		// テキスト表示
+		if (RenderInfoPart.getRenderingPart() == 0) {
+			float lhealth = entitylittlemaid.getHealth();
+			if (lhealth > 20) {
+				mc.fontRendererObj.drawString(String.format("x%d", MathHelper.floor_float((lhealth-1) / 20)), guiLeft + 95, guiTop + 64, 0x404040);
+			}
+		}
+
 		GlStateManager.enableLighting();
 		GlStateManager.enableDepth();
 		GlStateManager.colorMask(true, true, true, true);
@@ -305,22 +384,23 @@ public class GuiInventory extends GuiContainer {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(icons);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		int lhealth = MathHelper.ceiling_float_int(entitylittlemaid.getHealth());
-		int llasthealth = lhealth + MathHelper.ceiling_float_int(entitylittlemaid.getLastDamage());
+		int orgnHealth = MathHelper.ceiling_float_int(entitylittlemaid.getHealth());
+		int orgnLasthealth = orgnHealth + MathHelper.ceiling_float_int(entitylittlemaid.getLastDamage());
 		this.rand.setSeed(updateCounter * 312871);
 		//		FoodStats var7 = entitylittlemaid.getFoodStats();
 //		int var8 = var7.getFoodLevel();
 //		int var9 = var7.getPrevFoodLevel();
 		IAttributeInstance var10 = entitylittlemaid.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
-		float var14 = (float) var10.getAttributeValue();
-		float var15 = entitylittlemaid.getAbsorptionAmount();
-		int var16 = MathHelper.ceiling_float_int((var14 + var15) / 2.0F / 10.0F);
-		int var17 = Math.max(10 - (var16 - 2), 3);
-		float var19 = var15;
+		float maxHealth = (float) var10.getAttributeValue();
+		float origAbsorption = entitylittlemaid.getAbsorptionAmount();
+		int maxHealthRows = MathHelper.ceiling_float_int((maxHealth + origAbsorption) / 20.0F);
+		int healthRows = MathHelper.ceiling_float_int(orgnHealth / 20f);
+		int var17 = Math.max(10 - (maxHealthRows - 2), 3);
+		float absorption = origAbsorption;
 		int var21 = -1;
 
 		if (entitylittlemaid.isPotionActive(Potion.getPotionById(10))) {
-			var21 = updateCounter % MathHelper.ceiling_float_int(var14 + 5.0F);
+			var21 = updateCounter % MathHelper.ceiling_float_int(maxHealth + 5.0F);
 		}
 
 		int ldrawx;
@@ -328,68 +408,80 @@ public class GuiInventory extends GuiContainer {
 
 		// AP
 		int larmor = entitylittlemaid.getTotalArmorValue();
-		ldrawy = guiTop + 36;
-		for (int li = 0; li < 10; ++li) {
-			if (larmor > 0) {
-				ldrawx = guiLeft + li * 8 + 86;
+		if (larmor == 0) {
+			RenderInfoPart.setEnabled(1, false);
+		} else if (larmor > 0) {
+			RenderInfoPart.setEnabled(1, true);
+			if (RenderInfoPart.getRenderingPart() == 1) {
+				ldrawy = guiTop + 64;
+				for (int li = 0; li < 10; ++li) {
+						ldrawx = guiLeft + li * 8 + 7;
 
-				if (li * 2 + 1 < larmor) {
-					this.drawTexturedModalRect(ldrawx, ldrawy, 34, 9, 9, 9);
-				}
-				if (li * 2 + 1 == larmor) {
-					this.drawTexturedModalRect(ldrawx, ldrawy, 25, 9, 9, 9);
-				}
-				if (li * 2 + 1 > larmor) {
-					this.drawTexturedModalRect(ldrawx, ldrawy, 16, 9, 9, 9);
+						if (li * 2 + 1 < larmor) {
+							this.drawTexturedModalRect(ldrawx, ldrawy, 34, 9, 9, 9);
+						}
+						if (li * 2 + 1 == larmor) {
+							this.drawTexturedModalRect(ldrawx, ldrawy, 25, 9, 9, 9);
+						}
+						if (li * 2 + 1 > larmor) {
+							this.drawTexturedModalRect(ldrawx, ldrawy, 16, 9, 9, 9);
+						}
 				}
 			}
 		}
 
 		// LP
-		for (int li = MathHelper.ceiling_float_int((var14 + var15) / 2.0F) - 1; li >= 0; --li) {
-			int var23 = 16;
-			if (entitylittlemaid.isPotionActive(Potion.getPotionById(19))) {
-				var23 += 36;
-			} else if (entitylittlemaid.isPotionActive(Potion.getPotionById(20))) {
-				var23 += 72;
-			}
-
-			int var25 = MathHelper.ceiling_float_int((li + 1) / 10.0F);
-			ldrawx = guiLeft + li % 10 * 8 + 86;
-			ldrawy = guiTop + 7 + var25 * var17;
-
-			if (lhealth <= 4) {
-				ldrawy += this.rand.nextInt(2);
-			}
-			if (li == var21) {
-				ldrawy -= 2;
-			}
-
-			this.drawTexturedModalRect(ldrawx, ldrawy, var3 ? 25 : 16, 0, 9, 9);
-
-			if (var3) {
-				if (li * 2 + 1 < llasthealth) {
-					this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 54, 0, 9, 9);
+		if (RenderInfoPart.getRenderingPart() == 0) {
+			for (int li = maxHealthRows > healthRows ? 9 : MathHelper.ceiling_float_int((maxHealth + origAbsorption)/2f) % 10 - 1; li >= 0; --li) {
+				int var23 = 16;
+				if (entitylittlemaid.isPotionActive(Potion.getPotionById(19))) {
+					var23 += 36;
+				} else if (entitylittlemaid.isPotionActive(Potion.getPotionById(20))) {
+					var23 += 72;
 				}
-				if (li * 2 + 1 == llasthealth) {
-					this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 63, 0, 9, 9);
-				}
-			}
 
-			if (var19 > 0.0F) {
-				if (var19 == var15 && var15 % 2.0F == 1.0F) {
-					this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 153, 0, 9, 9);
+//				int var25 = MathHelper.ceiling_float_int((li + 1) / 10.0F);
+				ldrawx = guiLeft + li % 10 * 8 + 7;
+				ldrawy = guiTop + 64;
+
+				if (orgnHealth <= 4) {
+					ldrawy += this.rand.nextInt(2);
+				}
+				if (li == var21) {
+					ldrawy -= 2;
+				}
+
+				this.drawTexturedModalRect(ldrawx, ldrawy, var3 ? 25 : 16, 0, 9, 9);
+
+				int lhealth = orgnHealth % 20;
+				if (lhealth == 0 && orgnHealth > 0) lhealth = 20;
+				int llasthealth = orgnLasthealth % 20;
+				if (llasthealth == 0 && orgnLasthealth > 0) llasthealth = 20;
+
+				if (var3) {
+					if (li * 2 + 1 < llasthealth) {
+						this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 54, 0, 9, 9);
+					}
+					if (li * 2 + 1 == llasthealth) {
+						this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 63, 0, 9, 9);
+					}
+				}
+
+				if (absorption > 0.0F) {
+					if (absorption == origAbsorption && origAbsorption % 2.0F == 1.0F) {
+						this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 153, 0, 9, 9);
+					} else {
+						this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 144, 0, 9, 9);
+					}
+
+					absorption -= 2.0F;
 				} else {
-					this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 144, 0, 9, 9);
-				}
-
-				var19 -= 2.0F;
-			} else {
-				if (li * 2 + 1 < lhealth) {
-					this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 36, 0, 9, 9);
-				}
-				if (li * 2 + 1 == lhealth) {
-					this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 45, 0, 9, 9);
+					if (li * 2 + 1 < lhealth) {
+						this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 36, 0, 9, 9);
+					}
+					if (li * 2 + 1 == lhealth) {
+						this.drawTexturedModalRect(ldrawx, ldrawy, var23 + 45, 0, 9, 9);
+					}
 				}
 			}
 		}
@@ -415,6 +507,12 @@ public class GuiInventory extends GuiContainer {
 
 	@Override
 	public void drawScreen(int i, int j, float f) {
+		if (entitylittlemaid.ticksExisted % 30 == 0) {
+			if (!RenderInfoPart.islocked()) RenderInfoPart.shiftPart();
+			RenderInfoPart.lock();
+		} else {
+			RenderInfoPart.unlock();
+		}
 
 		super.drawScreen(i, j, f);
 
@@ -431,13 +529,12 @@ public class GuiInventory extends GuiContainer {
 		int ii = i - guiLeft;
 		int jj = j - guiTop;
 
-		if (ii > 25 && ii < 78 && jj > 7 && jj < 60) {
+		if (ii > 7 && ii < 96 && jj > 7 && jj < 60) {
 			// ボタンの表示
 			txbutton[0].visible = true;
 			txbutton[1].visible = true;
 			txbutton[2].visible = true;
 			txbutton[3].visible = true;
-			selectbutton.visible = true;
 
 			// テクスチャ名称の表示
 			GL11.glPushMatrix();
@@ -474,6 +571,10 @@ public class GuiInventory extends GuiContainer {
 			txbutton[1].visible = false;
 			txbutton[2].visible = false;
 			txbutton[3].visible = false;
+		}
+		if (ii > 25 && ii < 79 && jj > 24 && jj < 44) {
+			selectbutton.visible = true;
+		} else {
 			selectbutton.visible = false;
 		}
 		if (ii > 96 && ii < xSize && jj > -16 && jj < 0) {
