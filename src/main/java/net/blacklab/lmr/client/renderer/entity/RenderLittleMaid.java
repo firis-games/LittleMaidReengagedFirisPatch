@@ -25,7 +25,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-@SuppressWarnings("deprecation")
 public class RenderLittleMaid extends RenderModelMulti {
 
 	// Method

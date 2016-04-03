@@ -1,20 +1,13 @@
 package net.blacklab.lmr.proxy;
 
-import mmmlibx.lib.MMM_EntityDummy;
-import mmmlibx.lib.MMM_RenderDummy;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
-import net.blacklab.lmr.client.renderer.entity.LMMNX_RenderEntitySelect;
-import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.client.sound.SoundLoader;
-import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityPickupFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 /**
  * クライアント専用処理。
@@ -24,9 +17,11 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 public class ProxyClient extends ProxyCommon
 {
 	public void init() {
-		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class,new RenderLittleMaid(Minecraft.getMinecraft().getRenderManager(),0.3F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class,	new LMMNX_RenderEntitySelect(Minecraft.getMinecraft().getRenderManager(), 0.0F));
-		RenderingRegistry.registerEntityRenderingHandler(MMM_EntityDummy.class,		new MMM_RenderDummy());
+/*
+		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
+		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());
+		RenderingRegistry.registerEntityRenderingHandler(EntityMarkerDummy.class, new RenderFactoryMarkerDummy());
+*/
 	}
 
 	/* 呼び出し箇所なし
@@ -44,7 +39,7 @@ public class ProxyClient extends ProxyCommon
 	*/
 
 // Avatarr
-	
+
 	public void onItemPickup(EntityPlayer pAvatar, Entity entity, int i) {
 		// アイテム回収のエフェクト
 		// TODO:こっちを使うか？
@@ -64,7 +59,7 @@ public class ProxyClient extends ProxyCommon
 //		MMM_Helper.mc.effectRenderer.addEffect(entitycrit2fx);
 	}
 
-	
+
 	public EntityPlayer getClientPlayer()
 	{
 		return Minecraft.getMinecraft().thePlayer;
@@ -90,11 +85,11 @@ public class ProxyClient extends ProxyCommon
 	{
 		return Minecraft.getMinecraft().isSingleplayer();
 	}
-	
+
 	@Override
 	public void runCountThread(){
 	}
-	
+
 	@Override
 	public void playLittleMaidSound(World par1World, double x, double y, double z, String s, float v, float p, boolean b) {
 /*
@@ -112,9 +107,9 @@ public class ProxyClient extends ProxyCommon
 //		}
 */
 	}
-	
+
 	public int soundCount = 0;
-	
+
 	public static class CountThread extends Thread{
 
 		public boolean isRunning = true;
@@ -135,7 +130,7 @@ public class ProxyClient extends ProxyCommon
 				}
 			}
 		}
-		
+
 		public void cancel(){
 			isRunning = false;
 		}

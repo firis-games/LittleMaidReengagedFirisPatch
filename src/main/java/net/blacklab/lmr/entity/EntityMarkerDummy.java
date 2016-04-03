@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 /**
  * マーカーを表示します。
  */
-public class MMM_EntityDummy extends Entity {
+public class EntityMarkerDummy extends Entity {
 
 	private int livecount;
 	private final int maxlivecount = 16;
@@ -24,10 +24,10 @@ public class MMM_EntityDummy extends Entity {
 	 */
 	public static boolean isEnable = false;
 
-	public static List<MMM_EntityDummy> appendList = new ArrayList<MMM_EntityDummy>();
+	public static List<EntityMarkerDummy> appendList = new ArrayList<EntityMarkerDummy>();
 
 
-	public MMM_EntityDummy(World world, int color, Entity owner) {
+	public EntityMarkerDummy(World world, int color, Entity owner) {
 		super(world);
 		livecount = maxlivecount;
 		entityColor = color;
@@ -84,8 +84,8 @@ public class MMM_EntityDummy extends Entity {
 
 		List<Entity> liste = entity.worldObj.loadedEntityList;
 		for (Entity entity1 : liste) {
-			if (entity1 instanceof MMM_EntityDummy) {
-				((MMM_EntityDummy)entity1).setOwnerdEntityDead(entity);
+			if (entity1 instanceof EntityMarkerDummy) {
+				((EntityMarkerDummy)entity1).setOwnerdEntityDead(entity);
 			}
 		}
 	}
@@ -102,7 +102,7 @@ public class MMM_EntityDummy extends Entity {
 			LittleMaidReengaged.Debug("L");
 		}
 
-		MMM_EntityDummy ed = new MMM_EntityDummy(Minecraft.getMinecraft().theWorld, color, owner);
+		EntityMarkerDummy ed = new EntityMarkerDummy(Minecraft.getMinecraft().theWorld, color, owner);
 		ed.setPosition(posx, posy, posz);
 		appendList.add(ed);
 	}

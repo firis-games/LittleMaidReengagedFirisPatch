@@ -14,9 +14,14 @@ import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
 import net.blacklab.lmr.api.mode.LMMNX_API_Farmer;
+import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.EntityMarkerDummy;
+import net.blacklab.lmr.entity.renderfactory.RenderFactoryLittleMaid;
+import net.blacklab.lmr.entity.renderfactory.RenderFactoryMarkerDummy;
+import net.blacklab.lmr.entity.renderfactory.RenderFactoryModelSelect;
 import net.blacklab.lmr.event.EventHook;
 import net.blacklab.lmr.item.ItemMaidSpawnEgg;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
@@ -42,6 +47,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -316,7 +322,9 @@ public class LittleMaidReengaged {
 					new ModelResourceLocation(DOMAIN+":registerkey",
 							"inventory"));
 		}
-
+		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
+		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());
+		RenderingRegistry.registerEntityRenderingHandler(EntityMarkerDummy.class, new RenderFactoryMarkerDummy());
 	}
 
 	@EventHandler

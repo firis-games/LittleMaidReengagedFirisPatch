@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.ai;
 
-import mmmlibx.lib.MMM_EntityDummy;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.EntityMarkerDummy;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
@@ -48,7 +48,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 		int zz = lz;
 		
 		// TODO:Dummy
-		MMM_EntityDummy.clearDummyEntity(theMaid);
+		EntityMarkerDummy.clearDummyEntity(theMaid);
 		boolean flagdammy = false;
 		
 		// CW方向に検索領域を広げる 
@@ -73,7 +73,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 				}
 				// TODO:Dummay
 				if (!flagdammy) {
-					MMM_EntityDummy.setDummyEntity(theMaid, 0x00ff4f4f, xx, ly, zz);
+					EntityMarkerDummy.setDummyEntity(theMaid, 0x00ff4f4f, xx, ly, zz);
 					flagdammy = true;
 				}
 				int b = 0;
@@ -84,7 +84,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 							if (fmodeBase.outrangeBlock(theMaid.maidMode, xx, yy, zz)) {
 								theMaid.setTilePos(xx, yy, zz);
 								// TODO:Dummay
-								MMM_EntityDummy.setDummyEntity(theMaid, 0x004fff4f, xx, yy, zz);
+								EntityMarkerDummy.setDummyEntity(theMaid, 0x004fff4f, xx, yy, zz);
 								flagdammy = true;
 								return true;
 							}
@@ -92,7 +92,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 					}
 					// TODO:Dummay
 					if (!flagdammy) {
-						MMM_EntityDummy.setDummyEntity(theMaid, 0x00ffffcf, xx, ly, zz);
+						EntityMarkerDummy.setDummyEntity(theMaid, 0x00ffffcf, xx, ly, zz);
 						flagdammy = true;
 					}
 					// TODO:dammy
@@ -122,7 +122,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 				ly = ltile.getPos().getY();
 				lz = ltile.getPos().getZ();
 				// TODO:Dummay
-				MMM_EntityDummy.setDummyEntity(theMaid, 0x004fff4f, lx, ly, lz);
+				EntityMarkerDummy.setDummyEntity(theMaid, 0x004fff4f, lx, ly, lz);
 				flagdammy = true;
 			}
 			return true;

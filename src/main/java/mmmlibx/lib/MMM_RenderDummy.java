@@ -3,6 +3,7 @@ package mmmlibx.lib;
 import org.lwjgl.opengl.EXTRescaleNormal;
 import org.lwjgl.opengl.GL11;
 
+import net.blacklab.lmr.entity.EntityMarkerDummy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -40,9 +41,9 @@ public class MMM_RenderDummy extends Render {
 		tessellator.getBuffer().begin(GL11.GL_QUADS, tessellator.getBuffer().getVertexFormat());
 		
 		GL11.glColor3f(1F, 1F, 1F);
-		if (entity instanceof MMM_EntityDummy) {
-			int cc = ((MMM_EntityDummy) entity).getColor();
-			int ca = MathHelper.floor_float(((MMM_EntityDummy) entity)
+		if (entity instanceof EntityMarkerDummy) {
+			int cc = ((EntityMarkerDummy) entity).getColor();
+			int ca = MathHelper.floor_float(((EntityMarkerDummy) entity)
 					.getAlpha(1.0F) * 256);
 
 			int i = tessellator.getBuffer().getColorIndex(ca);
