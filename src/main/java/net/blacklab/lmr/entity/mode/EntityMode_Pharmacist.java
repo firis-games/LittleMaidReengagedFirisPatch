@@ -194,12 +194,14 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 						blazeStackM = null;
 					}
 					lflag = true;
+				} else {
+					return false;
 				}
 			}
 
 			ItemStack lIngredientStack = ltile.getStackInSlot(3);
 
-			if (lIngredientStack != null && ltile.getField(0) <= 0) {
+			if (lIngredientStack != null && lIngredientStack.stackSize > 0 && ltile.getField(0) <= 0) {
 				// 蒸留不能なので回収
 				LittleMaidReengaged.Debug("Impossible brewing.");
 				if (py <= owner.posY) {
