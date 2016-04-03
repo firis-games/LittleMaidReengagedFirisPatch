@@ -9,6 +9,7 @@ import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,7 +59,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack)) {
+			if (litemstack.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack) && owner.maidInventory.getInventorySlotContainItem(Items.blaze_powder) > 0) {
 				owner.setMaidMode("Pharmacist");
 				if (LMMNX_Achievements.ac_Pharmacist != null) {
 					pentityplayer.addStat(LMMNX_Achievements.ac_Pharmacist);
@@ -179,7 +180,23 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 			owner.setWorking(true);
 		}
 
+		int blaze_position = owner.maidInventory.getInventorySlotContainItem(Items.blaze_powder);
 		if (lswing.canAttack()) {
+			// Get fuel value
+			// Blaze Power slot in stand
+			ItemStack blazeStackB = ltile.getStackInSlot(4);
+			if (ltile.getField(1) <= 0 && blazeStackB == null) {
+				if (blaze_position >= 0) {
+					ItemStack blazeStackM = owner.maidInventory.getStackInSlot(blaze_position);
+					ltile.setInventorySlotContents(4, new ItemStack(Items.blaze_powder));
+					blazeStackM.stackSize--;
+					if (blazeStackM.stackSize <= 0) {
+						blazeStackM = null;
+					}
+					lflag = true;
+				}
+			}
+
 			ItemStack lIngredientStack = ltile.getStackInSlot(3);
 
 			if (lIngredientStack != null && ltile.getField(0) <= 0) {
