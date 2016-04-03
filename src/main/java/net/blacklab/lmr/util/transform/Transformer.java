@@ -1,4 +1,4 @@
-package mmmlibx.lib.multiModel.MMMLoader;
+package net.blacklab.lmr.util.transform;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +32,7 @@ import mmmlibx.lib.MMMLib;
  * 使用しているクラスを置換えて新しいものへ対応。
  *
  */
-public class MMMTransformer implements IClassTransformer, Opcodes {
+public class Transformer implements IClassTransformer, Opcodes {
 
 	static String packageString = "mmmlibx/lib/multiModel/model/mc162/";
 	@SuppressWarnings("serial")
@@ -75,7 +75,7 @@ public class MMMTransformer implements IClassTransformer, Opcodes {
 		// デバッグメッセージ
 		if(LittleMaidReengaged.cfg_PrintDebugMessage)
 		{
-			System.out.println(String.format("MMMTransformer-" + pText, pData));
+			System.out.println(String.format("Transformer-" + pText, pData));
 		}
 	}
 
@@ -89,7 +89,7 @@ public class MMMTransformer implements IClassTransformer, Opcodes {
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] basicClass) {
 		//MMMLibが立ち上がった時点で旧モデル置き換えを開始
-		MMMTransformer.isEnable = true;
+		Transformer.isEnable = true;
 
 		for(String header : ignoreNameSpace){
 			if(name.startsWith(header))	return basicClass;

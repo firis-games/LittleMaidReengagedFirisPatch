@@ -6,13 +6,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import mmmlibx.lib.multiModel.MMMLoader.MMMTransformer;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.manager.ModelManager;
+import net.blacklab.lmr.util.transform.Transformer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -59,7 +59,7 @@ public class MMMLib {
 		FileList.COMMON_CLASS_LOADER = new CommonClassLoaderWrapper(urls.toArray(new URL[]{}), MMMLib.class.getClassLoader());
 
 		// MMMLibが立ち上がった時点で旧モデル置き換えを開始
-		MMMTransformer.isEnable = true;
+		Transformer.isEnable = true;
 		
 		// コンフィグの解析・設定
 		isModelAlphaBlend	= LittleMaidReengaged.cfg_isModelAlphaBlend;
@@ -112,7 +112,7 @@ public class MMMLib {
 //		GunsBase.initAppend();
 		
 		// 旧モデル用変換開始
-		MMMTransformer.isEnable = true;
+		Transformer.isEnable = true;
 //		MultiModelManager.instance.execute();
 		
 		// TODO test

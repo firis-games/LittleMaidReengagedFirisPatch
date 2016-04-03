@@ -1,20 +1,20 @@
-package mmmlibx.lib.multiModel.MMMLoader;
+package net.blacklab.lmr.util.transform;
 
 import java.util.Map;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
-//@TransformerExclusions({"mmmlibx.lib.multiModel.MMMLoader"})
-public class MMMCoremod implements IFMLLoadingPlugin{
+//@TransformerExclusions({"net.blacklab.lmr.util.transform"})
+public class OldModelLoaderCoremod implements IFMLLoadingPlugin{
 
 	@Override
 	public String[] getASMTransformerClass() {
-		return new String[] {"mmmlibx.lib.multiModel.MMMLoader.MMMTransformer"};
+		return new String[] {"net.blacklab.lmr.util.transform.Transformer"};
 	}
 
 	@Override
 	public String getModContainerClass() {
-		return "mmmlibx.lib.multiModel.MMMLoader.MMMModContainer";
+		return "net.blacklab.lmr.util.transform.OldModelLoaderContainer";
 	}
 
 	@Override
