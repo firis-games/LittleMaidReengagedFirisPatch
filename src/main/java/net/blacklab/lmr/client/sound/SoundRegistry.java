@@ -23,7 +23,7 @@ public class SoundRegistry {
 	private EnumMap<EnumSound, HashMap<Pair<String, Integer>, String>> registerMap;
 	// 実際の参照パス
 	private Map<String, List<String>> pathMap;
-	
+
 	// LivingVoiceの再生レート
 	private static Map<String, Float> ratioMap;
 
@@ -49,11 +49,11 @@ public class SoundRegistry {
 		}
 		map.put(new SinglePair<String, Integer>(texture, color), name);
 	}
-	
+
 	public static void setLivingVoiceRatio(String name, Float ratio) {
 		ratioMap.put(name, ratio);
 	}
-	
+
 	public static Float getLivingVoiceRatio(String name) {
 		Float f = ratioMap.get(name);
 		if (f == null) {
@@ -83,16 +83,16 @@ public class SoundRegistry {
 	}
 
 	protected static void copySoundsAdjust() {
-		EnumSound[] sList = EnumSound.values();
-		for (int i=1; i<sList.length; i++) {
-			Map<Pair<String, Integer>, String> srcMap = instR.registerMap.get(sList[i & -16]);
+		for (EnumSound eSound: EnumSound.values()) {
+			int i = eSound.index;
+			Map<Pair<String, Integer>, String> srcMap = instR.registerMap.get(EnumSound.getEnumSound(i & 0xff0));
 			if (srcMap == null) {
 				continue;
 			}
-			Map<Pair<String, Integer>, String> dstMap = instR.registerMap.get(sList[i]);
+			Map<Pair<String, Integer>, String> dstMap = instR.registerMap.get(eSound);
 			if (dstMap == null) {
-				instR.registerMap.put(sList[i], new HashMap<Pair<String,Integer>, String>());
-				dstMap = instR.registerMap.get(sList[i]);
+				instR.registerMap.put(eSound, new HashMap<Pair<String,Integer>, String>());
+				dstMap = instR.registerMap.get(eSound);
 			}
 
 			for (Entry<Pair<String, Integer>, String> entryD: new HashMap<Pair<String, Integer>, String>(dstMap).entrySet()) {
