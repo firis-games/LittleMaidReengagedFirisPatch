@@ -2,18 +2,18 @@ package net.blacklab.lmr.client.entity;
 
 import java.util.Map;
 
-import mmmlibx.lib.IModelMMMEntity;
 import mmmlibx.lib.MMM_EntityCaps;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
+import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class EntityLittleMaidForTexSelect extends EntityLiving implements IModelCaps, IModelMMMEntity {
+public class EntityLittleMaidForTexSelect extends EntityLiving implements IModelCaps, IModelEntity {
 
 //	public int color;
 //	public int textureIndex[] = new int[] { 0, 0 };

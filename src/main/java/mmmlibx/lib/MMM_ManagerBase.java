@@ -11,9 +11,6 @@ import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
 public abstract class MMM_ManagerBase {
@@ -27,7 +24,7 @@ public abstract class MMM_ManagerBase {
 
 	protected void load() {
 		// ロード
-		
+
 		// 開発用
 		if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
 			startSearch(FileList.dirDevClasses, true);
@@ -40,7 +37,7 @@ public abstract class MMM_ManagerBase {
 
 		startSearch(FileList.dirMods, false);
 	}
-	
+
 	private void startSearch(File root, boolean dev){
 		if(dev){
 			if (root.isDirectory()) {
@@ -52,11 +49,11 @@ public abstract class MMM_ManagerBase {
 			}
 			return;
 		}
-		
+
 		// mods]
 		String mcv = (String) FMLInjectionData.data()[4];
-		MMMLib.Debug("MC %s", mcv);
-		MMMLib.Debug("START SEARCH MODS FOLDER");
+		LittleMaidReengaged.Debug("MC %s", mcv);
+		LittleMaidReengaged.Debug("START SEARCH MODS FOLDER");
 		decodeDirectory(root, root);
 		for (File lf : root.listFiles()) {
 			if (lf.isFile() && (lf.getName().endsWith(".zip") || lf.getName().endsWith(".jar"))) {
@@ -69,11 +66,11 @@ public abstract class MMM_ManagerBase {
 					md = md.substring(0, md.length()-1);
 				}
 
-				MMMLib.Debug("DIR SEARCH %s", md);
+				LittleMaidReengaged.Debug("DIR SEARCH %s", md);
 				String mf = FileClassUtil.getFileName(md);
-				MMMLib.Debug(" SPLICE %s", mf);
+				LittleMaidReengaged.Debug(" SPLICE %s", mf);
 				if (mf.equals(mcv)) {
-					MMMLib.Debug("DEBUG START SEARCH DIVIDED FOLDER");
+					LittleMaidReengaged.Debug("DEBUG START SEARCH DIVIDED FOLDER");
 					startSearch(lf, false);
 				}
 			}
@@ -94,7 +91,7 @@ public abstract class MMM_ManagerBase {
 					// 対象クラスファイルなのでロード
 					//ディレクトリはパスを自動で治してくれないので、手動で。
 					loadClass(FileClassUtil.getClassName(
-							FileClassUtil.getLinuxAntiDotName(lf.getAbsolutePath()), 
+							FileClassUtil.getLinuxAntiDotName(lf.getAbsolutePath()),
 							FileClassUtil.getLinuxAntiDotName(pRoot.getAbsolutePath())));
 				}
 			}else{
@@ -116,7 +113,7 @@ public abstract class MMM_ManagerBase {
 			FileInputStream fileinputstream = new FileInputStream(pfile);
 			ZipInputStream zipinputstream = new ZipInputStream(fileinputstream);
 			ZipEntry zipentry;
-			
+
 			do {
 				zipentry = zipinputstream.getNextEntry();
 				if(zipentry == null) {
@@ -129,21 +126,21 @@ public abstract class MMM_ManagerBase {
 					}
 				}
 			} while(true);
-			
+
 			zipinputstream.close();
 			fileinputstream.close();
 		}
 		catch (Exception exception) {
-			MMMLib.Debug("add%sZip-Exception.", getPreFix());
+			LittleMaidReengaged.Debug("add%sZip-Exception.", getPreFix());
 		}
-		
+
 	}
 
 	private void loadClass(String pname) {
 		String lclassname = "";
 		// 対象ファイルをクラスとしてロード
 		try {
-			Package lpackage = MMMLib.class.getPackage();
+			Package lpackage = LittleMaidReengaged.class.getPackage();
 			lclassname = pname.endsWith(".class") ? pname.substring(0, pname.lastIndexOf(".class")) : pname;
 			Class lclass;
 			if(lpackage != null) {
@@ -158,31 +155,31 @@ public abstract class MMM_ManagerBase {
 				return;
 			}
 			if (append(lclass)) {
-				MMMLib.Debug("get%sClass-done: %s", getPreFix(), lclassname);
+				LittleMaidReengaged.Debug("get%sClass-done: %s", getPreFix(), lclassname);
 			} else {
-				MMMLib.Debug("get%sClass-fail: %s", getPreFix(), lclassname);
+				LittleMaidReengaged.Debug("get%sClass-fail: %s", getPreFix(), lclassname);
 			}
 			/*
             if (!(MMM_ModelStabilizerBase.class).isAssignableFrom(lclass) || Modifier.isAbstract(lclass.getModifiers())) {
-            	MMMLib.Debug(String.format(String.format("get%sClass-fail: %s", pprefix, lclassname)));
+            	LittleMaidReengaged.Debug(String.format(String.format("get%sClass-fail: %s", pprefix, lclassname)));
                 return;
             }
-            
+
             MMM_ModelStabilizerBase lms = (MMM_ModelStabilizerBase)lclass.newInstance();
             pmap.put(lms.getName(), lms);
-            MMMLib.Debug(String.format("get%sClass-done: %s[%s]", pprefix, lclassname, lms.getName()));
+            LittleMaidReengaged.Debug(String.format("get%sClass-done: %s[%s]", pprefix, lclassname, lms.getName()));
             */
 		}
 		catch (Exception exception) {
-			MMMLib.Debug("get%sClass-Exception.(%s)", getPreFix(), lclassname);
+			LittleMaidReengaged.Debug("get%sClass-Exception.(%s)", getPreFix(), lclassname);
 			if(DevMode.DEVELOPMENT_DEBUG_MODE && LittleMaidReengaged.cfg_PrintDebugMessage) exception.printStackTrace();
 		}
 		catch (Error error) {
-			MMMLib.Debug("get%sClass-Error: %s", getPreFix(), lclassname);
+			LittleMaidReengaged.Debug("get%sClass-Error: %s", getPreFix(), lclassname);
 			if(DevMode.DEVELOPMENT_DEBUG_MODE && LittleMaidReengaged.cfg_PrintDebugMessage) error.printStackTrace();
 		}
-		
+
 	}
-	
-	
+
+
 }

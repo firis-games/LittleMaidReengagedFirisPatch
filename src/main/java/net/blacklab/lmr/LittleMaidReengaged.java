@@ -1,9 +1,14 @@
 package net.blacklab.lmr;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import mmmlibx.lib.MMM_StabilizerManager;
 import net.blacklab.lib.config.ConfigList;
 import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
@@ -19,9 +24,13 @@ import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.proxy.ProxyCommon;
 import net.blacklab.lmr.util.DevMode;
+import net.blacklab.lmr.util.FileList;
+import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.manager.EntityModeManager;
+import net.blacklab.lmr.util.manager.ModelManager;
+import net.blacklab.lmr.util.transform.Transformer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourcePack;
@@ -139,6 +148,10 @@ public class LittleMaidReengaged {
 		}
 	}
 
+	public static void Debug(boolean isRemote, String string) {
+		Debug("SIDE=%s, %s", isRemote ? "Client" : "Server", string);
+	}
+
 	public String getName() {
 		return "LittleMaidReengaged";
 	}
@@ -147,6 +160,43 @@ public class LittleMaidReengaged {
 
 	@EventHandler
 	public void PreInit(FMLPreInitializationEvent evt) {
+		// MMMLibからの引継ぎ
+		// ClassLoaderを初期化
+		List<URL> urls = new ArrayList<URL>();
+		try {
+			urls.add(FileList.dirMods.toURI().toURL());
+		} catch (MalformedURLException e1) {
+		}
+		if(DevMode.DEVMODE==DevMode.DEVMODE_ECLIPSE){
+			for(File f:FileList.dirDevIncludeClasses){
+				try {
+					urls.add(f.toURI().toURL());
+				} catch (MalformedURLException e) {
+				}
+			}
+		}
+		FileList.COMMON_CLASS_LOADER = new CommonClassLoaderWrapper(urls.toArray(new URL[]{}), LittleMaidReengaged.class.getClassLoader());
+
+		// MMMLibが立ち上がった時点で旧モデル置き換えを開始
+		Transformer.isEnable = true;
+
+		MMM_StabilizerManager.init();
+
+		// テクスチャパックの構築
+		ModelManager.instance.init();
+		ModelManager.instance.loadTextures();
+		// ロード
+		if (CommonHelper.isClient) {
+			// テクスチャパックの構築
+//			MMM_TextureManager.loadTextures();
+//			MMM_StabilizerManager.loadStabilizer();
+			// テクスチャインデックスの構築
+			Debug("Localmode: InitTextureList.");
+			ModelManager.instance.initTextureList(true);
+		} else {
+			ModelManager.instance.loadTextureServer();
+		}
+
 		// FileManager.setSrcPath(evt.getSourceFile());
 		// MMM_Config.init();
 

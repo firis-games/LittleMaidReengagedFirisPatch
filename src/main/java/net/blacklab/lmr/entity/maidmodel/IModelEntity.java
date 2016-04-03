@@ -1,14 +1,11 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.entity.maidmodel;
 
-import net.blacklab.lmr.entity.maidmodel.TextureBox;
-import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
-import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.minecraft.util.ResourceLocation;
 
 /**
  * MMM_Texture仕様のテクスチャパック設定に対応しているEntityへ継承させる。
  */
-public interface IModelMMMEntity {
+public interface IModelEntity {
 
 	/**
 	 * Client用。

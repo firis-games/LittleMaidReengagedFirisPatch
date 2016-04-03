@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.entity.Entity;
@@ -21,7 +22,7 @@ public abstract class MMM_GuiMobSelect extends GuiScreen {
 	public Map<String, Entity> entityMap;
 	public static Map<Class, String> entityMapClass = new HashMap<Class, String>();
 	public static List<String> exclusionList = new ArrayList<String>();
-	
+
 	protected String screenTitle;
 	protected GuiSlot selectPanel;
 
@@ -54,16 +55,16 @@ public abstract class MMM_GuiMobSelect extends GuiScreen {
 				entityMapClass.putAll(lmap);
 			}
 			catch (Exception e) {
-				MMMLib.Debug("EntityClassMap copy failed.");
+				LittleMaidReengaged.Debug("EntityClassMap copy failed.");
 			}
 		}
-		
+
 		if (entityMap == null) return;
 		if (!pForce && !entityMap.isEmpty()) return;
-		
+
 		for (Map.Entry<Class, String> le : entityMapClass.entrySet()) {
 			if (Modifier.isAbstract(le.getKey().getModifiers())) continue;
-			MMMLib.Debug("Add %s", le.getKey().getSimpleName());
+			LittleMaidReengaged.Debug("Add %s", le.getKey().getSimpleName());
 			int li = 0;
 			Entity lentity = null;
 			try {
@@ -73,7 +74,7 @@ public abstract class MMM_GuiMobSelect extends GuiScreen {
 //					lentity = (EntityLivingBase)EntityList.createEntityByName(le.getValue(), world);
 				} while (lentity != null && checkEntity(le.getValue(), lentity, li++));
 			} catch (Exception e) {
-				MMMLib.Debug("Entity [" + le.getValue() + "] can't created.");
+				LittleMaidReengaged.Debug("Entity [" + le.getValue() + "] can't created.");
 			}
 		}
 	}
@@ -101,12 +102,12 @@ public abstract class MMM_GuiMobSelect extends GuiScreen {
 		String lbossName = BossStatus.bossName;
 		boolean lfield_82825_d = BossStatus.hasColorModifier;
 */
-		
+
 		drawDefaultBackground();
 		selectPanel.drawScreen(px, py, pf);
 		drawCenteredString(this.mc.fontRendererObj, I18n.translateToLocal(screenTitle), width / 2, 20, 0xffffff);
 		super.drawScreen(px, py, pf);
-	
+
 /*
 		// GUIで表示した分のボスのステータスを表示しない
 		BossStatus.healthScale = lhealthScale;
@@ -125,5 +126,5 @@ public abstract class MMM_GuiMobSelect extends GuiScreen {
 	 *  スロットの描画
 	 */
 	public abstract void drawSlot(int pSlotindex, int pX, int pY, int pDrawheight, String pName, Entity pEntity);
-	
+
 }

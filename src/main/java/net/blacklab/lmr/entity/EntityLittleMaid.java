@@ -13,8 +13,6 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import mmmlibx.lib.IModelMMMEntity;
-import mmmlibx.lib.MMMLib;
 import mmmlibx.lib.MMM_Counter;
 import mmmlibx.lib.multiModel.model.mc162.EquippedStabilizer;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
@@ -49,6 +47,7 @@ import net.blacklab.lmr.entity.ai.LMMNX_EntityAIRestrictOpenDoor;
 import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest;
 import net.blacklab.lmr.entity.experience.ExperienceHandler;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
+import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
@@ -143,7 +142,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity {
+public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	// 定数はStaticsへ移動
 //	protected static final UUID maidUUID = UUID.nameUUIDFromBytes("lmm.littleMaidMob".getBytes());
@@ -2910,7 +2909,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelMMMEntity 
 
 	@Override
 	public boolean processInteract(EntityPlayer par1EntityPlayer, EnumHand par2Hand, ItemStack par3ItemStack) {
-		MMMLib.Debug(worldObj.isRemote, "LMM_EntityLittleMaid.interact:"+par1EntityPlayer.getGameProfile().getName());
+		LittleMaidReengaged.Debug(worldObj.isRemote, "LMM_EntityLittleMaid.interact:"+par1EntityPlayer.getGameProfile().getName());
 		float lhealth = getHealth();
 
 		// プラグインでの処理を先に行う

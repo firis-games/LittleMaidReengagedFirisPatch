@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.blacklab.lmr.LittleMaidReengaged;
-import net.minecraft.launchwrapper.IClassTransformer;
-
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -24,11 +21,12 @@ import org.objectweb.asm.tree.TypeInsnNode;
 
 import com.google.common.collect.Lists;
 
-import mmmlibx.lib.MMMLib;
+import net.blacklab.lmr.LittleMaidReengaged;
+import net.minecraft.launchwrapper.IClassTransformer;
 
 
 /**
- * 古いマルチモデルのロード用。<br>
+ * 古いマルチモデルのロード用。
  * 使用しているクラスを置換えて新しいものへ対応。
  *
  */
@@ -84,7 +82,7 @@ public class Transformer implements IClassTransformer, Opcodes {
 		"modchu.lib",
 		"net.minecraft.src.mod_Modchu_ModchuLib",
 		"modchu.pflm",
-		"modchu.pflmf");	
+		"modchu.pflmf");
 
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] basicClass) {
@@ -94,7 +92,7 @@ public class Transformer implements IClassTransformer, Opcodes {
 		for(String header : ignoreNameSpace){
 			if(name.startsWith(header))	return basicClass;
 		}
-		
+
 		if (basicClass != null && isEnable) {
 			return replacer(name, transformedName, basicClass);
 		}
@@ -112,12 +110,12 @@ public class Transformer implements IClassTransformer, Opcodes {
 		ClassReader lcreader = new ClassReader(basicClass);
 		final String superName = lcreader.getSuperName();
 		final boolean replaceSuper = targets.containsKey(superName);
-		
+
 		// どのクラスがMMMLibのクラスを使っているかわからないので、全クラスチェックする。当然重い。
 		// (親クラスだけでなく、引数や戻り値だけ使っている可能性もある)
 
 		isChange = false;
-		
+
 		// 親クラスの置き換え
 		ClassNode lcnode = new ClassNode();
 		lcreader.accept(lcnode, 0);
@@ -126,16 +124,16 @@ public class Transformer implements IClassTransformer, Opcodes {
 		{
 			Debug("Load Old-MulitiModel: %s extends %s -> %s", name, superName, lcnode.superName);
 		}
-		
+
 		// フィールドの置き換え
 		for (FieldNode lfn : lcnode.fields) {
 			lfn.desc = checkMMM(lfn.desc);
 		}
-		
+
 		// メソッドの置き換え
 		for (MethodNode lmn : lcnode.methods) {
 			lmn.desc = checkMMM(lmn.desc);
-			
+
 			if(lmn.localVariables != null)
 			{
 				for(LocalVariableNode lvn : lmn.localVariables)
@@ -167,7 +165,7 @@ public class Transformer implements IClassTransformer, Opcodes {
 				lin = lin.getNext();
 			}
 		}
-		
+
 		// バイナリコードの書き出し
 		if (isChange) {
 			ClassWriter lcwriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);

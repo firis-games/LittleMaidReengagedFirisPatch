@@ -9,13 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mmmlibx.lib.MMMLib;
 import net.blacklab.lib.classutil.FileClassUtil;
-import net.minecraft.client.Minecraft;
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
 public class FileList {
-	
+
 	public static class CommonClassLoaderWrapper extends URLClassLoader{
 
 		public CommonClassLoaderWrapper(URL[] urls, ClassLoader parent) {
@@ -29,7 +28,7 @@ public class FileList {
 			if (new ArrayList(Arrays.asList(getURLs())).contains(url)) return;
 			super.addURL(url);
 		}
-		
+
 	}
 
 	public static File dirMinecraft;
@@ -39,7 +38,7 @@ public class FileList {
 	public static File dirDevClassAssets;
 	public static List<File> dirDevIncludeClasses = new ArrayList<File>();
 //	public static File[] dirDevIncludeAssets = new File[]{};
-	
+
 	public static List<File> files;
 	public static String minecraftDir	= "";
 //	public static File   minecraftJar	= null;	// minecraft.jarを見に行くのは昔の仕様？
@@ -78,7 +77,7 @@ public class FileList {
 				dirDevClasses = new File(pathd);
 				if(!dirDevClasses.exists()||!dirDevClasses.isDirectory())
 					throw new IllegalStateException("Could not get dev class path: Maybe your source codes are out of src/main/java?");
-				
+
 				for(int i=0;i<DevMode.INCLUDEPROJECT.length&&!serverFlag;i++){
 					if(DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE){
 						String c = FileClassUtil.getParentDir(path.substring(0, path.indexOf(tail)))+"/"+DevMode.INCLUDEPROJECT[i]+"/bin";
@@ -91,15 +90,15 @@ public class FileList {
 			}
 		}
 		dirModsVersion = new File(dirMods, (String)injectionData[4]);
-		MMMLib.Debug("init FileManager.");
+		LittleMaidReengaged.Debug("init FileManager.");
 	}
-	
+
 	// TODO 今後使用しなさそう
 	/*
 	public static void setSrcPath(File file)
 	{
 		assetsDir = file.getPath() + "/assets";
-		MMMLib.Debug("mods path =" + dirMods.getAbsolutePath());
+		LittleMaidReengaged.Debug("mods path =" + dirMods.getAbsolutePath());
 
 		// eclipseの環境の場合、eclipseフォルダ配下のmodsを見に行く
 		isDevdir = file.getName().equalsIgnoreCase("bin");
@@ -214,8 +213,8 @@ public class FileList {
 			llist = new ArrayList<File>();
 			fileList.put(pname, llist);
 		}
-		
-		MMMLib.Debug("getModFile:[%s]:%s", pname, dirMods.getAbsolutePath());
+
+		LittleMaidReengaged.Debug("getModFile:[%s]:%s", pname, dirMods.getAbsolutePath());
 		// ファイル・ディレクトリを検索
 		if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
 			//開発モード時はそちらを優先
@@ -229,26 +228,26 @@ public class FileList {
 		}
 		try {
 			if (dirMods.isDirectory()) {
-				MMMLib.Debug("getModFile-get:%d.", dirMods.list().length);
+				LittleMaidReengaged.Debug("getModFile-get:%d.", dirMods.list().length);
 				for (File t : dirMods.listFiles()) {
 					if (t.getName().indexOf(pprefix) != -1) {
 						if (t.getName().endsWith(".zip") || t.getName().endsWith(".jar")) {
 							llist.add(t);
-							MMMLib.Debug("getModFile-file:%s", t.getName());
+							LittleMaidReengaged.Debug("getModFile-file:%s", t.getName());
 						} else if (t.isDirectory()) {
 							llist.add(t);
-							MMMLib.Debug("getModFile-file:%s", t.getName());
+							LittleMaidReengaged.Debug("getModFile-file:%s", t.getName());
 						}
 					}
 				}
-				MMMLib.Debug("getModFile-files:%d", llist.size());
+				LittleMaidReengaged.Debug("getModFile-files:%d", llist.size());
 			} else {
 				// まずありえない
-				MMMLib.Debug("getModFile-fail.");
+				LittleMaidReengaged.Debug("getModFile-fail.");
 			}
 		}
 		catch (Exception exception) {
-			MMMLib.Debug("getModFile-Exception.");
+			LittleMaidReengaged.Debug("getModFile-Exception.");
 		}
 		return llist;
 
@@ -264,7 +263,7 @@ public class FileList {
 			}
 		}
 	}
-	
+
 	public static List<File> getFileList(String pname)
 	{
 		return fileList.get(pname);

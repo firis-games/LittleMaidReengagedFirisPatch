@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
@@ -23,7 +22,7 @@ public class MMM_Helper {
 	public static Method registerModEntity = null;
 	protected static final Map<Class, Class>replaceEntitys = new HashMap<Class, Class>();
 	protected static Map<String, Integer> entityIDList = new HashMap<String, Integer>();
-	
+
 	/**
 	 * EntityListに登録されていいるEntityを置き換える。
 	 * TODO サポート外，未使用
@@ -65,7 +64,7 @@ public class MMM_Helper {
 				lmap.put(pDestClass, lint);
 			}
 			replaceEntitys.put(pSrcClass, pDestClass);
-			MMMLib.Debug("Replace %s -> %s(EntityListID: %d, EntityListString: %s)", pSrcClass.getSimpleName(), pDestClass.getSimpleName(), lint, ls);
+			LittleMaidReengaged.Debug("Replace %s -> %s(EntityListID: %d, EntityListString: %s)", pSrcClass.getSimpleName(), pDestClass.getSimpleName(), lint, ls);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,7 +77,7 @@ public class MMM_Helper {
 			for (int j = 0; j < pMobs.size(); j++) {
 				if (pMobs.get(j).entityClass == le.getKey()) {
 					pMobs.get(j).entityClass = le.getValue();
-					MMMLib.Debug("ReplaceCreatureList: %s -> %s", le.getKey().getSimpleName(), le.getValue().getSimpleName());
+					LittleMaidReengaged.Debug("ReplaceCreatureList: %s -> %s", le.getKey().getSimpleName(), le.getValue().getSimpleName());
 				}
 			}
 		}
@@ -104,7 +103,7 @@ public class MMM_Helper {
 					// static以外は対象外
 					continue;
 				}
-				
+
 				Object lobject = lfield[li].get(null);
 				if (lobject == pOriginal) {
 					ModLoader.setPrivateValue(Block.class, null, li, pReplace);

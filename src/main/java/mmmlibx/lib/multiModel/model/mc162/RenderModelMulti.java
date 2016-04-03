@@ -1,8 +1,11 @@
 package mmmlibx.lib.multiModel.model.mc162;
 
-import mmmlibx.lib.IModelMMMEntity;
-import mmmlibx.lib.MMMLib;
-import net.minecraft.client.renderer.GlStateManager;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
+import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -10,10 +13,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
 
 public class RenderModelMulti extends RenderLiving {
 
@@ -24,10 +23,10 @@ public class RenderModelMulti extends RenderLiving {
 	public RenderModelMulti(RenderManager manager,float pShadowSize) {
 		super(manager, null, pShadowSize);
 		modelFATT = new ModelBaseDuo(this);
-		modelFATT.isModelAlphablend = MMMLib.cfg_isModelAlphaBlend;
+		modelFATT.isModelAlphablend = LittleMaidReengaged.cfg_isModelAlphaBlend;
 		modelFATT.isRendering = true;
 		modelMain = new ModelBaseSolo(this);
-		modelMain.isModelAlphablend = MMMLib.cfg_isModelAlphaBlend;
+		modelMain.isModelAlphablend = LittleMaidReengaged.cfg_isModelAlphaBlend;
 		modelMain.capsLink = modelFATT;
 		mainModel = modelMain;
 		//setRenderPassModel(modelFATT);
@@ -42,10 +41,10 @@ public class RenderModelMulti extends RenderLiving {
 			modelFATT.showArmorParts(par2);
 			return is.isItemEnchanted() ? 15 : 1;
 		}
-		
+
 		return -1;
 	}
-	
+
 	@Override
 	protected void preRenderCallback(EntityLivingBase entityliving, float f) {
 		Float lscale = (Float)modelMain.getCapsValue(IModelCaps.caps_ScaleFactor);
@@ -56,8 +55,8 @@ public class RenderModelMulti extends RenderLiving {
 
 	public void setModelValues(EntityLivingBase par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
-		if (par1EntityLiving instanceof IModelMMMEntity) {
-			IModelMMMEntity ltentity = (IModelMMMEntity)par1EntityLiving;
+		if (par1EntityLiving instanceof IModelEntity) {
+			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
 			modelMain.model = ltentity.getModelConfigCompound().textureModel[0];
 			modelFATT.modelInner = ltentity.getModelConfigCompound().textureModel[1];
 			modelFATT.modelOuter = ltentity.getModelConfigCompound().textureModel[2];
@@ -82,7 +81,7 @@ public class RenderModelMulti extends RenderLiving {
 		modelMain.renderCount = 0;
 		modelFATT.renderCount = 0;
 		modelMain.lighting = modelFATT.lighting = par1EntityLiving.getBrightnessForRender(par8);
-		
+
 		modelMain.setCapsValue(IModelCaps.caps_heldItemLeft, (Integer)0);
 		modelMain.setCapsValue(IModelCaps.caps_heldItemRight, (Integer)0);
 		modelMain.setCapsValue(IModelCaps.caps_onGround, getSwingProgress(par1EntityLiving, par9));
@@ -140,13 +139,13 @@ public class RenderModelMulti extends RenderLiving {
 		modelMain.renderItems(par1EntityLiving, this);
 		renderArrowsStuckInEntity(par1EntityLiving, par2);
 	}
-	
+
 
 	@Override
 	protected void renderArrowsStuckInEntity(EntityLivingBase par1EntityLiving, float par2) {
 		Client.renderArrowsStuckInEntity(par1EntityLiving, par2, this, modelMain.model);
 	}
-	
+
 
 
 	@Override
@@ -157,7 +156,7 @@ public class RenderModelMulti extends RenderLiving {
 	}
 
 	*/
-	
+
 	@Override
 	protected ResourceLocation getEntityTexture(Entity var1) {
 		// テクスチャリソースを返すところだけれど、基本的に使用しない。

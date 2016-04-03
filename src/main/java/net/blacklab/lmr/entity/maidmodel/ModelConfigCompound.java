@@ -1,9 +1,8 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import mmmlibx.lib.IModelMMMEntity;
-import mmmlibx.lib.MMMLib;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.util.EnumArmor;
@@ -166,7 +165,7 @@ public class ModelConfigCompound  {
 			// TODO ★ 暫定処置 クライアントに存在しないテクスチャが指定された場合、デフォルトを読み出す。
 			else
 			{
-				lbox = ModelManager.instance.getDefaultTexture((IModelMMMEntity)owner);
+				lbox = ModelManager.instance.getDefaultTexture((IModelEntity)owner);
 				textureBox[0] = textureBox[1] = lbox;
 
 				if (lbox.hasColor(lc)) {
@@ -266,7 +265,7 @@ public class ModelConfigCompound  {
 			}
 			if (textureBox[0] == null) {
 				// 指定色が無い場合は標準モデルに
-				textureBox[0] = textureBox[1] = ModelManager.instance.getDefaultTexture((IModelMMMEntity)owner);
+				textureBox[0] = textureBox[1] = ModelManager.instance.getDefaultTexture((IModelEntity)owner);
 				setColor(12);
 			} else {
 				textureBox[1] = textureBox[0];
@@ -397,7 +396,7 @@ public class ModelConfigCompound  {
 	 * @param pName
 	 */
 	public void setTextureInitServer(String pName) {
-		MMMLib.Debug("request Init Texture: %s", pName);
+		LittleMaidReengaged.Debug("request Init Texture: %s", pName);
 		textureBox[0] = textureBox[1] = ModelManager.instance.getTextureBoxServer(pName);
 //		setTextureNames();
 		if (textureBox[0] == null) {

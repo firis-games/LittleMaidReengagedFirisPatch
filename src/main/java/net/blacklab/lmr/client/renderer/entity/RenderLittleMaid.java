@@ -2,12 +2,12 @@ package net.blacklab.lmr.client.renderer.entity;
 
 import org.lwjgl.opengl.GL11;
 
-import mmmlibx.lib.IModelMMMEntity;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import mmmlibx.lib.multiModel.model.mc162.ModelBaseDuo;
 import mmmlibx.lib.multiModel.model.mc162.RenderModelMulti;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
@@ -95,8 +95,8 @@ public class RenderLittleMaid extends RenderModelMulti {
 		}
 
 		public void setModelValues(EntityLivingBase par1EntityLiving, IModelCaps pEntityCaps) {
-			if (par1EntityLiving instanceof IModelMMMEntity) {
-				IModelMMMEntity ltentity = (IModelMMMEntity)par1EntityLiving;
+			if (par1EntityLiving instanceof IModelEntity) {
+				IModelEntity ltentity = (IModelEntity)par1EntityLiving;
 				mmodel.modelInner = ltentity.getModelConfigCompound().textureModel[1];
 				mmodel.modelOuter = ltentity.getModelConfigCompound().textureModel[2];
 				mmodel.textureInner = ltentity.getTextures(1);

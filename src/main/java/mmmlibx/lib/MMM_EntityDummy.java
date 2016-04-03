@@ -3,6 +3,7 @@ package mmmlibx.lib;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -13,7 +14,7 @@ import net.minecraft.world.World;
  * マーカーを表示します。
  */
 public class MMM_EntityDummy extends Entity {
-	
+
 	private int livecount;
 	private final int maxlivecount = 16;
 	private int entityColor;
@@ -22,7 +23,7 @@ public class MMM_EntityDummy extends Entity {
 	 * 有効判定
 	 */
 	public static boolean isEnable = false;
-	
+
 	public static List<MMM_EntityDummy> appendList = new ArrayList<MMM_EntityDummy>();
 
 
@@ -33,7 +34,7 @@ public class MMM_EntityDummy extends Entity {
 //		setSize(1F, 1F);
 		entityOwner = owner;
 	}
-	
+
 	@Override
 	protected void entityInit() {
 	}
@@ -49,7 +50,7 @@ public class MMM_EntityDummy extends Entity {
 	@Override
 	public void onUpdate() {
 //		super.onUpdate();
-		
+
 		if (--livecount < 0 || !isEnable) {
 			setDead();
 		}
@@ -80,7 +81,7 @@ public class MMM_EntityDummy extends Entity {
 	public static void clearDummyEntity(Entity entity) {
 		if (!isEnable) return;
 		if (!CommonHelper.isClient) return;
-		
+
 		List<Entity> liste = entity.worldObj.loadedEntityList;
 		for (Entity entity1 : liste) {
 			if (entity1 instanceof MMM_EntityDummy) {
@@ -95,12 +96,12 @@ public class MMM_EntityDummy extends Entity {
 	public static void setDummyEntity(Entity owner, int color, double posx, double posy, double posz) {
 		if (!isEnable) return;
 		if (!CommonHelper.isClient) return;
-		
+
 		// サーバー側でしか呼ばれないっぽい
 		if (owner.worldObj.isRemote) {
-			MMMLib.Debug("L");
+			LittleMaidReengaged.Debug("L");
 		}
-		
+
 		MMM_EntityDummy ed = new MMM_EntityDummy(Minecraft.getMinecraft().theWorld, color, owner);
 		ed.setPosition(posx, posy, posz);
 		appendList.add(ed);
