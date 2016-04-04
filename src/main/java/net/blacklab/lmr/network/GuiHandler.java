@@ -7,6 +7,8 @@ import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GuiHandler implements IGuiHandler
 {
@@ -15,16 +17,17 @@ public class GuiHandler implements IGuiHandler
 	 1:クライアント：右クリック対象のメイドを覚える
 	 2:サーバ：　　GUIを開く
 	 3:クライアント：サーバからの通知で覚えておいたメイドのインベントリGUIを開く
-	
+
 	 課題：1～3までの間にクライアントは別のメイドを右クリックする可能性がある?
-	 * 
+	 *
 	 */
 	public static EntityLittleMaid maidClient = null;
 	public static EntityLittleMaid maidServer = null;
 
 	public static final int GUI_ID_INVVENTORY	= 0;
 	public static final int GUI_ID_IFF			= 1;
-	
+
+	@SideOnly(Side.SERVER)
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
@@ -46,6 +49,7 @@ public class GuiHandler implements IGuiHandler
 		return o;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
