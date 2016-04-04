@@ -27,7 +27,6 @@ public class GuiHandler implements IGuiHandler
 	public static final int GUI_ID_INVVENTORY	= 0;
 	public static final int GUI_ID_IFF			= 1;
 
-	@SideOnly(Side.SERVER)
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
