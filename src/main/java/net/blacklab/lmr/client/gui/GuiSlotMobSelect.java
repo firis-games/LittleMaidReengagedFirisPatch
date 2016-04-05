@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiSlot;
@@ -9,15 +9,15 @@ import net.minecraft.entity.EntityLivingBase;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class MMM_GuiSlotMobSelect extends GuiSlot {
+import mmmlibx.lib.MMM_GuiMobSelect;
+
+public class GuiSlotMobSelect extends GuiSlot {
 
 	protected int selected;
 	protected Minecraft mc;
-	public MMM_GuiMobSelect ownerGui;
+	public GuiIFF ownerGui;
 
-
-
-	public MMM_GuiSlotMobSelect(Minecraft pMinecraft, MMM_GuiMobSelect pOwner) {
+	public GuiSlotMobSelect(Minecraft pMinecraft, GuiIFF pOwner) {
 		super(pMinecraft, pOwner.width, pOwner.height, 32, pOwner.height - 52, 36);
 		mc = pMinecraft;
 		ownerGui = pOwner;

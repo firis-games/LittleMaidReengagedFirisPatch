@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.client.gui.GuiSlotMobSelect;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.entity.Entity;
@@ -90,7 +91,7 @@ public abstract class MMM_GuiMobSelect extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		selectPanel = new MMM_GuiSlotMobSelect(mc, this);
+//		selectPanel = new GuiSlotMobSelect(mc, this);
 		selectPanel.registerScrollButtons(3, 4);
 	}
 
