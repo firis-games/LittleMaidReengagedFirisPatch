@@ -1,9 +1,8 @@
-package net.blacklab.lmr.entity.actionsp;
+package net.blacklab.lmr.util;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import mmmlibx.lib.MMM_EntityCaps;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -13,7 +12,7 @@ import net.minecraft.item.ItemStack;
  * Entityのデータ読み取り用のクラス
  * 別にEntityにインターフェース付けてもOK
  */
-public class EntityCaps extends MMM_EntityCaps {
+public class EntityCaps extends EntityCapsLiving {
 
 	private EntityLittleMaid owner;
 	private static Map<String, Integer> caps;

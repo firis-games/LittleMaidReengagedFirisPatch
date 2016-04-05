@@ -1,4 +1,4 @@
-package mmmlibx.lib.multiModel.model;
+package net.blacklab.lmr.entity.maidmodel;
 
 /**
  * マルチモデル用識別クラス<br>

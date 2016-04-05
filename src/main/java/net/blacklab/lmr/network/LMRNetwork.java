@@ -6,9 +6,9 @@ import java.util.Arrays;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.actionsp.SwingStatus;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
+import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;

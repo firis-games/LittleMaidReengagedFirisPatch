@@ -2,12 +2,12 @@ package net.blacklab.lmr.client.entity;
 
 import java.util.Map;
 
-import mmmlibx.lib.MMM_EntityCaps;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
+import net.blacklab.lmr.util.EntityCapsLiving;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
@@ -27,13 +27,13 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 //			{ null, null , null , null },
 //			{ null, null , null , null }
 //	};
-	protected MMM_EntityCaps entityCaps;
+	protected EntityCapsLiving entityCaps;
 	public ModelConfigCompound textureData;
 	public boolean modeArmor = false;
 
 	public EntityLittleMaidForTexSelect(World par1World) {
 		super(par1World);
-		entityCaps = new MMM_EntityCaps(this);
+		entityCaps = new EntityCapsLiving(this);
 		textureData = new ModelConfigCompound(this, entityCaps);
 	}
 

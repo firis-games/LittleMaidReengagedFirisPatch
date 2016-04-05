@@ -1,7 +1,5 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.entity.maidmodel;
 
-import net.blacklab.lmr.entity.maidmodel.ModelRenderer;
-import net.blacklab.lmr.entity.maidmodel.ModelStabilizerBase;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;

@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.util;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public class MMM_EntityCaps implements IModelCaps {
+public class EntityCapsLiving implements IModelCaps {
 
 	protected EntityLivingBase owner;
 	private static Map<String, Integer> caps;
@@ -74,7 +74,7 @@ public class MMM_EntityCaps implements IModelCaps {
 		return caps;
 	}
 
-	public MMM_EntityCaps(EntityLivingBase pOwner) {
+	public EntityCapsLiving(EntityLivingBase pOwner) {
 		owner = pOwner;
 	}
 

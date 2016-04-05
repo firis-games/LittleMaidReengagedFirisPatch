@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.actionsp;
+package net.blacklab.lmr.util;
 
 import java.util.Random;
 

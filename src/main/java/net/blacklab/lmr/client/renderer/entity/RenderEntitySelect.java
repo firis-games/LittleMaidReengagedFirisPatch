@@ -2,7 +2,6 @@ package net.blacklab.lmr.client.renderer.entity;
 
 import org.lwjgl.opengl.GL11;
 
-import mmmlibx.lib.multiModel.model.mc162.RenderModelMulti;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;

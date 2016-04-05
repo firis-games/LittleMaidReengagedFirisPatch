@@ -59,6 +59,10 @@ public class Transformer implements IClassTransformer, Opcodes {
 			addModelClassToTransform("ModelPlate");
 			addModelClassToTransform("ModelRenderer");
 			addModelClassToTransform("ModelStabilizerBase");
+			addModelClassToTransform("ModelStabilizer_WitchHat");
+			
+			put("mmmlibx/lib/MMM_EntityCaps", "net/blacklab/lmr/util/EntityCapsLiving");
+			put("littleMaidMobX/EntityCaps", "net/blacklab/lmr/util/EntityCaps");
 		}
 		private void addModelClassToTransform(String pName) {
 			put("MMM_" + pName, oldPackageString + pName);
