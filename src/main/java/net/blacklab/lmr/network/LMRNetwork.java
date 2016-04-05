@@ -148,6 +148,7 @@ public class LMRNetwork
 		clientPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
 	}
 
+	@SideOnly(Side.SERVER)
 	public static void onServerCustomPayLoad(EntityPlayer sender, LMRMessage pPayload) {
 		EnumPacketMode lmode = EnumPacketMode.getEnumPacketMode(pPayload.data[0]);
 		if (lmode == null) return;
