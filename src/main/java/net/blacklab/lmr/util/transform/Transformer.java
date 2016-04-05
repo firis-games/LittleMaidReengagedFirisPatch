@@ -65,7 +65,7 @@ public class Transformer implements IClassTransformer, Opcodes {
 			put("littleMaidMobX/EntityCaps", "net/blacklab/lmr/util/EntityCaps");
 		}
 		private void addModelClassToTransform(String pName) {
-			put("MMM_" + pName, oldPackageString + pName);
+			put("MMM_" + pName, newPackageString + pName);
 			put(oldPackageString + pName, newPackageString + pName);
 		}
 	};
