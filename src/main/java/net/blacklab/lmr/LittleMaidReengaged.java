@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import mmmlibx.lib.MMM_StabilizerManager;
 import net.blacklab.lib.config.ConfigList;
 import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
@@ -34,6 +33,7 @@ import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.manager.EntityModeManager;
+import net.blacklab.lmr.util.manager.StabilizerManager;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.transform.Transformer;
 import net.minecraft.client.Minecraft;
@@ -186,7 +186,7 @@ public class LittleMaidReengaged {
 		// MMMLibが立ち上がった時点で旧モデル置き換えを開始
 		Transformer.isEnable = true;
 
-		MMM_StabilizerManager.init();
+		StabilizerManager.init();
 
 		// テクスチャパックの構築
 		ModelManager.instance.init();

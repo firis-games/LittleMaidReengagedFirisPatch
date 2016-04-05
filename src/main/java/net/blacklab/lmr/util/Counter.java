@@ -1,11 +1,11 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.util;
 
 
 
 /**
  * カウンタ用。
  */
-public class MMM_Counter {
+public class Counter {
 
 	protected int fSetValue;
 	protected int fMaxValue;
@@ -13,11 +13,11 @@ public class MMM_Counter {
 	protected int fCounter;
 
 
-	public MMM_Counter() {
+	public Counter() {
 		this(25, 20, -10);
 	}
 
-	public MMM_Counter(int pSetValue, int pMaxValue, int pDelayValue) {
+	public Counter(int pSetValue, int pMaxValue, int pDelayValue) {
 		fSetValue = pSetValue;
 		fMaxValue = pMaxValue;
 		fDelayValue = pDelayValue;

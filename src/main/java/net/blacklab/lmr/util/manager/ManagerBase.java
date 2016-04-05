@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.util.manager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +13,7 @@ import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
-public abstract class MMM_ManagerBase {
+public abstract class ManagerBase {
 
 	protected abstract String getPreFix();
 	/**

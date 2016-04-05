@@ -20,7 +20,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 
-public class LMMNX_RenderEntitySelect extends RenderModelMulti {
+public class RenderEntitySelect extends RenderModelMulti {
 
 	public class MMMLayerArmor extends LayerArmorBase{
 
@@ -82,7 +82,7 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 //				mmodel.entityCaps = lmm.maidCaps;
 			}
 //			mmodel.setEntityCaps(pEntityCaps);
-			mmodel.setRender(LMMNX_RenderEntitySelect.this);
+			mmodel.setRender(RenderEntitySelect.this);
 			mmodel.showAllParts();
 			mmodel.isAlphablend = true;
 		}
@@ -196,7 +196,7 @@ public class LMMNX_RenderEntitySelect extends RenderModelMulti {
 	}
 
 
-	public LMMNX_RenderEntitySelect(RenderManager manager, float pShadowSize) {
+	public RenderEntitySelect(RenderManager manager, float pShadowSize) {
 		super(manager, pShadowSize);
 		addLayer(new MMMLayerArmor(this));
 	}

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import mmmlibx.lib.MMM_GuiMobSelect;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.network.EnumPacketMode;

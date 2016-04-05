@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.util.manager;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,7 +10,7 @@ import net.blacklab.lmr.util.FileList;
 /**
  * 追加パーツたるスタビライザーを管理する
  */
-public class MMM_StabilizerManager extends MMM_ManagerBase {
+public class StabilizerManager extends ManagerBase {
 
 	public static final String preFix = "ModelStabilizer";
 	public static Map<String, ModelStabilizerBase> stabilizerList = new TreeMap<String, ModelStabilizerBase>();
@@ -22,7 +22,7 @@ public class MMM_StabilizerManager extends MMM_ManagerBase {
 	}
 
 	public static void loadStabilizer() {
-		(new MMM_StabilizerManager()).load();
+		(new StabilizerManager()).load();
 	}
 
 	@Override

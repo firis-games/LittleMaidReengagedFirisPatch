@@ -3,13 +3,12 @@ package net.blacklab.lmr.util.manager;
 import java.util.ArrayList;
 import java.util.List;
 
-import mmmlibx.lib.MMM_ManagerBase;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.util.FileList;
 
-public class EntityModeManager extends MMM_ManagerBase {
+public class EntityModeManager extends ManagerBase {
 
 	public static final String prefix = "EntityMode";
 	public static List<EntityModeBase> maidModeList = new ArrayList<EntityModeBase>();

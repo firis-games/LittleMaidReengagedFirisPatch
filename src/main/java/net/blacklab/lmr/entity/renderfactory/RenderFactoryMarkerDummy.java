@@ -1,6 +1,6 @@
 package net.blacklab.lmr.entity.renderfactory;
 
-import mmmlibx.lib.MMM_RenderDummy;
+import net.blacklab.lmr.client.renderer.entity.RenderEntityMarkerDummy;
 import net.blacklab.lmr.entity.EntityMarkerDummy;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -10,7 +10,7 @@ public class RenderFactoryMarkerDummy implements IRenderFactory<EntityMarkerDumm
 
 	@Override
 	public Render<? super EntityMarkerDummy> createRenderFor(RenderManager manager) {
-		return new MMM_RenderDummy();
+		return new RenderEntityMarkerDummy();
 	}
 
 }

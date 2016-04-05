@@ -1,15 +1,13 @@
 package net.blacklab.lmr.client.gui;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.EntityLivingBase;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import mmmlibx.lib.MMM_GuiMobSelect;
 
 public class GuiSlotMobSelect extends GuiSlot {
 
@@ -57,7 +55,7 @@ public class GuiSlotMobSelect extends GuiSlot {
 		// 基本スロットの描画、細かい所はオーナー側で
 		// Entityの確保
 		String s = ownerGui.entityMap.keySet().toArray()[var1].toString();
-		boolean lf = MMM_GuiMobSelect.exclusionList.contains(s);
+		boolean lf = GuiIFF.exclusionList.contains(s);
 		EntityLivingBase entityliving = lf ? null : (EntityLivingBase) ownerGui.entityMap.get(s);
 		if(entityliving==null) return;
 		
@@ -101,7 +99,7 @@ public class GuiSlotMobSelect extends GuiSlot {
 			Minecraft.getMinecraft().getRenderManager().doRenderEntity(entityliving,
 					0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		} catch (Exception e) {
-			MMM_GuiMobSelect.exclusionList.add(s);
+			GuiIFF.exclusionList.add(s);
 		}
 		// 影だかバイオームだかの処理?
 		GL11.glPopMatrix();

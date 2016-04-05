@@ -13,7 +13,6 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import mmmlibx.lib.MMM_Counter;
 import mmmlibx.lib.multiModel.model.mc162.EquippedStabilizer;
 import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import net.blacklab.lib.minecraft.item.ItemUtil;
@@ -61,6 +60,7 @@ import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
+import net.blacklab.lmr.util.Counter;
 import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
@@ -200,10 +200,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //	protected boolean isMaidChaseWait;
 	protected int mstatWaitCount;
 	protected int mstatTime;
-	protected MMM_Counter maidOverDriveTime;
+	protected Counter maidOverDriveTime;
 	protected boolean mstatFirstLook;
 	protected boolean mstatLookSuger;
-	protected MMM_Counter workingCount;
+	protected Counter workingCount;
 	protected int mstatPlayingRole;
 	protected int mstatWorkingInt;
 	protected String mstatModeName;
@@ -286,7 +286,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	private static final int[] XBOUND_BLOCKOFFS = new int[]{  0, -1, -1, -1,  0,  1,  1,  1};
 	public int DEBUGCOUNT = 0;
 	private boolean isInsideOpaque = false;
-	protected MMM_Counter registerTick;
+	protected Counter registerTick;
 	protected String registerMode;
 
 	// NX5 レベル関連
@@ -318,9 +318,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		mstatOpenInventory = false;
 //		isMaidChaseWait = false;
 		mstatTime = 6000;
-		maidOverDriveTime = new MMM_Counter(5, 300, -LittleMaidReengaged.cfg_maidOverdriveDelay);
-		workingCount = new MMM_Counter(11, 10, -10);
-		registerTick = new MMM_Counter(200, 200, -20);
+		maidOverDriveTime = new Counter(5, 300, -LittleMaidReengaged.cfg_maidOverdriveDelay);
+		workingCount = new Counter(11, 10, -10);
+		registerTick = new Counter(200, 200, -20);
 
 		// モデルレンダリング用のフラグ獲得用ヘルパー関数
 		maidCaps = new EntityCaps(this);
@@ -801,7 +801,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return getMaidActiveModeClass() != null;
 	}
 
-	public MMM_Counter getWorkingCount() {
+	public Counter getWorkingCount() {
 		return workingCount;
 	}
 
@@ -2140,7 +2140,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 	}
 
-	public MMM_Counter getMaidOverDriveTime() {
+	public Counter getMaidOverDriveTime() {
 		return maidOverDriveTime;
 	}
 

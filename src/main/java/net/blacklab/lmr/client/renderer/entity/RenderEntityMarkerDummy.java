@@ -1,4 +1,4 @@
-package mmmlibx.lib;
+package net.blacklab.lmr.client.renderer.entity;
 
 import org.lwjgl.opengl.EXTRescaleNormal;
 import org.lwjgl.opengl.GL11;
@@ -12,9 +12,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-public class MMM_RenderDummy extends Render {
+public class RenderEntityMarkerDummy extends Render {
 
-	public MMM_RenderDummy() {
+	public RenderEntityMarkerDummy() {
 		super(Minecraft.getMinecraft().getRenderManager());
 		shadowSize = 0.0F;
 	}
