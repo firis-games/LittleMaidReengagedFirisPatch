@@ -15,7 +15,7 @@ public class OldModelLoaderContainer extends DummyModContainer {
 		super(new ModMetadata());
 		ModMetadata lmeta = getMetadata();
 
-		lmeta.modId		= "oldmodelloader";
+		lmeta.modId		= "OldModelLoader";
 		lmeta.name		= "LMR OldModelLoader";
 		lmeta.version	= LittleMaidReengaged.VERSION;
 		lmeta.authorList	= Arrays.asList("Verclene");

@@ -82,28 +82,21 @@ public class Transformer implements IClassTransformer, Opcodes {
 		"modchu.lib",
 		"net.minecraft.src.mod_Modchu_ModchuLib",
 		"modchu.pflm",
-		"modchu.pflmf",
-		"net.blacklab.lmr",
-		"net.minecraft");
+		"modchu.pflmf");
 
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] basicClass) {
 		//MMMLibが立ち上がった時点で旧モデル置き換えを開始
-		try {
-			Transformer.isEnable = true;
+		Transformer.isEnable = true;
 
-			for(String header : ignoreNameSpace){
-				if(name.startsWith(header))	return basicClass;
-			}
-
-			if (basicClass != null && isEnable) {
-				return replacer(name, transformedName, basicClass);
-			}
-			return basicClass;
-		} catch(Exception exception) {
-			exception.printStackTrace();
-			return basicClass;
+		for(String header : ignoreNameSpace){
+			if(name.startsWith(header))	return basicClass;
 		}
+
+		if (basicClass != null && isEnable) {
+			return replacer(name, transformedName, basicClass);
+		}
+		return basicClass;
 	}
 
 	/**
@@ -114,8 +107,6 @@ public class Transformer implements IClassTransformer, Opcodes {
 	 * @return
 	 */
 	private byte[] replacer(String name, String transformedName, byte[] basicClass) {
-		System.out.println("Transform execution! "+name);
-
 		ClassReader lcreader = new ClassReader(basicClass);
 		final String superName = lcreader.getSuperName();
 		final boolean replaceSuper = targets.containsKey(superName);

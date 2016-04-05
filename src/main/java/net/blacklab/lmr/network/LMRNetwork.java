@@ -22,7 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LMRNetwork
 {
@@ -134,32 +133,24 @@ public class LMRNetwork
 		return null;
 	}
 
-	@SideOnly(Side.CLIENT)
-	public static void onClientCustomPayLoad(LMRMessage pPayload) {
-		EnumPacketMode lmode = EnumPacketMode.getEnumPacketMode(pPayload.data[0]);
-		if (lmode == null) return;
-		LittleMaidReengaged.Debug("MODE: %s", lmode.toString());
-		EntityLittleMaid lemaid = null;
-		if (lmode.withEntity) {
-			lemaid = getLittleMaid(pPayload.data, 1, Minecraft.getMinecraft().theWorld);
-			if (lemaid == null) return;
-			syncPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, 5, pPayload.data.length));
-		}
-		clientPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
-	}
+	public static void onCustomPayload(EntityPlayer sender, LMRMessage pPayload) {
+		// Turn true if the packet is sent from server
+		boolean fromServer = sender==null;
 
-	@SideOnly(Side.SERVER)
-	public static void onServerCustomPayLoad(EntityPlayer sender, LMRMessage pPayload) {
 		EnumPacketMode lmode = EnumPacketMode.getEnumPacketMode(pPayload.data[0]);
 		if (lmode == null) return;
 		LittleMaidReengaged.Debug("MODE: %s", lmode.toString());
 		EntityLittleMaid lemaid = null;
 		if (lmode.withEntity) {
-			lemaid = getLittleMaid(pPayload.data, 1, sender.worldObj);
+			lemaid = getLittleMaid(pPayload.data, 1, fromServer?Minecraft.getMinecraft().theWorld:sender.worldObj);
 			if (lemaid == null) return;
 			syncPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, 5, pPayload.data.length));
 		}
-		serverPayLoad(lmode, sender, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
+		if (fromServer) {
+			clientPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
+		} else {
+			serverPayLoad(lmode, sender, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
+		}
 	}
 
 	private static void serverPayLoad(EnumPacketMode pMode, EntityPlayer sender, EntityLittleMaid lemaid, byte[] contents) {

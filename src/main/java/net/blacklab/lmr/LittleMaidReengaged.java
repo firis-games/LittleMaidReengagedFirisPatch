@@ -278,7 +278,8 @@ public class LittleMaidReengaged {
 
 		latestVersion = Version.getLatestVersion("http://mc.el-blacklab.net/lmmnxversion.txt", 10000);
 
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance,
+				new GuiHandler());
 
 		EntityRegistry.registerModEntity(EntityLittleMaid.class,
 				"LittleMaid", 0, instance, 80, 1, true);
