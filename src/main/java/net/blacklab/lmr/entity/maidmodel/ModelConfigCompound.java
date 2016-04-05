@@ -1,7 +1,5 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
-import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.EntityLittleMaid;

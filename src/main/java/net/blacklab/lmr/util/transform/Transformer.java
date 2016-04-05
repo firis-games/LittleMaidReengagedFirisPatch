@@ -32,36 +32,37 @@ import net.minecraft.launchwrapper.IClassTransformer;
  */
 public class Transformer implements IClassTransformer, Opcodes {
 
-	static String packageString = "mmmlibx/lib/multiModel/model/mc162/";
+	static String oldPackageString = "mmmlibx/lib/multiModel/model/mc162/";
+	static String newPackageString = "net/blacklab/lmr/entity/maidmodel/";
 	@SuppressWarnings("serial")
 	private static final Map<String, String> targets = new HashMap<String, String>() {
 		{
-			add("EquippedStabilizer");
-			add("IModelBaseMMM");
-			add("IModelCaps");
-			add("ModelBase");
-			add("ModelBaseDuo");
-			add("ModelBaseNihil");
-			add("ModelBaseSolo");
-			add("ModelBox");
-			add("ModelBoxBase");
-			add("ModelCapsHelper");
-			add("ModelLittleMaid_AC");
-			add("ModelLittleMaid_Archetype");
-			add("ModelLittleMaid_Orign");
-			add("ModelLittleMaid_RX2");
-			add("ModelLittleMaid_Aug");
-			add("ModelLittleMaid_SR2");
-			add("ModelLittleMaidBase");
-			add("ModelMultiBase");
-			add("ModelMultiMMMBase");
-			add("ModelPlate");
-			add("ModelRenderer");
-			add("ModelStabilizerBase");
+			addModelClassToTransform("EquippedStabilizer");
+			addModelClassToTransform("IModelBaseMMM");
+			addModelClassToTransform("IModelCaps");
+			addModelClassToTransform("ModelBase");
+			addModelClassToTransform("ModelBaseDuo");
+			addModelClassToTransform("ModelBaseNihil");
+			addModelClassToTransform("ModelBaseSolo");
+			addModelClassToTransform("ModelBox");
+			addModelClassToTransform("ModelBoxBase");
+			addModelClassToTransform("ModelCapsHelper");
+			addModelClassToTransform("ModelLittleMaid_AC");
+			addModelClassToTransform("ModelLittleMaid_Archetype");
+			addModelClassToTransform("ModelLittleMaid_Orign");
+			addModelClassToTransform("ModelLittleMaid_RX2");
+			addModelClassToTransform("ModelLittleMaid_Aug");
+			addModelClassToTransform("ModelLittleMaid_SR2");
+			addModelClassToTransform("ModelLittleMaidBase");
+			addModelClassToTransform("ModelMultiBase");
+			addModelClassToTransform("ModelMultiMMMBase");
+			addModelClassToTransform("ModelPlate");
+			addModelClassToTransform("ModelRenderer");
+			addModelClassToTransform("ModelStabilizerBase");
 		}
-		private void add(String pName) {
-			String replaceName = pName;
-			put("MMM_" + pName, packageString + replaceName);
+		private void addModelClassToTransform(String pName) {
+			put("MMM_" + pName, oldPackageString + pName);
+			put(oldPackageString + pName, newPackageString + pName);
 		}
 	};
 

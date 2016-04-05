@@ -13,8 +13,6 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import mmmlibx.lib.multiModel.model.mc162.EquippedStabilizer;
-import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
@@ -46,6 +44,8 @@ import net.blacklab.lmr.entity.ai.LMMNX_EntityAIRestrictOpenDoor;
 import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest;
 import net.blacklab.lmr.entity.experience.ExperienceHandler;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
+import net.blacklab.lmr.entity.maidmodel.EquippedStabilizer;
+import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;

@@ -1,7 +1,7 @@
 package mmmlibx.lib;
 
-import mmmlibx.lib.multiModel.model.mc162.ModelRenderer;
-import mmmlibx.lib.multiModel.model.mc162.ModelStabilizerBase;
+import net.blacklab.lmr.entity.maidmodel.ModelRenderer;
+import net.blacklab.lmr.entity.maidmodel.ModelStabilizerBase;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;

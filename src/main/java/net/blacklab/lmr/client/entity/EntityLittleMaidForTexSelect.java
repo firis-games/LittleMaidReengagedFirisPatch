@@ -3,9 +3,9 @@ package net.blacklab.lmr.client.entity;
 import java.util.Map;
 
 import mmmlibx.lib.MMM_EntityCaps;
-import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
+import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.util.manager.ModelManager;

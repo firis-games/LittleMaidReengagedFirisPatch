@@ -1,4 +1,4 @@
-package mmmlibx.lib.multiModel.model.mc162;
+package net.blacklab.lmr.entity.maidmodel;
 
 
 /**

@@ -1,9 +1,9 @@
-package mmmlibx.lib.multiModel.model.mc162;
+package net.blacklab.lmr.entity.maidmodel;
 
-import static mmmlibx.lib.multiModel.model.mc162.IModelCaps.caps_Actions;
-import static mmmlibx.lib.multiModel.model.mc162.IModelCaps.caps_Entity;
-import static mmmlibx.lib.multiModel.model.mc162.IModelCaps.caps_HeadMount;
-import static mmmlibx.lib.multiModel.model.mc162.IModelCaps.caps_Items;
+import static net.blacklab.lmr.entity.maidmodel.IModelCaps.caps_Actions;
+import static net.blacklab.lmr.entity.maidmodel.IModelCaps.caps_Entity;
+import static net.blacklab.lmr.entity.maidmodel.IModelCaps.caps_HeadMount;
+import static net.blacklab.lmr.entity.maidmodel.IModelCaps.caps_Items;
 
 import java.lang.reflect.Constructor;
 import java.nio.FloatBuffer;

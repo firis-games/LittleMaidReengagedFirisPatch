@@ -9,9 +9,9 @@ import org.lwjgl.opengl.GL12;
 
 import com.ibm.icu.text.Normalizer.Mode;
 
-import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
+import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.util.helper.RendererHelper;

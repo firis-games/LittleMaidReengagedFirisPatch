@@ -19,11 +19,11 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
+import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxServer;

@@ -5,7 +5,10 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
+import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
+import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;

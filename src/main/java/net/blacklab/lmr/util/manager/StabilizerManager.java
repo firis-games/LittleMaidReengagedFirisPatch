@@ -5,6 +5,9 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import mmmlibx.lib.multiModel.model.mc162.*;
+import net.blacklab.lmr.entity.maidmodel.EquippedStabilizer;
+import net.blacklab.lmr.entity.maidmodel.ModelBase;
+import net.blacklab.lmr.entity.maidmodel.ModelStabilizerBase;
 import net.blacklab.lmr.util.FileList;
 
 /**

@@ -2,12 +2,12 @@ package net.blacklab.lmr.client.renderer.entity;
 
 import org.lwjgl.opengl.GL11;
 
-import mmmlibx.lib.multiModel.model.mc162.IModelCaps;
-import mmmlibx.lib.multiModel.model.mc162.ModelBaseDuo;
 import mmmlibx.lib.multiModel.model.mc162.RenderModelMulti;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
+import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;

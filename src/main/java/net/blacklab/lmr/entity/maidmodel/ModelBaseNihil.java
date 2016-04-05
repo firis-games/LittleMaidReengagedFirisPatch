@@ -1,4 +1,4 @@
-package mmmlibx.lib.multiModel.model.mc162;
+package net.blacklab.lmr.entity.maidmodel;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderEntity;
