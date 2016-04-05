@@ -1,6 +1,6 @@
 package net.blacklab.lmr.util;
 
-public enum EnumArmor {
+public enum EnumArmorRenderParts {
 	INNER_HEAD(0x10),
 	INNER_CHESTPLATE(0x11),
 	INNER_LEGGINS(0x12),
@@ -15,18 +15,18 @@ public enum EnumArmor {
 	public Integer layerIndex;
 	public Integer textureIndex;
 	
-	EnumArmor(int texIndex) {
+	EnumArmorRenderParts(int texIndex) {
 		value = texIndex;
 		textureIndex = texIndex & 0x0f;
 		layerIndex = (textureIndex & 0xf0) / 0x10;
 		inventoryIndex = 4 - textureIndex;
 	}
 	
-	public static EnumArmor getEnumArmor(int layer, int tex) {
+	public static EnumArmorRenderParts getEnumArmor(int layer, int tex) {
 		if (layer <= 0) {
 			return null;
 		}
-		for (EnumArmor ea : values()) {
+		for (EnumArmorRenderParts ea : values()) {
 			if (ea.layerIndex == layer && ea.textureIndex == tex) {
 				return ea;
 			}

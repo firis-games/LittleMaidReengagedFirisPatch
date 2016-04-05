@@ -5,7 +5,7 @@ import mmmlibx.lib.multiModel.model.mc162.ModelMultiBase;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.util.EnumArmor;
+import net.blacklab.lmr.util.EnumArmorRenderParts;
 import net.blacklab.lmr.util.EnumTextureType;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.manager.ModelManager;
@@ -64,11 +64,11 @@ public class ModelConfigCompound  {
 			textures[0][type.index] = resourceLocation;
 		}
 
-		public ResourceLocation getArmorTexture(EnumTextureType type, EnumArmor parts) {
+		public ResourceLocation getArmorTexture(EnumTextureType type, EnumArmorRenderParts parts) {
 			return textures[type.index*2 + parts.layerIndex][parts.textureIndex];
 		}
 
-		public void setArmorTexture(EnumTextureType type, EnumArmor parts, ResourceLocation pLocation) {
+		public void setArmorTexture(EnumTextureType type, EnumArmorRenderParts parts, ResourceLocation pLocation) {
 			textures[type.index*2 + parts.layerIndex][parts.textureIndex] = pLocation;
 		}
 	}
