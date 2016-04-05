@@ -27,7 +27,7 @@ import net.blacklab.lmr.item.ItemMaidSpawnEgg;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
-import net.blacklab.lmr.proxy.ProxyCommon;
+import net.blacklab.lmr.network.ProxyCommon;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
@@ -137,7 +137,7 @@ public class LittleMaidReengaged {
 	public static boolean cfg_Aggressive = true;
 	public static int cfg_maidOverdriveDelay = 64;
 
-	@SidedProxy(clientSide = "net.blacklab.lmr.proxy.ProxyClient", serverSide = "net.blacklab.lmr.proxy.ProxyCommon")
+	@SidedProxy(clientSide = "net.blacklab.lmr.network.ProxyClient", serverSide = "net.blacklab.lmr.network.ProxyCommon")
 	public static ProxyCommon proxy;
 
 	@Instance(DOMAIN)
@@ -278,9 +278,6 @@ public class LittleMaidReengaged {
 
 		latestVersion = Version.getLatestVersion("http://mc.el-blacklab.net/lmmnxversion.txt", 10000);
 
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance,
-				new GuiHandler());
-
 		EntityRegistry.registerModEntity(EntityLittleMaid.class,
 				"LittleMaid", 0, instance, 80, 1, true);
 
@@ -310,26 +307,15 @@ public class LittleMaidReengaged {
 		// アイテムスロット更新用のパケット
 		LMRNetwork.init(DOMAIN);
 
-		// Model
-		if (evt.getSide() == Side.CLIENT) {
-			ModelLoader.setCustomModelResourceLocation(
-					LittleMaidReengaged.spawnEgg, 0, new ModelResourceLocation(
-							DOMAIN+":spawn_littlemaid_egg", "inventory"));
-			ModelLoader.setCustomModelResourceLocation(registerKey, 0,
-					new ModelResourceLocation(DOMAIN+":registerkey",
-							"inventory"));
-			ModelLoader.setCustomModelResourceLocation(registerKey, 1,
-					new ModelResourceLocation(DOMAIN+":registerkey",
-							"inventory"));
-		}
-		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
-		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());
-		RenderingRegistry.registerEntityRenderingHandler(EntityMarkerDummy.class, new RenderFactoryMarkerDummy());
+		// Register model and renderer
+		proxy.rendererRegister();
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.loadSounds();
+
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
 		if (CommonHelper.isClient) {
 			List<IResourcePack> defaultResourcePacks = ObfuscationReflectionHelper
@@ -337,9 +323,6 @@ public class LittleMaidReengaged {
 							"defaultResourcePacks", "field_110449_ao");
 			defaultResourcePacks.add(new SoundResourcePack());
 			defaultResourcePacks.add(new OldZipTexturesWrapper());
-
-			// デフォルトモデルの設定
-			proxy.init();
 		}
 
 	}
@@ -351,7 +334,6 @@ public class LittleMaidReengaged {
 		// カンマ区切りのアイテム名のリストを配列にして設定
 		// "aaa, bbb,ccc  " -> "aaa" "bbb" "ccc"
 		MinecraftForge.EVENT_BUS.register(new EventHook());
-		FMLCommonHandler.instance().bus().register(new EventHook());
 
 		// デフォルトモデルの設定
 		// MMM_TextureManager.instance.setDefaultTexture(LMM_EntityLittleMaid.class,

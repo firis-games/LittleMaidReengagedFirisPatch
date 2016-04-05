@@ -133,24 +133,18 @@ public class LMRNetwork
 		return null;
 	}
 
-	public static void onCustomPayload(EntityPlayer sender, LMRMessage pPayload) {
+	public static void onServerCustomPayload(EntityPlayer sender, LMRMessage pPayload) {
 		// Turn true if the packet is sent from server
-		boolean fromServer = sender==null;
-
 		EnumPacketMode lmode = EnumPacketMode.getEnumPacketMode(pPayload.data[0]);
 		if (lmode == null) return;
 		LittleMaidReengaged.Debug("MODE: %s", lmode.toString());
 		EntityLittleMaid lemaid = null;
 		if (lmode.withEntity) {
-			lemaid = getLittleMaid(pPayload.data, 1, fromServer?Minecraft.getMinecraft().theWorld:sender.worldObj);
+			lemaid = getLittleMaid(pPayload.data, 1, sender.worldObj);
 			if (lemaid == null) return;
 			syncPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, 5, pPayload.data.length));
 		}
-		if (fromServer) {
-			clientPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
-		} else {
-			serverPayLoad(lmode, sender, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
-		}
+		serverPayLoad(lmode, sender, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
 	}
 
 	private static void serverPayLoad(EnumPacketMode pMode, EntityPlayer sender, EntityLittleMaid lemaid, byte[] contents) {
@@ -228,40 +222,7 @@ public class LMRNetwork
 		}
 	}
 
-	private static void clientPayLoad(EnumPacketMode pMode, EntityLittleMaid lemaid, byte[] contents) {
-		switch (pMode) {
-		case CLIENT_SWINGARM :
-			// 腕振り
-			byte larm = contents[0];
-			EnumSound lsound = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(contents, 1));
-			lemaid.setSwinging(larm, lsound, NetworkHelper.getIntFromPacket(contents, 5)==1);
-//			mod_LMM_littleMaidMob.Debug(String.format("SwingSound:%s", lsound.name()));
-			break;
-
-		case CLIENT_RESPOND_IFF :
-			// IFFの設定値を受信
-			int lval = contents[0];
-			int lindex = NetworkHelper.getIntFromPacket(contents, 1);
-			String lname = (String)IFF.DefaultIFF.keySet().toArray()[lindex];
-			LittleMaidReengaged.Debug("setIFF-CL %s(%d)=%d", lname, lindex, lval);
-			IFF.setIFFValue(null, lname, lval);
-			break;
-
-		case CLIENT_PLAY_SOUND :
-			// 音声再生
-			EnumSound lsound9 = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(contents, 0));
-			LittleMaidReengaged.Debug(String.format("playSound:%s", lsound9.name()));
-			lemaid.playSound(lsound9, true);
-			break;
-		case CLIENT_ONDEATH :
-			lemaid.manualOnDeath();
-			break;
-		default:
-			break;
-		}
-	}
-
-	private static void syncPayLoad(EnumPacketMode pMode, EntityLittleMaid pMaid, byte[] contents) {
+	protected static void syncPayLoad(EnumPacketMode pMode, EntityLittleMaid pMaid, byte[] contents) {
 		switch (pMode) {
 		case SYNC_ARMORFLAG:
 			pMaid.setMaidArmorVisible(contents[0]);

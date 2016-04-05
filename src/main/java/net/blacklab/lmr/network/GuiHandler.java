@@ -1,5 +1,6 @@
 package net.blacklab.lmr.network;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.gui.GuiIFF;
 import net.blacklab.lmr.client.gui.inventory.GuiMaidInventory;
 import net.blacklab.lmr.entity.EntityLittleMaid;
@@ -49,21 +50,6 @@ public class GuiHandler implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		Object o = null;
-		switch(ID)
-		{
-			case GUI_ID_INVVENTORY:
-				if(maidClient!=null)
-				{
-					o = new GuiMaidInventory(player, maidClient);
-					maidClient = null;
-				}
-				break;
-
-			case GUI_ID_IFF:
-				o = new GuiIFF(world, player, maidClient);
-				break;
-		}
-		return o;
+		return LittleMaidReengaged.proxy.getClientGuiElement(ID, player, world, x, y, z);
 	}
 }
