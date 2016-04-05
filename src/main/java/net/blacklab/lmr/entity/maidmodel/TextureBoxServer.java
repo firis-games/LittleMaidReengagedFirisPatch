@@ -1,6 +1,5 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import mmmlibx.lib.multiModel.model.mc162.*;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 
 public class TextureBoxServer extends TextureBoxBase {

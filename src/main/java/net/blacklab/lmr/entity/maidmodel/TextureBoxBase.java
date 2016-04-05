@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import mmmlibx.lib.multiModel.model.mc162.*;
-
 public abstract class TextureBoxBase {
 
 	public String textureName;

@@ -1,7 +1,5 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import mmmlibx.lib.multiModel.model.mc162.*;
-
 public class ModelMulti_Stef extends ModelMulti_Steve {
 
 	public ModelRenderer bust;
