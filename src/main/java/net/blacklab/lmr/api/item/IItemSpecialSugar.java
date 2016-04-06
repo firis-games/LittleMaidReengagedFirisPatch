@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 /** メイドに与えた時、または食べた時に特殊な効果を発揮するアイテムを追加するためのインターフェース。
  */
-public interface LMMNX_IItemSpecialSugar {
+public interface IItemSpecialSugar {
 	
 	/** インベントリに入れておいた実装アイテムをメイドが食べた時に発揮する効果。
 	 * @param maid 対象のメイドを示すインスタンス

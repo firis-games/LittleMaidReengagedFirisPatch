@@ -12,7 +12,7 @@ import net.blacklab.lib.config.ConfigList;
 import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
-import net.blacklab.lmr.api.mode.LMMNX_API_Farmer;
+import net.blacklab.lmr.api.mode.UtilModeFarmer;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
@@ -66,13 +66,16 @@ import net.minecraftforge.fml.relauncher.Side;
 		modid = LittleMaidReengaged.DOMAIN,
 		name = "LittleMaidReengaged",
 		version = LittleMaidReengaged.VERSION,
-		acceptedMinecraftVersions=LittleMaidReengaged.ACCEPTED_MCVERSION)
+		acceptedMinecraftVersions=LittleMaidReengaged.ACCEPTED_MCVERSION,
+		dependencies = LittleMaidReengaged.DEPENDENCIES)
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
-	public static final String VERSION = "7.0.0.8";
-	public static final String ACCEPTED_MCVERSION = "[1.9,)";
+	public static final String VERSION = "7.1.0.1";
+	public static final String ACCEPTED_MCVERSION = "[1.9,1.9.100)";
 	public static final int VERSION_CODE = 1;
+	public static final String DEPENDENCIES = "required-after:Forge@[1.9-12.16.0.1819,);"
+			+ "required-after:net.blacklab.lib@[5.1.0.1,)";
 
 	public static final VersionData currentVersion = new VersionData(VERSION_CODE, VERSION, VERSION);
 	public static VersionData latestVersion = new VersionData(1, "6.0.1", "6.0.1");
@@ -258,13 +261,13 @@ public class LittleMaidReengaged {
 		String seedItemsOrgStr = cfg.getString("seedItems",
 				"wheat_seeds, carrot, potato");
 		for (String s : seedItemsOrgStr.split(" *, *")) {
-			LMMNX_API_Farmer.addItemsForSeed(s);
+			UtilModeFarmer.addItemsForSeed(s);
 		}
 
 		String cropItemsOrgStr = cfg.getString("cropItems",
 				"wheat, carrot, potato");
 		for (String s : cropItemsOrgStr.split(" *, *")) {
-			LMMNX_API_Farmer.addItemsForCrop(s);
+			UtilModeFarmer.addItemsForCrop(s);
 		}
 
 		try {

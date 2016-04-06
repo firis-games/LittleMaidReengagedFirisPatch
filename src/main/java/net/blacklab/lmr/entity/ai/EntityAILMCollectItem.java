@@ -3,9 +3,9 @@ package net.blacklab.lmr.entity.ai;
 import java.util.List;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
-import net.blacklab.lmr.api.item.LMMNX_API_Item;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
@@ -51,7 +51,7 @@ public class EntityAILMCollectItem extends EntityAIBase {
 								ei.posZ - MathHelper.cos(ep.rotationYaw * 0.01745329252F) * 2.0D) > 7.5D))
 				{
 					ItemStack lstack = ei.getEntityItem();
-					if (!LMMNX_API_Item.isSugar(lstack.getItem())) {
+					if (!ItemHelper.isSugar(lstack.getItem())) {
 						if ((theMaid.getMaidActiveModeClass() == null)) {
 							return false;
 						}

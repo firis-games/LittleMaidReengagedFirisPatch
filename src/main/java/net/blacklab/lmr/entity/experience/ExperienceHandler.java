@@ -3,11 +3,11 @@ package net.blacklab.lmr.entity.experience;
 import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.api.item.LMMNX_API_Item;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.mode.EntityMode_DeathWait;
 import net.blacklab.lmr.network.EnumPacketMode;
+import net.blacklab.lmr.util.helper.ItemHelper;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -142,7 +142,7 @@ public class ExperienceHandler {
 			int sugarCount = 0;
 			for (int i=0; i<18 && sugarCount < requiredSugarToRevive; i++) {
 				ItemStack stack = theMaid.maidInventory.mainInventory[i];
-				if (stack!=null && LMMNX_API_Item.isSugar(stack.getItem())) {
+				if (stack!=null && ItemHelper.isSugar(stack.getItem())) {
 					sugarCount += stack.stackSize;
 				}
 			}
@@ -155,7 +155,7 @@ public class ExperienceHandler {
 					theMaid.eatSugar(false,false,false);
 					for(int i=0; i<18 && requiredSugarToRevive > 0; i++) {
 						ItemStack stack = theMaid.maidInventory.mainInventory[i];
-						if (stack!=null && LMMNX_API_Item.isSugar(stack.getItem())) {
+						if (stack!=null && ItemHelper.isSugar(stack.getItem())) {
 							int consumesize = Math.min(stack.stackSize, requiredSugarToRevive);
 							stack.stackSize -= consumesize;
 							if (stack.stackSize <= 0) {

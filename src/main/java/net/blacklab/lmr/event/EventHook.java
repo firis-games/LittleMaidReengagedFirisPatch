@@ -2,14 +2,14 @@ package net.blacklab.lmr.event;
 
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.api.event.LMMNX_Event;
-import net.blacklab.lmr.api.item.LMMNX_API_Item;
-import net.blacklab.lmr.api.mode.LMMNX_API_Farmer;
+import net.blacklab.lmr.api.event.LMREvent;
+import net.blacklab.lmr.api.mode.UtilModeFarmer;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.EntityLittleMaidAvatarMP;
 import net.blacklab.lmr.entity.IEntityLittleMaidAvatar;
 import net.blacklab.lmr.entity.mode.EntityMode_Basic;
+import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -116,15 +116,15 @@ public class EventHook
 	}
 
 	@SubscribeEvent
-	public void onItemPutChest(LMMNX_Event.LMMNX_ItemPutChestEvent event){
+	public void onItemPutChest(LMREvent.LMMNX_ItemPutChestEvent event){
 		EntityLittleMaid maid = event.maid;
 //		IInventory target = event.target;
 		ItemStack stack = event.stack;
-		if(LMMNX_API_Item.isSugar(stack.getItem())|| stack.getItem() == Items.clock){
+		if(ItemHelper.isSugar(stack.getItem())|| stack.getItem() == Items.clock){
 			event.setCanceled(true);
 		}
 		if(maid.getMaidModeInt()==EntityMode_Basic.mmode_FarmPorter){
-			if(LMMNX_API_Farmer.isSeed(stack.getItem())||LMMNX_API_Farmer.isHoe(maid, stack)){
+			if(UtilModeFarmer.isSeed(stack.getItem())||UtilModeFarmer.isHoe(maid, stack)){
 				event.setCanceled(true);
 			}
 			if(event.maidStackIndex>13){

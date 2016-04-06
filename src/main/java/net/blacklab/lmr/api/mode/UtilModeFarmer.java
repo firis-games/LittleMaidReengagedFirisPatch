@@ -10,7 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 
-public class LMMNX_API_Farmer {
+public class UtilModeFarmer {
 
 	private static List<String> api_seedItems = new ArrayList<String>();
 	private static List<String> api_cropItems = new ArrayList<String>();

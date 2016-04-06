@@ -16,9 +16,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
-import net.blacklab.lmr.api.event.LMMNX_Event;
-import net.blacklab.lmr.api.item.LMMNX_API_Item;
-import net.blacklab.lmr.api.item.LMMNX_IItemSpecialSugar;
+import net.blacklab.lmr.api.event.LMREvent;
+import net.blacklab.lmr.api.item.IItemSpecialSugar;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.client.sound.SoundLoader;
 import net.blacklab.lmr.client.sound.SoundRegistry;
@@ -64,6 +63,7 @@ import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
+import net.blacklab.lmr.util.helper.ItemHelper;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.blacklab.lmr.util.helper.OwnableEntityHelper;
@@ -1204,7 +1204,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 
 		// 正常時は回復優先処理
-		if (getHealth() < 10 && !isBloodsuck() && LMMNX_API_Item.hasSugar(this)) {
+		if (getHealth() < 10 && !isBloodsuck() && ItemHelper.hasSugar(this)) {
 			return true;
 		}
 
@@ -1223,7 +1223,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public boolean isBreedingItem(ItemStack par1ItemStack) {
 		// お好みは何？
 		if (isContractEX()) {
-			return LMMNX_API_Item.isSugar(par1ItemStack.getItem());
+			return ItemHelper.isSugar(par1ItemStack.getItem());
 		}
 		return par1ItemStack.getItem() == Items.cake;
 	}
@@ -2984,11 +2984,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 						}
 						if (isRemainsContract()) {
 							// 通常
-							if (LMMNX_API_Item.isSugar(par3ItemStack.getItem())) {
+							if (ItemHelper.isSugar(par3ItemStack.getItem())) {
 								// モード切替
 								boolean cmode = true;
-								if(par3ItemStack.getItem() instanceof LMMNX_IItemSpecialSugar){
-									cmode = ((LMMNX_IItemSpecialSugar)par3ItemStack.getItem()).onSugarInteract(worldObj, par1EntityPlayer, par3ItemStack, this);
+								if(par3ItemStack.getItem() instanceof IItemSpecialSugar){
+									cmode = ((IItemSpecialSugar)par3ItemStack.getItem()).onSugarInteract(worldObj, par1EntityPlayer, par3ItemStack, this);
 								}
 								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								eatSugar(false, true, false);
@@ -3517,7 +3517,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			ItemStack ts = stacklist[i];
 			if(ts==null)continue;
 			Item ti = ts.getItem();
-			if(LMMNX_API_Item.isSugar(ti)){
+			if(ItemHelper.isSugar(ti)){
 				stack = ts;
 				item = ti;
 				index = i;
@@ -3527,9 +3527,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if(item==null||stack==null||index==-1) return;
 		if(item==Items.sugar){
 			eatSugar(true, true, mode==EnumConsumeSugar.RECONTRACT);
-		}else if(item instanceof LMMNX_IItemSpecialSugar){
+		}else if(item instanceof IItemSpecialSugar){
 			//モノグサ実装。良い子の皆さんはちゃんとif使うように…
-			eatSugar(((LMMNX_IItemSpecialSugar)item).onSugarEaten(this, mode, stack), true, mode==EnumConsumeSugar.RECONTRACT);
+			eatSugar(((IItemSpecialSugar)item).onSugarEaten(this, mode, stack), true, mode==EnumConsumeSugar.RECONTRACT);
 		}
 		if (mode == EnumConsumeSugar.RECONTRACT) {
 			addMaidExperience(3.5f);
@@ -3738,7 +3738,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			// 一度に複数レベルアップした場合にその分だけ呼ぶ
 			playSound("random.levelup");
 			getExperienceHandler().onLevelUp(currentLevel+1);
-			MinecraftForge.EVENT_BUS.post(new LMMNX_Event.LMMNX_MaidLevelUpEvent(this, getMaidLevel()));
+			MinecraftForge.EVENT_BUS.post(new LMREvent.LMMNX_MaidLevelUpEvent(this, getMaidLevel()));
 		}
 	}
 

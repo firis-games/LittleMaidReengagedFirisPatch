@@ -5,7 +5,7 @@ import java.util.Iterator;
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.achievements.LMMNX_Achievements;
-import net.blacklab.lmr.api.mode.LMMNX_API_Farmer;
+import net.blacklab.lmr.api.mode.UtilModeFarmer;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -73,7 +73,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		// TODO 自動生成されたメソッド・スタブ
 		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
 		if (litemstack != null) {
-			if (LMMNX_API_Farmer.isHoe(owner, litemstack)) {
+			if (UtilModeFarmer.isHoe(owner, litemstack)) {
 				owner.setMaidMode("Farmer");
 				if (LMMNX_Achievements.ac_Farmer != null) {
 					pentityplayer.addStat(LMMNX_Achievements.ac_Farmer);
@@ -111,7 +111,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 				if (litemstack == null) continue;
 				
 				// クワ
-				if (LMMNX_API_Farmer.isHoe(owner,litemstack)) {
+				if (UtilModeFarmer.isHoe(owner,litemstack)) {
 					return li;
 				}
 			}
@@ -124,7 +124,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
 		if(pItemStack==null) return false;
-		return LMMNX_API_Farmer.isHoe(owner, pItemStack)||LMMNX_API_Farmer.isSeed(pItemStack.getItem())||LMMNX_API_Farmer.isCrop(pItemStack.getItem());
+		return UtilModeFarmer.isHoe(owner, pItemStack)||UtilModeFarmer.isSeed(pItemStack.getItem())||UtilModeFarmer.isCrop(pItemStack.getItem());
 	}
 	
 	@Override
@@ -176,7 +176,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 //		if(owner.worldObj.isRemote) return false;
 		ItemStack curStack = owner.getCurrentEquippedItem();
 
-		boolean haveNothing = !LMMNX_API_Farmer.isHoe(owner,curStack);
+		boolean haveNothing = !UtilModeFarmer.isHoe(owner,curStack);
 		
 		if (!haveNothing && isUnfarmedLand(px,py,pz) &&
 				curStack.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
@@ -254,7 +254,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	protected int getHadSeedIndex(){
 		int r=-1;
-		for(String fname:LMMNX_API_Farmer.getItemsListForSeed()){
+		for(String fname:UtilModeFarmer.getItemsListForSeed()){
 			Item item = ItemUtil.getItemByStringId(fname);
 			r = owner.maidInventory.getInventorySlotContainItem(item);
 			if(r!=-1) break;

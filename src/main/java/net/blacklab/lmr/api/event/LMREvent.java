@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-public class LMMNX_Event extends Event {
+public class LMREvent extends Event {
 	
-	public static class LMMNX_MaidLevelUpEvent extends LMMNX_Event {
+	public static class LMMNX_MaidLevelUpEvent extends LMREvent {
 		
 		public int level = 0;
 
@@ -18,12 +18,12 @@ public class LMMNX_Event extends Event {
 		}
 	}
 
-	public LMMNX_Event(EntityLittleMaid maid) {
+	public LMREvent(EntityLittleMaid maid) {
 		this.maid = maid;
 	}
 	
 	@Cancelable
-	public static class LMMNX_ItemPutChestEvent extends LMMNX_Event{
+	public static class LMMNX_ItemPutChestEvent extends LMREvent{
 		
 		public IInventory target;
 		public ItemStack stack;
