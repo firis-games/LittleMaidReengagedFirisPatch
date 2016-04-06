@@ -11,7 +11,7 @@ import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest2;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.TriggerSelect;
-import net.blacklab.lmr.util.helper.MaidHelper;
+import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.Entity;
@@ -305,7 +305,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 					LittleMaidReengaged.Debug("Assert.");
 					lf = true;
 				} else {
-					lf = MaidHelper.setPathToTile(owner, (TileEntity)myInventory, false);
+					lf = CommonHelper.setPathToTile(owner, (TileEntity)myInventory, false);
 				}
 			} else {
 				distance = 0;
@@ -505,7 +505,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 							if(!owner.worldObj.isRemote) {
 								owner.clearActivePotions();
 							}
-							MaidHelper.decPlayerInventory(pentityplayer, -1, 1);
+							CommonHelper.decPlayerInventory(pentityplayer, -1, 1);
 							return true;
 						}
 					}

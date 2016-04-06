@@ -64,7 +64,6 @@ import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.ItemHelper;
-import net.blacklab.lmr.util.helper.MaidHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.blacklab.lmr.util.helper.OwnableEntityHelper;
 import net.blacklab.lmr.util.manager.EntityModeManager;
@@ -2934,7 +2933,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				// 紐で繋ぐ
 				setGotcha(par1EntityPlayer.getEntityId());
 				mstatgotcha = par1EntityPlayer;
-				MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+				CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 				playSound("entity.item.pickup");
 				return true;
 			}
@@ -2949,7 +2948,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 						return true;
 					} else if (par3ItemStack.getItem() == Items.cake) {
 						// 再契約
-						MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+						CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 						maidContractLimit = (24000 * 7);
 						setFreedom(false);
 						setTracer(false);
@@ -2990,7 +2989,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								if(par3ItemStack.getItem() instanceof IItemSpecialSugar){
 									cmode = ((IItemSpecialSugar)par3ItemStack.getItem()).onSugarInteract(worldObj, par1EntityPlayer, par3ItemStack, this);
 								}
-								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								eatSugar(false, true, false);
 								if(!cmode) return true;
 								worldObj.setEntityState(this, (byte)11);
@@ -3082,7 +3081,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								if (!worldObj.isRemote) {
 									setColor(15 - par3ItemStack.getItemDamage());
 								}
-								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								return true;
 							}
 							else if (par3ItemStack.getItem() == Items.feather) {
@@ -3112,7 +3111,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								if (par3ItemStack.stackSize == 64) {
 									getMaidMasterEntity().addStat(LMMNX_Achievements.ac_Boost);
 								}
-								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, par3ItemStack.stackSize);
+								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, par3ItemStack.stackSize);
 								return true;
 							}
 							else if (par3ItemStack.getItem() == Items.book) {
@@ -3151,12 +3150,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 										}
 									}
 								}
-								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								return true;
 							}
 							else if (isFreedom() && par3ItemStack.getItem() == Items.redstone) {
 								// Tracer
-								MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 								setMaidWait(false);
 								setTracer(!isTracer());
 								if (isTracer()) {
@@ -3197,7 +3196,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				if (par3ItemStack != null) {
 					if (par3ItemStack.getItem() == Items.cake) {
 						// 契約
-						MaidHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+						CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 
 						deathTime = 0;
 						if (!worldObj.isRemote) {

@@ -10,7 +10,6 @@ import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.helper.CommonHelper;
-import net.blacklab.lmr.util.helper.MaidHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -173,7 +172,7 @@ public class LMRNetwork
 					ItemStack lis = sender.inventory.mainInventory[li];
 					if (lis != null && lis.getItem() == Items.dye) {
 						if (lis.getItemDamage() == (15 - lcolor2)) {
-							MaidHelper.decPlayerInventory(sender, li, 1);
+							CommonHelper.decPlayerInventory(sender, li, 1);
 						}
 					}
 				}
