@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.wrapper.W_Common;
+import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -47,7 +47,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	public EntityLittleMaidAvatarMP(World par1World)
 	{
 		super(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(par1World == null ? 0 : par1World.provider.getDimension()),
-				W_Common.newGameProfile("1", "LMM_EntityLittleMaidAvatar"));
+				CommonHelper.newGameProfile("1", "LMM_EntityLittleMaidAvatar"));
 	}
 
 	public EntityLittleMaidAvatarMP(World par1World, EntityLittleMaid par2EntityLittleMaid) {

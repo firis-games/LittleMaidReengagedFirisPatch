@@ -6,7 +6,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.IEntityLittleMaidAvatar;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.wrapper.W_Common;
+import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
@@ -42,11 +42,11 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 
 	public EntityLittleMaidAvatarSP(World par1World)
 	{
-		super(par1World, W_Common.newGameProfile("1", "LMM_EntityLittleMaidAvatar"));
+		super(par1World, CommonHelper.newGameProfile("1", "LMM_EntityLittleMaidAvatar"));
 	}
 
 	public EntityLittleMaidAvatarSP(World par1World, EntityLittleMaid par2EntityLittleMaid) {
-		super(par1World, W_Common.newGameProfile("1", "LMM_EntityLittleMaidAvatar"));
+		super(par1World, CommonHelper.newGameProfile("1", "LMM_EntityLittleMaidAvatar"));
 
 		// 初期設定
 		avatar = par2EntityLittleMaid;

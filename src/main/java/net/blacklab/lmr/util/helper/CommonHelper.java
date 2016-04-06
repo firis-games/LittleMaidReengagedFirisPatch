@@ -3,7 +3,12 @@ package net.blacklab.lmr.util.helper;
 import java.util.List;
 import java.util.UUID;
 
+import com.mojang.authlib.GameProfile;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommand;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,6 +73,14 @@ public class CommonHelper {
 	public static double getAttackVSEntity(ItemStack pItemStack) {
 		AttributeModifier lam = (AttributeModifier)pItemStack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND).get(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName());
 		return lam == null ? 0 : lam.getAmount();
+	}
+
+	public static GameProfile newGameProfile(String UUIDid, String name) {
+		return new GameProfile(UUID.randomUUID(), name);
+	}
+
+	public static void notifyAdmins(ICommandSender sender, ICommand cmd, int p_152374_2_, String s, Object ... p_152374_4_) {
+		CommandBase.notifyOperators(sender, cmd, p_152374_2_, s, p_152374_4_);
 	}
 
 }

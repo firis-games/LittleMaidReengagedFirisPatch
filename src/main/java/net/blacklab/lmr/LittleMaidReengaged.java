@@ -183,9 +183,6 @@ public class LittleMaidReengaged {
 		}
 		FileList.COMMON_CLASS_LOADER = new CommonClassLoaderWrapper(urls.toArray(new URL[]{}), LittleMaidReengaged.class.getClassLoader());
 
-		// MMMLibが立ち上がった時点で旧モデル置き換えを開始
-		Transformer.isEnable = true;
-
 		StabilizerManager.init();
 
 		// テクスチャパックの構築

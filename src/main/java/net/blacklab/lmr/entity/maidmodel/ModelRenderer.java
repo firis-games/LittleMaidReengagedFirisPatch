@@ -10,7 +10,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.blacklab.lmr.wrapper.W_Client;
+import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.model.TextureOffset;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -464,7 +464,7 @@ public class ModelRenderer {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //			TileEntitySkullRenderer.skullRenderer.func_82393_a(-0.5F, -0.25F, -0.5F, 1, 180.0F,
 //					itemstack.getItemDamage(), lsowner);
-			W_Client.renderSkeletonHead(TileEntitySkullRenderer.instance, -0.5F, 0.0F, -0.5F, 1, 180.0F, itemstack.getItemDamage(), lsowner);
+			RendererHelper.renderSkeletonHead(TileEntitySkullRenderer.instance, -0.5F, 0.0F, -0.5F, 1, 180.0F, itemstack.getItemDamage(), lsowner);
 		} else if (pRealBlock && litem instanceof ItemBlock) {
 //			Client.setTexture(TextureMap.field_110575_b);
 //			pRender.loadTexture("/terrain.png");

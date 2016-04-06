@@ -16,7 +16,7 @@ import java.util.UUID;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.util.helper.CommonHelper;
-import net.blacklab.lmr.wrapper.W_Common;
+import net.blacklab.lmr.util.helper.OwnableEntityHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -212,7 +212,7 @@ public class IFF {
 				}
 			}
 		} else if (entity instanceof IEntityOwnable) {
-			UUID loname = W_Common.getOwnerUUID((IEntityOwnable)entity);
+			UUID loname = OwnableEntityHelper.getOwner((IEntityOwnable)entity);
 			if (loname.equals(pUsername)) {
 				// 自分の
 				lcname = (new StringBuilder()).append(lename).append(":Taim").toString();

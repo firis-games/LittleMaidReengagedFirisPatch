@@ -66,9 +66,9 @@ import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
+import net.blacklab.lmr.util.helper.OwnableEntityHelper;
 import net.blacklab.lmr.util.manager.EntityModeManager;
 import net.blacklab.lmr.util.manager.ModelManager;
-import net.blacklab.lmr.wrapper.W_Common;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -2957,7 +2957,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 						setMaidMode("Escorter");
 						if(!isMaidContractOwner(par1EntityPlayer)){
 							// あんなご主人なんか捨てて、僕のもとへおいで(洗脳)
-							W_Common.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
+							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
 							playLittleMaidSound(EnumSound.getCake, true);
 							worldObj.setEntityState(this, (byte)7);
 							maidContractLimit = (24000 * 7);
@@ -3182,7 +3182,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 						}
 					}
 					// メイドインベントリ
-					W_Common.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
+					OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
 					getNavigator().clearPathEntity();
 					isJumping = false;
 					if(!worldObj.isRemote){
@@ -3205,7 +3205,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								par1EntityPlayer.addStat(LMMNX_Achievements.ac_Contract);
 							}
 							setContract(true);
-							W_Common.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
+							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
 							setHealth(20);
 							setMaidMode("Escorter");
 							setMaidWait(false);
@@ -3304,7 +3304,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	public UUID getMaidMasterUUID() {
-		return W_Common.getOwnerUUID(this);
+		return OwnableEntityHelper.getOwner(this);
 	}
 
 	public EntityPlayer getMaidMasterEntity() {

@@ -32,5 +32,5 @@ public class OldModelLoaderCoremod implements IFMLLoadingPlugin{
 	public String getAccessTransformerClass() {
 		return null;
 	}
-
+	
 }
