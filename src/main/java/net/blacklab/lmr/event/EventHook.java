@@ -116,7 +116,7 @@ public class EventHook
 	}
 
 	@SubscribeEvent
-	public void onItemPutChest(LMREvent.LMMNX_ItemPutChestEvent event){
+	public void onItemPutChest(LMREvent.ItemPutChestEvent event){
 		EntityLittleMaid maid = event.maid;
 //		IInventory target = event.target;
 		ItemStack stack = event.stack;

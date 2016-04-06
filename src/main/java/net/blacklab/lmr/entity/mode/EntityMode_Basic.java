@@ -364,8 +364,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			while ((is = owner.maidInventory.getStackInSlot(maidSearchCount)) == null && maidSearchCount < InventoryLittleMaid.maxInventorySize) {
 				maidSearchCount++;
 			}
-			LMREvent.LMMNX_ItemPutChestEvent event =
-					new LMREvent.LMMNX_ItemPutChestEvent(owner,myChest,is,maidSearchCount);
+			LMREvent.ItemPutChestEvent event =
+					new LMREvent.ItemPutChestEvent(owner,myChest,is,maidSearchCount);
 			if (is != null){
 				if(!MinecraftForge.EVENT_BUS.post(event)){
 //						mod_littleMaidMob.Debug("getchest2.");
