@@ -3,13 +3,13 @@
   "modid": "net.blacklab.lib",
   "name": "EBLib",
   "description": "",
-  "version": "4.0.1",
-  "mcversion": "1.8.x",
+  "version": "5.1.0.1",
+  "mcversion": "1.9",
   "url": "http://el-blacklab.net/",
   "updateUrl": "",
   "authors": ["Verclene"],
   "credits": "created by Verclene",
-  "logoFile": "",
+  "logoFile": "/logo.png",
   "screenshots": [],
   "dependencies": []
 }
