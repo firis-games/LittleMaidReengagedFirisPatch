@@ -1,4 +1,4 @@
 # EBLib-1.8
-EBLib on Minecraft 1.8
+A common library for Verclene's mods.
 
-This is common library of Verclene's mods. DO NOT REMIX THIS ITSELF.
+This is common library of Verclene's mods.

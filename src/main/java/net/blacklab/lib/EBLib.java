@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = "net.blacklab.lib",name="EBLib",version=EBLib.VERSION, acceptedMinecraftVersions="[1.9,)")
 public class EBLib {
 
-	public static final String VERSION="4.0.1";
+	public static final String VERSION="5.1.0.1";
 	public static final int VERSION_CODE=8;
 	
 	public static final VersionData currentVersion = new VersionData(VERSION_CODE, VERSION, VERSION);
