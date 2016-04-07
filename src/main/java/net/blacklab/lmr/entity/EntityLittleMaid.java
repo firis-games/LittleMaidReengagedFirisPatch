@@ -3532,8 +3532,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 		if (mode == EnumConsumeSugar.RECONTRACT) {
 			addMaidExperience(3.5f);
-		} else if (mode == EnumConsumeSugar.HEAL) {
-			addMaidExperience(0.8f);
 		}
 		maidInventory.decrStackSize(index, Math.min(1, mode == EnumConsumeSugar.OTHER ? 1 : getExpBooster()));
 	}

@@ -224,7 +224,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 						ltile.setInventorySlotContents(li, null);
 						owner.playSound("entity.item.pickup");
 						owner.setSwing(5, EnumSound.cookingOver, false);
-						owner.addMaidExperience(0.2f);
+						owner.addMaidExperience(0.25f);
 						lflag = true;
 					}
 				}
@@ -276,7 +276,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					owner.maidInventory.setInventorySlotContents(inventryPos, null);
 					owner.playSound("entity.item.pickup");
 					owner.setSwing(15, EnumSound.Null, false);
-					owner.addMaidExperience(4.5f);
+					owner.addMaidExperience(3.5f);
 					lflag = true;
 				}
 				else if (litemstack1 == null || (litemstack1.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack1)) || !PotionUtils.getEffectsFromStack(litemstack1).isEmpty()) {
