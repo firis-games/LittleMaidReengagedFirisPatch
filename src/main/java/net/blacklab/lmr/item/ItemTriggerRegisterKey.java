@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 
 public class ItemTriggerRegisterKey extends Item {
 
-	public static final String RK_MODE_TAG = "LMMNX_RK_MODE";
-	public static final String RK_COUNT = "LMMNX_RK_COUNT";
+	public static final String RK_MODE_TAG = LittleMaidReengaged.DOMAIN + ":RK_MODE";
+	public static final String RK_COUNT = LittleMaidReengaged.DOMAIN + ":RK_COUNT";
 
 	public static final int RK_MAX_COUNT = 32;
 
@@ -63,20 +63,7 @@ public class ItemTriggerRegisterKey extends Item {
 			tooltip.add("Remains: " + (RK_MAX_COUNT-tagCompound.getInteger(RK_COUNT)));
 		}
 	}
-/*
-	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
-		// TODO 自動生成されたメソッド・スタブ
-		ItemStack stack = new ItemStack(new LMMNX_ItemRegisterKey(),1,0);
 
-		NBTTagCompound tagCompound = new NBTTagCompound();
-		String str = LMM_TriggerSelect.selector.get(0);
-		tagCompound.setString(RK_MODE_TAG, str);
-		stack.setTagCompound(tagCompound);
-
-		subItems.add(stack);
-	}
-*/
 	@Override
 	public boolean isDamageable() {
 		return true;
