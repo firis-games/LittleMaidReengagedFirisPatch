@@ -2,6 +2,7 @@ entity.lmreengaged.LittleMaidX.name=LittleMaid
 
 item.lmreengaged:spawn_littlemaid_egg.name=Spawn LittleMaid
 item.lmreengaged:registerkey.name=§eTrigger Item Registerer
+item.lmreengaged:maidporter.name=Maid Porter
 
 achievement.contract=Realization
 achievement.contract.desc=Employ a LittleMaid

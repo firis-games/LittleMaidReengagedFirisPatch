@@ -3731,9 +3731,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 
 		dataWatcher.set(Statics.dataWatch_MaidExpValue, maidExperience);
+		boolean flag = false;
 		for (;maidExperience >= ExperienceUtil.getRequiredExpToLevel(currentLevel+1); currentLevel++) {
 			// 一度に複数レベルアップした場合にその分だけ呼ぶ
-			playSound("random.levelup");
+			if (!flag) {
+				playSound("random.levelup");
+				flag = true;
+			}
 			getExperienceHandler().onLevelUp(currentLevel+1);
 			MinecraftForge.EVENT_BUS.post(new LMREvent.MaidLevelUpEvent(this, getMaidLevel()));
 		}

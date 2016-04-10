@@ -22,6 +22,7 @@ import net.blacklab.lmr.entity.renderfactory.RenderFactoryLittleMaid;
 import net.blacklab.lmr.entity.renderfactory.RenderFactoryMarkerDummy;
 import net.blacklab.lmr.entity.renderfactory.RenderFactoryModelSelect;
 import net.blacklab.lmr.event.EventHook;
+import net.blacklab.lmr.item.ItemMaidPorter;
 import net.blacklab.lmr.item.ItemMaidSpawnEgg;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.GuiHandler;
@@ -71,7 +72,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
-	public static final String VERSION = "7.1.0.7";
+	public static final String VERSION = "7.1.0.8";
 	public static final String ACCEPTED_MCVERSION = "[1.9,1.9.100)";
 	public static final int VERSION_CODE = 1;
 	public static final String DEPENDENCIES = "required-after:Forge@[1.9-12.16.0.1819,);"
@@ -145,10 +146,11 @@ public class LittleMaidReengaged {
 
 	@Instance(DOMAIN)
 	public static LittleMaidReengaged instance;
-
+	
+	// Item
 	public static ItemMaidSpawnEgg spawnEgg;
-
 	public static ItemTriggerRegisterKey registerKey;
+	public static ItemMaidPorter maidPorter;
 
 	public static void Debug(String pText, Object... pVals) {
 		// デバッグメッセージ
@@ -297,6 +299,9 @@ public class LittleMaidReengaged {
 		GameRegistry.<Item>register(registerKey, new ResourceLocation(DOMAIN, "registerkey"));
 		GameRegistry.addShapelessRecipe(new ItemStack(registerKey), Items.egg,
 				Items.sugar, Items.nether_wart);
+		
+		maidPorter = new ItemMaidPorter();
+		GameRegistry.register(maidPorter, new ResourceLocation(DOMAIN, "maidporter"));
 
 		// 実績追加
 		AchievementsLMR.initAchievements();

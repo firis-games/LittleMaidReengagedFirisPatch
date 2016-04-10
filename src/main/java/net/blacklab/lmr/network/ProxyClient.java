@@ -18,6 +18,7 @@ import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityPickupFX;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +43,13 @@ public class ProxyClient extends ProxyCommon
 		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.registerKey, 1,
 				new ModelResourceLocation(LittleMaidReengaged.DOMAIN+":registerkey",
 						"inventory"));
+
+		ModelResourceLocation porter_model_A = new ModelResourceLocation(LittleMaidReengaged.DOMAIN + ":maidporter_0", "inventory");
+		ModelResourceLocation porter_model_B = new ModelResourceLocation(LittleMaidReengaged.DOMAIN + ":maidporter_1", "inventory");
+//		ModelLoader.addVariantName(LittleMaidReengaged.maidPorter, LittleMaidReengaged.DOMAIN + ":maidporter_0", LittleMaidReengaged.DOMAIN + ":maidporter_1");
+		ModelBakery.registerItemVariants(LittleMaidReengaged.maidPorter, porter_model_A, porter_model_B);
+		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.maidPorter, 0, porter_model_A);
+		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.maidPorter, 1, porter_model_B);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());
