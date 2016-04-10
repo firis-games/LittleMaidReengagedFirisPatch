@@ -3,7 +3,7 @@ package net.blacklab.lmr.entity.mode;
 import java.util.Iterator;
 import java.util.List;
 
-import net.blacklab.lmr.achievements.LMMNX_Achievements;
+import net.blacklab.lmr.achievements.AchievementsLMR;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.CommonHelper;
@@ -61,8 +61,8 @@ public class EntityMode_Healer extends EntityModeBase {
 		if (litemstack != null) {
 			if (litemstack.getItem() instanceof ItemFood || (litemstack.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack))) {
 				owner.setMaidMode("Healer");
-				if (LMMNX_Achievements.ac_Healer != null) {
-					pentityplayer.addStat(LMMNX_Achievements.ac_Healer);
+				if (AchievementsLMR.ac_Healer != null) {
+					pentityplayer.addStat(AchievementsLMR.ac_Healer);
 				}
 				return true;
 			}

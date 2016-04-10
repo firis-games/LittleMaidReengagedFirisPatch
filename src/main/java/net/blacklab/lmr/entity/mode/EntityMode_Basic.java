@@ -7,7 +7,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.event.LMREvent;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
-import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest2;
+import net.blacklab.lmr.entity.ai.EntityAILMWildWatchClosest;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.TriggerSelect;
@@ -91,9 +91,9 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		ltasks[0].addTask(9, owner.aiCollectItem);
 		ltasks[0].addTask(10, new EntityAILeapAtTarget(owner, 0.3F));
 		ltasks[0].addTask(11, owner.aiWander);
-		ltasks[0].addTask(12, new LMMNX_EntityAIWatchClosest2(owner, EntityLivingBase.class, 10F, 0.02F));
-		ltasks[0].addTask(13, new LMMNX_EntityAIWatchClosest2(owner, EntityLittleMaid.class, 10F, 0.02F));
-		ltasks[0].addTask(13, new LMMNX_EntityAIWatchClosest2(owner, EntityPlayer.class, 10F, 0.02F));
+		ltasks[0].addTask(12, new EntityAILMWildWatchClosest(owner, EntityLivingBase.class, 10F, 0.02F));
+		ltasks[0].addTask(13, new EntityAILMWildWatchClosest(owner, EntityLittleMaid.class, 10F, 0.02F));
+		ltasks[0].addTask(13, new EntityAILMWildWatchClosest(owner, EntityPlayer.class, 10F, 0.02F));
 		ltasks[0].addTask(13, new EntityAILookIdle(owner));
 
 		ltasks[1].addTask(1, new EntityAILMHurtByTarget(owner, false));

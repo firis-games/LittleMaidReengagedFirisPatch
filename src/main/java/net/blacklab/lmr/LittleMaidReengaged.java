@@ -11,7 +11,7 @@ import java.util.Random;
 import net.blacklab.lib.config.ConfigList;
 import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
-import net.blacklab.lmr.achievements.LMMNX_Achievements;
+import net.blacklab.lmr.achievements.AchievementsLMR;
 import net.blacklab.lmr.api.mode.UtilModeFarmer;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
@@ -299,7 +299,7 @@ public class LittleMaidReengaged {
 				Items.sugar, Items.nether_wart);
 
 		// 実績追加
-		LMMNX_Achievements.initAchievements();
+		AchievementsLMR.initAchievements();
 
 		// AIリストの追加
 		EntityModeManager.init();

@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.mode;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
-import net.blacklab.lmr.achievements.LMMNX_Achievements;
+import net.blacklab.lmr.achievements.AchievementsLMR;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -66,8 +66,8 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		if (litemstack != null) {
 			if (litemstack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Torch", litemstack)) {
 				owner.setMaidMode("Torcher");
-				if (LMMNX_Achievements.ac_TorchLayer != null) {
-					pentityplayer.addStat(LMMNX_Achievements.ac_TorchLayer);
+				if (AchievementsLMR.ac_TorchLayer != null) {
+					pentityplayer.addStat(AchievementsLMR.ac_TorchLayer);
 				}
 				return true;
 			}

@@ -4,11 +4,11 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 
-public class LMMNX_EntityAIRestrictOpenDoor extends EntityAIRestrictOpenDoor {
+public class EntityAILMRestrictOpenDoor extends EntityAIRestrictOpenDoor {
 	
 	protected EntityLittleMaid theMaid;
 
-	public LMMNX_EntityAIRestrictOpenDoor(EntityCreature p_i1651_1_) {
+	public EntityAILMRestrictOpenDoor(EntityCreature p_i1651_1_) {
 		super(p_i1651_1_);
 		// TODO 自動生成されたコンストラクター・スタブ
 		if(p_i1651_1_ instanceof EntityLittleMaid)

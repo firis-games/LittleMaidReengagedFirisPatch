@@ -114,7 +114,7 @@ public class SoundResourcePack implements IResourcePack {
 
 	@Override
 	public String getPackName() {
-		return "LMMNXSound";
+		return "SoundPackLMR";
 	}
 
 }

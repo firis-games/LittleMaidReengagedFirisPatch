@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 
-public class LMMNX_Achievements {
+public class AchievementsLMR {
 
 	// 契約
 	public static Achievement ac_Contract;

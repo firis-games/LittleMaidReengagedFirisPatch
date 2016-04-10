@@ -4,15 +4,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 
-public class LMMNX_EntityAIWatchClosest extends EntityAIWatchClosest {
+public class EntityAILMWatchClosest extends EntityAIWatchClosest {
 
-	public LMMNX_EntityAIWatchClosest(EntityLiving entitylivingIn,
+	public EntityAILMWatchClosest(EntityLiving entitylivingIn,
 			Class<? extends Entity> watchTargetClass, float maxDistance,
 			float chanceIn) {
 		super(entitylivingIn, watchTargetClass, maxDistance, chanceIn);
 	}
 
-	public LMMNX_EntityAIWatchClosest(EntityLiving entitylivingIn,
+	public EntityAILMWatchClosest(EntityLiving entitylivingIn,
 			Class<? extends Entity> watchTargetClass, float maxDistance) {
 		super(entitylivingIn, watchTargetClass, maxDistance);
 	}

@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.mode;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.LMMNX_Achievements;
+import net.blacklab.lmr.achievements.AchievementsLMR;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -61,8 +61,8 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		if (litemstack != null) {
 			if (litemstack.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack) && owner.maidInventory.getInventorySlotContainItem(Items.blaze_powder) > 0) {
 				owner.setMaidMode("Pharmacist");
-				if (LMMNX_Achievements.ac_Pharmacist != null) {
-					pentityplayer.addStat(LMMNX_Achievements.ac_Pharmacist);
+				if (AchievementsLMR.ac_Pharmacist != null) {
+					pentityplayer.addStat(AchievementsLMR.ac_Pharmacist);
 				}
 				return true;
 			}

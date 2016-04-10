@@ -1,7 +1,7 @@
 package net.blacklab.lmr.inventory;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.LMMNX_Achievements;
+import net.blacklab.lmr.achievements.AchievementsLMR;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -113,7 +113,7 @@ public class ContainerInventoryLittleMaid extends Container {
 				((ItemArmor)item).getArmorMaterial() == ArmorMaterial.DIAMOND;
 
 		if (flag && !owner.worldObj.isRemote)
-			owner.getMaidMasterEntity().addStat(LMMNX_Achievements.ac_Overprtct);
+			owner.getMaidMasterEntity().addStat(AchievementsLMR.ac_Overprtct);
 	}
 
 	@Override

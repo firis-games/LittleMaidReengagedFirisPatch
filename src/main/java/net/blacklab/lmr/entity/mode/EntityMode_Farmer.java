@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lib.minecraft.vector.VectorUtil;
-import net.blacklab.lmr.achievements.LMMNX_Achievements;
+import net.blacklab.lmr.achievements.AchievementsLMR;
 import net.blacklab.lmr.api.mode.UtilModeFarmer;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
@@ -75,8 +75,8 @@ public class EntityMode_Farmer extends EntityModeBase {
 		if (litemstack != null) {
 			if (UtilModeFarmer.isHoe(owner, litemstack)) {
 				owner.setMaidMode("Farmer");
-				if (LMMNX_Achievements.ac_Farmer != null) {
-					pentityplayer.addStat(LMMNX_Achievements.ac_Farmer);
+				if (AchievementsLMR.ac_Farmer != null) {
+					pentityplayer.addStat(AchievementsLMR.ac_Farmer);
 				}
 				return true;
 			}

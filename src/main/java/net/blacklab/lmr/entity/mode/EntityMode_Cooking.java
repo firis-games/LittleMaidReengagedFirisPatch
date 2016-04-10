@@ -1,6 +1,6 @@
 package net.blacklab.lmr.entity.mode;
 
-import net.blacklab.lmr.achievements.LMMNX_Achievements;
+import net.blacklab.lmr.achievements.AchievementsLMR;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -53,8 +53,8 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		if (litemstack != null) {
 			if (owner.maidInventory.isItemBurned(0)) {
 				owner.setMaidMode("Cooking");
-				if (LMMNX_Achievements.ac_Cook != null) {
-					pentityplayer.addStat(LMMNX_Achievements.ac_Cook);
+				if (AchievementsLMR.ac_Cook != null) {
+					pentityplayer.addStat(AchievementsLMR.ac_Cook);
 				}
 				return true;
 			}

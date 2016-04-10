@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.LMMNX_Achievements;
+import net.blacklab.lmr.achievements.AchievementsLMR;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
@@ -94,13 +94,13 @@ public class EntityMode_Archer extends EntityModeBase {
 			if (litemstack.getItem() instanceof ItemBow || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Bow", litemstack)) {
 				if (owner.maidInventory.getInventorySlotContainItem(ItemFlintAndSteel.class) > -1) {
 					owner.setMaidMode("Blazingstar");
-					if (LMMNX_Achievements.ac_BlazingStar != null) {
-						pentityplayer.addStat(LMMNX_Achievements.ac_BlazingStar);
+					if (AchievementsLMR.ac_BlazingStar != null) {
+						pentityplayer.addStat(AchievementsLMR.ac_BlazingStar);
 					}
 				} else {
 					owner.setMaidMode("Archer");
-					if (LMMNX_Achievements.ac_Archer != null) {
-						pentityplayer.addStat(LMMNX_Achievements.ac_Archer);
+					if (AchievementsLMR.ac_Archer != null) {
+						pentityplayer.addStat(AchievementsLMR.ac_Archer);
 					}
 				}
 				return true;

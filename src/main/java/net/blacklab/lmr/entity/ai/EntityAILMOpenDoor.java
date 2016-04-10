@@ -5,11 +5,11 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 
-public class LMMNX_EntityAIOpenDoor extends EntityAIOpenDoor {
+public class EntityAILMOpenDoor extends EntityAIOpenDoor {
 	
 	protected EntityLittleMaid theMaid;
 
-	public LMMNX_EntityAIOpenDoor(EntityLiving p_i1644_1_, boolean p_i1644_2_) {
+	public EntityAILMOpenDoor(EntityLiving p_i1644_1_, boolean p_i1644_2_) {
 		super(p_i1644_1_, p_i1644_2_);
 		// TODO 自動生成されたコンストラクター・スタブ
 		if(p_i1644_1_ instanceof EntityLittleMaid)

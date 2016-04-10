@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.mode;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest2;
+import net.blacklab.lmr.entity.ai.EntityAILMWildWatchClosest;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -29,9 +29,9 @@ public class EntityMode_DeathWait extends EntityModeBase {
 		ltasks[0] = new EntityAITasks(null);
 		ltasks[1] = new EntityAITasks(null);
 
-		ltasks[0].addTask(1, new LMMNX_EntityAIWatchClosest2(owner, EntityLivingBase.class, 10F, 0.02F));
-		ltasks[0].addTask(2, new LMMNX_EntityAIWatchClosest2(owner, EntityLittleMaid.class, 10F, 0.02F));
-		ltasks[0].addTask(2, new LMMNX_EntityAIWatchClosest2(owner, EntityPlayer.class, 10F, 0.02F));
+		ltasks[0].addTask(1, new EntityAILMWildWatchClosest(owner, EntityLivingBase.class, 10F, 0.02F));
+		ltasks[0].addTask(2, new EntityAILMWildWatchClosest(owner, EntityLittleMaid.class, 10F, 0.02F));
+		ltasks[0].addTask(2, new EntityAILMWildWatchClosest(owner, EntityPlayer.class, 10F, 0.02F));
 		ltasks[0].addTask(2, new EntityAILookIdle(owner));
 
 		owner.addMaidMode(ltasks, "DeathWait", mmode_DeathWait);

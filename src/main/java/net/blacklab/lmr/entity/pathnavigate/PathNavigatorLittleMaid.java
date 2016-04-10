@@ -8,11 +8,11 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class LMMNX_PathNavigatorLittleMaid extends PathNavigateGround {
+public class PathNavigatorLittleMaid extends PathNavigateGround {
 	
 	protected EntityLittleMaid theMaid;
 
-	public LMMNX_PathNavigatorLittleMaid(EntityLiving entitylivingIn,
+	public PathNavigatorLittleMaid(EntityLiving entitylivingIn,
 			World worldIn) {
 		super(entitylivingIn, worldIn);
 		if (theEntity instanceof EntityLittleMaid) theMaid = (EntityLittleMaid) theEntity;

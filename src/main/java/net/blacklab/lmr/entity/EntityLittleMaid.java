@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.LMMNX_Achievements;
+import net.blacklab.lmr.achievements.AchievementsLMR;
 import net.blacklab.lmr.api.event.LMREvent;
 import net.blacklab.lmr.api.item.IItemSpecialSugar;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
@@ -36,9 +36,9 @@ import net.blacklab.lmr.entity.ai.EntityAILMSwimming;
 import net.blacklab.lmr.entity.ai.EntityAILMTracerMove;
 import net.blacklab.lmr.entity.ai.EntityAILMWait;
 import net.blacklab.lmr.entity.ai.EntityAILMWander;
-import net.blacklab.lmr.entity.ai.LMMNX_EntityAIOpenDoor;
-import net.blacklab.lmr.entity.ai.LMMNX_EntityAIRestrictOpenDoor;
-import net.blacklab.lmr.entity.ai.LMMNX_EntityAIWatchClosest;
+import net.blacklab.lmr.entity.ai.EntityAILMOpenDoor;
+import net.blacklab.lmr.entity.ai.EntityAILMRestrictOpenDoor;
+import net.blacklab.lmr.entity.ai.EntityAILMWatchClosest;
 import net.blacklab.lmr.entity.experience.ExperienceHandler;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
 import net.blacklab.lmr.entity.maidmodel.EquippedStabilizer;
@@ -49,7 +49,7 @@ import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
-import net.blacklab.lmr.entity.pathnavigate.LMMNX_PathNavigatorLittleMaid;
+import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.EnumPacketMode;
@@ -245,8 +245,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public EntityAITempt aiTempt;
 	public EntityAILMBeg aiBeg;
 	public EntityAILMBegMove aiBegMove;
-	public LMMNX_EntityAIOpenDoor aiOpenDoor;
-	public LMMNX_EntityAIRestrictOpenDoor aiCloseDoor;
+	public EntityAILMOpenDoor aiOpenDoor;
+	public EntityAILMRestrictOpenDoor aiCloseDoor;
 	public EntityAILMAvoidPlayer aiAvoidPlayer;
 	public EntityAILMFollowOwner aiFollow;
 	public EntityAILMAttackOnCollide aiAttack;
@@ -261,7 +261,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public EntityAILMSwimming aiSwiming;
 	public EntityAIPanic aiPanic;
 
-	public LMMNX_EntityAIWatchClosest aiWatchClosest;
+	public EntityAILMWatchClosest aiWatchClosest;
 	// ActiveModeClass
 	private EntityModeBase maidActiveModeClass;
 	public Profiler aiProfiler;
@@ -496,8 +496,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// AI
 		aiBeg = new EntityAILMBeg(this, 8F);
 		aiBegMove = new EntityAILMBegMove(this, 1.0F);
-		aiOpenDoor = new LMMNX_EntityAIOpenDoor(this, true);
-		aiCloseDoor = new LMMNX_EntityAIRestrictOpenDoor(this);
+		aiOpenDoor = new EntityAILMOpenDoor(this, true);
+		aiCloseDoor = new EntityAILMRestrictOpenDoor(this);
 		aiAvoidPlayer = new EntityAILMAvoidPlayer(this, 1.0F, 3);
 		aiFollow = new EntityAILMFollowOwner(this, 1.0F, 36D, 25D, 81D);
 		aiAttack = new EntityAILMAttackOnCollide(this, 1.0F, true);
@@ -513,7 +513,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		aiTracer = new EntityAILMTracerMove(this);
 		aiSit = new EntityAILMWait(this);
 
-		aiWatchClosest = new LMMNX_EntityAIWatchClosest(this, EntityLivingBase.class, 10F);
+		aiWatchClosest = new EntityAILMWatchClosest(this, EntityLivingBase.class, 10F);
 
 		// TODO:これいらなくね？
 		aiProfiler = worldObj != null && worldObj.theProfiler != null ? worldObj.theProfiler : null;
@@ -557,7 +557,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	protected PathNavigate getNewNavigator(World worldIn) {
-		return new LMMNX_PathNavigatorLittleMaid(this, worldIn);
+		return new PathNavigatorLittleMaid(this, worldIn);
 	}
 
 	public void addMaidMode(EntityAITasks[] peaiTasks, String pmodeName, int pmodeIndex) {
@@ -1594,7 +1594,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			if (isContractEX() && par2>=19 && par2<getHealth()) {
 				EntityPlayer player;
 				if ((player = getMaidMasterEntity()) != null)
-					player.addStat(LMMNX_Achievements.ac_Ashikubi);
+					player.addStat(AchievementsLMR.ac_Ashikubi);
 			}
 		}
 		if(!par1DamageSource.isUnblockable() && isBlocking()) {
@@ -3109,7 +3109,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								maidOverDriveTime.setValue(par3ItemStack.stackSize * 10);
 								playSound("mob.zombie.infect");
 								if (par3ItemStack.stackSize == 64) {
-									getMaidMasterEntity().addStat(LMMNX_Achievements.ac_Boost);
+									getMaidMasterEntity().addStat(AchievementsLMR.ac_Boost);
 								}
 								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, par3ItemStack.stackSize);
 								return true;
@@ -3200,8 +3200,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 						deathTime = 0;
 						if (!worldObj.isRemote) {
-							if (LMMNX_Achievements.ac_Contract != null) {
-								par1EntityPlayer.addStat(LMMNX_Achievements.ac_Contract);
+							if (AchievementsLMR.ac_Contract != null) {
+								par1EntityPlayer.addStat(AchievementsLMR.ac_Contract);
 							}
 							setContract(true);
 							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
@@ -3565,7 +3565,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			if (worldObj.getTotalWorldTime() - maidAnniversary > 24000 * 365) {
 				EntityPlayer player;
 				if ((player = getMaidMasterEntity()) != null)
-					player.addStat(LMMNX_Achievements.ac_MyFavorite);
+					player.addStat(AchievementsLMR.ac_MyFavorite);
 			}
 		}
 
