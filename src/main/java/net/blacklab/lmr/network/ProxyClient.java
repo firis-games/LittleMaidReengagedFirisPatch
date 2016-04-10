@@ -22,8 +22,10 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 /**
@@ -44,12 +46,12 @@ public class ProxyClient extends ProxyCommon
 				new ModelResourceLocation(LittleMaidReengaged.DOMAIN+":registerkey",
 						"inventory"));
 
-		ModelResourceLocation porter_model_A = new ModelResourceLocation(LittleMaidReengaged.DOMAIN + ":maidporter_0", "inventory");
-		ModelResourceLocation porter_model_B = new ModelResourceLocation(LittleMaidReengaged.DOMAIN + ":maidporter_1", "inventory");
+		String porter_modelName_A = LittleMaidReengaged.DOMAIN + ":maidporter_0";
+		String porter_modelName_B = LittleMaidReengaged.DOMAIN + ":maidporter_1";
 //		ModelLoader.addVariantName(LittleMaidReengaged.maidPorter, LittleMaidReengaged.DOMAIN + ":maidporter_0", LittleMaidReengaged.DOMAIN + ":maidporter_1");
-		ModelBakery.registerItemVariants(LittleMaidReengaged.maidPorter, porter_model_A, porter_model_B);
-		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.maidPorter, 0, porter_model_A);
-		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.maidPorter, 1, porter_model_B);
+		ModelBakery.registerItemVariants(LittleMaidReengaged.maidPorter, new ResourceLocation(porter_modelName_A), new ResourceLocation(porter_modelName_B));
+		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.maidPorter, 0, new ModelResourceLocation(porter_modelName_A, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.maidPorter, 1, new ModelResourceLocation(porter_modelName_B, "inventory"));
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());

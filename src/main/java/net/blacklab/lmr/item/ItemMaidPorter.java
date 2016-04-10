@@ -8,6 +8,7 @@ import net.blacklab.lmr.entity.experience.ExperienceUtil;
 import net.blacklab.lmr.util.Statics;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,7 +49,6 @@ public class ItemMaidPorter extends Item {
 		if (worldIn.isRemote) {
 			return EnumActionResult.PASS;
 		}
-
 		NBTTagCompound tagCompound = stack.getTagCompound();
 		if (tagCompound != null) {
 			if (worldIn.isAirBlock(pos.add(0, 1, 0)) && worldIn.isAirBlock(pos.add(0, 2, 0))) {
@@ -70,13 +70,11 @@ public class ItemMaidPorter extends Item {
 				lMaid.setTextureNameMain(tagCompound.getString(LittleMaidReengaged.DOMAIN + ":MAIN_MODEL_NAME"));
 				lMaid.setTextureNameArmor(tagCompound.getString(LittleMaidReengaged.DOMAIN + ":ARMOR_MODEL_NAME"));
 				lMaid.setColor(tagCompound.getInteger(LittleMaidReengaged.DOMAIN + ":MAID_COLOR"));
-				
-				stack.setTagCompound(null);
-				stack.setItemDamage(0);
-
-				return EnumActionResult.SUCCESS;
+			} else {
+				return EnumActionResult.PASS;
 			}
 		}
-		return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+		playerIn.setItemStackToSlot(hand==EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, null);
+		return EnumActionResult.SUCCESS;
 	}
 }
