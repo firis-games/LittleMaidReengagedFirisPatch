@@ -7,6 +7,7 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -255,7 +256,8 @@ public class InventoryLittleMaid extends InventoryPlayer {
 			return false;
 		}
 
-//		if (bufferStack.isItemDamaged()) {
+		if (par1ItemStack.isItemDamaged()) {
+			// Damaged Item
 			int empty = getFirstEmptyStack();
 			if (empty >= 0) {
 				mainInventory[empty] = ItemStack.copyItemStack(par1ItemStack);
@@ -264,8 +266,38 @@ public class InventoryLittleMaid extends InventoryPlayer {
 				markDirty();
 				return true;
 			}
-//		} else {
-//		}
+		} else {
+			// Non-damaged Item are stack-merged
+			ItemStack buffer = par1ItemStack;
+			int originalStackSize = buffer.stackSize;
+
+			for (int i=0; i<maxInventorySize; i++) {
+				if (mainInventory[i] != null && mainInventory[i].getItem() == buffer.getItem()) {
+					int maxStackSize = mainInventory[i].getItem().getItemStackLimit(mainInventory[i]);
+					int floorSize = mainInventory[i].stackSize + buffer.stackSize - maxStackSize;
+					if (floorSize > 0) {
+						mainInventory[i].stackSize = maxStackSize;
+						mainInventory[i].animationsToGo = 5;
+						buffer.stackSize = floorSize;
+					} else {
+						mainInventory[i].stackSize = floorSize + maxStackSize;
+						mainInventory[i].animationsToGo = 5;
+						buffer.stackSize = 0;
+						break;
+					}
+				} else if (mainInventory[i] == null) {
+					mainInventory[i] = ItemStack.copyItemStack(buffer);
+					mainInventory[i].animationsToGo = 5;
+					buffer.stackSize = 0;
+					break;
+				}
+			}
+			
+			if (buffer.stackSize < originalStackSize) {
+				markDirty();
+				return buffer.stackSize <= 0;
+			}
+		}
 		return false;
 	}
 
