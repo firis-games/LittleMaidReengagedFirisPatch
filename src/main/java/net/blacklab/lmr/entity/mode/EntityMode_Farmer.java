@@ -124,7 +124,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
 		if(pItemStack==null) return false;
-		return UtilModeFarmer.isHoe(owner, pItemStack)||UtilModeFarmer.isSeed(pItemStack.getItem())||UtilModeFarmer.isCrop(pItemStack.getItem());
+		return true;//UtilModeFarmer.isHoe(owner, pItemStack)||UtilModeFarmer.isSeed(pItemStack.getItem())||UtilModeFarmer.isCrop(pItemStack.getItem());
 	}
 	
 	@Override
@@ -253,13 +253,13 @@ public class EntityMode_Farmer extends EntityModeBase {
 	}
 
 	protected int getHadSeedIndex(){
-		int r=-1;
-		for(String fname:UtilModeFarmer.getItemsListForSeed()){
-			Item item = ItemUtil.getItemByStringId(fname);
-			r = owner.maidInventory.getInventorySlotContainItem(item);
-			if(r!=-1) break;
+		for (int i=0; i<InventoryLittleMaid.maxInventorySize; i++) {
+			ItemStack pStack;
+			if ((pStack = owner.maidInventory.getStackInSlot(i)) != null && UtilModeFarmer.isSeed(owner.getMaidMasterUUID(), pStack.getItem())) {
+				return i;
+			}
 		}
-		return r;
+		return -1;
 	}
 
 	protected boolean isUnfarmedLand(int x, int y, int z){

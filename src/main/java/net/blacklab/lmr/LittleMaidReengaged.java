@@ -12,15 +12,9 @@ import net.blacklab.lib.config.ConfigList;
 import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
 import net.blacklab.lmr.achievements.AchievementsLMR;
-import net.blacklab.lmr.api.mode.UtilModeFarmer;
-import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.EntityMarkerDummy;
-import net.blacklab.lmr.entity.renderfactory.RenderFactoryLittleMaid;
-import net.blacklab.lmr.entity.renderfactory.RenderFactoryMarkerDummy;
-import net.blacklab.lmr.entity.renderfactory.RenderFactoryModelSelect;
 import net.blacklab.lmr.event.EventHook;
 import net.blacklab.lmr.item.ItemMaidPorter;
 import net.blacklab.lmr.item.ItemMaidSpawnEgg;
@@ -34,11 +28,9 @@ import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.manager.EntityModeManager;
-import net.blacklab.lmr.util.manager.StabilizerManager;
 import net.blacklab.lmr.util.manager.ModelManager;
-import net.blacklab.lmr.util.transform.Transformer;
+import net.blacklab.lmr.util.manager.StabilizerManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Items;
@@ -46,10 +38,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -61,7 +50,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(
 		modid = LittleMaidReengaged.DOMAIN,
@@ -257,19 +245,6 @@ public class LittleMaidReengaged {
 			cfg_maidOverdriveDelay = 1;
 		} else if (cfg_maidOverdriveDelay > 128) {
 			cfg_maidOverdriveDelay = 128;
-		}
-
-		// 配列
-		String seedItemsOrgStr = cfg.getString("seedItems",
-				"wheat_seeds, carrot, potato");
-		for (String s : seedItemsOrgStr.split(" *, *")) {
-			UtilModeFarmer.addItemsForSeed(s);
-		}
-
-		String cropItemsOrgStr = cfg.getString("cropItems",
-				"wheat, carrot, potato");
-		for (String s : cropItemsOrgStr.split(" *, *")) {
-			UtilModeFarmer.addItemsForCrop(s);
 		}
 
 		try {

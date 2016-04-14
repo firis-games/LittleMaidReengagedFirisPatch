@@ -124,7 +124,7 @@ public class EventHook
 			event.setCanceled(true);
 		}
 		if(maid.getMaidModeInt()==EntityMode_Basic.mmode_FarmPorter){
-			if(UtilModeFarmer.isSeed(stack.getItem())||UtilModeFarmer.isHoe(maid, stack)){
+			if(UtilModeFarmer.isSeed(maid.getMaidMasterUUID(), stack.getItem())||UtilModeFarmer.isHoe(maid, stack)){
 				event.setCanceled(true);
 			}
 			if(event.maidStackIndex>13){
