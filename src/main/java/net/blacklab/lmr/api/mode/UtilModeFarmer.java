@@ -73,7 +73,7 @@ public class UtilModeFarmer {
 		if(pItemStack==null) return false;
 		if(pItemStack.getItem()==null) return false;
 		return pItemStack.getItem() instanceof ItemHoe ||
-				TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Hoe", pItemStack);
+				TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Hoe", pItemStack.getItem());
 	}
 
 }

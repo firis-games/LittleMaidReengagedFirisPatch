@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.event.LMREvent;
+import net.blacklab.lmr.api.mode.UtilModeFarmer;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMWildWatchClosest;
@@ -113,8 +114,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemHoe ||
-					TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Hoe", litemstack)) {
+			if (UtilModeFarmer.isHoe(owner, litemstack)) {
 				owner.setMaidMode("FarmPorter");
 				return true;
 			}

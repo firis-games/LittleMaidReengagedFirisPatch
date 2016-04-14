@@ -79,17 +79,23 @@ public class TriggerSelect {
 	/**
 	 * アイテムが指定されたトリガーに登録されているかを判定
 	 */
+	@Deprecated
 	public static boolean checkWeapon(UUID pUsername, String pSelector, ItemStack pItemStack) {
+		if (pItemStack == null) return false;
+		return checkTrigger(pUsername, pSelector, pItemStack.getItem());
+	}
+	
+	public static boolean checkTrigger(UUID pUuid, String pSelector, Item pItem) {
 		if (!selector.contains(pSelector)) {
 			return false;
 		}
 //		if (CommonHelper.isLocalPlay()) {
 //			return getuserTriggerList(null, pSelector).contains(pItemStack.getItem());
 //		}
-		if (!usersTrigger.containsKey(pUsername)) {
+		if (!usersTrigger.containsKey(pUuid)) {
 			return false;
 		}
-		return getuserTriggerList(pUsername, pSelector).contains(pItemStack.getItem());
+		return getuserTriggerList(pUuid, pSelector).contains(pItem);
 	}
 
 }

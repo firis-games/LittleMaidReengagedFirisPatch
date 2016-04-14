@@ -87,7 +87,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Sword", litemstack)) {
+			if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Sword", litemstack.getItem())) {
 				owner.setMaidMode("Fencer");
 				if (AchievementsLMR.ac_Fencer != null) {
 					pentityplayer.addStat(AchievementsLMR.ac_Fencer);
@@ -96,7 +96,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 					pentityplayer.addStat(AchievementsLMR.ac_Buster);
 				}
 				return true;
-			} else  if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Axe", litemstack)) {
+			} else  if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Axe", litemstack.getItem())) {
 				owner.setMaidMode("Bloodsucker");
 				if (AchievementsLMR.ac_RandomKiller != null) {
 					pentityplayer.addStat(AchievementsLMR.ac_RandomKiller);
@@ -143,7 +143,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				if (litemstack == null) continue;
 				
 				// 剣
-				if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Sword", litemstack)) {
+				if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Sword", litemstack.getItem())) {
 					return li;
 				}
 				
@@ -166,7 +166,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				if (litemstack == null) continue;
 				
 				// 斧
-				if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkWeapon(owner.getMaidMasterUUID(), "Axe", litemstack)) {
+				if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Axe", litemstack.getItem())) {
 					return li;
 				}
 				
