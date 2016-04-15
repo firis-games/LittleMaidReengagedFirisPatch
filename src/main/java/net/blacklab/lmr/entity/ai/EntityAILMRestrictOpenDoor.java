@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 
 public class EntityAILMRestrictOpenDoor extends EntityAIRestrictOpenDoor {
-	
+
 	protected EntityLittleMaid theMaid;
 
 	public EntityAILMRestrictOpenDoor(EntityCreature p_i1651_1_) {
@@ -19,7 +19,7 @@ public class EntityAILMRestrictOpenDoor extends EntityAIRestrictOpenDoor {
 	public void startExecuting() {
 		// TODO 自動生成されたメソッド・スタブ
 		if(theMaid==null) return;
-		if(theMaid.isSwimmingEnabled()||theMaid.isInWater()) return;
+		if(theMaid.isInWater()) return;
 		super.startExecuting();
 	}
 
@@ -27,7 +27,7 @@ public class EntityAILMRestrictOpenDoor extends EntityAIRestrictOpenDoor {
 	public void resetTask() {
 		// TODO 自動生成されたメソッド・スタブ
 		if(theMaid==null) return;
-		if(theMaid.isSwimmingEnabled()||theMaid.isInWater()) return;
+		if(theMaid.isInWater()) return;
 		super.resetTask();
 	}
 

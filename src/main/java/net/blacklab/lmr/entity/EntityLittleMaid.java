@@ -31,13 +31,13 @@ import net.blacklab.lmr.entity.ai.EntityAILMFindBlock;
 import net.blacklab.lmr.entity.ai.EntityAILMFleeRain;
 import net.blacklab.lmr.entity.ai.EntityAILMFollowOwner;
 import net.blacklab.lmr.entity.ai.EntityAILMJumpToMaster;
+import net.blacklab.lmr.entity.ai.EntityAILMOpenDoor;
+import net.blacklab.lmr.entity.ai.EntityAILMRestrictOpenDoor;
 import net.blacklab.lmr.entity.ai.EntityAILMRestrictRain;
 import net.blacklab.lmr.entity.ai.EntityAILMSwimming;
 import net.blacklab.lmr.entity.ai.EntityAILMTracerMove;
 import net.blacklab.lmr.entity.ai.EntityAILMWait;
 import net.blacklab.lmr.entity.ai.EntityAILMWander;
-import net.blacklab.lmr.entity.ai.EntityAILMOpenDoor;
-import net.blacklab.lmr.entity.ai.EntityAILMRestrictOpenDoor;
 import net.blacklab.lmr.entity.ai.EntityAILMWatchClosest;
 import net.blacklab.lmr.entity.experience.ExperienceHandler;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
@@ -55,10 +55,10 @@ import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
-import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.Counter;
 import net.blacklab.lmr.util.EntityCaps;
+import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.TriggerSelect;
@@ -273,8 +273,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public int playingTick = 0;
 
 	public boolean isWildSaved = false;
-
-	protected boolean swimmingEnabled = false;
 
 	// サーバ用テクスチャ処理移行フラグ
 	private boolean isMadeTextureNameFlag = false;
@@ -626,15 +624,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	public boolean setMaidMode(int pindex) {
 		return setMaidMode(pindex, false);
-	}
-
-	public void setSwimming(boolean flag){
-		swimmingEnabled = flag;
-		if (!worldObj.isRemote) {
-			setMaidFlags(flag, Statics.dataWatch_Flags_Swimming);
-		} else {
-			syncNet(EnumPacketMode.SERVER_CHANGE_SWIMMING, new byte[]{(byte) (flag?1:0)});
-		}
 	}
 
 	public boolean isInWater() {
@@ -1246,7 +1235,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		par1nbtTagCompound.setInteger("Color", getColor());
 		par1nbtTagCompound.setString("texName", textureData.getTextureName(0));
 		par1nbtTagCompound.setString("texArmor", textureData.getTextureName(1));
-		par1nbtTagCompound.setBoolean("isSwimming", swimmingEnabled);
 		par1nbtTagCompound.setInteger("maidArmorVisible", maidArmorVisible);
 		if(textureNameMain==null) textureNameMain = "default_Orign";
 		par1nbtTagCompound.setString("textureModelNameForClient", textureNameMain);
@@ -1369,7 +1357,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		onInventoryChanged();
 		isWildSaved = par1nbtTagCompound.getBoolean("isWildSaved");
-		setSwimming(par1nbtTagCompound.getBoolean("isSwimming"));
 		setMaidArmorVisible(par1nbtTagCompound.hasKey("maidArmorVisible")?par1nbtTagCompound.getInteger("maidArmorVisible"):15);
 //		syncMaidArmorVisible();
 
@@ -1820,7 +1807,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// TODO 自動生成されたメソッド・スタブ
 		if(getNavigator().getPath()!=null)
 			prevPathEntity = getNavigator().getPath();
-		if(swimmingEnabled) return;
 		super.updateAITick();
 	}
 
@@ -1985,13 +1971,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		superLivingUpdate();
 
 		// 水中関連
-		if (swimmingEnabled || !isContract()) {
-//			((PathNavigateGround)navigator).setAvoidsWater(false);
-			((PathNavigateGround)navigator).setCanSwim(true);
-		} else {
-//			((PathNavigateGround)navigator).setAvoidsWater(true);
-			((PathNavigateGround)navigator).setCanSwim(false);
-		}
+//		((PathNavigateGround)navigator).setAvoidsWater(false);
+		((PathNavigateGround)navigator).setCanSwim(true);
 
 		if(!worldObj.isRemote) maidInventory.decrementAnimations();
 
@@ -2555,10 +2536,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 		}
 
-	}
-
-	public boolean isSwimmingEnabled() {
-		return swimmingEnabled || !isContract();
 	}
 
 	@Override
@@ -3169,12 +3146,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 									setDominantArm(1);
 								}else{
 									setDominantArm(0);
-								}
-								return true;
-							}else if(par3ItemStack.getItem() == Items.fish){
-								if(!worldObj.isRemote){
-									setSwimming(!swimmingEnabled);
-									par1EntityPlayer.addChatComponentMessage(new TextComponentString("Swimming mode was set to "+swimmingEnabled));
 								}
 								return true;
 							}
@@ -3897,7 +3868,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		maidOverDriveTime.updateClient((li & dataWatch_Flags_OverDrive) > 0);
 		workingCount.updateClient((li & dataWatch_Flags_Working) > 0);
 		registerTick.updateClient((li & dataWatch_Flags_Register) > 0);
-		swimmingEnabled = (li & Statics.dataWatch_Flags_Swimming) > 0;
 	}
 
 	/**

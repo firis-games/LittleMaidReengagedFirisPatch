@@ -6,7 +6,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 
 public class EntityAILMOpenDoor extends EntityAIOpenDoor {
-	
+
 	protected EntityLittleMaid theMaid;
 
 	public EntityAILMOpenDoor(EntityLiving p_i1644_1_, boolean p_i1644_2_) {
@@ -47,8 +47,8 @@ public class EntityAILMOpenDoor extends EntityAIOpenDoor {
 	@Override
 	public boolean shouldExecute() {
 		if(theMaid==null) return false;
-		if(theMaid.isSwimmingEnabled() && theMaid.isInWater()) return false;
+		if(theMaid.isInWater()) return false;
 		return super.shouldExecute();
 	}
-	
+
 }

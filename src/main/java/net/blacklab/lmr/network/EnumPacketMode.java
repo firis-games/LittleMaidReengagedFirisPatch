@@ -39,18 +39,16 @@ public enum EnumPacketMode {
 	SERVER_DECREMENT_DYE	(0x26,  true),
 
 	/** Change Freedom Mode from GUI **/
-	SERVER_CHAMGE_FREEDOM	(0x30,  true),
-	/** Change Swimming Mode from GUI **/
-	SERVER_CHANGE_SWIMMING	(0x31,  true);
+	SERVER_CHAMGE_FREEDOM	(0x30,  true);
 
 	public byte modeByte;
 	public boolean withEntity;
-	
+
 	private EnumPacketMode(int pByte, boolean pBool) {
 		modeByte = (byte) pByte;
 		withEntity = pBool;
 	}
-	
+
 	public static EnumPacketMode getEnumPacketMode(byte pByte) {
 		for (EnumPacketMode sMode : values()) {
 			if (sMode.modeByte == pByte) {

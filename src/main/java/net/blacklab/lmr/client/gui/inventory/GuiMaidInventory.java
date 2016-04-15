@@ -12,7 +12,6 @@ import net.blacklab.lmr.client.gui.GuiButtonArmorToggle;
 import net.blacklab.lmr.client.gui.GuiButtonBoostChange;
 import net.blacklab.lmr.client.gui.GuiButtonFreedomToggle;
 import net.blacklab.lmr.client.gui.GuiButtonNextPage;
-import net.blacklab.lmr.client.gui.GuiButtonSwimToggle;
 import net.blacklab.lmr.client.gui.GuiTextureSelect;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
@@ -47,7 +46,6 @@ public class GuiMaidInventory extends GuiContainer {
 	public GuiButtonNextPage txbutton[] = new GuiButtonNextPage[4];
 	public GuiButton selectbutton;
 	public GuiButtonArmorToggle visarmorbutton[] = new GuiButtonArmorToggle[4];
-	public GuiButtonSwimToggle swimbutton;
 	public GuiButtonFreedomToggle frdmbutton;
 	public GuiButtonBoostChange boostMinus;
 	public GuiButtonBoostChange boostPlus;
@@ -150,8 +148,8 @@ public class GuiMaidInventory extends GuiContainer {
 		buttonList.add(visarmorbutton[1] = new GuiButtonArmorToggle  (301, guiLeft + 16, guiTop - 14, "littleMaidMob.gui.toggle.innerlight", true).setNode(0).setLight(1));
 		buttonList.add(visarmorbutton[2] = new GuiButtonArmorToggle  (302, guiLeft + 32, guiTop - 14, "littleMaidMob.gui.toggle.outer"     , true).setNode(1).setLight(0));
 		buttonList.add(visarmorbutton[3] = new GuiButtonArmorToggle  (303, guiLeft + 48, guiTop - 14, "littleMaidMob.gui.toggle.outerlight", true).setNode(1).setLight(1));
-		buttonList.add(frdmbutton        = new GuiButtonFreedomToggle(311, guiLeft + 64, guiTop - 16, "littleMaidMob.gui.toggle.freedom"   , entitylittlemaid.isSwimmingEnabled(), entitylittlemaid));
-		buttonList.add(swimbutton        = new GuiButtonSwimToggle   (310, guiLeft + 80, guiTop - 16, "littleMaidMob.gui.toggle.swim"      , entitylittlemaid.isSwimmingEnabled()));
+		buttonList.add(frdmbutton        = new GuiButtonFreedomToggle(311, guiLeft + 64, guiTop - 16, "littleMaidMob.gui.toggle.freedom"   , entitylittlemaid.isFreedom(), entitylittlemaid));
+//		buttonList.add(swimbutton        = new GuiButtonSwimToggle   (310, guiLeft + 80, guiTop - 16, "littleMaidMob.gui.toggle.swim"      , entitylittlemaid.isSwimmingEnabled()));
 		buttonList.add(boostMinus        = new GuiButtonBoostChange  (320, guiLeft + 96, guiTop - 16, "littleMaidMob.gui.button.minusboost").setInverse(true).setEnabled(false));
 		buttonList.add(boostPlus         = new GuiButtonBoostChange  (321, guiLeft+xSize-16, guiTop - 16, "littleMaidMob.gui.button.plusboost"));
 	}
@@ -521,8 +519,6 @@ public class GuiMaidInventory extends GuiContainer {
 			visarmorbutton[cnt].visible = true;
 			visarmorbutton[cnt].toggle = entitylittlemaid.isArmorVisible(cnt);
 		}
-		swimbutton.visible = true;
-		swimbutton.toggle = entitylittlemaid.isSwimmingEnabled();
 		frdmbutton.visible = true;
 		frdmbutton.toggle = entitylittlemaid.isFreedom();
 
@@ -679,10 +675,6 @@ public class GuiMaidInventory extends GuiContainer {
 		case 303 :
 			visarmorbutton[3].toggle=!visarmorbutton[3].toggle;
 			setArmorVisible();
-			break;
-		case 310 :
-			swimbutton.toggle=!swimbutton.toggle;
-			entitylittlemaid.setSwimming(swimbutton.toggle);
 			break;
 		case 311 :
 			frdmbutton.toggle=!frdmbutton.toggle;

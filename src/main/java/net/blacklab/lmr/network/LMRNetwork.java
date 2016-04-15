@@ -6,12 +6,10 @@ import java.util.Arrays;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -208,9 +206,6 @@ public class LMRNetwork
 			break;
 		case SERVER_CHAMGE_FREEDOM :
 			lemaid.setFreedom(contents[0]==1);
-			break;
-		case SERVER_CHANGE_SWIMMING :
-			lemaid.setSwimming(contents[0]==1);
 			break;
 		case SERVER_REQUEST_MODEL :
 			lemaid.syncModelNames();

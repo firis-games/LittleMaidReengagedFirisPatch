@@ -13,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
 public class EntityAILMSwimming extends EntityAISwimming {
 
 	protected EntityLiving theEntity;
-	
+
 	public EntityAILMSwimming(EntityLiving par1EntityLiving) {
 		super(par1EntityLiving);
 		theEntity = par1EntityLiving;
@@ -51,17 +51,16 @@ public class EntityAILMSwimming extends EntityAISwimming {
 //				if(theEntity.worldObj.isAnyLiquid(new AxisAlignedBB(x, y, z, x, y+h+1, z))){
 //					totalmotionY += 0.05D;
 //				}
-				
+
 				PathPoint pathPoint = null;
 				PathEntity pathEntity = theMaid.getPrevPathEntity();
-				if(pathEntity!=null && (theMaid.isSwimmingEnabled()||!theMaid.isContract())){
+				if(pathEntity!=null){
 					pathPoint = pathEntity.getFinalPathPoint();
 					theEntity.motionX = ((pathPoint.xCoord>x)?1:(pathPoint.xCoord<x)?-1:0) * theEntity.getAIMoveSpeed()/5d;
 					theEntity.motionZ = ((pathPoint.zCoord>z)?1:(pathPoint.zCoord<z)?-1:0) * theEntity.getAIMoveSpeed()/5d;
 					totalmotionY +=		((pathPoint.yCoord>=y)?1:-1) * theEntity.getAIMoveSpeed()/5d;
-					
 				}
-				if(theMaid.isSwimmingEnabled() && theMaid.isInWater()){
+				if(theMaid.isInWater()){
 					IBlockState iState;
 					if (pathPoint != null && Math.abs(pathPoint.yCoord - yd) < 3d && Math.pow(pathPoint.xCoord - xd, 2) + Math.pow(pathPoint.zCoord - zd, 2) < 9d &&
 							(iState = theMaid.worldObj.getBlockState(new BlockPos(pathPoint.xCoord,pathPoint.yCoord,pathPoint.zCoord))).getBlock().getMaterial(iState) != Material.water) {

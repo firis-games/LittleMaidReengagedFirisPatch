@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PathNavigatorLittleMaid extends PathNavigateGround {
-	
+
 	protected EntityLittleMaid theMaid;
 
 	public PathNavigatorLittleMaid(EntityLiving entitylivingIn,
@@ -27,14 +27,14 @@ public class PathNavigatorLittleMaid extends PathNavigateGround {
 
 	@Override
 	protected Vec3d getEntityPosition() {
-		if (theMaid.isSwimmingEnabled() && theMaid.isInWater())
+		if (theMaid.isInWater())
 			return new Vec3d(theEntity.posX, theEntity.posY + (double)theEntity.height * 0.5D, theEntity.posZ);
 		return super.getEntityPosition();
 	}
 
 	@Override
 	protected void pathFollow() {
-		if (theMaid.isSwimmingEnabled() && theMaid.isInWater()) {
+		if (theMaid.isInWater()) {
 			Vec3d vec3 = getEntityPosition();
 			float f = theEntity.width * theEntity.width;
 			int i = 6;
@@ -61,7 +61,7 @@ public class PathNavigatorLittleMaid extends PathNavigateGround {
 	@Override
 	protected boolean isDirectPathBetweenPoints(Vec3d posVec31, Vec3d posVec32,
 			int sizeX, int sizeY, int sizeZ) {
-		if (theMaid.isSwimmingEnabled()) {
+		if (theMaid.isInWater()) {
 			RayTraceResult movingobjectposition = worldObj.rayTraceBlocks(posVec31, new Vec3d(posVec32.xCoord, posVec32.yCoord + (double)theEntity.height * 0.5D, posVec32.zCoord), false, true, false);
 			return movingobjectposition == null || movingobjectposition.typeOfHit == RayTraceResult.Type.MISS;
 		}
