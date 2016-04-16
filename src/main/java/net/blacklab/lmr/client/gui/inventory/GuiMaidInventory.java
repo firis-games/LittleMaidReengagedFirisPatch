@@ -430,7 +430,7 @@ public class GuiMaidInventory extends GuiContainer {
 
 		// LP
 		if (RenderInfoPart.getRenderingPart() == 0) {
-			for (int li = maxHealthRows > healthRows ? 9 : MathHelper.ceiling_float_int((maxHealth + origAbsorption)/2f) % 10 - 1; li >= 0; --li) {
+			for (int li = maxHealthRows > healthRows ? 9 : MathHelper.ceiling_float_int((maxHealth + origAbsorption - 2)/2f) % 10; li >= 0; --li) {
 				int var23 = 16;
 				if (entitylittlemaid.isPotionActive(Potion.getPotionById(19))) {
 					var23 += 36;
