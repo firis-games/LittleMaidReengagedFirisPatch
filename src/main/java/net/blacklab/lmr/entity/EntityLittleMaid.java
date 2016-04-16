@@ -395,8 +395,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		textureData.setTextureInitServer(ls);
 		LittleMaidReengaged.Debug("init-ID:%d, %s:%d", getEntityId(), textureData.textureBox[0].textureName, textureData.getColor());
 //		setTexturePackIndex(textureData.getColor(), textureData.textureIndex);
-		textureNameMain = textureData.textureBox[0].textureName;
-		textureNameArmor = textureData.textureBox[1].textureName;
+		setTextureNameMain(textureData.textureBox[0].textureName);
+		setTextureNameArmor(textureData.textureBox[1].textureName);
 //		recallRenderParamTextureName(textureModelNameForClient, textureArmorNameForClient);
 		if(!isContract()) {
 			setMaidMode("Wild");
