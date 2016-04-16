@@ -2478,6 +2478,19 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				// 属性を設定
 				latt.applyModifier(attAxeAmp);
 			}
+			
+			// Auto-fix transparent maid
+			if (!isContract() && firstload > 0) {
+				if(((1 << getColor()) & (textureData.textureBox[0].wildColor)) == 0) {
+					int r = textureData.getWildColor();
+					if (r < 0) {
+						onSpawnWithEgg();
+					} else {
+						setColor(r);
+					}
+				}
+				firstload = 0;
+			}
 		}
 
 		// 紐で拉致
