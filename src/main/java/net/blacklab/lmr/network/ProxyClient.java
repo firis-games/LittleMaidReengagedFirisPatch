@@ -198,7 +198,7 @@ public class ProxyClient extends ProxyCommon
 			// 音声再生
 			EnumSound lsound9 = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(contents, 0));
 			LittleMaidReengaged.Debug(String.format("playSound:%s", lsound9.name()));
-			lemaid.playSound(lsound9, true);
+			lemaid.playSound(lsound9, contents[4]==1);
 			break;
 		case CLIENT_ONDEATH :
 			lemaid.manualOnDeath();

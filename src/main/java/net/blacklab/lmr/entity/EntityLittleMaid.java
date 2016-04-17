@@ -859,13 +859,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * ネットワーク対応音声再生
 	 */
 	public void playSound(EnumSound enumsound, boolean force) {
-		if (worldObj.isRemote && enumsound!=EnumSound.Null) {
+		if (worldObj.isRemote && enumsound!=EnumSound.Null && maidSoundInterval <= 0) {
 			if (!force) {
 				if(Math.random() > LittleMaidReengaged.cfg_voiceRate) {
 					return;
 				}
 			}
 			playingSound.add(enumsound);
+			maidSoundInterval = 10;
 //			float lpitch = LMM_LittleMaidMobNX.cfg_VoiceDistortion ? (rand.nextFloat() * 0.2F) + 0.95F : 1.0F;
 //			LMM_LittleMaidMobNX.proxy.playLittleMaidSound(worldObj, posX, posY, posZ, s, getSoundVolume(), lpitch, false);
 		}
@@ -878,18 +879,17 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void playLittleMaidSound(EnumSound enumsound, boolean force) {
 		// 音声の再生
 		if (enumsound == EnumSound.Null) return;
-		if (!force && rand.nextFloat() > LittleMaidReengaged.cfg_voiceRate) return;
-		maidSoundInterval = 20;
+//		if (!force && rand.nextFloat() > LittleMaidReengaged.cfg_voiceRate) return;
 		if (!worldObj.isRemote) {
 			// Server
 //			if((LMM_LittleMaidMobNX.cfg_ignoreForceSound || !force) && new Random().nextInt(LMM_LittleMaidMobNX.cfg_soundPlayChance)!=0) return;
 			LittleMaidReengaged.Debug("id:%d-%s, seps:%04x-%s", getEntityId(), "Server",  enumsound.index, enumsound.name());
 			byte[] lbuf = new byte[] {
 					0, 0, 0, 0,
-					0, 0, 0, 0
+					0
 			};
 			NetworkHelper.setIntToPacket(lbuf, 0, enumsound.index);
-			NetworkHelper.setIntToPacket(lbuf, 4, force?1:0);
+			lbuf[4] = (byte) (force ? 1 : 0);
 			syncNet(EnumPacketMode.CLIENT_PLAY_SOUND, lbuf);
 		}
 	}
