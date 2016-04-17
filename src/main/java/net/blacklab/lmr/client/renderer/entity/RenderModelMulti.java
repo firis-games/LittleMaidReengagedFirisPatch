@@ -87,7 +87,7 @@ public class RenderModelMulti extends RenderLiving {
 
 		modelMain.setCapsValue(IModelCaps.caps_heldItemLeft, (Integer)0);
 		modelMain.setCapsValue(IModelCaps.caps_heldItemRight, (Integer)0);
-		modelMain.setCapsValue(IModelCaps.caps_onGround, getSwingProgress(par1EntityLiving, par9));
+//		modelMain.setCapsValue(IModelCaps.caps_onGround, getSwingProgress(par1EntityLiving, par9));
 		modelMain.setCapsValue(IModelCaps.caps_isRiding, par1EntityLiving.isRiding());
 		modelMain.setCapsValue(IModelCaps.caps_isSneak, par1EntityLiving.isSneaking());
 		modelMain.setCapsValue(IModelCaps.caps_aimedBow, false);
