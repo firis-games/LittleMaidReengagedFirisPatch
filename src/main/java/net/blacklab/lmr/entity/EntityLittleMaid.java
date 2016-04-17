@@ -140,6 +140,7 @@ import net.minecraft.world.biome.BiomeGenBase.TempCategory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.tools.ant.sabbus.Break;
 
 public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
@@ -207,6 +208,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	protected int mstatWorkingInt;
 	protected String mstatModeName;
 	protected boolean mstatOpenInventory;
+
+	protected int ticksSinceLastDamage = 0;
+
 	// 腕振り
 	public SwingStatus mstatSwingStatus[];
 	public boolean mstatAimeBow;
@@ -1665,6 +1669,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 		}
 
+		// EXP penalty
+		if (par1DamageSource.getEntity() instanceof EntityPlayer || par1DamageSource.getDamageType().equals("inWall") ||
+				par1DamageSource.getDamageType().equals("inFire") || par1DamageSource.getDamageType().equals("inLava") ||
+				par1DamageSource.getDamageType().equals("anvil") || par1DamageSource.getDamageType().equals("fall") ||
+				par1DamageSource.getDamageType().equals("cactus") || par1DamageSource.getDamageType().equals("onFire")) {
+			addMaidExperience(-0.7f*par2);
+		}
+
 //		if (par2 == 0 && maidMode != mmode_Detonator) {
 		if (par2 == 0) {
 			// ノーダメージ
@@ -1673,16 +1685,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 			playLittleMaidSound(getMaidDamegeSound(), force);
 
-			// 減EXP対象
-			if (par1DamageSource.getEntity() instanceof EntityPlayer || par1DamageSource.getDamageType().equals("inWall") ||
-					par1DamageSource.getDamageType().equals("inFire") || par1DamageSource.getDamageType().equals("inLava") ||
-					par1DamageSource.getDamageType().equals("anvil") || par1DamageSource.getDamageType().equals("fall") ||
-					par1DamageSource.getDamageType().equals("cactus") || par1DamageSource.getDamageType().equals("onFire")) {
-				addMaidExperience(-2.0f*par2);
-			}
-
 			return false;
 		}
+		
+		ticksSinceLastDamage = 25;
 
 		if(super.attackEntityFrom(par1DamageSource, par2)) {
 			//契約者の名前チェックはマルチ用
@@ -1937,15 +1943,28 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public void onLivingUpdate() {
-		// 回復判定
 		float lhealth = getHealth();
 		if (lhealth > 0) {
 			if (!worldObj.isRemote) {
 				if (getSwingStatusDominant().canAttack()) {
-					if (!isBloodsuck()) {
-						// 通常時は回復優先
-						if (lhealth < getMaxHealth()) {
-							consumeSugar(EnumConsumeSugar.HEAL);
+					// 通常時は回復優先
+					HEALPHASE: if (lhealth < getMaxHealth() && ticksSinceLastDamage <= 0) {
+						if (isBloodsuck() && getAttackTarget() != null) {
+							break HEALPHASE;
+						}
+						consumeSugar(EnumConsumeSugar.HEAL);
+					}
+
+					// つまみ食い
+					if (rand.nextInt(MathHelper.floor_float(50000/(getExpBooster()*(1.05f+0.005f*getExpBooster())))) == 0) {
+						consumeSugar(EnumConsumeSugar.OTHER);
+					}
+					// 契約更新
+					if (isContractEX()) {
+						float f = getContractLimitDays();
+						if (f <= 6) {
+							// 契約更新
+							consumeSugar(EnumConsumeSugar.RECONTRACT);
 						}
 					}
 				}
@@ -2097,27 +2116,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				}
 			}
 
-			if (!worldObj.isRemote) {
-				if (getSwingStatusDominant().canAttack()) {
-//					mod_LMM_littleMaidMob.Debug("isRemort:" + worldObj.isRemote);
-					// 回復
-					if (getHealth() < getMaxHealth()) {
-						consumeSugar(EnumConsumeSugar.HEAL);
-					}
-					// つまみ食い
-					if (rand.nextInt(MathHelper.floor_float(50000/(getExpBooster()*(1.05f+0.005f*getExpBooster())))) == 0) {
-						consumeSugar(EnumConsumeSugar.OTHER);
-					}
-					// 契約更新
-					if (isContractEX()) {
-						float f = getContractLimitDays();
-						if (f <= 6) {
-							// 契約更新
-							consumeSugar(EnumConsumeSugar.RECONTRACT);
-						}
-					}
-				}
-			}
 		}
 	}
 
@@ -2395,6 +2393,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 		if (maidSoundInterval > 0) {
 			maidSoundInterval--;
+		}
+		if (ticksSinceLastDamage > 0) {
+			ticksSinceLastDamage--;
 		}
 
 		// くびかしげ
