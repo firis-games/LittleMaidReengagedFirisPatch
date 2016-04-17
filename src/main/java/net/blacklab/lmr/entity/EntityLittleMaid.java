@@ -428,7 +428,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
 		// 攻撃速度
 		getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(5D);
-
+		// Wrap EntityPlayer
+		getAttributeMap().registerAttribute(SharedMonsterAttributes.LUCK);
 	}
 
 	@Override
