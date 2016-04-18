@@ -256,9 +256,9 @@ public class InventoryLittleMaid extends InventoryPlayer {
 			return false;
 		}
 
+		int empty = getFirstEmptyStack();
 		if (par1ItemStack.isItemDamaged()) {
 			// Damaged Item
-			int empty = getFirstEmptyStack();
 			if (empty >= 0) {
 				mainInventory[empty] = ItemStack.copyItemStack(par1ItemStack);
 				mainInventory[empty].animationsToGo = 5;
@@ -285,12 +285,12 @@ public class InventoryLittleMaid extends InventoryPlayer {
 						buffer.stackSize = 0;
 						break;
 					}
-				} else if (mainInventory[i] == null) {
-					mainInventory[i] = ItemStack.copyItemStack(buffer);
-					mainInventory[i].animationsToGo = 5;
-					buffer.stackSize = 0;
-					break;
-				}
+				} 
+			}
+			
+			if (buffer.stackSize > 0 && empty >= 0) {
+				mainInventory[empty] = ItemStack.copyItemStack(buffer);
+				buffer.stackSize = 0;
 			}
 			
 			if (buffer.stackSize < originalStackSize) {
