@@ -631,10 +631,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return setMaidMode(pindex, false);
 	}
 
+/*
 	public boolean isInWater() {
 		IBlockState state = worldObj.getBlockState(getPosition());
 		return inWater ? true : state.getBlock().getMaterial(state) == Material.water;
 	}
+*/
 
 	public int[][] getMaidTiles() {
 		return maidTiles;
