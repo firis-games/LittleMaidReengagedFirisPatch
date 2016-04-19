@@ -1,5 +1,8 @@
 package net.blacklab.lmr.entity.mode;
 
+import java.util.UUID;
+
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMR;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
@@ -8,10 +11,11 @@ import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.Counter;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSpade;
@@ -28,14 +32,15 @@ public class EntityMode_Fencer extends EntityModeBase {
 
 	// Charging timer
 	protected Counter ticksCharge;
-	protected Float prevSpeed = null;
-	
+	protected static final UUID CHARGING_BOOST_UUID = UUID.nameUUIDFromBytes(LittleMaidReengaged.DOMAIN.concat(":fencer_charge_boost").getBytes());
+	protected static final AttributeModifier CHARGING_BOOST_MODIFIER = new AttributeModifier(CHARGING_BOOST_UUID, LittleMaidReengaged.DOMAIN.concat(":fencer_charge_boost"), 0.2d, 0);
+
 	protected static final int CHARGE_COUNTER_MAX_VALUE = 60;
 
 	public EntityMode_Fencer(EntityLittleMaid pEntity) {
 		super(pEntity);
 		isAnytimeUpdate = true;
-		ticksCharge = new Counter(-20*15, CHARGE_COUNTER_MAX_VALUE, -20*15);
+		ticksCharge = new Counter(-20*30, CHARGE_COUNTER_MAX_VALUE, -20*30);
 	}
 
 	@Override
@@ -70,23 +75,23 @@ public class EntityMode_Fencer extends EntityModeBase {
 		EntityAITasks[] ltasks = new EntityAITasks[2];
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = new EntityAITasks(owner.aiProfiler);
-		
+
 //		ltasks[1].addTask(1, new EntityAIOwnerHurtByTarget(owner));
 //		ltasks[1].addTask(2, new EntityAIOwnerHurtTarget(owner));
 		ltasks[1].addTask(3, new EntityAILMHurtByTarget(owner, true));
 		ltasks[1].addTask(4, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
-		
+
 		owner.addMaidMode(ltasks, "Fencer", mmode_Fencer);
-		
-		
+
+
 		// Bloodsucker:0x00c0
 		EntityAITasks[] ltasks2 = new EntityAITasks[2];
 		ltasks2[0] = pDefaultMove;
 		ltasks2[1] = new EntityAITasks(owner.aiProfiler);
-		
+
 		ltasks2[1].addTask(1, new EntityAILMHurtByTarget(owner, true));
 		ltasks2[1].addTask(2, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
-		
+
 		owner.addMaidMode(ltasks2, "Bloodsucker", mmode_Bloodsucker);
 	}
 
@@ -116,7 +121,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean setMode(int pMode) {
 		switch (pMode) {
@@ -130,10 +135,10 @@ public class EntityMode_Fencer extends EntityModeBase {
 			owner.setBloodsuck(true);
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public int getNextEquipItem(int pMode) {
 		int li;
@@ -141,19 +146,19 @@ public class EntityMode_Fencer extends EntityModeBase {
 		double ld = 0;
 		double lld;
 		ItemStack litemstack;
-		
+
 		// モードに応じた識別判定、速度優先
 		switch (pMode) {
-		case mmode_Fencer : 
+		case mmode_Fencer :
 			for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
-				
+
 				// 剣
 				if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Sword", litemstack.getItem())) {
 					return li;
 				}
-				
+
 				// 攻撃力な高いものを記憶する
 				lld = 1;
 				try {
@@ -171,12 +176,12 @@ public class EntityMode_Fencer extends EntityModeBase {
 			for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
-				
+
 				// 斧
 				if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Axe", litemstack.getItem())) {
 					return li;
 				}
-				
+
 				// 攻撃力な高いものを記憶する
 				lld = 1;
 				try {
@@ -191,16 +196,16 @@ public class EntityMode_Fencer extends EntityModeBase {
 			}
 			break;
 		}
-		
+
 		return ll;
 	}
-	
+
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
 		// 装備アイテムを回収
 		return pItemStack.getItem() instanceof ItemSword || pItemStack.getItem() instanceof ItemAxe;
 	}
-	
+
 	@Override
 	public void updateAITick(int pMode) {
 		super.updateAITick(pMode);
@@ -215,10 +220,10 @@ public class EntityMode_Fencer extends EntityModeBase {
 				}
 				if (ticksCharge.isEnable()) {
 					// Keep boosting speed
-					if (prevSpeed == null) {
-						prevSpeed = owner.getAIMoveSpeed();
+					IAttributeInstance maidAttribute;
+					if (!(maidAttribute = owner.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED)).hasModifier(CHARGING_BOOST_MODIFIER)) {
+						maidAttribute.applyModifier(CHARGING_BOOST_MODIFIER);
 					}
-					owner.setAIMoveSpeed(prevSpeed * 1.5f);
 				} else {
 					// Reset speed
 					resetSpeed();
@@ -236,9 +241,9 @@ public class EntityMode_Fencer extends EntityModeBase {
 	 * Reset AI speed once.
 	 */
 	protected void resetSpeed() {
-		if (prevSpeed != null) {
-			owner.setAIMoveSpeed(prevSpeed);
-			prevSpeed = null;
+		IAttributeInstance maidAttribute;
+		if ((maidAttribute = owner.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED)).hasModifier(CHARGING_BOOST_MODIFIER)) {
+			maidAttribute.removeModifier(CHARGING_BOOST_UUID);
 		}
 	}
 
