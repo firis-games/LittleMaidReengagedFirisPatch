@@ -1658,16 +1658,21 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //			coolingTick  = 200;
 			getNextEquipItem();
 		}
-		// ゲーム難易度によるダメージの補正
+		// ゲーム難易度によるダメージ・クールタイム補正
 		if(isContract() && (entity instanceof EntityLivingBase) || (entity instanceof EntityArrow)) {
+			// Removed cooltime for continuous damage
+			ticksSinceLastDamage = 15;
+			
 			if(worldObj.getDifficulty() == EnumDifficulty.PEACEFUL) {
 				par2 = 0;
 			}
 			if(worldObj.getDifficulty() == EnumDifficulty.EASY && par2 > 0) {
 				par2 = par2 / 2 + 1;
+				ticksSinceLastDamage = 12;
 			}
 			if(worldObj.getDifficulty() == EnumDifficulty.HARD) {
 				par2 = MathHelper.floor_float(par2 * 1.5f);
+				ticksSinceLastDamage = 18;
 			}
 		}
 
@@ -1690,8 +1695,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			return false;
 		}
 		
-		ticksSinceLastDamage = 25;
-
 		if(super.attackEntityFrom(par1DamageSource, par2)) {
 			//契約者の名前チェックはマルチ用
 //			if(force) playSound("game.player.hurt");
