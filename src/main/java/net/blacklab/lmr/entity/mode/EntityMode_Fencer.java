@@ -5,6 +5,7 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
+import net.blacklab.lmr.util.Counter;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.Entity;
@@ -25,10 +26,16 @@ public class EntityMode_Fencer extends EntityModeBase {
 	public static final int mmode_Fencer		= 0x0080;
 	public static final int mmode_Bloodsucker	= 0x00c0;
 
+	// Charging timer
+	protected Counter ticksCharge;
+	protected Float prevSpeed = null;
+	
+	protected static final int CHARGE_COUNTER_MAX_VALUE = 60;
 
 	public EntityMode_Fencer(EntityLittleMaid pEntity) {
 		super(pEntity);
 		isAnytimeUpdate = true;
+		ticksCharge = new Counter(-20*15, CHARGE_COUNTER_MAX_VALUE, -20*15);
 	}
 
 	@Override
@@ -192,6 +199,47 @@ public class EntityMode_Fencer extends EntityModeBase {
 	public boolean checkItemStack(ItemStack pItemStack) {
 		// 装備アイテムを回収
 		return pItemStack.getItem() instanceof ItemSword || pItemStack.getItem() instanceof ItemAxe;
+	}
+	
+	@Override
+	public void updateAITick(int pMode) {
+		super.updateAITick(pMode);
+		if (pMode == mmode_Fencer || pMode == mmode_Bloodsucker) {
+			// Charge(boost moving speed)
+			ticksCharge.onUpdate();
+			EntityLivingBase targetEntity = owner.getAttackTarget();
+			if (targetEntity != null && !targetEntity.isDead) {
+				if (!ticksCharge.isDelay()) {
+					// Reset counter
+					ticksCharge.setValue(CHARGE_COUNTER_MAX_VALUE);
+				}
+				if (ticksCharge.isEnable()) {
+					// Keep boosting speed
+					if (prevSpeed == null) {
+						prevSpeed = owner.getAIMoveSpeed();
+					}
+					owner.setAIMoveSpeed(prevSpeed * 1.5f);
+				} else {
+					// Reset speed
+					resetSpeed();
+				}
+			} else {
+				// no target or target died
+				resetSpeed();
+				if (ticksCharge.isEnable()) {
+					ticksCharge.setValue(0);
+				}
+			}
+		}
+	}
+	/**
+	 * Reset AI speed once.
+	 */
+	protected void resetSpeed() {
+		if (prevSpeed != null) {
+			owner.setAIMoveSpeed(prevSpeed);
+			prevSpeed = null;
+		}
 	}
 
 }
