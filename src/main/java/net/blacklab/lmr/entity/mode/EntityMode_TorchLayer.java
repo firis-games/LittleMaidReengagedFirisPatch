@@ -298,6 +298,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	@Override
 	public void onWarp() {
 		PathEntity pathEntity = owner.getNavigator().getPath();
+		if (pathEntity == null) return;
 		PathPoint destination = pathEntity.getFinalPathPoint();
 		if (!checkBlock(owner.getMaidModeInt(), destination.xCoord, destination.yCoord, destination.zCoord)) {
 			owner.getNavigator().clearPathEntity();
