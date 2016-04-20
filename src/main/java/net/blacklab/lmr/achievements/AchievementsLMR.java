@@ -75,7 +75,7 @@ public class AchievementsLMR {
 				ac_Boost,
 				ac_MyFavorite
 				};
-		AchievementPage.registerAchievementPage(new AchievementPage("LittleMaidNX", achievements));
+		AchievementPage.registerAchievementPage(new AchievementPage("LittleMaidReengaged", achievements));
 	}
 
 }
