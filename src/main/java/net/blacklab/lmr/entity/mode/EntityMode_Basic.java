@@ -35,7 +35,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 
 	public static final int mmode_Wild			= 0x0000;
 	public static final int mmode_Escorter		= 0x0001;
-	public static final int mmode_FarmPorter		= 0x0024;
+	public static final int mmode_FarmPorter	= 0x0024;
 	
 	private IInventory myInventory;
 	private IInventory myChest;
@@ -145,7 +145,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	
 	@Override
 	public int getNextEquipItem(int pMode) {
-		return pMode == mmode_Wild ? 0 : -1;
+		return 0;
 	}
 	
 	@Override
