@@ -102,7 +102,7 @@ public class EntityMarkerDummy extends Entity {
 			LittleMaidReengaged.Debug("L");
 		}
 
-		EntityMarkerDummy ed = new EntityMarkerDummy(Minecraft.getMinecraft().theWorld, color, owner);
+		EntityMarkerDummy ed = new EntityMarkerDummy(owner.worldObj, color, owner);
 		ed.setPosition(posx, posy, posz);
 		appendList.add(ed);
 	}
