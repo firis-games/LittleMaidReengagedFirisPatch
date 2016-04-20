@@ -1,15 +1,11 @@
 package net.blacklab.lmr.client.renderer.entity;
 
-import java.util.Map;
-
 import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
-import net.blacklab.lmr.entity.maidmodel.ModelBaseNihil;
-import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
@@ -52,7 +48,6 @@ public class RenderLittleMaid extends RenderModelMulti {
 		public float field_177187_e;
 		public boolean field_177193_i;
 		public EntityLittleMaid lmm;
-		private int renderCount;
 
 		public static final float renderScale = 0.0625F;
 
@@ -82,9 +77,6 @@ public class RenderLittleMaid extends RenderModelMulti {
 					render(par1EntityLiving, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, i);
 				}
 			}
-
-			//カウントインクリメント
-			renderCount++;
 		}
 
 		public void render(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, int renderParts) {
@@ -261,22 +253,20 @@ public class RenderLittleMaid extends RenderModelMulti {
 //		modelMain.isAlphablend = true;
 //		modelFATT.isAlphablend = true;
 
-		for (IModelCaps model: new IModelCaps[]{modelMain, modelFATT}) {
-			model.setCapsValue(IModelCaps.caps_heldItemLeft, (Integer)0);
-			model.setCapsValue(IModelCaps.caps_heldItemRight, (Integer)0);
-//			modelMain.setCapsValue(IModelCaps.caps_onGround, renderSwingProgress(lmaid, par9));
-//			model.setCapsValue(IModelCaps.caps_onGround,
-//					lmaid.mstatSwingStatus[0].getSwingProgress(par9),
-//					lmaid.mstatSwingStatus[1].getSwingProgress(par9));
-			model.setCapsValue(IModelCaps.caps_isRiding, lmaid.isRiding());
-			model.setCapsValue(IModelCaps.caps_isSneak, lmaid.isSneaking());
-			model.setCapsValue(IModelCaps.caps_aimedBow, lmaid.isAimebow());
-			model.setCapsValue(IModelCaps.caps_isWait, lmaid.isMaidWait());
-			model.setCapsValue(IModelCaps.caps_isChild, lmaid.isChild());
-			model.setCapsValue(IModelCaps.caps_entityIdFactor, lmaid.entityIdFactor);
-			model.setCapsValue(IModelCaps.caps_ticksExisted, lmaid.ticksExisted);
-			model.setCapsValue(IModelCaps.caps_dominantArm, lmaid.getDominantArm());
-		}
+		modelMain.setCapsValue(IModelCaps.caps_heldItemLeft, (Integer)0);
+		modelMain.setCapsValue(IModelCaps.caps_heldItemRight, (Integer)0);
+//		modelMain.setCapsValue(IModelCaps.caps_onGround, renderSwingProgress(lmaid, par9));
+		modelMain.setCapsValue(IModelCaps.caps_onGround,
+				lmaid.mstatSwingStatus[0].getSwingProgress(par9),
+				lmaid.mstatSwingStatus[1].getSwingProgress(par9));
+		modelMain.setCapsValue(IModelCaps.caps_isRiding, lmaid.isRiding());
+		modelMain.setCapsValue(IModelCaps.caps_isSneak, lmaid.isSneaking());
+		modelMain.setCapsValue(IModelCaps.caps_aimedBow, lmaid.isAimebow());
+		modelMain.setCapsValue(IModelCaps.caps_isWait, lmaid.isMaidWait());
+		modelMain.setCapsValue(IModelCaps.caps_isChild, lmaid.isChild());
+		modelMain.setCapsValue(IModelCaps.caps_entityIdFactor, lmaid.entityIdFactor);
+		modelMain.setCapsValue(IModelCaps.caps_ticksExisted, lmaid.ticksExisted);
+		modelMain.setCapsValue(IModelCaps.caps_dominantArm, lmaid.getDominantArm());
 		modelFATT.setModelAttributes(mainModel);
 		// だが無意味だ
 //		plittleMaid.textureModel0.isChild = plittleMaid.textureModel1.isChild = plittleMaid.textureModel2.isChild = plittleMaid.isChild();

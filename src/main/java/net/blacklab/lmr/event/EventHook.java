@@ -46,7 +46,7 @@ public class EventHook
 	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event){
 		if (!event.player.worldObj.isRemote && LittleMaidReengaged.currentVersion.compareVersion(LittleMaidReengaged.latestVersion) > 0) {
 			event.player.addChatComponentMessage(new TextComponentString(String.format("[LittleMaidReengaged]%s : %s",
-					I18n.translateToLocal("system.lmmnx.chat.text.newverstion"), LittleMaidReengaged.latestVersion.shownName)));
+					I18n.translateToLocal("system.lmmnx.chat.text.newversion"), LittleMaidReengaged.latestVersion.shownName)));
 			event.player.addChatComponentMessage(new TextComponentString(String.format("[LittleMaidReengaged]%s",
 					I18n.translateToLocal("system.lmmnx.chat.text.checkversion"))));
 		}
