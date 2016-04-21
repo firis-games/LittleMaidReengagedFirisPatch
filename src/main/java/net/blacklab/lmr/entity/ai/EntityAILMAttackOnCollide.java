@@ -1,6 +1,7 @@
 package net.blacklab.lmr.entity.ai;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -12,6 +13,7 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI {
@@ -103,9 +105,16 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 		}
 		
 		if (entityTarget.isDead) {
-			theMaid.setAttackTarget(null);
-			theMaid.setRevengeTarget(null);
-			theMaid.getNavigator().clearPathEntity();
+			resetTask();
+			return false;
+		}
+		if (theMaid.isFreedom() &&
+				theMaid.getHomePosition().distanceSq(lentity.getPosition()) > EntityModeBase.limitDistance_Freedom) {
+			resetTask();
+			return false;
+		} else if (!theMaid.isFreedom() && theMaid.getMaidMasterEntity() != null &&
+				theMaid.getMaidMasterEntity().getPositionVector().squareDistanceTo(lentity.getPositionVector()) > EntityModeBase.limitDistance_Follow) {
+			resetTask();
 			return false;
 		}
 		
@@ -123,8 +132,10 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 	@Override
 	public void resetTask() {
 		entityTarget = null;
-//		theMaid.getNavigator().clearPathEntity();
-		theMaid.maidAvatar.stopActiveHand();
+		theMaid.getNavigator().clearPathEntity();
+		theMaid.setAttackTarget(null);
+		theMaid.setRevengeTarget(null);
+//		theMaid.maidAvatar.stopActiveHand();
 	}
 
 	@Override
