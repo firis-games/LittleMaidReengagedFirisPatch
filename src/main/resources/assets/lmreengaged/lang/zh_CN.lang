@@ -1,4 +1,4 @@
-entity.lmreengaged.LittleMaidX.name=女仆酱
+entity.lmreengaged.LittleMaid.name=女仆酱
 
 item.lmreengaged:spawn_littlemaid_egg.name=生成 女仆酱
 item.lmreengaged:registerkey.name=§e物品模式添加器
@@ -100,13 +100,13 @@ littleMaidMob.mode.Ripper=剪刀模式
 littleMaidMob.mode.F-Ripper=自由-剪刀模式
 littleMaidMob.mode.T-Ripper=巡逻-剪刀模式
 
-littleMaidMob.mode.TNT-D=自爆模式
-littleMaidMob.mode.F-TNT-D=自由-自爆模式
-littleMaidMob.mode.T-TNT-D=巡逻-自爆模式
+littleMaidMob.mode.TNT-D=TNT-D
+littleMaidMob.mode.F-TNT-D=自由-TNT-D
+littleMaidMob.mode.T-TNT-D=巡逻-TNT-D
 
-littleMaidMob.mode.Detonator=轰炸机模式
-littleMaidMob.mode.F-Detonator=自由-轰炸机模式
-littleMaidMob.mode.T-Detonator=巡逻-轰炸机模式
+littleMaidMob.mode.Detonator=自爆模式
+littleMaidMob.mode.F-Detonator=自由-自爆模式
+littleMaidMob.mode.T-Detonator=巡逻-自爆模式
 
 littleMaidMob.mode.Farmer=农场模式
 littleMaidMob.mode.F-Farmer=自由-农场模式
