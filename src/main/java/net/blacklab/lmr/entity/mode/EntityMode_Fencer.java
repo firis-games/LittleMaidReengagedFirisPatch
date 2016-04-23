@@ -3,7 +3,7 @@ package net.blacklab.lmr.entity.mode;
 import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.AchievementsLMR;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
@@ -101,20 +101,20 @@ public class EntityMode_Fencer extends EntityModeBase {
 		if (litemstack != null) {
 			if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Sword", litemstack.getItem())) {
 				owner.setMaidMode("Fencer");
-				if (AchievementsLMR.ac_Fencer != null) {
-					pentityplayer.addStat(AchievementsLMR.ac_Fencer);
+				if (AchievementsLMRE.ac_Fencer != null) {
+					pentityplayer.addStat(AchievementsLMRE.ac_Fencer);
 				}
-				if (litemstack.getItem() instanceof ItemSpade && AchievementsLMR.ac_Buster != null) {
-					pentityplayer.addStat(AchievementsLMR.ac_Buster);
+				if (litemstack.getItem() instanceof ItemSpade && AchievementsLMRE.ac_Buster != null) {
+					pentityplayer.addStat(AchievementsLMRE.ac_Buster);
 				}
 				return true;
 			} else  if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Axe", litemstack.getItem())) {
 				owner.setMaidMode("Bloodsucker");
-				if (AchievementsLMR.ac_RandomKiller != null) {
-					pentityplayer.addStat(AchievementsLMR.ac_RandomKiller);
+				if (AchievementsLMRE.ac_RandomKiller != null) {
+					pentityplayer.addStat(AchievementsLMRE.ac_RandomKiller);
 				}
-				if (litemstack.getItem() instanceof ItemSpade && AchievementsLMR.ac_Buster != null) {
-					pentityplayer.addStat(AchievementsLMR.ac_Buster);
+				if (litemstack.getItem() instanceof ItemSpade && AchievementsLMRE.ac_Buster != null) {
+					pentityplayer.addStat(AchievementsLMRE.ac_Buster);
 				}
 				return true;
 			}

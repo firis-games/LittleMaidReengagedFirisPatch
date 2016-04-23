@@ -11,11 +11,12 @@ import java.util.Random;
 import net.blacklab.lib.config.ConfigList;
 import net.blacklab.lib.version.Version;
 import net.blacklab.lib.version.Version.VersionData;
-import net.blacklab.lmr.achievements.AchievementsLMR;
+import net.blacklab.lib.vevent.VEventBus;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.event.EventHook;
+import net.blacklab.lmr.event.EventHookLMRE;
 import net.blacklab.lmr.item.ItemMaidPorter;
 import net.blacklab.lmr.item.ItemMaidSpawnEgg;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
@@ -60,11 +61,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
-	public static final String VERSION = "7.1.5.19";
+	public static final String VERSION = "7.1.6.23";
 	public static final String ACCEPTED_MCVERSION = "[1.9,1.9.100)";
 	public static final int VERSION_CODE = 1;
 	public static final String DEPENDENCIES = "required-after:Forge@[1.9-12.16.0.1819,);"
-			+ "required-after:net.blacklab.lib@[5.1.0.1,)";
+			+ "required-after:net.blacklab.lib@[5.2.0.2,)";
 
 	public static final VersionData currentVersion = new VersionData(VERSION_CODE, VERSION, VERSION);
 	public static VersionData latestVersion = new VersionData(1, "6.0.1", "6.0.1");
@@ -158,7 +159,7 @@ public class LittleMaidReengaged {
 	public static Random randomSoundChance;
 
 	@EventHandler
-	public void PreInit(FMLPreInitializationEvent evt) {
+	public void preInit(FMLPreInitializationEvent evt) {
 		// MMMLibからの引継ぎ
 		// ClassLoaderを初期化
 		List<URL> urls = new ArrayList<URL>();
@@ -279,7 +280,7 @@ public class LittleMaidReengaged {
 		GameRegistry.register(maidPorter, new ResourceLocation(DOMAIN, "maidporter"));
 
 		// 実績追加
-		AchievementsLMR.initAchievements();
+		AchievementsLMRE.initAchievements();
 
 		// AIリストの追加
 		EntityModeManager.init();
@@ -305,6 +306,8 @@ public class LittleMaidReengaged {
 			defaultResourcePacks.add(new OldZipTexturesWrapper());
 		}
 
+		MinecraftForge.EVENT_BUS.register(new EventHookLMRE());
+		VEventBus.instance.registerListener(new EventHookLMRE());
 	}
 
 	// public static ProxyClient.CountThread countThread;
@@ -313,7 +316,6 @@ public class LittleMaidReengaged {
 	public void postInit(FMLPostInitializationEvent evt) {
 		// カンマ区切りのアイテム名のリストを配列にして設定
 		// "aaa, bbb,ccc  " -> "aaa" "bbb" "ccc"
-		MinecraftForge.EVENT_BUS.register(new EventHook());
 
 		// デフォルトモデルの設定
 		// MMM_TextureManager.instance.setDefaultTexture(LMM_EntityLittleMaid.class,
@@ -347,6 +349,7 @@ public class LittleMaidReengaged {
 
 		// IFFのロード
 		IFF.loadIFFs();
+
 	}
 
 }

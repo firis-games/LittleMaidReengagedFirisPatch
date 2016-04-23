@@ -1,8 +1,8 @@
 package net.blacklab.lmr.event;
 
-import net.blacklab.lib.minecraft.item.ItemUtil;
+import net.blacklab.lib.vevent.SubscribeVEvent;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.api.event.LMREvent;
+import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.api.mode.UtilModeFarmer;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.entity.EntityLittleMaid;
@@ -22,13 +22,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
-public class EventHook
+public class EventHookLMRE
 {
 	@SubscribeEvent
 	public void onEntityItemPickupEvent(EntityItemPickupEvent event)
@@ -113,27 +112,6 @@ public class EventHook
 	}
 
 	@SubscribeEvent
-	public void onItemPutChest(LMREvent.ItemPutChestEvent event){
-		EntityLittleMaid maid = event.maid;
-//		IInventory target = event.target;
-		ItemStack stack = event.stack;
-		if(ItemHelper.isSugar(stack.getItem())|| stack.getItem() == Items.clock){
-			event.setCanceled(true);
-		}
-		if(maid.getMaidModeInt()==EntityMode_Basic.mmode_FarmPorter){
-			if(UtilModeFarmer.isSeed(maid.getMaidMasterUUID(), stack.getItem())||UtilModeFarmer.isHoe(maid, stack)){
-				event.setCanceled(true);
-			}
-			if(event.maidStackIndex>13){
-				event.setCanceled(false);
-			}
-		}
-		if(event.maidStackIndex==17&&ItemUtil.isHelm(stack)){
-			event.setCanceled(true);
-		}
-	}
-
-	@SubscribeEvent
 	public void onPickUpXP(PlayerPickupXpEvent event) {
 		EntityPlayer player = event.getEntityPlayer();
 		if (player instanceof EntityLittleMaidAvatarMP) {
@@ -146,30 +124,50 @@ public class EventHook
 	}
 
 	public static boolean deleteDoppelganger(boolean loading, World worldObj, Entity entity) {
-			// ドッペル対策
-			if (LittleMaidReengaged.cfg_antiDoppelganger/* && maidAnniversary > 0L*/) {
-				for (int i = 0; i < worldObj.loadedEntityList.size(); i++) {
-					Entity entity1 = (Entity)worldObj.loadedEntityList.get(i);
-					if (!entity1.isDead && entity1 instanceof EntityLivingBase) {
-						EntityLivingBase elm = (EntityLivingBase)entity1;
+		// ドッペル対策
+		if (LittleMaidReengaged.cfg_antiDoppelganger/* && maidAnniversary > 0L*/) {
+			for (int i = 0; i < worldObj.loadedEntityList.size(); i++) {
+				Entity entity1 = (Entity)worldObj.loadedEntityList.get(i);
 
-						if (elm.equals(entity)) continue;
+				if (!entity1.isDead && entity1 instanceof EntityLivingBase) {
+					EntityLivingBase elm = (EntityLivingBase)entity1;
+					if (elm.equals(entity)) continue;
 
-						boolean c1 = elm.getClass().getName().equals(entity.getClass().getName());
+					boolean c1 = elm.getClass().getName().equals(entity.getClass().getName());
+					boolean c2 = elm.getUniqueID().equals(entity.getUniqueID());
 
-						boolean c2 = elm.getUniqueID().equals(entity.getUniqueID());
+					if (c1 && c2) {
+						LittleMaidReengaged.Debug("REMOVE DOPPELGANGER UUID %s", entity.getUniqueID());
 
-						if (c1 && c2) {
-							LittleMaidReengaged.Debug("REMOVE DOPPELGANGER UUID %s", entity.getUniqueID());
-							if (entity.getEntityId() > elm.getEntityId()) {
-								elm.setDead();
-							} else {
-								return true;
-							}
+						if (entity.getEntityId() > elm.getEntityId()) {
+							elm.setDead();
+						} else {
+							return true;
 						}
 					}
 				}
 			}
-			return false;
 		}
+		return false;
+	}
+
+	@SubscribeVEvent
+	public void onItemPutChest(EventLMRE.ItemPutChestEvent event){
+		LittleMaidReengaged.Debug("HOOK");
+		EntityLittleMaid maid = event.maid;
+		ItemStack stack = event.stack;
+
+		if(ItemHelper.isSugar(stack.getItem()) || stack.getItem() == Items.clock){
+			event.setCanceled(true);
+		}
+
+		if(maid.getMaidModeInt()==EntityMode_Basic.mmode_FarmPorter){
+			if(UtilModeFarmer.isSeed(maid.getMaidMasterUUID(), stack.getItem())||UtilModeFarmer.isHoe(maid, stack)){
+				event.setCanceled(true);
+			}
+			if(event.maidStackIndex>13){
+				event.setCanceled(false);
+			}
+		}
+	}
 }

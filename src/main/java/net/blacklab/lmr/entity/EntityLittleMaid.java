@@ -14,9 +14,10 @@ import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.blacklab.lib.minecraft.item.ItemUtil;
+import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.AchievementsLMR;
-import net.blacklab.lmr.api.event.LMREvent;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
+import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.api.item.IItemSpecialSugar;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.client.sound.SoundLoader;
@@ -50,6 +51,7 @@ import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
+import net.blacklab.lmr.event.EventHookLMRE;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.EnumPacketMode;
@@ -1588,7 +1590,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			if (isContractEX() && par2>=19 && par2<getHealth()) {
 				EntityPlayer player;
 				if ((player = getMaidMasterEntity()) != null)
-					player.addStat(AchievementsLMR.ac_Ashikubi);
+					player.addStat(AchievementsLMRE.ac_Ashikubi);
 			}
 		}
 		if(!par1DamageSource.isUnblockable() && isBlocking()) {
@@ -3106,7 +3108,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								maidOverDriveTime.setValue(par3ItemStack.stackSize * 10);
 								playSound("mob.zombie.infect");
 								if (par3ItemStack.stackSize == 64) {
-									getMaidMasterEntity().addStat(AchievementsLMR.ac_Boost);
+									getMaidMasterEntity().addStat(AchievementsLMRE.ac_Boost);
 								}
 								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, par3ItemStack.stackSize);
 								return true;
@@ -3191,8 +3193,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 						deathTime = 0;
 						if (!worldObj.isRemote) {
-							if (AchievementsLMR.ac_Contract != null) {
-								par1EntityPlayer.addStat(AchievementsLMR.ac_Contract);
+							if (AchievementsLMRE.ac_Contract != null) {
+								par1EntityPlayer.addStat(AchievementsLMRE.ac_Contract);
 							}
 							setContract(true);
 							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
@@ -3556,7 +3558,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			if (worldObj.getTotalWorldTime() - maidAnniversary > 24000 * 365) {
 				EntityPlayer player;
 				if ((player = getMaidMasterEntity()) != null)
-					player.addStat(AchievementsLMR.ac_MyFavorite);
+					player.addStat(AchievementsLMRE.ac_MyFavorite);
 			}
 		}
 
@@ -3730,7 +3732,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				flag = true;
 			}
 			getExperienceHandler().onLevelUp(currentLevel+1);
-			MinecraftForge.EVENT_BUS.post(new LMREvent.MaidLevelUpEvent(this, getMaidLevel()));
+			VEventBus.instance.post(new EventLMRE.MaidLevelUpEvent(this, getMaidLevel()));
 		}
 	}
 

@@ -3,8 +3,9 @@ package net.blacklab.lmr.entity.mode;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.api.event.LMREvent;
+import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.api.mode.UtilModeFarmer;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
@@ -15,6 +16,7 @@ import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
@@ -29,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 
 public class EntityMode_Basic extends EntityModeBlockBase {
@@ -364,45 +367,45 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			while ((is = owner.maidInventory.getStackInSlot(maidSearchCount)) == null && maidSearchCount < InventoryLittleMaid.maxInventorySize) {
 				maidSearchCount++;
 			}
-			LMREvent.ItemPutChestEvent event =
-					new LMREvent.ItemPutChestEvent(owner,myChest,is,maidSearchCount);
+
+			EventLMRE.ItemPutChestEvent event = new EventLMRE.ItemPutChestEvent(owner,myChest,is,maidSearchCount);
 			if (is != null){
-				if(!MinecraftForge.EVENT_BUS.post(event)){
-//						mod_littleMaidMob.Debug("getchest2.");
-						boolean f = false;
-						for (int j = 0; j < myChest.getSizeInventory() && is.stackSize > 0; j++)
+				if(!VEventBus.instance.post(event)){
+//					mod_littleMaidMob.Debug("getchest2.");
+					boolean f = false;
+					for (int j = 0; j < myChest.getSizeInventory() && is.stackSize > 0; j++)
+					{
+						ItemStack isc = myChest.getStackInSlot(j);
+						if (isc == null)
 						{
-							ItemStack isc = myChest.getStackInSlot(j);
-							if (isc == null)
+//							mod_littleMaidMob.Debug(String.format("%s -> NULL", is.getItemName()));
+							myChest.setInventorySlotContents(j, is.copy());
+							is.stackSize = 0;
+							f = true;
+							break;
+						}
+						else if (isc.isStackable() && isc.isItemEqual(is))
+						{
+//							mod_littleMaidMob.Debug(String.format("%s -> %s", is.getItemName(), isc.getItemName()));
+							f = true;
+							isc.stackSize += is.stackSize;
+							if (isc.stackSize > isc.getMaxStackSize())
 							{
-//								mod_littleMaidMob.Debug(String.format("%s -> NULL", is.getItemName()));
-								myChest.setInventorySlotContents(j, is.copy());
-								is.stackSize = 0;
-								f = true;
+								is.stackSize = isc.stackSize - isc.getMaxStackSize();
+								isc.stackSize = isc.getMaxStackSize();
+							} else {
+								is.stackSize = 0; 
 								break;
 							}
-							else if (isc.isStackable() && isc.isItemEqual(is))
-							{
-//								mod_littleMaidMob.Debug(String.format("%s -> %s", is.getItemName(), isc.getItemName()));
-								f = true;
-								isc.stackSize += is.stackSize;
-								if (isc.stackSize > isc.getMaxStackSize())
-								{
-									is.stackSize = isc.stackSize - isc.getMaxStackSize();
-									isc.stackSize = isc.getMaxStackSize();
-								} else {
-									is.stackSize = 0; 
-									break;
-								}
-							}
 						}
-						if (is.stackSize <= 0) {
-							owner.maidInventory.setInventorySlotContents(maidSearchCount, null);
-						}
-						if (f) {
-							owner.playSound("entity.item.pickup");
-							owner.setSwing(2, EnumSound.Null, false);
-						}
+					}
+					if (is.stackSize <= 0) {
+						owner.maidInventory.setInventorySlotContents(maidSearchCount, null);
+					}
+					if (f) {
+						owner.playSound("entity.item.pickup");
+						owner.setSwing(2, EnumSound.Null, false);
+					}
 				}
 			}
 //			mod_littleMaidMob.Debug(String.format("getchest3:%d", maidSearchCount));
