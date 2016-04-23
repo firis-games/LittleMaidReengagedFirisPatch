@@ -40,7 +40,7 @@ public class FileList {
 //	public static File[] dirDevIncludeAssets = new File[]{};
 
 	public static List<File> files;
-	public static String minecraftDir	= "";
+	public static String dirMinecraftPath	= "";
 //	public static File   minecraftJar	= null;	// minecraft.jarを見に行くのは昔の仕様？
 	public static String assetsDir		= "";	// mods/LittleMaidX/assets
 	public static boolean isDevdir;
@@ -51,42 +51,37 @@ public class FileList {
 	static {
 		Object[] injectionData = FMLInjectionData.data();
 		dirMinecraft = (File) FMLInjectionData.data()[6];
-		minecraftDir = dirMinecraft.getPath();
+		dirMinecraftPath = FileClassUtil.getLinuxAntiDotName(dirMinecraft.getAbsolutePath());
+		if (dirMinecraftPath.endsWith("/")) {
+			dirMinecraftPath = dirMinecraftPath.substring(0, dirMinecraftPath.lastIndexOf("/"));
+		}
 		dirMods = new File(dirMinecraft, "mods");
-		//開発モード
-		if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
-			//Linux準拠の形式に変更
-			String path = FileClassUtil.getLinuxAntiDotName(dirMods.getAbsolutePath());
-			String pathd = path;
-			String patha;
-			String tail = "/eclipse/mods";
-			String tail2 = "/eclipse/server/mods";
-			boolean serverFlag = false;
-			if(path.endsWith(tail2)){
-				path = path.substring(0, path.indexOf(tail2))+tail;
-				serverFlag = true;
-			}
-			if(path.endsWith(tail)){
-				if(DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE){
-					pathd = path.substring(0, path.indexOf(tail))+"/bin";
-				}else if(DevMode.DEVMODE == DevMode.DEVMODE_NO_IDE){
-					pathd = path.substring(0, path.indexOf(tail))+"/build/classes/main";
-					patha = path.substring(0, path.indexOf(tail))+"/build/resources/main";
-					dirDevClassAssets = new File(patha);
-				}
-				dirDevClasses = new File(pathd);
-				if(!dirDevClasses.exists()||!dirDevClasses.isDirectory())
-					throw new IllegalStateException("Could not get dev class path: Maybe your source codes are out of src/main/java?");
 
-				for(int i=0;i<DevMode.INCLUDEPROJECT.length&&!serverFlag;i++){
-					if(DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE){
-						String c = FileClassUtil.getParentDir(path.substring(0, path.indexOf(tail)))+"/"+DevMode.INCLUDEPROJECT[i]+"/bin";
-						dirDevIncludeClasses.add(new File(c));
-					}else if(DevMode.DEVMODE == DevMode.DEVMODE_NO_IDE){
-					}
+		// 開発モード
+		if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
+			// Linux準拠の形式に変更
+			String dirProjectPath = FileClassUtil.getParentDir(dirMinecraftPath);
+			
+			String binPath = "";
+			String assetsPath = "";
+
+			// Game Directoryの直上のディレクトリを見に行く.
+			if(DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE) {
+				binPath = dirProjectPath.concat("/bin");
+			} else if(DevMode.DEVMODE == DevMode.DEVMODE_NO_IDE) {
+				binPath = dirProjectPath.concat("/build/classes/main");
+				assetsPath = dirProjectPath.concat("/build/resources/main");
+				dirDevClassAssets = new File(assetsPath);
+			}
+			dirDevClasses = new File(binPath);
+			if(!dirDevClasses.exists() || !dirDevClasses.isDirectory())
+				throw new IllegalStateException("Could not get dev class path.");
+
+			if (DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE) {
+				for(int i=0; i<DevMode.INCLUDEPROJECT.length; i++){
+					String c = FileClassUtil.getParentDir(dirProjectPath)+"/"+DevMode.INCLUDEPROJECT[i]+"/bin";
+					dirDevIncludeClasses.add(new File(c));
 				}
-			}else{
-				throw new IllegalStateException("Run Directory is incorrect: You must run at \"<PROJECT>/eclipse\"!");
 			}
 		}
 		dirModsVersion = new File(dirMods, (String)injectionData[4]);
