@@ -51,7 +51,6 @@ import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
-import net.blacklab.lmr.event.EventHookLMRE;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.EnumPacketMode;
@@ -70,7 +69,6 @@ import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.blacklab.lmr.util.helper.OwnableEntityHelper;
 import net.blacklab.lmr.util.manager.EntityModeManager;
 import net.blacklab.lmr.util.manager.ModelManager;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -139,10 +137,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.TempCategory;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.tools.ant.sabbus.Break;
 
 public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
@@ -465,7 +461,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		// 独自分
 		// 19:maidColor
-		dataWatcher.register(dataWatch_Color, Byte.valueOf((byte)0));
+		dataWatcher.register(dataWatch_Color, Integer.valueOf(0));
 		// 20:選択テクスチャインデックス
 		// TODO いらん？
 		dataWatcher.register(dataWatch_Texture, Integer.valueOf(0));
@@ -478,7 +474,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// 24:メイドモード
 		dataWatcher.register(dataWatch_Mode, Integer.valueOf(0));
 		// 25:利き腕
-		dataWatcher.register(dataWatch_DominamtArm, Byte.valueOf((byte)0));
+		dataWatcher.register(dataWatch_DominamtArm, Integer.valueOf(0));
 		// 26:アイテムの使用判定
 		dataWatcher.register(dataWatch_ItemUse, Integer.valueOf(0));
 		// 27:保持経験値
@@ -1664,7 +1660,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if(isContract() && (entity instanceof EntityLivingBase) || (entity instanceof EntityArrow)) {
 			// Removed cooltime for continuous damage
 			ticksSinceLastDamage = 15;
-			
+
 			if(worldObj.getDifficulty() == EnumDifficulty.PEACEFUL) {
 				par2 = 0;
 			}
@@ -1696,7 +1692,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 			return false;
 		}
-		
+
 		if(super.attackEntityFrom(par1DamageSource, par2)) {
 			//契約者の名前チェックはマルチ用
 //			if(force) playSound("game.player.hurt");
@@ -2487,7 +2483,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				// 属性を設定
 				latt.applyModifier(attAxeAmp);
 			}
-			
+
 			// Auto-fix transparent maid
 			if (!isContract() && firstload > 0) {
 				if(((1 << getColor()) & (textureData.textureBox[0].wildColor)) == 0) {
@@ -3820,7 +3816,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	@Override
 	public void setColor(int index) {
 		textureData.setColor(index);
-		dataWatcher.set(dataWatch_Color, (byte)index);
+		dataWatcher.set(dataWatch_Color, index);
 	}
 
 	public boolean updateMaidColor() {
@@ -3920,7 +3916,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			lss.index = lss.lastIndex = -1;
 		}
 		maidDominantArm = pindex;
-		dataWatcher.set(dataWatch_DominamtArm, (byte)maidDominantArm);
+		dataWatcher.set(dataWatch_DominamtArm, maidDominantArm);
 		LittleMaidReengaged.Debug("Change Dominant.");
 	}
 

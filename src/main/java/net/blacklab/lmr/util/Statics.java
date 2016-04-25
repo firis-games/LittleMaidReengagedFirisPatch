@@ -14,7 +14,7 @@ public class Statics
 	public static final DataParameter<Float> dataWatch_Absoption		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.FLOAT);
 
 	/** メイドカラー(byte) */
-	public static final DataParameter<Byte> dataWatch_Color			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.BYTE);
+	public static final DataParameter<Integer> dataWatch_Color			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	/**
 	 * MSB|0x0000 0000|LSB<br>
 	 *       |    |本体のテクスチャインデックス<br>
@@ -50,7 +50,7 @@ public class Statics
 	/** メイドモード(Short) */
 	public static final DataParameter<Integer> dataWatch_Mode			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	/** 利き腕(Byte) */
-	public static final DataParameter<Byte> dataWatch_DominamtArm	= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.BYTE);
+	public static final DataParameter<Integer> dataWatch_DominamtArm	= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	/** アイテムの使用判定、腕毎(Integer) */
 	public static final DataParameter<Integer> dataWatch_ItemUse		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	/** 保持経験値→メイド経験値で上書きな */
