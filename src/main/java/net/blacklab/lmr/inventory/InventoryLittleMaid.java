@@ -7,7 +7,6 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -257,47 +256,49 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		}
 
 		int empty = getFirstEmptyStack();
-		if (par1ItemStack.isItemDamaged()) {
-			// Damaged Item
-			if (empty >= 0) {
-				mainInventory[empty] = ItemStack.copyItemStack(par1ItemStack);
-				mainInventory[empty].animationsToGo = 5;
-				par1ItemStack.stackSize = 0;
-				markDirty();
-				return true;
-			}
-		} else {
-			// Non-damaged Item are stack-merged
-			ItemStack buffer = par1ItemStack;
-			int originalStackSize = buffer.stackSize;
 
-			for (int i=0; i<maxInventorySize; i++) {
-				if (mainInventory[i] != null && mainInventory[i].getItem() == buffer.getItem()) {
-					int maxStackSize = mainInventory[i].getItem().getItemStackLimit(mainInventory[i]);
-					int floorSize = mainInventory[i].stackSize + buffer.stackSize - maxStackSize;
-					if (floorSize > 0) {
-						mainInventory[i].stackSize = maxStackSize;
-						mainInventory[i].animationsToGo = 5;
-						buffer.stackSize = floorSize;
-					} else {
-						mainInventory[i].stackSize = floorSize + maxStackSize;
-						mainInventory[i].animationsToGo = 5;
-						buffer.stackSize = 0;
-						break;
-					}
-				} 
-			}
-			
-			if (buffer.stackSize > 0 && empty >= 0) {
-				mainInventory[empty] = ItemStack.copyItemStack(buffer);
-				buffer.stackSize = 0;
-			}
-			
-			if (buffer.stackSize < originalStackSize) {
-				markDirty();
-				return buffer.stackSize <= 0;
+		// Picking up items
+		ItemStack buffer = par1ItemStack;
+		int originalStackSize = buffer.stackSize;
+
+		for (int i=0; i<maxInventorySize; i++) {
+			if (mainInventory[i] != null && mainInventory[i].getItem() == buffer.getItem()) {
+				int maxStackSize = mainInventory[i].getItem().getItemStackLimit(mainInventory[i]);
+				if (mainInventory[i].stackSize == maxStackSize) continue;
+
+				// Check item damage and NBT
+				boolean flag = true;
+				flag &= mainInventory[i].getItemDamage() == buffer.getItemDamage();
+				flag &= buffer.getTagCompound() == null ?
+						mainInventory[i].getTagCompound() == null :
+							buffer.getTagCompound().equals(mainInventory[i].getTagCompound());
+				if (!flag) continue;
+
+				// Merge stack
+				int floorSize = mainInventory[i].stackSize + buffer.stackSize - maxStackSize;
+				if (floorSize > 0) {
+					mainInventory[i].stackSize = maxStackSize;
+					mainInventory[i].animationsToGo = 5;
+					buffer.stackSize = floorSize;
+				} else {
+					mainInventory[i].stackSize = floorSize + maxStackSize;
+					mainInventory[i].animationsToGo = 5;
+					buffer.stackSize = 0;
+					break;
+				}
 			}
 		}
+
+		if (buffer.stackSize > 0 && empty >= 0) {
+			mainInventory[empty] = ItemStack.copyItemStack(buffer);
+			buffer.stackSize = 0;
+		}
+
+		if (buffer.stackSize < originalStackSize) {
+			markDirty();
+			return buffer.stackSize <= 0;
+		}
+
 		return false;
 	}
 
