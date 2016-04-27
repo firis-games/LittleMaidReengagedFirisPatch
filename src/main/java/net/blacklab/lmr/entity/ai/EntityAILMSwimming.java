@@ -1,5 +1,6 @@
 package net.blacklab.lmr.entity.ai;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -21,12 +22,7 @@ public class EntityAILMSwimming extends EntityAISwimming {
 
 	@Override
 	public boolean shouldExecute() {
-		if(theEntity instanceof EntityLittleMaid){
-			if(theEntity.isInWater()) return true;
-		}
-		return ((theEntity.getNavigator().noPath() ?
-				(theEntity.isInsideOfMaterial(Material.water)) : theEntity.isInWater())
-				|| theEntity.isInLava());
+		return theEntity.isInWater() || theEntity.isInsideOfMaterial(Material.water) || theEntity.isInLava();
 	}
 
 	@Override
@@ -41,39 +37,44 @@ public class EntityAILMSwimming extends EntityAISwimming {
 			}
 			EntityLittleMaid theMaid = (EntityLittleMaid) theEntity;
 			if(theMaid.isInWater()){
-				double xd = theEntity.posX;
-				double yd = theEntity.getEntityBoundingBox().minY;
-				double zd = theEntity.posZ;
+				double xd = theMaid.posX;
+				double yd = theMaid.getEntityBoundingBox().minY;
+				double zd = theMaid.posZ;
 				int x = MathHelper.floor_double(xd);
 				int z = MathHelper.floor_double(zd);
 				int y = MathHelper.floor_double(yd);
-				totalmotionY+= 0.05D*MathHelper.cos(theEntity.ticksExisted/8f);
-//				if(theEntity.worldObj.isAnyLiquid(new AxisAlignedBB(x, y, z, x, y+h+1, z))){
+				totalmotionY+= 0.03D * MathHelper.cos(theMaid.ticksExisted/16f);
+//				if(theMaid.worldObj.isAnyLiquid(new AxisAlignedBB(x, y, z, x, y+h+1, z))){
 //					totalmotionY += 0.05D;
 //				}
 
 				PathPoint pathPoint = null;
-				PathEntity pathEntity = theMaid.getPrevPathEntity();
+				PathEntity pathEntity = theMaid.getNavigator().getPath();
+
+				// Main AI
 				if(pathEntity!=null){
 					pathPoint = pathEntity.getFinalPathPoint();
-					theEntity.motionX = ((pathPoint.xCoord>x)?1:(pathPoint.xCoord<x)?-1:0) * theEntity.getAIMoveSpeed()/5d;
-					theEntity.motionZ = ((pathPoint.zCoord>z)?1:(pathPoint.zCoord<z)?-1:0) * theEntity.getAIMoveSpeed()/5d;
-					totalmotionY +=		((pathPoint.yCoord>=y)?1:-1) * theEntity.getAIMoveSpeed()/5d;
+					theMaid.motionX = ((pathPoint.xCoord>x)?1:(pathPoint.xCoord<x)?-1:0) * theMaid.getAIMoveSpeed()/5d;
+					theMaid.motionZ = ((pathPoint.zCoord>z)?1:(pathPoint.zCoord<z)?-1:0) * theMaid.getAIMoveSpeed()/5d;
+					totalmotionY +=		((pathPoint.yCoord>=y)?1:-1) * theMaid.getAIMoveSpeed()/3d;
 				}
+
 				if(theMaid.isInWater()){
 					IBlockState iState;
+
+					// Going ashore
 					if (pathPoint != null && Math.abs(pathPoint.yCoord - yd) < 3d && Math.pow(pathPoint.xCoord - xd, 2) + Math.pow(pathPoint.zCoord - zd, 2) < 9d &&
 							(iState = theMaid.worldObj.getBlockState(new BlockPos(pathPoint.xCoord,pathPoint.yCoord,pathPoint.zCoord))).getBlock().getMaterial(iState) != Material.water) {
 						totalmotionY += 0.1D;
 						theMaid.motionX *= 2d;
 						theMaid.motionZ *= 2d;
 					}
-					theEntity.motionY = totalmotionY;
-				}else{
-					theEntity.motionY = 0.04D;
+					theMaid.motionY = totalmotionY;
 				}
+				// Breathing
 				if (theMaid.getAir() == 0) {
-					theEntity.motionY += 0.2D;
+					LittleMaidReengaged.Debug("Breathing float");
+					theMaid.motionY += 0.1D;
 				}
 			}
 		}

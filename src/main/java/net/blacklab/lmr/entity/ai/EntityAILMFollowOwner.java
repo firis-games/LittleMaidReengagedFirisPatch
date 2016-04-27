@@ -60,10 +60,9 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 	 */
 	public boolean continueExecuting() {
 		toDistance = theMaid.getDistanceSqToEntity(theOwner);
-		if(theMaid.handleWaterMovement())
-			return !theMaid.isMaidWait()&&!theMaid.isSitting();
+//		if(theMaid.handleWaterMovement()) return !theMaid.isMaidWait()&&!theMaid.isSitting();
 		return !theMaid.getNavigator().noPath()
-				&&(toDistance > getMaxDist())
+				&& (toDistance > getMaxDist())
 				&& !theMaid.isSitting();
 	}
 
@@ -92,8 +91,9 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 	 * Updates the task
 	 */
 	public void updateTask() {
-		theMaid.getLookHelper().setLookPositionWithEntity(theOwner, 10F,
-				theMaid.getVerticalFaceSpeed());
+		if (toDistance - getMaxDist() > 1.0) {
+			theMaid.getLookHelper().setLookPositionWithEntity(theOwner, 10F, theMaid.getVerticalFaceSpeed());
+		}
 
 		if (theMaid.isSitting()) {
 			return;
