@@ -1258,6 +1258,16 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		par1nbtTagCompound.setFloat(LittleMaidReengaged.DOMAIN + ":MAID_EXP", maidExperience);
 		par1nbtTagCompound.setInteger(LittleMaidReengaged.DOMAIN + ":EXP_BOOST", gainExpBoost);
 
+		// 肩車
+		boolean isRide = isRiding();
+		par1nbtTagCompound.setBoolean(LittleMaidReengaged.DOMAIN + ":riding", isRide);
+		if (isRide) {
+			if (getRidingEntity() instanceof EntityPlayer) {
+				par1nbtTagCompound.setString(LittleMaidReengaged.DOMAIN + ":ridingPlayer", getRidingEntity().getUniqueID().toString());
+			}
+			par1nbtTagCompound.setIntArray(LittleMaidReengaged.DOMAIN + ":lastPosition", new int[]{(int) posX, (int) posY, (int) posZ});
+		}
+
 		// Tiles
 		NBTTagCompound lnbt = new NBTTagCompound();
 		par1nbtTagCompound.setTag("Tiles", lnbt);
@@ -1358,6 +1368,23 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setExpBooster(par1nbtTagCompound.getInteger(LittleMaidReengaged.DOMAIN + ":EXP_BOOST"));
 		dataWatcher.set(Statics.dataWatch_MaidExpValue, maidExperience);
 
+		// 肩車
+		boolean isRide = par1nbtTagCompound.getBoolean(LittleMaidReengaged.DOMAIN + ":riding");
+		if (isRide) {
+			int[] lastPosition = par1nbtTagCompound.getIntArray(LittleMaidReengaged.DOMAIN + ":lastPosition");
+			setPosition(lastPosition[0], lastPosition[1], lastPosition[2]);
+
+			String playerUid = par1nbtTagCompound.getString(LittleMaidReengaged.DOMAIN + ":ridingPlayer");
+			if (!playerUid.isEmpty()) {
+				try {
+					EntityPlayer ridingPlayer = worldObj.getPlayerEntityByUUID(UUID.fromString(playerUid));
+					if (ridingPlayer != null) {
+						startRiding(ridingPlayer);
+					}
+				} catch(IllegalArgumentException exception) {}
+			}
+		}
+
 		LittleMaidReengaged.Debug("READ %s %s", textureNameMain, textureNameArmor);
 
 		onInventoryChanged();
@@ -1416,43 +1443,28 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public double getYOffset() {
-		double yOffset = super.getYOffset();
+		double yOffset = -0.30D;
+
 		if(getRidingEntity() instanceof EntityPlayer) {
 			// 姿勢制御
-//			setSneaking(true);
-//			mstatAimeBow = true;
-//			updateAimebow();
-//			return (double)(yOffset - 1.8F);
 
 			// --------------------------------------------
 			// プレイヤーが馬に乗っているときは、肩車ではなく馬の後ろに乗る
 			if(getRidingEntity().getRidingEntity() instanceof EntityHorse)
 			{
-				if(worldObj.isRemote)
-				{
-					return (double)(yOffset - 2.8F);
-				}
-				else
-				{
-					return (double)(yOffset - 1.0F);
+				if(worldObj.isRemote) {
+					return yOffset - 2.8F;
+				} else {
+					return yOffset - 1.0F;
 				}
 			}
-			// プレイヤーに肩車
-			else
-			{
-				return (double)(yOffset - 2.0F);
-			}
-			// --------------------------------------------
 		}
-		return (double)(yOffset - 0.25F);
+		return yOffset;
 	}
-
 
 	@Override
 	public void updateRidden() {
-		// TODO:アップデート時にチェック
-		++ticksExisted;
-		//
+		super.updateRidden();
 
 		if(getRidingEntity() instanceof EntityPlayer) {
 			EntityPlayer lep = (EntityPlayer)getRidingEntity();
@@ -1460,12 +1472,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			// ヘッドハガー
 			renderYawOffset = lep.renderYawOffset;
 			prevRenderYawOffset = lep.prevRenderYawOffset;
-			double llpx = lastTickPosX;
-			double llpy = lastTickPosY;
-			double llpz = lastTickPosZ;
-
-			// ★注意：水に触れると getRidingEntity() はnullになる ★
-			super.updateRidden();
 
 			renderYawOffset = lep.renderYawOffset;
 			if (((rotationYaw - renderYawOffset) % 360F) > 90F) {
@@ -1506,12 +1512,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 			// --------------------------------------------
 
-			setPosition(lep.posX + dx, posY, lep.posZ - dz);
-			lastTickPosX = llpx;
-			lastTickPosY = llpy;
-			lastTickPosZ = llpz;
-		} else {
-			super.updateRidden();
+			posX += dx;
+			posZ -= dz;
+//			lastTickPosX = llpx;
+//			lastTickPosY = llpy;
+//			lastTickPosZ = llpz;
 		}
 	}
 
@@ -1991,7 +1996,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		}*/
 
-		superLivingUpdate();
+		try {
+			super.onLivingUpdate();
+		} catch (NullPointerException exception) {
+			exception.printStackTrace();
+		}
 
 		// 水中関連
 //		((PathNavigateGround)navigator).setAvoidsWater(false);
@@ -3090,14 +3099,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 							}
 							else if (par3ItemStack.getItem() == Items.saddle) {
 								// 肩車
-								if (!worldObj.isRemote) {
-									if (getRidingEntity() == par1EntityPlayer) {
-										dismountRidingEntity();
-									} else {
-										startRiding(par1EntityPlayer);
-									}
-									return true;
+								if (getRidingEntity() == par1EntityPlayer) {
+									dismountRidingEntity();
+								} else {
+									startRiding(par1EntityPlayer, true);
 								}
+								clearTilePosAll();
+								getNavigator().clearPathEntity();
+								return true;
 							}
 							else if (par3ItemStack.getItem() == Items.gunpowder) {
 								// test TNT-D
