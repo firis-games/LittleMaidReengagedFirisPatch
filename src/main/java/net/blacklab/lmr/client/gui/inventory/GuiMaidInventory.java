@@ -50,6 +50,8 @@ public class GuiMaidInventory extends GuiContainer {
 	public GuiButtonBoostChange boostMinus;
 	public GuiButtonBoostChange boostPlus;
 	public boolean isChangeTexture;
+	
+	private int topTicks = 0;
 
 	private static class RenderInfoPart {
 		private static boolean shiftLock;
@@ -130,6 +132,8 @@ public class GuiMaidInventory extends GuiContainer {
 
 		entitylittlemaid = elmaid;
 		// entitylittlemaid.setOpenInventory(true);
+		
+		topTicks = entitylittlemaid.ticksExisted;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -505,8 +509,8 @@ public class GuiMaidInventory extends GuiContainer {
 
 	@Override
 	public void drawScreen(int i, int j, float f) {
-		if (entitylittlemaid.ticksExisted % 30 == 0) {
-			if (!RenderInfoPart.islocked()) RenderInfoPart.shiftPart();
+		if ((entitylittlemaid.ticksExisted - topTicks) % 30 == 0) {
+			if (!RenderInfoPart.islocked())RenderInfoPart.shiftPart();
 			RenderInfoPart.lock();
 		} else {
 			RenderInfoPart.unlock();
