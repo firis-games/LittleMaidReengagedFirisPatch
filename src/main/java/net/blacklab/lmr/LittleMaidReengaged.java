@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.blacklab.lib.config.ConfigList;
-import net.blacklab.lib.version.Version;
-import net.blacklab.lib.version.Version.VersionData;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
@@ -57,18 +55,16 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 		name = "LittleMaidReengaged",
 		version = LittleMaidReengaged.VERSION,
 		acceptedMinecraftVersions=LittleMaidReengaged.ACCEPTED_MCVERSION,
-		dependencies = LittleMaidReengaged.DEPENDENCIES)
+		dependencies = LittleMaidReengaged.DEPENDENCIES,
+		updateJSON = "http://mc.el-blacklab.net/lmr-version.json")
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
-	public static final String VERSION = "7.1.6.23";
+	public static final String VERSION = "7.1.6.32";
 	public static final String ACCEPTED_MCVERSION = "[1.9,1.9.100)";
 	public static final int VERSION_CODE = 1;
 	public static final String DEPENDENCIES = "required-after:Forge@[1.9-12.16.0.1819,);"
 			+ "required-after:net.blacklab.lib@[5.2.0.2,)";
-
-	public static final VersionData currentVersion = new VersionData(VERSION_CODE, VERSION, VERSION);
-	public static VersionData latestVersion = new VersionData(1, "6.0.1", "6.0.1");
 
 	/*
 	 * public static String[] cfg_comment = {
@@ -254,7 +250,7 @@ public class LittleMaidReengaged {
 			e.printStackTrace();
 		}
 
-		latestVersion = Version.getLatestVersion("http://mc.el-blacklab.net/lmmnxversion.txt", 10000);
+//		latestVersion = Version.getLatestVersion("http://mc.el-blacklab.net/lmmnxversion.txt", 10000);
 
 		EntityRegistry.registerModEntity(EntityLittleMaid.class,
 				"LittleMaid", 0, instance, 80, 1, true);
@@ -351,5 +347,5 @@ public class LittleMaidReengaged {
 		IFF.loadIFFs();
 
 	}
-
+	
 }

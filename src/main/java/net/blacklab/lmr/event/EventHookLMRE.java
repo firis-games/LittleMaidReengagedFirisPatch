@@ -16,8 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -25,7 +23,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 public class EventHookLMRE
 {
@@ -38,16 +35,6 @@ public class EventHookLMRE
 			{
 				event.setCanceled(true);
 			}
-		}
-	}
-
-	@SubscribeEvent
-	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event){
-		if (!event.player.worldObj.isRemote && LittleMaidReengaged.currentVersion.compareVersion(LittleMaidReengaged.latestVersion) > 0) {
-			event.player.addChatComponentMessage(new TextComponentString(String.format("[LittleMaidReengaged]%s : %s",
-					I18n.translateToLocal("system.lmmnx.chat.text.newversion"), LittleMaidReengaged.latestVersion.shownName)));
-			event.player.addChatComponentMessage(new TextComponentString(String.format("[LittleMaidReengaged]%s",
-					I18n.translateToLocal("system.lmmnx.chat.text.checkversion"))));
 		}
 	}
 
