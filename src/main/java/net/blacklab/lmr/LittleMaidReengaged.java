@@ -60,11 +60,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
-	public static final String VERSION = "7.1.6.32";
+	public static final String VERSION = "7.1.6.35";
 	public static final String ACCEPTED_MCVERSION = "[1.9,1.9.100)";
 	public static final int VERSION_CODE = 1;
 	public static final String DEPENDENCIES = "required-after:Forge@[1.9-12.16.0.1819,);"
-			+ "required-after:net.blacklab.lib@[5.2.0.2,)";
+			+ "required-after:net.blacklab.lib@[5.2.0.3,)";
 
 	/*
 	 * public static String[] cfg_comment = {
