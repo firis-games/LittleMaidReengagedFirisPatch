@@ -5,7 +5,6 @@ import java.util.List;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
-import net.blacklab.lmr.util.Statics;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -55,7 +54,13 @@ public class ItemMaidPorter extends Item {
 				String customName = tagCompound.getString(LittleMaidReengaged.DOMAIN + ":MAID_NAME");
 				float experience = tagCompound.getFloat(LittleMaidReengaged.DOMAIN + ":EXPERIENCE");
 				
-				EntityLittleMaid lMaid = new EntityLittleMaid(worldIn);
+				EntityLittleMaid lMaid = new EntityLittleMaid(worldIn) {
+					@Deprecated
+					public EntityLittleMaid addMaidExperienceWithoutEvent(float value) {
+						maidExperience += value;
+						return this;
+					}
+				}.addMaidExperienceWithoutEvent(experience);
 				lMaid.setLocationAndAngles(pos.getX(), pos.getY()+1, pos.getZ(), 0, 0);
 				worldIn.spawnEntityInWorld(lMaid);
 				lMaid.processInteract(playerIn, EnumHand.MAIN_HAND, new ItemStack(Items.cake));
@@ -63,7 +68,6 @@ public class ItemMaidPorter extends Item {
 				if (!customName.isEmpty()) {
 					lMaid.setCustomNameTag(customName);
 				}
-				lMaid.getDataManager().set(Statics.dataWatch_MaidExpValue, experience);
 				lMaid.maidInventory.clear();
 				lMaid.maidInventory.readFromNBT(tagCompound.getTagList(LittleMaidReengaged.DOMAIN + ":MAID_INVENTORY", 10));
 				

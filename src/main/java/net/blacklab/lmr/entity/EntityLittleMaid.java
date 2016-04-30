@@ -60,7 +60,6 @@ import net.blacklab.lmr.util.Counter;
 import net.blacklab.lmr.util.EntityCaps;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
-import net.blacklab.lmr.util.Statics;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
@@ -106,6 +105,9 @@ import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SPacketEntityEffect;
 import net.minecraft.network.play.server.SPacketEntityEquipment;
 import net.minecraft.network.play.server.SPacketRemoveEntityEffect;
@@ -151,6 +153,42 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	protected static AttributeModifier attAxeAmp = (new AttributeModifier(maidUUID, "Axe Attack boost", 0.5D, 1)).setSaved(false);
 	protected static AttributeModifier attSneakingSpeed = (new AttributeModifier(maidUUIDSneak, "Sneking speed ampd", -0.4D, 2)).setSaved(false);
 
+	/** Absoption効果をクライアント側へ転送するのに使う */
+	// TODO DataManagerは手探り
+	protected static final DataParameter<Float> dataWatch_Absoption		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.FLOAT);
+	/** メイドカラー(byte) */
+	protected static final DataParameter<Integer> dataWatch_Color			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	/**
+	 * MSB|0x0000 0000|LSB<br>
+	 *       |    |本体のテクスチャインデックス<br>
+	 *       |アーマーのテクスチャインデックス<br>
+	 */
+	protected static final DataParameter<Integer> dataWatch_Texture		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	/** モデルパーツの表示フラグ(Integer) */
+	protected static final DataParameter<Integer> dataWatch_Parts			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	/**
+	 * 各種フラグを一纏めにしたもの。
+	 */
+	// TODO VARって何
+	protected static final DataParameter<Integer> dataWatch_Flags			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	/** 紐の持ち主のEntityID。 */
+	protected static final DataParameter<Integer> dataWatch_Gotcha			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	/** メイドモード(Short) */
+	protected static final DataParameter<Integer> dataWatch_Mode			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	/** 利き腕(Byte) */
+	protected static final DataParameter<Integer> dataWatch_DominamtArm	= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	/** アイテムの使用判定、腕毎(Integer) */
+	protected static final DataParameter<Integer> dataWatch_ItemUse		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	/** 保持経験値→メイド経験値で上書きな */
+	protected static final DataParameter<Float> dataWatch_MaidExpValue		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.FLOAT);
+	// TODO この処遇は何とするか．EntityPlayer#ABSORPTIONはprivateだし
+	/** EntityPlayer と EntityTameable で17番がかぶっているため、EntityPlayer側を28へ移動。 */
+	protected static final DataParameter<Float> dataWatch_AbsorptionAmount	= EntityDataManager.createKey(EntityLittleMaidAvatarMP.class, DataSerializers.FLOAT);
+
+	/**
+	 * 自由設定値。
+	 */
+	public static final DataParameter<Integer> dataWatch_Free			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 
 //	protected long maidContractLimit;		// 契約失効日
 	protected int maidContractLimit;		// 契約期間
@@ -289,7 +327,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	protected String registerMode;
 
 	// NX5 レベル関連
-	private float maidExperience = 0;				// 経験値
+	protected float maidExperience = 0;				// 経験値
 	protected ExperienceHandler experienceHandler;	// 経験値アクション制御
 	private int gainExpBoost = 1;					// 取得経験値倍率
 
@@ -457,37 +495,37 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// maidAvater用EntityPlayer互換変数
 		// 17 -> 18
 		// 18 : Absoption効果をクライアント側へ転送するのに使う
-		dataWatcher.register(dataWatch_Absoption, Float.valueOf(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_Absoption, Float.valueOf(0));
 
 		// 独自分
 		// 19:maidColor
-		dataWatcher.register(dataWatch_Color, Integer.valueOf(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_Color, Integer.valueOf(0));
 		// 20:選択テクスチャインデックス
 		// TODO いらん？
-		dataWatcher.register(dataWatch_Texture, Integer.valueOf(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_Texture, Integer.valueOf(0));
 		// 21:モデルパーツの表示フラグ
-		dataWatcher.register(dataWatch_Parts, Integer.valueOf(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_Parts, Integer.valueOf(0));
 		// 22:状態遷移フラグ群(32Bit)、詳細はStatics参照
-		dataWatcher.register(dataWatch_Flags, Integer.valueOf(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_Flags, Integer.valueOf(0));
 		// 23:GotchaID
-		dataWatcher.register(dataWatch_Gotcha, Integer.valueOf(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_Gotcha, Integer.valueOf(0));
 		// 24:メイドモード
-		dataWatcher.register(dataWatch_Mode, Integer.valueOf(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_Mode, Integer.valueOf(0));
 		// 25:利き腕
-		dataWatcher.register(dataWatch_DominamtArm, Integer.valueOf(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_DominamtArm, Integer.valueOf(0));
 		// 26:アイテムの使用判定
-		dataWatcher.register(dataWatch_ItemUse, Integer.valueOf(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_ItemUse, Integer.valueOf(0));
 		// 27:保持経験値
 		/**
 		 * TODO 旧コメにあった「互換性保持」の意味がよく分からなかった．
 		 * バニラには27番を使うMobはいないし，旧版継承の問題？
 		 * バニラ由来のexperienceValueはほとんど利用していないので上書き．
 		 */
-		dataWatcher.register(Statics.dataWatch_MaidExpValue , Float.valueOf(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_MaidExpValue , Float.valueOf(0));
 
 		// TODO:test
 		// 31:自由変数、EntityMode等で使用可能な変数。
-		dataWatcher.register(dataWatch_Free, new Integer(0));
+		dataWatcher.register(EntityLittleMaid.dataWatch_Free, new Integer(0));
 
 		defaultWidth = width;
 		defaultHeight = height;
@@ -711,7 +749,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 		mstatModeName = getMaidModeString(pindex);
 		maidMode = pindex;
-		dataWatcher.set(dataWatch_Mode, maidMode);
+		dataWatcher.set(EntityLittleMaid.dataWatch_Mode, maidMode);
 		EntityAITasks[] ltasks = maidModeList.get(pindex);
 
 		// AIを根底から書き換える
@@ -1089,10 +1127,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			par1 = 0.0F;
 		}
 
-		dataWatcher.set(dataWatch_Absoption, Float.valueOf(par1));
+		dataWatcher.set(EntityLittleMaid.dataWatch_Absoption, Float.valueOf(par1));
 	}
 	public float getAbsorptionAmount() {
-		return dataWatcher.get(dataWatch_Absoption);
+		return dataWatcher.get(EntityLittleMaid.dataWatch_Absoption);
 	}
 
 
@@ -1366,7 +1404,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		maidExperience = par1nbtTagCompound.getFloat(LittleMaidReengaged.DOMAIN + ":MAID_EXP");
 		setExpBooster(par1nbtTagCompound.getInteger(LittleMaidReengaged.DOMAIN + ":EXP_BOOST"));
-		dataWatcher.set(Statics.dataWatch_MaidExpValue, maidExperience);
+		dataWatcher.set(EntityLittleMaid.dataWatch_MaidExpValue, maidExperience);
 
 		// 肩車
 		boolean isRide = par1nbtTagCompound.getBoolean(LittleMaidReengaged.DOMAIN + ":riding");
@@ -1533,16 +1571,16 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if (looksWithInterest != f) {
 			looksWithInterest = f;
 
-			int li = dataWatcher.get(dataWatch_Flags);
+			int li = dataWatcher.get(EntityLittleMaid.dataWatch_Flags);
 			li = looksWithInterest ? (li | dataWatch_Flags_looksWithInterest) : (li & ~dataWatch_Flags_looksWithInterest);
 			li = looksWithInterestAXIS ? (li | dataWatch_Flags_looksWithInterestAXIS) : (li & ~dataWatch_Flags_looksWithInterestAXIS);
-			dataWatcher.set(dataWatch_Flags, Integer.valueOf(li));
+			dataWatcher.set(EntityLittleMaid.dataWatch_Flags, Integer.valueOf(li));
 		}
 	}
 
 	public boolean getLooksWithInterest() {
-		looksWithInterest = (dataWatcher.get(dataWatch_Flags) & dataWatch_Flags_looksWithInterest) > 0;
-		looksWithInterestAXIS = (dataWatcher.get(dataWatch_Flags) & dataWatch_Flags_looksWithInterestAXIS) > 0;
+		looksWithInterest = (dataWatcher.get(EntityLittleMaid.dataWatch_Flags) & dataWatch_Flags_looksWithInterest) > 0;
+		looksWithInterestAXIS = (dataWatcher.get(EntityLittleMaid.dataWatch_Flags) & dataWatch_Flags_looksWithInterestAXIS) > 0;
 
 		return looksWithInterest && !isHeadMount();
 	}
@@ -2297,18 +2335,18 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			if (lupd) {
 				setTextureNames();
 			}
-			setMaidMode(dataWatcher.get(dataWatch_Mode));
-			setDominantArm(dataWatcher.get(dataWatch_DominamtArm));
+			setMaidMode(dataWatcher.get(EntityLittleMaid.dataWatch_Mode));
+			setDominantArm(dataWatcher.get(EntityLittleMaid.dataWatch_DominamtArm));
 			updateMaidFlagsClient();
 			updateGotcha();
 
 			// メイド経験値
 			if (ticksExisted%10 == 0) {
-				maidExperience = dataWatcher.get(Statics.dataWatch_MaidExpValue);
+				maidExperience = dataWatcher.get(EntityLittleMaid.dataWatch_MaidExpValue);
 			}
 
 			// 腕の挙動関連
-			litemuse = dataWatcher.get(dataWatch_ItemUse);
+			litemuse = dataWatcher.get(EntityLittleMaid.dataWatch_ItemUse);
 			for (int li = 0; li < mstatSwingStatus.length; li++) {
 				ItemStack lis = mstatSwingStatus[li].getItemStack(this);
 				if ((litemuse & (1 << li)) > 0 && lis != null) {
@@ -2448,7 +2486,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if (!worldObj.isRemote) {
 			// サーバー側処理
 			// アイテム使用状態の更新
-			dataWatcher.set(dataWatch_ItemUse, litemuse);
+			dataWatcher.set(EntityLittleMaid.dataWatch_ItemUse, litemuse);
 			// インベントリの更新
 //			if (!mstatOpenInventory) {
 				// TODO メインインベントリに対する処理は既に行っているので，そこまで再チェックする必要がない・・・たぶん．
@@ -3728,7 +3766,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			maidExperience = ExperienceUtil.getRequiredExpToLevel(ExperienceUtil.EXP_FUNCTION_MAX);
 		}
 
-		dataWatcher.set(Statics.dataWatch_MaidExpValue, maidExperience);
+		dataWatcher.set(EntityLittleMaid.dataWatch_MaidExpValue, maidExperience);
 		boolean flag = false;
 		for (;maidExperience >= ExperienceUtil.getRequiredExpToLevel(currentLevel+1); currentLevel++) {
 			// 一度に複数レベルアップした場合にその分だけ呼ぶ
@@ -3740,7 +3778,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			VEventBus.instance.post(new EventLMRE.MaidLevelUpEvent(this, getMaidLevel()));
 		}
 	}
-
+	
 	/**
 	 * 取得経験値による操作を定義するExperienceHandlerを取得
 	 * @return
@@ -3788,9 +3826,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	private boolean checkedTextureUpdate = false;
+
+	/**
+	 * テクスチャパックの更新を確認
+	 * @return
+	 */
 	public boolean updateTexturePack() {
-		// テクスチャパックが更新されていないかをチェック
-		// クライアント側の
 		/*
 		boolean lflag = false;
 		int ltexture = dataWatcher.getWatchableObjectInt(dataWatch_Texture);
@@ -3819,13 +3860,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	@Override
 	public int getColor() {
 //		return textureData.getColor();
-		return dataWatcher.get(dataWatch_Color);
+		return dataWatcher.get(EntityLittleMaid.dataWatch_Color);
 	}
 
 	@Override
 	public void setColor(int index) {
 		textureData.setColor(index);
-		dataWatcher.set(dataWatch_Color, index);
+		dataWatcher.set(EntityLittleMaid.dataWatch_Color, index);
 	}
 
 	public boolean updateMaidColor() {
@@ -3842,7 +3883,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * 紐の持ち主
 	 */
 	public void updateGotcha() {
-		int lid = dataWatcher.get(dataWatch_Gotcha);
+		int lid = dataWatcher.get(EntityLittleMaid.dataWatch_Gotcha);
 		if (lid == 0) {
 			mstatgotcha = null;
 			return;
@@ -3859,7 +3900,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	public void setGotcha(int pEntityID) {
-		dataWatcher.set(dataWatch_Gotcha, Integer.valueOf(pEntityID));
+		dataWatcher.set(EntityLittleMaid.dataWatch_Gotcha, Integer.valueOf(pEntityID));
 	}
 	public void setGotcha(Entity pEntity) {
 		setGotcha(pEntity == null ? 0 : pEntity.getEntityId());
@@ -3875,7 +3916,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	public boolean isAimebow() {
-		return (dataWatcher.get(dataWatch_Flags) & dataWatch_Flags_Aimebow) > 0;
+		return (dataWatcher.get(EntityLittleMaid.dataWatch_Flags) & dataWatch_Flags_Aimebow) > 0;
 	}
 
 
@@ -3883,7 +3924,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * 各種フラグのアップデート
 	 */
 	public void updateMaidFlagsClient() {
-		int li = dataWatcher.get(dataWatch_Flags);
+		int li = dataWatcher.get(EntityLittleMaid.dataWatch_Flags);
 		maidFreedom = (li & dataWatch_Flags_Freedom) > 0;
 		maidTracer = (li & dataWatch_Flags_Tracer) > 0;
 		maidWait = (li & dataWatch_Flags_Wait) > 0;
@@ -3903,16 +3944,16 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * @param pFlags： 対象フラグ。
 	 */
 	public void setMaidFlags(boolean pFlag, int pFlagvalue) {
-		int li = dataWatcher.get(dataWatch_Flags);
+		int li = dataWatcher.get(EntityLittleMaid.dataWatch_Flags);
 		li = pFlag ? (li | pFlagvalue) : (li & ~pFlagvalue);
-		dataWatcher.set(dataWatch_Flags, Integer.valueOf(li));
+		dataWatcher.set(EntityLittleMaid.dataWatch_Flags, Integer.valueOf(li));
 	}
 
 	/**
 	 * 指定されたフラグを獲得
 	 */
 	public boolean getMaidFlags(int pFlagvalue) {
-		return (dataWatcher.get(dataWatch_Flags) & pFlagvalue) > 0;
+		return (dataWatcher.get(EntityLittleMaid.dataWatch_Flags) & pFlagvalue) > 0;
 	}
 
 	/**
@@ -3925,7 +3966,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			lss.index = lss.lastIndex = -1;
 		}
 		maidDominantArm = pindex;
-		dataWatcher.set(dataWatch_DominamtArm, maidDominantArm);
+		dataWatcher.set(EntityLittleMaid.dataWatch_DominamtArm, maidDominantArm);
 		LittleMaidReengaged.Debug("Change Dominant.");
 	}
 
@@ -4210,11 +4251,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	public boolean isUsingItem() {
-		return dataWatcher.get(dataWatch_ItemUse) > 0;
+		return dataWatcher.get(EntityLittleMaid.dataWatch_ItemUse) > 0;
 	}
 
 	public boolean isUsingItem(int pIndex) {
-		return (dataWatcher.get(dataWatch_ItemUse) & (1 << pIndex)) > 0;
+		return (dataWatcher.get(EntityLittleMaid.dataWatch_ItemUse) & (1 << pIndex)) > 0;
 	}
 
 	public void setExperienceValue(int val) {

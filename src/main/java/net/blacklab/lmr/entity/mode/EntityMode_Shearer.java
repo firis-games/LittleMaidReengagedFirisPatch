@@ -6,7 +6,6 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.Statics;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -147,9 +146,9 @@ public class EntityMode_Shearer extends EntityModeBase {
 		if (pMode == mmode_Detonator && owner.isEntityAlive()) {
 			if (timeSinceIgnited < 0) {
 				if (lastTimeSinceIgnited != timeSinceIgnited) {
-					owner.getDataManager().set(Statics.dataWatch_Free, Integer.valueOf(0));
+					owner.getDataManager().set(EntityLittleMaid.dataWatch_Free, Integer.valueOf(0));
 				}
-				else if (owner.getDataManager().get(Statics.dataWatch_Free) == 1) {
+				else if (owner.getDataManager().get(EntityLittleMaid.dataWatch_Free) == 1) {
 					lastTimeSinceIgnited = timeSinceIgnited = 0;
 				}
 			}
@@ -361,7 +360,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 		if (pMode == mmode_Detonator && InventoryLittleMaid.isItemExplord(owner.getCurrentEquippedItem())) {
 			if (timeSinceIgnited == -1) {
 				owner.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.tnt.primed")), 1.0F, 0.5F);
-				owner.getDataManager().set(Statics.dataWatch_Free, Integer.valueOf(1));
+				owner.getDataManager().set(EntityLittleMaid.dataWatch_Free, Integer.valueOf(1));
 			}
 //        	if (owner.entityToAttack == null)
 			owner.setMaidWait(true);
