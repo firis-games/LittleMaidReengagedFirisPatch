@@ -167,11 +167,6 @@ public class GuiMaidInventory extends GuiContainer {
 		//fontRenderer.drawString(StatCollector.translateToLocal("littleMaidMob.text.Health"), 86, 8, 0x404040);
 		//fontRenderer.drawString(StatCollector.translateToLocal("littleMaidMob.text.AP"), 86, 32, 0x404040);
 
-		if (entitylittlemaid.getMaidModeInt() == EntityMode_Basic.mmode_Escorter && !entitylittlemaid.isTracer()) {
-			RenderInfoPart.setEnabled(2, false);
-		} else {
-			RenderInfoPart.setEnabled(2, true);
-		}
 		if (RenderInfoPart.getRenderingPart() == 2) {
 			mc.fontRendererObj.drawString(I18n.translateToLocal(
 					"littleMaidMob.mode.".concat(entitylittlemaid.getMaidModeString())), 7, 64, 0x404040);
