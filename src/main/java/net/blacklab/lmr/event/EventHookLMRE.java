@@ -23,6 +23,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 public class EventHookLMRE
 {
@@ -81,7 +82,7 @@ public class EventHookLMRE
 			}
 		}
 	}
-
+	
 	@SubscribeEvent
 	public void onLivingAttack(LivingAttackEvent event) {
 		Entity entity = event.getSource().getEntity();

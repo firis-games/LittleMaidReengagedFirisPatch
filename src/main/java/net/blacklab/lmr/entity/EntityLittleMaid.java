@@ -1410,7 +1410,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		boolean isRide = par1nbtTagCompound.getBoolean(LittleMaidReengaged.DOMAIN + ":riding");
 		if (isRide) {
 			int[] lastPosition = par1nbtTagCompound.getIntArray(LittleMaidReengaged.DOMAIN + ":lastPosition");
-			setPosition(lastPosition[0], lastPosition[1], lastPosition[2]);
+			setLocationAndAngles(lastPosition[0], lastPosition[1], lastPosition[2], 0, 0);
 
 			String playerUid = par1nbtTagCompound.getString(LittleMaidReengaged.DOMAIN + ":ridingPlayer");
 			if (!playerUid.isEmpty()) {
@@ -1500,6 +1500,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return yOffset;
 	}
 
+	/*
 	@Override
 	public void updateRidden() {
 		super.updateRidden();
@@ -1557,6 +1558,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //			lastTickPosZ = llpz;
 		}
 	}
+	*/
 
 	@Override
 	public float getSwingProgress(float par1) {
@@ -2418,6 +2420,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 
 		super.onUpdate();
+		
+		// Debug
+		LittleMaidReengaged.Debug(worldObj.isRemote, String.format("ride?%s, pos: %d, %d, %d", isRiding(), (int)posX, (int)posY, (int)posZ));
 
 		// SwingUpdate
 		SwingStatus lmss1 = getSwingStatusDominant();
@@ -3134,19 +3139,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 									worldObj.setEntityState(this, isFreedom() ? (byte)12 : (byte)13);
 								}
 								return true;
-							}
-							else if (par3ItemStack.getItem() == Items.saddle) {
-								// 肩車
-								if (getRidingEntity() == par1EntityPlayer) {
-									dismountRidingEntity();
-								} else {
-									startRiding(par1EntityPlayer, true);
-								}
-								clearTilePosAll();
-								getNavigator().clearPathEntity();
-								return true;
-							}
-							else if (par3ItemStack.getItem() == Items.gunpowder) {
+							} else if (par3ItemStack.getItem() == Items.gunpowder) {
 								// test TNT-D
 								maidOverDriveTime.setValue(par3ItemStack.stackSize * 10);
 								playSound("mob.zombie.infect");
