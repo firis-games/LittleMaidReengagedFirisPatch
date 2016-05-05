@@ -280,10 +280,13 @@ public class EntityMode_Farmer extends EntityModeBase {
 	}
 	
 	protected boolean isCropGrown(int x, int y, int z){
-		IBlockState state = owner.worldObj.getBlockState(new BlockPos(x,y,z));
-		if(state.getBlock() instanceof BlockCrops){
-			int age = (Integer) state.getValue(BlockCrops.AGE);
-			if(age==7) return true;
+		BlockPos position = new BlockPos(x, y, z);
+		IBlockState state = owner.worldObj.getBlockState(position);
+		Block block = state.getBlock();
+
+		if(block instanceof BlockCrops){
+			// Max age -> Cannot glow(#34)
+			return !((BlockCrops)block).canGrow(owner.worldObj, position, state, owner.worldObj.isRemote);
 		}
 		return false;
 	}
