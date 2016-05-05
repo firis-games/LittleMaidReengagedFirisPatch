@@ -20,12 +20,10 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 	protected boolean isEnable;
 
 	public EntityAILMFollowOwner(EntityLittleMaid par1EntityLittleMaid,
-			float pSpeed, double pMin, double pMax, double pSprintDistSQ) {
+			float pSpeed, double pSprintDistSQ) {
 		theMaid = par1EntityLittleMaid;
 		moveSpeed = pSpeed;
 		petPathfinder = par1EntityLittleMaid.getNavigator();
-		setMinDist(pMin);
-		setMaxDist(pMax);
 		sprintDist = pSprintDistSQ;
 		isEnable = true;
 		setMutexBits(3);
@@ -48,7 +46,7 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 		}
 
 		toDistance = theMaid.getDistanceSqToEntity(entityliving);
-		if (toDistance < getMinDist() && !theMaid.isInWater()) {
+		if (toDistance < theMaid.getActiveModeClass().getDistanceSqToStartFollow() && !theMaid.isInWater()) {
 			return false;
 		}
 		theOwner = entityliving;
@@ -62,7 +60,7 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 		toDistance = theMaid.getDistanceSqToEntity(theOwner);
 //		if(theMaid.handleWaterMovement()) return !theMaid.isMaidWait()&&!theMaid.isSitting();
 		return !theMaid.getNavigator().noPath()
-				&& (toDistance > getMaxDist())
+				&& (toDistance > theMaid.getActiveModeClass().getDistanceSqToStartFollow())
 				&& !theMaid.isSitting();
 	}
 
@@ -91,7 +89,7 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 	 * Updates the task
 	 */
 	public void updateTask() {
-		if (toDistance - getMaxDist() > 1.0) {
+		if (toDistance - theMaid.getActiveModeClass().getDistanceSqToStartFollow() > 1.0) {
 			theMaid.getLookHelper().setLookPositionWithEntity(theOwner, 10F, theMaid.getVerticalFaceSpeed());
 		}
 
@@ -138,22 +136,6 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 	@Override
 	public boolean getEnable() {
 		return isEnable;
-	}
-
-	public double getMinDist() {
-		return minDist;
-	}
-
-	public void setMinDist(double minDist) {
-		this.minDist = minDist;
-	}
-
-	public double getMaxDist() {
-		return maxDist;
-	}
-
-	public void setMaxDist(double maxDist) {
-		this.maxDist = maxDist;
 	}
 
 }

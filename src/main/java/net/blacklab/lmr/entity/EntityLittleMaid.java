@@ -538,7 +538,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		aiOpenDoor = new EntityAILMOpenDoor(this, true);
 		aiCloseDoor = new EntityAILMRestrictOpenDoor(this);
 		aiAvoidPlayer = new EntityAILMAvoidPlayer(this, 1.0F, 3);
-		aiFollow = new EntityAILMFollowOwner(this, 1.0F, 36D, 25D, 81D);
+		aiFollow = new EntityAILMFollowOwner(this, 1.0F, 81D);
 		aiAttack = new EntityAILMAttackOnCollide(this, 1.0F, true);
 		aiShooting = new EntityAILMAttackArrow(this);
 		aiCollectItem = new EntityAILMCollectItem(this, 1.0F);
@@ -781,8 +781,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			EntityModeBase iem = maidEntityModeList.get(li);
 			if (iem.setMode(maidMode)) {
 				setActiveModeClass(iem);
-				aiFollow.setMinDist(iem.getRangeToMaster(0));
-				aiFollow.setMaxDist(iem.getRangeToMaster(1));
 				break;
 			}
 		}

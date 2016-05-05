@@ -131,13 +131,13 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		//離れすぎている
 		if(owner.isFreedom()){
 			//自由行動時
-			if(owner.getPosition().distanceSqToCenter(px,py,pz) > EntityModeBase.limitDistance_Freedom){
+			if(owner.getHomePosition().distanceSqToCenter(px,py,pz) > owner.getActiveModeClass().getFreedomTrackingRange()){
 				return 15;
 			}
 		}else{
 			//追従時
 			if(owner.getMaidMasterEntity()!=null){
-				if(owner.getMaidMasterEntity().getPosition().distanceSqToCenter(px,py,pz) > EntityModeBase.limitDistance_Follow){
+				if(owner.getMaidMasterEntity().getPosition().distanceSqToCenter(px,py,pz) > owner.getActiveModeClass().getLimitRangeSqOnFollow()){
 					return 15;
 				}
 			}
@@ -153,11 +153,11 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	
 	@Override
 	public boolean checkBlock(int pMode, int px, int py, int pz) {
-		if (owner.isFreedom() && owner.getHomePosition().distanceSq(px, py, pz) > EntityModeBase.limitDistance_Freedom) {
+		if (owner.isFreedom() && owner.getHomePosition().distanceSq(px, py, pz) > owner.getActiveModeClass().getFreedomTrackingRange()) {
 			return false;
 		}
 		if (!owner.isFreedom() && owner.getMaidMasterEntity()!=null &&
-				owner.getMaidMasterEntity().getDistanceSq(px, py, pz) > EntityModeBase.limitDistance_Follow) {
+				owner.getMaidMasterEntity().getDistanceSq(px, py, pz) >  owner.getActiveModeClass().getLimitRangeSqOnFollow()) {
 			return false;
 		}
 		// アイテムを置けない場合

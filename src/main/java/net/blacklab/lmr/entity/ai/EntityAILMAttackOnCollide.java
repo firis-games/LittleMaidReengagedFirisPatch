@@ -61,7 +61,8 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 		attackRange = (double)theMaid.width + (double)entityTarget.width + 0.4D;
 		attackRange *= attackRange;
 		
-		if (theMaid.isFreedom() && !theMaid.isWithinHomeDistanceFromPosition(new BlockPos(MathHelper.floor_double(entityTarget.posX), MathHelper.floor_double(entityTarget.posY), MathHelper.floor_double(entityTarget.posZ)))) {
+		if (theMaid.isFreedom() &&
+				!theMaid.isWithinHomeDistanceFromPosition(entityTarget.getPosition())) {
 			return false;
 		}
 		
@@ -109,11 +110,11 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 			return false;
 		}
 		if (theMaid.isFreedom() &&
-				theMaid.getHomePosition().distanceSq(lentity.getPosition()) > EntityModeBase.limitDistance_Freedom) {
+				theMaid.getHomePosition().distanceSq(lentity.getPosition()) > theMaid.getActiveModeClass().getFreedomTrackingRange()) {
 			resetTask();
 			return false;
 		} else if (!theMaid.isFreedom() && theMaid.getMaidMasterEntity() != null &&
-				theMaid.getMaidMasterEntity().getPositionVector().squareDistanceTo(lentity.getPositionVector()) > EntityModeBase.limitDistance_Follow) {
+				theMaid.getMaidMasterEntity().getPositionVector().squareDistanceTo(lentity.getPositionVector()) > theMaid.getActiveModeClass().getLimitRangeSqOnFollow()) {
 			resetTask();
 			return false;
 		}

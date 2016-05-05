@@ -33,9 +33,6 @@ public abstract class EntityModeBase {
 
 	public int fpriority;
 
-	public static final double limitDistance_Freedom = 361D;
-
-	public static final double limitDistance_Follow  = 100D;
 	/**
 	 * 優先順位。
 	 * 番号が若いほうが先に処理される。
@@ -288,14 +285,24 @@ public abstract class EntityModeBase {
 	}
 
 	/**
-	 * 主との距離感。
-	 * @param pIndex
-	 * 0:minRange;
-	 * 1:maxRange;
-	 * @return
+	 * Returns the squared distance from master to start following.
 	 */
-	public double getRangeToMaster(int pIndex) {
-		return pIndex == 0 ? 36D : pIndex == 1 ? 25D : 0D;
+	public double getDistanceSqToStartFollow() {
+		return 25d;
+	}
+	
+	/**
+	 * Returns the squared distance from master to teleport.
+	 */
+	public double getLimitRangeSqOnFollow() {
+		return 100d;
+	}
+	
+	/**
+	 * Returns the squared radius of the area on which freedom maids can act.
+	 */
+	public double getFreedomTrackingRange() {
+		return 361d;
 	}
 
 	/**

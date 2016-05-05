@@ -203,10 +203,15 @@ public class EntityMode_Healer extends EntityModeBase {
 			}
 		}
 	}
-
+	
 	@Override
-	public double getRangeToMaster(int pIndex) {
-		return pIndex == 0 ? 16D : pIndex == 1 ? 9D : 0D;
+	public double getDistanceSqToStartFollow() {
+		return 9D;
+	}
+	
+	@Override
+	public double getLimitRangeSqOnFollow() {
+		return 16D;
 	}
 
 }
