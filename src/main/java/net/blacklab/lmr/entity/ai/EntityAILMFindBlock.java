@@ -137,7 +137,11 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 		if (!theMaid.getNavigator().noPath()) return true;
 		
 		double ld = theMaid.getDistanceTilePos();
-		if (ld > 100.0D) {
+		
+		// Too far or over tracking range
+		if (ld > 100.0D || (theMaid.isFreedom() ?
+				theMaid.getHomePosition().distanceSq(theMaid.getCurrentTilePos()) > fmodeBase.getFreedomTrackingRangeSq() :
+				theMaid.getMaidMasterEntity() != null && theMaid.getMaidMasterEntity().getDistanceSq(theMaid.getCurrentTilePos()) > fmodeBase.getLimitRangeSqOnFollow())) {
 			// 索敵範囲外
 			theMaid.getActiveModeClass().farrangeBlock();
 			return false;

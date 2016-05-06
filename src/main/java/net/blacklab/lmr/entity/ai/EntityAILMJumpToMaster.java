@@ -1,6 +1,5 @@
 package net.blacklab.lmr.entity.ai;
 
-import akka.actor.FSM.State;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.block.state.IBlockState;
@@ -60,16 +59,9 @@ public class EntityAILMJumpToMaster extends EntityAIBase implements IEntityAI {
 		} else {
 			jumpTarget = true;
 			theOwner = theMaid.getMaidMasterEntity();
-			if (theMaid.getAttackTarget() == null) {
-				if (theMaid.getDistanceSqToMaster() < 144D) {
-					return false;
-				}
-				//theMaid.setPosition(theMaid.getMaidMasterEntity().posX, theMaid.getMaidMasterEntity().posY, theMaid.getMaidMasterEntity().posZ);
-			} else {
-				// ターゲティング中は距離が伸びる
-				if (theMaid.getDistanceSqToMaster() < (theMaid.isBloodsuck() ? 1024D : 256D)) {
-					return false;
-				}
+
+			if (theMaid.getDistanceSqToMaster() < theMaid.getActiveModeClass().getLimitRangeSqOnFollow()) {
+				return false;
 			}
 			LittleMaidReengaged.Debug(
 					"ID:%d(%s) Jump To Master.",

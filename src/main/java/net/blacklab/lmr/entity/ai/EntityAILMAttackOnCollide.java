@@ -110,7 +110,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 			return false;
 		}
 		if (theMaid.isFreedom() &&
-				theMaid.getHomePosition().distanceSq(lentity.getPosition()) > theMaid.getActiveModeClass().getFreedomTrackingRange()) {
+				theMaid.getHomePosition().distanceSq(lentity.getPosition()) > theMaid.getActiveModeClass().getFreedomTrackingRangeSq()) {
 			resetTask();
 			return false;
 		} else if (!theMaid.isFreedom() && theMaid.getMaidMasterEntity() != null &&

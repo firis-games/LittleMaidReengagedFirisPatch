@@ -86,7 +86,7 @@ public class EntityAILMFleeRain extends EntityAIBase implements IEntityAI {
 			int l = MathHelper.floor_double((theMaid.posZ + (i-5)));
 			
 			//離れすぎている
-			if(theMaid.getHomePosition().distanceSq(j, k, l) > theMaid.getActiveModeClass().getFreedomTrackingRange() &&
+			if(theMaid.getHomePosition().distanceSq(j, k, l) > theMaid.getActiveModeClass().getFreedomTrackingRangeSq() &&
 					theMaid.isFreedom()){
 				continue;
 			}

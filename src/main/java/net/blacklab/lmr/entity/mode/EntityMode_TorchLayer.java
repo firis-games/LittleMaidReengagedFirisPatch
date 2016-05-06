@@ -131,7 +131,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		//離れすぎている
 		if(owner.isFreedom()){
 			//自由行動時
-			if(owner.getHomePosition().distanceSqToCenter(px,py,pz) > owner.getActiveModeClass().getFreedomTrackingRange()){
+			if(owner.getHomePosition().distanceSqToCenter(px,py,pz) > owner.getActiveModeClass().getFreedomTrackingRangeSq()){
 				return 15;
 			}
 		}else{
@@ -153,7 +153,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	
 	@Override
 	public boolean checkBlock(int pMode, int px, int py, int pz) {
-		if (owner.isFreedom() && owner.getHomePosition().distanceSq(px, py, pz) > owner.getActiveModeClass().getFreedomTrackingRange()) {
+		if (owner.isFreedom() && owner.getHomePosition().distanceSq(px, py, pz) > owner.getActiveModeClass().getFreedomTrackingRangeSq()) {
 			return false;
 		}
 		if (!owner.isFreedom() && owner.getMaidMasterEntity()!=null &&

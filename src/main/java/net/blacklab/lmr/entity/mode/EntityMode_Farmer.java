@@ -34,8 +34,6 @@ import net.minecraft.util.math.MathHelper;
 public class EntityMode_Farmer extends EntityModeBase {
 	
 	public static final int mmode_Farmer = 0x0023;
-	public static final double limitDistance_Freedom = 361D;
-	public static final double limitDistance_Follow  = 100D;
 	public static final int WATER_RADIUS = 4;
 
 	private int clearCount = 0;
@@ -139,12 +137,12 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	@Override
 	public boolean checkBlock(int pMode, int px, int py, int pz) {
-		if(owner.isFreedom()){
-			if(owner.getPosition().distanceSq(px, py, pz)>limitDistance_Freedom){
+		if (owner.isFreedom()) {
+			if(owner.getHomePosition().distanceSq(px, py, pz) > getFreedomTrackingRangeSq()){
 				return false;
 			}
-		}else if(owner.getMaidMasterEntity()!=null){
-			if(owner.getMaidMasterEntity().getDistanceSq(px,py,pz)>limitDistance_Follow){
+		} else if (owner.getMaidMasterEntity()!=null) {
+			if (owner.getMaidMasterEntity().getDistanceSq(px,py,pz) > getLimitRangeSqOnFollow()) {
 				return false;
 			}
 		}

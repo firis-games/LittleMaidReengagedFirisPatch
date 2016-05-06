@@ -2420,7 +2420,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		super.onUpdate();
 		
 		// Debug
-		LittleMaidReengaged.Debug(worldObj.isRemote, String.format("ride?%s, pos: %d, %d, %d", isRiding(), (int)posX, (int)posY, (int)posZ));
 
 		// SwingUpdate
 		SwingStatus lmss1 = getSwingStatusDominant();
@@ -3698,6 +3697,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public float getMaximumHomeDistance() {
+		if (getActiveModeClass() != null) {
+			return MathHelper.sqrt_double(getActiveModeClass().getFreedomTrackingRangeSq());
+		}
 		return 20f;
 	}
 
@@ -4113,6 +4115,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			return true;
 		}
 		return false;
+	}
+	
+	public BlockPos getCurrentTilePos() {
+		return new BlockPos(maidTile[0], maidTile[1], maidTile[2]);
 	}
 
 	public void setTilePos(int pX, int pY, int pZ) {
