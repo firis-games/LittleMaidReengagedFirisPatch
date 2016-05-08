@@ -5,7 +5,9 @@ import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
@@ -101,18 +103,22 @@ public class CommonHelper {
 		float lspeed = 1.0F;
 		// 向きに合わせて距離を調整
 		int i = (pTarget.getPos().getY() == MathHelper.floor_double(pEntity.posY) && flag) ? 2 : 1;
-		switch (pEntity.worldObj.getBlockState(new BlockPos(pTarget.getPos().getX(), pTarget.getPos().getY(), pTarget.getPos().getZ())).getValue(BlockDirectional.FACING)) {
-		case SOUTH:
-			return lpn.tryMoveToXYZ(pTarget.getPos().getX(), pTarget.getPos().getY(), pTarget.getPos().getZ() + i, lspeed);
-		case NORTH:
-			return lpn.tryMoveToXYZ(pTarget.getPos().getX(), pTarget.getPos().getY(), pTarget.getPos().getZ(), lspeed);
-		case EAST:
-			return lpn.tryMoveToXYZ(pTarget.getPos().getX() + 1, pTarget.getPos().getY(), pTarget.getPos().getZ(), lspeed);
-		case WEST:
-			return lpn.tryMoveToXYZ(pTarget.getPos().getX() - i, pTarget.getPos().getY(), pTarget.getPos().getZ(), lspeed);
-		default:
-			return lpn.tryMoveToXYZ(pTarget.getPos().getX(), pTarget.getPos().getY(), pTarget.getPos().getZ(), lspeed);
+		try {
+			switch (pEntity.worldObj.getBlockState(pTarget.getPos()).getValue(BlockHorizontal.FACING)) {
+			case SOUTH:
+				return lpn.tryMoveToXYZ(pTarget.getPos().getX(), pTarget.getPos().getY(), pTarget.getPos().getZ() + i, lspeed);
+			case NORTH:
+				return lpn.tryMoveToXYZ(pTarget.getPos().getX(), pTarget.getPos().getY(), pTarget.getPos().getZ(), lspeed);
+			case EAST:
+				return lpn.tryMoveToXYZ(pTarget.getPos().getX() + 1, pTarget.getPos().getY(), pTarget.getPos().getZ(), lspeed);
+			case WEST:
+				return lpn.tryMoveToXYZ(pTarget.getPos().getX() - i, pTarget.getPos().getY(), pTarget.getPos().getZ(), lspeed);
+			}
+		} catch (IllegalArgumentException exception) {
+			LittleMaidReengaged.Debug("Failed to get direction of tile. Maybe non-vanilla chest?");
 		}
+		return lpn.tryMoveToXYZ(pTarget.getPos().getX(), pTarget.getPos().getY(), pTarget.getPos().getZ(), lspeed);
+
 	}
 
 	/**
