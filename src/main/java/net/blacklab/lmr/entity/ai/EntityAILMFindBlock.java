@@ -11,7 +11,6 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 
 	protected boolean isEnable;
 	protected EntityLittleMaid theMaid;
-	protected EntityModeBase fmodeBase;
 //	protected MovingObjectPosition theBlock;
 //	protected int tileY;
 //	protected int tileZ;
@@ -28,14 +27,13 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 	
 	@Override
 	public boolean shouldExecute() {
-		fmodeBase = theMaid.getActiveModeClass();
 //		LMM_EntityModeBase llmode = theMaid.getActiveModeClass();
 //		if (!isEnable || theMaid.isWait() || theMaid.getActiveModeClass() == null || !theMaid.getActiveModeClass().isSearchBlock() || theMaid.getCurrentEquippedItem() == null) {
-		if (!isEnable || theMaid.isMaidWait() || fmodeBase == null) {
+		if (!isEnable || theMaid.isMaidWait() || theMaid.getMaidActiveModeClass() == null) {
 			return false;
 		}
-		if (!fmodeBase.isSearchBlock()) {
-			return fmodeBase.shouldBlock(theMaid.maidMode);
+		if (!theMaid.getMaidActiveModeClass().isSearchBlock()) {
+			return theMaid.getMaidActiveModeClass().shouldBlock(theMaid.maidMode);
 		}
 		
 		// ターゲットをサーチ
@@ -80,8 +78,8 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 				do {
 					for (int c = 0; c < 3; c++) {
 						yy = ly + (c == 2 ? -1 : c);
-						if (fmodeBase.checkBlock(theMaid.maidMode, xx, yy, zz)) {
-							if (fmodeBase.outrangeBlock(theMaid.maidMode, xx, yy, zz)) {
+						if (theMaid.getMaidActiveModeClass().checkBlock(theMaid.maidMode, xx, yy, zz)) {
+							if (theMaid.getMaidActiveModeClass().outrangeBlock(theMaid.maidMode, xx, yy, zz)) {
 								theMaid.setTilePos(xx, yy, zz);
 								// TODO:Dummay
 								EntityMarkerDummy.setDummyEntity(theMaid, 0x004fff4f, xx, yy, zz);
@@ -115,7 +113,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 			}
 			vt = (vt + 1) & 3;
 		}
-		if (fmodeBase.overlooksBlock(theMaid.maidMode)) {
+		if (theMaid.getMaidActiveModeClass().overlooksBlock(theMaid.maidMode)) {
 			TileEntity ltile = theMaid.maidTileEntity;
 			if (ltile != null) {
 				lx = ltile.getPos().getX();
@@ -132,7 +130,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 
 	@Override
 	public boolean continueExecuting() {
-		fmodeBase.updateBlock();
+		theMaid.getMaidActiveModeClass().updateBlock();
 		// 移動中は継続
 		if (!theMaid.getNavigator().noPath()) return true;
 		
@@ -140,8 +138,8 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 		
 		// Too far or over tracking range
 		if (ld > 100.0D || (theMaid.isFreedom() ?
-				theMaid.getHomePosition().distanceSq(theMaid.getCurrentTilePos()) > fmodeBase.getFreedomTrackingRangeSq() :
-				theMaid.getMaidMasterEntity() != null && theMaid.getMaidMasterEntity().getDistanceSq(theMaid.getCurrentTilePos()) > fmodeBase.getLimitRangeSqOnFollow())) {
+				theMaid.getHomePosition().distanceSq(theMaid.getCurrentTilePos()) > theMaid.getMaidActiveModeClass().getFreedomTrackingRangeSq() :
+				theMaid.getMaidMasterEntity() != null && theMaid.getMaidMasterEntity().getDistanceSq(theMaid.getCurrentTilePos()) > theMaid.getMaidActiveModeClass().getLimitRangeSqOnFollow())) {
 			// 索敵範囲外
 			theMaid.getActiveModeClass().farrangeBlock();
 			return false;
@@ -156,12 +154,12 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 
 	@Override
 	public void startExecuting() {
-		fmodeBase.startBlock(theMaid.maidMode);
+		theMaid.getMaidActiveModeClass().startBlock(theMaid.maidMode);
 	}
 
 	@Override
 	public void resetTask() {
-		fmodeBase.resetBlock(theMaid.maidMode);
+		theMaid.getMaidActiveModeClass().resetBlock(theMaid.maidMode);
 	}
 
 	@Override

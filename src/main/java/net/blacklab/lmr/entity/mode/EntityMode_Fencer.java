@@ -247,4 +247,13 @@ public class EntityMode_Fencer extends EntityModeBase {
 		}
 	}
 
+	@Override
+	public double getLimitRangeSqOnFollow() {
+		return 18 * 18;
+	}
+	
+	@Override
+	public double getFreedomTrackingRangeSq() {
+		return 25 * 25;
+	}
 }
