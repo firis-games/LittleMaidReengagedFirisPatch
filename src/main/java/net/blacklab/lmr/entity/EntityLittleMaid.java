@@ -2059,10 +2059,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			int px = MathHelper.floor_double(posX);
 			int pz = MathHelper.floor_double(posZ);
 			int py = MathHelper.floor_double(getEntityBoundingBox().minY);
+
+			/*
 			float movespeed = getAIMoveSpeed();
 
 			BlockPos targetPos = new BlockPos(px+XBOUND_BLOCKOFFS[pitchindex], py, pz+ZBOUND_BLOCKOFFS[pitchindex]);
-			new BlockPos(px+XBOUND_BLOCKOFFS[pitchindex], py+1, pz+ZBOUND_BLOCKOFFS[pitchindex]);
 			// TODO BETA
 			if(movespeed!=0 && !isMaidWait() && isCollidedHorizontally && (onGround&&!isInWater()) &&
 					PathNodeType.BLOCKED == WalkNodeProcessor.func_186330_a(worldObj, targetPos.getX(), targetPos.getY()  , targetPos.getZ()) &&
@@ -2070,6 +2071,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				//段差にギリ載せ
 				setLocationAndAngles(posX+0.05*XBOUND_BLOCKOFFS[pitchindex], posY+1D, posZ+0.05*ZBOUND_BLOCKOFFS[pitchindex], rotationYaw, rotationPitch);
 			}
+			*/
 
 			// 埋まった
 			OPAQUE: if(isEntityInsideOpaqueBlock()){
