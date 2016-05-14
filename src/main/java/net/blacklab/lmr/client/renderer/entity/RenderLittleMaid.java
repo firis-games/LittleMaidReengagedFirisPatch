@@ -90,6 +90,8 @@ public class RenderLittleMaid extends RenderModelMulti {
 					ResourceLocation texInner = modelFATT.textureInner[renderParts];
 					if(texInner!=null&&lmm.isArmorVisible(0)) try{
 						Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
+						GL11.glEnable(GL11.GL_BLEND);
+						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 						modelFATT.modelInner.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, fcaps);
 						modelFATT.modelInner.setLivingAnimations(fcaps, limbSwing, limbSwingAmount, partialTicks);
 						modelFATT.modelInner.render(fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
@@ -106,7 +108,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 					try{
 						Minecraft.getMinecraft().getTextureManager().bindTexture(texInnerLight);
 						GL11.glEnable(GL11.GL_BLEND);
-						GL11.glEnable(GL11.GL_ALPHA_TEST);
+						GL11.glDisable(GL11.GL_ALPHA_TEST);
 						GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 						GL11.glDepthFunc(GL11.GL_LEQUAL);
 
@@ -125,21 +127,21 @@ public class RenderLittleMaid extends RenderModelMulti {
 						RendererHelper.setLightmapTextureCoords(modelFATT.lighting);
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 						GL11.glDisable(GL11.GL_BLEND);
-						GL11.glDisable(GL11.GL_ALPHA_TEST);
+						GL11.glEnable(GL11.GL_ALPHA_TEST);
 					}catch(Exception e){ break INNERLIGHT; }
-					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				}
 			}
 
 //			Minecraft.getMinecraft().getTextureManager().deleteTexture(lmm.getTextures(0)[renderParts]);
 			//Outer
-			if(LittleMaidReengaged.cfg_isModelAlphaBlend) GL11.glEnable(GL11.GL_BLEND);
+//			if(LittleMaidReengaged.cfg_isModelAlphaBlend) GL11.glEnable(GL11.GL_BLEND);
 			OUTER:{
-				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				if(modelFATT.textureOuter!=null){
 					ResourceLocation texOuter = modelFATT.textureOuter[renderParts];
 					if(texOuter!=null&&lmm.isArmorVisible(2)) try{
 						Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
+						GL11.glEnable(GL11.GL_BLEND);
+						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 						modelFATT.modelOuter.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, fcaps);
 						modelFATT.modelOuter.setLivingAnimations(fcaps, limbSwing, limbSwingAmount, partialTicks);
 						modelFATT.modelOuter.render(fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
@@ -175,12 +177,11 @@ public class RenderLittleMaid extends RenderModelMulti {
 						RendererHelper.setLightmapTextureCoords(modelFATT.lighting);
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 						GL11.glDisable(GL11.GL_BLEND);
-						GL11.glDisable(GL11.GL_ALPHA_TEST);
+						GL11.glEnable(GL11.GL_ALPHA_TEST);
 					}catch(Exception e){ break OUTERLIGHT; }
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				}
-
 			}
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		}
 	}
 
