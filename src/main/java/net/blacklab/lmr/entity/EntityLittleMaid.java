@@ -2040,24 +2040,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			exception.printStackTrace();
 		}
 
-		// 水中関連
-//		((PathNavigateGround)navigator).setAvoidsWater(false);
 		((PathNavigateGround)navigator).setCanSwim(true);
 
 		if(!worldObj.isRemote) maidInventory.decrementAnimations();
 
-		//壁衝突判定
-		//pitchはデフォルト+-180度が北方向(Z負)
-		//八方位に分割して割り出す
 		if(!worldObj.isRemote){
 //			float rot = getRotationYawHead();
-			int pitchindex = Math.round(rotationYaw/45F);
-//			if(pitchindex>=8||pitchindex<0) pitchindex = 0;
-			while(pitchindex<0)  pitchindex+=8;
-			while(pitchindex>=8) pitchindex-=8;
-
-			int px = MathHelper.floor_double(posX);
-			int pz = MathHelper.floor_double(posZ);
 			int py = MathHelper.floor_double(getEntityBoundingBox().minY);
 
 			/*
@@ -2096,7 +2084,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 					for (int i = 0; i < list.size(); i++) {
 						Entity entity = (Entity)list.get(i);
 						if (!entity.isDead) {
-							if (entity instanceof EntityArrow) {
+							if (entity instanceof EntityArrow &&
+									(worldObj.getDifficulty() == EnumDifficulty.HARD ? ((EntityArrow) entity).shootingEntity == this : true)) {
 								// 特殊回収
 								((EntityArrow)entity).canBePickedUp = PickupStatus.ALLOWED;
 							}
