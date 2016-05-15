@@ -1793,12 +1793,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	protected void dropFewItems(boolean par1, int par2) {
-		// メイドさんはお砂糖とココアと不定形の何かでできてるの！
 		int k = rand.nextInt(3 + par2);
 		for(int j = 0; j <= k; j++) {
-			if(rand.nextInt(30) == 0) {
-				dropItem(Items.slime_ball, 1);
-			}
 			if(rand.nextInt(50) == 0) {
 				entityDropItem(new ItemStack(Items.dye, 1, 3), 0F);
 			}
