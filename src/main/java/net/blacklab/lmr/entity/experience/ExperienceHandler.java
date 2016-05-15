@@ -49,13 +49,13 @@ public class ExperienceHandler {
 		if (level%20 == 0) {
 			MaidHelper.giveItem(new ItemStack(Items.name_tag), theMaid);
 		}
-		if (level%50 == 0) {
-			MaidHelper.giveItem(new ItemStack(Items.emerald, level/50), theMaid);
-		}
-		if (level%100 == 0) {
-			MaidHelper.giveItem(new ItemStack(Items.diamond, level/100), theMaid);
+		if (level%75 == 0) {
+			MaidHelper.giveItem(new ItemStack(Items.emerald, MathHelper.ceiling_float_int(level/150f)), theMaid);
 		}
 		if (level%150 == 0) {
+			MaidHelper.giveItem(new ItemStack(Items.diamond, level/150), theMaid);
+		}
+		if (level == 200 || level == 300) {
 			MaidHelper.giveItem(new ItemStack(Items.nether_star, 1), theMaid);
 		}
 
