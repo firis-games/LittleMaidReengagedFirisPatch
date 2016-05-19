@@ -3,9 +3,11 @@ package net.blacklab.lmr.entity.ai;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.EntityMarkerDummy;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 
@@ -137,9 +139,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
 		double ld = theMaid.getDistanceTilePos();
 		
 		// Too far or over tracking range
-		if (ld > 100.0D || (theMaid.isFreedom() ?
-				theMaid.getHomePosition().distanceSq(theMaid.getCurrentTilePos()) > theMaid.getMaidActiveModeClass().getFreedomTrackingRangeSq() :
-				theMaid.getMaidMasterEntity() != null && theMaid.getMaidMasterEntity().getDistanceSq(theMaid.getCurrentTilePos()) > theMaid.getMaidActiveModeClass().getLimitRangeSqOnFollow())) {
+		if (ld > 100.0D || !MaidHelper.isTargetReachable(theMaid, new Vec3d(theMaid.getCurrentTilePos()), 0)) {
 			// 索敵範囲外
 			theMaid.getActiveModeClass().farrangeBlock();
 			return false;

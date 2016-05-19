@@ -6,6 +6,7 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.TriggerSelect;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -22,6 +23,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityMode_TorchLayer extends EntityModeBase {
@@ -129,19 +131,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	protected int getBlockLighting(int px, int py, int pz) {
 		World worldObj = owner.worldObj;
 		//離れすぎている
-		if(owner.isFreedom()){
-			//自由行動時
-			if(owner.getHomePosition().distanceSqToCenter(px,py,pz) > owner.getActiveModeClass().getFreedomTrackingRangeSq()){
-				return 15;
-			}
-		}else{
-			//追従時
-			if(owner.getMaidMasterEntity()!=null){
-				if(owner.getMaidMasterEntity().getPosition().distanceSqToCenter(px,py,pz) > owner.getActiveModeClass().getLimitRangeSqOnFollow()){
-					return 15;
-				}
-			}
-		}
+		if (!MaidHelper.isTargetReachable(owner, new Vec3d(px, py, pz), 0)) return 15;
 		
 		BlockPos targetPos = new BlockPos(px, py, pz);
 		if (!owner.isMaidWait()) {
@@ -153,13 +143,8 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	
 	@Override
 	public boolean checkBlock(int pMode, int px, int py, int pz) {
-		if (owner.isFreedom() && owner.getHomePosition().distanceSq(px, py, pz) > owner.getActiveModeClass().getFreedomTrackingRangeSq()) {
-			return false;
-		}
-		if (!owner.isFreedom() && owner.getMaidMasterEntity()!=null &&
-				owner.getMaidMasterEntity().getDistanceSq(px, py, pz) >  owner.getActiveModeClass().getLimitRangeSqOnFollow()) {
-			return false;
-		}
+		if (!super.checkBlock(pMode, px, py, pz)) return false;
+		
 		// アイテムを置けない場合
 		Item heldItem = owner.getHeldItem(EnumHand.MAIN_HAND).getItem();
 		if (heldItem instanceof ItemBlock) {

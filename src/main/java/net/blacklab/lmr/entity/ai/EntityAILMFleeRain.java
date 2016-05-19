@@ -5,6 +5,7 @@ import java.util.Random;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
@@ -86,8 +87,7 @@ public class EntityAILMFleeRain extends EntityAIBase implements IEntityAI {
 			int l = MathHelper.floor_double((theMaid.posZ + (i-5)));
 			
 			//離れすぎている
-			if(theMaid.getHomePosition().distanceSq(j, k, l) > theMaid.getActiveModeClass().getFreedomTrackingRangeSq() &&
-					theMaid.isFreedom()){
+			if(theMaid.isFreedom() && !MaidHelper.isTargetReachable(theMaid, new Vec3d(j, k, l), 0)){
 				continue;
 			}
 			

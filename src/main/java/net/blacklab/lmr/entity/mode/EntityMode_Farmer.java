@@ -10,6 +10,7 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.TriggerSelect;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockFarmland;
@@ -25,6 +26,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * メイド農家。付近の農地に移動し耕作可能であれば耕す。
@@ -137,15 +139,8 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	@Override
 	public boolean checkBlock(int pMode, int px, int py, int pz) {
-		if (owner.isFreedom()) {
-			if(owner.getHomePosition().distanceSq(px, py, pz) > getFreedomTrackingRangeSq()){
-				return false;
-			}
-		} else if (owner.getMaidMasterEntity()!=null) {
-			if (owner.getMaidMasterEntity().getDistanceSq(px,py,pz) > getLimitRangeSqOnFollow()) {
-				return false;
-			}
-		}
+		if (!super.checkBlock(pMode, px, py, pz)) return false;
+		
 		if(!VectorUtil.canMoveThrough(owner, 0.9D, px + 0.5D, py + 1.9D, pz + 0.5D, py==MathHelper.floor_double(owner.posY-1D), true, false)) return false;
 		if(isUnfarmedLand(px,py,pz)) return true;
 		if(isFarmedLand(px,py,pz)){

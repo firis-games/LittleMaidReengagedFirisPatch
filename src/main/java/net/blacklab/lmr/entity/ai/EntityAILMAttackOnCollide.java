@@ -3,6 +3,7 @@ package net.blacklab.lmr.entity.ai;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -109,15 +110,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 			resetTask();
 			return false;
 		}
-		if (theMaid.isFreedom() &&
-				theMaid.getHomePosition().distanceSq(lentity.getPosition()) > theMaid.getActiveModeClass().getFreedomTrackingRangeSq()) {
-			resetTask();
-			return false;
-		} else if (!theMaid.isFreedom() && theMaid.getMaidMasterEntity() != null &&
-				theMaid.getMaidMasterEntity().getPositionVector().squareDistanceTo(lentity.getPositionVector()) > theMaid.getActiveModeClass().getLimitRangeSqOnFollow()) {
-			resetTask();
-			return false;
-		}
+		if (!MaidHelper.isTargetReachable(theMaid, lentity, 0)) return false;
 		
 		if (!entityTarget.isEntityAlive()) {
 			return false;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * LMM用独自AI処理に使用。
@@ -166,7 +168,7 @@ public abstract class EntityModeBase {
 	 * trueを返すと検索終了。
 	 */
 	public boolean checkBlock(int pMode, int px, int py, int pz) {
-		return false;
+		return MaidHelper.isTargetReachable(owner, new Vec3d(px, py, pz), 0);
 	}
 
 	/**
