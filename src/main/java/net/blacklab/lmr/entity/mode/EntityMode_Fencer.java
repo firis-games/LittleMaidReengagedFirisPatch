@@ -11,6 +11,8 @@ import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.Counter;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
+import net.blacklab.lmr.util.helper.MaidHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -204,6 +206,18 @@ public class EntityMode_Fencer extends EntityModeBase {
 	public boolean checkItemStack(ItemStack pItemStack) {
 		// 装備アイテムを回収
 		return pItemStack.getItem() instanceof ItemSword || pItemStack.getItem() instanceof ItemAxe;
+	}
+	
+	@Override
+	public boolean isSearchEntity() {
+		return true;
+	}
+	
+	@Override
+	public boolean checkEntity(int pMode, Entity pEntity) {
+		if (pMode == mmode_Fencer && !MaidHelper.isTargetReachable(owner, pEntity, 0)) return false;
+		
+		return !owner.getIFF(pEntity);
 	}
 
 	@Override

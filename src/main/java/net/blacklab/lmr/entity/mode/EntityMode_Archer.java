@@ -10,6 +10,7 @@ import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.TriggerSelect;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -155,6 +156,17 @@ public class EntityMode_Archer extends EntityModeBase {
 	public boolean checkItemStack(ItemStack pItemStack) {
 		UUID ls = owner.getMaidMasterUUID();
 		return (pItemStack.getItem() instanceof ItemBow) || TriggerSelect.checkTrigger(ls, "Bow", pItemStack.getItem());
+	}
+	
+	@Override
+	public boolean isSearchEntity() {
+		return true;
+	}
+	
+	@Override
+	public boolean checkEntity(int pMode, Entity pEntity) {
+		if (pMode == mmode_Archer && !MaidHelper.isTargetReachable(owner, pEntity, 100)) return false;
+		return !owner.getIFF(pEntity);
 	}
 
 	@Override

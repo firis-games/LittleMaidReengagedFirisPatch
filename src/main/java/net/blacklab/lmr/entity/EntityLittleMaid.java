@@ -1835,9 +1835,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		super.updateAITasks();
 		tasks.onUpdateTasks();
 //		if(++playingTick==2){
-			for (EntityModeBase ieml : maidEntityModeList) {
-				ieml.updateAITick(getMaidModeInt());
-			}
+		getActiveModeClass().updateAITick(getMaidModeInt());
 //			playingTick = 0;
 //		}
 	}
