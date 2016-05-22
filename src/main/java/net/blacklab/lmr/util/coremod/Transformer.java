@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.transform;
+package net.blacklab.lmr.util.coremod;
 
 import java.util.HashMap;
 import java.util.List;

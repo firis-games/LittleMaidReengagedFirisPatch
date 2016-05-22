@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.transform;
+package net.blacklab.lmr.util.coremod;
 
 import java.util.Arrays;
 
@@ -9,9 +9,9 @@ import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModMetadata;
 
-public class OldModelLoaderContainer extends DummyModContainer {
+public class LMRECoreModContainer extends DummyModContainer {
 
-	public OldModelLoaderContainer() {
+	public LMRECoreModContainer() {
 		super(new ModMetadata());
 		ModMetadata lmeta = getMetadata();
 
