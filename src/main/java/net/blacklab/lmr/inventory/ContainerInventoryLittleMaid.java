@@ -27,7 +27,7 @@ public class ContainerInventoryLittleMaid extends Container {
 
 		InventoryLittleMaid maidInventory = pEntity.maidInventory;
 		owner = pEntity;
-		numRows = maidInventory.getSizeInventory() / 9;
+		numRows = 2;
 		littlemaidInventory = maidInventory;
 		littlemaidInventory.openInventory(owner.maidAvatar);
 
@@ -86,7 +86,12 @@ public class ContainerInventoryLittleMaid extends Container {
 					return ItemArmor.EMPTY_SLOT_NAMES[armorIndex];
 				}
 			});
+
 		}
+
+		// Hand items
+		addSlotToContainer(new Slot(littlemaidInventory, InventoryLittleMaid.handInventoryOffset, 8 + 6 * 18, 8 + 36));
+		addSlotToContainer(new Slot(littlemaidInventory, InventoryLittleMaid.handInventoryOffset + 1, 8 + 8 * 18, 8 + 36));
 	}
 
 	@Override
@@ -110,6 +115,8 @@ public class ContainerInventoryLittleMaid extends Container {
 		flag &= (slot = getSlot(55)).getHasStack() && (item = slot.getStack().getItem()) instanceof ItemArmor &&
 				((ItemArmor)item).getArmorMaterial() == ArmorMaterial.DIAMOND;
 		flag &= (slot = getSlot(56)).getHasStack() && (item = slot.getStack().getItem()) instanceof ItemArmor &&
+				((ItemArmor)item).getArmorMaterial() == ArmorMaterial.DIAMOND;
+		flag &= (slot = getSlot(57)).getHasStack() && (item = slot.getStack().getItem()) instanceof ItemArmor &&
 				((ItemArmor)item).getArmorMaterial() == ArmorMaterial.DIAMOND;
 
 		if (flag && !owner.worldObj.isRemote)

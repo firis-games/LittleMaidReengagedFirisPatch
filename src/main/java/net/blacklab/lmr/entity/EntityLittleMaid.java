@@ -114,8 +114,6 @@ import net.minecraft.network.play.server.SPacketRemoveEntityEffect;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
@@ -2403,7 +2401,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 
 		super.onUpdate();
-		
+
 		// Debug
 
 		// SwingUpdate
@@ -3756,7 +3754,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			VEventBus.instance.post(new EventLMRE.MaidLevelUpEvent(this, getMaidLevel()));
 		}
 	}
-	
+
 	/**
 	 * 取得経験値による操作を定義するExperienceHandlerを取得
 	 * @return
@@ -4101,7 +4099,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 		return false;
 	}
-	
+
 	public BlockPos getCurrentTilePos() {
 		return new BlockPos(maidTile[0], maidTile[1], maidTile[2]);
 	}

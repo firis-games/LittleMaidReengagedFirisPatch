@@ -36,6 +36,10 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	 * 最大インベントリ数
 	 */
 	public static final int maxInventorySize = 18;
+	/**
+	 * Offset of mainHand slot's index
+	 */
+	public static final int handInventoryOffset = maxInventorySize + 4;
 
 	/**
 	 * Inventory "inside skirt"
@@ -46,6 +50,11 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	 * Armor Inventory
 	 */
 //	private ItemStack armorInventory[] = new ItemStack[4];
+
+	/**
+	 * Hand Slots
+	 */
+	public final ItemStack mainHandInventory[] = new ItemStack[1];
 
 	/**
 	 * オーナー
@@ -64,14 +73,11 @@ public class InventoryLittleMaid extends InventoryPlayer {
 //		player = entityLittleMaid.maidAvatar;
 		// TODO InventoryPlayer.mainInventory became 'final'. S**t
 //		mainInventory = new ItemStack[maxInventorySize];
-		prevItems = new ItemStack[maxInventorySize + armorInventory.length];
+		prevItems = new ItemStack[getSizeInventory()];
 	}
 
 	@Override
 	public void readFromNBT(NBTTagList par1nbtTagList) {
-//		mainInventory = new ItemStack[maxInventorySize];
-//		armorInventory = new ItemStack[4];
-
 		for (int i = 0; i < par1nbtTagList.tagCount(); i++) {
 			NBTTagCompound nbttagcompound = par1nbtTagList.getCompoundTagAt(i);
 			int j = nbttagcompound.getByte("Slot") & 0xff;
@@ -88,13 +94,30 @@ public class InventoryLittleMaid extends InventoryPlayer {
 			if (j >= 100 && j < armorInventory.length + 100) {
 				armorInventory[j - 100] = itemstack;
 			}
+
+			if (j >= 150 && j < armorInventory.length + 150) {
+				offHandInventory[j - 150] = itemstack;
+			}
+
+			if (j >= 200 && j < mainHandInventory.length + 200) {
+				mainHandInventory[j - 200] = itemstack;
+			}
 		}
 	}
 
 	@Override
 	public NBTTagList writeToNBT(NBTTagList nbtTagListIn) {
-		// TODO 自動生成されたメソッド・スタブ
-		return super.writeToNBT(nbtTagListIn);
+		NBTTagList result = super.writeToNBT(nbtTagListIn);
+
+		for (int k = 0; k < mainHandInventory.length; ++k) {
+			if (this.mainHandInventory[k] != null) {
+				NBTTagCompound nbttagcompound2 = new NBTTagCompound();
+				nbttagcompound2.setByte("Slot", (byte)(k + 200));
+				mainHandInventory[k].writeToNBT(nbttagcompound2);
+				result.appendTag(nbttagcompound2);
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -105,7 +128,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	@Override
 	public int getSizeInventory() {
 		// 一応
-		return maxInventorySize + armorInventory.length;
+		return handInventoryOffset + 2;
 	}
 
 	@Override
@@ -119,13 +142,13 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	}
 
 	public void decrementAnimations() {
-		for (int li = 0; li < maxInventorySize; ++li) {
-			if (this.mainInventory[li] != null) {
+		for (int li = 0; li < getSizeInventory(); ++li) {
+			if (getStackInSlot(li) != null) {
 				try {
-					this.mainInventory[li].updateAnimation(this.player.worldObj,
+					getStackInSlot(li).updateAnimation(this.player.worldObj,
 							entityLittleMaid, li, this.currentItem == li);
 				} catch (ClassCastException e) {
-					this.mainInventory[li].updateAnimation(this.player.worldObj,
+					getStackInSlot(li).updateAnimation(this.player.worldObj,
 							entityLittleMaid.maidAvatar, li, this.currentItem == li);
 				}
 			}
@@ -189,7 +212,6 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		}
 	}
 */
-	@SuppressWarnings("null")
 	public void dropAllItems(boolean detonator) {
 		// インベントリをブチマケロ！
 		Explosion lexp = null;
@@ -243,6 +265,12 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	}
 
 	public ItemStack getCurrentItem() {
+		if (currentItem >= handInventoryOffset + 1) {
+			return offHandInventory[currentItem - (handInventoryOffset + 1)];
+		}
+		if (currentItem >= handInventoryOffset) {
+			return mainHandInventory[currentItem - handInventoryOffset];
+		}
 		if (currentItem >= 0 && currentItem < InventoryLittleMaid.maxInventorySize) {
 			return mainInventory[currentItem];
 		}
@@ -261,7 +289,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		ItemStack buffer = par1ItemStack;
 		int originalStackSize = buffer.stackSize;
 
-		for (int i=0; i<maxInventorySize; i++) {
+		for (int i=0; i < maxInventorySize; i++) {
 			if (mainInventory[i] != null && mainInventory[i].getItem() == buffer.getItem()) {
 				int maxStackSize = mainInventory[i].getItem().getItemStackLimit(mainInventory[i]);
 				if (mainInventory[i].stackSize == maxStackSize) continue;
@@ -503,6 +531,12 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
+		if (index >= handInventoryOffset + 1) {
+			return offHandInventory[index - (handInventoryOffset + 1)];
+		}
+		if (index >= handInventoryOffset) {
+			return mainHandInventory[index - handInventoryOffset];
+		}
 		if (index >= maxInventorySize) {
 			return armorInventory[index-maxInventorySize];
 		}
@@ -526,6 +560,14 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	public ItemStack removeStackFromSlot(int index) {
 		markDirty();
 		ItemStack aStack;
+		if (index >= handInventoryOffset + 1) {
+			aStack = ItemStack.copyItemStack(offHandInventory[index - (handInventoryOffset + 1)]);
+			offHandInventory[index - (handInventoryOffset)] = null;
+		}
+		if (index >= handInventoryOffset) {
+			aStack = ItemStack.copyItemStack(mainHandInventory[index - handInventoryOffset]);
+			mainHandInventory[index - handInventoryOffset] = null;
+		}
 		if (index >= maxInventorySize) {
 			aStack = ItemStack.copyItemStack(armorInventory[index-maxInventorySize]);
 			armorInventory[index-maxInventorySize] = null;
@@ -539,7 +581,11 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		if (isItemValidForSlot(index, stack)) {
-			if (index >= maxInventorySize) {
+			if (index >= handInventoryOffset + 1) {
+				offHandInventory[index - (handInventoryOffset + 1)] = stack;
+			} else if (index >= handInventoryOffset) {
+				mainHandInventory[index - handInventoryOffset] = stack;
+			} else if (index >= maxInventorySize) {
 				armorInventory[index - maxInventorySize] = stack;
 			} else {
 				mainInventory[index] = stack;
@@ -554,7 +600,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		if (stack != null && index >= maxInventorySize && index < getSizeInventory()) {
+		if (stack != null && index >= maxInventorySize && index < handInventoryOffset) {
 			int armorSlotIndex = index - maxInventorySize;
 			for (EntityEquipmentSlot slot: EntityEquipmentSlot.values()) {
 				if (slot.getSlotType()==EntityEquipmentSlot.Type.ARMOR && slot.getIndex() == armorSlotIndex) {
