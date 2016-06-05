@@ -109,7 +109,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SPacketEntityEffect;
-import net.minecraft.network.play.server.SPacketEntityEquipment;
 import net.minecraft.network.play.server.SPacketRemoveEntityEffect;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
@@ -134,7 +133,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.TempCategory;
 import net.minecraftforge.fml.relauncher.Side;
@@ -2344,7 +2342,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			// サーバーの方が先に起動するのでクライアント側が更新を受け取れない
 			if (firstload > 0) {
 				if (Minecraft.getMinecraft().theWorld != null && Minecraft.getMinecraft().thePlayer != null) {
-					syncNet(EnumPacketMode.SERVER_UPDATE_SLOTS, new byte[]{});
 					syncNet(EnumPacketMode.SERVER_REQUEST_MODEL, new byte[]{});
 					firstload = 0;
 				}
@@ -2475,20 +2472,23 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			// インベントリの更新
 //			if (!mstatOpenInventory) {
 				// TODO メインインベントリに対する処理は既に行っているので，そこまで再チェックする必要がない・・・たぶん．
+			/*
 				for (int li = InventoryLittleMaid.maxInventorySize; li < maidInventory.getSizeInventory(); li++) {
 					// インベントリの中身が変わった
 					if (maidInventory.isChanged(li)) {
 						ItemStack st = maidInventory.getStackInSlot(li);
 						for(EntityEquipmentSlot lSlot: EntityEquipmentSlot.values()) {
 							if (lSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR &&
-							lSlot.getIndex() == li-InventoryLittleMaid.maxInventorySize)
-								((WorldServer)worldObj).getEntityTracker().func_151248_b(this, new SPacketEntityEquipment(getEntityId(), lSlot, st));
-							maidInventory.resetChanged(li);
+							lSlot.getIndex() == li - InventoryLittleMaid.maxInventorySize) {
+								((WorldServer)worldObj).getEntityTracker().sendToAllTrackingEntity(this, new SPacketEntityEquipment(getEntityId(), lSlot, st));
+							}
 						}
-						LittleMaidReengaged.Debug(String.format("ID:%d-%s - Slot(%d-%d,%d) Update.", getEntityId(), worldObj.isRemote ? "Client" : "Server", li, mstatSwingStatus[0].index, mstatSwingStatus[1].index));
+						maidInventory.resetChanged(li);
+						LittleMaidReengaged.Debug("ID:%d-%s - Slot(%d-%d,%d) Update.", getEntityId(), worldObj.isRemote ? "Client" : "Server", li, mstatSwingStatus[0].index, mstatSwingStatus[1].index);
 					}
 //				}
 			}
+			*/
 
 			// 弓構え
 			mstatAimeBow &= !getSwingStatusDominant().canAttack();
@@ -2771,7 +2771,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if (hand == EnumHand.MAIN_HAND) {
 			return maidInventory.getCurrentItem();
 		}
-		return null;
+		return maidInventory.getStackInSlot(InventoryLittleMaid.handInventoryOffset + 1);
 	}
 
 	@Override
@@ -2781,11 +2781,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public Iterable<ItemStack> getHeldEquipment() {
-		return Arrays.asList(new ItemStack[]{getCurrentEquippedItem(), null});
+		return Arrays.asList(new ItemStack[]{getCurrentEquippedItem(), getHeldItemOffhand()});
 	}
 
 	@Override
 	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
+		if (slotIn == EntityEquipmentSlot.OFFHAND) {
+			return getHeldItem(EnumHand.OFF_HAND);
+		}
 		if (slotIn == EntityEquipmentSlot.MAINHAND) {
 			return getHeldItem(EnumHand.MAIN_HAND);
 		} else if (slotIn.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
@@ -2797,11 +2800,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
-		if (slotIn.func_188452_c() == 0) {
+		if (slotIn == EntityEquipmentSlot.MAINHAND) {
 			maidInventory.setInventoryCurrentSlotContents(stack);
-		} else if (slotIn.func_188452_c() < 5) {
+		} else if (slotIn == EntityEquipmentSlot.OFFHAND) {
+			maidInventory.setInventorySlotContents(InventoryLittleMaid.handInventoryOffset + 1, stack);
+		} else if (slotIn.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
 			maidInventory.setInventorySlotContents(slotIn.getIndex() + InventoryLittleMaid.maxInventorySize, stack);
-			setTextureNames();
+//			setTextureNames();
 		} else {
 			// TODO What was this used for?
 /*

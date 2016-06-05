@@ -12,11 +12,9 @@ import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMWildWatchClosest;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
@@ -26,28 +24,25 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemAppleGold;
 import net.minecraft.item.ItemBucketMilk;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.MinecraftForge;
 
 public class EntityMode_Basic extends EntityModeBlockBase {
 
 	public static final int mmode_Wild			= 0x0000;
 	public static final int mmode_Escorter		= 0x0001;
 	public static final int mmode_FarmPorter	= 0x0024;
-	
+
 	private IInventory myInventory;
 	private IInventory myChest;
 	private List<IInventory> fusedTiles;
 	private double lastdistance;
 	private int maidSearchCount;
-	
+
 	/**
-	 * Wild, Escorter 
+	 * Wild, Escorter
 	 */
 	public EntityMode_Basic(EntityLittleMaid pEntity) {
 		super(pEntity);
@@ -59,7 +54,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	public int priority() {
 		return 9000;
 	}
-	
+
 	@Override
 	public void init() {
 		/* langファイルに移動
@@ -110,7 +105,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		ltasks[1] = pDefaultTargeting;
 		owner.addMaidMode(ltasks, "Escorter", mmode_Escorter);
 		owner.addMaidMode(ltasks, "FarmPorter", mmode_FarmPorter);
-		
+
 	}
 
 	@Override
@@ -125,7 +120,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		owner.setMaidMode("Escorter");
 		return true;
 	}
-	
+
 	@Override
 	public boolean setMode(int pMode) {
 		switch (pMode) {
@@ -145,12 +140,16 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 //		owner.getNavigator().clearPathEntity()
 		return false;
 	}
-	
+
 	@Override
 	public int getNextEquipItem(int pMode) {
+		// Use mainhand slot prior
+		if (owner.getHeldItemMainhand() != null) {
+			return InventoryLittleMaid.handInventoryOffset;
+		}
 		return 0;
 	}
-	
+
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
 		return !owner.isMaidWait();
@@ -185,7 +184,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			// インベントリのサイズが１８以下なら対象としない。
 			return false;
 		}
-		
+
 		// 世界のメイドから
 		if (checkWorldMaid(ltile)) return false;
 		// 使用済みチェック
@@ -193,7 +192,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			// 既に通り過ぎた場所よッ！
 			return false;
 		}
-		
+
 		double ldis = owner.getDistanceTilePosSq(ltile);
 		if (fDistance > ldis) {
 			myInventory = (IInventory)ltile;
@@ -216,7 +215,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 				}
 				double lr = lentity.getDistanceSq(owner.posX,owner.posY,owner.posZ);
 				// 見える位置にある最も近い調べていないカートチェスト
-				
+
 				if (fDistance > lr/* && owner.getEntitySenses().canSee(lentity)*/) {
 					myInventory = (IInventory)lentity;
 					fDistance = lr;
@@ -347,14 +346,14 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			fusedTiles.add(lchest.adjacentChestZNeg);
 			fusedTiles.add(lchest.adjacentChestZPos);
 		}
-		
+
 		TileEntity ltile = (TileEntity)myInventory;
 		Block lblock = owner.worldObj.getBlockState(ltile.getPos()).getBlock();
 		myChest = myInventory;
 		if (lblock instanceof BlockChest) {
 			myChest = ((BlockChest)lblock).getLockableContainer(owner.worldObj, ltile.getPos());
 		}
-		
+
 		return myChest != null;
 	}
 
@@ -394,7 +393,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 								is.stackSize = isc.stackSize - isc.getMaxStackSize();
 								isc.stackSize = isc.getMaxStackSize();
 							} else {
-								is.stackSize = 0; 
+								is.stackSize = 0;
 								break;
 							}
 						}

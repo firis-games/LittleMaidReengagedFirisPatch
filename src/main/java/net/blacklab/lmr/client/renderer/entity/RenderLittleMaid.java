@@ -1,8 +1,9 @@
 package net.blacklab.lmr.client.renderer.entity;
 
+import java.util.Iterator;
+
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
@@ -204,35 +205,44 @@ public class RenderLittleMaid extends RenderModelMulti {
 				float p_177141_5_, float p_177141_6_, float p_177141_7_,
 				float p_177141_8_) {
 			EntityLittleMaid lmm = (EntityLittleMaid) p_177141_1_;
-			Minecraft minecraft = Minecraft.getMinecraft();
+
 			if(!lmm.isMaidWait()){
-				ItemStack itemstack = lmm.getCurrentEquippedItem();
 
-				if (itemstack != null)
-				{
-					GlStateManager.pushMatrix();
+				Iterator<ItemStack> heldItemIterator = lmm.getHeldEquipment().iterator();
+				int i = 0, handindexes[] = {lmm.getDominantArm(), lmm.getDominantArm() == 1 ? 0 : 1};
 
-					modelMain.model.Arms[lmm.getDominantArm()].postRender(0.0625F);
+				while (heldItemIterator.hasNext()) {
+					ItemStack itemstack = (ItemStack) heldItemIterator.next();
 
-					if (lmm.isSneaking()) {
-						GlStateManager.translate(0.0F, 0.2F, 0.0F);
+					if (itemstack != null)
+					{
+						GlStateManager.pushMatrix();
+
+						// Use dominant arm as mainhand.
+						modelMain.model.Arms[handindexes[i]].postRender(0.0625F);
+
+						if (lmm.isSneaking()) {
+							GlStateManager.translate(0.0F, 0.2F, 0.0F);
+						}
+						boolean flag = handindexes[i] == 1;
+
+						GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+						GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+						/* 初期モデル構成で
+						 * x: 手の甲に垂直な方向(-で向かって右に移動)
+						 * y: 体の面に垂直な方向(-で向かって背面方向に移動)
+						 * z: 腕に平行な方向(-で向かって手の先方向に移動)
+						 */
+						GlStateManager.translate(flag ? -0.0125F : 0.0125F, 0.05f, -0.15f);
+						Minecraft.getMinecraft().getItemRenderer().renderItemSide(lmm, itemstack,
+								flag ?
+										ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND :
+										ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND,
+								flag);
+						GlStateManager.popMatrix();
 					}
-					boolean flag = lmm.getDominantArm() == 1;
 
-					GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
-					GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-					/* 初期モデル構成で
-					 * x: 手の甲に垂直な方向(-で向かって右に移動)
-					 * y: 体の面に垂直な方向(-で向かって背面方向に移動)
-					 * z: 腕に平行な方向(-で向かって手の先方向に移動)
-					 */
-					GlStateManager.translate(flag ? -0.0125F : 0.0125F, 0.05f, -0.15f);
-					Minecraft.getMinecraft().getItemRenderer().renderItemSide(lmm, itemstack,
-							flag ?
-									ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND :
-									ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND,
-							flag);
-					GlStateManager.popMatrix();
+					i++;
 				}
 
 			}

@@ -289,28 +289,31 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		ItemStack buffer = par1ItemStack;
 		int originalStackSize = buffer.stackSize;
 
-		for (int i=0; i < maxInventorySize; i++) {
-			if (mainInventory[i] != null && mainInventory[i].getItem() == buffer.getItem()) {
-				int maxStackSize = mainInventory[i].getItem().getItemStackLimit(mainInventory[i]);
-				if (mainInventory[i].stackSize == maxStackSize) continue;
+		// Can be merged to dedicated slots
+		for (int i=0; i < getSizeInventory(); i++) {
+			ItemStack targetStack = getStackInSlot(i);
+
+			if (targetStack != null && targetStack.getItem() == buffer.getItem()) {
+				int maxStackSize = targetStack.getItem().getItemStackLimit(targetStack);
+				if (targetStack.stackSize == maxStackSize) continue;
 
 				// Check item damage and NBT
 				boolean flag = true;
-				flag &= mainInventory[i].getItemDamage() == buffer.getItemDamage();
+				flag &= targetStack.getItemDamage() == buffer.getItemDamage();
 				flag &= buffer.getTagCompound() == null ?
-						mainInventory[i].getTagCompound() == null :
-							buffer.getTagCompound().equals(mainInventory[i].getTagCompound());
+						targetStack.getTagCompound() == null :
+							buffer.getTagCompound().equals(targetStack.getTagCompound());
 				if (!flag) continue;
 
 				// Merge stack
-				int floorSize = mainInventory[i].stackSize + buffer.stackSize - maxStackSize;
+				int floorSize = targetStack.stackSize + buffer.stackSize - maxStackSize;
 				if (floorSize > 0) {
-					mainInventory[i].stackSize = maxStackSize;
-					mainInventory[i].animationsToGo = 5;
+					targetStack.stackSize = maxStackSize;
+					targetStack.animationsToGo = 5;
 					buffer.stackSize = floorSize;
 				} else {
-					mainInventory[i].stackSize = floorSize + maxStackSize;
-					mainInventory[i].animationsToGo = 5;
+					targetStack.stackSize = floorSize + maxStackSize;
+					targetStack.animationsToGo = 5;
 					buffer.stackSize = 0;
 					break;
 				}
@@ -318,7 +321,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		}
 
 		if (buffer.stackSize > 0 && empty >= 0) {
-			mainInventory[empty] = ItemStack.copyItemStack(buffer);
+			setInventorySlotContents(empty, ItemStack.copyItemStack(buffer));
 			buffer.stackSize = 0;
 		}
 
