@@ -549,10 +549,10 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack returned = null;
-		if (mainInventory[index] != null) {
-			returned = mainInventory[index].splitStack(count);
-			if (mainInventory[index].stackSize == 0) {
-				mainInventory[index] = null;
+		if (getStackInSlot(index) != null) {
+			returned = getStackInSlot(index).splitStack(count);
+			if (getStackInSlot(index).stackSize == 0) {
+				setInventorySlotContents(index, null);
 			}
 			return returned;
 		}
@@ -565,15 +565,15 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		ItemStack aStack;
 		if (index >= handInventoryOffset + 1) {
 			aStack = ItemStack.copyItemStack(offHandInventory[index - (handInventoryOffset + 1)]);
-			offHandInventory[index - (handInventoryOffset)] = null;
+			offHandInventory[index - (handInventoryOffset + 1)] = null;
 		}
 		if (index >= handInventoryOffset) {
 			aStack = ItemStack.copyItemStack(mainHandInventory[index - handInventoryOffset]);
 			mainHandInventory[index - handInventoryOffset] = null;
 		}
 		if (index >= maxInventorySize) {
-			aStack = ItemStack.copyItemStack(armorInventory[index-maxInventorySize]);
-			armorInventory[index-maxInventorySize] = null;
+			aStack = ItemStack.copyItemStack(armorInventory[index - maxInventorySize]);
+			armorInventory[index - maxInventorySize] = null;
 		} else {
 			aStack = ItemStack.copyItemStack(mainInventory[index]);
 			mainInventory[index] = null;
