@@ -57,11 +57,11 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
+		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
 			if (litemstack.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack) && owner.maidInventory.getInventorySlotContainItem(Items.blaze_powder) > 0) {
 				owner.setMaidMode("Pharmacist");
-				if (AchievementsLMRE.ac_Pharmacist != null) {
+				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Pharmacist);
 				}
 				return true;
@@ -89,6 +89,10 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	@Override
 	public int getNextEquipItem(int pMode) {
 		int li;
+		if ((li = super.getNextEquipItem(pMode)) >= 0) {
+			return li;
+		}
+
 		ItemStack litemstack;
 
 		// モードに応じた識別判定、速度優先
@@ -96,11 +100,11 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		case mmode_Pharmacist :
 			litemstack = owner.getCurrentEquippedItem();
 			if (!(inventryPos > 0 && litemstack != null && !PotionUtils.getEffectsFromStack(litemstack).isEmpty())) {
-				for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
+				for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 					litemstack = owner.maidInventory.getStackInSlot(li);
 					if (litemstack != null) {
 						// 対象は水ポーション
-						if (litemstack.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack)) {
+						if (isTriggerItem(pMode, litemstack)) {
 							return li;
 						}
 					}
@@ -110,6 +114,14 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		}
 
 		return -1;
+	}
+
+	@Override
+	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+		if (par1ItemStack == null) {
+			return false;
+		}
+		return par1ItemStack.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(par1ItemStack);
 	}
 
 	@Override

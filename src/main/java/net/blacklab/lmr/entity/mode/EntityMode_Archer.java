@@ -8,7 +8,6 @@ import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
-import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.block.state.IBlockState;
@@ -90,17 +89,18 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
+		ItemStack litemstack = owner.getHandSlotForModeChange();
+
 		if (litemstack != null) {
 			if (litemstack.getItem() instanceof ItemBow || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Bow", litemstack.getItem())) {
 				if (owner.maidInventory.getInventorySlotContainItem(ItemFlintAndSteel.class) > -1) {
 					owner.setMaidMode("Blazingstar");
-					if (AchievementsLMRE.ac_BlazingStar != null) {
+					if (pentityplayer != null) {
 						pentityplayer.addStat(AchievementsLMRE.ac_BlazingStar);
 					}
 				} else {
 					owner.setMaidMode("Archer");
-					if (AchievementsLMRE.ac_Archer != null) {
+					if (pentityplayer != null) {
 						pentityplayer.addStat(AchievementsLMRE.ac_Archer);
 					}
 				}
@@ -131,18 +131,23 @@ public class EntityMode_Archer extends EntityModeBase {
 	@Override
 	public int getNextEquipItem(int pMode) {
 		int li;
+		if ((li = super.getNextEquipItem(pMode)) >= 0) {
+			return li;
+		}
+
 		ItemStack litemstack;
 
 		// モードに応じた識別判定、速度優先
 		switch (pMode) {
 		case mmode_Archer :
 		case mmode_Blazingstar :
-			for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
+			// Except off hand slot
+			for (li = 0; li < owner.maidInventory.getSizeInventory() - 1; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
 
 				// 射手
-				if (litemstack.getItem() instanceof ItemBow || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Bow", litemstack.getItem())) {
+				if (isTriggerItem(pMode, litemstack)) {
 					return li;
 				}
 			}
@@ -153,16 +158,27 @@ public class EntityMode_Archer extends EntityModeBase {
 	}
 
 	@Override
+	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+		if (par1ItemStack == null) {
+			return false;
+		}
+		return par1ItemStack.getItem() instanceof ItemBow || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Bow", par1ItemStack.getItem());
+	}
+
+	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
+		if (pItemStack == null) {
+			return false;
+		}
 		UUID ls = owner.getMaidMasterUUID();
 		return (pItemStack.getItem() instanceof ItemBow) || TriggerSelect.checkTrigger(ls, "Bow", pItemStack.getItem());
 	}
-	
+
 	@Override
 	public boolean isSearchEntity() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean checkEntity(int pMode, Entity pEntity) {
 		if (pMode == mmode_Archer && !MaidHelper.isTargetReachable(owner, pEntity, 100)) return false;

@@ -4,26 +4,23 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -464,33 +461,17 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	public boolean isItemBurned(int index) {
 		// 燃えるアイテムか?
-		return index > -1 && isItemBurned(getStackInSlot(index));
-	}
-
-	public static boolean isItemBurned(ItemStack pItemstack) {
-		return (pItemstack != null &&
-				TileEntityFurnace.getItemBurnTime(pItemstack) > 0);
+		return index > -1 && ItemHelper.isItemBurned(getStackInSlot(index));
 	}
 
 	public boolean isItemSmelting(int index) {
 		// 燃えるアイテムか?
-		return isItemSmelting(getStackInSlot(index));
-	}
-
-	public static boolean isItemSmelting(ItemStack pItemstack) {
-		return (pItemstack != null && FurnaceRecipes.instance().getSmeltingResult(pItemstack) != null);
+		return ItemHelper.isItemSmelting(getStackInSlot(index));
 	}
 
 	public boolean isItemExplord(int index) {
 		// 爆発物？
-		return (index >= 0) && isItemExplord(getStackInSlot(index));
-	}
-
-	public static boolean isItemExplord(ItemStack pItemstack) {
-		if (pItemstack == null)
-			return false;
-		Item li = pItemstack.getItem();
-		return (pItemstack != null && li instanceof ItemBlock && Block.getBlockFromItem(li).getMaterial(Block.getBlockFromItem(li).getDefaultState()) == Material.tnt);
+		return (index >= 0) && ItemHelper.isItemExplord(getStackInSlot(index));
 	}
 
 	// インベントリの転送関連

@@ -738,9 +738,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if (!maidModeList.containsKey(pindex)) return false;
 		if (maidMode == pindex) return true;
 
-		if (pplaying) {
-
-		} else {
+		if (!pplaying) {
 			mstatWorkingInt = pindex;
 		}
 		mstatModeName = getMaidModeString(pindex);
@@ -2469,26 +2467,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			// サーバー側処理
 			// アイテム使用状態の更新
 			dataWatcher.set(EntityLittleMaid.dataWatch_ItemUse, litemuse);
-			// インベントリの更新
-//			if (!mstatOpenInventory) {
-				// TODO メインインベントリに対する処理は既に行っているので，そこまで再チェックする必要がない・・・たぶん．
-			/*
-				for (int li = InventoryLittleMaid.maxInventorySize; li < maidInventory.getSizeInventory(); li++) {
-					// インベントリの中身が変わった
-					if (maidInventory.isChanged(li)) {
-						ItemStack st = maidInventory.getStackInSlot(li);
-						for(EntityEquipmentSlot lSlot: EntityEquipmentSlot.values()) {
-							if (lSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR &&
-							lSlot.getIndex() == li - InventoryLittleMaid.maxInventorySize) {
-								((WorldServer)worldObj).getEntityTracker().sendToAllTrackingEntity(this, new SPacketEntityEquipment(getEntityId(), lSlot, st));
-							}
-						}
-						maidInventory.resetChanged(li);
-						LittleMaidReengaged.Debug("ID:%d-%s - Slot(%d-%d,%d) Update.", getEntityId(), worldObj.isRemote ? "Client" : "Server", li, mstatSwingStatus[0].index, mstatSwingStatus[1].index);
-					}
-//				}
-			}
-			*/
 
 			// 弓構え
 			mstatAimeBow &= !getSwingStatusDominant().canAttack();
@@ -2688,7 +2666,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void onInventoryChanged() {
 		checkClockMaid();
 		checkHeadMount();
+		if (getActiveModeClass() != null && getHandSlotForModeChange() != null)
+			if (maidInventory.isChanged(InventoryLittleMaid.handInventoryOffset) ||
+					maidInventory.isChanged(InventoryLittleMaid.handInventoryOffset + 1)) {
+				setMaidModeAuto(getMaidMasterEntity());
+			}
+
 		getNextEquipItem();
+
 //		setArmorTextureValue();
 	}
 
@@ -2696,10 +2681,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * インベントリにある次の装備品を選択
 	 */
 	public boolean getNextEquipItem() {
-		if (worldObj.isRemote) {
-//			return false;
-		}
-
 		int li;
 		if (isActiveModeClass()) {
 			li = getActiveModeClass().getNextEquipItem(maidMode);
@@ -2708,6 +2689,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 		setEquipItem(getDominantArm(), li);
 		return li > -1;
+	}
+
+	public ItemStack getHandSlotForModeChange() {
+		return maidInventory.getStackInSlot(InventoryLittleMaid.handInventoryOffset);
 	}
 
 	public void setEquipItem(int pArm, int pIndex) {
@@ -3032,21 +3017,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 									setFreedom(isFreedom());
 									if (isMaidWait()) {
 										// 動作モードの切替
-										boolean lflag = false;
-										setActiveModeClass(null);
-										for (int li = 0; li < maidEntityModeList.size() && !lflag; li++) {
-											lflag = maidEntityModeList.get(li).changeMode(par1EntityPlayer);
-											if (lflag) {
-												setActiveModeClass(maidEntityModeList.get(li));
-											}
-										}
-										if (!lflag) {
-											setMaidMode("Escorter");
-											setEquipItem(-1);
-//											maidInventory.currentItem = -1;
-										}
+										setMaidModeAuto(par1EntityPlayer);
 										setMaidWait(false);
-										getNextEquipItem();
 									} else {
 										// 待機
 										setMaidWait(true);
@@ -3250,6 +3222,32 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			return true;
 		}
 
+		return false;
+	}
+
+	/**
+	 * Set maid's mode automatically.
+	 * @return whether the mode was changed
+	 */
+	private boolean setMaidModeAuto(EntityPlayer par1EntityPlayer) {
+		boolean lflag = false;
+		int orgnMode = getMaidModeInt();
+
+		setActiveModeClass(null);
+		for (int li = 0; li < maidEntityModeList.size() && !lflag; li++) {
+			lflag = maidEntityModeList.get(li).changeMode(par1EntityPlayer);
+			if (lflag) {
+				setActiveModeClass(maidEntityModeList.get(li));
+			}
+		}
+		if (!lflag) {
+			setMaidMode("Escorter");
+			setEquipItem(-1);
+//			maidInventory.currentItem = -1;
+		}
+		getNextEquipItem();
+
+		if (orgnMode != getMaidModeInt()) return true;
 		return false;
 	}
 

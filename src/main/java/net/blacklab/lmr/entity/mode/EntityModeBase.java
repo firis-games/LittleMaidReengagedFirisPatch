@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -23,7 +24,7 @@ import net.minecraft.util.math.Vec3d;
 public abstract class EntityModeBase {
 
 	public final EntityLittleMaid owner;
-	
+
 	public boolean isAnytimeUpdate = false;
 
 	/**
@@ -107,15 +108,15 @@ public abstract class EntityModeBase {
 	}
 
 	/**
-	 * 砂糖でモードチェンジした時。
+	 * When true, this mode class will be used.
+	 * *pentityplayer became nullable!! Be careful when use it!!*
 	 */
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		return false;
 	}
 
 	/**
-	 * モードチェンジ時の設定処理の本体。
-	 * こっちに処理を書かないとロード時におかしくなるかも？
+	 * Called post changing mode.
 	 */
 	public boolean setMode(int pMode) {
 		return false;
@@ -126,10 +127,32 @@ public abstract class EntityModeBase {
 	 * 戻り値はスロット番号
 	 */
 	public int getNextEquipItem(int pMode) {
-		// 未選択
+		if (isTriggerItem(pMode, owner.getHandSlotForModeChange())) {
+			return InventoryLittleMaid.handInventoryOffset;
+		}
 		return -1;
 	}
-	
+
+	/**
+	 * Returns whether the item is used as main item of this class.
+	 * Before using par1ItemStack, NULL CHECKING IS REQUIRED!
+	 */
+	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+		return false;
+	}
+
+	/**
+	 * Swap inventory contents between [index] and MAIN_HAND slot.
+	 * @param index
+	 */
+	protected void swapItemIntoMainHandSlot(int index) {
+		ItemStack lStack = owner.maidInventory.getStackInSlot(index);
+		ItemStack dStack = owner.getHandSlotForModeChange();
+
+		owner.maidInventory.setInventorySlotContents(InventoryLittleMaid.handInventoryOffset, lStack);
+		owner.maidInventory.setInventorySlotContents(index, dStack);
+	}
+
 	/**
 	 * アイテム回収可否の判定式。
 	 * 拾いに行くアイテムの判定。
@@ -227,7 +250,7 @@ public abstract class EntityModeBase {
 	 */
 	public void updateBlock() {
 	}
-	
+
 	/**
 	 * ワープ時にEntityから呼ばれる．
 	 */
@@ -254,7 +277,7 @@ public abstract class EntityModeBase {
 	public int colorMultiplier(float pLight, float pPartialTicks) {
 		return 0;
 	}
-	
+
 	/**
 	 * 被ダメ時の処理１。
 	 * 0以上を返すと処理を乗っ取る。
@@ -292,14 +315,14 @@ public abstract class EntityModeBase {
 	public double getDistanceSqToStartFollow() {
 		return 36d;
 	}
-	
+
 	/**
 	 * Returns the squared distance from master to teleport.
 	 */
 	public double getLimitRangeSqOnFollow() {
 		return 144d;
 	}
-	
+
 	/**
 	 * Returns the squared radius of the area on which freedom maids can act.
 	 */

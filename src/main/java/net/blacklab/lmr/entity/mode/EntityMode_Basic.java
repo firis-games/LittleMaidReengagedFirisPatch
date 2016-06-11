@@ -110,7 +110,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
+		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
 			if (UtilModeFarmer.isHoe(owner, litemstack)) {
 				owner.setMaidMode("FarmPorter");
@@ -144,10 +144,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	@Override
 	public int getNextEquipItem(int pMode) {
 		// Use mainhand slot prior
-		if (owner.getHeldItemMainhand() != null) {
-			return InventoryLittleMaid.handInventoryOffset;
-		}
-		return 0;
+		return -1;
 	}
 
 	@Override

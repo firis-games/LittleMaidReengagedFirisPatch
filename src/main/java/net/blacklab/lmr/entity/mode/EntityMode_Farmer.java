@@ -2,7 +2,6 @@ package net.blacklab.lmr.entity.mode;
 
 import java.util.Iterator;
 
-import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.api.mode.UtilModeFarmer;
@@ -10,7 +9,6 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.TriggerSelect;
-import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockFarmland;
@@ -19,14 +17,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 
 /**
  * メイド農家。付近の農地に移動し耕作可能であれば耕す。
@@ -34,7 +30,7 @@ import net.minecraft.util.math.Vec3d;
  *
  */
 public class EntityMode_Farmer extends EntityModeBase {
-	
+
 	public static final int mmode_Farmer = 0x0023;
 	public static final int WATER_RADIUS = 4;
 
@@ -44,7 +40,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		super(pEntity);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
-	
+
 	@Override
 	public void init() {
 		// TODO 自動生成されたメソッド・スタブ
@@ -64,18 +60,18 @@ public class EntityMode_Farmer extends EntityModeBase {
 		EntityAITasks[] ltasks = new EntityAITasks[2];
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = pDefaultTargeting;
-		
+
 		owner.addMaidMode(ltasks, "Farmer", mmode_Farmer);
 	}
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		// TODO 自動生成されたメソッド・スタブ
-		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
+		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
 			if (UtilModeFarmer.isHoe(owner, litemstack)) {
 				owner.setMaidMode("Farmer");
-				if (AchievementsLMRE.ac_Farmer != null) {
+				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Farmer);
 				}
 				return true;
@@ -94,22 +90,26 @@ public class EntityMode_Farmer extends EntityModeBase {
 			owner.aiShooting.setEnable(false);
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	@Override
 	public int getNextEquipItem(int pMode) {
 		int li;
+		if ((li = super.getNextEquipItem(pMode)) >= 0) {
+			return InventoryLittleMaid.handInventoryOffset;
+		}
+
 		ItemStack litemstack;
-		
+
 		// モードに応じた識別判定、速度優先
 		switch (pMode) {
-		case mmode_Farmer : 
-			for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
+		case mmode_Farmer :
+			for (li = 0; li < owner.maidInventory.getSizeInventory() - 1; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
-				
+
 				// クワ
 				if (UtilModeFarmer.isHoe(owner,litemstack)) {
 					return li;
@@ -117,7 +117,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 			}
 			break;
 		}
-		
+
 		return -1;
 	}
 
@@ -126,7 +126,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		if(pItemStack==null) return false;
 		return true;//UtilModeFarmer.isHoe(owner, pItemStack)||UtilModeFarmer.isSeed(pItemStack.getItem())||UtilModeFarmer.isCrop(pItemStack.getItem());
 	}
-	
+
 	@Override
 	public boolean isSearchBlock() {
 		return !owner.isMaidWait()&&(owner.getCurrentEquippedItem()!=null);
@@ -140,7 +140,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 	@Override
 	public boolean checkBlock(int pMode, int px, int py, int pz) {
 		if (!super.checkBlock(pMode, px, py, pz)) return false;
-		
+
 		if(!VectorUtil.canMoveThrough(owner, 0.9D, px + 0.5D, py + 1.9D, pz + 0.5D, py==MathHelper.floor_double(owner.posY-1D), true, false)) return false;
 		if(isUnfarmedLand(px,py,pz)) return true;
 		if(isFarmedLand(px,py,pz)){
@@ -170,12 +170,12 @@ public class EntityMode_Farmer extends EntityModeBase {
 		ItemStack curStack = owner.getCurrentEquippedItem();
 
 		boolean haveNothing = !UtilModeFarmer.isHoe(owner,curStack);
-		
+
 		if (!haveNothing && isUnfarmedLand(px,py,pz) &&
 				curStack.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
 			owner.setSwing(10, EnumSound.Null, false);
 			owner.playLittleMaidSound(EnumSound.farmer_farm, false);
-			
+
 			/*
 			if (owner.maidAvatar.capabilities.isCreativeMode) {
 				lis.stackSize = li;
@@ -216,7 +216,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void onUpdate(int pMode) {
 		// TODO 自動生成されたメソッド・スタブ
@@ -262,7 +262,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		return (Block.isEqualTo(b, Blocks.dirt)||Block.isEqualTo(b, Blocks.grass))&&
 				owner.worldObj.isAirBlock(new BlockPos(x,y+1,z)) && isBlockWatered(x, y, z);
 	}
-	
+
 	protected boolean isFarmedLand(int x, int y, int z){
 		//耕されていて、直上が空気ブロック
 		IBlockState state = owner.worldObj.getBlockState(new BlockPos(x,y,z));
@@ -271,7 +271,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		}
 		return false;
 	}
-	
+
 	protected boolean isCropGrown(int x, int y, int z){
 		BlockPos position = new BlockPos(x, y, z);
 		IBlockState state = owner.worldObj.getBlockState(position);
@@ -283,7 +283,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		}
 		return false;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	protected boolean isBlockWatered(int x, int y, int z){
 		// 雨天時は検索範囲を制限
@@ -300,7 +300,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 			{
 				return false;
 			}
-			
+
 			mutableblockpos = (BlockPos.MutableBlockPos)iterator.next();
 		}
 		while ((iState = owner.worldObj.getBlockState(mutableblockpos)).getBlock().getMaterial(iState) != Material.water);

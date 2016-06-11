@@ -22,8 +22,7 @@ public class UtilModeFarmer {
 	 * 渡されたItemStackがクワのものかどうか
 	 */
 	public static boolean isHoe(EntityLittleMaid owner, ItemStack pItemStack){
-		if(pItemStack==null) return false;
-		if(pItemStack.getItem()==null) return false;
+		if(pItemStack == null || pItemStack.getItem() == null) return false;
 		return pItemStack.getItem() instanceof ItemHoe ||
 				TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Hoe", pItemStack.getItem());
 	}

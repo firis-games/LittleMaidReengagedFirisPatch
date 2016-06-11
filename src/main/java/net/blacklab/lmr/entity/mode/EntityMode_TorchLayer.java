@@ -27,7 +27,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityMode_TorchLayer extends EntityModeBase {
-	
+
 	public static final int mmode_Torcher = 0x0020;
 
 
@@ -58,17 +58,17 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		EntityAITasks[] ltasks = new EntityAITasks[2];
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = pDefaultTargeting;
-		
+
 		owner.addMaidMode(ltasks, "Torcher", mmode_Torcher);
 	}
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
+		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
 			if (litemstack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Torch", litemstack.getItem())) {
 				owner.setMaidMode("Torcher");
-				if (AchievementsLMRE.ac_TorchLayer != null) {
+				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_TorchLayer);
 				}
 				return true;
@@ -86,36 +86,49 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 			owner.aiShooting.setEnable(false);
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	@Override
 	public int getNextEquipItem(int pMode) {
 		int li;
+		if ((li = super.getNextEquipItem(pMode)) >= 0) {
+			return li;
+		}
+
 		ItemStack litemstack;
-		
+
 		// モードに応じた識別判定、速度優先
 		switch (pMode) {
-		case mmode_Torcher : 
-			for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
+		case mmode_Torcher :
+			for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
-				
+
 				// 松明
-				if (litemstack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Torch", litemstack.getItem())) {
-					return li;
+				if (isTriggerItem(pMode, litemstack)) {
+					swapItemIntoMainHandSlot(li);
+					return InventoryLittleMaid.handInventoryOffset;
 				}
 			}
 			break;
 		}
-		
+
 		return -1;
 	}
 
 	@Override
+	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+		if (par1ItemStack == null) {
+			return false;
+		}
+		return par1ItemStack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Torch", par1ItemStack.getItem());
+	}
+
+	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
-		return pItemStack.getItem() == Item.getItemFromBlock(Blocks.torch);
+		return isTriggerItem(owner.getMaidModeInt(), pItemStack);
 	}
 
 	@Override
@@ -132,7 +145,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		World worldObj = owner.worldObj;
 		//離れすぎている
 		if (!MaidHelper.isTargetReachable(owner, new Vec3d(px, py, pz), 0)) return 15;
-		
+
 		BlockPos targetPos = new BlockPos(px, py, pz);
 		if (!owner.isMaidWait()) {
 			int a = worldObj.getLight(targetPos,true);
@@ -140,11 +153,11 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		}
 		return 15;
 	}
-	
+
 	@Override
 	public boolean checkBlock(int pMode, int px, int py, int pz) {
 		if (!super.checkBlock(pMode, px, py, pz)) return false;
-		
+
 		// アイテムを置けない場合
 		Item heldItem = owner.getHeldItem(EnumHand.MAIN_HAND).getItem();
 		if (heldItem instanceof ItemBlock) {
@@ -167,9 +180,9 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	public boolean executeBlock(int pMode, int px, int py, int pz) {
 		ItemStack lis = owner.getCurrentEquippedItem();
 		if (lis == null) return false;
-		
+
 		if(lis.getItem()!=Item.getItemFromBlock(Blocks.torch)) return false;
-		
+
 		int li = lis.stackSize;
 		// TODO:当たり判定をどうするか
 		if (lis.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px, py - 1, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
@@ -190,7 +203,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 			EntityPlayer par6EntityPlayer, ItemStack par7ItemStack, ItemBlock pItemBlock) {
 		// TODO:マルチ対策用、ItemBlockから丸パクリバージョンアップ時は確認すること
 		Block var8 = par1World.getBlockState(new BlockPos(par2, par3, par4)).getBlock();
-		
+
 		if (Block.isEqualTo(var8, Blocks.snow)) {
 			par5 = EnumFacing.UP;
 		} else if (!Block.isEqualTo(var8, Blocks.vine) && !Block.isEqualTo(var8, Blocks.tallgrass) &&
@@ -214,12 +227,12 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 				++par2;
 			}
 		}
-		
+
 		IBlockState iState = par1World.getBlockState(new BlockPos(par2, par3, par4));
 		if (iState.getBlock().getMaterial(iState) instanceof MaterialLiquid) {
 			return false;
 		}
-		
+
 		return par1World.canBlockBePlaced(Block.getBlockFromItem(pItemBlock), new BlockPos(par2, par3, par4), false, par5, (Entity)null, par7ItemStack);
 	}
 
@@ -232,7 +245,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 			int lic = lis.stackSize;
 			Item lii = lis.getItem();
 			World lworld = owner.worldObj;
-			
+
 			// 周囲を検索
 			int lxx = MathHelper.floor_double(owner.posX);
 			int lyy = MathHelper.floor_double(owner.posY);
@@ -262,7 +275,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 					}
 				}
 			}
-			
+
 			if (ll < 8 && lis.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(ltx, lty, ltz), EnumFacing.UP, 0.5F, 1.0F, 0.5F)) {
 //				mod_LMM_littleMaidMob.Debug("torch-inst: %d, %d, %d: %d", ltx, lty, ltz, ll);
 				owner.setSwing(10, LMM_EnumSound.installation, false);
@@ -279,7 +292,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		}
 */
 	}
-	
+
 	@Override
 	public void onWarp() {
 		PathEntity pathEntity = owner.getNavigator().getPath();

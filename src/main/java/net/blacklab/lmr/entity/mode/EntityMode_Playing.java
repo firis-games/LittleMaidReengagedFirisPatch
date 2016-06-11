@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -29,9 +28,9 @@ public class EntityMode_Playing extends EntityModeBase {
 	public static final int mpr_NULL = 0;
 	public static final int mpr_QuickShooter = 0x0010;
 	public static final int mpr_StockShooter = 0x0020;
-	
+
 	public int playingTick = 0;
-	
+
 	public int fcounter;
 
 	public EntityMode_Playing(EntityLittleMaid pEntity) {
@@ -62,10 +61,10 @@ public class EntityMode_Playing extends EntityModeBase {
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = pDefaultTargeting;
 //		ltasks[1] = new EntityAITasks(owner.aiProfiler);
-		
+
 //		ltasks[1].addTask(3, new LMM_EntityAIHurtByTarget(owner, true));
 //		ltasks[1].addTask(4, new LMM_EntityAINearestAttackableTarget(owner, EntityLiving.class, 16F, 0, true));
-		
+
 		owner.addMaidMode(ltasks, "Playing", mmode_Playing);
 	}
 
@@ -77,7 +76,7 @@ public class EntityMode_Playing extends EntityModeBase {
 		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x-1, y, z  )).getBlock(), Blocks.snow_layer) ? 1: 0;
 		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x,   y, z+1)).getBlock(), Blocks.snow_layer) ? 1: 0;
 		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x,   y, z-1)).getBlock(), Blocks.snow_layer) ? 1: 0;
-		
+
 		return snowCnt >= 5;
 	}
 
@@ -87,8 +86,8 @@ public class EntityMode_Playing extends EntityModeBase {
 		int y = MathHelper.floor_double(owner.posY);
 		int z = MathHelper.floor_double(owner.posZ);
 		PathEntity pe = null;
-		
-		// CW方向に検索領域を広げる 
+
+		// CW方向に検索領域を広げる
 		loop_search:
 			for (int a = 2; a < 18 && pe == null; a += 2) {
 				x--;
@@ -116,7 +115,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			return true;
 		}
 		return false;
-			
+
 	}
 
 	protected void playingSnowWar() {
@@ -127,7 +126,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			owner.setSneaking(false);
 			if (!owner.getNextEquipItem()) {
 				owner.setAttackTarget(null);
-				
+
 				owner.getNavigator().clearPathEntity();
 				fcounter = 1;
 			} else if (owner.getAttackTarget() == null) {
@@ -150,7 +149,7 @@ public class EntityMode_Playing extends EntityModeBase {
 				fcounter = 2;
 			}
 			break;
-		
+
 		case 2:
 			// 雪原を探す
 			if (owner.getAttackTarget() == null && owner.getNavigator().noPath()) {
@@ -212,9 +211,9 @@ public class EntityMode_Playing extends EntityModeBase {
 			owner.setJumping(false);
 			owner.getNavigator().clearPathEntity();
 			owner.getLookHelper().setLookPosition(
-					MathHelper.floor_double(owner.posX), 
-					MathHelper.floor_double(owner.posY - 1D), 
-					MathHelper.floor_double(owner.posZ), 
+					MathHelper.floor_double(owner.posX),
+					MathHelper.floor_double(owner.posY - 1D),
+					MathHelper.floor_double(owner.posZ),
 					30F, 40F);
 			owner.setSitting(true);
 			break;
@@ -234,13 +233,13 @@ public class EntityMode_Playing extends EntityModeBase {
 //			isMaidChaseWait = true;
 			owner.setSneaking(true);
 			owner.getLookHelper().setLookPosition(
-					MathHelper.floor_double(owner.posX), 
-					MathHelper.floor_double(owner.posY - 1D), 
-					MathHelper.floor_double(owner.posZ), 
+					MathHelper.floor_double(owner.posX),
+					MathHelper.floor_double(owner.posY - 1D),
+					MathHelper.floor_double(owner.posZ),
 					30F, 40F);
 			break;
 		}
-		
+
 	}
 
 
@@ -254,14 +253,14 @@ public class EntityMode_Playing extends EntityModeBase {
 			// 自由行動中の固体は虎視眈々と隙をうかがう。
 			if (owner.worldObj.isDaytime()) {
 				// 昼間のお遊び
-				
+
 				// 雪原判定
 				if (!owner.isPlaying()) {
 					// TODO:お遊び判定
 					int xx = MathHelper.floor_double(owner.posX);
 					int yy = MathHelper.floor_double(owner.posY);
 					int zz = MathHelper.floor_double(owner.posZ);
-					
+
 					// 3x3が雪の平原ならお遊び判定が発生
 					boolean f = true;
 					for (int z = -1; z < 2; z++) {
@@ -276,20 +275,20 @@ public class EntityMode_Playing extends EntityModeBase {
 					if (f) {
 						// mod_littleMaidMob.Debug(String.format("playRole-%d:%d", entityId, playingRole));
 					}
-					
+
 				} else if (owner.getPlayingRole() >= 0x8000) {
 					// 夜の部終了
 					owner.setPlayingRole(mpr_NULL);
 					fcounter = 0;
 				} else {
 					// お遊びの実行をここに書く？
-					if (owner.getPlayingRole() == mpr_QuickShooter || 
+					if (owner.getPlayingRole() == mpr_QuickShooter ||
 							owner.getPlayingRole() == mpr_StockShooter) {
 						playingSnowWar();
 					}
-					
+
 				}
-				
+
 			} else {
 				if (owner.getPlayingRole() != mpr_NULL) {
 					// 昼の部終了
@@ -297,11 +296,11 @@ public class EntityMode_Playing extends EntityModeBase {
 					fcounter = 0;
 				}
 			}
-			
+
 			// チェスト判定
 			if (owner.getAttackTarget() == null
 					&& owner.maidInventory.getFirstEmptyStack() == -1) {
-				
+
 			}
 		}
 	}
@@ -331,7 +330,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			owner.setBloodsuck(false);
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -339,10 +338,10 @@ public class EntityMode_Playing extends EntityModeBase {
 	public int getNextEquipItem(int pMode) {
 		ItemStack litemstack = null;
 		if (owner.getPlayingRole() != 0) {
-			for (int li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
+			for (int li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
-				
+
 				// 雪球
 				if (litemstack.getItem() instanceof ItemSnowball) {
 					return li;

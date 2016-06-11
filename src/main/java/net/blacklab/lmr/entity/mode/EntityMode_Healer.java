@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -22,7 +23,7 @@ public class EntityMode_Healer extends EntityModeBase {
 
 	public static final int mmode_Healer		= 0x0082;
 
-	
+
 	public EntityMode_Healer(EntityLittleMaid pEntity) {
 		super(pEntity);
 	}
@@ -49,7 +50,7 @@ public class EntityMode_Healer extends EntityModeBase {
 		EntityAITasks[] ltasks = new EntityAITasks[2];
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = new EntityAITasks(owner.aiProfiler);
-		
+
 		// 索敵系
 		ltasks[1].addTask(1, new EntityAIHurtByTarget(owner, true));
 		owner.addMaidMode(ltasks, "Healer", mmode_Healer);
@@ -57,11 +58,11 @@ public class EntityMode_Healer extends EntityModeBase {
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
+		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemFood || (litemstack.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack))) {
+			if (isTriggerItem(mmode_Healer, litemstack)) {
 				owner.setMaidMode("Healer");
-				if (AchievementsLMRE.ac_Healer != null) {
+				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Healer);
 				}
 				return true;
@@ -79,12 +80,16 @@ public class EntityMode_Healer extends EntityModeBase {
 			owner.aiShooting.setEnable(false);
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	@Override
 	public int getNextEquipItem(int pMode) {
+		if (isTriggerItem(pMode, owner.getHandSlotForModeChange())) {
+			return InventoryLittleMaid.handInventoryOffset;
+		}
+
 		switch (pMode) {
 		case mmode_Healer:
 			// Healer
@@ -92,13 +97,21 @@ public class EntityMode_Healer extends EntityModeBase {
 				ItemStack is = owner.maidInventory.getStackInSlot(i);
 				if (is == null) continue;
 				// 対象は食料かポーション
-				if (is.getItem() instanceof ItemFood || (is.getItem() instanceof ItemPotion && CommonHelper.hasEffect(is))) {
+				if (isTriggerItem(pMode, is)) {
 					return i;
 				}
 			}
 			break;
 		}
 		return -1;
+	}
+
+	@Override
+	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+		if (par1ItemStack == null) {
+			return false;
+		}
+		return par1ItemStack.getItem() instanceof ItemFood || (par1ItemStack.getItem() instanceof ItemPotion && CommonHelper.hasEffect(par1ItemStack));
 	}
 
 	@Override
@@ -124,7 +137,7 @@ public class EntityMode_Healer extends EntityModeBase {
 						&& owner.getMaidMasterEntity() != null && owner.getMaidMasterEntity().isEntityAlive()
 						&& owner.getMaidMasterEntity() != null
 						&& owner.canEntityBeSeen(owner.getMaidMasterEntity())) {
-					EntityPlayer lmaster = owner.getMaidMasterEntity(); 
+					EntityPlayer lmaster = owner.getMaidMasterEntity();
 					int h = lmaster.getFoodStats().getFoodLevel();
 					// TODO 頭防具がなんとかなるまで後回し
 					/*
@@ -137,7 +150,7 @@ public class EntityMode_Healer extends EntityModeBase {
 								owner.setEquipItem(j);
 								break;
 							}
-						} 
+						}
 						if (h < 18) {
 							// 自然回復できない腹具合なら食料
 							int j = owner.maidInventory.getInventorySlotContainItemFood();
@@ -149,7 +162,7 @@ public class EntityMode_Healer extends EntityModeBase {
 						break;
 					}
 					*/
-					
+
 					ItemStack itemstack1 = owner.getCurrentEquippedItem();
 					if (itemstack1 != null) {
 						if (itemstack1.getItem() instanceof ItemFood) {
@@ -190,7 +203,7 @@ public class EntityMode_Healer extends EntityModeBase {
 									}
 								}
 							}
-							
+
 							if (lswing) {
 								owner.setSwing(10, EnumSound.healing_potion, true);
 								owner.usePotionTotarget(lmaster);
@@ -203,12 +216,12 @@ public class EntityMode_Healer extends EntityModeBase {
 			}
 		}
 	}
-	
+
 	@Override
 	public double getDistanceSqToStartFollow() {
 		return 9D;
 	}
-	
+
 	@Override
 	public double getLimitRangeSqOnFollow() {
 		return 16D;

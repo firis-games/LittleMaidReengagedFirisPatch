@@ -99,23 +99,23 @@ public class EntityMode_Fencer extends EntityModeBase {
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
+		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Sword", litemstack.getItem())) {
+			if (isTriggerItem(mmode_Fencer, litemstack)) {
 				owner.setMaidMode("Fencer");
-				if (AchievementsLMRE.ac_Fencer != null) {
+				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Fencer);
 				}
-				if (litemstack.getItem() instanceof ItemSpade && AchievementsLMRE.ac_Buster != null) {
+				if (litemstack.getItem() instanceof ItemSpade && pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Buster);
 				}
 				return true;
-			} else  if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Axe", litemstack.getItem())) {
+			} else  if (isTriggerItem(mmode_Bloodsucker, litemstack)) {
 				owner.setMaidMode("Bloodsucker");
-				if (AchievementsLMRE.ac_RandomKiller != null) {
+				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_RandomKiller);
 				}
-				if (litemstack.getItem() instanceof ItemSpade && AchievementsLMRE.ac_Buster != null) {
+				if (litemstack.getItem() instanceof ItemSpade && pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Buster);
 				}
 				return true;
@@ -143,6 +143,10 @@ public class EntityMode_Fencer extends EntityModeBase {
 
 	@Override
 	public int getNextEquipItem(int pMode) {
+		if (isTriggerItem(pMode, owner.getHandSlotForModeChange())) {
+			return InventoryLittleMaid.handInventoryOffset;
+		}
+
 		int li;
 		int ll = -1;
 		double ld = 0;
@@ -152,12 +156,12 @@ public class EntityMode_Fencer extends EntityModeBase {
 		// モードに応じた識別判定、速度優先
 		switch (pMode) {
 		case mmode_Fencer :
-			for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
+			for (li = 0; li < owner.maidInventory.getSizeInventory() - 1; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
 
 				// 剣
-				if (litemstack.getItem() instanceof ItemSword || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Sword", litemstack.getItem())) {
+				if (isTriggerItem(pMode, litemstack)) {
 					return li;
 				}
 
@@ -180,7 +184,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				if (litemstack == null) continue;
 
 				// 斧
-				if (litemstack.getItem() instanceof ItemAxe || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Axe", litemstack.getItem())) {
+				if (isTriggerItem(pMode, litemstack)) {
 					return li;
 				}
 
@@ -199,7 +203,21 @@ public class EntityMode_Fencer extends EntityModeBase {
 			break;
 		}
 
-		return ll;
+		return -1;
+	}
+
+	@Override
+	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+		if (par1ItemStack == null) {
+			return false;
+		}
+		switch (pMode) {
+		case mmode_Fencer:
+			return par1ItemStack.getItem() instanceof ItemSword || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Sword", par1ItemStack.getItem());
+		case mmode_Bloodsucker:
+			return par1ItemStack.getItem() instanceof ItemAxe || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Axe", par1ItemStack.getItem());
+		}
+		return super.isTriggerItem(pMode, par1ItemStack);
 	}
 
 	@Override
@@ -207,16 +225,16 @@ public class EntityMode_Fencer extends EntityModeBase {
 		// 装備アイテムを回収
 		return pItemStack.getItem() instanceof ItemSword || pItemStack.getItem() instanceof ItemAxe;
 	}
-	
+
 	@Override
 	public boolean isSearchEntity() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean checkEntity(int pMode, Entity pEntity) {
 		if (pMode == mmode_Fencer && !MaidHelper.isTargetReachable(owner, pEntity, 0)) return false;
-		
+
 		return !owner.getIFF(pEntity);
 	}
 
@@ -265,7 +283,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 	public double getLimitRangeSqOnFollow() {
 		return 18 * 18;
 	}
-	
+
 	@Override
 	public double getFreedomTrackingRangeSq() {
 		return 25 * 25;

@@ -4,8 +4,8 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
-import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -177,16 +177,16 @@ public class EntityMode_Shearer extends EntityModeBase {
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
+		ItemStack litemstack = owner.getHandSlotForModeChange();;
 		if (litemstack != null) {
 			if (litemstack.getItem() instanceof ItemShears) {
 				owner.setMaidMode("Ripper");
-				if (AchievementsLMRE.ac_Shearer != null) {
+				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Shearer);
 				}
 				return true;
 			}
-			if (owner.maidInventory.isItemExplord(0)) {
+			if (ItemHelper.isItemExplord(litemstack)) {
 				owner.setMaidMode("Detonator");
 				return true;
 			}
@@ -217,26 +217,30 @@ public class EntityMode_Shearer extends EntityModeBase {
 	@Override
 	public int getNextEquipItem(int pMode) {
 		int li;
+		if ((li = super.getNextEquipItem(pMode)) >= 0) {
+			return li;
+		}
+
 		ItemStack litemstack;
 
 		// モードに応じた識別判定、速度優先
 		switch (pMode) {
 		case mmode_Ripper :
 		case mmode_TNTD :
-			for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
+			for (li = 0; li < owner.maidInventory.getSizeInventory() - 1; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
 
 				// はさみ
-				if (litemstack.getItem() instanceof ItemShears) {
+				if (isTriggerItem(pMode, litemstack)) {
 					return li;
 				}
 			}
 			break;
 		case mmode_Detonator :
-			for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
+			for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				// 爆発物
-				if (owner.maidInventory.isItemExplord(li)) {
+				if (isTriggerItem(pMode, owner.maidInventory.getStackInSlot(li))) {
 					return li;
 				}
 			}
@@ -246,7 +250,21 @@ public class EntityMode_Shearer extends EntityModeBase {
 		return -1;
 	}
 
+	@Override
+	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+		if (par1ItemStack == null) {
+			return false;
+		}
 
+		switch (pMode) {
+		case mmode_Ripper:
+		case mmode_TNTD:
+			return par1ItemStack.getItem() instanceof ItemShears;
+		case mmode_Detonator:
+			return ItemHelper.isItemExplord(par1ItemStack);
+		}
+		return super.isTriggerItem(pMode, par1ItemStack);
+	}
 
 	@Override
 	public boolean attackEntityAsMob(int pMode, Entity pEntity) {
@@ -357,7 +375,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 	@Override
 	public boolean damageEntity(int pMode, DamageSource par1DamageSource, float par2) {
 		// 起爆
-		if (pMode == mmode_Detonator && InventoryLittleMaid.isItemExplord(owner.getCurrentEquippedItem())) {
+		if (pMode == mmode_Detonator && ItemHelper.isItemExplord(owner.getCurrentEquippedItem())) {
 			if (timeSinceIgnited == -1) {
 				owner.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.tnt.primed")), 1.0F, 0.5F);
 				owner.getDataManager().set(EntityLittleMaid.dataWatch_Free, Integer.valueOf(1));

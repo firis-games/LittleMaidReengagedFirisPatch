@@ -4,6 +4,7 @@ import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,17 +44,17 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		EntityAITasks[] ltasks = new EntityAITasks[2];
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = new EntityAITasks(owner.aiProfiler);
-		
+
 		owner.addMaidMode(ltasks, "Cooking", mmode_Cooking);
 	}
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		ItemStack litemstack = owner.maidInventory.getStackInSlot(0);
+		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
-			if (owner.maidInventory.isItemBurned(0)) {
+			if (ItemHelper.isItemBurned(litemstack)) {
 				owner.setMaidMode("Cooking");
-				if (AchievementsLMRE.ac_Cook != null) {
+				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Cook);
 				}
 				return true;
@@ -74,7 +75,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 			owner.aiShooting.setEnable(false);
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -84,27 +85,28 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		// モードに応じた識別判定、速度優先
 		switch (pMode) {
 		case mmode_Cooking :
-			for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
+			for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				// 調理
 				if (owner.maidInventory.isItemBurned(li)) {
-					return li;
+					swapItemIntoMainHandSlot(li);
+					return InventoryLittleMaid.handInventoryOffset;
 				}
 			}
 			break;
 		}
-		
+
 		return -1;
 	}
 
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
-		return InventoryLittleMaid.isItemBurned(pItemStack) || InventoryLittleMaid.isItemSmelting(pItemStack);
+		return ItemHelper.isItemBurned(pItemStack) || ItemHelper.isItemSmelting(pItemStack);
 	}
 
 	@Override
 	public boolean isSearchBlock() {
 		if (!super.isSearchBlock()) return false;
-		
+
 		// 燃焼アイテムを持っている？
 		if (owner.getCurrentEquippedItem() != null && owner.maidInventory.getSmeltingItem() > -1) {
 			fDistance = Double.MAX_VALUE;
@@ -119,7 +121,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 	public boolean shouldBlock(int pMode) {
 		return owner.maidTileEntity instanceof TileEntityFurnace &&
 				(((TileEntityFurnace)owner.maidTileEntity).isBurning() ||
-				InventoryLittleMaid.isItemBurned(owner.getCurrentEquippedItem()));
+				ItemHelper.isItemBurned(owner.getCurrentEquippedItem()));
 	}
 
 	@Override
@@ -128,18 +130,18 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		if (!(ltile instanceof TileEntityFurnace)) {
 			return false;
 		}
-		
+
 		// 世界のメイドから
 		if (checkWorldMaid(ltile)) return false;
 		// 使用していた竈ならそこで終了
 		if (owner.isUsingTile(ltile)) return true;
-		
+
 		double ldis = owner.getDistanceTilePosSq(ltile);
 		if (fDistance > ldis) {
 			owner.setTilePos(ltile);
 			fDistance = ldis;
 		}
-		
+
 		return false;
 	}
 
@@ -148,12 +150,12 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		if (!owner.isEqualTile()) {
 			return false;
 		}
-		
+
 		TileEntityFurnace ltile = (TileEntityFurnace)owner.maidTileEntity;
 		ItemStack litemstack;
 		boolean lflag = false;
 		int li;
-		
+
 		if (owner.getSwingStatusDominant().canAttack()) {
 			// 完成品回収
 			litemstack = ltile.getStackInSlot(2);
@@ -173,7 +175,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 				}
 				ltile.setInventorySlotContents(2, null);
 			}
-				
+
 			// 調理可能品を竈にぽーい
 			if (!lflag && ltile.getStackInSlot(0) == null) {
 				litemstack = ltile.getStackInSlot(2);
@@ -195,12 +197,12 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 					lflag = true;
 				}
 			}
-			
+
 			// 手持ちの燃料をぽーい
 			if (!lflag && ltile.getStackInSlot(1) == null && ltile.getStackInSlot(0) != null) {
 				owner.getNextEquipItem();
 				litemstack = owner.getCurrentEquippedItem();
-				if (InventoryLittleMaid.isItemBurned(litemstack)) {
+				if (ItemHelper.isItemBurned(litemstack)) {
 					if (litemstack.stackSize >= ltile.getInventoryStackLimit()) {
 						ltile.setInventorySlotContents(1, litemstack.splitStack(ltile.getInventoryStackLimit()));
 					} else {
@@ -229,8 +231,8 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 						}
 					}
 				}
-			} 
-			
+			}
+
 			// 燃え終わってるのに燃料口に何かあるなら回収する
 			if (!lflag && !ltile.isBurning() && ltile.getStackInSlot(1) != null) {
 				ItemStack litemstack2 = ltile.removeStackFromSlot(1);
@@ -238,7 +240,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 					owner.playSound("entity.item.pickup");
 					owner.setSwing(5, EnumSound.Null, false);
 					owner.getNextEquipItem();
-					lflag = InventoryLittleMaid.isItemBurned(owner.getCurrentEquippedItem());
+					lflag = ItemHelper.isItemBurned(owner.getCurrentEquippedItem());
 				} else {
 					ltile.setInventorySlotContents(1, litemstack2);
 				}
@@ -271,19 +273,19 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		if (!owner.worldObj.isRemote) {
 			float var3 = pItemStack.getItem().getSmeltingExperience(pItemStack);
 			int var4;
-			
+
 			if (var3 == 0.0F) {
 				pCount = 0;
 			} else if (var3 < 1.0F) {
 				var4 = MathHelper.floor_float(pCount * var3);
-				
+
 				if (var4 < MathHelper.ceiling_float_int(pCount * var3) && (float)Math.random() < pCount * var3 - var4) {
 					++var4;
 				}
-				
+
 				pCount = var4 == 0 ? 1 : var4;
 			}
-			
+
 			while (pCount > 0) {
 				var4 = EntityXPOrb.getXPSplit(pCount);
 				pCount -= var4;
