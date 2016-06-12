@@ -3250,7 +3250,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 		getNextEquipItem();
 
-		if (orgnMode != getMaidModeInt()) return true;
+		if (orgnMode != getMaidModeInt()) {
+			clearTilePosAll();
+			getNavigator().clearPathEntity();
+			setAttackTarget(null);
+			return true;
+		}
 		return false;
 	}
 

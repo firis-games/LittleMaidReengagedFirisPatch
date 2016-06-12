@@ -78,15 +78,23 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 			//fMaid.setTarget(null);
 //			fMaid.getNavigator().clearPathEntity();
 			fTarget = null;
-			resetTask();
+//			resetTask();
 			return false;
 		}
+
 		if (fMaid.getMaidModeInt() == EntityMode_Archer.mmode_Archer ||
 				fMaid.getMaidModeInt() == EntityMode_Archer.mmode_Blazingstar) {
 //			for (ItemStack stack: fMaid.maidInventory.mainInventory) {
 //				if (stack != null && stack.getItem()==Items.arrow || TriggerSelect.checkWeapon(fMaid.getMaidMasterUUID(), "Arrow", stack)) {
-					fTarget = entityliving;
-					return true;
+			// Cannot see
+			if (!fMaid.getEntitySenses().canSee(entityliving)/* &&
+				VectorUtil.canMoveThrough(
+						fMaid, fMaid.getEyeHeight(),
+						fTarget.posX, fTarget.posY+fTarget.getEyeHeight(), fTarget.posZ, false, true, false)*/) {
+				return false;
+			}
+			fTarget = entityliving;
+			return true;
 //				}
 //			}
 		}
@@ -145,7 +153,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 		// 攻撃対象を見る
 		if (fTarget!=null) fMaid.getLookHelper().setLookPositionWithEntity(fTarget, 30F, 30F);
 
-		if(fForget>=15){
+		if(fForget >= 30){
 			resetTask();
 			return;
 		}
