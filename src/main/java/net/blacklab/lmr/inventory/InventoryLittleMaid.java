@@ -401,7 +401,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	public int getSmeltingItem() {
 		// 調理可能アイテムを返す
-		for (int i = 0; i < InventoryLittleMaid.maxInventorySize; i++) {
+		for (int i = 0; i < entityLittleMaid.maidInventory.getSizeInventory(); i++) {
 			if (isItemSmelting(i) && i != currentItem) {
 				ItemStack mi = mainInventory[i];
 				if (mi.getMaxDamage() > 0 && mi.getItemDamage() == 0) {
@@ -486,6 +486,9 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	}
 
 	public void setChanged(int pIndex) {
+		if (pIndex >= getSizeInventory()) {
+			return;
+		}
 		prevItems[pIndex] = new ItemStack(Items.sugar);
 	}
 

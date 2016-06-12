@@ -2697,6 +2697,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	public void setEquipItem(int pArm, int pIndex) {
 //		if (pArm == getDominantArm()) {
+		if (pIndex >= maidInventory.getSizeInventory()) {
+			pIndex = -1;
+		}
 			maidInventory.currentItem = pIndex;
 //		}
 		int li = mstatSwingStatus[pArm].index;

@@ -3,7 +3,6 @@ package net.blacklab.lmr.entity.mode;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.helper.CommonHelper;
@@ -59,7 +58,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack) && owner.maidInventory.getInventorySlotContainItem(Items.blaze_powder) > 0) {
+			if (isTriggerItem(mmode_Pharmacist, litemstack) && owner.maidInventory.getInventorySlotContainItem(Items.blaze_powder) > 0) {
 				owner.setMaidMode("Pharmacist");
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Pharmacist);
@@ -227,7 +226,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				}
 			}
 			// 完成品
-			if (!lflag && inventryPos > InventoryLittleMaid.maxInventorySize) {
+			if (!lflag && inventryPos >= owner.maidInventory.getSizeInventory()) {
 				// ポーションの回収
 				LittleMaidReengaged.Debug("Complete.");
 				for (int li = 0; li < 3 && !lflag; li ++) {
@@ -269,7 +268,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				// ポーション以外を検索
 				LittleMaidReengaged.Debug("Search stuff.");
 //				for (inventryPos = 0; inventryPos < owner.maidInventory.InventoryLittleMaid.maxInventorySize; inventryPos++) {
-				for (; inventryPos < InventoryLittleMaid.maxInventorySize; inventryPos++) {
+				for (; inventryPos < owner.maidInventory.getSizeInventory(); inventryPos++) {
 					litemstack1 = owner.maidInventory.getStackInSlot(inventryPos);
 					if (litemstack1 != null && !(litemstack1.getItem() instanceof ItemPotion)) {
 						LittleMaidReengaged.Debug("Select item %s", litemstack1.getItem().getRegistryName());
@@ -293,12 +292,13 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				}
 				else if (litemstack1 == null || (litemstack1.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack1)) || !PotionUtils.getEffectsFromStack(litemstack1).isEmpty()) {
 					// 対象外アイテムを発見した時に終了
-					inventryPos = InventoryLittleMaid.maxInventorySize;
+					inventryPos = owner.maidInventory.getSizeInventory();
 					lflag = true;
 				}
 				inventryPos++;
 //				owner.maidInventory.currentItem = maidSearchCount;
 				owner.setEquipItem(inventryPos);
+
 			}
 
 
