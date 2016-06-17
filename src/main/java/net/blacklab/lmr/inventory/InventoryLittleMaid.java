@@ -419,7 +419,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		// インベントリの最初のポーションを返す
 		// flag = true: 攻撃・デバフ系、 false: 回復・補助系
 		// potionID: 要求ポーションのID
-		for (int j = 0; j < InventoryLittleMaid.maxInventorySize; j++) {
+		for (int j = 0; j < getSizeInventory(); j++) {
 			if (mainInventory[j] != null
 					&& mainInventory[j].getItem() instanceof ItemPotion) {
 				ItemStack is = mainInventory[j];

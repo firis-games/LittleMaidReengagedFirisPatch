@@ -2853,7 +2853,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * メットを被ってるか
 	 */
 	public boolean isMaskedMaid() {
-		return mstatMaskSelect > -1;
+		return getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null;//mstatMaskSelect > -1;
 	}
 
 	protected void checkHeadMount() {

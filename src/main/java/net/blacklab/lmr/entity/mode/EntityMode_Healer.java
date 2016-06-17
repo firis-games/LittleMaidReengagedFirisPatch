@@ -17,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.ResourceLocation;
 
 public class EntityMode_Healer extends EntityModeBase {
 
@@ -139,13 +138,12 @@ public class EntityMode_Healer extends EntityModeBase {
 						&& owner.canEntityBeSeen(owner.getMaidMasterEntity())) {
 					EntityPlayer lmaster = owner.getMaidMasterEntity();
 					int h = lmaster.getFoodStats().getFoodLevel();
-					// TODO 頭防具がなんとかなるまで後回し
-					/*
+
 					while (owner.isMaskedMaid()) {
 						// 主の状態に合わせてアイテムを選択
 						if (lmaster.getHealth() < 9F) {
 							// HPが減っているときはポーションを使う
-							int j = owner.maidInventory.getInventorySlotContainItemPotion(false, Potion.heal.id, lmaster.isEntityUndead());
+							int j = owner.maidInventory.getInventorySlotContainItemPotion(false, Potion.getIdFromPotion(Potion.getPotionFromResourceLocation("instant_health")), lmaster.isEntityUndead());
 							if (j > -1) {
 								owner.setEquipItem(j);
 								break;
@@ -161,7 +159,6 @@ public class EntityMode_Healer extends EntityModeBase {
 						}
 						break;
 					}
-					*/
 
 					ItemStack itemstack1 = owner.getCurrentEquippedItem();
 					if (itemstack1 != null) {
@@ -187,7 +184,7 @@ public class EntityMode_Healer extends EntityModeBase {
 								PotionEffect potioneffect;
 								for(Iterator iterator = list.iterator(); iterator.hasNext();) {
 									potioneffect = (PotionEffect)iterator.next();
-									if (potioneffect.getPotion() == Potion.potionRegistry.getObject(new ResourceLocation("instant_health"))) {
+									if (potioneffect.getPotion().equals(Potion.getPotionFromResourceLocation("instant_health"))) {
 										if ((6 << potioneffect.getAmplifier()) <= (lmaster.getMaxHealth() - lmaster.getHealth())) {
 //	                                    	mod_littleMaidMob.Debug(String.format("%d <= %d", (6 << potioneffect.getAmplifier()), (masterEntity.func_40117_c() - masterEntity.health)));
 											lswing = true;
