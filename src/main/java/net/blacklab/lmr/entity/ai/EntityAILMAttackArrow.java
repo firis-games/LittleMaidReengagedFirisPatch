@@ -145,10 +145,10 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 
 		double lrange = 225D;
 		double ldist = fMaid.getDistanceSqToEntity(fTarget);
-		boolean lsee = fMaid.getEntitySenses().canSee(fTarget) &&
+		boolean lsee = fMaid.getEntitySenses().canSee(fTarget)/* &&
 				VectorUtil.canMoveThrough(
 						fMaid, fMaid.getEyeHeight(),
-						fTarget.posX, fTarget.posY+fTarget.getEyeHeight(), fTarget.posZ, false, true, false);
+						fTarget.posX, fTarget.posY+fTarget.getEyeHeight(), fTarget.posZ, false, true, false)*/;
 
 		// 攻撃対象を見る
 		if (fTarget!=null) fMaid.getLookHelper().setLookPositionWithEntity(fTarget, 30F, 30F);
