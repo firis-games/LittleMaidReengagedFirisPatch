@@ -23,7 +23,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 public class EventHookLMRE
 {
@@ -40,11 +39,11 @@ public class EventHookLMRE
 	}
 
 	@SubscribeEvent
-	public void onEntitySpawned(EntityJoinWorldEvent event){
+	public void onEntityJoinWorld(EntityJoinWorldEvent event){
 		if(event.getEntity() instanceof EntityLivingBase){
 			event.setCanceled(deleteDoppelganger(true, event.getWorld(), event.getEntity()));
 		}
-		
+
 		if(event.getEntity() instanceof EntityLittleMaid){
 			EntityLittleMaid maid = (EntityLittleMaid) event.getEntity();
 			if(maid.isContract()||maid.isWildSaved) return;
@@ -82,7 +81,7 @@ public class EventHookLMRE
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onLivingAttack(LivingAttackEvent event) {
 		Entity entity = event.getSource().getEntity();

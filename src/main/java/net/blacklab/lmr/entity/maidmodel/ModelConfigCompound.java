@@ -307,7 +307,7 @@ public class ModelConfigCompound  {
 		}
 	}
 
-	protected void setSize() {
+	public void setSize() {
 
 		if(textureBox!=null && textureBox.length>0 && textureBox[0]!=null)
 		{

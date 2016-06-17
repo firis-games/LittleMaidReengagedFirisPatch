@@ -233,6 +233,7 @@ public class LMRNetwork
 				// armor
 				pMaid.setTextureNameArmor(NetworkHelper.getStrFromPacket(contents, 1));
 			}
+			break;
 		default:
 			break;
 		}

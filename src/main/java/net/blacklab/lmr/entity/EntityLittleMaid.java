@@ -4037,6 +4037,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		setTextureBox(new TextureBoxBase[]{mainModel, armorModel});
 		setTextureNames();
+
+		getModelConfigCompound().setSize();
 	}
 
 	private TextureBoxBase modelBoxAutoSelect(String pName) {
