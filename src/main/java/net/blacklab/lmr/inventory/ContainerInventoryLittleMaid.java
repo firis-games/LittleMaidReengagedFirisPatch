@@ -73,7 +73,7 @@ public class ContainerInventoryLittleMaid extends Container {
 				public boolean isItemValid(ItemStack par1ItemStack)
 				{
 					if (par1ItemStack == null) return false;
-					boolean flag = littlemaidInventory.isItemValidForSlot(littlemaidInventory.maxInventorySize+armorIndex, par1ItemStack);
+					boolean flag = littlemaidInventory.isItemValidForSlot(InventoryLittleMaid.maxInventorySize+armorIndex, par1ItemStack);
 					LittleMaidReengaged.Debug("SLOT-INDEX: %d; VALID? %s", getSlotIndex(), flag);
 					return flag;
 				}

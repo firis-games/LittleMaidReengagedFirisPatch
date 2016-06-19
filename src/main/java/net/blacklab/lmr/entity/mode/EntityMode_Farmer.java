@@ -246,7 +246,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 	}
 
 	protected int getHadSeedIndex(){
-		for (int i=0; i < InventoryLittleMaid.maxInventorySize; i++) {
+		for (int i=0; i < owner.maidInventory.getSizeInventory(); i++) {
 			ItemStack pStack;
 			if ((pStack = owner.maidInventory.getStackInSlot(i)) != null && UtilModeFarmer.isSeed(owner.getMaidMasterUUID(), pStack.getItem())) {
 				return i;

@@ -179,7 +179,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 			}
 			break;
 		case mmode_Bloodsucker :
-			for (li = 0; li < InventoryLittleMaid.maxInventorySize; li++) {
+			for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
 

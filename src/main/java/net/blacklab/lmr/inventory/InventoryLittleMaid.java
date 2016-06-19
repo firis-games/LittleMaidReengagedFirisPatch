@@ -26,6 +26,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.Explosion;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class InventoryLittleMaid extends InventoryPlayer {
 
@@ -338,8 +339,8 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	public int getInventorySlotContainItem(Item item) {
 		// 指定されたアイテムIDの物を持っていれば返す
-		for (int j = 0; j < InventoryLittleMaid.maxInventorySize; j++) {
-			if (mainInventory[j] != null && mainInventory[j].getItem() == item) {
+		for (int j = 0; j < getSizeInventory(); j++) {
+			if (getStackInSlot(j) != null && getStackInSlot(j).getItem() == item) {
 				return j;
 			}
 		}
@@ -349,12 +350,12 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	public int getInventorySlotContainItem(Class<? extends Item> itemClass) {
 		// 指定されたアイテムクラスの物を持っていれば返す
-		for (int j = 0; j < InventoryLittleMaid.maxInventorySize; j++) {
+		for (int j = 0; j < getSizeInventory(); j++) {
 			// if (mainInventory[j] != null &&
 			// mainInventory[j].getItem().getClass().isAssignableFrom(itemClass))
 			// {
-			if (mainInventory[j] != null
-					&& itemClass.isAssignableFrom(mainInventory[j].getItem().getClass())) {
+			if (getStackInSlot(j) != null
+					&& itemClass.isAssignableFrom(getStackInSlot(j).getItem().getClass())) {
 				return j;
 			}
 		}
@@ -363,10 +364,13 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	}
 
 	protected int getInventorySlotContainItemAndDamage(Item item, int damege) {
-		// とダメージ値
-		for (int i = 0; i < InventoryLittleMaid.maxInventorySize; i++) {
-			if (mainInventory[i] != null && mainInventory[i].getItem() == item
-					&& mainInventory[i].getItemDamage() == damege) {
+		if (damege == OreDictionary.WILDCARD_VALUE) {
+			return getInventorySlotContainItem(item);
+		}
+
+		for (int i = 0; i < getSizeInventory(); i++) {
+			if (getStackInSlot(i) != null && getStackInSlot(i).getItem() == item
+					&& getStackInSlot(i).getItemDamage() == damege) {
 				return i;
 			}
 		}
@@ -388,8 +392,8 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	public int getInventorySlotContainItemFood() {
 		// インベントリの最初の食料を返す
-		for (int j = 0; j < InventoryLittleMaid.maxInventorySize; j++) {
-			ItemStack mi = mainInventory[j];
+		for (int j = 0; j < getSizeInventory(); j++) {
+			ItemStack mi = getStackInSlot(j);
 			if (mi != null && mi.getItem() instanceof ItemFood) {
 				if (((ItemFood) mi.getItem()).getHealAmount(mi) > 0) {
 					return j;
