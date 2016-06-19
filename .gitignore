@@ -5,3 +5,6 @@
 /.project
 /build.gradle
 /.gradle/
+/eclipse/
+/EBLib_Client.launch
+/EBLib_Server.launch
