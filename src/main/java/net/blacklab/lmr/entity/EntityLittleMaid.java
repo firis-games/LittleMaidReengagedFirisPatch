@@ -315,9 +315,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	protected int maidArmorVisible = 15;
 
-	private static final int[] ZBOUND_BLOCKOFFS = new int[]{  1,  1,  0, -1, -1, -1,  0,  1};
-	private static final int[] XBOUND_BLOCKOFFS = new int[]{  0, -1, -1, -1,  0,  1,  1,  1};
-	public int DEBUGCOUNT = 0;
 	private boolean isInsideOpaque = false;
 	protected Counter registerTick;
 	protected String registerMode;
@@ -326,6 +323,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	protected float maidExperience = 0;				// 経験値
 	protected ExperienceHandler experienceHandler;	// 経験値アクション制御
 	private int gainExpBoost = 1;					// 取得経験値倍率
+	
+	protected boolean modelChangeable = true;
 
 	public EntityLittleMaid(World par1World) {
 		super(par1World);
@@ -3082,14 +3081,17 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								IFF.saveIFF(CommonHelper.getPlayerUUID(par1EntityPlayer));
 								registerTick.setEnable(false);
 								return true;
-							}
-							else if (par3ItemStack.getItem() == Items.dye) {
+							} else if (par3ItemStack.getItem() == Items.dye) {
 								// カラーメイド
-								if (!worldObj.isRemote) {
-									setColor(15 - par3ItemStack.getItemDamage());
+								if (canChangeModel()) {
+									if (!worldObj.isRemote) {
+										setColor(15 - par3ItemStack.getItemDamage());
+									}
+									CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+									return true;
+								} else {
+									// TODO print block-message
 								}
-								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
-								return true;
 							}
 							else if (par3ItemStack.getItem() == Items.feather) {
 								// 自由行動
@@ -4064,6 +4066,15 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	@Override
 	public ModelConfigCompound getModelConfigCompound() {
 		return textureData;
+	}
+	
+	/**
+	 * Can maid-model and texture be changed?
+	 * NOTICE: modelChangeable will not be synchronized in default. 
+	 * To change this dynamically, you need to use packets.
+	 */
+	public boolean canChangeModel() {
+		return modelChangeable;
 	}
 
 	// Tile関係

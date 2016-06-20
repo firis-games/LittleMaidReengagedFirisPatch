@@ -524,7 +524,7 @@ public class GuiMaidInventory extends GuiContainer {
 		int ii = i - guiLeft;
 		int jj = j - guiTop;
 
-		if (ii > 7 && ii < 96 && jj > 7 && jj < 60) {
+		if (entitylittlemaid.canChangeModel() && ii > 7 && ii < 96 && jj > 7 && jj < 60) {
 			// ボタンの表示
 			txbutton[0].visible = true;
 			txbutton[1].visible = true;
