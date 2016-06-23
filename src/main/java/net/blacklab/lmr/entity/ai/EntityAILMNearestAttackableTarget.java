@@ -50,7 +50,15 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 //		} else if (theMaid.getAttackTarget() != null) {
 //			return true;
 		}
-		double lfollowRange = this.getTargetDistance();
+
+		double lfollowRange;
+		if (!(
+				taskOwner instanceof EntityLittleMaid && ((EntityLittleMaid) taskOwner).getActiveModeClass() != null &&
+				(lfollowRange = ((EntityLittleMaid) taskOwner).getActiveModeClass().getDistanceToSearchTargets()) > 0
+				)) {
+			lfollowRange = getTargetDistance();
+		}
+		
 		List llist = this.taskOwner.worldObj.getEntitiesWithinAABB(targetClass, taskOwner.getEntityBoundingBox().expand(lfollowRange, 8.0D, lfollowRange));
 		if (theMaid.getMaidMasterEntity() != null && !theMaid.isBloodsuck()) {
 			// ソーターを主中心へ

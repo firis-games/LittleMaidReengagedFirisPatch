@@ -329,6 +329,14 @@ public abstract class EntityModeBase {
 	public double getFreedomTrackingRangeSq() {
 		return 400d;
 	}
+	
+	/**
+	 * Returns the radius of the range to search targets.
+	 * @return The radius of the range to search targets. If 0 or less, default searching range(FOLLOW_RANGE of EntityAttribute) will be used.
+	 */
+	public double getDistanceToSearchTargets() {
+		return 0d;
+	}
 
 	/**
 	 * 攻撃後にターゲットを再設定させるかの指定。
