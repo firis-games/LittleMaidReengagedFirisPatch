@@ -313,7 +313,7 @@ public abstract class EntityModeBase {
 	 * Returns the squared distance from master to start following.
 	 */
 	public double getDistanceSqToStartFollow() {
-		return 36d;
+		return 20.25d;
 	}
 
 	/**
