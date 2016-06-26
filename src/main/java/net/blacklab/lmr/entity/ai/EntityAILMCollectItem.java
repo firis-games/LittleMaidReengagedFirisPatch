@@ -12,18 +12,18 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.MathHelper;
 
 public class EntityAILMCollectItem extends EntityAIBase {
-	
+
 	protected EntityLittleMaid theMaid;
 	protected float moveSpeed;
 	protected EntityItem targetItem;
 	protected boolean lastAvoidWater;
-	
-	
+
+
 	public EntityAILMCollectItem(EntityLittleMaid pEntityLittleMaid, float pmoveSpeed) {
 		theMaid = pEntityLittleMaid;
 		moveSpeed = pmoveSpeed;
@@ -40,7 +40,7 @@ public class EntityAILMCollectItem extends EntityAIBase {
 				int li = theMaid.getRNG().nextInt(llist.size());
 				EntityItem ei = (EntityItem)llist.get(li);
 				EntityPlayer ep = theMaid.getMaidMasterEntity() != null ? theMaid.getMaidMasterEntity() : theMaid.worldObj.getClosestPlayerToEntity(theMaid, 16F);
-				
+
 				NBTTagCompound p = new NBTTagCompound();
 				ei.writeEntityToNBT(p);
 				if (!ei.isDead && ei.onGround && p.getShort("PickupDelay") <= 0 && !ei.isBurning()
@@ -65,7 +65,7 @@ public class EntityAILMCollectItem extends EntityAIBase {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -93,13 +93,13 @@ public class EntityAILMCollectItem extends EntityAIBase {
 	@Override
 	public void updateTask() {
 		theMaid.getLookHelper().setLookPositionWithEntity(targetItem, 30F, theMaid.getVerticalFaceSpeed());
-		
+
 		PathNavigate lnavigater = theMaid.getNavigator();
 		if (lnavigater.noPath()) {
 			if (targetItem.isInWater()) {
 				//lnavigater.setAvoidsWater(false);
 			}
-			PathEntity lpath = lnavigater.getPathToXYZ(targetItem.posX, targetItem.posY, targetItem.posZ);
+			Path lpath = lnavigater.getPathToXYZ(targetItem.posX, targetItem.posY, targetItem.posZ);
 			lnavigater.setPath(lpath, moveSpeed);
 		}
 	}

@@ -26,7 +26,7 @@ public class ItemTriggerRegisterKey extends Item {
 
 	public ItemTriggerRegisterKey() {
 		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":registerkey");
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(CreativeTabs.MISC);
 	}
 
 	@Override

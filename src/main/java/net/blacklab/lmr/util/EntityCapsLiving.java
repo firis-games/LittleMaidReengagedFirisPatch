@@ -122,7 +122,7 @@ public class EntityCapsLiving implements IModelCaps {
 				return new Double[] {owner.motionX, owner.motionY, owner.motionZ};
 			}
 			return (Integer)pArg[0] == 0 ? owner.motionX : (Integer)pArg[0] == 1 ? owner.motionY : owner.motionZ;
-			
+
 		case caps_rotationYaw:
 			return owner.rotationYaw;
 		case caps_rotationPitch:
@@ -133,7 +133,7 @@ public class EntityCapsLiving implements IModelCaps {
 			return owner.prevRotationPitch;
 		case caps_renderYawOffset:
 			return owner.renderYawOffset;
-			
+
 		case caps_onGround:
 			return owner.onGround;
 		case caps_isRiding:
@@ -211,7 +211,7 @@ public class EntityCapsLiving implements IModelCaps {
 			return (owner instanceof EntityLiving) && ((EntityLiving)owner).getLeashed();
 		case caps_getRidingName:
 			return owner.getRidingEntity() == null ? "" : EntityList.getEntityString(owner.getRidingEntity());
-		
+
 		// World
 		case caps_WorldTotalTime:
 			return owner.worldObj.getWorldInfo().getWorldTotalTime();
@@ -222,7 +222,7 @@ public class EntityCapsLiving implements IModelCaps {
 		case caps_TextureEntity:
 			return owner;
 		}
-		
+
 		return null;
 	}
 
@@ -238,7 +238,7 @@ public class EntityCapsLiving implements IModelCaps {
 		case caps_heldItems:
 		case caps_currentEquippedItem:
 			for (EntityEquipmentSlot fSlot : EntityEquipmentSlot.values()) {
-				if (fSlot.func_188452_c() == (Integer)pArg[0]) {
+				if (fSlot.getSlotIndex() == (Integer)pArg[0]) {
 					owner.setItemStackToSlot(fSlot, (ItemStack) pArg[1]);
 				}
 			}
@@ -295,7 +295,7 @@ public class EntityCapsLiving implements IModelCaps {
 //		case caps_isInvisible:
 //		case caps_isSprinting:
 		}
-		
+
 		return false;
 	}
 

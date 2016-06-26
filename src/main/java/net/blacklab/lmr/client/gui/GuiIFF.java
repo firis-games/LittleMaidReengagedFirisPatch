@@ -52,7 +52,7 @@ public class GuiIFF extends GuiScreen {
 		super.handleMouseInput();
 		selectPanel.handleMouseInput();
 	}
-	
+
 	public GuiIFF(World world, EntityPlayer player, EntityLittleMaid pEntity) {
 		super();
 		entityMap = new TreeMap<String, Entity>();
@@ -61,7 +61,7 @@ public class GuiIFF extends GuiScreen {
 		screenTitle = I18n.translateToLocal("littleMaidMob.gui.iff.title");
 		target = pEntity;
 		thePlayer = player;
-	
+
 		// IFFをサーバーから取得
 		if (!Minecraft.getMinecraft().isSingleplayer()) {
 			int li = 0;
@@ -80,7 +80,7 @@ public class GuiIFF extends GuiScreen {
 		// 表示用EntityListの初期化
 		if (entityMapClass.isEmpty()) {
 			try {
-				Map lmap = EntityList.classToStringMapping;// (Map)ModLoader.getPrivateValue(EntityList.class, null, 1);
+				Map lmap = EntityList.CLASS_TO_NAME;// (Map)ModLoader.getPrivateValue(EntityList.class, null, 1);
 				entityMapClass.putAll(lmap);
 			}
 			catch (Exception e) {
@@ -215,7 +215,7 @@ public class GuiIFF extends GuiScreen {
 			}
 
 			Entity player = mc.thePlayer;
-			player.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("ui.button.click")), 1, 1);
+			player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("ui.button.click")), 1, 1);
 		}
 	}
 

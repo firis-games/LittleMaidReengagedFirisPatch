@@ -7,38 +7,39 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 
 public class MaidMoveNodeProcessor extends WalkNodeProcessor {
-	
+
 	protected boolean canSwim;
-	
+
 	@Override
 	public void setCanSwim(boolean canSwimIn) {
 		super.setCanSwim(canSwimIn);
 		canSwim = canSwimIn;
 	}
-	
+
 	@Override
-	public PathPoint func_186318_b() {
-		if (canSwim && field_186326_b.isInWater()) {
-			return this.openPoint(MathHelper.floor_double(field_186326_b.getEntityBoundingBox().minX), MathHelper.floor_double(field_186326_b.getEntityBoundingBox().minY + 0.5D), MathHelper.floor_double(field_186326_b.getEntityBoundingBox().minZ));
+	public PathPoint getStart() {
+		if (canSwim && entity.isInWater()) {
+			return this.openPoint(MathHelper.floor_double(entity.getEntityBoundingBox().minX), MathHelper.floor_double(entity.getEntityBoundingBox().minY + 0.5D), MathHelper.floor_double(entity.getEntityBoundingBox().minZ));
 		}
-		return super.func_186318_b();
+		return super.getStart();
 	}
 
 	@Override
-	public PathPoint func_186325_a(double x, double y, double target) {
-		if (canSwim && field_186326_b.isInWater()) {
-			return this.openPoint(MathHelper.floor_double(x - (double)(field_186326_b.width / 2.0F)), MathHelper.floor_double(y + 0.5D), MathHelper.floor_double(target - (double)(field_186326_b.width / 2.0F)));
+	public PathPoint getPathPointToCoords(double x, double y, double z) {
+		if (canSwim && entity.isInWater()) {
+			return this.openPoint(MathHelper.floor_double(x - (double)(entity.width / 2.0F)), MathHelper.floor_double(y + 0.5D), MathHelper.floor_double(z - (double)(entity.width / 2.0F)));
 		}
-		return super.func_186325_a(x, y, target);
+		return super.getPathPointToCoords(x, y, z);
 	}
-	
+
 	@Override
-	public int func_186320_a(PathPoint[] pathOptions, PathPoint currentPoint, PathPoint targetPoint, float maxDistance) {
-		if (canSwim && field_186326_b.isInWater()) {
+	public int findPathOptions(PathPoint[] pathOptions, PathPoint currentPoint, PathPoint targetPoint,
+			float maxDistance) {
+		if (canSwim && entity.isInWater()) {
 			int i = 0;
 
 			for (EnumFacing enumfacing : EnumFacing.values()) {
-				PathPoint pathpoint = this.getSafePoint(field_186326_b, currentPoint.xCoord + enumfacing.getFrontOffsetX(), currentPoint.yCoord + enumfacing.getFrontOffsetY(), currentPoint.zCoord + enumfacing.getFrontOffsetZ());
+				PathPoint pathpoint = this.getSafePoint(entity, currentPoint.xCoord + enumfacing.getFrontOffsetX(), currentPoint.yCoord + enumfacing.getFrontOffsetY(), currentPoint.zCoord + enumfacing.getFrontOffsetZ());
 
 				if (pathpoint != null && !pathpoint.visited && pathpoint.distanceTo(targetPoint) < maxDistance) {
 					pathOptions[i++] = pathpoint;
@@ -47,7 +48,7 @@ public class MaidMoveNodeProcessor extends WalkNodeProcessor {
 
 			return i;
 		}
-		return super.func_186320_a(pathOptions, currentPoint, targetPoint, maxDistance);
+		return super.findPathOptions(pathOptions, currentPoint, targetPoint, maxDistance);
 	}
 
 	/**

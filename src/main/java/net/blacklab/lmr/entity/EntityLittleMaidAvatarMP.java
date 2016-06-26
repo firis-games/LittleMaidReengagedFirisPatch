@@ -19,7 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatBase;
-import net.minecraft.stats.StatisticsFile;
+import net.minecraft.stats.StatisticsManagerServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
@@ -55,10 +55,10 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 		// 初期設定
 		avatar = par2EntityLittleMaid;
-		// TODO dataWatcher has been taken over.
-		dataWatcher = avatar.getDataManager();
+		// TODO dataManager has been taken over.
+		dataManager = avatar.getDataManager();
 
-//		this.dataWatcher.register(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
+//		this.dataManager.register(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
 
 		/*
 		 * TODO 要調整
@@ -69,7 +69,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	// 実績参照
 	@Override
-	public StatisticsFile getStatFile() {
+	public StatisticsManagerServer getStatFile() {
 		// ご主人様がいれば、ご主人様の実績を返す。
 		if (this.avatar != null && this.avatar.getMaidMasterEntity() != null) {
 			// TODO Server only, so picking up from vanilla method. Is it correct?

@@ -17,7 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -66,7 +66,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
-			if (litemstack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Torch", litemstack.getItem())) {
+			if (litemstack.getItem() == Item.getItemFromBlock(Blocks.TORCH) || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Torch", litemstack.getItem())) {
 				owner.setMaidMode("Torcher");
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_TorchLayer);
@@ -123,7 +123,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		if (par1ItemStack == null) {
 			return false;
 		}
-		return par1ItemStack.getItem() == Item.getItemFromBlock(Blocks.torch) || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Torch", par1ItemStack.getItem());
+		return par1ItemStack.getItem() == Item.getItemFromBlock(Blocks.TORCH) || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Torch", par1ItemStack.getItem());
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		ItemStack lis = owner.getCurrentEquippedItem();
 		if (lis == null) return false;
 
-		if(lis.getItem()!=Item.getItemFromBlock(Blocks.torch)) return false;
+		if(lis.getItem()!=Item.getItemFromBlock(Blocks.TORCH)) return false;
 
 		int li = lis.stackSize;
 		// TODO:当たり判定をどうするか
@@ -204,10 +204,10 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		// TODO:マルチ対策用、ItemBlockから丸パクリバージョンアップ時は確認すること
 		Block var8 = par1World.getBlockState(new BlockPos(par2, par3, par4)).getBlock();
 
-		if (Block.isEqualTo(var8, Blocks.snow)) {
+		if (Block.isEqualTo(var8, Blocks.SNOW)) {
 			par5 = EnumFacing.UP;
-		} else if (!Block.isEqualTo(var8, Blocks.vine) && !Block.isEqualTo(var8, Blocks.tallgrass) &&
-				!Block.isEqualTo(var8, Blocks.deadbush)) {
+		} else if (!Block.isEqualTo(var8, Blocks.VINE) && !Block.isEqualTo(var8, Blocks.TALLGRASS) &&
+				!Block.isEqualTo(var8, Blocks.DEADBUSH)) {
 			if (par5 == EnumFacing.DOWN) {
 				--par3;
 			}
@@ -295,7 +295,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 
 	@Override
 	public void onWarp() {
-		PathEntity pathEntity = owner.getNavigator().getPath();
+		Path pathEntity = owner.getNavigator().getPath();
 		if (pathEntity == null) return;
 		PathPoint destination = pathEntity.getFinalPathPoint();
 		if (!checkBlock(owner.getMaidModeInt(), destination.xCoord, destination.yCoord, destination.zCoord)) {

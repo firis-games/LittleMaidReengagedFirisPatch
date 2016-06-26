@@ -16,7 +16,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -27,7 +26,7 @@ public class ItemMaidSpawnEgg extends Item
 	public ItemMaidSpawnEgg()
 	{
 		setHasSubtypes(true);
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(CreativeTabs.MISC);
 		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":spawn_littlemaid_egg");
 	}
 
@@ -76,7 +75,7 @@ public class ItemMaidSpawnEgg extends Item
 		try {
 			entityliving = new EntityLittleMaid(par0World);
 
-			entityliving.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
+			entityliving.setLocationAndAngles(par2, par4, par6, (par0World.rand.nextFloat() * 360.0F) - 180.0F, 0.0F);
 //			((LMM_EntityLittleMaid)entityliving).setTextureNames();
 			((EntityLittleMaid) entityliving).onSpawnWithEgg();
 			par0World.spawnEntityInWorld(entityliving);

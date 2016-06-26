@@ -58,7 +58,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
-			if (isTriggerItem(mmode_Pharmacist, litemstack) && owner.maidInventory.getInventorySlotContainItem(Items.blaze_powder) > 0) {
+			if (isTriggerItem(mmode_Pharmacist, litemstack) && owner.maidInventory.getInventorySlotContainItem(Items.BLAZE_POWDER) > 0) {
 				owner.setMaidMode("Pharmacist");
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Pharmacist);
@@ -191,7 +191,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 			owner.setWorking(true);
 		}
 
-		int blaze_position = owner.maidInventory.getInventorySlotContainItem(Items.blaze_powder);
+		int blaze_position = owner.maidInventory.getInventorySlotContainItem(Items.BLAZE_POWDER);
 		if (lswing.canAttack()) {
 			// Get fuel value
 			// Blaze Power slot in stand
@@ -199,7 +199,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 			if (ltile.getField(1) <= 0 && blazeStackB == null) {
 				if (blaze_position >= 0) {
 					ItemStack blazeStackM = owner.maidInventory.getStackInSlot(blaze_position);
-					ltile.setInventorySlotContents(4, new ItemStack(Items.blaze_powder));
+					ltile.setInventorySlotContents(4, new ItemStack(Items.BLAZE_POWDER));
 					blazeStackM.stackSize--;
 					if (blazeStackM.stackSize <= 0) {
 						blazeStackM = null;

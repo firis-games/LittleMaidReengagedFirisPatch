@@ -17,7 +17,7 @@ import net.blacklab.lmr.util.FileList;
 import net.minecraft.client.resources.DefaultResourcePack;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.resources.data.IMetadataSerializer;
+import net.minecraft.client.resources.data.MetadataSerializer;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -95,7 +95,7 @@ public class SoundResourcePack implements IResourcePack {
 	}
 
 	@Override
-	public IMetadataSection getPackMetadata(IMetadataSerializer par1MetadataSerializer, String par2Str)
+	public IMetadataSection getPackMetadata(MetadataSerializer par1MetadataSerializer, String par2Str)
 	{ //throws IOException {
 		return null;
 	}

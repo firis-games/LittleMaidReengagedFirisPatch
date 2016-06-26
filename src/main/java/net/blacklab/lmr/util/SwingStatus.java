@@ -217,7 +217,7 @@ public class SwingStatus {
 
 	protected void updateItemUse(Entity pEntity, int par2) {
 		if (itemInUse.getItemUseAction() == EnumAction.DRINK) {
-			pEntity.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.generic.drink")), 0.5F, pEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+			pEntity.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.generic.drink")), 0.5F, pEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 		}
 
 		Random rand = new Random();
@@ -238,7 +238,7 @@ public class SwingStatus {
 			}
 
 
-			pEntity.playSound(SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.generic.eat")), 0.5F + 0.5F * rand.nextInt(2), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+			pEntity.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.generic.eat")), 0.5F + 0.5F * rand.nextInt(2), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 		}
 	}
 

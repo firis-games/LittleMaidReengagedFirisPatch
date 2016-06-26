@@ -6,16 +6,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
+
 import net.blacklab.lmr.util.FileList;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.resources.data.IMetadataSerializer;
+import net.minecraft.client.resources.data.MetadataSerializer;
 import net.minecraft.util.ResourceLocation;
 
-import com.google.common.collect.ImmutableSet;
-
 public class OldZipTexturesWrapper implements IResourcePack {
-	
+
 	public static ArrayList<String> keys = new ArrayList<String>();
 
 	@Override
@@ -34,7 +34,7 @@ public class OldZipTexturesWrapper implements IResourcePack {
 	}
 
 	@Override
-	public IMetadataSection getPackMetadata(IMetadataSerializer arg0,
+	public IMetadataSection getPackMetadata(MetadataSerializer arg0,
 			String arg1) throws IOException {
 		return null;
 	}

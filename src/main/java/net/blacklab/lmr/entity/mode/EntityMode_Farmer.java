@@ -259,7 +259,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		//耕されておらず、直上が空気ブロック
 		//近くに水があるときにとりあえず耕す用
 		Block b = owner.worldObj.getBlockState(new BlockPos(x,y,z)).getBlock();
-		return (Block.isEqualTo(b, Blocks.dirt)||Block.isEqualTo(b, Blocks.grass))&&
+		return (Block.isEqualTo(b, Blocks.DIRT)||Block.isEqualTo(b, Blocks.GRASS))&&
 				owner.worldObj.isAirBlock(new BlockPos(x,y+1,z)) && isBlockWatered(x, y, z);
 	}
 
@@ -303,7 +303,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 			mutableblockpos = (BlockPos.MutableBlockPos)iterator.next();
 		}
-		while ((iState = owner.worldObj.getBlockState(mutableblockpos)).getBlock().getMaterial(iState) != Material.water);
+		while ((iState = owner.worldObj.getBlockState(mutableblockpos)).getBlock().getMaterial(iState) != Material.WATER);
 
 		return true;
 	}

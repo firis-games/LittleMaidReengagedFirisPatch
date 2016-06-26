@@ -50,9 +50,9 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 
 		// 初期設定
 		avatar = par2EntityLittleMaid;
-		dataWatcher = avatar.getDataManager();
+		dataManager = avatar.getDataManager();
 
-//		this.dataWatcher.register(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
+//		this.dataManager.register(Statics.dataWatch_AbsorptionAmount, Float.valueOf(0.0F));
 
 		// TODO Client限定ゴマカシ
 		inventory = new InventoryPlayer(this);

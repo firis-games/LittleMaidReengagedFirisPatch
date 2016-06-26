@@ -10,8 +10,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityAILMTracerMove extends EntityAIBase implements IEntityAI {
-	
-	protected EntityLittleMaid theMaid; 
+
+	protected EntityLittleMaid theMaid;
 	protected World world;
 	protected boolean isEnable;
 	protected int tileX;
@@ -23,7 +23,7 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAI {
 		theMaid = pEntityLittleMaid;
 		world = pEntityLittleMaid.worldObj;
 		isEnable = false;
-		
+
 		setMutexBits(1);
 	}
 
@@ -41,7 +41,7 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAI {
 	public boolean getEnable() {
 		return isEnable;
 	}
-	
+
 	protected boolean canUpdate() {
 		return isEnable && theMaid.isTracer() && theMaid.isFreedom();
 	}
@@ -49,14 +49,14 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAI {
 	@Override
 	public boolean shouldExecute() {
 		return canUpdate() && !theMaid.isMaidWaitEx() && theMaid.getNavigator().noPath();
-		
+
 	}
 
 	@Override
 	public boolean continueExecuting() {
 		return shouldExecute() || !theMaid.getNavigator().noPath();
 	}
-	
+
 	protected void doExecute() {
 		// ルート策定
 		// ターゲットをサーチ
@@ -68,12 +68,12 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAI {
 		int yy = oy;
 		int zz = oz;
 		double lrange = Double.MAX_VALUE;
-		
+
 		// TODO:Dummy
 		EntityMarkerDummy.clearDummyEntity(theMaid);
 		boolean flagdammy = false;
-		
-		// CW方向に検索領域を広げる 
+
+		// CW方向に検索領域を広げる
 		for (int d = 0; d < 4; d++) {
 			for (int a = 2; a < 14; a += 2) {
 				int del = a / 2;
@@ -81,15 +81,15 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAI {
 					xx = ox - del;
 					zz = oz - del;
 				}
-				else if (vt == 1) { 
+				else if (vt == 1) {
 					xx = ox + del;
 					zz = oz - del;
 				}
-				else if (vt == 2) { 
+				else if (vt == 2) {
 					xx = ox + del;
 					zz = oz + del;
 				}
-				else if (vt == 3) { 
+				else if (vt == 3) {
 					xx = ox - del;
 					zz = oz + del;
 				}
@@ -131,20 +131,20 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAI {
 					}
 					// TODO:dammy
 					flagdammy = false;
-					
+
 					if (vt == 0) {
 						xx++;
 					}
-					else if (vt == 1) { 
+					else if (vt == 1) {
 						zz++;
 					}
-					else if (vt == 2) { 
+					else if (vt == 2) {
 						xx--;
 					}
-					else if (vt == 3) { 
+					else if (vt == 3) {
 						zz--;
 					}
-					
+
 				} while(++b < a);
 			}
 			vt = (vt + 1) & 3;
@@ -156,7 +156,7 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAI {
 	 */
 	protected boolean checkBlock(int px, int py, int pz) {
 		IBlockState iState = world.getBlockState(new BlockPos(px, py + 1, pz));
-		return world.isBlockPowered(new BlockPos(px,py,pz)) && (iState.getBlock().getMaterial(iState) == Material.air);
+		return world.isBlockPowered(new BlockPos(px,py,pz)) && (iState.getBlock().getMaterial(iState) == Material.AIR);
 	}
 
 	/**

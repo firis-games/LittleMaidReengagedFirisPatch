@@ -36,7 +36,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -60,8 +60,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
-	public static final String VERSION = "7.1.8.41";
-	public static final String ACCEPTED_MCVERSION = "[1.9,1.9.100)";
+	public static final String VERSION = "8.0.1.66";
+	public static final String ACCEPTED_MCVERSION = "[1.9.4,1.10]";
 	public static final int VERSION_CODE = 1;
 	public static final String DEPENDENCIES = "required-after:Forge@[1.9-12.16.0.1819,);"
 			+ "required-after:net.blacklab.lib@[5.2.0.3,)";
@@ -131,7 +131,7 @@ public class LittleMaidReengaged {
 
 	@Instance(DOMAIN)
 	public static LittleMaidReengaged instance;
-	
+
 	// Item
 	public static ItemMaidSpawnEgg spawnEgg;
 	public static ItemTriggerRegisterKey registerKey;
@@ -261,17 +261,17 @@ public class LittleMaidReengaged {
 			GameRegistry.addRecipe(
 					new ItemStack(spawnEgg, 1),
 					new Object[] { "scs", "sbs", " e ", Character.valueOf('s'),
-							Items.sugar, Character.valueOf('c'),
-							new ItemStack(Items.dye, 1, 3),
-							Character.valueOf('b'), Items.slime_ball,
-							Character.valueOf('e'), Items.egg, });
+							Items.SUGAR, Character.valueOf('c'),
+							new ItemStack(Items.DYE, 1, 3),
+							Character.valueOf('b'), Items.SLIME_BALL,
+							Character.valueOf('e'), Items.EGG, });
 		}
 
 		registerKey = new ItemTriggerRegisterKey();
 		GameRegistry.<Item>register(registerKey, new ResourceLocation(DOMAIN, "registerkey"));
-		GameRegistry.addShapelessRecipe(new ItemStack(registerKey), Items.egg,
-				Items.sugar, Items.nether_wart);
-		
+		GameRegistry.addShapelessRecipe(new ItemStack(registerKey), Items.EGG,
+				Items.SUGAR, Items.NETHER_WART);
+
 		maidPorter = new ItemMaidPorter();
 		GameRegistry.register(maidPorter, new ResourceLocation(DOMAIN, "maidporter"));
 
@@ -318,16 +318,16 @@ public class LittleMaidReengaged {
 		// MMM_TextureManager.instance.getTextureBox("default_Orign"));
 
 		// Dominant
-		BiomeGenBase[] biomeList = null;
+		Biome[] biomeList = null;
 		if (cfg_spawnWeight > 0) {
 //			if (cfg_Dominant) {
-//				biomeList = BiomeGenBase.bio();
+//				biomeList = Biome.bio();
 //			} else {
 				String biomeNameList[] = new String[] { "desert", "plains", "savanna", "mushroom_island", "forest", "birch_forest", "swampland", "taiga", "ice_flats", "mutated_ice_flats" };
-				biomeList = new BiomeGenBase[biomeNameList.length];
-				for (int i=0; i<biomeNameList.length; i++) biomeList[i] = BiomeGenBase.biomeRegistry.getObject(new ResourceLocation(biomeNameList[i]));
+				biomeList = new Biome[biomeNameList.length];
+				for (int i=0; i<biomeNameList.length; i++) biomeList[i] = Biome.REGISTRY.getObject(new ResourceLocation(biomeNameList[i]));
 //			}
-			for (BiomeGenBase biome : biomeList) {
+			for (Biome biome : biomeList) {
 				if (biome != null) {
 					EntityRegistry.addSpawn(EntityLittleMaid.class,
 							cfg_spawnWeight, cfg_minGroupSize,
@@ -347,5 +347,5 @@ public class LittleMaidReengaged {
 		IFF.loadIFFs();
 
 	}
-	
+
 }

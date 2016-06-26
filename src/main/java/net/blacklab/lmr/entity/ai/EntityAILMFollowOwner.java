@@ -3,7 +3,7 @@ package net.blacklab.lmr.entity.ai;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 
 public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
@@ -106,7 +106,7 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 
 		field_48310_h = 10;
 
-		PathEntity entity = theMaid.getNavigator().getPathToEntityLiving(theOwner);
+		Path entity = theMaid.getNavigator().getPathToEntityLiving(theOwner);
 		/*
 		if(entity==null){
 			if(theMaid.isInWater()&&theMaid.swimmingEnabled){

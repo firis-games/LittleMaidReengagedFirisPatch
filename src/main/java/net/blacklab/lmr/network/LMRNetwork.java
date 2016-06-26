@@ -168,7 +168,7 @@ public class LMRNetwork
 			if (!sender.capabilities.isCreativeMode) {
 				for (int li = 0; li < sender.inventory.mainInventory.length; li++) {
 					ItemStack lis = sender.inventory.mainInventory[li];
-					if (lis != null && lis.getItem() == Items.dye) {
+					if (lis != null && lis.getItem() == Items.DYE) {
 						if (lis.getItemDamage() == (15 - lcolor2)) {
 							CommonHelper.decPlayerInventory(sender, li, 1);
 						}

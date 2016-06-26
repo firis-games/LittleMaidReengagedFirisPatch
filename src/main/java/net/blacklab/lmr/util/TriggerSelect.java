@@ -68,7 +68,7 @@ public class TriggerSelect {
 		if (indexstr.isEmpty()) return;
 		String[] s = indexstr.split(",");
 		for (String t : s) {
-			Object o = Item.itemRegistry.getObject(new ResourceLocation(t));
+			Object o = Item.REGISTRY.getObject(new ResourceLocation(t));
 			if(o instanceof Item)
 			{
 				indexlist.add((Item)o);
@@ -84,7 +84,7 @@ public class TriggerSelect {
 		if (pItemStack == null) return false;
 		return checkTrigger(pUsername, pSelector, pItemStack.getItem());
 	}
-	
+
 	public static boolean checkTrigger(UUID pUuid, String pSelector, Item pItem) {
 		if (!selector.contains(pSelector)) {
 			return false;

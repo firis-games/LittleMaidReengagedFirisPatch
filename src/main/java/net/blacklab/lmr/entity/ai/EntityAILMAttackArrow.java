@@ -213,7 +213,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 					Entity lentity = CommonHelper.getRayTraceEntity(fMaid.maidAvatar, tpr + 1.0F, 1.0F, 1.0F);
 					ItemStack headstack = fInventory.armorInventory[3];
 					Item helmid = headstack == null ? null : headstack.getItem();
-					if (helmid == Items.diamond_helmet || helmid == Items.golden_helmet) {
+					if (helmid == Items.DIAMOND_HELMET || helmid == Items.GOLDEN_HELMET) {
 						// 射線軸の確認
 						if (lentity != null && fMaid.getIFF(lentity)) {
 							lcanattack = false;
@@ -268,7 +268,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 							if (!getAvatarIF().isUsingItemLittleMaid()) {
 								// 構え
 								if (!fMaid.weaponFullAuto || lcanattack) {
-									int at = ((helmid == Items.iron_helmet) || (helmid == Items.diamond_helmet)) ? 26 : 16;
+									int at = ((helmid == Items.IRON_HELMET) || (helmid == Items.DIAMOND_HELMET)) ? 26 : 16;
 									if (swingState.attackTime < at) {
 										ActionResult<ItemStack> result = litemstack.useItemRightClick(worldObj, fAvatar, EnumHand.MAIN_HAND);
 										if (result.getType() != EnumActionResult.SUCCESS) {

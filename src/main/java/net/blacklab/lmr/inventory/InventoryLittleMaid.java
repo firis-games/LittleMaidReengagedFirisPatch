@@ -493,7 +493,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		if (pIndex >= getSizeInventory()) {
 			return;
 		}
-		prevItems[pIndex] = new ItemStack(Items.sugar);
+		prevItems[pIndex] = new ItemStack(Items.SUGAR);
 	}
 
 	public void resetChanged(int pIndex) {
@@ -504,7 +504,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	public void clearChanged() {
 		// 強制リロード用、ダミーを登録して強制的に一周させる
-		ItemStack lis = new ItemStack(Items.sugar);
+		ItemStack lis = new ItemStack(Items.SUGAR);
 		for (int li = 0; li < prevItems.length; li++) {
 			prevItems[li] = lis;
 		}

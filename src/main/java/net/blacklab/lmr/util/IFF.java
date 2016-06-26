@@ -315,10 +315,10 @@ public class IFF {
 							.append(TriggerSelect.selector.get(le.getKey()))
 							.append("=");
 					if (!le.getValue().isEmpty()) {
-						String itemName = Item.itemRegistry.getNameForObject(le.getValue().get(0)).toString();
+						String itemName = Item.REGISTRY.getNameForObject(le.getValue().get(0)).toString();
 						sb.append(itemName);
 						for (int i = 1; i < le.getValue().size(); i++) {
-							itemName = Item.itemRegistry.getNameForObject(le.getValue().get(i)).toString();
+							itemName = Item.REGISTRY.getNameForObject(le.getValue().get(i)).toString();
 							sb.append(",").append(itemName);
 						}
 					}

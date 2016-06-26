@@ -15,7 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemSnowball;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -71,11 +71,11 @@ public class EntityMode_Playing extends EntityModeBase {
 	public static boolean checkSnows(int x, int y, int z, World world) {
 		// 周りが雪か？
 		int snowCnt = 0;
-		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x,   y, z  )).getBlock(), Blocks.snow_layer) ? 3: 0;
-		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x+1, y, z  )).getBlock(), Blocks.snow_layer) ? 1: 0;
-		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x-1, y, z  )).getBlock(), Blocks.snow_layer) ? 1: 0;
-		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x,   y, z+1)).getBlock(), Blocks.snow_layer) ? 1: 0;
-		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x,   y, z-1)).getBlock(), Blocks.snow_layer) ? 1: 0;
+		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x,   y, z  )).getBlock(), Blocks.SNOW_LAYER) ? 3: 0;
+		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x+1, y, z  )).getBlock(), Blocks.SNOW_LAYER) ? 1: 0;
+		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x-1, y, z  )).getBlock(), Blocks.SNOW_LAYER) ? 1: 0;
+		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x,   y, z+1)).getBlock(), Blocks.SNOW_LAYER) ? 1: 0;
+		snowCnt += Block.isEqualTo(world.getBlockState(new BlockPos(x,   y, z-1)).getBlock(), Blocks.SNOW_LAYER) ? 1: 0;
 
 		return snowCnt >= 5;
 	}
@@ -85,7 +85,7 @@ public class EntityMode_Playing extends EntityModeBase {
 		int x = MathHelper.floor_double(owner.posX);
 		int y = MathHelper.floor_double(owner.posY);
 		int z = MathHelper.floor_double(owner.posZ);
-		PathEntity pe = null;
+		Path pe = null;
 
 		// CW方向に検索領域を広げる
 		loop_search:
@@ -193,7 +193,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			// リロード
 			//1.8検討
 			if (owner.arrowHitTimer <= 0) {
-				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.snowball))) {
+				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.SNOWBALL))) {
 					owner.playSound("entity.item.pickup");
 					if (owner.getPlayingRole() == mpr_StockShooter) {
 						owner.setSwing(5, EnumSound.collect_snow, false);
@@ -221,7 +221,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			// リロード
 //			isMaidChaseWait = true;
 			if (owner.arrowHitTimer <= 0) {
-				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.snowball))) {
+				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.SNOWBALL))) {
 					owner.setSwing(5, EnumSound.collect_snow, false);
 					owner.playSound("entity.item.pickup");
 					fcounter = 0;
@@ -265,7 +265,7 @@ public class EntityMode_Playing extends EntityModeBase {
 					boolean f = true;
 					for (int z = -1; z < 2; z++) {
 						for (int x = -1; x < 2; x++) {
-							f &= Block.isEqualTo(owner.worldObj.getBlockState(new BlockPos(xx + x, yy, zz + z)).getBlock(), Blocks.snow_layer);
+							f &= Block.isEqualTo(owner.worldObj.getBlockState(new BlockPos(xx + x, yy, zz + z)).getBlock(), Blocks.SNOW_LAYER);
 						}
 					}
 					int lpr = owner.getRNG().nextInt(100) - 97;

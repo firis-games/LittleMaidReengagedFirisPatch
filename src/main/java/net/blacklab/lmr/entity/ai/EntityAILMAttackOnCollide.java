@@ -1,7 +1,6 @@
 package net.blacklab.lmr.entity.ai;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
@@ -10,11 +9,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI {
@@ -26,7 +22,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 	protected Entity entityTarget;
 	protected float moveSpeed;
 	protected boolean isReroute;
-	protected PathEntity pathToTarget;
+	protected Path pathToTarget;
 	protected int rerouteTimer;
 	protected double attackRange;
 
@@ -51,22 +47,22 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 		if (lentity == null) {
 			return false;
 		}
-		
+
 		lentity = theMaid.getAttackTarget();
 		if(lentity==null) return false;
-		
+
 		entityTarget = lentity;
 
 		pathToTarget = theMaid.getNavigator().getPathToXYZ(entityTarget.posX, entityTarget.posY, entityTarget.posZ);
 //		pathToTarget = theMaid.getNavigator().getPathToEntityLiving(entityTarget);
 		attackRange = (double)theMaid.width + (double)entityTarget.width + 0.4D;
 		attackRange *= attackRange;
-		
+
 		if (theMaid.isFreedom() &&
 				!theMaid.isWithinHomeDistanceFromPosition(entityTarget.getPosition())) {
 			return false;
 		}
-		
+
 		if ((pathToTarget != null) || (theMaid.getDistanceSq(entityTarget.posX, entityTarget.getEntityBoundingBox().minY, entityTarget.posZ) <= attackRange)) {
 			return true;
 		}
@@ -74,9 +70,9 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 		theMaid.setRevengeTarget(null);
 //		theMaid.getNavigator().clearPathEntity();
 		return false;
-		
+
 	}
-	
+
 	@Override
 	public void startExecuting() {
 		Entity lentity = theMaid.getAttackTarget();
@@ -105,21 +101,21 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 		if (lentity == null || entityTarget != lentity) {
 			return false;
 		}
-		
+
 		if (entityTarget.isDead) {
 			resetTask();
 			return false;
 		}
 		if (!MaidHelper.isTargetReachable(theMaid, lentity, 0)) return false;
-		
+
 		if (!entityTarget.isEntityAlive()) {
 			return false;
 		}
-		
+
 		if (!isReroute) {
 			return !theMaid.getNavigator().noPath();
 		}
-		
+
 		return true;
 	}
 
@@ -135,7 +131,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 	@Override
 	public void updateTask() {
 		theMaid.getLookHelper().setLookPositionWithEntity(entityTarget, 30F, 30F);
-		
+
 //		if ((isReroute || theMaid.getEntitySenses().canSee(entityTarget)) && --rerouteTimer <= 0) {
 //			// リルート
 //			rerouteTimer = 4 + theMaid.getRNG().nextInt(7);
@@ -156,7 +152,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 				theMaid.setRevengeTarget(null);
 			}
 		}
-		
+
 		boolean lguard = false;
 		if (theMaid.getDistanceSq(entityTarget.posX, entityTarget.getEntityBoundingBox().minY, entityTarget.posZ) > attackRange) {
 			if (isGuard && theMaid.isMaskedMaid()) {
@@ -180,7 +176,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 		if (theMaid.maidAvatar.isHandActive() && !lguard) {
 			theMaid.maidAvatar.stopActiveHand();
 		}
-		
+
 		if (!theMaid.getSwingStatusDominant().canAttack()) {
 			return;
 		}
@@ -194,7 +190,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 		if (ld < -0.35D) {
 			return;
 		}
-		
+
 		// 攻撃
 		theMaid.attackEntityAsMob(entityTarget);
 		//theMaid.moveback();
@@ -216,5 +212,5 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 	public boolean getEnable() {
 		return fEnable;
 	}
-	
+
 }

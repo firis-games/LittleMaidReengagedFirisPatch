@@ -22,26 +22,26 @@ public class ItemMaidPorter extends Item {
 		setMaxStackSize(1);
 		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":maidporter");
 	}
-	
+
 	@Override
 	public boolean isDamageable() {
 		return true;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
 		NBTTagCompound stackTag = stack.getTagCompound();
 		if (stackTag != null) {
 			String customName = stackTag.getString(LittleMaidReengaged.DOMAIN + ":MAID_NAME");
 			float experience = stackTag.getFloat(LittleMaidReengaged.DOMAIN + ":EXPERIENCE");
-			
+
 			if (!customName.isEmpty()) {
 				tooltip.add("Name: ".concat(customName));
 			}
 			tooltip.add(String.format("Level: %3d", ExperienceUtil.getLevelFromExp(experience)));
 		}
 	}
-	
+
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -53,7 +53,7 @@ public class ItemMaidPorter extends Item {
 			if (worldIn.isAirBlock(pos.add(0, 1, 0)) && worldIn.isAirBlock(pos.add(0, 2, 0))) {
 				String customName = tagCompound.getString(LittleMaidReengaged.DOMAIN + ":MAID_NAME");
 				float experience = tagCompound.getFloat(LittleMaidReengaged.DOMAIN + ":EXPERIENCE");
-				
+
 				EntityLittleMaid lMaid = new EntityLittleMaid(worldIn) {
 					@Deprecated
 					public EntityLittleMaid addMaidExperienceWithoutEvent(float value) {
@@ -63,14 +63,14 @@ public class ItemMaidPorter extends Item {
 				}.addMaidExperienceWithoutEvent(experience);
 				lMaid.setLocationAndAngles(pos.getX(), pos.getY()+1, pos.getZ(), 0, 0);
 				worldIn.spawnEntityInWorld(lMaid);
-				lMaid.processInteract(playerIn, EnumHand.MAIN_HAND, new ItemStack(Items.cake));
-				
+				lMaid.processInteract(playerIn, EnumHand.MAIN_HAND, new ItemStack(Items.CAKE));
+
 				if (!customName.isEmpty()) {
 					lMaid.setCustomNameTag(customName);
 				}
 				lMaid.maidInventory.clear();
 				lMaid.maidInventory.readFromNBT(tagCompound.getTagList(LittleMaidReengaged.DOMAIN + ":MAID_INVENTORY", 10));
-				
+
 				lMaid.setTextureNameMain(tagCompound.getString(LittleMaidReengaged.DOMAIN + ":MAIN_MODEL_NAME"));
 				lMaid.setTextureNameArmor(tagCompound.getString(LittleMaidReengaged.DOMAIN + ":ARMOR_MODEL_NAME"));
 				lMaid.setColor(tagCompound.getInteger(LittleMaidReengaged.DOMAIN + ":MAID_COLOR"));

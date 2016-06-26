@@ -11,7 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.MathHelper;
 
@@ -38,11 +38,11 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 		theNearestAttackableTargetSorter = new EntityAILMNearestAttackableTargetSorter(par1);
 		fretarget = par6;
 		theMaid = par1;
-		
+
 		setMutexBits(1);
 	}
 
-	
+
 	@Override
 	public boolean shouldExecute() {
 		if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0) {
@@ -58,7 +58,7 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 				)) {
 			lfollowRange = getTargetDistance();
 		}
-		
+
 		List llist = this.taskOwner.worldObj.getEntitiesWithinAABB(targetClass, taskOwner.getEntityBoundingBox().expand(lfollowRange, 8.0D, lfollowRange));
 		if (theMaid.getMaidMasterEntity() != null && !theMaid.isBloodsuck()) {
 			// ソーターを主中心へ
@@ -76,7 +76,7 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -106,19 +106,19 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 		if (pTarget == null) {
 			return false;
 		}
-		
+
 		if (pTarget == taskOwner) {
 			return false;
 		}
 		if (pTarget == theMaid.getMaidMasterEntity()) {
 			return false;
 		}
-		
+
 		if (!pTarget.isEntityAlive()) {
 			return false;
 		}
-		
-		EntityModeBase lailm = theMaid.getActiveModeClass(); 
+
+		EntityModeBase lailm = theMaid.getActiveModeClass();
 		if (lailm != null && lailm.isSearchEntity()) {
 			if (!lailm.checkEntity(theMaid.getMaidModeInt(), pTarget)) {
 				return false;
@@ -128,47 +128,47 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 				return false;
 			}
 		}
-/*		
+/*
 		// 基点から一定距離離れている場合も攻撃しない
 		if (!taskOwner.func_110176_b(MathHelper.floor_double(pTarget.posX), MathHelper.floor_double(pTarget.posY), MathHelper.floor_double(pTarget.posZ))) {
 //		if (!taskOwner.isWithinHomeDistance(MathHelper.floor_double(par1EntityLiving.posX), MathHelper.floor_double(par1EntityLiving.posY), MathHelper.floor_double(par1EntityLiving.posZ))) {
 			return false;
 		}
-*/		
+*/
 		// ターゲットが見えない
 		if (shouldCheckSight && !taskOwner.getEntitySenses().canSee(pTarget)) {
 			return false;
 		}
-		
+
 		// 攻撃中止判定？
 		if (this.fretarget) {
 			if (--this.fretryCounter <= 0) {
 				this.fcanAttack = 0;
 			}
-			
+
 			if (this.fcanAttack == 0) {
 				this.fcanAttack = this.func_75295_a(pTarget) ? 1 : 2;
 			}
-			
+
 			if (this.fcanAttack == 2) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
 	// 最終位置が攻撃の間合いでなければ失敗
 	protected boolean func_75295_a(Entity par1EntityLiving) {
 		this.fretryCounter = 10 + this.taskOwner.getRNG().nextInt(5);
-		PathEntity var2 = taskOwner.getNavigator().getPathToXYZ(par1EntityLiving.posX, par1EntityLiving.posY, par1EntityLiving.posZ);
+		Path var2 = taskOwner.getNavigator().getPathToXYZ(par1EntityLiving.posX, par1EntityLiving.posY, par1EntityLiving.posZ);
 //		PathEntity var2 = this.taskOwner.getNavigator().getPathToEntityLiving(par1EntityLiving);
-		
+
 		if (var2 == null) {
 			return false;
 		}
 		PathPoint var3 = var2.getFinalPathPoint();
-		
+
 		if (var3 == null) {
 			return false;
 		}

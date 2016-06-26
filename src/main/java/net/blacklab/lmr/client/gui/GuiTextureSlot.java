@@ -2,14 +2,10 @@ package net.blacklab.lmr.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.ibm.icu.text.Normalizer.Mode;
-
-import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
@@ -24,7 +20,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class GuiTextureSlot extends GuiSlot {
 
@@ -38,10 +33,10 @@ public class GuiTextureSlot extends GuiSlot {
 	public int color;
 	public int selectColor;
 	private ItemStack armors[] = new ItemStack[] {
-			new ItemStack(Items.leather_boots),
-			new ItemStack(Items.leather_leggings),
-			new ItemStack(Items.leather_chestplate),
-			new ItemStack(Items.leather_helmet)
+			new ItemStack(Items.LEATHER_BOOTS),
+			new ItemStack(Items.LEATHER_LEGGINGS),
+			new ItemStack(Items.LEATHER_CHESTPLATE),
+			new ItemStack(Items.LEATHER_HELMET)
 	};
 	protected boolean isContract;
 	protected static TextureBox blankBox;
@@ -55,7 +50,7 @@ public class GuiTextureSlot extends GuiSlot {
 		selectColor = -1;
 		blankBox = new TextureBox();
 		blankBox.models = new ModelMultiBase[] {null, null, null};
-		
+
 		texsel[0] = 0;//-1;
 		texsel[1] = 0;//-1;
 		indexTexture = new ArrayList<TextureBox>();
@@ -91,7 +86,7 @@ public class GuiTextureSlot extends GuiSlot {
 	protected int getSize() {
 		return mode ? indexArmor.size() : indexTexture.size();
 	}
-	
+
 	public static TextureBox getBlankBox() {
 		return blankBox;
 	}
@@ -127,7 +122,7 @@ public class GuiTextureSlot extends GuiSlot {
 	@Override
 	protected void drawSlot(int var1, int var2, int var3, int var4, int var6, int var7) {
 		GL11.glPushMatrix();
-		
+
 		if (!mode) {
 			for (int li = 0; li < 16; li++) {
 				int lx = var2 + 15 + 12 * li;
@@ -144,7 +139,7 @@ public class GuiTextureSlot extends GuiSlot {
 				}
 			}
 		}
-		
+
 		TextureBox lbox;
 		if (mode) {
 			lbox = indexArmor.get(var1);
@@ -157,7 +152,7 @@ public class GuiTextureSlot extends GuiSlot {
 		}
 //		MMM_TextureManager.instance.checkTextureBoxServer(lbox);
 		GL11.glDisable(GL11.GL_BLEND);
-		
+
 		owner.drawString(this.owner.mc.fontRendererObj, lbox.textureName,
 				var2 + 207 - mc.fontRendererObj.getStringWidth(lbox.textureName), var3 + 25, -1);
 		GL11.glTranslatef(var2 + 8F, var3 + 25F, 50F);

@@ -144,7 +144,7 @@ public class EventHookLMRE
 		EntityLittleMaid maid = event.maid;
 		ItemStack stack = event.stack;
 
-		if(ItemHelper.isSugar(stack.getItem()) || stack.getItem() == Items.clock){
+		if(ItemHelper.isSugar(stack.getItem()) || stack.getItem() == Items.CLOCK){
 			event.setCanceled(true);
 		}
 
