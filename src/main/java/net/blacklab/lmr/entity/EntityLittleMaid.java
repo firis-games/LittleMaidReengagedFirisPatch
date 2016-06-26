@@ -566,7 +566,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		//ltasks[0].addTask(8, aiPanic);
 		ltasks[0].addTask(10, aiBeg);
 		ltasks[0].addTask(11, aiBegMove);
-		ltasks[0].addTask(20, aiAvoidPlayer);
+		// TODO Needed?
+//		ltasks[0].addTask(20, aiAvoidPlayer);
 		ltasks[0].addTask(21, aiFreeRain);
 		ltasks[0].addTask(22, aiCollectItem);
 		// 移動用AI

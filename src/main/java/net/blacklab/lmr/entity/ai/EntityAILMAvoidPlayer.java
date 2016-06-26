@@ -75,6 +75,7 @@ public class EntityAILMAvoidPlayer extends EntityAIBase implements
 			return false;
 		}
 
+		// WTF NSME on 1.10
 		return avoidPath.isDestinationSame(vec3d);
 	}
 
