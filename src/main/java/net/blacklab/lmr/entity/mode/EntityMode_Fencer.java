@@ -280,6 +280,14 @@ public class EntityMode_Fencer extends EntityModeBase {
 	}
 
 	@Override
+	public double getDistanceToSearchTargets() {
+		if (owner.isFreedom()) {
+			return 21d;
+		}
+		return super.getDistanceToSearchTargets();
+	}
+
+	@Override
 	public double getLimitRangeSqOnFollow() {
 		return 18 * 18;
 	}

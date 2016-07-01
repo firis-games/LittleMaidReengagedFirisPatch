@@ -260,4 +260,19 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	}
 
+	@Override
+	public double getDistanceToSearchTargets() {
+		return 24d;
+	}
+
+	@Override
+	public double getLimitRangeSqOnFollow() {
+		return 16 * 16;
+	}
+
+	@Override
+	public double getFreedomTrackingRangeSq() {
+		return 21 * 21;
+	}
+
 }

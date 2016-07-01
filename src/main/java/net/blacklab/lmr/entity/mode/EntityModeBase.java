@@ -313,23 +313,23 @@ public abstract class EntityModeBase {
 	 * Returns the squared distance from master to start following.
 	 */
 	public double getDistanceSqToStartFollow() {
-		return 20.25d;
+		return 4.5 * 4.5;
 	}
 
 	/**
 	 * Returns the squared distance from master to teleport.
 	 */
 	public double getLimitRangeSqOnFollow() {
-		return 144d;
+		return 12 * 12;
 	}
 
 	/**
 	 * Returns the squared radius of the area on which freedom maids can act.
 	 */
 	public double getFreedomTrackingRangeSq() {
-		return 400d;
+		return 20 * 20;
 	}
-	
+
 	/**
 	 * Returns the radius of the range to search targets.
 	 * @return The radius of the range to search targets. If 0 or less, default searching range(FOLLOW_RANGE of EntityAttribute) will be used.
