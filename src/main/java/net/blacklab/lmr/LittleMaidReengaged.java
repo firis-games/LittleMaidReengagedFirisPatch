@@ -146,8 +146,8 @@ public class LittleMaidReengaged {
 		}
 	}
 
-	public static void Debug(boolean isRemote, String string) {
-		Debug("SIDE=%s, %s", isRemote ? "Client" : "Server", string);
+	public static void Debug(boolean isRemote, String format, Object... pVals) {
+		Debug("Side=%s; ".concat(format), isRemote, pVals);
 	}
 
 	public String getName() {
