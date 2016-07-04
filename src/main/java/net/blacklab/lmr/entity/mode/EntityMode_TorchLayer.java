@@ -108,8 +108,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 
 				// 松明
 				if (isTriggerItem(pMode, litemstack)) {
-					swapItemIntoMainHandSlot(li);
-					return InventoryLittleMaid.handInventoryOffset;
+					return li;
 				}
 			}
 			break;
