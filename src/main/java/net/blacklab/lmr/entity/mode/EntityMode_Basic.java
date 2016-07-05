@@ -110,7 +110,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		ItemStack litemstack = owner.getHandSlotForModeChange();
+		ItemStack litemstack = owner.getCurrentEquippedItem();
 		if (litemstack != null) {
 			if (UtilModeFarmer.isHoe(owner, litemstack)) {
 				owner.setMaidMode("FarmPorter");
@@ -199,7 +199,6 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean overlooksBlock(int pMode) {
 		// チェストカートの検索
 		List<TileEntity> list = owner.worldObj.loadedTileEntityList;
@@ -364,8 +363,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 				maidSearchCount++;
 			}
 
-			EventLMRE.ItemPutChestEvent event = new EventLMRE.ItemPutChestEvent(owner,myChest,is,maidSearchCount);
 			if (is != null){
+				EventLMRE.ItemPutChestEvent event = new EventLMRE.ItemPutChestEvent(owner,myChest,is,maidSearchCount);
 				if(!VEventBus.instance.post(event)){
 //					mod_littleMaidMob.Debug("getchest2.");
 					boolean f = false;
@@ -512,6 +511,16 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public void updateAITick(int pMode) {
+		if(pMode == EntityMode_Basic.mmode_FarmPorter &&
+				owner.maidInventory.getFirstEmptyStack()>-1 &&
+				!owner.getWorkingCount().isEnable()){
+			owner.setMaidMode("Farmer");
+		}
+		super.updateAITick(pMode);
 	}
 
 }
