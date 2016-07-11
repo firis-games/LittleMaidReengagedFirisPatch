@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
@@ -181,6 +182,10 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	@Override
 	public boolean checkEntity(int pMode, Entity pEntity) {
+		if (owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0) {
+			return false;
+		}
+
 		if (pMode == mmode_Archer) {
 			if (!MaidHelper.isTargetReachable(owner, pEntity, 100)) return false;
 			if (!owner.getEntitySenses().canSee(pEntity)) return false;

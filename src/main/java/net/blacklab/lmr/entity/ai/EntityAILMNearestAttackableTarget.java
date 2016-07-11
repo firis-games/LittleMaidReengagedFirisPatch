@@ -38,11 +38,11 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 		theNearestAttackableTargetSorter = new EntityAILMNearestAttackableTargetSorter(par1);
 		fretarget = par6;
 		theMaid = par1;
-		
+
 		setMutexBits(1);
 	}
 
-	
+
 	@Override
 	public boolean shouldExecute() {
 		if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0) {
@@ -58,7 +58,7 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 				)) {
 			lfollowRange = getTargetDistance();
 		}
-		
+
 		List llist = this.taskOwner.worldObj.getEntitiesWithinAABB(targetClass, taskOwner.getEntityBoundingBox().expand(lfollowRange, 8.0D, lfollowRange));
 		if (theMaid.getMaidMasterEntity() != null && !theMaid.isBloodsuck()) {
 			// ソーターを主中心へ
@@ -76,7 +76,7 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -99,6 +99,16 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 		fretryCounter = 0;
 	}
 
+	@Override
+	public boolean continueExecuting() {
+		if (theMaid.getActiveModeClass() != null && theMaid.getActiveModeClass().isSearchEntity()) {
+			if (!theMaid.getActiveModeClass().checkEntity(theMaid.getMaidModeInt(), targetEntity)) {
+				return false;
+			}
+		}
+		return super.continueExecuting();
+	}
+
 //	@Override
 	protected boolean isSuitableTargetLM(Entity pTarget, boolean par2) {
 		// LMM用にカスタム
@@ -106,19 +116,19 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 		if (pTarget == null) {
 			return false;
 		}
-		
+
 		if (pTarget == taskOwner) {
 			return false;
 		}
 		if (pTarget == theMaid.getMaidMasterEntity()) {
 			return false;
 		}
-		
+
 		if (!pTarget.isEntityAlive()) {
 			return false;
 		}
-		
-		EntityModeBase lailm = theMaid.getActiveModeClass(); 
+
+		EntityModeBase lailm = theMaid.getActiveModeClass();
 		if (lailm != null && lailm.isSearchEntity()) {
 			if (!lailm.checkEntity(theMaid.getMaidModeInt(), pTarget)) {
 				return false;
@@ -128,33 +138,33 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 				return false;
 			}
 		}
-/*		
+/*
 		// 基点から一定距離離れている場合も攻撃しない
 		if (!taskOwner.func_110176_b(MathHelper.floor_double(pTarget.posX), MathHelper.floor_double(pTarget.posY), MathHelper.floor_double(pTarget.posZ))) {
 //		if (!taskOwner.isWithinHomeDistance(MathHelper.floor_double(par1EntityLiving.posX), MathHelper.floor_double(par1EntityLiving.posY), MathHelper.floor_double(par1EntityLiving.posZ))) {
 			return false;
 		}
-*/		
+*/
 		// ターゲットが見えない
 		if (shouldCheckSight && !taskOwner.getEntitySenses().canSee(pTarget)) {
 			return false;
 		}
-		
+
 		// 攻撃中止判定？
 		if (this.fretarget) {
 			if (--this.fretryCounter <= 0) {
 				this.fcanAttack = 0;
 			}
-			
+
 			if (this.fcanAttack == 0) {
 				this.fcanAttack = this.func_75295_a(pTarget) ? 1 : 2;
 			}
-			
+
 			if (this.fcanAttack == 2) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -163,12 +173,12 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 		this.fretryCounter = 10 + this.taskOwner.getRNG().nextInt(5);
 		PathEntity var2 = taskOwner.getNavigator().getPathToXYZ(par1EntityLiving.posX, par1EntityLiving.posY, par1EntityLiving.posZ);
 //		PathEntity var2 = this.taskOwner.getNavigator().getPathToEntityLiving(par1EntityLiving);
-		
+
 		if (var2 == null) {
 			return false;
 		}
 		PathPoint var3 = var2.getFinalPathPoint();
-		
+
 		if (var3 == null) {
 			return false;
 		}
@@ -177,5 +187,13 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 		return var4 * var4 + var5 * var5 <= 2.25D;
 	}
 
+	@Override
+	protected double getTargetDistance() {
+		double targetd = 0;
+		if (theMaid.getActiveModeClass() != null && (targetd = theMaid.getActiveModeClass().getDistanceToSearchTargets()) > 0) {
+			return targetd;
+		}
+		return super.getTargetDistance();
+	}
 
 }
