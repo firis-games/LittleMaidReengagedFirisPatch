@@ -185,6 +185,7 @@ public class LMRNetwork
 			LittleMaidReengaged.Debug("setIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerUUID(sender), lname, lindex, lval);
 			IFF.setIFFValue(CommonHelper.getPlayerUUID(sender), lname, lval);
 			sendIFFValue(sender, lval, lindex);
+			IFF.saveIFF(CommonHelper.getPlayerUUID(sender));
 			break;
 		case SERVER_REQUEST_IFF :
 			// IFFGUI open
