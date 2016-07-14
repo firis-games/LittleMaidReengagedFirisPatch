@@ -233,7 +233,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 
 	@Override
 	public boolean checkEntity(int pMode, Entity pEntity) {
-		if (pMode == mmode_Fencer && !MaidHelper.isTargetReachable(owner, pEntity, 0)) return false;
+		if (!MaidHelper.isTargetReachable(owner, pEntity, 0)) return false;
 
 		return !owner.getIFF(pEntity);
 	}
