@@ -34,10 +34,11 @@ public class EntityAILMJumpToMaster extends EntityAIBase implements IEntityAI {
 			// 契約個体のみが跳ぶ
 			return false;
 		}
-		if (theMaid.getLeashed()) {
-			// 括られているなら跳ばない
+		if (theMaid.getAttackTarget() != null && theMaid.getAttackTarget().isEntityAlive() || theMaid.getLeashed()) {
+			// Cancel if targeting or leashed
 			return false;
 		}
+
 		if (theMaid.isFreedom()) {
 			// 自由行動の子は基点へジャンプ
 			if (theMaid.homeWorld != theMaid.dimension) {

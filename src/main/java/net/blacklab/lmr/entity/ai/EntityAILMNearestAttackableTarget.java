@@ -68,11 +68,14 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 			theNearestAttackableTargetSorter.setEntity(theMaid);
 		}
 		Collections.sort(llist, theNearestAttackableTargetSorter);
-		Iterator var2 = llist.iterator();
-		while (var2.hasNext()) {
-			Entity var3 = (Entity)var2.next();
-			if (var3.isEntityAlive() && this.isSuitableTargetLM(var3, false)) {
-				this.targetEntity = var3;
+		Iterator nearEntityCollectionsIterator = llist.iterator();
+		while (nearEntityCollectionsIterator.hasNext()) {
+			Entity lentity = (Entity)nearEntityCollectionsIterator.next();
+			if (lentity == theMaid.getAttackTarget()) {
+				return true;
+			}
+			if (lentity.isEntityAlive() && this.isSuitableTargetLM(lentity, false)) {
+				this.targetEntity = lentity;
 				return true;
 			}
 		}
@@ -101,11 +104,13 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 
 	@Override
 	public boolean continueExecuting() {
+		/*
 		if (theMaid.getActiveModeClass() != null && theMaid.getActiveModeClass().isSearchEntity()) {
 			if (!theMaid.getActiveModeClass().checkEntity(theMaid.getMaidModeInt(), targetEntity)) {
 				return false;
 			}
 		}
+		*/
 		return super.continueExecuting();
 	}
 
