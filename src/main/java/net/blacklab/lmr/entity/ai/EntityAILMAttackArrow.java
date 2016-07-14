@@ -120,9 +120,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
 	@Override
 	public void resetTask() {
 		fTarget = null;
-//		fAvatar.stopUsingItem();
-		fAvatar.stopActiveHand();
-//		fAvatar.clearItemInUse();
+		fAvatar.resetActiveHand();
 		fForget=0;
 	}
 
