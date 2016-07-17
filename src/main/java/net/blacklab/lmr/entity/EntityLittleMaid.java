@@ -31,7 +31,7 @@ import net.blacklab.lmr.entity.ai.EntityAILMCollectItem;
 import net.blacklab.lmr.entity.ai.EntityAILMFindBlock;
 import net.blacklab.lmr.entity.ai.EntityAILMFleeRain;
 import net.blacklab.lmr.entity.ai.EntityAILMFollowOwner;
-import net.blacklab.lmr.entity.ai.EntityAILMJumpToMaster;
+import net.blacklab.lmr.entity.ai.EntityAILMMoveToAnchor;
 import net.blacklab.lmr.entity.ai.EntityAILMOpenDoor;
 import net.blacklab.lmr.entity.ai.EntityAILMRestrictOpenDoor;
 import net.blacklab.lmr.entity.ai.EntityAILMRestrictRain;
@@ -291,7 +291,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public EntityAILMRestrictRain aiRestrictRain;
 	public EntityAILMFleeRain aiFreeRain;
 	public EntityAILMWander aiWander;
-	public EntityAILMJumpToMaster aiJumpTo;
+	public EntityAILMMoveToAnchor aiMoveToAnchor;
 	public EntityAILMFindBlock aiFindBlock;
 	public EntityAILMTracerMove aiTracer;
 	public EntityAILMSwimming aiSwiming;
@@ -540,7 +540,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		aiRestrictRain = new EntityAILMRestrictRain(this);
 		aiFreeRain = new EntityAILMFleeRain(this, 1.0F);
 		aiWander = new EntityAILMWander(this, 1.0F);
-		aiJumpTo = new EntityAILMJumpToMaster(this);
+		aiMoveToAnchor = new EntityAILMMoveToAnchor(this);
 		aiFindBlock = new EntityAILMFindBlock(this);
 		aiSwiming = new EntityAILMSwimming(this);
 		aiPanic = new EntityAIPanic(this, 2.0F);
@@ -560,7 +560,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// default
 		ltasks[0].addTask(1, aiSwiming);
 		ltasks[0].addTask(2, aiSit);
-		ltasks[0].addTask(3, aiJumpTo);
+		ltasks[0].addTask(3, aiMoveToAnchor);
 		ltasks[0].addTask(4, aiFindBlock);
 		ltasks[0].addTask(5, aiAttack);
 		ltasks[0].addTask(6, aiShooting);
@@ -762,7 +762,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setSitting(false);
 		setSneaking(false);
 		setActiveModeClass(null);
-		aiJumpTo.setEnable(true);
+		aiMoveToAnchor.setEnable(true);
 //		aiFollow.setEnable(true);
 		aiAttack.setEnable(true);
 		aiShooting.setEnable(false);
@@ -3670,7 +3670,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			aiRestrictRain.setEnable(pFlag);
 			aiFreeRain.setEnable(pFlag);
 			aiWander.setEnable(pFlag);
-//			aiJumpTo.setEnable(!pFlag);
+//			aiMoveToAnchor.setEnable(!pFlag);
 			aiAvoidPlayer.setEnable(!pFlag);
 			aiFollow.setEnable(!pFlag);
 			aiTracer.setEnable(isTracer()&&pFlag);
@@ -3703,6 +3703,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	public void onWarp() {
 		getActiveModeClass().onWarp();
+	}
+	
+	public int getTicksUntilTeleport() {
+		if (getActiveModeClass() != null) {
+			return getActiveModeClass().ticksUntilTeleport();
+		}
+		return 60;
 	}
 
 	public boolean isHeadMount(){

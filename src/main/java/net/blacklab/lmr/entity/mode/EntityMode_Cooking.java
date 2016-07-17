@@ -68,7 +68,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		switch (pMode) {
 		case mmode_Cooking :
 			owner.setBloodsuck(false);
-			owner.aiJumpTo.setEnable(false);
+			owner.aiMoveToAnchor.setEnable(false);
 			owner.aiFollow.setEnable(false);
 			owner.aiAvoidPlayer.setEnable(false);
 			owner.aiAttack.setEnable(false);
