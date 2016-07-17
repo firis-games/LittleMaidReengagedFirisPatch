@@ -225,19 +225,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 		// 装備アイテムを回収
 		return pItemStack.getItem() instanceof ItemSword || pItemStack.getItem() instanceof ItemAxe;
 	}
-
-	@Override
-	public boolean isSearchEntity() {
-		return true;
-	}
-
-	@Override
-	public boolean checkEntity(int pMode, Entity pEntity) {
-		if (!MaidHelper.isTargetReachable(owner, pEntity, 0)) return false;
-
-		return !owner.getIFF(pEntity);
-	}
-
+	
 	@Override
 	public void updateAITick(int pMode) {
 		super.updateAITick(pMode);

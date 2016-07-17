@@ -2,6 +2,7 @@ package net.blacklab.lmr.entity.ai;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -86,11 +87,10 @@ public class EntityAILMHurtByTarget extends EntityAIHurtByTarget {
 			if (theMaid.getIFF(par1EntityLiving)) {
 				return false;
 			}
-		}
-		
-		// 基点から一定距離離れている場合も攻撃しない
-		if (!taskOwner.isWithinHomeDistanceCurrentPosition()) {
-			return false;
+			// Can't reach target
+			if (!MaidHelper.isTargetReachable(theMaid, par1EntityLiving, 0)) {
+				return false;
+			}
 		}
 		
 		// ターゲットが見えない
