@@ -18,6 +18,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSpade;
@@ -224,6 +225,21 @@ public class EntityMode_Fencer extends EntityModeBase {
 	public boolean checkItemStack(ItemStack pItemStack) {
 		// 装備アイテムを回収
 		return pItemStack.getItem() instanceof ItemSword || pItemStack.getItem() instanceof ItemAxe;
+	}
+	
+	@Override
+	public boolean isSearchEntity() {
+		return owner.getMaidModeInt() == mmode_Fencer;
+	}
+	
+	@Override
+	public boolean checkEntity(int pMode, Entity pEntity) {
+		if (pEntity instanceof EntityCreeper) {
+			if (owner.getMaidMasterEntity() == null ? true : !owner.getMaidMasterEntity().equals(((EntityCreeper) pEntity).getAttackTarget())) {
+				return false;
+			}
+		}
+		return super.checkEntity(pMode, pEntity);
 	}
 	
 	@Override
