@@ -268,7 +268,7 @@ public abstract class EntityModeBase {
 	 * 独自索敵処理
 	 */
 	public boolean checkEntity(int pMode, Entity pEntity) {
-		return true;
+		return false;
 	}
 
 	/**

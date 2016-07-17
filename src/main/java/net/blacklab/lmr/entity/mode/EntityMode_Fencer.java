@@ -9,6 +9,7 @@ import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.Counter;
+import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.MaidHelper;
@@ -239,7 +240,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				return false;
 			}
 		}
-		return super.checkEntity(pMode, pEntity);
+		return !owner.getIFF(pEntity);
 	}
 	
 	@Override
