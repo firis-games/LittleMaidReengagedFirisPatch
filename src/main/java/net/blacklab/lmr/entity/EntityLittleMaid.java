@@ -325,6 +325,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	private int gainExpBoost = 1;					// 取得経験値倍率
 	
 	protected boolean modelChangeable = true;
+	
+	protected final Counter countForTeleport = new Counter(-1, Integer.MAX_VALUE, -1);
 
 	public EntityLittleMaid(World par1World) {
 		super(par1World);
@@ -2425,6 +2427,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			ticksSinceLastDamage--;
 		}
 
+		if (getAttackTarget() != null && getAttackTarget().isEntityAlive()) {
+			countForTeleport.onUpdate();
+		}
+
 		// くびかしげ
 		prevRotateAngleHead = rotateAngleHead;
 		if (getLooksWithInterest()) {
@@ -3820,7 +3826,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	private boolean checkedTextureUpdate = false;
-
 	/**
 	 * テクスチャパックの更新を確認
 	 * @return
@@ -3968,6 +3973,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void setHomePosAndDistance(BlockPos par1, int par4) {
 		homeWorld = dimension;
 		super.setHomePosAndDistance(par1, par4);
+	}
+	
+	public final Counter getTeleportCounter() {
+		return countForTeleport;
 	}
 
 	@Override
