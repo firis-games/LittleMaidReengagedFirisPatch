@@ -535,6 +535,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 		if (pItemStack != null && pItemStack.stackSize <= 0) {
 			setInventorySlotContents(index, null);
+			pItemStack = null;
 		}
 
 		return pItemStack;
@@ -544,7 +545,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack target, returned = null;
 		if ((target = getStackInSlot(index)) != null) {
-			returned = getStackInSlot(index).splitStack(count);
+			returned = target.splitStack(count);
 			if (target.stackSize == 0) {
 				setInventorySlotContents(index, null);
 			}
