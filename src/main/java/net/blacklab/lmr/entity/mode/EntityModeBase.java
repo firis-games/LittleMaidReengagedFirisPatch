@@ -347,11 +347,4 @@ public abstract class EntityModeBase {
 		return !owner.isBloodsuck();
 	}
 
-	/**
-	 * @return Ticks from going out of tracking range to teleporting
-	 */
-	public int ticksUntilTeleport() {
-		return 60;
-	}
-
 }

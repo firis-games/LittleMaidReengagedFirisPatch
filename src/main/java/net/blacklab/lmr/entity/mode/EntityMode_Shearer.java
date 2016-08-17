@@ -79,7 +79,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 
 		ltasks[0].addTask(1, owner.aiSwiming);
 		ltasks[0].addTask(2, owner.getAISit());
-		ltasks[0].addTask(3, owner.aiMoveToAnchor);
+		ltasks[0].addTask(3, owner.aiJumpTo);
 		ltasks[0].addTask(4, owner.aiAttack);
 		ltasks[0].addTask(5, owner.aiPanic);
 		ltasks[0].addTask(6, owner.aiBeg);
