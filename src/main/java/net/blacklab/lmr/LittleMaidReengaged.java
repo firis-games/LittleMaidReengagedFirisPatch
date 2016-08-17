@@ -147,7 +147,7 @@ public class LittleMaidReengaged {
 	}
 
 	public static void Debug(boolean isRemote, String format, Object... pVals) {
-		Debug(String.format("Side=%s; ", isRemote ? "C" : "S").concat(format), pVals);
+		Debug("Side=%s; ".concat(format), isRemote, pVals);
 	}
 
 	public String getName() {

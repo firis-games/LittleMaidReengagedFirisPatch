@@ -21,6 +21,8 @@ public class EntityAILMMoveToAnchor extends EntityAIBase implements IEntityAI {
 	protected boolean isEnable;
 	protected AxisAlignedBB boundingBox;
 	
+	protected Counter countForTeleport;
+
 	public EntityAILMMoveToAnchor(EntityLittleMaid pEntityLittleMaid) {
 		super();
 		
@@ -28,6 +30,7 @@ public class EntityAILMMoveToAnchor extends EntityAIBase implements IEntityAI {
 		theWorld = pEntityLittleMaid.worldObj;
 		isEnable = true;
 		boundingBox = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+		countForTeleport = new Counter(-1, Integer.MAX_VALUE, -1);
 	}
 
 	@Override
@@ -77,9 +80,7 @@ public class EntityAILMMoveToAnchor extends EntityAIBase implements IEntityAI {
 
 	@Override
 	public void startExecuting() {
-		LittleMaidReengaged.Debug(theMaid.worldObj.isRemote, "%d: Jump to anchor startEx", theMaid.getEntityId());
-		
-		theMaid.getTeleportCounter().setValue(theMaid.getTicksUntilTeleport());
+		countForTeleport.setValue(theMaid.getTicksUntilTeleport());
 		
 		// Try move to anchor / master
 		if (theMaid.isFreedom()) {
@@ -92,26 +93,27 @@ public class EntityAILMMoveToAnchor extends EntityAIBase implements IEntityAI {
 	
 	@Override
 	public void updateTask() {
-		LittleMaidReengaged.Debug(theMaid.worldObj.isRemote, "%d: Jump tn anchor update: %d", theMaid.getEntityId(), theMaid.getTeleportCounter().getValue());
-		
+		// Target set
+		if (theMaid.getAttackTarget() != null && theMaid.getAttackTarget().isEntityAlive()) {
+			resetTask();
+			return;
+		}
+
 		// Return into range
 		if (theMaid.isFreedom()) {
 			if (theMaid.isWithinHomeDistanceCurrentPosition()) {
 				resetTask();
-			} else if (theMaid.getTeleportCounter().isEnable() && theMaid.getNavigator().noPath()) {
+			} else if (countForTeleport.isEnable() && theMaid.getNavigator().noPath()) {
 				theMaid.getNavigator().setPath(theMaid.getNavigator().getPathToPos(theMaid.getHomePosition()), 1.0d);
 			} 
 		} else if (MaidHelper.isTargetReachable(theMaid, theMaid, 0)) {
 			resetTask();
 		}
 
-		// Target set
-		if (theMaid.getAttackTarget() != null && theMaid.getAttackTarget().isEntityAlive()) {
-			return;
-		}
-
+		countForTeleport.onUpdate();
+		
 		// Doing jump
-		if (!theMaid.getTeleportCounter().isEnable()) {
+		if (!countForTeleport.isEnable()) {
 			if (!theMaid.isFreedom()) {
 				// Jump to master
 				int i = theOwner.getPosition().getX() - 2;
@@ -244,12 +246,12 @@ public class EntityAILMMoveToAnchor extends EntityAIBase implements IEntityAI {
 
 	@Override
 	public boolean continueExecuting() {
-		return theMaid.getTeleportCounter().isEnable();
+		return countForTeleport.isEnable();
 	}
 	
 	@Override
 	public void resetTask() {
-		theMaid.getTeleportCounter().setValue(-1);
+		countForTeleport.setValue(-1);
 	}
 
 	@Override
