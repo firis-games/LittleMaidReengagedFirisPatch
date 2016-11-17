@@ -1163,6 +1163,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	/**
 	 * 敵味方識別
+	 * falseなら敵対
 	 */
 	public boolean getIFF(Entity pEntity) {
 		// 敵味方識別(敵=false)
@@ -1827,10 +1828,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	{
 		super.updateAITasks();
 		tasks.onUpdateTasks();
-//		if(++playingTick==2){
 		getActiveModeClass().updateAITick(getMaidModeInt());
-//			playingTick = 0;
-//		}
 	}
 
 	@Override

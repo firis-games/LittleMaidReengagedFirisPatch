@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
@@ -181,10 +182,8 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	@Override
 	public boolean checkEntity(int pMode, Entity pEntity) {
-		if (pMode == mmode_Archer) {
-			if (!MaidHelper.isTargetReachable(owner, pEntity, 100)) return false;
-			if (!owner.getEntitySenses().canSee(pEntity)) return false;
-		}
+		if (owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0) return false;
+		if (!MaidHelper.isTargetReachable(owner, pEntity, 100)) return false;
 
 		return !owner.getIFF(pEntity);
 	}
@@ -203,6 +202,10 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	@Override
 	public void updateAITick(int pMode) {
+		if (owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0) {
+			owner.setAttackTarget(null);
+		}
+
 		switch (pMode) {
 		case mmode_Archer:
 //			owner.getWeaponStatus();
@@ -258,6 +261,21 @@ public class EntityMode_Archer extends EntityModeBase {
 			owner.mstatAimeBow = true;
 		}
 
+	}
+
+	@Override
+	public double getDistanceToSearchTargets() {
+		return 24d;
+	}
+
+	@Override
+	public double getLimitRangeSqOnFollow() {
+		return 16 * 16;
+	}
+
+	@Override
+	public double getFreedomTrackingRangeSq() {
+		return 21 * 21;
 	}
 
 }

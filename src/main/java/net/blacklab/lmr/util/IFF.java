@@ -21,6 +21,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
@@ -77,6 +78,9 @@ public class IFF {
 			int pIndex, Map<String, Entity> pMap) {
 		int liff = IFF.iff_Unknown;
 		if (pEntity instanceof EntityLivingBase) {
+			if (pEntity instanceof EntityArmorStand) {
+				liff = iff_Friendry;
+			}
 			if (pEntity instanceof EntityLittleMaid) {
 				switch (pIndex) {
 				case 0:
@@ -249,6 +253,7 @@ public class IFF {
 	}
 
 	protected static File getFile(UUID pUsername) {
+		LittleMaidReengaged.Debug("GetFile.");
 		File lfile;
 		if (pUsername == null) {
 			lfile = new File(CommonHelper.mc.mcDataDir, "config/littleMaidMob.iff");
@@ -299,6 +304,7 @@ public class IFF {
 
 	public static void saveIFF(UUID pUsername) {
 		// IFF ファイルの書込み
+		LittleMaidReengaged.Debug("Save IFF, %s", pUsername.toString());
 		File lfile = getFile(pUsername);
 		Map<String, Integer> lmap = getUserIFF(pUsername);
 

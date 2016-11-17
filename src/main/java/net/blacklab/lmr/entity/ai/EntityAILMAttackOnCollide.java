@@ -55,7 +55,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 
 		pathToTarget = theMaid.getNavigator().getPathToXYZ(entityTarget.posX, entityTarget.posY, entityTarget.posZ);
 //		pathToTarget = theMaid.getNavigator().getPathToEntityLiving(entityTarget);
-		attackRange = (double)theMaid.width + (double)entityTarget.width + 0.4D;
+		attackRange = (double)theMaid.width + (double)entityTarget.width + 0.8D;
 		attackRange *= attackRange;
 
 		if (theMaid.isFreedom() &&

@@ -311,15 +311,19 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		isItemReload = isItemPreReload = false;
 		avatar.getSwingStatus(pIndex).stopUsingItem(getEntityServer());
 	}
-//	@Deprecated
+
 	@Override
 	public void stopActiveHand() {
-//		super.stopUsingItem();
-		isItemTrigger = false;
-		isItemReload = isItemPreReload = false;
 		stopUsingItem(avatar.getDominantArm());
 		avatar.stopActiveHand();
 		super.stopActiveHand();
+	}
+	
+	@Override
+	public void resetActiveHand() {
+		stopUsingItem(avatar.getDominantArm());
+		avatar.resetActiveHand();
+		super.resetActiveHand();
 	}
 
 	public void setItemInUse(int pIndex, ItemStack itemstack, int i) {

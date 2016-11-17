@@ -9,6 +9,7 @@ import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.Counter;
+import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.MaidHelper;
@@ -18,6 +19,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSpade;
@@ -225,19 +227,22 @@ public class EntityMode_Fencer extends EntityModeBase {
 		// 装備アイテムを回収
 		return pItemStack.getItem() instanceof ItemSword || pItemStack.getItem() instanceof ItemAxe;
 	}
-
+	
 	@Override
 	public boolean isSearchEntity() {
-		return true;
+		return owner.getMaidModeInt() == mmode_Fencer;
 	}
-
+	
 	@Override
 	public boolean checkEntity(int pMode, Entity pEntity) {
-		if (pMode == mmode_Fencer && !MaidHelper.isTargetReachable(owner, pEntity, 0)) return false;
-
+		if (pEntity instanceof EntityCreeper) {
+			if (owner.getMaidMasterEntity() == null ? true : !owner.getMaidMasterEntity().equals(((EntityCreeper) pEntity).getAttackTarget())) {
+				return false;
+			}
+		}
 		return !owner.getIFF(pEntity);
 	}
-
+	
 	@Override
 	public void updateAITick(int pMode) {
 		super.updateAITick(pMode);
@@ -277,6 +282,14 @@ public class EntityMode_Fencer extends EntityModeBase {
 		if ((maidAttribute = owner.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED)).hasModifier(CHARGING_BOOST_MODIFIER)) {
 			maidAttribute.removeModifier(CHARGING_BOOST_UUID);
 		}
+	}
+
+	@Override
+	public double getDistanceToSearchTargets() {
+		if (owner.isFreedom()) {
+			return 21d;
+		}
+		return super.getDistanceToSearchTargets();
 	}
 
 	@Override

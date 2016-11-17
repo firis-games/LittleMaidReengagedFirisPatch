@@ -7,6 +7,7 @@ import java.util.List;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
 import net.blacklab.lmr.entity.mode.EntityMode_Fencer;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -15,27 +16,25 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.MathHelper;
 
-public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackableTarget {
+public class EntityAILMNearestAttackableTarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
 
 	protected EntityLittleMaid theMaid;
-	protected Entity targetEntity;
-	protected Class targetClass;
 	protected int targetChance;
-	protected EntityAILMNearestAttackableTargetSorter theNearestAttackableTargetSorter;
+	protected EntityAILMNearestAttackableTargetSorter<?> theNearestAttackableTargetSorter;
 
 	private boolean fretarget;
 	private int fcanAttack;
 	private int fretryCounter;
 
-	public EntityAILMNearestAttackableTarget(EntityLittleMaid par1EntityLiving, Class par2Class, int par4, boolean par5) {
+	public EntityAILMNearestAttackableTarget(EntityLittleMaid par1EntityLiving, Class<T> par2Class, int par4, boolean par5) {
 		this(par1EntityLiving, par2Class, par4, par5, false);
 	}
 
-	public EntityAILMNearestAttackableTarget(EntityLittleMaid par1, Class par2, int par4, boolean par5, boolean par6) {
+	public EntityAILMNearestAttackableTarget(EntityLittleMaid par1, Class<T> par2, int par4, boolean par5, boolean par6) {
 		super(par1, par2, par4, par5, par6, null);
-		targetClass = par2;
+//		targetClass = par2;
 		targetChance = par4;
-		theNearestAttackableTargetSorter = new EntityAILMNearestAttackableTargetSorter(par1);
+		theNearestAttackableTargetSorter = new EntityAILMNearestAttackableTargetSorter<T>(par1);
 		fretarget = par6;
 		theMaid = par1;
 
@@ -45,6 +44,10 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 
 	@Override
 	public boolean shouldExecute() {
+		if (targetEntity != null && targetEntity.isEntityAlive() && taskOwner.getAttackTarget() == targetEntity) {
+			return true;
+		}
+
 		if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0) {
 			return false;
 //		} else if (theMaid.getAttackTarget() != null) {
@@ -59,7 +62,8 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 			lfollowRange = getTargetDistance();
 		}
 
-		List llist = this.taskOwner.worldObj.getEntitiesWithinAABB(targetClass, taskOwner.getEntityBoundingBox().expand(lfollowRange, 8.0D, lfollowRange));
+		List<T> llist = this.taskOwner.worldObj.getEntitiesWithinAABB(targetClass, taskOwner.getEntityBoundingBox().expand(lfollowRange, 8.0D, lfollowRange));
+
 		if (theMaid.getMaidMasterEntity() != null && !theMaid.isBloodsuck()) {
 			// ソーターを主中心へ
 			theNearestAttackableTargetSorter.setEntity(theMaid.getMaidMasterEntity());
@@ -68,11 +72,14 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 			theNearestAttackableTargetSorter.setEntity(theMaid);
 		}
 		Collections.sort(llist, theNearestAttackableTargetSorter);
-		Iterator var2 = llist.iterator();
-		while (var2.hasNext()) {
-			Entity var3 = (Entity)var2.next();
-			if (var3.isEntityAlive() && this.isSuitableTargetLM(var3, false)) {
-				this.targetEntity = var3;
+		Iterator<T> nearEntityCollectionsIterator = llist.iterator();
+		while (nearEntityCollectionsIterator.hasNext()) {
+			T lentity = (T)nearEntityCollectionsIterator.next();
+			if (lentity == theMaid.getAttackTarget()) {
+				return true;
+			}
+			if (lentity.isEntityAlive() && this.isSuitableTargetLM(lentity, false)) {
+				this.targetEntity = lentity;
 				return true;
 			}
 		}
@@ -83,20 +90,22 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 	@Override
 	public void startExecuting() {
 		super.startExecuting();
-		BREAK: if (targetEntity instanceof EntityLivingBase) {
-			if(theMaid.getMaidModeInt() == EntityMode_Fencer.mmode_Fencer && targetEntity instanceof EntityCreeper){
-				if(theMaid.getMaidMasterEntity()==null || ((EntityCreeper) targetEntity).getAttackTarget()==null){
-					theMaid.setAttackTarget(null);
-					break BREAK;
-				}else if(!((EntityCreeper) targetEntity).getAttackTarget().equals(theMaid.getMaidMasterEntity())){
-					theMaid.setAttackTarget(null);
-					break BREAK;
-				}
-			}
-			theMaid.setAttackTarget((EntityLivingBase)targetEntity);
-		}
+		theMaid.setAttackTarget((EntityLivingBase)targetEntity);
+
 		fcanAttack = 0;
 		fretryCounter = 0;
+	}
+
+	@Override
+	public boolean continueExecuting() {
+		/*
+		if (theMaid.getActiveModeClass() != null && theMaid.getActiveModeClass().isSearchEntity()) {
+			if (!theMaid.getActiveModeClass().checkEntity(theMaid.getMaidModeInt(), targetEntity)) {
+				return false;
+			}
+		}
+		*/
+		return super.continueExecuting();
 	}
 
 //	@Override
@@ -127,14 +136,12 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 			if (theMaid.getIFF(pTarget)) {
 				return false;
 			}
+			// Can't reach target
+			if (!MaidHelper.isTargetReachable(theMaid, pTarget, 0)) {
+				return false;
+			}
 		}
-/*
-		// 基点から一定距離離れている場合も攻撃しない
-		if (!taskOwner.func_110176_b(MathHelper.floor_double(pTarget.posX), MathHelper.floor_double(pTarget.posY), MathHelper.floor_double(pTarget.posZ))) {
-//		if (!taskOwner.isWithinHomeDistance(MathHelper.floor_double(par1EntityLiving.posX), MathHelper.floor_double(par1EntityLiving.posY), MathHelper.floor_double(par1EntityLiving.posZ))) {
-			return false;
-		}
-*/
+
 		// ターゲットが見えない
 		if (shouldCheckSight && !taskOwner.getEntitySenses().canSee(pTarget)) {
 			return false;
@@ -177,5 +184,13 @@ public class EntityAILMNearestAttackableTarget extends EntityAINearestAttackable
 		return var4 * var4 + var5 * var5 <= 2.25D;
 	}
 
+	@Override
+	protected double getTargetDistance() {
+		double targetd = 0;
+		if (theMaid.getActiveModeClass() != null && (targetd = theMaid.getActiveModeClass().getDistanceToSearchTargets()) > 0) {
+			return targetd;
+		}
+		return super.getTargetDistance();
+	}
 
 }

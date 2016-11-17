@@ -14,6 +14,7 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.IFF;
+import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -190,28 +191,26 @@ public class GuiIFF extends GuiScreen {
 
 	public void clickSlot(int pIndex, boolean pDoubleClick, String pName, EntityLivingBase pEntity) {
 		if (pDoubleClick) {
-			int tt = IFF.getIFF(null, pName, pEntity.worldObj);
+			int tt = IFF.getIFF(CommonHelper.getPlayerUUID(thePlayer), pName, pEntity.worldObj);
 			tt++;
 			if (tt > 2) {
 				tt = 0;
 			}
 
-			if (!mc.isSingleplayer()) {
-				// サーバーへ変更値を送る。
-				int li = 0;
-				for (String ls : IFF.DefaultIFF.keySet()) {
-					if (ls.contains(pName)) {
-						byte[] ldata = new byte[pName.length() + 5];
-						ldata[0] = (byte) tt;
-						NetworkHelper.setIntToPacket(ldata, 1, li);
-						NetworkHelper.setStrToPacket(ldata, 5, pName);
-						LittleMaidReengaged.Debug("SendIFF %s(%d) = %d", pName, li, tt);
-						LMRNetwork.sendToServer(EnumPacketMode.SERVER_CHANGE_IFF, ldata);
-					}
-					li++;
+			IFF.setIFFValue(CommonHelper.getPlayerUUID(thePlayer), pName, tt);
+
+			// サーバーへ変更値を送る。
+			int li = 0;
+			for (String ls : IFF.DefaultIFF.keySet()) {
+				if (ls.contains(pName)) {
+					byte[] ldata = new byte[pName.length() + 5];
+					ldata[0] = (byte) tt;
+					NetworkHelper.setIntToPacket(ldata, 1, li);
+					NetworkHelper.setStrToPacket(ldata, 5, pName);
+					LittleMaidReengaged.Debug("SendIFF %s(%d) = %d", pName, li, tt);
+					LMRNetwork.sendToServer(EnumPacketMode.SERVER_CHANGE_IFF, ldata);
 				}
-			} else {
-				IFF.setIFFValue(null, pName, tt);
+				li++;
 			}
 
 			Entity player = mc.thePlayer;
@@ -221,7 +220,7 @@ public class GuiIFF extends GuiScreen {
 
 	public void drawSlot(int pSlotindex, int pX, int pY, int pDrawheight, String pName, Entity pEntity) {
 		// 名前と敵味方識別の描画
-		int tt = IFF.getIFF(null, pName, pEntity.worldObj);
+		int tt = IFF.getIFF(CommonHelper.getPlayerUUID(thePlayer), pName, pEntity.worldObj);
 		int c = 0xffffff;
 		switch (tt) {
 		case IFF.iff_Friendry:

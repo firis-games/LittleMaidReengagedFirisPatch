@@ -232,16 +232,11 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	@Override
 	public void updateAITick(int pMode) {
-		if (pMode == mmode_Farmer && owner.getNextEquipItem()) {
-			if(owner.getAIMoveSpeed()>0.5F) owner.setAIMoveSpeed(0.5F);
-			if(owner.maidInventory.getFirstEmptyStack()==-1){
+		if (pMode == mmode_Farmer) {
+			if(owner.getAIMoveSpeed() > 0.5F) owner.setAIMoveSpeed(0.5F);
+			if(owner.maidInventory.getFirstEmptyStack() < 0){
 				owner.setMaidMode("FarmPorter");
 			}
-		}
-		if(pMode==EntityMode_Basic.mmode_FarmPorter &&
-				owner.maidInventory.getFirstEmptyStack()>-1 &&
-				!owner.getWorkingCount().isEnable()){
-			owner.setMaidMode("Farmer");
 		}
 	}
 

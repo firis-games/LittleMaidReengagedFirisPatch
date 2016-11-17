@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -37,6 +38,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
+//github.com/Verclene/LittleMaidReengaged.git
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -144,8 +147,8 @@ public class LittleMaidReengaged {
 		}
 	}
 
-	public static void Debug(boolean isRemote, String string) {
-		Debug("SIDE=%s, %s", isRemote ? "Client" : "Server", string);
+	public static void Debug(boolean isRemote, String format, Object... pVals) {
+		Debug("Side=%s; ".concat(format), isRemote, pVals);
 	}
 
 	public String getName() {
@@ -191,11 +194,11 @@ public class LittleMaidReengaged {
 		}
 
 		// FileManager.setSrcPath(evt.getSourceFile());
-		// MMM_Config.init();
+		// MMM_cfg_init();
 
 		// MMMLibのRevisionチェック
 		// MMM_Helper.checkRevision("6");
-		// MMM_Config.checkConfig(this.getClass());
+		// MMM_cfg_checkConfig(this.getClass());
 
 		randomSoundChance = new Random();
 
@@ -269,6 +272,7 @@ public class LittleMaidReengaged {
 
 		registerKey = new ItemTriggerRegisterKey();
 		GameRegistry.<Item>register(registerKey, new ResourceLocation(DOMAIN, "registerkey"));
+
 		GameRegistry.addShapelessRecipe(new ItemStack(registerKey), Items.EGG,
 				Items.SUGAR, Items.NETHER_WART);
 
@@ -319,19 +323,33 @@ public class LittleMaidReengaged {
 
 		// Dominant
 		Biome[] biomeList = null;
+
 		if (cfg_spawnWeight > 0) {
-//			if (cfg_Dominant) {
-//				biomeList = Biome.bio();
-//			} else {
-				String biomeNameList[] = new String[] { "desert", "plains", "savanna", "mushroom_island", "forest", "birch_forest", "swampland", "taiga", "ice_flats", "mutated_ice_flats" };
-				biomeList = new Biome[biomeNameList.length];
-				for (int i=0; i<biomeNameList.length; i++) biomeList[i] = Biome.REGISTRY.getObject(new ResourceLocation(biomeNameList[i]));
-//			}
-			for (Biome biome : biomeList) {
-				if (biome != null) {
-					EntityRegistry.addSpawn(EntityLittleMaid.class,
-							cfg_spawnWeight, cfg_minGroupSize,
-							cfg_maxGroupSize, EnumCreatureType.CREATURE, biome);
+			Iterator<Biome> biomeIterator = Biome.REGISTRY.iterator();
+			while(biomeIterator.hasNext()) {
+				Biome biome = biomeIterator.next();
+
+				if(biome != null &&
+						(
+								(BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.HOT) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.COLD) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.WET) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.DRY) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SAVANNA) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.CONIFEROUS) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.LUSH) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.MUSHROOM) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.FOREST) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.PLAINS) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SANDY) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SNOWY) ||
+										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.BEACH))
+								)
+						)
+				{
+					EntityRegistry.addSpawn(EntityLittleMaid.class, cfg_spawnWeight, cfg_minGroupSize, cfg_maxGroupSize, EnumCreatureType.CREATURE, biome);
+					System.out.println("Registering spawn in " + biome.getBiomeName());
+					Debug("Registering maids to spawn in " + biome.getBiomeName());
 				}
 			}
 		}
