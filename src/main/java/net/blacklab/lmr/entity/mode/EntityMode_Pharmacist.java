@@ -74,7 +74,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		switch (pMode) {
 		case mmode_Pharmacist :
 			owner.setBloodsuck(false);
-			owner.aiJumpTo.setEnable(false);
+//			owner.aiJumpTo.setEnable(false);
 			owner.aiFollow.setEnable(false);
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(false);
