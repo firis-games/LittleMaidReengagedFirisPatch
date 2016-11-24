@@ -1,6 +1,7 @@
 package net.blacklab.lmr.entity.ai;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -59,9 +60,16 @@ public class EntityAILMSwimming extends EntityAISwimming {
 					totalmotionY +=		((pathPoint.yCoord>=y)?1:-1) * theMaid.getAIMoveSpeed()/3d;
 				}
 
-				if(theMaid.isInWater()){
-					IBlockState iState;
+				// Breathing
+				if (theMaid.getAir() <= 0) {
+					theMaid.motionY += 0.1D;
+				}
+				
+				if (MaidHelper.canStartWalk(theMaid)) {
+					// Move 
 
+					IBlockState iState;
+					
 					// Going ashore
 					if (pathPoint != null && Math.abs(pathPoint.yCoord - yd) < 3d && Math.pow(pathPoint.xCoord - xd, 2) + Math.pow(pathPoint.zCoord - zd, 2) < 9d &&
 							(iState = theMaid.worldObj.getBlockState(new BlockPos(pathPoint.xCoord, pathPoint.yCoord + 1, pathPoint.zCoord)))
@@ -69,10 +77,6 @@ public class EntityAILMSwimming extends EntityAISwimming {
 						totalmotionY += 0.05D;
 					}
 					theMaid.motionY = totalmotionY;
-				}
-				// Breathing
-				if (theMaid.getAir() <= 0) {
-					theMaid.motionY += 0.1D;
 				}
 			}
 		}

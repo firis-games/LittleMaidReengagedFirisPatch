@@ -2,6 +2,8 @@ package net.blacklab.lmr.util.helper;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 
@@ -14,6 +16,30 @@ public class MaidHelper {
 		if (!maid.maidInventory.addItemStackToInventory(stack)) {
 			maid.entityDropItem(stack, 0);
 		}
+	}
+	
+	/**
+	 * Returns if the maid can walk or swim. Used for move-AI.
+	 * @param pMaid
+	 * @return
+	 */
+	public static boolean canStartWalk(EntityLittleMaid pMaid) {
+		if (pMaid.isFreedom()) {
+			return true;
+		}
+		EntityPlayer lMaster = pMaid.getMaidMasterEntity();
+		return lMaster == null ? false : canStartFollow(pMaid, lMaster, 0);
+	}
+	
+	/**
+	 * Returns if the maid can follow her master. If the maid is freedom mode, this method returns false. 
+	 * @param pMaid
+	 * @param pTarget
+	 * @param expandIgnoreRangeSq
+	 * @return
+	 */
+	public static boolean canStartFollow(EntityLittleMaid pMaid, Entity pTarget, double expandIgnoreRangeSq) {
+		return pMaid.isFreedom() ? false : pMaid.getDistanceSqToEntity(pTarget) > pMaid.getActiveModeClass().getDistanceSqToStartFollow() + expandIgnoreRangeSq;
 	}
 	
 	public static boolean isTargetReachable(EntityLittleMaid pMaid, Entity pTarget, double expandRangeSq) {

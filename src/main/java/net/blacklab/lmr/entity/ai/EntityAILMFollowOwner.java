@@ -1,6 +1,7 @@
 package net.blacklab.lmr.entity.ai;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
@@ -16,7 +17,6 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 	private double maxDist;
 	private double minDist;
 	protected double sprintDist;
-	protected double toDistance;
 	protected boolean isEnable;
 
 	public EntityAILMFollowOwner(EntityLittleMaid par1EntityLittleMaid,
@@ -45,22 +45,17 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 			return false;
 		}
 
-		toDistance = theMaid.getDistanceSqToEntity(entityliving);
-		if (toDistance < theMaid.getActiveModeClass().getDistanceSqToStartFollow() && !theMaid.isInWater()) {
-			return false;
-		}
 		theOwner = entityliving;
-		return true;
+		return MaidHelper.canStartFollow(theMaid, theOwner, 0);
 	}
 
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
 	public boolean continueExecuting() {
-		toDistance = theMaid.getDistanceSqToEntity(theOwner);
 //		if(theMaid.handleWaterMovement()) return !theMaid.isMaidWait()&&!theMaid.isSitting();
 		return !theMaid.getNavigator().noPath()
-				&& (toDistance > theMaid.getActiveModeClass().getDistanceSqToStartFollow())
+				&& MaidHelper.canStartFollow(theMaid, theOwner, 0)
 				&& !theMaid.isSitting();
 	}
 
@@ -89,6 +84,8 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
 	 * Updates the task
 	 */
 	public void updateTask() {
+		double toDistance = theMaid.getDistanceSqToEntity(theOwner);
+		
 		if (toDistance - theMaid.getActiveModeClass().getDistanceSqToStartFollow() > 1.0) {
 			theMaid.getLookHelper().setLookPositionWithEntity(theOwner, 10F, theMaid.getVerticalFaceSpeed());
 		}
