@@ -83,7 +83,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -139,6 +138,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -2156,7 +2156,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			registerTick.onUpdate();
 
 			if (!registerTick.isEnable() && registerTick.getValue() == 0 && !worldObj.isRemote) {
-				getOwner().addChatMessage(new TextComponentString("littleMaidMob.chat.text.cancelregistration").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+				getOwner().addChatMessage(new TextComponentTranslation("littleMaidMob.chat.text.cancelregistration").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
 			}
 		}
 
@@ -2448,33 +2448,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// 死因を表示
 //		if (!worldObj.isRemote) {
 			if (LittleMaidReengaged.cfg_DeathMessage && getMaidMasterEntity() != null) {
-				TextComponentString text = new TextComponentString(sprintfDeadCause("your %s killed, by %s", par1DamageSource));
-				getMaidMasterEntity().addChatMessage(text);
+				getMaidMasterEntity().addChatMessage(new TextComponentTranslation("littleMaidMob.chat.text.death", CommonHelper.getDeadSource(par1DamageSource)));
 			}
 //		}
-	}
-
-	public String sprintfDeadCause(String format, DamageSource source) {
-		String ls = source.getDamageType();
-		Entity lentity = source.getSourceOfDamage();
-		if (lentity != null) {
-			if (lentity instanceof EntityPlayer) {
-				ls += ":" + lentity.getName();
-			} else {
-				String lt = EntityList.getEntityString(lentity);
-				if (lt != null) {
-					ls += ":" + lt;
-				}
-			}
-		}
-
-		// 不具合対応
-		// getFormattedText → getUnformattedTextForChat
-		// getFormattedText はクライアント専用（描画用）。
-		// http://forum.minecraftuser.jp/viewtopic.php?f=13&t=23347&p=212078#p211805
-		String lt = getDisplayName().getUnformattedText();
-
-		return String.format(format, lt, ls);
 	}
 
 	/**
@@ -2905,7 +2881,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								// トリガーセット
 								if (registerTick.isEnable()) {
 									registerTick.setEnable(false);
-									par1EntityPlayer.addChatComponentMessage(new TextComponentString("littleMaidMob.chat.text.cancelregistration").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+									par1EntityPlayer.addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.cancelregistration").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
 									return true;
 								}
 
@@ -2924,13 +2900,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								}
 								tagCompound.setInteger(ItemTriggerRegisterKey.RK_COUNT, count);
 
-								par1EntityPlayer.addChatComponentMessage(new TextComponentString("littleMaidMob.chat.text.readyregistration" + registerMode));
+								par1EntityPlayer.addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.readyregistration", registerMode));
 								if(count >= ItemTriggerRegisterKey.RK_MAX_COUNT-10){
 									if(count<ItemTriggerRegisterKey.RK_MAX_COUNT){
-										par1EntityPlayer.addChatComponentMessage(new TextComponentString("littleMaidMob.chat.text.warningcount" +
+										par1EntityPlayer.addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.warningcount",
 												(ItemTriggerRegisterKey.RK_MAX_COUNT-count)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
 									} else {
-										par1EntityPlayer.addChatComponentMessage(new TextComponentString("littleMaidMob.chat.text.endcount")
+										par1EntityPlayer.addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.endcount")
 												.setStyle(new Style().setColor(TextFormatting.DARK_RED)));
 									}
 								}
@@ -2944,9 +2920,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 									while(list.remove(item)) flag = true;
 									if (!flag) {
 										list.add(item);
-										par1EntityPlayer.addChatComponentMessage(new TextComponentString("littleMaidMob.chat.text.addtrigger" + " " + registerMode + "/+" + Item.REGISTRY.getNameForObject(item).toString()));
+										par1EntityPlayer.addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.addtrigger", registerMode + "/+" + Item.REGISTRY.getNameForObject(item).toString()));
 									} else {
-										par1EntityPlayer.addChatComponentMessage(new TextComponentString("littleMaidMob.chat.text.removetrigger" + " " + registerMode + "/-" + Item.REGISTRY.getNameForObject(item).toString()));
+										par1EntityPlayer.addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.removetrigger", registerMode + "/-" + Item.REGISTRY.getNameForObject(item).toString()));
 									}
 								}
 								IFF.saveIFF(CommonHelper.getPlayerUUID(par1EntityPlayer));

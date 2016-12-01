@@ -7,8 +7,10 @@ import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.mode.EntityMode_DeathWait;
 import net.blacklab.lmr.network.EnumPacketMode;
+import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.blacklab.lmr.util.helper.MaidHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -21,7 +23,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public class ExperienceHandler {
 
@@ -124,8 +126,7 @@ public class ExperienceHandler {
 				theMaid.playSound("mob.ghast.death");
 				theMaid.playSound("dig.glass");
 				if (theMaid.getMaidMasterEntity() != null) {
-					theMaid.getMaidMasterEntity().addChatComponentMessage(new TextComponentString(
-							theMaid.sprintfDeadCause(I18n.translateToLocal("littleMaidMob.chat.text.timedeath"), deadCause)));
+					theMaid.getMaidMasterEntity().addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.timedeath", CommonHelper.getDeadSource(deadCause)));
 				}
 			}
 

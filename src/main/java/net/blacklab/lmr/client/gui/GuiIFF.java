@@ -20,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,7 +28,6 @@ import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class GuiIFF extends GuiScreen {
@@ -59,7 +59,7 @@ public class GuiIFF extends GuiScreen {
 		entityMap = new TreeMap<String, Entity>();
 		initEntitys(world, true);
 
-		screenTitle = I18n.translateToLocal("littleMaidMob.gui.iff.title");
+		screenTitle = I18n.format("littleMaidMob.gui.iff.title");
 		target = pEntity;
 		thePlayer = player;
 
@@ -120,7 +120,7 @@ public class GuiIFF extends GuiScreen {
 
 		drawDefaultBackground();
 		selectPanel.drawScreen(px, py, pf);
-		drawCenteredString(this.mc.fontRendererObj, I18n.translateToLocal(screenTitle), width / 2, 20, 0xffffff);
+		drawCenteredString(this.mc.fontRendererObj, I18n.format(screenTitle), width / 2, 20, 0xffffff);
 		super.drawScreen(px, py, pf);
 
 /*

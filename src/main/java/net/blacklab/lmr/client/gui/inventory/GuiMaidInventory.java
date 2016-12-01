@@ -21,6 +21,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +32,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.translation.I18n;
 
 public class GuiMaidInventory extends GuiContainer {
 	// Field
@@ -159,15 +159,15 @@ public class GuiMaidInventory extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		String mInventoryString = I18n.translateToLocal(maidInventory.getName());
+		String mInventoryString = I18n.format(maidInventory.getName());
 		mc.fontRendererObj.drawString(mInventoryString, 168 - mc.fontRendererObj.getStringWidth(mInventoryString), 64, 0x404040);
-		mc.fontRendererObj.drawString(I18n.translateToLocal(
-				playerInventory.getName()), 8, 114, 0x404040);
+		mc.fontRendererObj.drawString(I18n.format(playerInventory.getName()), 8, 114, 0x404040);
+
 		//fontRenderer.drawString(StatCollector.translateToLocal("littleMaidMob.text.Health"), 86, 8, 0x404040);
 		//fontRenderer.drawString(StatCollector.translateToLocal("littleMaidMob.text.AP"), 86, 32, 0x404040);
 
 		if (RenderInfoPart.getRenderingPart() == 2) {
-			mc.fontRendererObj.drawString(I18n.translateToLocal(
+			mc.fontRendererObj.drawString(I18n.format(
 					"littleMaidMob.mode.".concat(entitylittlemaid.getMaidModeString())), 7, 64, 0x404040);
 		}
 
@@ -575,7 +575,7 @@ public class GuiMaidInventory extends GuiContainer {
 			GlStateManager.disableLighting();
 			GlStateManager.disableDepth();
 			GlStateManager.colorMask(true, true, true, false);
-			String str = I18n.translateToLocal("littleMaidMob.gui.text.expboost");
+			String str = I18n.format("littleMaidMob.gui.text.expboost");
 			int width = fontRendererObj.getStringWidth(str);
 			int centerx = guiLeft + 48 + xSize/2;
 			drawGradientRect(centerx - width/2 - 4, guiTop, centerx + width/2 + 4, guiTop + fontRendererObj.FONT_HEIGHT, 0xc0202020, 0xc0202020);
@@ -726,10 +726,10 @@ public class GuiMaidInventory extends GuiContainer {
 				drawTexturedModalRect(lx + 6, ly + 7, 0 + (i1 % 8) * 18,
 						ySizebk + 32 + (i1 / 8) * 18, 18, 18);
 			}
-			String ls = I18n.translateToLocal(potion.getName());
+			String ls = I18n.format(potion.getName());
 			if (potioneffect.getAmplifier() > 0) {
 				ls = (new StringBuilder()).append(ls).append(" ")
-						.append(I18n.translateToLocal((new StringBuilder())
+						.append(I18n.format((new StringBuilder())
 								.append("potion.potency.")
 								.append(potioneffect.getAmplifier())
 								.toString())).toString();

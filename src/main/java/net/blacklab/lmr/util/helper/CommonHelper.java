@@ -12,6 +12,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -25,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -203,5 +205,23 @@ public class CommonHelper {
 			}
 			return ltarget;
 		}
+
+	public static String getDeadSource(DamageSource source) {
+		String ls = source.getDamageType();
+	
+		Entity lentity = source.getSourceOfDamage();
+		if (lentity != null) {
+			if (lentity instanceof EntityPlayer) {
+				ls += ":" + lentity.getName();
+			} else {
+				String lt = EntityList.getEntityString(lentity);
+				if (lt != null) {
+					ls += ":" + lt;
+				}
+			}
+		}
+	
+		return ls;
+	}
 
 }

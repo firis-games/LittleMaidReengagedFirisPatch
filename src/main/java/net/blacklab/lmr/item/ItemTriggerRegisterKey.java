@@ -13,8 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 public class ItemTriggerRegisterKey extends Item {
@@ -48,8 +47,8 @@ public class ItemTriggerRegisterKey extends Item {
 		modeString = TriggerSelect.selector.get(index);
 		tagCompound.setString(RK_MODE_TAG, modeString);
 
-		if(worldIn.isRemote)
-			playerIn.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("littleMaidMob.chat.text.changeregistermode") + modeString));
+		if(!worldIn.isRemote)
+			playerIn.addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.changeregistermode", modeString));
 
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 	}

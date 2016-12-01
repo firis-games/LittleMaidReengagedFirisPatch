@@ -125,14 +125,15 @@ littleMaidMob.gui.text.expboost=Experience Booster
 
 littleMaidMob.gui.iff.title=Switch mobs to Enemy or Friendly
 
-littleMaidMob.chat.text.changeregistermode=Trigger Registration Mode changed to:
-littleMaidMob.chat.text.readyregistration=Now right-click with the item which you want to register as the Trigger:
+littleMaidMob.chat.text.changeregistermode=Trigger Registration Mode changed to: %s
+littleMaidMob.chat.text.readyregistration=Now right-click with the item which you want to register as the Trigger: %s
 littleMaidMob.chat.text.cancelregistration=Registration canceled.
-littleMaidMob.chat.text.addtrigger=Trigger item registered:
-littleMaidMob.chat.text.removetrigger=Trigger item removed:
-littleMaidMob.chat.text.warningcount=WARNING: The number of registrations are left:
+littleMaidMob.chat.text.addtrigger=Trigger item registered: %s
+littleMaidMob.chat.text.removetrigger=Trigger item removed: %s
+littleMaidMob.chat.text.warningcount=WARNING: The number of registrations are left: %d
 littleMaidMob.chat.text.endcount=The number of registrations are no longer left. Craft a key again.
-littleMaidMob.chat.text.timedeath=your %s can no longer endure pain from %s
+littleMaidMob.chat.text.death=Your %s was killed by %s
+littleMaidMob.chat.text.timedeath=Your %s can no longer endure pain from %s
 
 system.lmmnx.chat.text.newversion=New version avaliable
 system.lmmnx.chat.text.checkversion=Go to: http://el-blacklab.net/
