@@ -1,17 +1,6 @@
 package net.blacklab.lmr.entity;
 
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Aimebow;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Bloodsuck;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Freedom;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_LooksSugar;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_OverDrive;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Register;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Tracer;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Wait;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Working;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterest;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterestAXIS;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_remainsContract;
+import static net.blacklab.lmr.util.Statics.*;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -137,7 +126,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.EnumDifficulty;
@@ -1980,7 +1968,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 					}
 
 					// つまみ食い
-					if (rand.nextInt(MathHelper.floor_float(50000/(getExpBooster()*(1.05f+0.005f*getExpBooster())))) == 0) {
+					float jobFactor = getActiveModeClass() != null ? getActiveModeClass().getSugarSpeed() : 1;
+					if (rand.nextInt(MathHelper.floor_float(
+							50000 / jobFactor / (getExpBooster() * (1.05f+0.005f*getExpBooster())))) == 0) {
 						consumeSugar(EnumConsumeSugar.OTHER);
 					}
 					// 契約更新
@@ -3381,19 +3371,19 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		ItemStack stack = null;
 		Item item = null;
 		int index = -1;
-		for(int i=0;i<stacklist.length;i++){
+		for(int i = 0; i < stacklist.length; i++){
 			ItemStack ts = stacklist[i];
-			if(ts==null)continue;
+			if (ts == null)continue;
 			Item ti = ts.getItem();
-			if(ItemHelper.isSugar(ti)){
+			if (ItemHelper.isSugar(ti)){
 				stack = ts;
 				item = ti;
 				index = i;
 				break;
 			}
 		}
-		if(item==null||stack==null||index==-1) return;
-		if(item==Items.SUGAR){
+		if(item == null || stack == null || index == -1) return;
+		if(item == Items.SUGAR){
 			eatSugar(true, true, mode==EnumConsumeSugar.RECONTRACT);
 		}else if(item instanceof IItemSpecialSugar){
 			//モノグサ実装。良い子の皆さんはちゃんとif使うように…
@@ -3402,7 +3392,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if (mode == EnumConsumeSugar.RECONTRACT) {
 			addMaidExperience(3.5f);
 		}
-		maidInventory.decrStackSize(index, Math.min(1, mode == EnumConsumeSugar.OTHER ? 1 : getExpBooster()));
+		maidInventory.decrStackSize(index, Math.max(1, mode == EnumConsumeSugar.OTHER ? 1 : getExpBooster()));
 	}
 
 	/** 主に砂糖を食べる仕草やその後のこと。consumeSugar()から呼ばれる．

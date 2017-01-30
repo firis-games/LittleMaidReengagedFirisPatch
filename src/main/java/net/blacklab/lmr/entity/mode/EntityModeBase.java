@@ -346,21 +346,22 @@ public abstract class EntityModeBase {
 	public boolean isChangeTartget(Entity pTarget) {
 		return !owner.isBloodsuck();
 	}
-	
-	public final double getSugarSpeed() {
-		double lSpeed = getSugarConsumingMultiply();
+
+	public final float getSugarSpeed() {
+		float lSpeed = getSugarConsumingMultiply();
 		if (lSpeed < 1) {
 			throw new IllegalArgumentException("Return of getSugarConsumingMultiply() must not be under 1.0");
 		}
 		return lSpeed;
 	}
-	
+
 	/**
-	 * 砂糖の消費速度.1より低い値を指定することはできず, 1より低い値が返された場合はgetSugarSpeed()からIllegalrgumentExceptionがスローされる.
+	 * ジョブによりつまみ食い量を調整する.
+	 * 1より低い値を指定することはできず, 1より低い値が返された場合はgetSugarSpeed()からIllegalrgumentExceptionがスローされる.
 	 * @return
 	 */
-	public double getSugarConsumingMultiply() {
-		return 1.0;
+	public float getSugarConsumingMultiply() {
+		return 1f;
 	}
 
 }
