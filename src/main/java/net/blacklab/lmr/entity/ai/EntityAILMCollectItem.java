@@ -52,10 +52,10 @@ public class EntityAILMCollectItem extends EntityAIBase {
 				{
 					ItemStack lstack = ei.getEntityItem();
 					if (!ItemHelper.isSugar(lstack.getItem())) {
-						if ((theMaid.getMaidActiveModeClass() == null)) {
+						if (!theMaid.isActiveModeClass()) {
 							return false;
 						}
-						if ((!theMaid.getMaidActiveModeClass().checkItemStack(lstack))) {
+						if ((!theMaid.getActiveModeClass().checkItemStack(lstack))) {
 							return false;
 						}
 					}
@@ -107,7 +107,7 @@ public class EntityAILMCollectItem extends EntityAIBase {
 	public boolean canEntityItemBeSeen(Entity entity) {
 		// アイテムの可視判定
 //		return theMaid.worldObj.rayTraceBlocks(new Vec3(theMaid.posX, theMaid.posY + (double)theMaid.getEyeHeight(), theMaid.posZ), new Vec3(entity.posX, entity.posY + ((entity.getEntityBoundingBox().minY - entity.getEntityBoundingBox().minY) / 2), entity.posZ)) == null;
-		return VectorUtil.canMoveThrough(theMaid.getMaidActiveModeClass().owner, 0D, MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ), false, true, false);
+		return VectorUtil.canMoveThrough(theMaid, 0D, MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ), false, true, false);
 	}
 
 }

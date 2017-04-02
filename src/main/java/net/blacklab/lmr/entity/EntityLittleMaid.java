@@ -640,13 +640,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return ls;
 	}
 
-	@Deprecated
-	public EntityModeBase getMaidActiveModeClass() {
-		return maidActiveModeClass;
-	}
-
-	public void setMaidActiveModeClass(EntityModeBase maidActiveModeClass) {
-		this.maidActiveModeClass = maidActiveModeClass;
+	public final void setMaidActiveModeClass(EntityModeBase pModeClass) {
+		maidActiveModeClass = pModeClass;
 	}
 
 	public boolean setMaidMode(String pname) {
@@ -815,15 +810,15 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * This method is nullable, so check if isActiveModeClass() is true
 	 */
 	@Nullable
-	public EntityModeBase getActiveModeClass() {
-		return getMaidActiveModeClass();
+	public final EntityModeBase getActiveModeClass() {
+		return maidActiveModeClass;
 	}
 
 	public void setActiveModeClass(EntityModeBase pEntityMode) {
 		setMaidActiveModeClass(pEntityMode);
 	}
 
-	public boolean isActiveModeClass() {
+	public final boolean isActiveModeClass() {
 		return getActiveModeClass() != null;
 	}
 
