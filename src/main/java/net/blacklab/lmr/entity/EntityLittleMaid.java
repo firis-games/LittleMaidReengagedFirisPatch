@@ -13,6 +13,8 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.annotation.Nullable;
+
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -282,6 +284,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public EntityAILMRestrictOpenDoor aiCloseDoor;
 	public EntityAILMAvoidPlayer aiAvoidPlayer;
 	public EntityAILMFollowOwner aiFollow;
+	public EntityAIBase aiBackHome;
 	public EntityAILMAttackOnCollide aiAttack;
 	public EntityAILMAttackArrow aiShooting;
 	public EntityAILMCollectItem aiCollectItem;
@@ -637,6 +640,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return ls;
 	}
 
+	@Deprecated
 	public EntityModeBase getMaidActiveModeClass() {
 		return maidActiveModeClass;
 	}
@@ -808,7 +812,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	/**
 	 * 適用されているモードクラス
+	 * This method is nullable, so check if isActiveModeClass() is true
 	 */
+	@Nullable
 	public EntityModeBase getActiveModeClass() {
 		return getMaidActiveModeClass();
 	}
@@ -818,7 +824,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	public boolean isActiveModeClass() {
-		return getMaidActiveModeClass() != null;
+		return getActiveModeClass() != null;
 	}
 
 	public Counter getWorkingCount() {

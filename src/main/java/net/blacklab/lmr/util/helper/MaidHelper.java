@@ -2,7 +2,6 @@ package net.blacklab.lmr.util.helper;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
@@ -17,7 +16,7 @@ public class MaidHelper {
 			maid.entityDropItem(stack, 0);
 		}
 	}
-	
+
 	/**
 	 * Returns if the maid can walk or swim. Used for move-AI.
 	 * @param pMaid
@@ -30,22 +29,32 @@ public class MaidHelper {
 		EntityPlayer lMaster = pMaid.getMaidMasterEntity();
 		return lMaster == null ? false : canStartFollow(pMaid, lMaster, 0);
 	}
-	
+
 	/**
-	 * Returns if the maid can follow her master. If the maid is freedom mode, this method returns false. 
+	 * Returns if the maid can follow her master. If the maid is freedom mode, this method returns false.
 	 * @param pMaid
 	 * @param pTarget
 	 * @param expandIgnoreRangeSq
 	 * @return
 	 */
 	public static boolean canStartFollow(EntityLittleMaid pMaid, Entity pTarget, double expandIgnoreRangeSq) {
-		return pMaid.isFreedom() ? false : pMaid.getDistanceSqToEntity(pTarget) > pMaid.getActiveModeClass().getDistanceSqToStartFollow() + expandIgnoreRangeSq;
+		if (!pMaid.isFreedom()) {
+			return pMaid.getDistanceSqToEntity(pTarget) > pMaid.getActiveModeClass().getDistanceSqToStartFollow() + expandIgnoreRangeSq;
+		}
+		return false;
 	}
-	
+
+	public static boolean isOutSideHome(EntityLittleMaid pMaid) {
+		if (pMaid.isFreedom()) {
+			return pMaid.getDistanceSqToCenter(pMaid.getHomePosition()) > pMaid.getActiveModeClass().getFreedomTrackingRangeSq();
+		}
+		return false;
+	}
+
 	public static boolean isTargetReachable(EntityLittleMaid pMaid, Entity pTarget, double expandRangeSq) {
 		return isTargetReachable(pMaid, pTarget.getPositionVector(), expandRangeSq);
 	}
-	
+
 	/** Can maid reach target? **/
 	public static boolean isTargetReachable(EntityLittleMaid pMaid, Vec3d pTarget, double expandRangeSq) {
 		expandRangeSq -= 1D;
