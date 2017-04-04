@@ -7,7 +7,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 
-public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAI {
+public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAILM {
 
 	private EntityLittleMaid theMaid;
 	private Entity theOwner;

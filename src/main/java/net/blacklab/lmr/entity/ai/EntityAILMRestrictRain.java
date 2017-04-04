@@ -4,7 +4,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 
 public class EntityAILMRestrictRain extends EntityAIBase implements
-		IEntityAI {
+		IEntityAILM {
 
 	protected EntityLiving theEntity;
 	protected boolean isEnable;

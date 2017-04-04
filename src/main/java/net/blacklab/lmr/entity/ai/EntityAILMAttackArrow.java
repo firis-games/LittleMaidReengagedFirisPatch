@@ -24,7 +24,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAI {
+public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 
 	protected boolean fEnable;
 

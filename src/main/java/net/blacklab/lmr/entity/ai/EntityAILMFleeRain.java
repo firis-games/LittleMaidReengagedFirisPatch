@@ -13,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class EntityAILMFleeRain extends EntityAIBase implements IEntityAI {
+public class EntityAILMFleeRain extends EntityAIBase implements IEntityAILM {
 
 	protected EntityCreature theCreature;
 	protected EntityLittleMaid theMaid;

@@ -13,7 +13,7 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI {
+public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAILM {
 
 	protected boolean fEnable;
 

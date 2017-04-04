@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityAILMTracerMove extends EntityAIBase implements IEntityAI {
+public class EntityAILMTracerMove extends EntityAIBase implements IEntityAILM {
 
 	protected EntityLittleMaid theMaid;
 	protected World world;

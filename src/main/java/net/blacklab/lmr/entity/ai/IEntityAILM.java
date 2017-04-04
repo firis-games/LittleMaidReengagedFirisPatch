@@ -1,6 +1,6 @@
 package net.blacklab.lmr.entity.ai;
 
-public interface IEntityAI {
+public interface IEntityAILM {
 	
 	//実行可能判定
 	public void setEnable(boolean pFlag);

@@ -9,7 +9,7 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.Vec3d;
 
 public class EntityAILMAvoidPlayer extends EntityAIBase implements
-		IEntityAI {
+		IEntityAILM {
 
 	/** The entity we are attached to */
 	protected EntityLittleMaid theMaid;

@@ -27,6 +27,7 @@ import net.blacklab.lmr.client.sound.SoundRegistry;
 import net.blacklab.lmr.entity.ai.EntityAILMAttackArrow;
 import net.blacklab.lmr.entity.ai.EntityAILMAttackOnCollide;
 import net.blacklab.lmr.entity.ai.EntityAILMAvoidPlayer;
+import net.blacklab.lmr.entity.ai.EntityAILMMoveTowardsRestriction;
 import net.blacklab.lmr.entity.ai.EntityAILMBeg;
 import net.blacklab.lmr.entity.ai.EntityAILMBegMove;
 import net.blacklab.lmr.entity.ai.EntityAILMCollectItem;
@@ -284,7 +285,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public EntityAILMRestrictOpenDoor aiCloseDoor;
 	public EntityAILMAvoidPlayer aiAvoidPlayer;
 	public EntityAILMFollowOwner aiFollow;
-	public EntityAIBase aiBackHome;
+	public EntityAILMMoveTowardsRestriction aiMoveTowardsRestriction;
 	public EntityAILMAttackOnCollide aiAttack;
 	public EntityAILMAttackArrow aiShooting;
 	public EntityAILMCollectItem aiCollectItem;
@@ -534,6 +535,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		aiCloseDoor = new EntityAILMRestrictOpenDoor(this);
 		aiAvoidPlayer = new EntityAILMAvoidPlayer(this, 1.0F, 3);
 		aiFollow = new EntityAILMFollowOwner(this, 1.0F, 81D);
+		aiMoveTowardsRestriction = new EntityAILMMoveTowardsRestriction(this, 1.0);
 		aiAttack = new EntityAILMAttackOnCollide(this, 1.0F, true);
 		aiShooting = new EntityAILMAttackArrow(this);
 		aiCollectItem = new EntityAILMCollectItem(this, 1.0F);
@@ -574,8 +576,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// 移動用AI
 		ltasks[0].addTask(30, aiTracer);
 		ltasks[0].addTask(31, aiFollow);
-		ltasks[0].addTask(32, aiWander);
-		ltasks[0].addTask(33, new EntityAILeapAtTarget(this, 0.3F));
+		ltasks[0].addTask(32, aiMoveTowardsRestriction);
+		ltasks[0].addTask(33, aiWander);
+		ltasks[0].addTask(34, new EntityAILeapAtTarget(this, 0.3F));
 		// Mutexの影響しない特殊行動
 		ltasks[0].addTask(40, aiCloseDoor);
 		ltasks[0].addTask(41, aiOpenDoor);
@@ -3513,6 +3516,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //			aiJumpTo.setEnable(!pFlag);
 			aiAvoidPlayer.setEnable(!pFlag);
 			aiFollow.setEnable(!pFlag);
+			aiMoveTowardsRestriction.setEnable(maidFreedom);
 			aiTracer.setEnable(isTracer()&&pFlag);
 //			setAIMoveSpeed(pFlag ? moveSpeed_Nomal : moveSpeed_Max);
 //			setMoveForward(0.0F);

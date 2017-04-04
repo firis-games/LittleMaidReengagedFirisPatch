@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAILMFindBlock extends EntityAIBase implements IEntityAI {
+public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 
 	protected boolean isEnable;
 	protected EntityLittleMaid theMaid;
