@@ -141,7 +141,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 			fMaid.posZ += dtz / distTarget * 1.0;	// 1m 目標に近づける
 		}
 
-		double lrange = 225D;
+		double lrange = 15 * 15;
 		double ldist = fMaid.getDistanceSqToEntity(fTarget);
 		boolean lsee = fMaid.getEntitySenses().canSee(fTarget)/* &&
 				VectorUtil.canMoveThrough(
@@ -180,6 +180,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 				double atl = atx * atx + aty * aty + atz * atz;
 				double il = -1D;
 				double milsq = 10D;
+
 				Entity masterEntity = fMaid.getMaidMasterEntity();
 				if (masterEntity != null && !fMaid.isPlaying()) {
 					// 主とのベクトル
@@ -211,6 +212,8 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 					Entity lentity = CommonHelper.getRayTraceEntity(fMaid.maidAvatar, tpr + 1.0F, 1.0F, 1.0F);
 					ItemStack headstack = fInventory.armorInventory[3];
 					Item helmid = headstack == null ? null : headstack.getItem();
+
+					/*
 					if (helmid == Items.DIAMOND_HELMET || helmid == Items.GOLDEN_HELMET) {
 						// 射線軸の確認
 						if (lentity != null && fMaid.getIFF(lentity)) {
@@ -218,6 +221,8 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 //							mod_LMM_littleMaidMob.Debug("ID:%d-friendly fire to ID:%d.", fMaid.entityId, lentity.entityId);
 						}
 					}
+					*/
+
 					if (lentity == fTarget) {
 						ldotarget = true;
 					}

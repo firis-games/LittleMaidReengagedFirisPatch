@@ -183,7 +183,7 @@ public class EntityMode_Archer extends EntityModeBase {
 	@Override
 	public boolean checkEntity(int pMode, Entity pEntity) {
 		if (owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0) return false;
-		if (!MaidHelper.isTargetReachable(owner, pEntity, 100)) return false;
+		if (!MaidHelper.isTargetReachable(owner, pEntity, 18 * 18)) return false;
 
 		return !owner.getIFF(pEntity);
 	}

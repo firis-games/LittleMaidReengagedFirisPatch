@@ -60,7 +60,7 @@ public class Transformer implements IClassTransformer, Opcodes {
 			addModelClassToTransform("ModelRenderer");
 			addModelClassToTransform("ModelStabilizerBase");
 			addModelClassToTransform("ModelStabilizer_WitchHat");
-			
+
 			put("mmmlibx/lib/MMM_EntityCaps", "net/blacklab/lmr/util/EntityCapsLiving");
 			put("littleMaidMobX/EntityCaps", "net/blacklab/lmr/util/EntityCaps");
 		}
