@@ -16,7 +16,16 @@ public class EntityAILMMoveTowardsRestriction extends EntityAIMoveTowardsRestric
 
 	@Override
 	public boolean shouldExecute() {
-		return !theMaid.isMaidWait() && enabled && !theMaid.aiBegMove.shouldExecute() && super.shouldExecute();
+		if (theMaid == null) {
+			return false;
+		}
+		if (!theMaid.isTamed() || theMaid.isMaidWait() || theMaid.isSitting()) {
+			return false;
+		}
+		if (theMaid.isPlaying() && !theMaid.getNavigator().noPath()) {
+			return false;
+		}
+		return !theMaid.aiBegMove.shouldExecute() && super.shouldExecute();
 	}
 
 	@Override
