@@ -321,9 +321,6 @@ public class LittleMaidReengaged {
 		// MMM_TextureManager.instance.setDefaultTexture(LMM_EntityLittleMaid.class,
 		// MMM_TextureManager.instance.getTextureBox("default_Orign"));
 
-		// Dominant
-		Biome[] biomeList = null;
-
 		if (cfg_spawnWeight > 0) {
 			Iterator<Biome> biomeIterator = Biome.REGISTRY.iterator();
 			while(biomeIterator.hasNext()) {
@@ -332,17 +329,17 @@ public class LittleMaidReengaged {
 				if(biome != null &&
 						(
 								(BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.HOT) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.COLD) ||
+//										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.COLD) ||
 										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.WET) ||
 										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.DRY) ||
 										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SAVANNA) ||
 										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.CONIFEROUS) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.LUSH) ||
+//										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.LUSH) ||
 										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.MUSHROOM) ||
 										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.FOREST) ||
 										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.PLAINS) ||
 										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SANDY) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SNOWY) ||
+//										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SNOWY) ||
 										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.BEACH))
 								)
 						)
