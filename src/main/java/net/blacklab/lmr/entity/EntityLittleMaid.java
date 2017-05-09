@@ -327,8 +327,18 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	protected boolean modelChangeable = true;
 
+	protected boolean initialized = false;
+
 	public EntityLittleMaid(World par1World) {
 		super(par1World);
+	}
+
+	public void maidInit() {
+		if (initialized) return;
+		initialized = true;
+		System.out.println("Maid initializing.");
+		World par1World = worldObj;
+
 		// 初期設定
 		maidInventory = new InventoryLittleMaid(this);
 		if (par1World != null ) {
@@ -421,6 +431,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	public void onSpawnWithEgg() {
+		maidInit();
 		// テクスチャーをランダムで選択
 		String ls;
 		if (LittleMaidReengaged.cfg_isFixedWildMaid) {
@@ -441,6 +452,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	protected void onSpawnWild() {
+		maidInit();
 		// 野生メイドの色設定処理
 		int nsize = 0;
 		int avaliableColor[] = new int[16];
@@ -981,6 +993,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public void onKillEntity(EntityLivingBase par1EntityLiving) {
+		maidInit();
 		super.onKillEntity(par1EntityLiving);
 		if (isBloodsuck()) {
 			playLittleMaidSound(EnumSound.laughter, false);
@@ -991,6 +1004,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	protected boolean canDespawn() {
+		maidInit();
 		// デスポーン判定
 		return isTamed()||hasCustomName() ? false : LittleMaidReengaged.cfg_canDespawn;
 	}
@@ -1318,6 +1332,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound par1nbtTagCompound) {
+		maidInit();
 		// データロード
 		super.readEntityFromNBT(par1nbtTagCompound);
 
