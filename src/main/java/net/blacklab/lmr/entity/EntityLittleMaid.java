@@ -385,7 +385,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setHealth(15F);
 
 		// 移動用フィジカル設定
-		((PathNavigateGround)navigator).setEnterDoors(true);
+		((PathNavigateGround)navigator).setBreakDoors(true);
 
 		// TODO:これはテスト
 //		maidStabilizer.put("HeadTop", MMM_StabilizerManager.getStabilizer("WitchHat", "HeadTop"));

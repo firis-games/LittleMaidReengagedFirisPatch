@@ -298,7 +298,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 			mutableblockpos = (BlockPos.MutableBlockPos)iterator.next();
 		}
-		while ((iState = owner.worldObj.getBlockState(mutableblockpos)).getBlock().getMaterial(iState) != Material.WATER);
+		while ((iState = owner.worldObj.getBlockState(mutableblockpos)).getMaterial() != Material.WATER);
 
 		return true;
 	}
