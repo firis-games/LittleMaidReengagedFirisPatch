@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 		updateJSON = "http://mc.el-blacklab.net/eblib-version.json")
 public class EBLib {
 
-	public static final String VERSION="6.0.2.5";
+	public static final String VERSION="6.1.3.6";
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
