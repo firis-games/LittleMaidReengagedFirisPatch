@@ -3,6 +3,7 @@ package net.blacklab.lmr.inventory;
 import java.util.Iterator;
 import java.util.List;
 
+import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.block.Block;
@@ -120,7 +121,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	@Override
 	public String getName() {
-		return "InsideSkirt";
+		return "LOSE";
 	}
 
 	@Override
@@ -392,12 +393,16 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	public int getInventorySlotContainItemFood() {
 		// インベントリの最初の食料を返す
+		if (ItemUtil.getFoodAmount(mainHandInventory[0]) > 0) {
+			return getSizeInventory() - 2;
+		}
+		if (ItemUtil.getFoodAmount(offHandInventory[0]) > 0) {
+			return getSizeInventory() - 1;
+		}
 		for (int j = 0; j < getSizeInventory(); j++) {
 			ItemStack mi = getStackInSlot(j);
-			if (mi != null && mi.getItem() instanceof ItemFood) {
-				if (((ItemFood) mi.getItem()).getHealAmount(mi) > 0) {
-					return j;
-				}
+			if (ItemUtil.getFoodAmount(mi) > 0) {
+				return j;
 			}
 		}
 		return -1;
