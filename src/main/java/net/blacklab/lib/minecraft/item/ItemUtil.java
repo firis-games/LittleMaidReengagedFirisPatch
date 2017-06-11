@@ -5,20 +5,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.util.ResourceLocation;
 
 public class ItemUtil {
 	
 	public static Item getItemByStringId(String id){
-		String modid,name = "";
-		if(name.indexOf(":")==-1){
-			modid= "minecraft";
-			name = id;
-		}else{
-			modid= id.split(":")[0];
-			name = id.split(":")[1];
-		}
-		Item item = GameRegistry.findItem(modid, name);
+		Item item = Item.REGISTRY.getObject(new ResourceLocation(id));
 		return item;
 	}
 
