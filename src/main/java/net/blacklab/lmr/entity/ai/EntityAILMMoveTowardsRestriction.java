@@ -19,7 +19,7 @@ public class EntityAILMMoveTowardsRestriction extends EntityAIMoveTowardsRestric
 		if (theMaid == null) {
 			return false;
 		}
-		if (!theMaid.isTamed() || theMaid.isMaidWait() || theMaid.isSitting()) {
+		if (!theMaid.isTamed() || theMaid.isMaidWait() || theMaid.isSitting() || !theMaid.isFreedom()) {
 			return false;
 		}
 		if (theMaid.isPlaying() && !theMaid.getNavigator().noPath()) {

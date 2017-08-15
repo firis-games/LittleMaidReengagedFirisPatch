@@ -37,7 +37,8 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 		if (theMaid == null) {
 			return false;
 		}
-		if (theMaid.isFreedom() || theMaid.getActiveModeClass() == null || theMaid.getMaidMasterEntity() == null) {
+		if (theMaid.getActiveModeClass() == null || theMaid.getMaidMasterEntity() == null ||
+				theMaid.isFreedom() || theMaid.isMaidWait() || theMaid.isSitting()) {
 			return false;
 		}
 		
@@ -46,6 +47,11 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public void startExecuting() {
+		theMaid.getNavigator().clearPathEntity();
 	}
 	
 	@Override
@@ -81,9 +87,13 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 			if (i > 0) {
 				BlockPos tDest = lCoordinates[new Random().nextInt(i)];
 				theMaid.setPosition(tDest.getX(), tDest.getY(), tDest.getZ());
-				theMaid.getNavigator().clearPathEntity();
 			}
 		}
+	}
+	
+	@Override
+	public void resetTask() {
+		theMaid.getNavigator().clearPathEntity();
 	}
 
 }

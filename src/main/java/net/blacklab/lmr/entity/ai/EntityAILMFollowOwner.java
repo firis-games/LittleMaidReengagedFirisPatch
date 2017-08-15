@@ -76,7 +76,7 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAILM {
 		theMaid.setSprinting(false);
 		theOwner = null;
 //		if(!theMaid.isInWater()) ((PathNavigateGround)this.theMaid.getNavigator()).setAvoidsWater(true);
-		petPathfinder.clearPathEntity();
+		theMaid.getNavigator().clearPathEntity();
 		//petPathfinder.setAvoidsWater(lastAvoidWater);
 	}
 
@@ -104,24 +104,6 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAILM {
 		field_48310_h = 10;
 
 		Path entity = theMaid.getNavigator().getPathToEntityLiving(theOwner);
-		/*
-		if(entity==null){
-			if(theMaid.isInWater()&&theMaid.swimmingEnabled){
-				int x = MathHelper.floor_double(theOwner.posX);
-				int z = MathHelper.floor_double(theOwner.posZ);
-				int y = MathHelper.floor_double(theOwner.posY);
-				LMM_LittleMaidMobNX.Debug("TARGET POS %d,%d,%d", x,y,z);
-				if(theMaid.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().getMaterial()!=Material.water){
-					if(theMaid.worldObj.getBlockState(new BlockPos(x, y-1, z)).getBlock().getMaterial()==Material.water)
-						entity = theMaid.getNavigator().getPathToXYZ(theOwner.posX, theOwner.posY-1, theOwner.posZ);
-					else {
-						theMaid.setLocationAndAngles(x, y+1, z, theMaid.rotationYaw, theMaid.rotationPitch);
-					}
-				}
-			}
-			return;
-		}
-		*/
 		theMaid.getNavigator().setPath(entity, moveSpeed);
 	}
 
