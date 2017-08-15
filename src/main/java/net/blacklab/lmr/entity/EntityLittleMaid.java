@@ -38,6 +38,7 @@ import net.blacklab.lmr.entity.ai.EntityAILMOpenDoor;
 import net.blacklab.lmr.entity.ai.EntityAILMRestrictOpenDoor;
 import net.blacklab.lmr.entity.ai.EntityAILMRestrictRain;
 import net.blacklab.lmr.entity.ai.EntityAILMSwimming;
+import net.blacklab.lmr.entity.ai.EntityAILMTeleport;
 import net.blacklab.lmr.entity.ai.EntityAILMTracerMove;
 import net.blacklab.lmr.entity.ai.EntityAILMWait;
 import net.blacklab.lmr.entity.ai.EntityAILMWander;
@@ -302,6 +303,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public EntityAIPanic aiPanic;
 
 	public EntityAILMWatchClosest aiWatchClosest;
+	public EntityAILMTeleport aiJumpTo;
 	// ActiveModeClass
 	private EntityModeBase maidActiveModeClass;
 	public Profiler aiProfiler;
@@ -329,7 +331,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	private int gainExpBoost = 1;					// 取得経験値倍率
 
 	protected boolean modelChangeable = true;
-
 	public EntityLittleMaid(World par1World) {
 		super(par1World);
 		// 初期設定
@@ -554,7 +555,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		aiRestrictRain = new EntityAILMRestrictRain(this);
 		aiFreeRain = new EntityAILMFleeRain(this, 1.0F);
 		aiWander = new EntityAILMWander(this, 1.0F);
-//		aiJumpTo = new EntityAILMJumpToMaster(this);
+		aiJumpTo = new EntityAILMTeleport(this);
 		aiFindBlock = new EntityAILMFindBlock(this);
 		aiSwiming = new EntityAILMSwimming(this);
 		aiPanic = new EntityAIPanic(this, 2.0F);
@@ -574,7 +575,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// default
 		ltasks[0].addTask(1, aiSwiming);
 		ltasks[0].addTask(2, aiSit);
-//		ltasks[0].addTask(3, aiJumpTo);
+		ltasks[0].addTask(3, aiJumpTo);
 		ltasks[0].addTask(4, aiFindBlock);
 		ltasks[0].addTask(5, aiAttack);
 		ltasks[0].addTask(6, aiShooting);

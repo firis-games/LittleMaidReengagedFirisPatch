@@ -11,7 +11,7 @@ public class EntityAILMMoveTowardsRestriction extends EntityAIMoveTowardsRestric
 	public EntityAILMMoveTowardsRestriction(EntityLittleMaid par1EntityLittleMaid, double pSpeed) {
 		super(par1EntityLittleMaid, pSpeed);
 		theMaid = par1EntityLittleMaid;
-		enabled = false;
+		enabled = true;
 	}
 
 	@Override
