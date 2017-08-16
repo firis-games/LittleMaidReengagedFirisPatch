@@ -16,13 +16,14 @@ public class VEventBus {
 		listenerMethods = new HashMap<Class<? extends IVEvent>, Map<Object,Method>>();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void registerListener(Object object) {
 		// Register LMRE Event Listener
 		for (Method method: object.getClass().getMethods()) {
 			if (method.isAnnotationPresent(SubscribeVEvent.class)) {
-				Class[] paramType = method.getParameterTypes();
+				Class<?>[] paramType = method.getParameterTypes();
 				if (paramType.length == 1 && IVEvent.class.isAssignableFrom(paramType[0])) {
-					register(paramType[0], object, method);
+					register((Class<? extends IVEvent>) paramType[0], object, method);
 				}
 			}
 		}

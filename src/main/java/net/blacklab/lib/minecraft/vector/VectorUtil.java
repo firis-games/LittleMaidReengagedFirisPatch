@@ -25,7 +25,7 @@ public class VectorUtil {
 			return false;
 		}
 //		lblock.setBlockBoundsBasedOnState(worldObj, new BlockPos(pX, pY, pZ));
-		AxisAlignedBB boundingBox = lblock.getBoundingBox(state, worldObj, pos);
+		AxisAlignedBB boundingBox = state.getBoundingBox(worldObj, pos);
 		
 		Vec3d vec3do = new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
 		Vec3d vec3dt = new Vec3d(pX + 0.5D, pY + ((boundingBox.maxY + boundingBox.minY) * (toTop ? 0.9D : 0.5D)), pZ + 0.5D);
