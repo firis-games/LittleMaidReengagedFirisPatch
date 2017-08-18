@@ -13,4 +13,28 @@ A MOD of Minecraft; LittleMaidMob for MC1.9/1.9.4/1.10. Cute and little maid gir
 ## LICENSE
 Read LICENSE.md
 
-## Making developing environment
+## Writing build.gradle for multiproject
+
+```gradle:build.gradle
+sourceSets.main {
+	java.srcDirs project.projectDir.name
+	resources.srcDirs project.projectDir.name
+}
+jar {
+	doFirst {
+		archivesBaseName = "[1.9.4-1.10.x]LittleMaidReengaged"
+	}
+	
+	manifest {
+		attributes 'FMLCorePlugin' : 'net.blacklab.lmr.util.coremod.LMRECoremod'
+		attributes 'FMLCorePluginContainsFMLMod' : 'true'
+	}
+}
+tasks.withType(Jar) {compileJava.options.encoding = 'UTF-8'}
+tasks.withType(Jar) {compileApiJava.options.encoding = 'UTF-8'}
+
+// Replace ':EBLib***' to the project of EBLib in your workspace 
+dependencies { compile project(':EBLib194')}
+
+version = "8.1.1.102"
+```
