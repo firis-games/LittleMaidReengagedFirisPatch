@@ -21,7 +21,7 @@ public abstract class ManagerBase {
 	 */
 	protected abstract boolean append(Class pclass);
 
-
+	@Deprecated
 	protected void load() {
 		// ロード
 
