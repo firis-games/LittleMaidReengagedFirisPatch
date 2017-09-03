@@ -404,8 +404,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //		maidStabilizer.put("HeadTop", MMM_StabilizerManager.getStabilizer("WitchHat", "HeadTop"));
 
 		// EntityModeの追加
-		maidEntityModeList = EntityModeManager.getModeList(this);
-
+		maidEntityModeList = EntityModeManager.getInstance().getModeList(this);
 		// モードリスト
 		setMaidActiveModeClass(null);
 		maidModeList = new HashMap<Integer, EntityAITasks[]>();
