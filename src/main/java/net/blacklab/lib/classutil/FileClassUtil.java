@@ -31,18 +31,6 @@ public class FileClassUtil {
 		if(path.endsWith(".class")) path = path.substring(0,path.lastIndexOf(".class"));
 		return path.replace("/", ".");
 	}
-	
-	/**
-	 * 末尾のクラス名を読み取る.
-	 * @param pString クラスの完全修飾名
-	 * @return 末尾のクラス識別子.引数が不正な場合null.
-	 */
-	public static String getClassIdentifier(String pString) {
-		if (pString.indexOf('.') >= 0) {
-			return pString.substring(pString.lastIndexOf('.'));
-		}
-		return null;
-	}
 
 	/**与えるパスはgetLinuxAntiDotNameで正規化したものでなくてはならない
 	 * @param path
