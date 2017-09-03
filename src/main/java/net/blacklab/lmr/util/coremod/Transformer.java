@@ -1,6 +1,5 @@
 package net.blacklab.lmr.util.coremod;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +21,7 @@ import org.objectweb.asm.tree.TypeInsnNode;
 
 import com.google.common.collect.Lists;
 
-import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.util.manager.EntityModeManager;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 
@@ -37,42 +34,32 @@ public class Transformer implements IClassTransformer, Opcodes {
 
 	static String oldPackageString = "mmmlibx/lib/multiModel/model/mc162/";
 	static String newPackageString = "net/blacklab/lmr/entity/maidmodel/";
-	
-	private static ArrayList<String> entityModeList = new ArrayList<>();
-	private static ArrayList<String> modelListTemp = new ArrayList<>();
-	
-	private static final ArrayList<String> targetClassTail = new ArrayList<String>() {{
-		add("EquippedStabilizer");
-		add("IModelBaseMMM");
-		add("IModelCaps");
-		add("ModelBase");
-		add("ModelBaseDuo");
-		add("ModelBaseNihil");
-		add("ModelBaseSolo");
-		add("ModelBox");
-		add("ModelBoxBase");
-		add("ModelCapsHelper");
-		add("ModelLittleMaid_AC");
-		add("ModelLittleMaid_Archetype");
-		add("ModelLittleMaid_Orign");
-		add("ModelLittleMaid_RX2");
-		add("ModelLittleMaid_Aug");
-		add("ModelLittleMaid_SR2");
-		add("ModelLittleMaidBase");
-		add("ModelMultiBase");
-		add("ModelMultiMMMBase");
-		add("ModelPlate");
-		add("ModelRenderer");
-		add("ModelStabilizerBase");
-		add("ModelStabilizer_WitchHat");
-	}};
-	
 	@SuppressWarnings("serial")
 	private static final Map<String, String> targets = new HashMap<String, String>() {
 		{
-			for (String tString : targetClassTail) {
-				addModelClassToTransform(tString);
-			}
+			addModelClassToTransform("EquippedStabilizer");
+			addModelClassToTransform("IModelBaseMMM");
+			addModelClassToTransform("IModelCaps");
+			addModelClassToTransform("ModelBase");
+			addModelClassToTransform("ModelBaseDuo");
+			addModelClassToTransform("ModelBaseNihil");
+			addModelClassToTransform("ModelBaseSolo");
+			addModelClassToTransform("ModelBox");
+			addModelClassToTransform("ModelBoxBase");
+			addModelClassToTransform("ModelCapsHelper");
+			addModelClassToTransform("ModelLittleMaid_AC");
+			addModelClassToTransform("ModelLittleMaid_Archetype");
+			addModelClassToTransform("ModelLittleMaid_Orign");
+			addModelClassToTransform("ModelLittleMaid_RX2");
+			addModelClassToTransform("ModelLittleMaid_Aug");
+			addModelClassToTransform("ModelLittleMaid_SR2");
+			addModelClassToTransform("ModelLittleMaidBase");
+			addModelClassToTransform("ModelMultiBase");
+			addModelClassToTransform("ModelMultiMMMBase");
+			addModelClassToTransform("ModelPlate");
+			addModelClassToTransform("ModelRenderer");
+			addModelClassToTransform("ModelStabilizerBase");
+			addModelClassToTransform("ModelStabilizer_WitchHat");
 
 			put("mmmlibx/lib/MMM_EntityCaps", "net/blacklab/lmr/util/EntityCapsLiving");
 			put("littleMaidMobX/EntityCaps", "net/blacklab/lmr/util/EntityCaps");
@@ -105,17 +92,6 @@ public class Transformer implements IClassTransformer, Opcodes {
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] basicClass) {
 		Transformer.isEnable = true;
-		
-		// Check entity mode
-		if (getClassIdentifier(transformedName).startsWith("EntityMode")) {
-			System.err.println("Add mode class "+transformedName);
-			entityModeList.add(transformedName);
-		}
-		
-		//Check model
-		if (getClassIdentifier(name).startsWith("Model")) {
-			modelListTemp.add(name);
-		}
 
 		for(String header : ignoreNameSpace){
 			if(name.startsWith(header))	return basicClass;
@@ -206,32 +182,15 @@ public class Transformer implements IClassTransformer, Opcodes {
 	}
 
 	private String checkMMM(String pText) {
-		String result = pText;
 		for (Entry<String, String> le : targets.entrySet()) {
 			if (pText.indexOf(le.getKey()) > -1) {
-				result = pText.replace(le.getKey(), le.getValue());
+				String result = pText.replace(le.getKey(), le.getValue());
 //				Debug("%d Hit and Replace: %s -> %s", debugOut, pText, result);
-				break;
+				isChange = true;
+				return result;
 			}
 		}
-		return result;
+		return pText;
 	}
-
-	/**
-	 * 末尾のクラス名を読み取る.
-	 * @param pString クラスの完全修飾名
-	 * @return 末尾のクラス識別子.引数が不正な場合null.
-	 */
-	public static String getClassIdentifier(String pString) {
-		if (pString.indexOf('.') >= 0) {
-			return pString.substring(pString.lastIndexOf('.') + 1);
-		}
-		return null;
-	}
-
-	public static ArrayList<String> getEntityModeList() {
-		return entityModeList;
-	}
-
 
 }

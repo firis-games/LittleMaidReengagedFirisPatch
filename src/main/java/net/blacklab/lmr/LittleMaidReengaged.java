@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
 import net.blacklab.lib.config.ConfigList;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
@@ -351,16 +352,14 @@ public class LittleMaidReengaged {
 		}
 
 		// モードリストを構築
-		// TODO DEPRECATED
-		EntityModeManager.getInstance().loadEntityMode();
-		EntityModeManager.getInstance().showLoadedModes();
+		EntityModeManager.loadEntityMode();
+		EntityModeManager.showLoadedModes();
 
 		// サウンドのロード
 		// TODO ★ proxy.loadSounds();
 
 		// IFFのロード
 		IFF.loadIFFs();
-		
 
 	}
 
