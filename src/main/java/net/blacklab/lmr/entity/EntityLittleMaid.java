@@ -52,6 +52,7 @@ import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
+import net.blacklab.lmr.entity.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
@@ -69,7 +70,9 @@ import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.blacklab.lmr.util.helper.OwnableEntityHelper;
+import net.blacklab.lmr.util.manager.EntityModeHandler;
 import net.blacklab.lmr.util.manager.EntityModeManager;
+import net.blacklab.lmr.util.manager.LoaderSearcher;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -404,12 +407,16 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //		maidStabilizer.put("HeadTop", MMM_StabilizerManager.getStabilizer("WitchHat", "HeadTop"));
 
 		// EntityModeの追加
-		maidEntityModeList = EntityModeManager.getModeList(this);
+		maidEntityModeList = 
+				((EntityModeHandler) LoaderSearcher.INSTANCE.getInstanceOfHandler(EntityModeHandler.class)).getModeList(this);
+				//EntityModeManager.getModeList(this);
 		// モードリスト
-		setMaidActiveModeClass(null);
 		maidModeList = new HashMap<Integer, EntityAITasks[]>();
 		maidModeIndexList = new HashMap<String, Integer>();
+
 		initModeList();
+		setMaidMode(EntityMode_Basic.mmode_Wild);
+
 		mstatModeName = "";
 		maidMode = 65535;
 		// 初期化時実行コード
@@ -774,7 +781,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		maidAvatar.stopActiveHand();
 		setSitting(false);
 		setSneaking(false);
-		setActiveModeClass(null);
+		setMaidActiveModeClass(null);
 //		aiJumpTo.setEnable(true);
 //		aiFollow.setEnable(true);
 		aiAttack.setEnable(true);
@@ -783,10 +790,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //		aiWander.setEnable(maidFreedom);
 		setBloodsuck(false);
 		clearTilePosAll();
+
 		for (int li = 0; li < maidEntityModeList.size(); li++) {
 			EntityModeBase iem = maidEntityModeList.get(li);
 			if (iem.setMode(maidMode)) {
-				setActiveModeClass(iem);
+				setMaidActiveModeClass(iem);
 				break;
 			}
 		}
@@ -828,10 +836,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	@Nullable
 	public final EntityModeBase getActiveModeClass() {
 		return maidActiveModeClass;
-	}
-
-	public void setActiveModeClass(EntityModeBase pEntityMode) {
-		setMaidActiveModeClass(pEntityMode);
 	}
 
 	public final boolean isActiveModeClass() {
@@ -995,6 +999,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	@Override
 	public void onKillEntity(EntityLivingBase par1EntityLiving) {
 		super.onKillEntity(par1EntityLiving);
+		
 		if (isBloodsuck()) {
 			playLittleMaidSound(EnumSound.laughter, false);
 		} else {
@@ -1340,7 +1345,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setMaidWait(par1nbtTagCompound.getBoolean("Wait"));
 		setFreedom(par1nbtTagCompound.getBoolean("Freedom"));
 		setTracer(par1nbtTagCompound.getBoolean("Tracer"));
-		setMaidMode(par1nbtTagCompound.getString("Mode"));
+		
+		String tMode = par1nbtTagCompound.getString("Mode");
+		if (tMode.isEmpty() || !isContract()) {
+			setMaidMode(EntityMode_Basic.mmode_Wild);
+		} else {
+			setMaidMode(tMode);
+		}
+		
 		if (par1nbtTagCompound.hasKey("LimitCount")) {
 			maidContractLimit = par1nbtTagCompound.getInteger("LimitCount");
 		} else {
@@ -3092,11 +3104,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		boolean lflag = false;
 		int orgnMode = getMaidModeInt();
 
-		setActiveModeClass(null);
+		setMaidActiveModeClass(null);
 		for (int li = 0; li < maidEntityModeList.size() && !lflag; li++) {
 			lflag = maidEntityModeList.get(li).changeMode(par1EntityPlayer);
 			if (lflag) {
-				setActiveModeClass(maidEntityModeList.get(li));
+				setMaidActiveModeClass(maidEntityModeList.get(li));
 			}
 		}
 		if (!lflag) {

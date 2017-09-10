@@ -27,7 +27,9 @@ import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
+import net.blacklab.lmr.util.manager.EntityModeHandler;
 import net.blacklab.lmr.util.manager.EntityModeManager;
+import net.blacklab.lmr.util.manager.LoaderSearcher;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.manager.StabilizerManager;
 import net.minecraft.client.Minecraft;
@@ -41,6 +43,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 //github.com/Verclene/LittleMaidReengaged.git
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.ChunkDataEvent.Load;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -352,8 +355,12 @@ public class LittleMaidReengaged {
 		}
 
 		// モードリストを構築
-		EntityModeManager.loadEntityMode();
-		EntityModeManager.showLoadedModes();
+//		EntityModeManager.loadEntityMode();
+//		EntityModeManager.showLoadedModes();
+		
+		// Class Loader
+		LoaderSearcher.INSTANCE.register(EntityModeHandler.class);
+		LoaderSearcher.INSTANCE.startSearch();
 
 		// サウンドのロード
 		// TODO ★ proxy.loadSounds();
