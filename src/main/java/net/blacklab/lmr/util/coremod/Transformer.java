@@ -67,7 +67,6 @@ public class Transformer implements IClassTransformer, Opcodes {
 		private void addModelClassToTransform(String pName) {
 			put("MMM_" + pName, newPackageString + pName);
 			put(oldPackageString + pName, newPackageString + pName);
-			
 		}
 	};
 
