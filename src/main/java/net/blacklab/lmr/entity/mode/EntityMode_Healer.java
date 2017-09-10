@@ -20,7 +20,7 @@ import net.minecraft.potion.PotionUtils;
 
 public class EntityMode_Healer extends EntityModeBase {
 
-	public static final int mmode_Healer		= 0x0082;
+	public static final String mmode_Healer		= "SYS:Healer";
 
 
 	public EntityMode_Healer(EntityLittleMaid pEntity) {
@@ -52,7 +52,7 @@ public class EntityMode_Healer extends EntityModeBase {
 
 		// 索敵系
 		ltasks[1].addTask(1, new EntityAIHurtByTarget(owner, true));
-		owner.addMaidMode(ltasks, "Healer", mmode_Healer);
+		owner.addMaidMode(mmode_Healer, ltasks);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class EntityMode_Healer extends EntityModeBase {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
 			if (isTriggerItem(mmode_Healer, litemstack)) {
-				owner.setMaidMode("Healer");
+				owner.setMaidMode(mmode_Healer);
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Healer);
 				}
@@ -71,9 +71,8 @@ public class EntityMode_Healer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean setMode(int pMode) {
-		switch (pMode) {
-		case mmode_Healer :
+	public boolean setMode(String pMode) {
+		if (pMode.equals(mmode_Healer)) {
 			owner.setBloodsuck(false);
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(false);
@@ -84,13 +83,12 @@ public class EntityMode_Healer extends EntityModeBase {
 	}
 
 	@Override
-	public int getNextEquipItem(int pMode) {
+	public int getNextEquipItem(String pMode) {
 		if (isTriggerItem(pMode, owner.getHandSlotForModeChange())) {
 			return InventoryLittleMaid.handInventoryOffset;
 		}
 
-		switch (pMode) {
-		case mmode_Healer:
+		if (pMode.equals(mmode_Healer)) {
 			// Healer
 			for (int i = 0; i < owner.maidInventory.getSizeInventory(); i++) {
 				ItemStack is = owner.maidInventory.getStackInSlot(i);
@@ -100,13 +98,12 @@ public class EntityMode_Healer extends EntityModeBase {
 					return i;
 				}
 			}
-			break;
 		}
 		return -1;
 	}
 
 	@Override
-	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
 		if (par1ItemStack == null) {
 			return false;
 		}
@@ -119,7 +116,7 @@ public class EntityMode_Healer extends EntityModeBase {
 	}
 
 	@Override
-	public void onUpdate(int pMode) {
+	public void onUpdate(String pMode) {
 		// TODO 自動生成されたメソッド・スタブ
 		if(owner.isMaidWait()) return;
 		super.onUpdate(pMode);
@@ -127,8 +124,8 @@ public class EntityMode_Healer extends EntityModeBase {
 	}
 
 	@Override
-	public void updateAITick(int pMode) {
-		if (pMode == mmode_Healer) {
+	public void updateAITick(String pMode) {
+		if (pMode.equals(mmode_Healer)) {
 			// 近接した主に食物を突っ込む
 			if (owner.getSwingStatusDominant().canAttack()) {
 				// 主の回復

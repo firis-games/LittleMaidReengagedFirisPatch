@@ -20,7 +20,7 @@ import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 
 public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
-	public static final int mmode_Pharmacist = 0x0022;
+	public static final String mmode_Pharmacist = "SYS:Pharmacist";
 
 	protected int inventryPos;
 
@@ -51,7 +51,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = pDefaultTargeting;
 
-		owner.addMaidMode(ltasks, "Pharmacist", mmode_Pharmacist);
+		owner.addMaidMode(mmode_Pharmacist, ltasks);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
 			if (isTriggerItem(mmode_Pharmacist, litemstack) && owner.maidInventory.getInventorySlotContainItem(Items.BLAZE_POWDER) > 0) {
-				owner.setMaidMode("Pharmacist");
+				owner.setMaidMode(mmode_Pharmacist);
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Pharmacist);
 				}
@@ -70,9 +70,8 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	}
 
 	@Override
-	public boolean setMode(int pMode) {
-		switch (pMode) {
-		case mmode_Pharmacist :
+	public boolean setMode(String pMode) {
+		if (pMode.equals(mmode_Pharmacist)) {
 			owner.setBloodsuck(false);
 //			owner.aiJumpTo.setEnable(false);
 			owner.aiFollow.setEnable(false);
@@ -86,7 +85,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	}
 
 	@Override
-	public int getNextEquipItem(int pMode) {
+	public int getNextEquipItem(String pMode) {
 		int li;
 		if ((li = super.getNextEquipItem(pMode)) >= 0) {
 			return li;
@@ -95,8 +94,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		ItemStack litemstack;
 
 		// モードに応じた識別判定、速度優先
-		switch (pMode) {
-		case mmode_Pharmacist :
+		if (pMode.equals(mmode_Pharmacist)) {
 			litemstack = owner.getCurrentEquippedItem();
 			if (!(inventryPos > 0 && litemstack != null && !PotionUtils.getEffectsFromStack(litemstack).isEmpty())) {
 				for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
@@ -109,14 +107,13 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					}
 				}
 			}
-			break;
 		}
 
 		return -1;
 	}
 
 	@Override
-	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
 		if (par1ItemStack == null) {
 			return false;
 		}
@@ -142,7 +139,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	}
 
 	@Override
-	public boolean shouldBlock(int pMode) {
+	public boolean shouldBlock(String pMode) {
 		// 実行中判定
 		return owner.maidTileEntity instanceof TileEntityBrewingStand &&
 				(((TileEntityBrewingStand)owner.maidTileEntity).getField(0) > 0 ||
@@ -150,7 +147,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	}
 
 	@Override
-	public boolean checkBlock(int pMode, int px, int py, int pz) {
+	public boolean checkBlock(String pMode, int px, int py, int pz) {
 		if (owner.getCurrentEquippedItem() == null) {
 			return false;
 		}
@@ -174,7 +171,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	}
 
 	@Override
-	public boolean executeBlock(int pMode, int px, int py, int pz) {
+	public boolean executeBlock(String pMode, int px, int py, int pz) {
 		TileEntityBrewingStand ltile = (TileEntityBrewingStand)owner.maidTileEntity;
 		if (owner.worldObj.getTileEntity(new BlockPos(px, py, pz)) != ltile) {
 			return false;
@@ -317,12 +314,12 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	}
 
 	@Override
-	public void startBlock(int pMode) {
+	public void startBlock(String pMode) {
 		inventryPos = 0;
 	}
 
 	@Override
-	public void resetBlock(int pMode) {
+	public void resetBlock(String pMode) {
 		owner.setSneaking(false);
 	}
 

@@ -22,12 +22,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityMode_Playing extends EntityModeBase {
+	
+	public static enum PlayRole {
+		NOTPLAYING,
+		QUICKSHOOTER,
+		STOCKSHOOTER
+	}
 
-	public static final int mmode_Playing	= 0x00ff;
-
-	public static final int mpr_NULL = 0;
-	public static final int mpr_QuickShooter = 0x0010;
-	public static final int mpr_StockShooter = 0x0020;
+	public static final String mmode_Playing	= "SYS:Playing";
 
 	public int playingTick = 0;
 
@@ -65,7 +67,7 @@ public class EntityMode_Playing extends EntityModeBase {
 //		ltasks[1].addTask(3, new LMM_EntityAIHurtByTarget(owner, true));
 //		ltasks[1].addTask(4, new LMM_EntityAINearestAttackableTarget(owner, EntityLiving.class, 16F, 0, true));
 
-		owner.addMaidMode(ltasks, "Playing", mmode_Playing);
+		owner.addMaidMode(mmode_Playing, ltasks);
 	}
 
 	public static boolean checkSnows(int x, int y, int z, World world) {
@@ -156,7 +158,7 @@ public class EntityMode_Playing extends EntityModeBase {
 				if (movePlaying()) {
 					fcounter = 3;
 				} else {
-					owner.setPlayingRole(mpr_NULL);
+					owner.setPlayingRole(PlayRole.NOTPLAYING);
 					fcounter = 0;
 				}
 			} else {
@@ -175,7 +177,7 @@ public class EntityMode_Playing extends EntityModeBase {
 //					owner.isMaidChaseWait = true;
 					//1.8検討
 					//owner.attackTime = 30;
-					if (owner.getPlayingRole() == mpr_QuickShooter) {
+					if (owner.getPlayingRole().equals(PlayRole.QUICKSHOOTER)) {
 						fcounter = 8;
 					} else {
 						fcounter = 4;
@@ -195,7 +197,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			if (owner.arrowHitTimer <= 0) {
 				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.SNOWBALL))) {
 					owner.playSound("entity.item.pickup");
-					if (owner.getPlayingRole() == mpr_StockShooter) {
+					if (owner.getPlayingRole().equals(PlayRole.STOCKSHOOTER)) {
 						owner.setSwing(5, EnumSound.collect_snow, false);
 						fcounter = 0;
 					} else {
@@ -203,7 +205,7 @@ public class EntityMode_Playing extends EntityModeBase {
 						fcounter++;
 					}
 				} else {
-					owner.setPlayingRole(mpr_NULL);
+					owner.setPlayingRole(PlayRole.NOTPLAYING);
 					fcounter = 0;
 				}
 			}
@@ -226,7 +228,7 @@ public class EntityMode_Playing extends EntityModeBase {
 					owner.playSound("entity.item.pickup");
 					fcounter = 0;
 				} else {
-					owner.setPlayingRole(mpr_NULL);
+					owner.setPlayingRole(PlayRole.NOTPLAYING);
 					fcounter = 0;
 				}
 			}
@@ -244,8 +246,8 @@ public class EntityMode_Playing extends EntityModeBase {
 
 
 	@Override
-	public void updateAITick(int pMode) {
-		if(owner.playingTick++<5||pMode!=mmode_Playing){
+	public void updateAITick(String pMode) {
+		if(owner.playingTick++<5 || !pMode.equals(mmode_Playing)){
 			return;
 		}
 		owner.playingTick = 0;
@@ -269,30 +271,29 @@ public class EntityMode_Playing extends EntityModeBase {
 						}
 					}
 					int lpr = owner.getRNG().nextInt(100) - 97;
-					lpr = (f && lpr > 0) ? (lpr == 1 ? mpr_QuickShooter : mpr_StockShooter) : 0;
-					owner.setPlayingRole(lpr);
+					PlayRole tSwitchTo = (f && lpr > 0) ? (lpr == 1 ? PlayRole.QUICKSHOOTER : PlayRole.STOCKSHOOTER) : PlayRole.NOTPLAYING;
+					owner.setPlayingRole(tSwitchTo);
 					fcounter = 0;
 					if (f) {
 						// mod_littleMaidMob.Debug(String.format("playRole-%d:%d", entityId, playingRole));
 					}
 
-				} else if (owner.getPlayingRole() >= 0x8000) {
+				} else if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
 					// 夜の部終了
-					owner.setPlayingRole(mpr_NULL);
+					owner.setPlayingRole(PlayRole.NOTPLAYING);
 					fcounter = 0;
 				} else {
 					// お遊びの実行をここに書く？
-					if (owner.getPlayingRole() == mpr_QuickShooter ||
-							owner.getPlayingRole() == mpr_StockShooter) {
+					if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
 						playingSnowWar();
 					}
 
 				}
 
 			} else {
-				if (owner.getPlayingRole() != mpr_NULL) {
+				if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
 					// 昼の部終了
-					owner.setPlayingRole(mpr_NULL);
+					owner.setPlayingRole(PlayRole.NOTPLAYING);
 					fcounter = 0;
 				}
 			}
@@ -310,8 +311,8 @@ public class EntityMode_Playing extends EntityModeBase {
 		if (par1DamageSource.getSourceOfDamage() instanceof EntitySnowball) {
 			// お遊び判定用、雪玉かどうか判定
 			owner.setMaidDamegeSound(EnumSound.hurt_snow);
-			if (!owner.isContractEX() || (owner.isFreedom() && owner.maidMode==1)) {
-				owner.setPlayingRole(mpr_QuickShooter);
+			if (!owner.isContractEX() || (owner.isFreedom() && owner.maidMode.equals(EntityMode_Basic.mmode_Escorter))) {
+				owner.setPlayingRole(PlayRole.QUICKSHOOTER);
 				owner.setMaidWait(false);
 				owner.setMaidWaitCount(0);
 				LittleMaidReengaged.Debug("playingMode Enable.");
@@ -321,9 +322,8 @@ public class EntityMode_Playing extends EntityModeBase {
 	}
 
 	@Override
-	public boolean setMode(int pMode) {
-		switch (pMode) {
-		case mmode_Playing :
+	public boolean setMode(String pMode) {
+		if (pMode.equals(mmode_Playing)) {
 			if(!owner.worldObj.isDaytime()) return false;
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(true);
@@ -335,9 +335,9 @@ public class EntityMode_Playing extends EntityModeBase {
 	}
 
 	@Override
-	public int getNextEquipItem(int pMode) {
+	public int getNextEquipItem(String pMode) {
 		ItemStack litemstack = null;
-		if (owner.getPlayingRole() != 0) {
+		if (owner.isPlaying()) {
 			for (int li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;

@@ -39,7 +39,7 @@ public abstract class EntityModeBlockBase extends EntityModeBase {
 	}
 
 	@Override
-	public boolean overlooksBlock(int pMode) {
+	public boolean overlooksBlock(String pMode) {
 		if (owner.isTilePos()) {
 			owner.setTilePos(0);
 		}

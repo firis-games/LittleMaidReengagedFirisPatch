@@ -25,14 +25,15 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import scala.annotation.elidable;
 
 /**
  * 独自基準としてモード定数は0x0080は平常、0x00c0は血まみれモードと区別。
  */
 public class EntityMode_Fencer extends EntityModeBase {
 
-	public static final int mmode_Fencer		= 0x0080;
-	public static final int mmode_Bloodsucker	= 0x00c0;
+	public static final String mmode_Fencer		= "SYS:Fencer";
+	public static final String mmode_Bloodsucker	= "SYS:Bloodsucker";
 
 	// Charging timer
 	protected Counter ticksCharge;
@@ -85,7 +86,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 		ltasks[1].addTask(3, new EntityAILMHurtByTarget(owner, true));
 		ltasks[1].addTask(4, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
 
-		owner.addMaidMode(ltasks, "Fencer", mmode_Fencer);
+		owner.addMaidMode(mmode_Fencer, ltasks);
 
 
 		// Bloodsucker:0x00c0
@@ -96,7 +97,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 		ltasks2[1].addTask(1, new EntityAILMHurtByTarget(owner, true));
 		ltasks2[1].addTask(2, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
 
-		owner.addMaidMode(ltasks2, "Bloodsucker", mmode_Bloodsucker);
+		owner.addMaidMode(mmode_Bloodsucker, ltasks2);
 	}
 
 	@Override
@@ -104,7 +105,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
 			if (isTriggerItem(mmode_Fencer, litemstack)) {
-				owner.setMaidMode("Fencer");
+				owner.setMaidMode(mmode_Fencer);
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Fencer);
 				}
@@ -113,7 +114,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				}
 				return true;
 			} else  if (isTriggerItem(mmode_Bloodsucker, litemstack)) {
-				owner.setMaidMode("Bloodsucker");
+				owner.setMaidMode(mmode_Bloodsucker);
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_RandomKiller);
 				}
@@ -127,15 +128,13 @@ public class EntityMode_Fencer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean setMode(int pMode) {
-		switch (pMode) {
-		case mmode_Fencer :
+	public boolean setMode(String pMode) {
+		if (pMode.equals(mmode_Fencer)) {
 //			pentitylittlemaid.maidInventory.currentItem = getNextEquipItem(pentitylittlemaid, pMode);
 			owner.setBloodsuck(false);
 			owner.aiAttack.isGuard = true;
 			return true;
-		case mmode_Bloodsucker :
-//			pentitylittlemaid.maidInventory.currentItem = getNextEquipItem(pentitylittlemaid, pMode);
+		} else if (pMode.equals(mmode_Bloodsucker)) {
 			owner.setBloodsuck(true);
 			return true;
 		}
@@ -144,7 +143,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 	}
 
 	@Override
-	public int getNextEquipItem(int pMode) {
+	public int getNextEquipItem(String pMode) {
 		if (isTriggerItem(pMode, owner.getHandSlotForModeChange())) {
 			return InventoryLittleMaid.handInventoryOffset;
 		}
@@ -156,8 +155,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 		ItemStack litemstack;
 
 		// モードに応じた識別判定、速度優先
-		switch (pMode) {
-		case mmode_Fencer :
+		if (pMode.equals(mmode_Fencer)) {
 			for (li = 0; li < owner.maidInventory.getSizeInventory() - 1; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
@@ -179,8 +177,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 					ld = lld;
 				}
 			}
-			break;
-		case mmode_Bloodsucker :
+		} else if (pMode.equals(mmode_Bloodsucker)) {
 			for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
@@ -202,14 +199,13 @@ public class EntityMode_Fencer extends EntityModeBase {
 					ld = lld;
 				}
 			}
-			break;
 		}
 
 		return -1;
 	}
 
 	@Override
-	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
 		if (par1ItemStack == null) {
 			return false;
 		}
@@ -230,11 +226,11 @@ public class EntityMode_Fencer extends EntityModeBase {
 	
 	@Override
 	public boolean isSearchEntity() {
-		return owner.getMaidModeInt() == mmode_Fencer;
+		return owner.getMaidModeString().equals(mmode_Fencer);
 	}
 	
 	@Override
-	public boolean checkEntity(int pMode, Entity pEntity) {
+	public boolean checkEntity(String pMode, Entity pEntity) {
 		if (pEntity instanceof EntityCreeper) {
 			if (owner.getMaidMasterEntity() == null ? true : !owner.getMaidMasterEntity().equals(((EntityCreeper) pEntity).getAttackTarget())) {
 				return false;
@@ -244,9 +240,9 @@ public class EntityMode_Fencer extends EntityModeBase {
 	}
 	
 	@Override
-	public void updateAITick(int pMode) {
+	public void updateAITick(String pMode) {
 		super.updateAITick(pMode);
-		if (pMode == mmode_Fencer || pMode == mmode_Bloodsucker) {
+		if (pMode.equals(mmode_Fencer)|| pMode.equals(mmode_Bloodsucker)) {
 			// Charge(boost moving speed)
 			ticksCharge.onUpdate();
 			EntityLivingBase targetEntity = owner.getAttackTarget();

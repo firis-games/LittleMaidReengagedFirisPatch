@@ -81,14 +81,14 @@ public abstract class EntityModeBase {
 	 * サーバー側のみの毎時処理。
 	 * AI処理の後の方に呼ばれる。
 	 */
-	public void updateAITick(int pMode) {
+	public void updateAITick(String pMode) {
 	}
 
 	/**
 	 * 毎時処理。
 	 * 他の処理の前に呼ばれる
 	 */
-	public void onUpdate(int pMode) {
+	public void onUpdate(String pMode) {
 	}
 
 	/**
@@ -118,7 +118,7 @@ public abstract class EntityModeBase {
 	/**
 	 * Called post changing mode.
 	 */
-	public boolean setMode(int pMode) {
+	public boolean setMode(String maidMode) {
 		return false;
 	}
 
@@ -126,7 +126,7 @@ public abstract class EntityModeBase {
 	 * 使用アイテムの選択。
 	 * 戻り値はスロット番号
 	 */
-	public int getNextEquipItem(int pMode) {
+	public int getNextEquipItem(String pMode) {
 		if (isTriggerItem(pMode, owner.getHandSlotForModeChange())) {
 			return InventoryLittleMaid.handInventoryOffset;
 		}
@@ -137,7 +137,7 @@ public abstract class EntityModeBase {
 	 * Returns whether the item is used as main item of this class.
 	 * Before using par1ItemStack, NULL CHECKING IS REQUIRED!
 	 */
-	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
 		return false;
 	}
 
@@ -166,7 +166,7 @@ public abstract class EntityModeBase {
 	 * 攻撃判定処理。
 	 * 特殊な攻撃動作はここで実装。
 	 */
-	public boolean attackEntityAsMob(int pMode, Entity pEntity) {
+	public boolean attackEntityAsMob(String pMode, Entity pEntity) {
 		// 特殊攻撃の設定なし
 		return false;
 	}
@@ -182,7 +182,7 @@ public abstract class EntityModeBase {
 	/**
 	 * isSearchBlock=falseのときに判定される。
 	 */
-	public boolean shouldBlock(int pMode) {
+	public boolean shouldBlock(String pMode) {
 		return false;
 	}
 
@@ -190,14 +190,14 @@ public abstract class EntityModeBase {
 	 * 探し求めたブロックであるか。
 	 * trueを返すと検索終了。
 	 */
-	public boolean checkBlock(int pMode, int px, int py, int pz) {
+	public boolean checkBlock(String pMode, int px, int py, int pz) {
 		return MaidHelper.isTargetReachable(owner, new Vec3d(px, py, pz), 0);
 	}
 
 	/**
 	 * 検索範囲に索敵対象がなかった。
 	 */
-	public boolean overlooksBlock(int pMode) {
+	public boolean overlooksBlock(String pMode) {
 		return false;
 	}
 //	@Deprecated
@@ -215,10 +215,10 @@ public abstract class EntityModeBase {
 	/**
 	 * 有効射程距離を超えた時の処理
 	 */
-	public boolean outrangeBlock(int pMode, int pX, int pY, int pZ) {
+	public boolean outrangeBlock(String pMode, int pX, int pY, int pZ) {
 		return owner.getNavigator().tryMoveToXYZ(pX, pY, pZ, 1.0F);
 	}
-	public boolean outrangeBlock(int pMode) {
+	public boolean outrangeBlock(String pMode) {
 		return outrangeBlock(pMode, owner.maidTile[0], owner.maidTile[1], owner.maidTile[2]);
 	}
 
@@ -226,23 +226,23 @@ public abstract class EntityModeBase {
 	 * 射程距離に入ったら実行される。
 	 * 戻り値がtrueの時は終了せずに動作継続
 	 */
-	public boolean executeBlock(int pMode, int px, int py, int pz) {
+	public boolean executeBlock(String pMode, int px, int py, int pz) {
 		return false;
 	}
-	public boolean executeBlock(int pMode) {
+	public boolean executeBlock(String pMode) {
 		return executeBlock(pMode, owner.maidTile[0], owner.maidTile[1], owner.maidTile[2]);
 	}
 
 	/**
 	 * AI実行時に呼ばれる。
 	 */
-	public void startBlock(int pMode) {
+	public void startBlock(String pMode) {
 	}
 
 	/**
 	 * AI終了時に呼ばれる。
 	 */
-	public void resetBlock(int pMode) {
+	public void resetBlock(String pMode) {
 	}
 
 	/**
@@ -267,7 +267,7 @@ public abstract class EntityModeBase {
 	/**
 	 * 独自索敵処理
 	 */
-	public boolean checkEntity(int pMode, Entity pEntity) {
+	public boolean checkEntity(String pMode, Entity pEntity) {
 		return false;
 	}
 
@@ -291,7 +291,7 @@ public abstract class EntityModeBase {
 	 * 被ダメ時の処理２。
 	 * trueを返すと処理を乗っ取る。
 	 */
-	public boolean damageEntity(int pMode, DamageSource par1DamageSource, float par2) {
+	public boolean damageEntity(String pMode, DamageSource par1DamageSource, float par2) {
 		return false;
 	}
 

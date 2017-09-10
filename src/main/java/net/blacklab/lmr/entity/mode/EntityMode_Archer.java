@@ -29,9 +29,8 @@ import net.minecraft.world.World;
 
 public class EntityMode_Archer extends EntityModeBase {
 
-	public static final int mmode_Archer		= 0x0083;
-	public static final int mmode_Blazingstar	= 0x00c3;
-
+	public static final String mmode_Archer			= "SYS:Archer";
+	public static final String mmode_Blazingstar	= "SYS:BlazingStar";
 
 	@Override
 	public int priority() {
@@ -74,8 +73,7 @@ public class EntityMode_Archer extends EntityModeBase {
 		ltasks[1].addTask(3, new EntityAILMHurtByTarget(owner, true));
 		ltasks[1].addTask(4, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
 
-		owner.addMaidMode(ltasks, "Archer", mmode_Archer);
-
+		owner.addMaidMode(mmode_Archer, ltasks);
 
 		// Blazingstar:0x00c3
 		EntityAITasks[] ltasks2 = new EntityAITasks[2];
@@ -85,7 +83,7 @@ public class EntityMode_Archer extends EntityModeBase {
 		ltasks2[1].addTask(1, new EntityAILMHurtByTarget(owner, true));
 		ltasks2[1].addTask(2, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
 
-		owner.addMaidMode(ltasks2, "Blazingstar", mmode_Blazingstar);
+		owner.addMaidMode(mmode_Blazingstar, ltasks2);
 	}
 
 	@Override
@@ -95,12 +93,12 @@ public class EntityMode_Archer extends EntityModeBase {
 		if (litemstack != null) {
 			if (litemstack.getItem() instanceof ItemBow || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Bow", litemstack.getItem())) {
 				if (owner.maidInventory.getInventorySlotContainItem(ItemFlintAndSteel.class) > -1) {
-					owner.setMaidMode("Blazingstar");
+					owner.setMaidMode(mmode_Blazingstar);
 					if (pentityplayer != null) {
 						pentityplayer.addStat(AchievementsLMRE.ac_BlazingStar);
 					}
 				} else {
-					owner.setMaidMode("Archer");
+					owner.setMaidMode(mmode_Archer);
 					if (pentityplayer != null) {
 						pentityplayer.addStat(AchievementsLMRE.ac_Archer);
 					}
@@ -112,14 +110,13 @@ public class EntityMode_Archer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean setMode(int pMode) {
-		switch (pMode) {
-		case mmode_Archer :
+	public boolean setMode(String pMode) {
+		if (pMode.equals(mmode_Archer)) {
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(true);
 			owner.setBloodsuck(false);
 			return true;
-		case mmode_Blazingstar :
+		} else if (pMode.equals(mmode_Blazingstar)) {
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(true);
 			owner.setBloodsuck(true);
@@ -130,7 +127,7 @@ public class EntityMode_Archer extends EntityModeBase {
 	}
 
 	@Override
-	public int getNextEquipItem(int pMode) {
+	public int getNextEquipItem(String pMode) {
 		int li;
 		if ((li = super.getNextEquipItem(pMode)) >= 0) {
 			return li;
@@ -159,7 +156,7 @@ public class EntityMode_Archer extends EntityModeBase {
 	}
 
 	@Override
-	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
 		if (par1ItemStack == null) {
 			return false;
 		}
@@ -181,7 +178,7 @@ public class EntityMode_Archer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean checkEntity(int pMode, Entity pEntity) {
+	public boolean checkEntity(String pMode, Entity pEntity) {
 		if (owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0) return false;
 		if (!MaidHelper.isTargetReachable(owner, pEntity, 18 * 18)) return false;
 
@@ -189,29 +186,21 @@ public class EntityMode_Archer extends EntityModeBase {
 	}
 
 	@Override
-	public void onUpdate(int pMode) {
-		switch (pMode) {
-		case mmode_Archer:
-		case mmode_Blazingstar:
+	public void onUpdate(String pMode) {
+		if (pMode.equals(mmode_Archer) || pMode.equals(mmode_Blazingstar)) {
 			owner.getWeaponStatus();
 //			updateGuns();
-			break;
 		}
 
 	}
 
 	@Override
-	public void updateAITick(int pMode) {
+	public void updateAITick(String pMode) {
 		if (owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0) {
 			owner.setAttackTarget(null);
 		}
 
-		switch (pMode) {
-		case mmode_Archer:
-//			owner.getWeaponStatus();
-//			updateGuns();
-			break;
-		case mmode_Blazingstar:
+		if (pMode.equals(mmode_Blazingstar)) {
 //			owner.getWeaponStatus();
 //			updateGuns();
 			// Blazingstarの特殊効果
@@ -232,7 +221,6 @@ public class EntityMode_Archer extends EntityModeBase {
 					}
 				}
 			}
-			break;
 		}
 	}
 

@@ -129,7 +129,7 @@ public class EntityAILMNearestAttackableTarget<T extends EntityLivingBase> exten
 
 		EntityModeBase lailm = theMaid.getActiveModeClass();
 		if (lailm != null && lailm.isSearchEntity()) {
-			if (!lailm.checkEntity(theMaid.getMaidModeInt(), pTarget)) {
+			if (!lailm.checkEntity(theMaid.getMaidModeString(), pTarget)) {
 				return false;
 			}
 		} else {

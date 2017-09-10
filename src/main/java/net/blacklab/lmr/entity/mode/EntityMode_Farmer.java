@@ -31,7 +31,7 @@ import net.minecraft.util.math.MathHelper;
  */
 public class EntityMode_Farmer extends EntityModeBase {
 
-	public static final int mmode_Farmer = 0x0023;
+	public static final String mmode_Farmer = "SYS:Farmer";
 	public static final int WATER_RADIUS = 4;
 
 	private int clearCount = 0;
@@ -61,7 +61,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = pDefaultTargeting;
 
-		owner.addMaidMode(ltasks, "Farmer", mmode_Farmer);
+		owner.addMaidMode(mmode_Farmer, ltasks);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
 			if (UtilModeFarmer.isHoe(owner, litemstack)) {
-				owner.setMaidMode("Farmer");
+				owner.setMaidMode(mmode_Farmer);
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Farmer);
 				}
@@ -81,10 +81,9 @@ public class EntityMode_Farmer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean setMode(int pMode) {
+	public boolean setMode(String pMode) {
 		// TODO 自動生成されたメソッド・スタブ
-		switch (pMode) {
-		case mmode_Farmer :
+		if (pMode.equals(mmode_Farmer)) {
 			owner.setBloodsuck(false);
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(false);
@@ -95,7 +94,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 	}
 
 	@Override
-	public int getNextEquipItem(int pMode) {
+	public int getNextEquipItem(String pMode) {
 		int li;
 		if ((li = super.getNextEquipItem(pMode)) >= 0) {
 			return InventoryLittleMaid.handInventoryOffset;
@@ -133,12 +132,12 @@ public class EntityMode_Farmer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean shouldBlock(int pMode) {
+	public boolean shouldBlock(String pMode) {
 		return owner.getCurrentEquippedItem() != null;
 	}
 
 	@Override
-	public boolean checkBlock(int pMode, int px, int py, int pz) {
+	public boolean checkBlock(String pMode, int px, int py, int pz) {
 		if (!super.checkBlock(pMode, px, py, pz)) return false;
 
 		if(!VectorUtil.canMoveThrough(owner, 0.9D, px + 0.5D, py + 1.9D, pz + 0.5D, py==MathHelper.floor_double(owner.posY-1D), true, false)) return false;
@@ -165,7 +164,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean executeBlock(int pMode, int px, int py, int pz) {
+	public boolean executeBlock(String pMode, int px, int py, int pz) {
 //		if(owner.worldObj.isRemote) return false;
 		ItemStack curStack = owner.getCurrentEquippedItem();
 
@@ -218,9 +217,9 @@ public class EntityMode_Farmer extends EntityModeBase {
 	}
 
 	@Override
-	public void onUpdate(int pMode) {
+	public void onUpdate(String pMode) {
 		// TODO 自動生成されたメソッド・スタブ
-		if(pMode==mmode_Farmer&&++clearCount>=300&&owner.getNavigator().noPath()){
+		if(pMode.equals(mmode_Farmer) && ++clearCount >= 300 && owner.getNavigator().noPath()){
 			try{
 				if(!owner.isWorking()){
 					if(owner.aiCollectItem.shouldExecute()) owner.aiCollectItem.updateTask();
@@ -231,11 +230,11 @@ public class EntityMode_Farmer extends EntityModeBase {
 	}
 
 	@Override
-	public void updateAITick(int pMode) {
-		if (pMode == mmode_Farmer) {
+	public void updateAITick(String pMode) {
+		if (pMode.equals(mmode_Farmer)) {
 			if(owner.getAIMoveSpeed() > 0.5F) owner.setAIMoveSpeed(0.5F);
 			if(owner.maidInventory.getFirstEmptyStack() < 0){
-				owner.setMaidMode("FarmPorter");
+				owner.setMaidMode(EntityMode_Basic.mmode_FarmPorter);
 			}
 		}
 	}

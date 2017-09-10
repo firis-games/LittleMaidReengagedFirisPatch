@@ -131,7 +131,7 @@ public class ExperienceHandler {
 			}
 
 			// 行動不能
-			if ((--pauseCount > 0 || deathCount > 0) && (theMaid.isMaidWait() || theMaid.getMaidModeInt() != EntityMode_DeathWait.mmode_DeathWait)) {
+			if ((--pauseCount > 0 || deathCount > 0) && (theMaid.isMaidWait() || !theMaid.getMaidModeString().equals(EntityMode_DeathWait.mmode_DeathWait))) {
 				theMaid.setMaidWait(false);
 				theMaid.setMaidMode(EntityMode_DeathWait.mmode_DeathWait);
 			}

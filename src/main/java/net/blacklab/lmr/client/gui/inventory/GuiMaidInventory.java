@@ -168,7 +168,7 @@ public class GuiMaidInventory extends GuiContainer {
 
 		if (RenderInfoPart.getRenderingPart() == 2) {
 			mc.fontRendererObj.drawString(I18n.format(
-					"littleMaidMob.mode.".concat(entitylittlemaid.getMaidModeString())), 7, 64, 0x404040);
+					"littleMaidMob.mode.".concat(entitylittlemaid.getMaidModeStringForDisplay())), 7, 64, 0x404040);
 		}
 
 //	      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

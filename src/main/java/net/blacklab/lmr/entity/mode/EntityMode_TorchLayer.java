@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 
 public class EntityMode_TorchLayer extends EntityModeBase {
 
-	public static final int mmode_Torcher = 0x0020;
+	public static final String mmode_Torcher = "SYS:TorchLayer";
 
 
 	public EntityMode_TorchLayer(EntityLittleMaid pEntity) {
@@ -59,7 +59,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = pDefaultTargeting;
 
-		owner.addMaidMode(ltasks, "Torcher", mmode_Torcher);
+		owner.addMaidMode(mmode_Torcher, ltasks);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
 			if (litemstack.getItem() == Item.getItemFromBlock(Blocks.TORCH) || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Torch", litemstack.getItem())) {
-				owner.setMaidMode("Torcher");
+				owner.setMaidMode(mmode_Torcher);
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_TorchLayer);
 				}
@@ -78,7 +78,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean setMode(int pMode) {
+	public boolean setMode(String pMode) {
 		switch (pMode) {
 		case mmode_Torcher :
 			owner.setBloodsuck(false);
@@ -91,7 +91,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	}
 
 	@Override
-	public int getNextEquipItem(int pMode) {
+	public int getNextEquipItem(String pMode) {
 		int li;
 		if ((li = super.getNextEquipItem(pMode)) >= 0) {
 			return li;
@@ -118,7 +118,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	}
 
 	@Override
-	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
 		if (par1ItemStack == null) {
 			return false;
 		}
@@ -127,7 +127,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
-		return isTriggerItem(owner.getMaidModeInt(), pItemStack);
+		return isTriggerItem(owner.getMaidModeString(), pItemStack);
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean shouldBlock(int pMode) {
+	public boolean shouldBlock(String pMode) {
 		return !(owner.getCurrentEquippedItem() == null);
 	}
 
@@ -154,8 +154,8 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean checkBlock(int pMode, int px, int py, int pz) {
-		if (!super.checkBlock(pMode, px, py, pz)) return false;
+	public boolean checkBlock(String string, int px, int py, int pz) {
+		if (!super.checkBlock(string, px, py, pz)) return false;
 
 		// アイテムを置けない場合
 		Item heldItem = owner.getHeldItem(EnumHand.MAIN_HAND).getItem();
@@ -176,7 +176,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean executeBlock(int pMode, int px, int py, int pz) {
+	public boolean executeBlock(String pMode, int px, int py, int pz) {
 		ItemStack lis = owner.getCurrentEquippedItem();
 		if (lis == null) return false;
 
@@ -236,7 +236,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	}
 
 	@Override
-	public void updateAITick(int pMode) {
+	public void updateAITick(String pMode) {
 		// トーチの設置
 /*
 		if (pMode == mmode_Torcher && owner.getNextEquipItem()) {
@@ -297,7 +297,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		Path pathEntity = owner.getNavigator().getPath();
 		if (pathEntity == null) return;
 		PathPoint destination = pathEntity.getFinalPathPoint();
-		if (!checkBlock(owner.getMaidModeInt(), destination.xCoord, destination.yCoord, destination.zCoord)) {
+		if (!checkBlock(owner.getMaidModeString(), destination.xCoord, destination.yCoord, destination.zCoord)) {
 			owner.getNavigator().clearPathEntity();
 		}
 	}

@@ -82,8 +82,8 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 			return false;
 		}
 
-		if (fMaid.getMaidModeInt() == EntityMode_Archer.mmode_Archer ||
-				fMaid.getMaidModeInt() == EntityMode_Archer.mmode_Blazingstar) {
+		if (fMaid.getMaidModeString().equals(EntityMode_Archer.mmode_Archer) ||
+				fMaid.getMaidModeString().equals(EntityMode_Archer.mmode_Blazingstar)) {
 //			for (ItemStack stack: fMaid.maidInventory.mainInventory) {
 //				if (stack != null && stack.getItem()==Items.arrow || TriggerSelect.checkWeapon(fMaid.getMaidMasterUUID(), "Arrow", stack)) {
 			// Cannot see
@@ -284,8 +284,9 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 										LittleMaidReengaged.Debug("id:%d redygun.", fMaid.getEntityId());
 									}
 								} else {
-									if(fMaid.maidMode!=EntityMode_Playing.mmode_Playing)
-										LittleMaidReengaged.Debug(String.format("ID:%d-friendly fire FullAuto.", fMaid.getEntityId()));
+									// TODO FOR DEBUG
+//									if(fMaid.maidMode!=EntityMode_Playing.mmode_Playing)
+//										LittleMaidReengaged.Debug(String.format("ID:%d-friendly fire FullAuto.", fMaid.getEntityId()));
 								}
 							}
 						}
@@ -299,12 +300,12 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 									fMaid.setSwing(10, (litemstack.stackSize == itemcount) ? EnumSound.shoot_burst : EnumSound.Null, !fMaid.isPlaying());
 									LittleMaidReengaged.Debug(String.format("id:%d throw weapon.(%d:%f:%f)", fMaid.getEntityId(), swingState.attackTime, fMaid.rotationYaw, fMaid.rotationYawHead));
 									swingState.attackTime = 5;
-									if (fMaid.maidMode == EntityMode_Playing.mmode_Playing) {
+									if (!fMaid.maidMode.equals("Playing")) {
 										fMaid.setMaidWaitCount(10);
 //										return;
 									}
 								} else {
-									if(fMaid.maidMode!=EntityMode_Playing.mmode_Playing)
+									if(!fMaid.maidMode.equals("Playing"))
 										LittleMaidReengaged.Debug(String.format("ID:%d-friendly fire throw weapon.", fMaid.getEntityId()));
 								}
 							}

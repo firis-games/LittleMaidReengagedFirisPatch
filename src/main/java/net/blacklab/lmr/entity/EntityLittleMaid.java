@@ -1,6 +1,17 @@
 package net.blacklab.lmr.entity;
 
-import static net.blacklab.lmr.util.Statics.*;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Aimebow;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Bloodsuck;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Freedom;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_LooksSugar;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_OverDrive;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Register;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Tracer;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Wait;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Working;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterest;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterestAXIS;
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_remainsContract;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -9,7 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -27,13 +37,13 @@ import net.blacklab.lmr.client.sound.SoundRegistry;
 import net.blacklab.lmr.entity.ai.EntityAILMAttackArrow;
 import net.blacklab.lmr.entity.ai.EntityAILMAttackOnCollide;
 import net.blacklab.lmr.entity.ai.EntityAILMAvoidPlayer;
-import net.blacklab.lmr.entity.ai.EntityAILMMoveTowardsRestriction;
 import net.blacklab.lmr.entity.ai.EntityAILMBeg;
 import net.blacklab.lmr.entity.ai.EntityAILMBegMove;
 import net.blacklab.lmr.entity.ai.EntityAILMCollectItem;
 import net.blacklab.lmr.entity.ai.EntityAILMFindBlock;
 import net.blacklab.lmr.entity.ai.EntityAILMFleeRain;
 import net.blacklab.lmr.entity.ai.EntityAILMFollowOwner;
+import net.blacklab.lmr.entity.ai.EntityAILMMoveTowardsRestriction;
 import net.blacklab.lmr.entity.ai.EntityAILMOpenDoor;
 import net.blacklab.lmr.entity.ai.EntityAILMRestrictOpenDoor;
 import net.blacklab.lmr.entity.ai.EntityAILMRestrictRain;
@@ -52,7 +62,9 @@ import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.mode.EntityModeBase;
+import net.blacklab.lmr.entity.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.mode.EntityMode_Playing;
+import net.blacklab.lmr.entity.mode.EntityMode_Playing.PlayRole;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
@@ -70,7 +82,6 @@ import net.blacklab.lmr.util.helper.ItemHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.blacklab.lmr.util.helper.OwnableEntityHelper;
 import net.blacklab.lmr.util.manager.EntityModeHandler;
-import net.blacklab.lmr.util.manager.EntityModeManager;
 import net.blacklab.lmr.util.manager.LoaderSearcher;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.block.state.IBlockState;
@@ -176,7 +187,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	/** 紐の持ち主のEntityID。 */
 	protected static final DataParameter<Integer> dataWatch_Gotcha			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	/** メイドモード(Short) */
-	protected static final DataParameter<Integer> dataWatch_Mode			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	protected static final DataParameter<String> dataWatch_Mode			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.STRING);
 	/** 利き腕(Byte) */
 	protected static final DataParameter<Integer> dataWatch_DominamtArm	= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	/** アイテムの使用判定、腕毎(Integer) */
@@ -213,9 +224,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public EntityCaps maidCaps;	// Client側のみ
 
 	public List<EntityModeBase> maidEntityModeList;
-	public Map<Integer, EntityAITasks[]> maidModeList;
-	public Map<String, Integer> maidModeIndexList;
-	public int maidMode;		// 2Byte
+	/** Associate mode String with Tasks **/
+	public Map<String, EntityAITasks[]> modeAIMap;
+
+	/** Mode String **/
+	public String maidMode;
+
 	public boolean maidTracer;
 	public boolean maidFreedom;
 	public boolean maidWait;
@@ -242,8 +256,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	protected boolean mstatFirstLook;
 	protected boolean mstatLookSuger;
 	protected Counter workingCount;
-	protected int mstatPlayingRole;
-	protected int mstatWorkingInt;
+	protected PlayRole mstatPlayingRole;
+	protected String mstatWorking;
 	protected String mstatModeName;
 	protected boolean mstatOpenInventory;
 
@@ -369,6 +383,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		maidOverDriveTime = new Counter(5, 300, -LittleMaidReengaged.cfg_maidOverdriveDelay);
 		workingCount = new Counter(11, 10, -10);
 		registerTick = new Counter(200, 200, -20);
+		mstatPlayingRole = PlayRole.NOTPLAYING;
 
 		// モデルレンダリング用のフラグ獲得用ヘルパー関数
 		maidCaps = new EntityCaps(this);
@@ -409,11 +424,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		maidEntityModeList = ((EntityModeHandler) LoaderSearcher.INSTANCE.getInstanceOfHandler(EntityModeHandler.class)).getModeList(this);//EntityModeManager.getModeList(this);
 		// モードリスト
 		setMaidActiveModeClass(null);
-		maidModeList = new HashMap<Integer, EntityAITasks[]>();
-		maidModeIndexList = new HashMap<String, Integer>();
+
+		modeAIMap = new HashMap<>();
+
 		initModeList();
 		mstatModeName = "";
-		maidMode = 65535;
+		maidMode = "Wild";
 		// 初期化時実行コード
 		for (EntityModeBase lem : maidEntityModeList) {
 			lem.initEntity();
@@ -450,7 +466,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setTextureNameArmor(textureData.textureBox[1].textureName);
 //		recallRenderParamTextureName(textureModelNameForClient, textureArmorNameForClient);
 		if(!isContract()) {
-			setMaidMode("Wild");
+			setMaidMode(EntityMode_Basic.mmode_Wild);
 			onSpawnWild();
 		}
 	}
@@ -521,7 +537,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// 23:GotchaID
 		dataManager.register(EntityLittleMaid.dataWatch_Gotcha, Integer.valueOf(0));
 		// 24:メイドモード
-		dataManager.register(EntityLittleMaid.dataWatch_Mode, Integer.valueOf(0));
+		dataManager.register(EntityLittleMaid.dataWatch_Mode, "");
 		// 25:利き腕
 		dataManager.register(EntityLittleMaid.dataWatch_DominamtArm, Integer.valueOf(0));
 		// 26:アイテムの使用判定
@@ -613,19 +629,17 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return new PathNavigatorLittleMaid(this, worldIn);
 	}
 
-	public void addMaidMode(EntityAITasks[] peaiTasks, String pmodeName, int pmodeIndex) {
-		maidModeList.put(pmodeIndex, peaiTasks);
-		maidModeIndexList.put(pmodeName, pmodeIndex);
-	}
-
-
-	public int getMaidModeInt() {
-		return maidMode;
+	public void addMaidMode(String pModeName, EntityAITasks[] pAiTasks) {
+		modeAIMap.put(pModeName, pAiTasks);
 	}
 
 	public String getMaidModeString() {
+		return maidMode;
+	}
+
+	public String getMaidModeStringForDisplay() {
 		if (!isContract()) {
-			return getMaidModeString(maidMode);
+			return getMaidModeString();
 		} else if (!isRemainsContract()) {
 			return "Strike";
 		} else if (isMaidWait()) {
@@ -633,7 +647,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		} else if (isPlaying()) {
 			return "Playing";
 		} else {
-			String ls = getMaidModeString(maidMode);
+			String ls = getMaidModeString();
+			ls = ls.substring(ls.lastIndexOf(":") + 1);
 //			if (maidOverDriveTime.isEnable()) {
 //				ls = "D-" + ls;
 //			} else
@@ -646,35 +661,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 	}
 
-	public String getMaidModeString(int pindex) {
-		// モード名称の獲得
-		String ls = "";
-		for (Entry<String, Integer> le : maidModeIndexList.entrySet()) {
-			if (le.getValue() == pindex) {
-				ls = le.getKey();
-				break;
-			}
-		}
-		return ls;
-	}
-
 	public final void setMaidActiveModeClass(EntityModeBase pModeClass) {
 		maidActiveModeClass = pModeClass;
 	}
 
 	public boolean setMaidMode(String pname) {
 		return setMaidMode(pname, false);
-	}
-
-	public boolean setMaidMode(String pname, boolean pplaying) {
-		if (!maidModeIndexList.containsKey(pname)) {
-			return false;
-		}
-		return setMaidMode(maidModeIndexList.get(pname), pplaying);
-	}
-
-	public boolean setMaidMode(int pindex) {
-		return setMaidMode(pindex, false);
 	}
 
 /*
@@ -746,19 +738,19 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 	}
 
-	public boolean setMaidMode(int pindex, boolean pplaying) {
+	public boolean setMaidMode(String pName, boolean pplaying) {
 		// モードに応じてAIを切り替える
 		velocityChanged = true;
-		if (!maidModeList.containsKey(pindex)) return false;
-		if (maidMode == pindex) return true;
+		if (!modeAIMap.containsKey(pName)) return false;
+		if (maidMode.equals(pName)) return true;
 
 		if (!pplaying) {
-			mstatWorkingInt = pindex;
+			mstatWorking = pName;
 		}
-		mstatModeName = getMaidModeString(pindex);
-		maidMode = pindex;
+		mstatModeName = pName;
+		maidMode = pName;
 		dataManager.set(EntityLittleMaid.dataWatch_Mode, maidMode);
-		EntityAITasks[] ltasks = maidModeList.get(pindex);
+		EntityAITasks[] ltasks = modeAIMap.get(maidMode);
 
 		// AIを根底から書き換える
 		if (ltasks.length > 0 && ltasks[0] != null) {
@@ -1201,7 +1193,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 			if (pEntity instanceof EntityLittleMaid) {
 				// お遊びモードのメイドには敵対しない
-				if (((EntityLittleMaid)pEntity).mstatPlayingRole > EntityMode_Playing.mpr_NULL) {
+				if (((EntityLittleMaid)pEntity).isPlaying()) {
 					return true;
 				}
 			}
@@ -1275,7 +1267,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		super.writeEntityToNBT(par1nbtTagCompound);
 
 		par1nbtTagCompound.setTag("Inventory", maidInventory.writeToNBT(new NBTTagList()));
-		par1nbtTagCompound.setString("Mode", getMaidModeString(mstatWorkingInt));
+		par1nbtTagCompound.setString("Mode", mstatWorking);
 		par1nbtTagCompound.setBoolean("Wait", isMaidWait());
 		par1nbtTagCompound.setBoolean("Freedom", isFreedom());
 		par1nbtTagCompound.setBoolean("Tracer", isTracer());
@@ -1706,7 +1698,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setMaidWaitCount(0);
 		if (par2 > 0) {
 			// 遊びは終わりだ！
-			setPlayingRole(0);
+			setPlayingRole(PlayRole.NOTPLAYING);
 //			coolingTick  = 200;
 			getNextEquipItem();
 		}
@@ -1845,7 +1837,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	{
 		super.updateAITasks();
 		tasks.onUpdateTasks();
-		getActiveModeClass().updateAITick(getMaidModeInt());
+		getActiveModeClass().updateAITick(getMaidModeString());
 	}
 
 	@Override
@@ -2005,14 +1997,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 
 		//雪合戦試験
-		if ((isFreedom() || !isContractEX()) && worldObj.isDaytime() && !isPlaying() && (maidMode==0||maidMode==1)){
+		if ((isFreedom() || !isContractEX()) && worldObj.isDaytime() && !isPlaying() && (maidMode.equals("Wild")||maidMode.equals("Escort"))){
 			if(EntityMode_Playing.checkSnows(
 						MathHelper.floor_double(posX),
 						MathHelper.floor_double(posY),
 						MathHelper.floor_double(posZ), worldObj)){
-				setPlayingRole(0x0010);
+				setPlayingRole(PlayRole.QUICKSHOOTER);
 			}else{
-				setPlayingRole(0);
+				setPlayingRole(PlayRole.NOTPLAYING);
 			}
 		}
 
@@ -2829,7 +2821,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 						setFreedom(false);
 						setTracer(false);
 						setMaidWait(false);
-						setMaidMode("Escorter");
+						setMaidMode(EntityMode_Basic.mmode_Escorter);
 						if(!isMaidContractOwner(par1EntityPlayer)){
 							// あんなご主人なんか捨てて、僕のもとへおいで(洗脳)
 							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
@@ -3053,10 +3045,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 							setContract(true);
 							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
 							setHealth(20);
-							setMaidMode("Escorter");
+							setMaidMode(EntityMode_Basic.mmode_Escorter);
 							setMaidWait(false);
 							setFreedom(false);
-							setPlayingRole(0);
+							setPlayingRole(PlayRole.NOTPLAYING);
 							playLittleMaidSound(EnumSound.getCake, true);
 //							playLittleMaidSound(LMM_EnumSound.getCake, true);
 //							playTameEffect(true);
@@ -3092,7 +3084,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 */
 	private boolean setMaidModeAuto(EntityPlayer par1EntityPlayer) {
 		boolean lflag = false;
-		int orgnMode = getMaidModeInt();
+		String orgnMode = getMaidModeString();
 
 		setActiveModeClass(null);
 		for (int li = 0; li < maidEntityModeList.size() && !lflag; li++) {
@@ -3102,13 +3094,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 		}
 		if (!lflag) {
-			setMaidMode("Escorter");
+			setMaidMode(EntityMode_Basic.mmode_Escorter);
 			setEquipItem(-1);
 //			maidInventory.currentItem = -1;
 		}
 		getNextEquipItem();
 
-		if (orgnMode != getMaidModeInt()) {
+		if (!orgnMode.equals(getMaidModeString())) {
 			clearTilePosAll();
 			getNavigator().clearPathEntity();
 			setAttackTarget(null);
@@ -3247,7 +3239,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setRevengeTarget(null);
 		//setPathToEntity(null);
 		getNavigator().clearPathEntity();
-		setPlayingRole(0);
+		setPlayingRole(PlayRole.NOTPLAYING);
 		if(pflag){
 			//setMaidModeAITasks(null,null);
 			setWorking(false);
@@ -3292,8 +3284,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 */
 	public void onGuiClosed() {
 		setOpenInventory(false);
-		int li = maidMode & 0x0080;
-		setMaidWaitCount((li == 0) ? 50 : 0);
+		// TODO Waiting?
+//		int li = maidMode & 0x0080;
+		setMaidWaitCount(50);
 	}
 
 	// 腕振り
@@ -3498,25 +3491,25 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 
 	// お遊びモード
-	public void setPlayingRole(int pValue) {
+	public void setPlayingRole(PlayRole pValue) {
 
-		if (mstatPlayingRole != pValue) {
+		if (!mstatPlayingRole.equals(pValue)) {
 			mstatPlayingRole = pValue;
-			if (pValue == 0) {
+			if (pValue.equals(PlayRole.NOTPLAYING)) {
 				setAttackTarget(null);
-				setMaidMode(mstatWorkingInt , true);
+				setMaidMode(mstatWorking , true);
 			} else {
-				setMaidMode(0x00ff, true);
+				setMaidMode(EntityMode_Playing.mmode_Playing, true);
 			}
 		}
 	}
 
-	public int getPlayingRole() {
+	public PlayRole getPlayingRole() {
 		return mstatPlayingRole;
 	}
 
 	public boolean isPlaying() {
-		return mstatPlayingRole != 0;
+		return !mstatPlayingRole.equals(PlayRole.NOTPLAYING);
 	}
 
 
@@ -3535,7 +3528,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			aiTracer.setEnable(isTracer()&&pFlag);
 //			setAIMoveSpeed(pFlag ? moveSpeed_Nomal : moveSpeed_Max);
 //			setMoveForward(0.0F);
-			setPlayingRole(0);
+			setPlayingRole(PlayRole.NOTPLAYING);
 			if (maidFreedom && isContract()) {
 				setTracer(isTracer());
 				setHomePosAndDistance(getPosition(), (int) getMaximumHomeDistance());

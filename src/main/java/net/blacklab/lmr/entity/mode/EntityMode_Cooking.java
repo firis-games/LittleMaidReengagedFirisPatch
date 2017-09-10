@@ -16,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class EntityMode_Cooking extends EntityModeBlockBase {
 
-	public static final int mmode_Cooking = 0x0021;
+	public static final String mmode_Cooking = "SYS:Cooking";
 
 
 	public EntityMode_Cooking(EntityLittleMaid pEntity) {
@@ -45,7 +45,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = new EntityAITasks(owner.aiProfiler);
 
-		owner.addMaidMode(ltasks, "Cooking", mmode_Cooking);
+		owner.addMaidMode(mmode_Cooking,ltasks);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
 			if (ItemHelper.isItemBurned(litemstack)) {
-				owner.setMaidMode("Cooking");
+				owner.setMaidMode(mmode_Cooking);
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Cook);
 				}
@@ -64,9 +64,8 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 	}
 
 	@Override
-	public boolean setMode(int pMode) {
-		switch (pMode) {
-		case mmode_Cooking :
+	public boolean setMode(String pMode) {
+		if (pMode.equals(mmode_Cooking)) {
 			owner.setBloodsuck(false);
 //			owner.aiJumpTo.setEnable(false);
 			owner.aiFollow.setEnable(false);
@@ -80,11 +79,9 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 	}
 
 	@Override
-	public int getNextEquipItem(int pMode) {
+	public int getNextEquipItem(String pMode) {
 		int li;
-		// モードに応じた識別判定、速度優先
-		switch (pMode) {
-		case mmode_Cooking :
+		if (pMode.equals(mmode_Cooking)) {
 			for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				// 調理
 				if (owner.maidInventory.isItemBurned(li)) {
@@ -92,7 +89,6 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 					return InventoryLittleMaid.handInventoryOffset;
 				}
 			}
-			break;
 		}
 
 		return -1;
@@ -118,14 +114,14 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 	}
 
 	@Override
-	public boolean shouldBlock(int pMode) {
+	public boolean shouldBlock(String pMode) {
 		return owner.maidTileEntity instanceof TileEntityFurnace &&
 				(((TileEntityFurnace)owner.maidTileEntity).isBurning() ||
 				ItemHelper.isItemBurned(owner.getCurrentEquippedItem()));
 	}
 
 	@Override
-	public boolean checkBlock(int pMode, int px, int py, int pz) {
+	public boolean checkBlock(String pMode, int px, int py, int pz) {
 		TileEntity ltile = owner.worldObj.getTileEntity(new BlockPos(px, py, pz));
 		if (!(ltile instanceof TileEntityFurnace)) {
 			return false;
@@ -146,7 +142,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 	}
 
 	@Override
-	public boolean executeBlock(int pMode, int px, int py, int pz) {
+	public boolean executeBlock(String pMode, int px, int py, int pz) {
 		if (!owner.isEqualTile()) {
 			return false;
 		}
@@ -258,12 +254,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 	}
 
 	@Override
-	public void startBlock(int pMode) {
-//		owner.setWorking(true);
-	}
-
-	@Override
-	public void resetBlock(int pMode) {
+	public void resetBlock(String pMode) {
 		owner.setSneaking(false);
 //		owner.setWorking(false);
 	}

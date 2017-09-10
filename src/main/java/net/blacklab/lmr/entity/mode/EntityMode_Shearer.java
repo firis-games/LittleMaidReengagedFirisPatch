@@ -25,9 +25,9 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class EntityMode_Shearer extends EntityModeBase {
 
-	public static final int mmode_Ripper	= 0x0081;
-	public static final int mmode_TNTD		= 0x00c1;
-	public static final int mmode_Detonator	= 0x00c2;
+	public static final String mmode_Ripper		= "SYS:Shearer";
+	public static final String mmode_TNTD		= "SYS:TNT-D";
+	public static final String mmode_Detonator	= "SYS:Detonator";
 
 	public int timeSinceIgnited;
 	public int lastTimeSinceIgnited;
@@ -98,7 +98,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 		ltasks[1].addTask(2, new EntityAILMNearestAttackableTarget(owner, EntityTNTPrimed.class, 0, true));
 		ltasks[1].addTask(3, new EntityAILMNearestAttackableTarget(owner, EntitySheep.class, 0, true));
 
-		owner.addMaidMode(ltasks, "Ripper", mmode_Ripper);
+		owner.addMaidMode(mmode_Ripper, ltasks);
 
 
 		// TNT-D:0x00c1
@@ -108,7 +108,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 		ltasks2[1].addTask(1, new EntityAILMNearestAttackableTarget(owner, EntityCreeper.class, 0, true));
 		ltasks2[1].addTask(2, new EntityAILMNearestAttackableTarget(owner, EntityTNTPrimed.class, 0, true));
 
-		owner.addMaidMode(ltasks2, "TNT-D", mmode_TNTD);
+		owner.addMaidMode(mmode_TNTD, ltasks2);
 
 
 		// Detonator:0x00c2
@@ -117,33 +117,33 @@ public class EntityMode_Shearer extends EntityModeBase {
 		ltasks3[1] = new EntityAITasks(owner.aiProfiler);
 		ltasks2[1].addTask(1, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
 
-		owner.addMaidMode(ltasks2, "Detonator", mmode_Detonator);
+		owner.addMaidMode(mmode_Detonator, ltasks3);
 
 
 	}
 
 	@Override
-	public void updateAITick(int pMode) {
+	public void updateAITick(String pMode) {
 		ItemStack litemstack = owner.maidInventory.getCurrentItem();
 		if (litemstack != null
 				&& (owner.getAttackTarget() instanceof EntityCreeper/* || owner.getAttackTarget().getClass().isAssignableFrom(EntityTNTPrimed.class)*/)) {
-			if (pMode == mmode_Ripper) {
-				owner.setMaidMode("TNT-D");
+			if (pMode.equals(mmode_Ripper)) {
+				owner.setMaidMode(mmode_TNTD);
 				owner.getMaidOverDriveTime().setEnable(true);
-			} else if (owner.getMaidModeInt() == mmode_TNTD && litemstack.getItem() instanceof ItemShears) {
+			} else if (owner.getMaidModeString().equals(mmode_TNTD) && litemstack.getItem() instanceof ItemShears) {
 				owner.getMaidOverDriveTime().setEnable(true);
 			}
 		}
 		if (!owner.getMaidOverDriveTime().isEnable() && pMode == mmode_TNTD) {
-			owner.setMaidMode("Ripper");
+			owner.setMaidMode(mmode_Ripper);
 //    		getNextEquipItem();
 		}
 	}
 
 	@Override
-	public void onUpdate(int pMode) {
+	public void onUpdate(String pMode) {
 		// 自爆モード
-		if (pMode == mmode_Detonator && owner.isEntityAlive()) {
+		if (pMode.equals(mmode_Detonator) && owner.isEntityAlive()) {
 			if (timeSinceIgnited < 0) {
 				if (lastTimeSinceIgnited != timeSinceIgnited) {
 					owner.getDataManager().set(EntityLittleMaid.dataWatch_Free, Integer.valueOf(0));
@@ -180,14 +180,14 @@ public class EntityMode_Shearer extends EntityModeBase {
 		ItemStack litemstack = owner.getHandSlotForModeChange();;
 		if (litemstack != null) {
 			if (litemstack.getItem() instanceof ItemShears) {
-				owner.setMaidMode("Ripper");
+				owner.setMaidMode(mmode_Ripper);
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Shearer);
 				}
 				return true;
 			}
 			if (ItemHelper.isItemExplord(litemstack)) {
-				owner.setMaidMode("Detonator");
+				owner.setMaidMode(mmode_Detonator);
 				return true;
 			}
 		}
@@ -195,7 +195,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean setMode(int pMode) {
+	public boolean setMode(String pMode) {
 		switch (pMode) {
 		case mmode_Ripper :
 			owner.setBloodsuck(false);
@@ -215,7 +215,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 	}
 
 	@Override
-	public int getNextEquipItem(int pMode) {
+	public int getNextEquipItem(String pMode) {
 		int li;
 		if ((li = super.getNextEquipItem(pMode)) >= 0) {
 			return li;
@@ -251,7 +251,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 	}
 
 	@Override
-	protected boolean isTriggerItem(int pMode, ItemStack par1ItemStack) {
+	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
 		if (par1ItemStack == null) {
 			return false;
 		}
@@ -267,8 +267,8 @@ public class EntityMode_Shearer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(int pMode, Entity pEntity) {
-		if (pMode == mmode_Detonator) {
+	public boolean attackEntityAsMob(String pMode, Entity pEntity) {
+		if (pMode.equals(mmode_Detonator)) {
 			// 通常殴り
 			return false;
 		}
@@ -314,7 +314,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean checkEntity(int pMode, Entity pEntity) {
+	public boolean checkEntity(String pMode, Entity pEntity) {
 		if (owner.maidInventory.currentItem < 0) {
 			return false;
 		}
@@ -373,9 +373,9 @@ public class EntityMode_Shearer extends EntityModeBase {
 	}
 
 	@Override
-	public boolean damageEntity(int pMode, DamageSource par1DamageSource, float par2) {
+	public boolean damageEntity(String pMode, DamageSource par1DamageSource, float par2) {
 		// 起爆
-		if (pMode == mmode_Detonator && ItemHelper.isItemExplord(owner.getCurrentEquippedItem())) {
+		if (pMode.equals(mmode_Detonator) && ItemHelper.isItemExplord(owner.getCurrentEquippedItem())) {
 			if (timeSinceIgnited == -1) {
 				owner.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.tnt.primed")), 1.0F, 0.5F);
 				owner.getDataManager().set(EntityLittleMaid.dataWatch_Free, Integer.valueOf(1));
