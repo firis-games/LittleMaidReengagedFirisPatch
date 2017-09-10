@@ -45,20 +45,36 @@ public class EntityModeHandler extends LoaderHandler {
 	}
 	
 	public List<EntityModeBase> getModeList(EntityLittleMaid pMaid) {
-		if (entityModes == null) {
-			// Generate
-			ArrayList<EntityModeBase> result = new ArrayList<>();
-			for (Class<? extends EntityModeBase> tClass : modeClasses) {
-				try {
-					result.add(tClass.getConstructor(EntityLittleMaid.class).newInstance(pMaid));
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-					e.printStackTrace();
+		// Generate
+		ArrayList<EntityModeBase> result = new ArrayList<>();
+		for (Class<? extends EntityModeBase> tClass : modeClasses) {
+			try {
+				// TODO Dup loop?
+				EntityModeBase tModeAdd = tClass.getConstructor(EntityLittleMaid.class).newInstance(pMaid);
+				if (!result.isEmpty()) {
+					// Check priority
+					int startSize = result.size();
+					for (int i = 0; i <= startSize; i++) {
+						if (i < startSize) {
+							EntityModeBase tModePres = result.get(i);
+							if (tModePres.priority() >= tModeAdd.priority()) {
+								result.add(i, tModeAdd);
+								break;
+							}
+						} else {
+							result.add(tModeAdd);
+						}
+					}
+				} else {
+					result.add(tModeAdd);
 				}
+			} catch (IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+			} catch (InstantiationException e) {
 			}
-			entityModes = result;
 		}
-		return entityModes;
+		return result;
 	}
 
 }

@@ -69,7 +69,9 @@ import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.blacklab.lmr.util.helper.OwnableEntityHelper;
+import net.blacklab.lmr.util.manager.EntityModeHandler;
 import net.blacklab.lmr.util.manager.EntityModeManager;
+import net.blacklab.lmr.util.manager.LoaderSearcher;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -404,7 +406,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //		maidStabilizer.put("HeadTop", MMM_StabilizerManager.getStabilizer("WitchHat", "HeadTop"));
 
 		// EntityModeの追加
-		maidEntityModeList = EntityModeManager.getModeList(this);
+		maidEntityModeList = ((EntityModeHandler) LoaderSearcher.INSTANCE.getInstanceOfHandler(EntityModeHandler.class)).getModeList(this);//EntityModeManager.getModeList(this);
 		// モードリスト
 		setMaidActiveModeClass(null);
 		maidModeList = new HashMap<Integer, EntityAITasks[]>();

@@ -27,7 +27,9 @@ import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
+import net.blacklab.lmr.util.manager.EntityModeHandler;
 import net.blacklab.lmr.util.manager.EntityModeManager;
+import net.blacklab.lmr.util.manager.LoaderSearcher;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.manager.StabilizerManager;
 import net.minecraft.client.Minecraft;
@@ -352,8 +354,10 @@ public class LittleMaidReengaged {
 		}
 
 		// モードリストを構築
-		EntityModeManager.loadEntityMode();
-		EntityModeManager.showLoadedModes();
+//		EntityModeManager.loadEntityMode();
+//		EntityModeManager.showLoadedModes();
+		LoaderSearcher.INSTANCE.register(EntityModeHandler.class);
+		LoaderSearcher.INSTANCE.startSearch();
 
 		// サウンドのロード
 		// TODO ★ proxy.loadSounds();
