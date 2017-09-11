@@ -380,6 +380,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		mstatOpenInventory = false;
 //		isMaidChaseWait = false;
 		mstatTime = 6000;
+		mstatWorking = EntityMode_Basic.mmode_Wild;
 		maidOverDriveTime = new Counter(5, 300, -LittleMaidReengaged.cfg_maidOverdriveDelay);
 		workingCount = new Counter(11, 10, -10);
 		registerTick = new Counter(200, 200, -20);

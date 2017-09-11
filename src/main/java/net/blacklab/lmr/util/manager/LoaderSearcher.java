@@ -64,7 +64,6 @@ public class LoaderSearcher {
 			Enumeration<? extends ZipEntry> zEntries = zFile.entries();
 			while (zEntries.hasMoreElements()) {
 				ZipEntry tEntry = zEntries.nextElement();
-				System.err.println("Z+" + tEntry.getName());
 				String tSearchName = tEntry.getName();
 
 				for (LoaderHandler tHandler : handlers) {
@@ -96,7 +95,6 @@ public class LoaderSearcher {
 			if (tSearchName.startsWith("/")) {
 				tSearchName = tSearchName.substring(1);
 			}
-			System.err.println("F+" + tSearchName);
 			
 			for (LoaderHandler tHandler : handlers) {
 				if (tHandler.isHandled(tSearchName)) {

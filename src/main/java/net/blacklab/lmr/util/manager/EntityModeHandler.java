@@ -36,7 +36,6 @@ public class EntityModeHandler extends LoaderHandler {
 		try {
 			Class<?> tClass = LittleMaidReengaged.class.getClassLoader().loadClass(tClassName);
 			if (EntityModeBase.class.isAssignableFrom(tClass)) {
-				System.err.println("ADD");
 				modeClasses.add((Class<? extends EntityModeBase>) tClass);
 			}
 		} catch (ClassNotFoundException e) {
