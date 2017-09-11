@@ -72,7 +72,8 @@ public class EntityMode_Healer extends EntityModeBase {
 
 	@Override
 	public boolean setMode(String pMode) {
-		if (pMode.equals(mmode_Healer)) {
+		switch (pMode) {
+		case mmode_Healer :
 			owner.setBloodsuck(false);
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(false);
@@ -88,7 +89,8 @@ public class EntityMode_Healer extends EntityModeBase {
 			return InventoryLittleMaid.handInventoryOffset;
 		}
 
-		if (pMode.equals(mmode_Healer)) {
+		switch (pMode) {
+		case mmode_Healer:
 			// Healer
 			for (int i = 0; i < owner.maidInventory.getSizeInventory(); i++) {
 				ItemStack is = owner.maidInventory.getStackInSlot(i);
@@ -98,6 +100,7 @@ public class EntityMode_Healer extends EntityModeBase {
 					return i;
 				}
 			}
+			break;
 		}
 		return -1;
 	}

@@ -111,12 +111,13 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	@Override
 	public boolean setMode(String pMode) {
-		if (pMode.equals(mmode_Archer)) {
+		switch (pMode) {
+		case mmode_Archer :
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(true);
 			owner.setBloodsuck(false);
 			return true;
-		} else if (pMode.equals(mmode_Blazingstar)) {
+		case mmode_Blazingstar :
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(true);
 			owner.setBloodsuck(true);
@@ -187,7 +188,9 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	@Override
 	public void onUpdate(String pMode) {
-		if (pMode.equals(mmode_Archer) || pMode.equals(mmode_Blazingstar)) {
+		switch (pMode) {
+		case mmode_Archer:
+		case mmode_Blazingstar:
 			owner.getWeaponStatus();
 //			updateGuns();
 		}
@@ -200,7 +203,12 @@ public class EntityMode_Archer extends EntityModeBase {
 			owner.setAttackTarget(null);
 		}
 
-		if (pMode.equals(mmode_Blazingstar)) {
+		switch (pMode) {
+		case mmode_Archer:
+//			owner.getWeaponStatus();
+//			updateGuns();
+			break;
+		case mmode_Blazingstar:
 //			owner.getWeaponStatus();
 //			updateGuns();
 			// Blazingstarの特殊効果

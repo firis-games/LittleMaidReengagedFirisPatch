@@ -71,7 +71,8 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
 	@Override
 	public boolean setMode(String pMode) {
-		if (pMode.equals(mmode_Pharmacist)) {
+		switch (pMode) {
+		case mmode_Pharmacist :
 			owner.setBloodsuck(false);
 //			owner.aiJumpTo.setEnable(false);
 			owner.aiFollow.setEnable(false);
@@ -94,7 +95,8 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		ItemStack litemstack;
 
 		// モードに応じた識別判定、速度優先
-		if (pMode.equals(mmode_Pharmacist)) {
+		switch (pMode) {
+		case mmode_Pharmacist :
 			litemstack = owner.getCurrentEquippedItem();
 			if (!(inventryPos > 0 && litemstack != null && !PotionUtils.getEffectsFromStack(litemstack).isEmpty())) {
 				for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
@@ -107,6 +109,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					}
 				}
 			}
+			break;
 		}
 
 		return -1;

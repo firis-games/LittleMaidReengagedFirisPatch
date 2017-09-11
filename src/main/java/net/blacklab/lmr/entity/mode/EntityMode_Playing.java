@@ -323,7 +323,8 @@ public class EntityMode_Playing extends EntityModeBase {
 
 	@Override
 	public boolean setMode(String pMode) {
-		if (pMode.equals(mmode_Playing)) {
+		switch (pMode) {
+		case mmode_Playing :
 			if(!owner.worldObj.isDaytime()) return false;
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(true);

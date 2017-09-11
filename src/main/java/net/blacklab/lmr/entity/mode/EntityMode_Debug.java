@@ -53,7 +53,8 @@ public class EntityMode_Debug extends EntityMode_Basic {
 	@Override
 	public boolean setMode(String pMode) {
 		if(!DevMode.DEVELOPMENT_DEBUG_MODE) return false;
-		if (pMode.equals(mmode_Debug)) {
+		switch (pMode) {
+		case mmode_Debug :
 			owner.setBloodsuck(false);
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(false);

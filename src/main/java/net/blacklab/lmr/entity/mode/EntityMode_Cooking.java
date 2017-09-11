@@ -65,7 +65,8 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 
 	@Override
 	public boolean setMode(String pMode) {
-		if (pMode.equals(mmode_Cooking)) {
+		switch (pMode) {
+		case mmode_Cooking :
 			owner.setBloodsuck(false);
 //			owner.aiJumpTo.setEnable(false);
 			owner.aiFollow.setEnable(false);
@@ -81,7 +82,9 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 	@Override
 	public int getNextEquipItem(String pMode) {
 		int li;
-		if (pMode.equals(mmode_Cooking)) {
+		// モードに応じた識別判定、速度優先
+		switch (pMode) {
+		case mmode_Cooking :
 			for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				// 調理
 				if (owner.maidInventory.isItemBurned(li)) {
@@ -89,6 +92,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 					return InventoryLittleMaid.handInventoryOffset;
 				}
 			}
+			break;
 		}
 
 		return -1;

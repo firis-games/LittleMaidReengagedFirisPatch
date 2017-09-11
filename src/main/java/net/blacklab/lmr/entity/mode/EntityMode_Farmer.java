@@ -83,7 +83,8 @@ public class EntityMode_Farmer extends EntityModeBase {
 	@Override
 	public boolean setMode(String pMode) {
 		// TODO 自動生成されたメソッド・スタブ
-		if (pMode.equals(mmode_Farmer)) {
+		switch (pMode) {
+		case mmode_Farmer :
 			owner.setBloodsuck(false);
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(false);

@@ -123,17 +123,18 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 
 	@Override
 	public boolean setMode(String pMode) {
-		if (pMode.equals(mmode_Wild)) {
+		switch (pMode) {
+		case mmode_Wild :
 			owner.setFreedom(true);
 //			owner.aiWander.setEnable(true);
 			return true;
-		} else if (pMode.equals(mmode_Escorter)) {
+		case mmode_Escorter :
 			owner.aiAvoidPlayer.setEnable(false);
 			for (int li = 0; li < owner.mstatSwingStatus.length; li++) {
 				owner.setEquipItem(li, -1);
 			}
 			return true;
-		} else if (pMode.equals(mmode_FarmPorter)) {
+		case mmode_FarmPorter :
 			return true;
 		}
 //		owner.getNavigator().clearPathEntity()

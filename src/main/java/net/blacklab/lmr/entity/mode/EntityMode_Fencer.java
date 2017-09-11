@@ -129,12 +129,14 @@ public class EntityMode_Fencer extends EntityModeBase {
 
 	@Override
 	public boolean setMode(String pMode) {
-		if (pMode.equals(mmode_Fencer)) {
+		switch (pMode) {
+		case mmode_Fencer :
 //			pentitylittlemaid.maidInventory.currentItem = getNextEquipItem(pentitylittlemaid, pMode);
 			owner.setBloodsuck(false);
 			owner.aiAttack.isGuard = true;
 			return true;
-		} else if (pMode.equals(mmode_Bloodsucker)) {
+		case mmode_Bloodsucker :
+//			pentitylittlemaid.maidInventory.currentItem = getNextEquipItem(pentitylittlemaid, pMode);
 			owner.setBloodsuck(true);
 			return true;
 		}
@@ -155,7 +157,8 @@ public class EntityMode_Fencer extends EntityModeBase {
 		ItemStack litemstack;
 
 		// モードに応じた識別判定、速度優先
-		if (pMode.equals(mmode_Fencer)) {
+		switch (pMode) {
+		case mmode_Fencer :
 			for (li = 0; li < owner.maidInventory.getSizeInventory() - 1; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
@@ -177,7 +180,8 @@ public class EntityMode_Fencer extends EntityModeBase {
 					ld = lld;
 				}
 			}
-		} else if (pMode.equals(mmode_Bloodsucker)) {
+			break;
+		case mmode_Bloodsucker :
 			for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack == null) continue;
@@ -199,6 +203,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 					ld = lld;
 				}
 			}
+			break;
 		}
 
 		return -1;
