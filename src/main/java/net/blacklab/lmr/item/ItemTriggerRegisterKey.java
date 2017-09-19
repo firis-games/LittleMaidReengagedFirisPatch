@@ -31,6 +31,10 @@ public class ItemTriggerRegisterKey extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn,
 			EntityPlayer playerIn, EnumHand pHand) {
+		if (TriggerSelect.selector.size() <= 0) {
+			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+		}
+		
 		NBTTagCompound tagCompound = itemStackIn.getTagCompound();
 		if(tagCompound==null) {
 			tagCompound = new NBTTagCompound();
@@ -72,6 +76,9 @@ public class ItemTriggerRegisterKey extends Item {
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn,
 			int itemSlot, boolean isSelected) {
 		if(!stack.hasTagCompound()){
+			if (TriggerSelect.selector.size() <= 0) {
+				return;
+			}
 			NBTTagCompound t = new NBTTagCompound();
 			t.setString(RK_MODE_TAG, TriggerSelect.selector.get(0));
 			stack.setTagCompound(t);

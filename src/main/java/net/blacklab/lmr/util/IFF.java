@@ -28,6 +28,7 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
 /**
  * IFFを管理するためのクラス、ほぼマルチ用。
@@ -234,21 +235,23 @@ public class IFF {
 	}
 
 	public static void loadIFFs() {
-		if (!CommonHelper.isClient) {
-			// サーバー側処理
+		// 1.10.2対策(#108)
 //			loadIFF("");
-			File lfile = FMLCommonHandler.instance().getMinecraftServerInstance().getFile("config");
-			for (File lf : lfile.listFiles()) {
-				LittleMaidReengaged.Debug("FIND FILE %s", lf.getName());
-				if (lf.getName().startsWith("littleMaidMob_")&&lf.getName().endsWith(".iff")) {
-					String ls = lf.getName().substring(14, lf.getName().length() - 4);
-					LittleMaidReengaged.Debug(ls);
-					loadIFF(UUID.fromString(ls));
-				}
+		// 初期値
+		loadIFF(null);
+		
+		// UUID別のデータを読み込む
+		File lfile = new File((File) FMLInjectionData.data()[6], "config");
+		if (!lfile.exists()) {
+			lfile.mkdir();
+		}
+		for (File lf : lfile.listFiles()) {
+			LittleMaidReengaged.Debug("FIND FILE %s", lf.getName());
+			if (lf.getName().startsWith("littleMaidMob_")&&lf.getName().endsWith(".iff")) {
+				String ls = lf.getName().substring(14, lf.getName().length() - 4);
+				LittleMaidReengaged.Debug(ls);
+				loadIFF(UUID.fromString(ls));
 			}
-		} else {
-			// クライアント側
-			loadIFF(null);
 		}
 	}
 
