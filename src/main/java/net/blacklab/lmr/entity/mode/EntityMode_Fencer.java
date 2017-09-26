@@ -1,5 +1,6 @@
 package net.blacklab.lmr.entity.mode;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -7,12 +8,10 @@ import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
+import net.blacklab.lmr.entity.littlemaid.ModeTrigger;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.Counter;
-import net.blacklab.lmr.util.IFF;
-import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
-import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -25,23 +24,24 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import scala.annotation.elidable;
 
 /**
  * 独自基準としてモード定数は0x0080は平常、0x00c0は血まみれモードと区別。
  */
 public class EntityMode_Fencer extends EntityModeBase {
 
-	public static final String mmode_Fencer		= "SYS:Fencer";
+	public static final String mmode_Fencer			= "SYS:Fencer";
 	public static final String mmode_Bloodsucker	= "SYS:Bloodsucker";
 
+	public static final String mtrigger_Sword 	= "Fencer:Sword";
+	public static final String mtrigger_Axe = "Bloodsucker:Axe";
+	
 	// Charging timer
 	protected Counter ticksCharge;
 	protected static final UUID CHARGING_BOOST_UUID = UUID.nameUUIDFromBytes(LittleMaidReengaged.DOMAIN.concat(":fencer_charge_boost").getBytes());
 	protected static final AttributeModifier CHARGING_BOOST_MODIFIER = new AttributeModifier(CHARGING_BOOST_UUID, LittleMaidReengaged.DOMAIN.concat(":fencer_charge_boost"), 0.2d, 0);
 
 	protected static final int CHARGE_COUNTER_MAX_VALUE = 60;
-
 	public EntityMode_Fencer(EntityLittleMaid pEntity) {
 		super(pEntity);
 		isAnytimeUpdate = true;
@@ -70,8 +70,8 @@ public class EntityMode_Fencer extends EntityModeBase {
 		ModLoader.addLocalization("littleMaidMob.mode.T-Bloodsucker", "T-Bloodsucker");
 		ModLoader.addLocalization("littleMaidMob.mode.D-Bloodsucker", "D-Bloodsucker");
 		*/
-		TriggerSelect.appendTriggerItem(null, "Sword", "");
-		TriggerSelect.appendTriggerItem(null, "Axe", "");
+		ModeTrigger.registerTrigger(mtrigger_Sword, new HashMap<>());
+		ModeTrigger.registerTrigger(mtrigger_Axe, new HashMap<>());
 	}
 
 	@Override
@@ -214,11 +214,12 @@ public class EntityMode_Fencer extends EntityModeBase {
 		if (par1ItemStack == null) {
 			return false;
 		}
+
 		switch (pMode) {
 		case mmode_Fencer:
-			return par1ItemStack.getItem() instanceof ItemSword || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Sword", par1ItemStack.getItem());
+			return owner.getModeTrigger().isTriggerable(mtrigger_Sword, par1ItemStack, ItemSword.class);
 		case mmode_Bloodsucker:
-			return par1ItemStack.getItem() instanceof ItemAxe || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Axe", par1ItemStack.getItem());
+			return owner.getModeTrigger().isTriggerable(mtrigger_Axe, par1ItemStack, ItemAxe.class);
 		}
 		return super.isTriggerItem(pMode, par1ItemStack);
 	}

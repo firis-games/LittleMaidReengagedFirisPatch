@@ -3,7 +3,7 @@ package net.blacklab.lmr.item;
 import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.util.TriggerSelect;
+import net.blacklab.lmr.entity.littlemaid.ModeTrigger;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,10 +31,6 @@ public class ItemTriggerRegisterKey extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn,
 			EntityPlayer playerIn, EnumHand pHand) {
-		if (TriggerSelect.selector.size() <= 0) {
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-		}
-		
 		NBTTagCompound tagCompound = itemStackIn.getTagCompound();
 		if(tagCompound==null) {
 			tagCompound = new NBTTagCompound();
@@ -45,10 +41,12 @@ public class ItemTriggerRegisterKey extends Item {
 		String modeString = tagCompound.getString(RK_MODE_TAG);
 
 		// 登録モードを切り替える．
-		index = TriggerSelect.selector.indexOf(modeString) + 1;
-		if(index >= TriggerSelect.selector.size()) index = 0;
+		index = ModeTrigger.getSelectorList().indexOf(modeString);
+		if (index < 0 || index >= ModeTrigger.getSelectorList().size()) {
+			index = 0;
+		}
 
-		modeString = TriggerSelect.selector.get(index);
+//		modeString = TriggerSelect.selector.get(index);
 		tagCompound.setString(RK_MODE_TAG, modeString);
 
 		if(!worldIn.isRemote)
@@ -76,11 +74,11 @@ public class ItemTriggerRegisterKey extends Item {
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn,
 			int itemSlot, boolean isSelected) {
 		if(!stack.hasTagCompound()){
-			if (TriggerSelect.selector.size() <= 0) {
+			if (ModeTrigger.getSelectorList().size() <= 0) {
 				return;
 			}
 			NBTTagCompound t = new NBTTagCompound();
-			t.setString(RK_MODE_TAG, TriggerSelect.selector.get(0));
+			t.setString(RK_MODE_TAG, ModeTrigger.getSelectorList().get(0));
 			stack.setTagCompound(t);
 		}
 	}

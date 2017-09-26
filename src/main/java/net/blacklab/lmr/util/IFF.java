@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -25,7 +23,6 @@ import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
@@ -286,10 +283,6 @@ public class IFF {
 			while ((s = br.readLine()) != null) {
 				String t[] = s.split("=");
 				if (t.length > 1) {
-					if (t[0].startsWith("triggerWeapon")) {
-						TriggerSelect.appendTriggerItem(pUsername, t[0].substring(13), t[1]);
-						continue;
-					}
 					int i = Integer.valueOf(t[1]);
 					if (i > 2) {
 						i = iff_Unknown;
@@ -315,25 +308,6 @@ public class IFF {
 			if ((lfile.exists() || lfile.createNewFile()) && lfile.canWrite()) {
 				FileWriter fw = new FileWriter(lfile);
 				BufferedWriter bw = new BufferedWriter(fw);
-
-				// トリガーアイテムのリスト
-				for (Entry<Integer, List<Item>> le : TriggerSelect.getUserTrigger(pUsername).entrySet())
-				{
-					StringBuilder sb = new StringBuilder();
-					sb.append("triggerWeapon")
-							.append(TriggerSelect.selector.get(le.getKey()))
-							.append("=");
-					if (!le.getValue().isEmpty()) {
-						String itemName = Item.REGISTRY.getNameForObject(le.getValue().get(0)).toString();
-						sb.append(itemName);
-						for (int i = 1; i < le.getValue().size(); i++) {
-							itemName = Item.REGISTRY.getNameForObject(le.getValue().get(i)).toString();
-							sb.append(",").append(itemName);
-						}
-					}
-					sb.append("\r\n");
-					bw.write(sb.toString());
-				}
 
 				for (Map.Entry<String, Integer> me : lmap.entrySet()) {
 					bw.write(String.format("%s=%d\r\n", me.getKey(),

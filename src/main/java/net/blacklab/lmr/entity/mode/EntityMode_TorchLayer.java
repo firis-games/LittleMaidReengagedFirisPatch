@@ -1,11 +1,14 @@
 package net.blacklab.lmr.entity.mode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.inventory.InventoryLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.ModeTrigger;
+import net.blacklab.lmr.entity.littlemaid.ModeTrigger.Status;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MaterialLiquid;
@@ -29,6 +32,7 @@ import net.minecraft.world.World;
 public class EntityMode_TorchLayer extends EntityModeBase {
 
 	public static final String mmode_Torcher = "SYS:TorchLayer";
+	public static final String mtrigger_Torch = "Torch";
 
 
 	public EntityMode_TorchLayer(EntityLittleMaid pEntity) {
@@ -49,7 +53,10 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		ModLoader.addLocalization("littleMaidMob.mode.D-Torcher", "D-Torcher");
 		ModLoader.addLocalization("littleMaidMob.mode.T-Torcher", "T-Torcher");
 		*/
-		TriggerSelect.appendTriggerItem(null, "Torch", "");
+		Map<Item, Status> defaultTrigger = new HashMap<>();
+		defaultTrigger.put(Item.getItemFromBlock(Blocks.TORCH), Status.TRIGGER);
+		
+		ModeTrigger.registerTrigger(mtrigger_Torch, defaultTrigger);
 	}
 
 	@Override
@@ -66,7 +73,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
-			if (litemstack.getItem() == Item.getItemFromBlock(Blocks.TORCH) || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Torch", litemstack.getItem())) {
+			if (owner.getModeTrigger().isTriggerable(mtrigger_Torch, litemstack)) {
 				owner.setMaidMode(mmode_Torcher);
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_TorchLayer);
@@ -122,7 +129,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		if (par1ItemStack == null) {
 			return false;
 		}
-		return par1ItemStack.getItem() == Item.getItemFromBlock(Blocks.TORCH) || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Torch", par1ItemStack.getItem());
+		return owner.getModeTrigger().isTriggerable(mtrigger_Torch, par1ItemStack);
 	}
 
 	@Override

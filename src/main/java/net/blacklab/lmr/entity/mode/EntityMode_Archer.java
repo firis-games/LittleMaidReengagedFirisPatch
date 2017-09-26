@@ -1,5 +1,6 @@
 package net.blacklab.lmr.entity.mode;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,7 +9,7 @@ import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
-import net.blacklab.lmr.util.TriggerSelect;
+import net.blacklab.lmr.entity.littlemaid.ModeTrigger;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -16,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFlintAndSteel;
@@ -31,6 +33,9 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	public static final String mmode_Archer			= "SYS:Archer";
 	public static final String mmode_Blazingstar	= "SYS:BlazingStar";
+	
+	public static final String mtrigger_Bow			= "Archer:Bow";
+	public static final String mtrigger_Arrow		= "Archer:Arrow";
 
 	@Override
 	public int priority() {
@@ -57,8 +62,8 @@ public class EntityMode_Archer extends EntityModeBase {
 		ModLoader.addLocalization("littleMaidMob.mode.D-Blazingstar", "D-Blazingstar");
 //		ModLoader.addLocalization("littleMaidMob.mode.Blazingstar", "ja_JP", "刃鳴散らす者");
 		*/
-		TriggerSelect.appendTriggerItem(null, "Bow", "");
-//		TriggerSelect.appendTriggerItem(null, "Arrow", "");
+		ModeTrigger.registerTrigger(mtrigger_Bow, new HashMap<>());
+		ModeTrigger.registerTrigger(mtrigger_Arrow, new HashMap<>());
 	}
 
 	@Override
@@ -91,7 +96,9 @@ public class EntityMode_Archer extends EntityModeBase {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 
 		if (litemstack != null) {
-			if (litemstack.getItem() instanceof ItemBow || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Bow", litemstack.getItem())) {
+			Item item = litemstack.getItem();
+			
+			if (owner.getModeTrigger().isTriggerable(mtrigger_Bow, item, item instanceof ItemBow)) {
 				if (owner.maidInventory.getInventorySlotContainItem(ItemFlintAndSteel.class) > -1) {
 					owner.setMaidMode(mmode_Blazingstar);
 					if (pentityplayer != null) {
@@ -161,7 +168,9 @@ public class EntityMode_Archer extends EntityModeBase {
 		if (par1ItemStack == null) {
 			return false;
 		}
-		return par1ItemStack.getItem() instanceof ItemBow || TriggerSelect.checkTrigger(owner.getMaidMasterUUID(), "Bow", par1ItemStack.getItem());
+		
+		Item item = par1ItemStack.getItem();
+		return owner.getModeTrigger().isTriggerable(mtrigger_Bow, item, item instanceof ItemBow);
 	}
 
 	@Override
@@ -169,8 +178,10 @@ public class EntityMode_Archer extends EntityModeBase {
 		if (pItemStack == null) {
 			return false;
 		}
-		UUID ls = owner.getMaidMasterUUID();
-		return (pItemStack.getItem() instanceof ItemBow) || TriggerSelect.checkTrigger(ls, "Bow", pItemStack.getItem());
+		
+		Item item = pItemStack.getItem();
+		return owner.getModeTrigger().isTriggerable(mtrigger_Bow, item, item instanceof ItemBow)
+				/* || TriggerSelect.checkTrigger(ls, "Bow", pItemStack.getItem())*/;
 	}
 
 	@Override

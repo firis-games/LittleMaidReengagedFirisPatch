@@ -6,7 +6,6 @@ import java.util.List;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.event.EventLMRE;
-import net.blacklab.lmr.api.mode.UtilModeFarmer;
 import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMWildWatchClosest;
@@ -24,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemAppleGold;
 import net.minecraft.item.ItemBucketMilk;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
@@ -112,7 +112,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getCurrentEquippedItem();
 		if (litemstack != null) {
-			if (UtilModeFarmer.isHoe(owner, litemstack)) {
+			if (owner.getModeTrigger().isTriggerable(EntityMode_Farmer.mtrigger_Hoe, litemstack, ItemHoe.class)) {
 				owner.setMaidMode(mmode_FarmPorter);
 				return true;
 			}

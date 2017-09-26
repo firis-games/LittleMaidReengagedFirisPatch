@@ -55,6 +55,7 @@ import net.blacklab.lmr.entity.ai.EntityAILMWander;
 import net.blacklab.lmr.entity.ai.EntityAILMWatchClosest;
 import net.blacklab.lmr.entity.experience.ExperienceHandler;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
+import net.blacklab.lmr.entity.littlemaid.ModeTrigger;
 import net.blacklab.lmr.entity.maidmodel.EquippedStabilizer;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
@@ -76,7 +77,6 @@ import net.blacklab.lmr.util.EntityCaps;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.SwingStatus;
-import net.blacklab.lmr.util.TriggerSelect;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
@@ -347,6 +347,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	private int gainExpBoost = 1;					// 取得経験値倍率
 
 	protected boolean modelChangeable = true;
+	
+	private ModeTrigger modeTrigger;
+	
 	public EntityLittleMaid(World par1World) {
 		super(par1World);
 		// 初期設定
@@ -435,6 +438,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		for (EntityModeBase lem : maidEntityModeList) {
 			lem.initEntity();
 		}
+		
+		modeTrigger = ModeTrigger.getDefaultInstance();
+		
 		setExperienceHandler(new ExperienceHandler(this));
 
 		/*
@@ -1322,6 +1328,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 
 		getExperienceHandler().writeEntityToNBT(par1nbtTagCompound);
+		
+		modeTrigger.writeToNBT(par1nbtTagCompound);
 	}
 
 	@Override
@@ -1433,6 +1441,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //		syncMaidArmorVisible();
 
 		getExperienceHandler().readEntityFromNBT(par1nbtTagCompound);
+		
+		modeTrigger.readFromNBT(par1nbtTagCompound);
 	}
 
 	public boolean canBePushed()
@@ -2915,19 +2925,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 								return true;
 							} else if (registerTick.isEnable() && !par1EntityPlayer.worldObj.isRemote) {
-								List list = TriggerSelect.getuserTriggerList(CommonHelper.getPlayerUUID(par1EntityPlayer), registerMode);
-								Item item = par3ItemStack.getItem();
-								if (item != null) {
-									boolean flag = false;
-									while(list.remove(item)) flag = true;
-									if (!flag) {
-										list.add(item);
-										par1EntityPlayer.addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.addtrigger", registerMode + "/+" + Item.REGISTRY.getNameForObject(item).toString()));
-									} else {
-										par1EntityPlayer.addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.removetrigger", registerMode + "/-" + Item.REGISTRY.getNameForObject(item).toString()));
-									}
-								}
-								IFF.saveIFF(CommonHelper.getPlayerUUID(par1EntityPlayer));
+								// TODO Trigger Save each maid
 								registerTick.setEnable(false);
 								return true;
 							} else if (par3ItemStack.getItem() == Items.DYE) {
@@ -4134,4 +4132,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		super.setSize(par1, par2);
 	}
 
+	public ModeTrigger getModeTrigger() {
+		return modeTrigger;
+	}
 }

@@ -1,14 +1,14 @@
 package net.blacklab.lmr.entity.mode;
 
+import java.util.HashMap;
 import java.util.Iterator;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
-import net.blacklab.lmr.api.mode.UtilModeFarmer;
 import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.ModeTrigger;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.TriggerSelect;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockFarmland;
@@ -17,12 +17,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.IPlantable;
 
 /**
  * メイド農家。付近の農地に移動し耕作可能であれば耕す。
@@ -31,9 +33,10 @@ import net.minecraft.util.math.MathHelper;
  */
 public class EntityMode_Farmer extends EntityModeBase {
 
-	public static final String mmode_Farmer = "SYS:Farmer";
+	public static final String mmode_Farmer		= "SYS:Farmer";
+	public static final String mtrigger_Hoe		= "Farmer:Hoe";
+	public static final String mtrigger_Seed 	= "Farmer:Seed";
 	public static final int WATER_RADIUS = 4;
-
 	private int clearCount = 0;
 
 	public EntityMode_Farmer(EntityLittleMaid pEntity) {
@@ -43,8 +46,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	@Override
 	public void init() {
-		// TODO 自動生成されたメソッド・スタブ
-		TriggerSelect.appendTriggerItem(null, "Hoe", "");
+		ModeTrigger.registerTrigger(mtrigger_Hoe, new HashMap<>());
 	}
 
 	@Override
@@ -66,10 +68,9 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		// TODO 自動生成されたメソッド・スタブ
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (litemstack != null) {
-			if (UtilModeFarmer.isHoe(owner, litemstack)) {
+			if (owner.getModeTrigger().isTriggerable(mtrigger_Hoe, litemstack, ItemHoe.class)) {
 				owner.setMaidMode(mmode_Farmer);
 				if (pentityplayer != null) {
 					pentityplayer.addStat(AchievementsLMRE.ac_Farmer);
@@ -111,7 +112,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 				if (litemstack == null) continue;
 
 				// クワ
-				if (UtilModeFarmer.isHoe(owner,litemstack)) {
+				if (owner.getModeTrigger().isTriggerable(mtrigger_Hoe, litemstack, ItemHoe.class)) {
 					return li;
 				}
 			}
@@ -166,10 +167,9 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	@Override
 	public boolean executeBlock(String pMode, int px, int py, int pz) {
-//		if(owner.worldObj.isRemote) return false;
 		ItemStack curStack = owner.getCurrentEquippedItem();
 
-		boolean haveNothing = !UtilModeFarmer.isHoe(owner,curStack);
+		boolean haveNothing = !owner.getModeTrigger().isTriggerable(mtrigger_Hoe, curStack, ItemHoe.class);
 
 		if (!haveNothing && isUnfarmedLand(px,py,pz) &&
 				curStack.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
@@ -243,7 +243,8 @@ public class EntityMode_Farmer extends EntityModeBase {
 	protected int getHadSeedIndex(){
 		for (int i=0; i < owner.maidInventory.getSizeInventory(); i++) {
 			ItemStack pStack;
-			if ((pStack = owner.maidInventory.getStackInSlot(i)) != null && UtilModeFarmer.isSeed(owner.getMaidMasterUUID(), pStack.getItem())) {
+			if ((pStack = owner.maidInventory.getStackInSlot(i)) != null &&
+					owner.getModeTrigger().isTriggerable(mtrigger_Seed, pStack, IPlantable.class)) {
 				return i;
 			}
 		}
@@ -302,5 +303,5 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 		return true;
 	}
-
+	
 }
