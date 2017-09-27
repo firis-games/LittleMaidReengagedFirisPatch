@@ -259,8 +259,8 @@ public class IFF {
 			lfile = new File(CommonHelper.mc.mcDataDir, "config/littleMaidMob.iff");
 		} else {
 			String lfilename;
-			lfilename = "config/littleMaidMob_".concat(pUsername.toString()).concat(".iff");
-			lfile = FMLCommonHandler.instance().getMinecraftServerInstance().getFile(lfilename);
+			lfilename = "./config/littleMaidMob_".concat(pUsername.toString()).concat(".iff");
+			lfile = new File(lfilename);
 		}
 		LittleMaidReengaged.Debug(lfile.getAbsolutePath());
 		return lfile;

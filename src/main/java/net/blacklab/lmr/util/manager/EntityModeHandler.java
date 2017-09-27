@@ -8,7 +8,7 @@ import java.util.List;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.mode.EntityModeBase;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 
 public class EntityModeHandler extends LoaderHandler {
 	
@@ -37,8 +37,13 @@ public class EntityModeHandler extends LoaderHandler {
 			Class<?> tClass = LittleMaidReengaged.class.getClassLoader().loadClass(tClassName);
 			if (EntityModeBase.class.isAssignableFrom(tClass)) {
 				modeClasses.add((Class<? extends EntityModeBase>) tClass);
+				
+				// Call init() (semi-static)
+				EntityModeBase tBase =
+						(EntityModeBase) tClass.getConstructor(EntityLittleMaid.class).newInstance((EntityLittleMaid)null);
+				tBase.init();
 			}
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
 	}

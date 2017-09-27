@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.mode;
+package net.blacklab.lmr.entity.littlemaid.mode;
 
 import java.util.List;
 
@@ -44,13 +44,17 @@ public abstract class EntityModeBase {
 	public abstract int priority();
 
 	/**
-	 * 起動時の初期化。
+	 * Initialize on Load.<br/>
+	 * <strong>NOTE:</strong>init() method MUST <strong>NOT</strong> access to non-static members.
+	 * All operations to instance in this method will be discarded.
+	 * If you want to apply any changes to maids, use initEntity() method instead.
 	 */
 	public void init() {
 	}
 
 	/**
-	 * Entity初期化時の実行部
+	 * Called when Initialize Entity.
+	 * This method is called from constructor of EntityLittleMaid.
 	 */
 	public void initEntity() {
 	}

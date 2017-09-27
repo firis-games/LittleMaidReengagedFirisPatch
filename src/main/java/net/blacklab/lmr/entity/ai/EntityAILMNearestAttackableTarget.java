@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.mode.EntityModeBase;
-import net.blacklab.lmr.entity.mode.EntityMode_Fencer;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Fencer;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

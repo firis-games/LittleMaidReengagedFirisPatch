@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.mode;
+package net.blacklab.lmr.entity.littlemaid.mode;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;

@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.mode.EntityMode_Basic;
-import net.blacklab.lmr.entity.mode.EntityMode_DeathWait;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_DeathWait;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.ItemHelper;
