@@ -3,7 +3,7 @@ package net.blacklab.lmr.entity.ai;
 import java.util.List;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.entity.Entity;

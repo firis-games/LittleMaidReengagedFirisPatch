@@ -3,7 +3,7 @@ package net.blacklab.lmr.network;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.gui.GuiIFF;
 import net.blacklab.lmr.client.gui.inventory.GuiMaidInventory;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

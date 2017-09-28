@@ -2,8 +2,8 @@ package net.blacklab.lmr.entity.ai;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.IEntityLittleMaidAvatar;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.IEntityLittleMaidAvatar;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Archer;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.util.FileList;
 

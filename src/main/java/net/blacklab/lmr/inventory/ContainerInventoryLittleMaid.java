@@ -2,7 +2,7 @@ package net.blacklab.lmr.inventory;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;

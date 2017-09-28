@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.blacklab.lib.minecraft.item.ItemUtil;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;

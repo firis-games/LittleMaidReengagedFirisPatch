@@ -6,10 +6,10 @@ import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
-import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
-import net.blacklab.lmr.entity.littlemaid.ModeTrigger;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;

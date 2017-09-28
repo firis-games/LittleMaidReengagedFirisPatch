@@ -1,7 +1,7 @@
 package net.blacklab.lmr.api.event;
 
 import net.blacklab.lib.vevent.IVEventCancelable;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;

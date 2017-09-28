@@ -1,6 +1,6 @@
 package net.blacklab.lmr.entity.pathnavigate;
 
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigateGround;

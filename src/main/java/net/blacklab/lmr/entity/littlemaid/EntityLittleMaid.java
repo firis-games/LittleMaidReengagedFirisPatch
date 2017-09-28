@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity;
+package net.blacklab.lmr.entity.littlemaid;
 
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Aimebow;
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Bloodsuck;
@@ -55,11 +55,11 @@ import net.blacklab.lmr.entity.ai.EntityAILMWander;
 import net.blacklab.lmr.entity.ai.EntityAILMWatchClosest;
 import net.blacklab.lmr.entity.experience.ExperienceHandler;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
-import net.blacklab.lmr.entity.littlemaid.ModeTrigger;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing.PlayRole;
+import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.entity.maidmodel.EquippedStabilizer;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;

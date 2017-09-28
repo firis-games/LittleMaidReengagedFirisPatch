@@ -1,7 +1,7 @@
 package net.blacklab.lmr.util.helper;
 
 import net.blacklab.lmr.api.item.IItemSpecialSugar;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;

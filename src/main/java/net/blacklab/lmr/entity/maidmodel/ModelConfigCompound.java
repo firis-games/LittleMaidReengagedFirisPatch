@@ -2,7 +2,7 @@ package net.blacklab.lmr.entity.maidmodel;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.EnumArmorRenderParts;
 import net.blacklab.lmr.util.EnumTextureType;
 import net.blacklab.lmr.util.helper.CommonHelper;

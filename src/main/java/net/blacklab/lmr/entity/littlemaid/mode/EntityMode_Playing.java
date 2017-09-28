@@ -3,7 +3,7 @@ package net.blacklab.lmr.entity.littlemaid.mode;
 import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

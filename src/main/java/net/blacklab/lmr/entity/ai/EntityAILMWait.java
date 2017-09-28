@@ -1,6 +1,6 @@
 package net.blacklab.lmr.entity.ai;
 
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.ai.EntityAISit;
 
 public class EntityAILMWait extends EntityAISit {

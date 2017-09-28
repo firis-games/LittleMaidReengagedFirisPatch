@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.IFF;

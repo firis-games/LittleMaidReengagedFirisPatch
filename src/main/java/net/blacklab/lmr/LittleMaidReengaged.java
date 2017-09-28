@@ -14,7 +14,7 @@ import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.event.EventHookLMRE;
 import net.blacklab.lmr.item.ItemMaidPorter;
 import net.blacklab.lmr.item.ItemMaidSpawnEgg;

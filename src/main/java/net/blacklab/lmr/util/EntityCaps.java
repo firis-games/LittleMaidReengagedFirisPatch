@@ -3,7 +3,7 @@ package net.blacklab.lmr.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 

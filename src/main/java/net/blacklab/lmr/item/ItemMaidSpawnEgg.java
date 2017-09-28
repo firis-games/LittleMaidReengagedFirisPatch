@@ -3,7 +3,7 @@ package net.blacklab.lmr.item;
 import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;

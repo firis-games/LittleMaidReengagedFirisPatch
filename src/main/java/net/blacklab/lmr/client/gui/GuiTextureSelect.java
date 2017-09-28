@@ -6,7 +6,7 @@ import org.lwjgl.opengl.EXTRescaleNormal;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.minecraft.client.gui.GuiButton;

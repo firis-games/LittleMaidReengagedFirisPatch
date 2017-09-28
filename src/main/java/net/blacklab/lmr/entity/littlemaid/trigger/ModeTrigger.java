@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.littlemaid;
+package net.blacklab.lmr.entity.littlemaid.trigger;
 
 import java.io.Serializable;
 import java.util.ArrayList;

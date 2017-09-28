@@ -3,7 +3,7 @@ package net.blacklab.lmr.item;
 import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.entity.littlemaid.ModeTrigger;
+import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

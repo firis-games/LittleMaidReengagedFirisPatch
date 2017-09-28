@@ -1,6 +1,6 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.tileentity.TileEntity;
 
 public abstract class EntityModeBlockBase extends EntityModeBase {

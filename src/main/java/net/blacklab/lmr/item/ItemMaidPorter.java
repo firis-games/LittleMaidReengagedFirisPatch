@@ -3,8 +3,8 @@ package net.blacklab.lmr.item;
 import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.entity.EntityLittleMaid;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;

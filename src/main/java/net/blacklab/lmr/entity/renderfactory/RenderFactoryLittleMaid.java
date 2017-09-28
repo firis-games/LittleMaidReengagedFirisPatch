@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.renderfactory;
 
 import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.registry.IRenderFactory;

@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity;
+package net.blacklab.lmr.entity.littlemaid;
 
 import net.minecraft.util.DamageSource;
 

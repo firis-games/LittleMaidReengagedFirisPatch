@@ -3,7 +3,7 @@ package net.blacklab.lmr.entity.ai;
 import org.apache.logging.log4j.core.impl.Log4jLogEvent;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateBase;

@@ -3,7 +3,7 @@ package net.blacklab.lmr.client.renderer.entity;
 import org.lwjgl.opengl.EXTRescaleNormal;
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.entity.EntityMarkerDummy;
+import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;

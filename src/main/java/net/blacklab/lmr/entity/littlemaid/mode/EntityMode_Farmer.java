@@ -5,8 +5,8 @@ import java.util.Iterator;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
-import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.littlemaid.ModeTrigger;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.block.Block;

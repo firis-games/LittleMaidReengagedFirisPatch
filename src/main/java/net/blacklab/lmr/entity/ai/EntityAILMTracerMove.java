@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.ai;
 
-import net.blacklab.lmr.entity.EntityLittleMaid;
-import net.blacklab.lmr.entity.EntityMarkerDummy;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;

@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.entity.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
