@@ -42,7 +42,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 
 	@Override
 	public int priority() {
-		return 6200;
+		return 6400;
 	}
 
 	@Override

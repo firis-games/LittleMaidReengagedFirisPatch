@@ -94,22 +94,28 @@ public class ModeTrigger implements Serializable {
 	}
 	
 	public void activateTrigger(String pSelector, Item pItem) {
-		setStatus(pSelector, pItem, Status.TRIGGER);
+		setTriggerStatus(pSelector, pItem, Status.TRIGGER);
 	}
 	
 	public void deactivateTrigger(String pSelector, Item pItem) {
-		setStatus(pSelector, pItem, Status.NON_TRIGGER);
+		setTriggerStatus(pSelector, pItem, Status.NON_TRIGGER);
 	}
 	
-	private void setStatus(String pSelector, Item pItem, Status pStatus) {
+	private void setTriggerStatus(String pSelector, Item pItem, Status pStatus) {
+		ResourceLocation itemName = Item.REGISTRY.getNameForObject(pItem);
+		Item keyItem = Item.REGISTRY.getObject(itemName);
+		
 		Map<Item, Status> target = getTriggerMap(pSelector);
-		target.put(pItem, pStatus);
+		target.put(keyItem, pStatus);
 	}
 	
 	@Nonnull
-	public Status getTriggerStatus(String pSelector, Item pItem) {
+	private Status getTriggerStatus(String pSelector, Item pItem) {
+		ResourceLocation itemName = Item.REGISTRY.getNameForObject(pItem);
+		Item keyItem = Item.REGISTRY.getObject(itemName);
+		
 		Map<Item, Status> target = getTriggerMap(pSelector);
-		Status tStatus = target.get(pItem);
+		Status tStatus = target.get(keyItem);
 		if (tStatus == null) {
 			tStatus = Status.NOT_REGISTERED;
 		}
@@ -131,7 +137,11 @@ public class ModeTrigger implements Serializable {
 	}
 	
 	public boolean isTriggerable(String pSelector, ItemStack pStack) {
-		return isTriggerable(pSelector, pStack, Item.class);
+		if (pStack == null) {
+			return false;
+		}
+		
+		return isTriggerable(pSelector, pStack.getItem(), false);
 	}
 	
 	public void writeToNBT(NBTTagCompound pCompound) {
@@ -193,7 +203,7 @@ public class ModeTrigger implements Serializable {
 				
 				// Set
 				Item item = Item.REGISTRY.getObject(new ResourceLocation(itemName));
-				setStatus(pSelector, item, triggerStatus);
+				setTriggerStatus(pSelector, item, triggerStatus);
 			}
 		}
 	}
