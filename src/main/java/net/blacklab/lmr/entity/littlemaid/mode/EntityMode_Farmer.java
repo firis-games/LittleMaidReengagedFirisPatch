@@ -47,6 +47,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 	@Override
 	public void init() {
 		ModeTrigger.registerTrigger(mtrigger_Hoe, new HashMap<>());
+		ModeTrigger.registerTrigger(mtrigger_Seed, new HashMap<>());
 	}
 
 	@Override
