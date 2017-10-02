@@ -102,20 +102,14 @@ public class ModeTrigger implements Serializable {
 	}
 	
 	private void setTriggerStatus(String pSelector, Item pItem, Status pStatus) {
-		ResourceLocation itemName = Item.REGISTRY.getNameForObject(pItem);
-		Item keyItem = Item.REGISTRY.getObject(itemName);
-		
 		Map<Item, Status> target = getTriggerMap(pSelector);
-		target.put(keyItem, pStatus);
+		target.put(pItem, pStatus);
 	}
 	
 	@Nonnull
 	private Status getTriggerStatus(String pSelector, Item pItem) {
-		ResourceLocation itemName = Item.REGISTRY.getNameForObject(pItem);
-		Item keyItem = Item.REGISTRY.getObject(itemName);
-		
 		Map<Item, Status> target = getTriggerMap(pSelector);
-		Status tStatus = target.get(keyItem);
+		Status tStatus = target.get(pItem);
 		if (tStatus == null) {
 			tStatus = Status.NOT_REGISTERED;
 		}
