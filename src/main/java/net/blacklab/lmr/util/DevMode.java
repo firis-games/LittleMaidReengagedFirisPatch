@@ -10,7 +10,7 @@ public enum DevMode {
 	 * 開発環境でEntityModeやModelの開発を行う際はNOT_IN_DEVMODE「以外」にしてください。
 	 * 開発環境外であるか、eclipseを使用して開発環境を構築しているかの設定です。LMMNX_DevModeの値を指定してください。
 	 */
-	public static final DevMode DEVMODE = DevMode.DEVMODE_ECLIPSE;
+	public static final DevMode DEVMODE = DevMode.NOT_IN_DEV;
 
 	public static final String[] INCLUDEPROJECT = new String[]{};
 
