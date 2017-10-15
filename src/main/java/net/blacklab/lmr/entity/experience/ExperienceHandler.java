@@ -46,22 +46,6 @@ public class ExperienceHandler {
 
 	public void onLevelUp(int level) {
 		/*
-		 * 報酬付与・固定アイテム
-		 */
-		if (level%20 == 0) {
-			MaidHelper.giveItem(new ItemStack(Items.NAME_TAG), theMaid);
-		}
-		if (level%75 == 0) {
-			MaidHelper.giveItem(new ItemStack(Items.EMERALD, MathHelper.ceiling_float_int(level/150f)), theMaid);
-		}
-		if (level%150 == 0) {
-			MaidHelper.giveItem(new ItemStack(Items.DIAMOND, level/150), theMaid);
-		}
-		if (level == 200 || level == 300) {
-			MaidHelper.giveItem(new ItemStack(Items.NETHER_STAR, 1), theMaid);
-		}
-
-		/*
 		 * 最大HP上昇
 		 */
 		double modifyamount = 0;
