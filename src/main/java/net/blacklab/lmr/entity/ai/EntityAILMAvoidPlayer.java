@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.Vec3d;
 
 public class EntityAILMAvoidPlayer extends EntityAIBase implements
@@ -75,8 +76,8 @@ public class EntityAILMAvoidPlayer extends EntityAIBase implements
 			return false;
 		}
 
-		// WTF NSME on 1.10
-		return avoidPath.isDestinationSame(vec3d);
+		PathPoint pathpoint = avoidPath.getFinalPathPoint();
+		return pathpoint == null ? false : pathpoint.xCoord == (int)vec3d.xCoord && pathpoint.zCoord == (int)vec3d.zCoord;
 	}
 
 	@Override
