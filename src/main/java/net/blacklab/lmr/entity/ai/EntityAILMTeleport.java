@@ -1,12 +1,7 @@
 package net.blacklab.lmr.entity.ai;
 
-import org.apache.logging.log4j.core.impl.Log4jLogEvent;
-
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +33,7 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 			return false;
 		}
 		if (theMaid.getActiveModeClass() == null || theMaid.getMaidMasterEntity() == null ||
-				theMaid.isFreedom() || theMaid.isMaidWait() || theMaid.isSitting()) {
+				theMaid.isFreedom() || theMaid.isMaidWait() || theMaid.isSitting() || theMaid.isWorkingDelay()) {
 			return false;
 		}
 		
