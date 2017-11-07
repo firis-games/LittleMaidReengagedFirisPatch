@@ -20,7 +20,7 @@ import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 
 public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
-	public static final String mmode_Pharmacist = "SYS:Pharmacist";
+	public static final String mmode_Pharmacist = "Pharmacist";
 
 	protected int inventryPos;
 

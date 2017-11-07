@@ -16,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class EntityMode_Cooking extends EntityModeBlockBase {
 
-	public static final String mmode_Cooking = "SYS:Cooking";
+	public static final String mmode_Cooking = "Cooking";
 
 
 	public EntityMode_Cooking(EntityLittleMaid pEntity) {

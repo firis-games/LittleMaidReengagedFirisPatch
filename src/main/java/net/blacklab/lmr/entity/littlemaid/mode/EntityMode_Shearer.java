@@ -25,9 +25,9 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class EntityMode_Shearer extends EntityModeBase {
 
-	public static final String mmode_Ripper		= "SYS:Shearer";
-	public static final String mmode_TNTD		= "SYS:TNT-D";
-	public static final String mmode_Detonator	= "SYS:Detonator";
+	public static final String mmode_Ripper		= "Shearer";
+	public static final String mmode_TNTD		= "TNT-D";
+	public static final String mmode_Detonator	= "Detonator";
 
 	public int timeSinceIgnited;
 	public int lastTimeSinceIgnited;

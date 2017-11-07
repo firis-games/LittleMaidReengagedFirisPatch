@@ -30,8 +30,8 @@ import net.minecraft.item.ItemSword;
  */
 public class EntityMode_Fencer extends EntityModeBase {
 
-	public static final String mmode_Fencer			= "SYS:Fencer";
-	public static final String mmode_Bloodsucker	= "SYS:Bloodsucker";
+	public static final String mmode_Fencer			= "Fencer";
+	public static final String mmode_Bloodsucker	= "Bloodsucker";
 
 	public static final String mtrigger_Sword 	= "Fencer:Sword";
 	public static final String mtrigger_Axe = "Bloodsucker:Axe";

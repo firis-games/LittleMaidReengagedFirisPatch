@@ -33,7 +33,7 @@ import net.minecraftforge.common.IPlantable;
  */
 public class EntityMode_Farmer extends EntityModeBase {
 
-	public static final String mmode_Farmer		= "SYS:Farmer";
+	public static final String mmode_Farmer		= "Farmer";
 	public static final String mtrigger_Hoe		= "Farmer:Hoe";
 	public static final String mtrigger_Seed 	= "Farmer:Seed";
 	public static final int WATER_RADIUS = 4;

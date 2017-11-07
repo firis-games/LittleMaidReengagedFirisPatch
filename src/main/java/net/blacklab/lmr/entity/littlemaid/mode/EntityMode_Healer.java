@@ -20,7 +20,7 @@ import net.minecraft.potion.PotionUtils;
 
 public class EntityMode_Healer extends EntityModeBase {
 
-	public static final String mmode_Healer		= "SYS:Healer";
+	public static final String mmode_Healer		= "Healer";
 
 
 	public EntityMode_Healer(EntityLittleMaid pEntity) {

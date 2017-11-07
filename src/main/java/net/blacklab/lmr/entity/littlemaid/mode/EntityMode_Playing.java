@@ -29,7 +29,7 @@ public class EntityMode_Playing extends EntityModeBase {
 		STOCKSHOOTER
 	}
 
-	public static final String mmode_Playing	= "SYS:Playing";
+	public static final String mmode_Playing	= "Playing";
 
 	public int playingTick = 0;
 

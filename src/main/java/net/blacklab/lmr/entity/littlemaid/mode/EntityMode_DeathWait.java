@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class EntityMode_DeathWait extends EntityModeBase {
 	
-	public static final String mmode_DeathWait = "SYS:Fatal"; 
+	public static final String mmode_DeathWait = "Fatal"; 
 
 	public EntityMode_DeathWait(EntityLittleMaid pEntity) {
 		super(pEntity);

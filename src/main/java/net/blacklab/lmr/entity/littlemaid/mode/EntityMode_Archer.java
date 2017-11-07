@@ -2,7 +2,6 @@ package net.blacklab.lmr.entity.littlemaid.mode;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
@@ -31,8 +30,8 @@ import net.minecraft.world.World;
 
 public class EntityMode_Archer extends EntityModeBase {
 
-	public static final String mmode_Archer			= "SYS:Archer";
-	public static final String mmode_Blazingstar	= "SYS:BlazingStar";
+	public static final String mmode_Archer			= "Archer";
+	public static final String mmode_Blazingstar	= "BlazingStar";
 	
 	public static final String mtrigger_Bow			= "Archer:Bow";
 	public static final String mtrigger_Arrow		= "Archer:Arrow";

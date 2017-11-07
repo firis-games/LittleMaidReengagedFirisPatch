@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 
 public class EntityMode_Debug extends EntityMode_Basic {
 
-	public static final String mmode_Debug = "SYS:D:DEBUG";
+	public static final String mmode_Debug = "D:DEBUG";
 
 	public EntityMode_Debug(EntityLittleMaid pEntity) {
 		super(pEntity);

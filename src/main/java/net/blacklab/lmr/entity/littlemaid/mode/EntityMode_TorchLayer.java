@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 
 public class EntityMode_TorchLayer extends EntityModeBase {
 
-	public static final String mmode_Torcher = "SYS:TorchLayer";
+	public static final String mmode_Torcher = "TorchLayer";
 	public static final String mtrigger_Torch = "Torch";
 
 

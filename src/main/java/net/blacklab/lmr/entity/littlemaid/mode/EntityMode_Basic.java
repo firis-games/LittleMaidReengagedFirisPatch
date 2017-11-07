@@ -31,9 +31,9 @@ import net.minecraft.util.math.BlockPos;
 
 public class EntityMode_Basic extends EntityModeBlockBase {
 
-	public static final String mmode_Wild			= "SYS:Wild";
-	public static final String mmode_Escorter		= "SYS:Escort";
-	public static final String mmode_FarmPorter		= "SYS:FarmPort";
+	public static final String mmode_Wild			= "Wild";
+	public static final String mmode_Escorter		= "Escort";
+	public static final String mmode_FarmPorter		= "FarmPort";
 
 	private IInventory myInventory;
 	private IInventory myChest;
