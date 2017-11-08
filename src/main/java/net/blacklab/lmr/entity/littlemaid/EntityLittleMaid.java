@@ -426,20 +426,18 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		// EntityModeの追加
 		maidEntityModeList = ((EntityModeHandler) LoaderSearcher.INSTANCE.getInstanceOfHandler(EntityModeHandler.class)).getModeList(this);//EntityModeManager.getModeList(this);
-		// モードリスト
-		setMaidActiveModeClass(null);
 
 		modeAIMap = new HashMap<>();
 
 		initModeList();
 		mstatModeName = "";
-		maidMode = "Wild";
 		// 初期化時実行コード
 		for (EntityModeBase lem : maidEntityModeList) {
 			lem.initEntity();
 		}
 		
 		modeTrigger = ModeTrigger.getDefaultInstance();
+		setMaidMode(EntityMode_Basic.mmode_Wild);
 		
 		setExperienceHandler(new ExperienceHandler(this));
 
@@ -749,7 +747,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// モードに応じてAIを切り替える
 		velocityChanged = true;
 		if (!modeAIMap.containsKey(pName)) return false;
-		if (maidMode.equals(pName)) return true;
 
 		if (!pplaying) {
 			mstatWorking = pName;
