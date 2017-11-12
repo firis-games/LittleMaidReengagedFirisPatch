@@ -1,10 +1,13 @@
 package net.blacklab.lmr.entity.pathnavigate;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
 
 public class MaidMoveNodeProcessor extends WalkNodeProcessor {
 
@@ -22,6 +25,15 @@ public class MaidMoveNodeProcessor extends WalkNodeProcessor {
 			return this.openPoint(MathHelper.floor_double(entity.getEntityBoundingBox().minX), MathHelper.floor_double(entity.getEntityBoundingBox().minY + 0.5D), MathHelper.floor_double(entity.getEntityBoundingBox().minZ));
 		}
 		return super.getStart();
+	}
+	
+	@Override
+	public PathNodeType getPathNodeType(IBlockAccess x, int y, int z, int p_186330_4_) {
+		PathNodeType pathNodeType1 = super.getPathNodeType(x, y, z, p_186330_4_);
+		if (pathNodeType1 == PathNodeType.RAIL) {
+			pathNodeType1 = pathNodeType1.WALKABLE;
+		}
+		return pathNodeType1;
 	}
 
 	@Override
