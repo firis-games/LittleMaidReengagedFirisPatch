@@ -82,6 +82,7 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 			if (i > 0) {
 				BlockPos tDest = lCoordinates[new Random().nextInt(i)];
 				theMaid.setPosition(tDest.getX(), tDest.getY(), tDest.getZ());
+				resetTask();
 			}
 		}
 	}
@@ -89,6 +90,8 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 	@Override
 	public void resetTask() {
 		theMaid.getNavigator().clearPathEntity();
+		theMaid.setAttackTarget(null);
+		theMaid.getWorkingCount().setValue(0);
 	}
 
 }

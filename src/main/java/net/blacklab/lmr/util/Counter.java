@@ -24,13 +24,6 @@ public class Counter {
 		fCounter = pDelayValue;
 	}
 
-
-	public void setCountValue(int pSetValue, int pMaxValue, int pDelayValue) {
-		fSetValue = pSetValue;
-		fMaxValue = pMaxValue;
-		fDelayValue = pDelayValue;
-	}
-
 	public void setValue(int pValue) {
 		fCounter = pValue;
 	}
