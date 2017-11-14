@@ -67,9 +67,9 @@ littleMaidMob.mode.T-Cooking=赤石コックさん
 littleMaidMob.mode.Strike=ストライキ
 littleMaidMob.mode.Wait=待機
 littleMaidMob.mode.Wild=野生種
-littleMaidMob.mode.Escorter=従者
-littleMaidMob.mode.F-Escorter=自由人
-littleMaidMob.mode.T-Escorter=赤石探知
+littleMaidMob.mode.Escort=従者
+littleMaidMob.mode.F-Escort=自由人
+littleMaidMob.mode.T-Escort=赤石探知
 
 littleMaidMob.mode.Fencer=護衛剣士
 littleMaidMob.mode.F-Fencer=自由剣士

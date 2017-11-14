@@ -72,9 +72,9 @@ littleMaidMob.mode.T-Cooking=Cook(Trace RS)
 littleMaidMob.mode.Strike=Strike
 littleMaidMob.mode.Wait=Wait
 littleMaidMob.mode.Wild=Wild
-littleMaidMob.mode.Escorter=Escort
-littleMaidMob.mode.F-Escorter=Freedom
-littleMaidMob.mode.T-Escorter=Trace RedStone
+littleMaidMob.mode.Escort=Escort
+littleMaidMob.mode.F-Escort=Freedom
+littleMaidMob.mode.T-Escort=Trace RedStone
 
 littleMaidMob.mode.Fencer=Fencer
 littleMaidMob.mode.F-Fencer=Area defender(S)

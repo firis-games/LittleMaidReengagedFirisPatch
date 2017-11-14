@@ -32,7 +32,7 @@ import net.minecraft.util.math.BlockPos;
 public class EntityMode_Basic extends EntityModeBlockBase {
 
 	public static final String mmode_Wild			= "Wild";
-	public static final String mmode_Escorter		= "Escort";
+	public static final String mmode_Escort			= "Escort";
 	public static final String mmode_FarmPorter		= "FarmPort";
 
 	private IInventory myInventory;
@@ -57,17 +57,6 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 
 	@Override
 	public void init() {
-		/* langファイルに移動
-		ModLoader.addLocalization("littleMaidMob.mode.Strike", "Strike");
-		ModLoader.addLocalization("littleMaidMob.mode.Wait", "Wait");
-		ModLoader.addLocalization("littleMaidMob.mode.Wild", "Wild");
-		ModLoader.addLocalization("littleMaidMob.mode.Wild", "ja_JP", "野生種");
-		ModLoader.addLocalization("littleMaidMob.mode.Escorter", "Escorter");
-		ModLoader.addLocalization("littleMaidMob.mode.Escorter", "ja_JP", "従者");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Escorter", "Freedom");
-		ModLoader.addLocalization("littleMaidMob.mode.D-Escorter", "D-Escorter");
-		ModLoader.addLocalization("littleMaidMob.mode.T-Escorter", "Tracer");
-		*/
 	}
 
 	@Override
@@ -103,7 +92,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		ltasks = new EntityAITasks[2];
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = pDefaultTargeting;
-		owner.addMaidMode(mmode_Escorter, ltasks);
+		owner.addMaidMode(mmode_Escort, ltasks);
 		owner.addMaidMode(mmode_FarmPorter, ltasks);
 
 	}
@@ -117,7 +106,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 				return true;
 			}
 		}
-		owner.setMaidMode(mmode_Escorter);
+		owner.setMaidMode(mmode_Escort);
 		return true;
 	}
 
@@ -128,7 +117,10 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			owner.setFreedom(true);
 //			owner.aiWander.setEnable(true);
 			return true;
-		case mmode_Escorter :
+		case "Escorter":
+			owner.setMaidMode(mmode_Escort);
+			break;
+		case mmode_Escort :
 			owner.aiAvoidPlayer.setEnable(false);
 			for (int li = 0; li < owner.mstatSwingStatus.length; li++) {
 				owner.setEquipItem(li, -1);
@@ -154,7 +146,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 
 	@Override
 	public boolean isSearchBlock() {
-		if ((owner.getMaidModeString().equals(mmode_Escorter) ||
+		if ((owner.getMaidModeString().equals(mmode_Escort) ||
 				owner.getMaidModeString().equals(mmode_FarmPorter))
 				&& owner.isFreedom() && !owner.isMaidWait() &&
 				owner.maidInventory.getFirstEmptyStack() == -1) {

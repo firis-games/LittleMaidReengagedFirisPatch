@@ -84,9 +84,9 @@ littleMaidMob.mode.Strike=罢工
 littleMaidMob.mode.Wait=待命
 littleMaidMob.mode.Wild=野生
 
-littleMaidMob.mode.Escorter=跟随模式
-littleMaidMob.mode.F-Escorter=自由模式
-littleMaidMob.mode.T-Escorter=巡逻模式
+littleMaidMob.mode.Escort=跟随模式
+littleMaidMob.mode.F-Escort=自由模式
+littleMaidMob.mode.T-Escort=巡逻模式
 
 littleMaidMob.mode.Fencer=剑客模式
 littleMaidMob.mode.F-Fencer=自由-剑客模式

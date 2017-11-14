@@ -150,7 +150,7 @@ public class ExperienceHandler {
 						}
 					}
 					theMaid.setMaidWait(false);
-					theMaid.setMaidMode(EntityMode_Basic.mmode_Escorter);
+					theMaid.setMaidMode(EntityMode_Basic.mmode_Escort);
 					isWaitRevive = false;
 				}
 			}

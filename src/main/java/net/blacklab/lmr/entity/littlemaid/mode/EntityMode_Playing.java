@@ -311,7 +311,7 @@ public class EntityMode_Playing extends EntityModeBase {
 		if (par1DamageSource.getSourceOfDamage() instanceof EntitySnowball) {
 			// お遊び判定用、雪玉かどうか判定
 			owner.setMaidDamegeSound(EnumSound.hurt_snow);
-			if (!owner.isContractEX() || (owner.isFreedom() && owner.maidMode.equals(EntityMode_Basic.mmode_Escorter))) {
+			if (!owner.isContractEX() || (owner.isFreedom() && owner.maidMode.equals(EntityMode_Basic.mmode_Escort))) {
 				owner.setPlayingRole(PlayRole.QUICKSHOOTER);
 				owner.setMaidWait(false);
 				owner.setMaidWaitCount(0);

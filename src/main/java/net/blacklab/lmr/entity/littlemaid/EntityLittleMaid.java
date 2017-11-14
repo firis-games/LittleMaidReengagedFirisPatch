@@ -2829,7 +2829,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 						setFreedom(false);
 						setTracer(false);
 						setMaidWait(false);
-						setMaidMode(EntityMode_Basic.mmode_Escorter);
+						setMaidMode(EntityMode_Basic.mmode_Escort);
 						if(!isMaidContractOwner(par1EntityPlayer)){
 							// あんなご主人なんか捨てて、僕のもとへおいで(洗脳)
 							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
@@ -3041,7 +3041,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 							setContract(true);
 							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
 							setHealth(20);
-							setMaidMode(EntityMode_Basic.mmode_Escorter);
+							setMaidMode(EntityMode_Basic.mmode_Escort);
 							setMaidWait(false);
 							setFreedom(false);
 							setPlayingRole(PlayRole.NOTPLAYING);
@@ -3090,7 +3090,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 		}
 		if (!lflag) {
-			setMaidMode(EntityMode_Basic.mmode_Escorter);
+			setMaidMode(EntityMode_Basic.mmode_Escort);
 			setEquipItem(-1);
 //			maidInventory.currentItem = -1;
 		}
