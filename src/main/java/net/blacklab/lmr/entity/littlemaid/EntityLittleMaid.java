@@ -2247,7 +2247,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				setMaidFlags(lf, dataWatch_Flags_Register);
 			}
 			// 拗ねる
-			if (!isContractEX() && !isFreedom()) {
+			if (!isRemainsContract() && !isFreedom()) {
 				setFreedom(true);
 				setMaidWait(false);
 			}
