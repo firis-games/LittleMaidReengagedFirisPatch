@@ -1,3 +1,8 @@
+2017-11-20 Verclene <xdev58bo@gmail.com>
+	*	Commit Hash: be3a4f0de580dff9da29939c642ddfe2102094bc
+	*	8.1.4.128: Fix saving mode bug
+	*	- Fix maid's freedom on contract(again) #122
+
 2017-11-18 Verclene <xdev58bo@gmail.com>
 	*	Commit Hash: ff19a9dc43d6419101a4993af53eff98906e7f59
 	*	mod mcmod.info
