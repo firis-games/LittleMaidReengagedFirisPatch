@@ -383,7 +383,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		mstatOpenInventory = false;
 //		isMaidChaseWait = false;
 		mstatTime = 6000;
-		mstatWorking = EntityMode_Basic.mmode_Wild;
+
 		maidOverDriveTime = new Counter(5, 300, -LittleMaidReengaged.cfg_maidOverdriveDelay);
 		workingCount = new Counter(11, 10, -10);
 		registerTick = new Counter(200, 200, -20);
@@ -1271,7 +1271,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		super.writeEntityToNBT(par1nbtTagCompound);
 
 		par1nbtTagCompound.setTag("Inventory", maidInventory.writeToNBT(new NBTTagList()));
-		par1nbtTagCompound.setString("Mode", mstatWorking);
+		par1nbtTagCompound.setString("Mode", getMaidModeString());
 		par1nbtTagCompound.setBoolean("Wait", isMaidWait());
 		par1nbtTagCompound.setBoolean("Freedom", isFreedom());
 		par1nbtTagCompound.setBoolean("Tracer", isTracer());
@@ -1340,7 +1340,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setMaidWait(par1nbtTagCompound.getBoolean("Wait"));
 		setFreedom(par1nbtTagCompound.getBoolean("Freedom"));
 		setTracer(par1nbtTagCompound.getBoolean("Tracer"));
+		
 		setMaidMode(par1nbtTagCompound.getString("Mode"));
+		
 		if (par1nbtTagCompound.hasKey("LimitCount")) {
 			maidContractLimit = par1nbtTagCompound.getInteger("LimitCount");
 		} else {
@@ -3039,12 +3041,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								par1EntityPlayer.addStat(AchievementsLMRE.ac_Contract);
 							}
 							setContract(true);
+							getNavigator().clearPathEntity();
 							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
-							setHealth(20);
-							setMaidMode(EntityMode_Basic.mmode_Escort);
-							setMaidWait(false);
-							setFreedom(false);
-							setPlayingRole(PlayRole.NOTPLAYING);
+
 							playLittleMaidSound(EnumSound.getCake, true);
 //							playLittleMaidSound(LMM_EnumSound.getCake, true);
 //							playTameEffect(true);
@@ -3052,6 +3051,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 							// 契約記念日と、初期契約期間
 							maidContractLimit = (24000 * 7);
 							maidAnniversary = worldObj.getTotalWorldTime();
+
+							setHealth(20);
+							setPlayingRole(PlayRole.NOTPLAYING);
+							setMaidWait(false);
+							setFreedom(false);
+							setMaidMode(EntityMode_Basic.mmode_Escort);
 							// テクスチャのアップデート:いらん？
 //							LMM_Net.sendToAllEClient(this, new byte[] {LMM_Net.LMN_Client_UpdateTexture, 0, 0, 0, 0});
 
