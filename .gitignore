@@ -8,3 +8,9 @@
 /eclipse/
 /EBLib_Client.launch
 /EBLib_Server.launch
+/config/
+/logs/
+/saves/
+/options.txt
+/usercache.json
+/usernamecache.json
