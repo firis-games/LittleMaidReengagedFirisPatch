@@ -170,6 +170,13 @@ public class EntityMode_Farmer extends EntityModeBase {
 	public boolean executeBlock(String pMode, int px, int py, int pz) {
 		ItemStack curStack = owner.getCurrentEquippedItem();
 
+		if (pMode.equals(mmode_Farmer)) {
+			if(owner.getAIMoveSpeed() > 0.5F) owner.setAIMoveSpeed(0.5F);
+			if(owner.maidInventory.getFirstEmptyStack() < 0){
+				owner.setMaidMode(EntityMode_Basic.mmode_FarmPorter);
+			}
+		}
+
 		boolean haveNothing = !owner.getModeTrigger().isTriggerable(mtrigger_Hoe, curStack, ItemHoe.class);
 
 		if (!haveNothing && isUnfarmedLand(px,py,pz) &&
@@ -212,7 +219,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 			owner.setSwing(10, EnumSound.Null, false);
 			owner.playLittleMaidSound(EnumSound.farmer_harvest, false);
 			owner.addMaidExperience(4f);
-			executeBlock(pMode,px,py-1,pz);
+			executeBlock(pMode, px, py-1, pz);
 //			return true;
 		}
 		return false;
@@ -233,12 +240,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	@Override
 	public void updateAITick(String pMode) {
-		if (pMode.equals(mmode_Farmer)) {
-			if(owner.getAIMoveSpeed() > 0.5F) owner.setAIMoveSpeed(0.5F);
-			if(owner.maidInventory.getFirstEmptyStack() < 0){
-				owner.setMaidMode(EntityMode_Basic.mmode_FarmPorter);
-			}
-		}
+
 	}
 
 	protected int getHadSeedIndex(){

@@ -14,13 +14,7 @@ import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterestAXI
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_remainsContract;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.annotation.Nullable;
@@ -666,10 +660,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 	}
 
-	public final void setMaidActiveModeClass(EntityModeBase pModeClass) {
-		maidActiveModeClass = pModeClass;
-	}
-
 	public boolean setMaidMode(String pname) {
 		return setMaidMode(pname, false);
 	}
@@ -772,7 +762,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		maidAvatar.stopActiveHand();
 		setSitting(false);
 		setSneaking(false);
-		setActiveModeClass(null);
+//		setActiveModeClass(null);
 //		aiJumpTo.setEnable(true);
 //		aiFollow.setEnable(true);
 		aiAttack.setEnable(true);
@@ -829,7 +819,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	public void setActiveModeClass(EntityModeBase pEntityMode) {
-		setMaidActiveModeClass(pEntityMode);
+		if (pEntityMode == null) {
+			throw new IllegalArgumentException("activeMode cannot be null");
+		}
+		maidActiveModeClass = pEntityMode;
 	}
 
 	public final boolean isActiveModeClass() {
@@ -1846,7 +1839,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void updateAITasks()
 	{
 		super.updateAITasks();
-		tasks.onUpdateTasks();
+		try {
+			tasks.onUpdateTasks();
+		} catch (ConcurrentModificationException exception) {
+			// TODO Unsuitable silence
+		}
 		getActiveModeClass().updateAITick(getMaidModeString());
 	}
 
@@ -3087,7 +3084,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		boolean lflag = false;
 		String orgnMode = getMaidModeString();
 
-		setActiveModeClass(null);
+//		setActiveModeClass(null);
 		for (int li = 0; li < maidEntityModeList.size() && !lflag; li++) {
 			lflag = maidEntityModeList.get(li).changeMode(par1EntityPlayer);
 			if (lflag) {
@@ -3780,8 +3777,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	/**
 	 * フラグ群に値をセット。
-	 * @param pCheck： 対象値。
-	 * @param pFlags： 対象フラグ。
 	 */
 	public void setMaidFlags(boolean pFlag, int pFlagvalue) {
 		int li = dataManager.get(EntityLittleMaid.dataWatch_Flags);

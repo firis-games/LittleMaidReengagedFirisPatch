@@ -115,7 +115,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		switch (pMode) {
 		case mmode_Wild :
 			if (owner.isContractEX()) {
-				return false;
+				return setMode(mmode_Escort);
 			}
 			owner.setFreedom(true);
 //			owner.aiWander.setEnable(true);
