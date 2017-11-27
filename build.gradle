@@ -32,6 +32,6 @@ tasks.withType(Jar) {compileJava.options.encoding = 'UTF-8'}
 tasks.withType(Jar) {compileApiJava.options.encoding = 'UTF-8'}
 
 // Replace ':EBLib***' to the project of EBLib in your workspace 
-dependencies { compile project(':EBLib194') }
+dependencies { compile project(':' + project.name + ':EBLib') }
 
 version = "8.1.4.131"
