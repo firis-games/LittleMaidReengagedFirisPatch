@@ -21,6 +21,7 @@ See [Releases](https://github.com/Verclene/LittleMaidReengaged/releases)
 1. Make your GradleForge workspace multi-project
 2. Install git
 3. Run this command on project root: `git clone --recursive https://github.com/Verclene/LittleMaidReengaged.git`
+ * **WARNING** if you run this on Windows, you have to **enable symbolic link** before cloning. See: https://github.com/git-for-windows/git/wiki/Symbolic-Links
 4. Add this line to root/settings.gradle: `include 'LittleMaidReengaged'`
 5. Then run this command on root: `./gradlew setupDecompWorkspace --refresh-dependencies`
 

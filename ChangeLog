@@ -1,6 +1,46 @@
+2017-11-27 Verclene<xdev58bo@gmail.com>
+	*	* a0968fed629e726b30cffbdf3089a694fe47cbbe
+	*	Modify build.gradle and README for using Submodule
+
+
+2017-11-27 Verclene<xdev58bo@gmail.com>
+	*	* b88ae361c3de00cfed6c3e0447d6c8210cc068de
+	*	Use EBLib as Submodule
+
+
+2017-11-27 Verclene<xdev58bo@gmail.com>
+	*	* 76277513692632393a3eb81191c81a7e5d53ccc2
+	*	Merge remote-tracking branch 'origin/master'
+
+
+2017-11-27 Verclene<xdev58bo@gmail.com>
+	*	* b543c7498857629f3153a6a457d43d341d81fe38
+	*	8.1.4.131: Modify AvatarMP for Sponge #125
+
+
+2017-11-27 Verclene<xdev58bo@gmail.com>
+	*	* 19d0f743d6f060292b5512a643db55f04a921867
+	*	8.1.4.130: Modify AvatarMP for Sponge #125
+
+
+2017-11-24 Verclene<xdev58bo@gmail.com>
+	*	* cc86678916c3ece6c6345be4030149aec9e2d62f
+	*	Merge remote-tracking branch 'origin/master'
+
+
+2017-11-24 Verclene<xdev58bo@gmail.com>
+	*	* dfe7156477ee2f84a228dc5426c341e38b6dedef
+	*	8.1.4.130: Make maid mode not allow to be null
+
+
 2017-11-23 Verclene<xdev58bo@gmail.com>
 	*	* ba141af2579f799d4a9f61d5cb9624a163d36a98
 	*	8.1.4.129: Update dependencies
+
+
+2017-11-22 Verclene<xdev58bo@gmail.com>
+	*	* 26d15c45edb568a68dfcf67b1bc96ed9883f4970
+	*	Modify README
 
 
 2017-11-21 Verclene<xdev58bo@gmail.com>
