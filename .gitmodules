@@ -1,0 +1,3 @@
+[submodule "EBLib"]
+	path = EBLib
+	url = https://github.com/Verclene/EBLib.git
