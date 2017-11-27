@@ -1,8 +1,10 @@
 package net.blacklab.lmr.entity.littlemaid;
 
 import java.util.Collection;
+import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.Entity;
@@ -13,6 +15,7 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -65,6 +68,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		 */
 		inventory = avatar.maidInventory;
 		inventory.player = this;
+		inventoryContainer = new ContainerInventoryLittleMaid(inventory, avatar);
 	}
 
 	// 実績参照
@@ -147,6 +151,8 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	@Override
 	public void onUpdate() {
+		super.onUpdate();
+
 //		posX = avatar.posX;
 		EntityPlayer lep = avatar.getMaidMasterEntity();
 		setEntityId(avatar.getEntityId());
@@ -631,5 +637,13 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	@Override
 	public EntityLittleMaid getMaid() {
 		return avatar;
+	}
+
+	@Override
+	public void sendContainerToPlayer(Container containerIn) {
+	}
+
+	@Override
+	public void updateCraftingInventory(Container containerToSend, List<ItemStack> itemsList) {
 	}
 }
