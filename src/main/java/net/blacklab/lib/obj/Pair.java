@@ -1,11 +1,12 @@
 package net.blacklab.lib.obj;
 
+@SuppressWarnings("unused")
 public interface Pair<K, V> {
 	
-	public K getKey();
-	public Pair<K, V> setKey(K s);
+	K getKey();
+	Pair<K, V> setKey(K s);
 	
-	public V getValue();
-	public Pair<K, V> setValue(V v);
+	V getValue();
+	Pair<K, V> setValue(V v);
 
 }

@@ -1,0 +1,260 @@
+2017-11-27 Verclene<xdev58bo@gmail.com>
+	*	* 3de2c28c4e37047ab4c494d1c30d728358c9b861
+	*	Modify build.gradle
+
+
+2017-11-24 Verclene<xdev58bo@gmail.com>
+	*	* ba12b02a70352ccbb3e94ebbb2aa6d2cc1bb1139
+	*	Merge remote-tracking branch 'origin/master'
+
+
+2017-11-23 Verclene<xdev58bo@gmail.com>
+	*	* fb8cde796f24b964e14916910d10abec08c92266
+	*	Fix versions
+
+
+2017-11-22 Verclene<xdev58bo@gmail.com>
+	*	* 4f91369a2ffef3755e21472d255cb807b0243ad5
+	*	Modify README
+
+
+2017-09-03 Verclene<xdev58bo@gmail.com>
+	*	* 4143b7554be23ec96e85d167a491ead1cc879bd3
+	*	Revert "6.1.6.9: Add reading class method"
+	*	This reverts commit b1a2f8262c225b1e24c4da2a23b7ed7aa81e79c0.
+
+
+2017-08-30 Verclene<xdev58bo@gmail.com>
+	*	* b1a2f8262c225b1e24c4da2a23b7ed7aa81e79c0
+	*	6.1.6.9: Add reading class method
+
+
+2017-08-16 Verclene<xdev58bo@gmail.com>
+	*	* 7a4b73215746a99c422fc48a4ac104bec72c8ea1
+	*	6.1.5.8: Fix some methods
+
+
+2017-06-11 Verclene<xdev58bo@gmail.com>
+	*	* 238fb27d4aa9f9f0760f6248ccb3ac16e3fd0de8
+	*	Update mcmod.info
+
+
+2017-06-11 Verclene<xdev58bo@gmail.com>
+	*	* 06d5ebec0f1665e41897887b8fd762e8524aba14
+	*	Bump onto 1.9.4, Modify getting item method
+
+
+2017-06-04 Verclene<xdev58bo@gmail.com>
+	*	* b04c2de8480b2b09f709af160b09363f499d294d
+	*	6.1.3.6: Add getFoodAmount() method
+
+
+2016-07-07 Verclene<xdev58bo@gmail.com>
+	*	* 4fa423cb1064f35d7c7c8f2bf0cbb7cdb60b17a6
+	*	6.0.2.5: Expand launchable version
+
+
+2016-06-26 Verclene<xdev58bo@gmail.com>
+	*	* e59059de992837bf6695f5140ced11e70ac1a1be
+	*	6.0.1.4: Expand launchable range(1.9/1.9.4/1.10); Modify README
+
+
+2016-06-19 Verclene<xdev58bo@gmail.com>
+	*	* b1f4927ec16609194e3b76e0ed75edba0873c5de
+	*	Revert 5.2.1.4
+
+
+2016-06-19 Verclene<xdev58bo@gmail.com>
+	*	* 24c2c488b6f1eb5bd34b20e2d2678c29549f41e9
+	*	Update .gitignore
+
+
+2016-05-28 Verclene<xdev58bo@gmail.com>
+	*	* cc1c718db89225b318d84a1a5d6d58f8c8c6349e
+	*	5.2.1.4: Add ByteArrayUtil
+
+
+2016-04-30 Verclene<xdev58bo@gmail.com>
+	*	* 7403f1adeb1871f3de7af6ca2d0f0ca241572a41
+	*	5.2.0.3: Migrate version check to Forge updateJSON
+
+
+2016-04-23 Verclene<xdev58bo@gmail.com>
+	*	* 8d6087a8af19c98874ca43f65a320004442855c4
+	*	Fix versions
+
+
+2016-04-23 Verclene<xdev58bo@gmail.com>
+	*	* 837cbcfb5da4e0aeca84295003dc6ce8693dab06
+	*	5.2.0.2: Add new classes: VEvent
+
+
+2016-04-07 Verclene<xdev58bo@gmail.com>
+	*	* b6273c012fa137b2859a064fdc542b29a469d701
+	*	Modify mcmod.info; Add logo
+
+
+2016-04-07 Verclene<xdev58bo@gmail.com>
+	*	* e175012601cca9b7bcc7d1961074c15ca47928e8
+	*	Bump version & update license
+
+
+2016-03-19 Verclene<xdev58bo@gmail.com>
+	*	* 0534019f461ce6cfc5cdac7c2e285e1d3dc6436a
+	*	4.0.1: Bump version; Modify for MC1.9
+
+
+2016-02-04 Verclene<xdev58bo@gmail.com>
+	*	* 6aed9338805283b4f54892e3ba8617bea18aafe3
+	*	raise version
+
+
+2016-02-02 Verclene<xdev58bo@gmail.com>
+	*	* 4c010cb25279a9631032befa11c4e4490a331015
+	*	3.2.12: Stable (NX3 Build 12)
+
+
+2016-02-02 Verclene<xdev58bo@gmail.com>
+	*	* 694158efa5237a60b85a2f3a5f888e84a083959a
+	*	3.2.12: Modify Version#getLatestVersion()
+
+
+2016-02-01 Verclene<hrsnozomu@gmail.com>
+	*	* 46191eb86da41296fa03561289179ec39c00543c
+	*	3.2.11: Add Version / VersionData methods
+
+
+2015-12-30 Verclene<xdev58bo@gmail.com>
+	*	* 78c7814e66f2c84bda5153fcc5ac671015eccfc8
+	*	Stable 3.1.10(EL3 Build 10)
+
+
+2015-12-30 Verclene<xdev58bo@gmail.com>
+	*	* d7df29de914bd423381a26ceb7252daaaff5259c
+	*	Update acceptedMinecraftVersion
+
+
+2015-12-28 Verclene<xdev58bo@gmail.com>
+	*	* 20e602756ca542e95926775a4e38217eb8035050
+	*	3.0.9(EL3 Build 9)
+
+
+2015-12-28 Verclene<xdev58bo@gmail.com>
+	*	* d410df03777129591e0dae7eb7f928c43000c530
+	*	Add acceptedMV
+
+
+2015-12-23 Verclene<xdev58bo@gmail.com>
+	*	* 0237f11bb4706adac159c39766169e21d0a84831
+	*	Fix getFileName()
+
+
+2015-12-23 Verclene<xdev58bo@gmail.com>
+	*	* f4685eac1b7f86468f67321feece4d991da0eb1e
+	*	Minor fix
+
+
+2015-12-21 Verclene<xdev58bo@gmail.com>
+	*	* 18a2e18cad5c35430153338707328dcfd863333c
+	*	Add Hash to SinglePair
+
+
+2015-12-14 Verclene<xdev58bo@gmail.com>
+	*	* fb33e19eafc557fdbb680b92f1531c3004b0073f
+	*	Add some methods
+
+
+2015-12-03 Verclene<xdev58bo@gmail.com>
+	*	* c476e35e1da319f162af1e34aec37dca56592d38
+	*	Refactoring & Add New Interface 'Pair()'
+
+
+2015-11-25 Verclene<xdev58bo@gmail.com>
+	*	* daa9bbaa52473feb1e28ffaf81f3466e3936dc51
+	*	NX2 Build 4(2.1.4)
+
+
+2015-11-24 Verclene<xdev58bo@gmail.com>
+	*	* ecc2212c74408f07801a970a351761b29d0f99cd
+	*	Add Method: ConfigList#setComment()
+
+
+2015-11-21 Verclene<xdev58bo@gmail.com>
+	*	* a9df9c5a60cbce603d217b07f84a3b71f0ca5036
+	*	NX2 Build 3
+
+
+2015-11-21 Verclene<xdev58bo@gmail.com>
+	*	* 1b57d2fa1026848979a4cd3e23ce5a5aed8ba221
+	*	Add mcmod.info
+
+
+2015-11-21 Verclene<xdev58bo@gmail.com>
+	*	* ded6b9a7f16644dd67926452a45b0cfb8acff8dd
+	*	NX2 Build 2
+
+
+2015-10-25 Verclene<xdev58bo@gmail.com>
+	*	* e0008b98a254580464379628f2e7bf9f08ce7c50
+	*	Adjust Vector Util
+
+
+2015-10-25 Verclene<xdev58bo@gmail.com>
+	*	* 03b5c1f852ccdfbff79b61be294f997fc803b38d
+	*	New Util
+
+
+2015-09-16 Verclene<xdev58bo@gmail.com>
+	*	* 75b852afd3431e12b14c71b16b483b8e8ae01055
+	*	EL1 Build 5
+
+
+2015-09-16 Verclene<xdev58bo@gmail.com>
+	*	* 462de65ccb06be852e649758f51508a0f7d8355a
+	*	Critical Fix
+
+
+2015-08-25 Verclene<xdev58bo@gmail.com>
+	*	* 8b3195381b6d82a6070636e0b42289ecad8f4cb7
+	*	EL1 Build 4
+
+
+2015-08-25 Verclene<xdev58bo@gmail.com>
+	*	* c9fdf45265cffefc1e3b47f31ed672dcd476af32
+	*	Add Version check
+
+
+2015-08-25 Verclene<xdev58bo@gmail.com>
+	*	* 602f45d1d32b2a862f10e01bc81bdfa5d97be98a
+	*	EL1
+
+
+2015-08-25 Verclene<xdev58bo@gmail.com>
+	*	* 1f9745a082b0197b193eae21d5a2bcd33eccd3b7
+	*	Refactor from LMMNX
+
+
+2015-08-17 Verclene<xdev58bo@gmail.com>
+	*	* 33881158c09eed80fef1737c657b5743247b1b5d
+	*	Add Util func
+
+
+2015-08-15 Verclene<xdev58bo@gmail.com>
+	*	* 614cfb9e1fb55323e36fc0a6621a8386b6b63f33
+	*	EL1B1
+
+
+2015-06-04 Verclene<xdev58bo@gmail.com>
+	*	* d26606f16265e35f213b409491af01470d0087df
+	*	uploaded source
+
+
+2015-06-04 Verclene<xdev58bo@gmail.com>
+	*	* 42c37f19346cdae16f16a662b52e28895f127df5
+	*	first commit
+
+
+2015-06-04 Verclene<Verclene@users.noreply.github.com>
+	*	* 767b6cf658256a2731b01691db03093d588c88b6
+	*	Initial commit
+

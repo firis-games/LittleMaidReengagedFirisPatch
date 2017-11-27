@@ -11,9 +11,10 @@ import java.util.Map;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+@SuppressWarnings("ALL")
 public class ConfigList {
-	private List<ConfigKey> list;
-	private Map<String, String> commentMap;
+	private final List<ConfigKey> list;
+	private final Map<String, String> commentMap;
 	
 	/**
 	 * Configファイルの設定内容の一覧を格納するためのConfigListの新しいインスタンスを生成します。
@@ -65,7 +66,6 @@ public class ConfigList {
 	/**
 	 * ConfigKeyをConfigListに追加します。
 	 * @param par1 Key
-	 * @param par2 設定される値
 	 * @exception IllegalStateException Keyがすでに存在する場合にスローされます。
 	 * **/
 	public void putConfig(ConfigKey par1){

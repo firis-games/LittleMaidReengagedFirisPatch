@@ -1,8 +1,9 @@
 package net.blacklab.lib.vevent;
 
+@SuppressWarnings("ALL")
 public interface IVEventCancelable extends IVEvent {
 
-	public boolean isCanceled();
-	public void setCanceled(boolean flag);
+	boolean isCanceled();
+	void setCanceled(boolean flag);
 
 }

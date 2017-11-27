@@ -7,11 +7,11 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+@SuppressWarnings("ALL")
 public class ItemUtil {
 	
 	public static Item getItemByStringId(String id){
-		Item item = Item.REGISTRY.getObject(new ResourceLocation(id));
-		return item;
+		return Item.REGISTRY.getObject(new ResourceLocation(id));
 	}
 
 	public static boolean isHelm(ItemStack stack){

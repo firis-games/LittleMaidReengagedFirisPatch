@@ -1,5 +1,6 @@
 package net.blacklab.lib.vevent;
 
+@SuppressWarnings("ALL")
 public abstract class VEventCancelableBase implements IVEventCancelable {
 	
 	protected boolean canceled;

@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 public class VEventBus {
 	
-	private Map<Class<? extends IVEvent>, Map<Object, Method>> listenerMethods;
+	private final Map<Class<? extends IVEvent>, Map<Object, Method>> listenerMethods;
 	
 	public static VEventBus instance = new VEventBus();
 
@@ -51,7 +51,7 @@ public class VEventBus {
 			for (Entry<Object,Method> entry: nMap.entrySet()) {
 				try {
 					entry.getValue().invoke(entry.getKey(), event);
-					return event instanceof IVEventCancelable ? ((IVEventCancelable) event).isCanceled() : false;
+					return event instanceof IVEventCancelable && ((IVEventCancelable) event).isCanceled();
 				} catch (IllegalAccessException e) {
 					e.printStackTrace();
 				} catch (IllegalArgumentException e) {
