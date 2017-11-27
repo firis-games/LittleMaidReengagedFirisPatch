@@ -3,7 +3,6 @@
 /.settings/
 /.classpath
 /.project
-/build.gradle
 /.gradle/
 /eclipse/
 /EBLib_Client.launch
