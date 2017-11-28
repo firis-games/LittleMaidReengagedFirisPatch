@@ -1,3 +1,18 @@
+2017-11-28 Verclene<xdev58bo@gmail.com>
+	*	* d73ebb6b9cbae7dfbb65bdf82a34eb967eb7d8a1
+	*	Mod versions
+
+
+2017-11-28 Verclene<xdev58bo@gmail.com>
+	*	* a4c4fcab7569595668b345ae6b64a3caa8a46421
+	*	8.1.4.132: Fix IFF#getfFile() #125
+
+
+2017-11-27 Verclene<xdev58bo@gmail.com>
+	*	* b729d4939b23b35b8a9585b3a87159e1c522434d
+	*	Fix symlinks
+
+
 2017-11-27 Verclene<xdev58bo@gmail.com>
 	*	* a0968fed629e726b30cffbdf3089a694fe47cbbe
 	*	Modify build.gradle and README for using Submodule
