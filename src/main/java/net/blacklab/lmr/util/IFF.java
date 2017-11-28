@@ -256,7 +256,7 @@ public class IFF {
 		LittleMaidReengaged.Debug("GetFile.");
 		File lfile;
 		if (pUsername == null) {
-			lfile = new File(CommonHelper.mc.mcDataDir, "config/littleMaidMob.iff");
+			lfile = new File("config/littleMaidMob.iff");
 		} else {
 			String lfilename;
 			lfilename = "./config/littleMaidMob_".concat(pUsername.toString()).concat(".iff");
