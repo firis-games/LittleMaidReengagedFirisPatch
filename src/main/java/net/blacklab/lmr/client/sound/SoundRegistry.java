@@ -183,7 +183,7 @@ public class SoundRegistry {
 	public static InputStream getSoundStream(String name) {
 		String aString = getPathFromRegisteredName(name);
 		LittleMaidReengaged.Debug("GETSTREAM %s", aString);
-		return FileList.COMMON_CLASS_LOADER.getResourceAsStream(aString);
+		return LittleMaidReengaged.class.getClassLoader().getResourceAsStream(aString);
 	}
 
 	public static InputStream getSoundStream(EnumSound sound, String texture, Integer color) {

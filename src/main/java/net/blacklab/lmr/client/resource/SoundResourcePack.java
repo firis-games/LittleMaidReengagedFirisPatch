@@ -42,10 +42,10 @@ public class SoundResourcePack implements IResourcePack {
 	private InputStream getResourceStream(ResourceLocation resource) {
 		InputStream lis = null;
 		if (resource.getResourcePath().endsWith("sounds.json")) {
-			return FileList.COMMON_CLASS_LOADER.getResourceAsStream("LittleMaidReengaged/sounds.json");
+			return LittleMaidReengaged.class.getClassLoader().getResourceAsStream("LittleMaidReengaged/sounds.json");
 		}
 		if (resource.getResourcePath().endsWith(".ogg")) {
-			lis = FileList.COMMON_CLASS_LOADER.getResourceAsStream(decodePathGetPath(resource));
+			lis = LittleMaidReengaged.class.getClassLoader().getResourceAsStream(decodePathGetPath(resource));
 		}
 		return lis;
 	}

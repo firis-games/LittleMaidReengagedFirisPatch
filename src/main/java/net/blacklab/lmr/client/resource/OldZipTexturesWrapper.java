@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.FileList;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
@@ -23,7 +24,7 @@ public class OldZipTexturesWrapper implements IResourcePack {
 		if(resourceExists(arg0)){
 			String key = arg0.getResourcePath();
 			if(key.startsWith("/")) key = key.substring(1);
-			return FileList.COMMON_CLASS_LOADER.getResourceAsStream(key);
+			return LittleMaidReengaged.class.getClassLoader().getResourceAsStream(key);
 		}
 		return null;
 	}

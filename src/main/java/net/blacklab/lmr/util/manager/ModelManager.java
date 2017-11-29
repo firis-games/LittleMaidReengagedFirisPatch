@@ -105,13 +105,6 @@ public class ModelManager {
 	public static final String[] searchFileNamePrefix = new String[]{"littleMaidMob","mmmlibx","ModelMulti","LittleMaidMob"};
 
 	public void init() {
-		// 検索対象ファイル名を登録します。
-		// パターンを登録しない場合、独自名称のMODファイル、テクスチャディレクトリ、クラスが読み込まれません。
-		FileList.getModFile("littleMaidMob", "littleMaidMob");
-		FileList.getModFile("littleMaidMob", "mmmlibx");
-		FileList.getModFile("littleMaidMob", "ModelMulti");
-		FileList.getModFile("littleMaidMob", "LittleMaidMob");
-
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/ModelMulti/", "ModelMulti_");
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littleMaid/", "ModelMulti_");
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littleMaid/", "ModelLittleMaid_");
@@ -212,13 +205,6 @@ public class ModelManager {
 		for (String[] lst : searchPrefix) {
 			// mods
 			searchFiles(FileList.dirMods, lst);
-			if (DevMode.DEVMODE != DevMode.NOT_IN_DEV) {
-				searchFiles(FileList.dirDevClasses, lst);
-			}
-			if (DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE) {
-				for (File ln: FileList.dirDevIncludeClasses)
-					searchFiles(ln, lst);
-			}
 		}
 
 		// TODO 実験コード
@@ -435,7 +421,7 @@ public class ModelManager {
 //					cn = (new StringBuilder("")).append(".").append(cn).toString();
 					cn = cn.replace("/", ".");
 					System.out.println("MMM_TextureManager.addModelClass : "+cn);
-					lclass = FileList.COMMON_CLASS_LOADER.loadClass(cn);
+					lclass = LittleMaidReengaged.class.getClassLoader().loadClass(cn);
 				} else {
 					lclass = Class.forName(cn);
 				}
@@ -507,10 +493,6 @@ public class ModelManager {
 			return false;
 		}
 		try {
-			FileList.COMMON_CLASS_LOADER.addURL(file.toURI().toURL());
-		} catch (MalformedURLException e) {
-		}
-		try {
 			FileInputStream fileinputstream = new FileInputStream(file);
 			ZipInputStream zipinputstream = new ZipInputStream(fileinputstream);
 			ZipEntry zipentry;
@@ -552,39 +534,21 @@ public class ModelManager {
 		}
 
 		try {
-			FileList.COMMON_CLASS_LOADER.addURL(file.toURI().toURL());
-		} catch (MalformedURLException e1) {
-		}
-
-		try {
 			for (File nfile : file.listFiles()) {
 				if(nfile.isDirectory()) {
 					addTexturesDir(nfile, pSearch);
 				} else {
 					String tn = FileClassUtil.getLinuxAntiDotName(nfile.getAbsolutePath());
 					String rmn = FileClassUtil.getLinuxAntiDotName(FileList.dirMods.getAbsolutePath());
-					ADDMODEL: if (nfile.getName().endsWith(".class")) {
-						if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
-							String rdn = FileClassUtil.getLinuxAntiDotName(FileList.dirDevClasses.getAbsolutePath());
-							if(tn.startsWith(rdn)){
-								addModelClass(FileClassUtil.getClassName(tn, rdn),pSearch);
-								break ADDMODEL;
-							}
-							for(File f:FileList.dirDevIncludeClasses){
-								String rin = FileClassUtil.getLinuxAntiDotName(f.getAbsolutePath());
-								if(tn.startsWith(rin)){
-									addModelClass(FileClassUtil.getClassName(tn, rin),pSearch);
-									break ADDMODEL;
-								}
-							}
-						}else if(tn.startsWith(rmn)) addModelClass(FileClassUtil.getClassName(tn, rmn), pSearch);
+					if (nfile.getName().endsWith(".class")) {
+						if(tn.startsWith(rmn)) addModelClass(FileClassUtil.getClassName(tn, rmn), pSearch);
 					} else if(nfile.getName().endsWith(".png")) {
 						String s = nfile.getPath().replace('\\', '/');
 						int i = s.indexOf(pSearch[1]);
 						if (i > -1) {
 							// 対象はテクスチャディレクトリ
 							addTextureName(s.substring(i), pSearch);
-							if(DevMode.DEVMODE==DevMode.DEVMODE_ECLIPSE) for(File f:FileList.dirDevIncludeClasses){
+							if(DevMode.DEVMODE==DevMode.DEVMODE_ECLIPSE) for(File f:FileList.dirClasspath){
 								String rin = FileClassUtil.getLinuxAntiDotName(f.getAbsolutePath());
 								if(tn.startsWith(rin)){
 									String cname = tn.substring(rin.length()+1);

@@ -16,7 +16,6 @@ public class EntityModeManager extends ManagerBase {
 
 	public static void init() {
 		// 特定名称をプリフィックスに持つmodファイをを獲得
-		FileList.getModFile("EntityMode", prefix);
 	}
 	
 	public static void loadEntityMode() {

@@ -308,10 +308,6 @@ public class SoundLoader {
 			e.printStackTrace();
 		}
 
-		try {
-			FileList.COMMON_CLASS_LOADER.addURL(jsonDir.toURI().toURL());
-		} catch (MalformedURLException e) {
-		}
 	}
 
 	private void appendPath() {

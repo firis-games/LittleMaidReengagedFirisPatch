@@ -3,7 +3,6 @@ package net.blacklab.lmr.util.manager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -24,16 +23,6 @@ public abstract class ManagerBase {
 
 	protected void load() {
 		// ロード
-
-		// 開発用
-		if(DevMode.DEVMODE != DevMode.NOT_IN_DEV){
-			startSearch(FileList.dirDevClasses, true);
-			if(DevMode.DEVMODE == DevMode.DEVMODE_ECLIPSE){
-				for(File f:FileList.dirDevIncludeClasses){
-					startSearch(f, true);
-				}
-			}
-		}
 
 		startSearch(FileList.dirMods, false);
 	}
@@ -78,11 +67,6 @@ public abstract class ManagerBase {
 	}
 
 	private void decodeDirectory(File pfile, File pRoot) {
-		try {
-			FileList.COMMON_CLASS_LOADER.addURL(pRoot.toURI().toURL());
-		} catch (MalformedURLException e) {
-			return;
-		}
 		// ディレクトリ内のクラスを検索
 		for (File lf : pfile.listFiles()) {
 			if (lf.isFile()) {
@@ -103,12 +87,6 @@ public abstract class ManagerBase {
 
 	private void decodeZip(File pfile) {
 		// zipファイルを解析
-		try {
-			// 多分いらんと思う…
-			FileList.COMMON_CLASS_LOADER.addURL(pfile.toURI().toURL());
-		} catch (MalformedURLException e) {
-			return;
-		}
 		try {
 			FileInputStream fileinputstream = new FileInputStream(pfile);
 			ZipInputStream zipinputstream = new ZipInputStream(fileinputstream);
@@ -147,7 +125,7 @@ public abstract class ManagerBase {
 	// TODO ★	lclassname = (new StringBuilder(String.valueOf(lpackage.getName()))).append(".").append(lclassname).toString();
 				lclassname = lclassname.replace("/", ".");
 // LMM_EntityModeManager でしか使ってないので暫定
-				lclass = FileList.COMMON_CLASS_LOADER.loadClass(lclassname);
+				lclass = LittleMaidReengaged.class.getClassLoader().loadClass(lclassname);
 			} else {
 				lclass = Class.forName(lclassname);
 			}

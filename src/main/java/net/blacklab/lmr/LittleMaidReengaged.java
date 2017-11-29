@@ -2,9 +2,6 @@ package net.blacklab.lmr;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -24,7 +21,6 @@ import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.network.ProxyCommon;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
-import net.blacklab.lmr.util.FileList.CommonClassLoaderWrapper;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.manager.EntityModeHandler;
@@ -162,20 +158,18 @@ public class LittleMaidReengaged {
 	public void preInit(FMLPreInitializationEvent evt) {
 		// MMMLibからの引継ぎ
 		// ClassLoaderを初期化
-		List<URL> urls = new ArrayList<URL>();
-		try {
-			urls.add(FileList.dirMods.toURI().toURL());
-		} catch (MalformedURLException e1) {
-		}
-		if(DevMode.DEVMODE==DevMode.DEVMODE_ECLIPSE){
-			for(File f:FileList.dirDevIncludeClasses){
-				try {
-					urls.add(f.toURI().toURL());
-				} catch (MalformedURLException e) {
-				}
+
+		// Find classpath dir
+		String classpath = System.getProperty("java.class.path");
+		String separator = System.getProperty("path.separator");
+
+		for (String path :
+				classpath.split(separator)) {
+			File pathFile = new File(path);
+			if (pathFile.isDirectory()) {
+				FileList.dirClasspath.add(pathFile);
 			}
 		}
-		FileList.COMMON_CLASS_LOADER = new CommonClassLoaderWrapper(urls.toArray(new URL[]{}), LittleMaidReengaged.class.getClassLoader());
 
 		StabilizerManager.init();
 

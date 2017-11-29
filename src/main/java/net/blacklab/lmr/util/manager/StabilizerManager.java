@@ -20,7 +20,6 @@ public class StabilizerManager extends ManagerBase {
 	
 	public static void init() {
 		// 特定名称をプリフィックスに持つmodファイをを獲得
-		FileList.getModFile("Stabilizer", preFix);
 	}
 
 	public static void loadStabilizer() {
