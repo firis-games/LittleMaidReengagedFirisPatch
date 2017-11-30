@@ -237,6 +237,12 @@ public class EntityMode_Fencer extends EntityModeBase {
 	
 	@Override
 	public boolean checkEntity(String pMode, Entity pEntity) {
+		// Distance from master
+		if (!owner.isFreedom() && owner.getMaidMasterEntity() != null &&
+				owner.getMaidMasterEntity().getDistanceSqToEntity(pEntity) >= getLimitRangeSqOnFollow()) {
+			return false;
+		}
+
 		if (pEntity instanceof EntityCreeper) {
 			if (owner.getMaidMasterEntity() == null ? true : !owner.getMaidMasterEntity().equals(((EntityCreeper) pEntity).getAttackTarget())) {
 				return false;
@@ -289,7 +295,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 	@Override
 	public double getDistanceToSearchTargets() {
 		if (owner.isFreedom()) {
-			return 21d;
+			return 18d;
 		}
 		return super.getDistanceToSearchTargets();
 	}

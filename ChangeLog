@@ -1,3 +1,14 @@
+2017-12-01 Verclene<xdev58bo@gmail.com>
+	*	* 482c1a3c291586835ea5e137d7106631b272f053
+	*	8.1.5.135: Expand teleport, fix #126
+
+
+2017-11-30 Verclene<xdev58bo@gmail.com>
+	*	* 3a8f3b5c8fb848b76ad83495b08dc9b8f1ee388a
+	*	8.1.5.134: Modify loading, subfolders under mods will no longer be loaded
+	*	- Read classpath from properties
+
+
 2017-11-30 Verclene<xdev58bo@gmail.com>
 	*	* cab5f9372ea06af001bb1c363f6ded9597016886
 	*	8.1.5.133: Remove unnecessary methods; Migrate dev loading
