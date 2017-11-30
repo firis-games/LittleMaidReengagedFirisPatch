@@ -35,18 +35,7 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAILM {
 	public boolean shouldExecute() {
 		if (!isEnable)
 			return false;
-
-		Entity entityliving = theMaid.getOwner();
-		if (entityliving == null) {
-			return false;
-		}
-
-		if (theMaid.isSitting()||theMaid.isMaidWait()) {
-			return false;
-		}
-
-		theOwner = entityliving;
-		return MaidHelper.canStartFollow(theMaid, theOwner, 0);
+		return MaidHelper.canStartFollow(theMaid);
 	}
 
 	/**
@@ -55,14 +44,14 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAILM {
 	public boolean continueExecuting() {
 //		if(theMaid.handleWaterMovement()) return !theMaid.isMaidWait()&&!theMaid.isSitting();
 		return !theMaid.getNavigator().noPath()
-				&& MaidHelper.canStartFollow(theMaid, theOwner, 0)
-				&& !theMaid.isSitting();
+				&& shouldExecute();
 	}
 
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
 	public void startExecuting() {
+		theOwner = theMaid.getMaidMasterEntity();
 		field_48310_h = 0;
 		//lastAvoidWater = petPathfinder.getAvoidsWater();
 		//petPathfinder.setAvoidsWater(false);

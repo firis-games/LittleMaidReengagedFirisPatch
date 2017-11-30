@@ -17,8 +17,10 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.sun.istack.internal.NotNull;
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -813,12 +815,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * 適用されているモードクラス
 	 * This method is nullable, so check if isActiveModeClass() is true
 	 */
-	@Nullable
+	@Nonnull
 	public final EntityModeBase getActiveModeClass() {
 		return maidActiveModeClass;
 	}
 
-	public void setActiveModeClass(EntityModeBase pEntityMode) {
+	public void setActiveModeClass(@Nonnull EntityModeBase pEntityMode) {
 		if (pEntityMode == null) {
 			throw new IllegalArgumentException("activeMode cannot be null");
 		}
@@ -2164,7 +2166,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			registerTick.onUpdate();
 
 			if (!registerTick.isEnable() && registerTick.getValue() == 0 && !worldObj.isRemote) {
-				getOwner().addChatMessage(new TextComponentTranslation("littleMaidMob.chat.text.cancelregistration").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+				getMaidMasterEntity().addChatMessage(new TextComponentTranslation("littleMaidMob.chat.text.cancelregistration").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
 			}
 		}
 
@@ -3166,6 +3168,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	@Override
+	@Deprecated
 	public EntityLivingBase getOwner() {
 		return getMaidMasterEntity();
 	}
@@ -3174,6 +3177,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return OwnableEntityHelper.getOwner(this);
 	}
 
+	@Nullable
 	public EntityPlayer getMaidMasterEntity() {
 		// 主を獲得
 		if (isContract()) {

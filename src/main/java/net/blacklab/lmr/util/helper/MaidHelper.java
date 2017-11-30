@@ -22,26 +22,12 @@ public class MaidHelper {
 	 * @param pMaid
 	 * @return
 	 */
-	public static boolean canStartWalk(EntityLittleMaid pMaid) {
-		if (pMaid.isFreedom()) {
-			return true;
+	public static boolean canStartFollow(EntityLittleMaid pMaid) {
+		if (!pMaid.isContractEX() || pMaid.isFreedom() || pMaid.getMaidMasterEntity() == null) {
+			return false;
 		}
-		EntityPlayer lMaster = pMaid.getMaidMasterEntity();
-		return lMaster == null ? false : canStartFollow(pMaid, lMaster, 0);
-	}
 
-	/**
-	 * Returns if the maid can follow her master. If the maid is freedom mode, this method returns false.
-	 * @param pMaid
-	 * @param pTarget
-	 * @param expandIgnoreRangeSq
-	 * @return
-	 */
-	public static boolean canStartFollow(EntityLittleMaid pMaid, Entity pTarget, double expandIgnoreRangeSq) {
-		if (!pMaid.isFreedom()) {
-			return pMaid.getDistanceSqToEntity(pTarget) > pMaid.getActiveModeClass().getDistanceSqToStartFollow() + expandIgnoreRangeSq;
-		}
-		return false;
+		return pMaid.getDistanceSqToMaster() >= pMaid.getActiveModeClass().getDistanceSqToStartFollow();
 	}
 
 	public static boolean isOutSideHome(EntityLittleMaid pMaid) {

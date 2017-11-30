@@ -65,9 +65,8 @@ public class EntityAILMSwimming extends EntityAISwimming {
 					theMaid.motionY += 0.1D;
 				}
 				
-				if (MaidHelper.canStartWalk(theMaid)) {
+				if (MaidHelper.canStartFollow(theMaid)) {
 					// Move 
-
 					IBlockState iState;
 					
 					// Going ashore
