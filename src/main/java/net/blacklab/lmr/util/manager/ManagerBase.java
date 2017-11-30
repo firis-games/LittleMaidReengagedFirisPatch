@@ -23,8 +23,15 @@ public abstract class ManagerBase {
 
 	protected void load() {
 		// ロード
+		for (File pack :
+				FileList.filesMods) {
+			decodeZip(pack);
+		}
 
-		startSearch(FileList.dirMods, false);
+		for (File classpathDir :
+				FileList.dirClasspath) {
+			decodeDirectory(classpathDir, classpathDir);
+		}
 	}
 
 	private void startSearch(File root, boolean dev){

@@ -189,22 +189,14 @@ public class ModelManager {
 			getArmorPrefix();
 		}
 
-		// ファイルを解析してテクスチャを追加
-		// jar内のテクスチャを追加
-		/*
-		if (FileManager.minecraftJar == null) {
-			LittleMaidReengaged.Debug("getTexture-append-jar-file not founded.");
-		} else {
-			for (String[] lss : searchPrefix) {
-				LittleMaidReengaged.Debug("getTexture[%s:%s].", lss[0], lss[1]);
-				addTexturesJar(FileManager.minecraftJar, lss);
-			}
-		}
-		*/
-
 		for (String[] lst : searchPrefix) {
 			// mods
 			searchFiles(FileList.dirMods, lst);
+
+			for (File classpathDir :
+					FileList.dirClasspath) {
+				addTexturesDir(classpathDir, classpathDir, lst);
+			}
 		}
 
 		// TODO 実験コード
@@ -272,7 +264,7 @@ public class ModelManager {
 			boolean lflag;
 			if (lf.isDirectory()) {
 				// ディレクトリ
-				lflag = addTexturesDir(lf, lst);
+				lflag = addTexturesDir(lf, lf, lst);
 			} else {
 				// zip
 				lflag = addTexturesZip(lf, lst);
@@ -527,7 +519,7 @@ public class ModelManager {
 		}
 	}
 
-	protected boolean addTexturesDir(File file, String[] pSearch) {
+	protected boolean addTexturesDir(File file, File root, String[] pSearch) {
 		// modsフォルダに突っ込んであるものも検索、再帰で。
 		if (file == null) {
 			return false;
@@ -536,34 +528,25 @@ public class ModelManager {
 		try {
 			for (File nfile : file.listFiles()) {
 				if(nfile.isDirectory()) {
-					addTexturesDir(nfile, pSearch);
+					addTexturesDir(nfile, root, pSearch);
 				} else {
 					String tn = FileClassUtil.getLinuxAntiDotName(nfile.getAbsolutePath());
-					String rmn = FileClassUtil.getLinuxAntiDotName(FileList.dirMods.getAbsolutePath());
+					String rmn = FileClassUtil.getLinuxAntiDotName(root.getAbsolutePath());
 					if (nfile.getName().endsWith(".class")) {
 						if(tn.startsWith(rmn)) addModelClass(FileClassUtil.getClassName(tn, rmn), pSearch);
 					} else if(nfile.getName().endsWith(".png")) {
 						String s = nfile.getPath().replace('\\', '/');
+
 						int i = s.indexOf(pSearch[1]);
 						if (i > -1) {
 							// 対象はテクスチャディレクトリ
 							addTextureName(s.substring(i), pSearch);
-							if(DevMode.DEVMODE==DevMode.DEVMODE_ECLIPSE) for(File f:FileList.dirClasspath){
-								String rin = FileClassUtil.getLinuxAntiDotName(f.getAbsolutePath());
-								if(tn.startsWith(rin)){
-									String cname = tn.substring(rin.length()+1);
-									String pr="assets/minecraft/";
-									if(cname.startsWith(pr)) cname=cname.substring(pr.length());
-									if(FMLCommonHandler.instance().getSide()==Side.CLIENT)
-										OldZipTexturesWrapper.keys.add(cname);
-								}
-							}
 //							addTextureName(s.substring(i).replace('\\', '/'));
 						}
-					} else {
+					}/* else {
 						// サブフォルダ分のアーカイブを検索
 						addTexturesZip(nfile, pSearch);
-					}
+					}*/
 				}
 			}
 			return true;

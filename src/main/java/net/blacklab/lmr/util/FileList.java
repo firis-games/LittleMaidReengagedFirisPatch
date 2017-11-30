@@ -15,27 +15,10 @@ import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
 public class FileList {
 
-	public static class CommonClassLoaderWrapper extends URLClassLoader{
-
-		public CommonClassLoaderWrapper(URL[] urls, ClassLoader parent) {
-			super(urls, parent);
-			// TODO 自動生成されたコンストラクター・スタブ
-		}
-
-		@Override
-		public void addURL(URL url) {
-			// 可視化
-			if (new ArrayList(Arrays.asList(getURLs())).contains(url)) return;
-			super.addURL(url);
-		}
-
-	}
-
 	public static File dirMinecraft;
 	public static File dirMods;
-	public static File dirModsVersion;
-	public static List<File> dirClasspath = new ArrayList<File>();
-//	public static File[] dirDevIncludeAssets = new File[]{};
+	public static List<File> filesMods;
+	public static List<File> dirClasspath = new ArrayList<>();
 
 	public static String dirMinecraftPath	= "";
 
@@ -48,8 +31,23 @@ public class FileList {
 		}
 		dirMods = new File(dirMinecraft, "mods");
 
-		// 開発モード
-		dirModsVersion = new File(dirMods, (String)injectionData[4]);
+		// Check if version directory exists
+		File dirModsVersion = new File(dirMods, (String)injectionData[4]);
+		if (dirModsVersion.isDirectory()) {
+			dirMods = dirModsVersion;
+		}
+
+		// List 'files' up in mods
+		filesMods = new ArrayList<>();
+		filesMods.addAll(Arrays.asList(dirMods.listFiles()));
+
+		for (File child :
+				new ArrayList<>(filesMods)) {
+			if (!child.isFile()) {
+				filesMods.remove(child);
+			}
+		}
+
 		LittleMaidReengaged.Debug("init FileManager.");
 	}
 

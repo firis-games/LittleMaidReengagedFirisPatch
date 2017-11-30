@@ -16,6 +16,10 @@ import java.util.zip.ZipFile;
 
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.util.DevMode;
+import net.blacklab.lmr.util.FileList;
+import net.minecraftforge.fml.common.FMLLog;
+import org.apache.logging.log4j.Level;
 
 /**
  * Searches for classes or resources.
@@ -28,29 +32,21 @@ public class LoaderSearcher {
 	public static LoaderSearcher INSTANCE = new LoaderSearcher();
 	
 	private List<LoaderHandler> handlers;
-	private List<File> classPath;
-	
+
 	public LoaderSearcher() {
 		handlers = new ArrayList<>();
 	}
 	
 	public void startSearch() {
 		// Initialize classpath
-		classPath = new ArrayList<>();
-		for (URL tUrl : ((URLClassLoader)LittleMaidReengaged.class.getClassLoader()).getURLs()) {
-			try {
-				classPath.add(new File(tUrl.toURI()));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		for (File pack :
+				FileList.filesMods) {
+			searchZip(pack);
 		}
-		
-		for (File file : classPath) {
-			if (file.isDirectory()) {
-				searchDir(file, FileClassUtil.getLinuxAntiDotName(file.getAbsolutePath()));
-			} else if (file.getName().endsWith(".zip") || file.getName().endsWith(".jar")) {
-				searchZip(file);
-			}
+
+		for (File classpathDir :
+				FileList.dirClasspath) {
+			searchDir(classpathDir, FileClassUtil.getLinuxAntiDotName(classpathDir.getAbsolutePath()));
 		}
 	}
 	
@@ -74,7 +70,10 @@ public class LoaderSearcher {
 			}
 			zFile.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			FMLLog.log(Level.ERROR, "Cannot %s as zip package.", file.getName());
+			if (DevMode.DEVELOPMENT_DEBUG_MODE) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -124,10 +123,6 @@ public class LoaderSearcher {
 			throw new IllegalArgumentException(e);
 		}
 		
-	}
-	
-	public List<File> getClassPath() {
-		return classPath;
 	}
 	
 	public LoaderHandler getInstanceOfHandler(Class<? extends LoaderHandler> pClass) {
