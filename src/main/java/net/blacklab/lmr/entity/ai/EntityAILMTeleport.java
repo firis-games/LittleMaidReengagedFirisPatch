@@ -72,8 +72,8 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 								tHead = theMaid.worldObj.getBlockState(tPos.add(0, 1, 0));
 						if (tGround.getMaterial().isSolid() &&
 								tFeet.getMaterial().isReplaceable() &&
-								!tHead.getMaterial().isOpaque() &&
-								VectorUtil.canBlockBeSeen(lMaster, tPos.getX(), tPos.getY(), tPos.getZ(), false, true, false)) {
+								!tHead.getMaterial().isOpaque()/* &&
+								VectorUtil.canBlockBeSeen(lMaster, tPos.getX(), tPos.getY(), tPos.getZ(), false, true, false)*/) {
 							lCoordinates[i++] = tPos;
 						}
 					}
