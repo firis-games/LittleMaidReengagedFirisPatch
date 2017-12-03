@@ -65,15 +65,10 @@ public class EntityAILMHurtByTarget extends EntityAIHurtByTarget {
 	@Override
 	protected boolean isSuitableTarget(EntityLivingBase par1EntityLiving, boolean par2) {
 		// LMM用にカスタム
-		if (par1EntityLiving == null) {
+		if (par1EntityLiving == null || par1EntityLiving == taskOwner || par1EntityLiving == theMaid.getMaidMasterEntity()) {
 			return false;
 		}
-		if (par1EntityLiving == taskOwner) {
-			return false;
-		}
-		if (par1EntityLiving == theMaid.getMaidMasterEntity()) {
-			return false;
-		}
+
 		if (!par1EntityLiving.isEntityAlive()) {
 			return false;
 		}

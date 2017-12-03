@@ -63,7 +63,8 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 			return false;
 		}
 
-		if ((pathToTarget != null) || (theMaid.getDistanceSq(entityTarget.posX, entityTarget.getEntityBoundingBox().minY, entityTarget.posZ) <= attackRange)) {
+		if ((pathToTarget != null) ||
+				(theMaid.getDistanceSq(entityTarget.posX, entityTarget.getEntityBoundingBox().minY, entityTarget.posZ) <= attackRange)) {
 			return true;
 		}
 		theMaid.setAttackTarget(null);
@@ -106,7 +107,16 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 			resetTask();
 			return false;
 		}
-		if (!MaidHelper.isTargetReachable(theMaid, lentity, 0)) return false;
+
+		if (theMaid.getActiveModeClass().isSearchEntity()) {
+			if (!theMaid.getActiveModeClass().checkEntity(theMaid.getMaidModeString(), entityTarget)) {
+				return  false;
+			}
+		} else {
+			if (!MaidHelper.isTargetReachable(theMaid, lentity, 0)) {
+				return false;
+			}
+		}
 
 		if (!entityTarget.isEntityAlive()) {
 			return false;

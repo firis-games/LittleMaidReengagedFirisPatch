@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 
 public class MaidHelper {
 
@@ -43,10 +44,15 @@ public class MaidHelper {
 
 	/** Can maid reach target? **/
 	public static boolean isTargetReachable(EntityLittleMaid pMaid, Vec3d pTarget, double expandRangeSq) {
-		expandRangeSq -= 1D;
-		return pMaid.isFreedom() ?
-				pMaid.getHomePosition().distanceSq(pTarget.xCoord, pTarget.yCoord, pTarget.zCoord) <= pMaid.getActiveModeClass().getFreedomTrackingRangeSq() + expandRangeSq :
-				(pMaid.getMaidMasterEntity() == null ? true : pMaid.getMaidMasterEntity().getPositionVector().squareDistanceTo(pTarget) <= pMaid.getActiveModeClass().getLimitRangeSqOnFollow() + expandRangeSq);
+		if (pMaid.isFreedom()) {
+			return pMaid.getHomePosition().distanceSq(pTarget.xCoord, pTarget.yCoord, pTarget.zCoord)
+					<= pMaid.getActiveModeClass().getFreedomTrackingRangeSq() + expandRangeSq;
+		}
+		if (pMaid.getMaidMasterEntity() == null) {
+			return true;
+		}
+		return pMaid.getMaidMasterEntity().getDistanceSq(pTarget.xCoord, pTarget.yCoord, pTarget.zCoord)
+				<= pMaid.getActiveModeClass().getLimitRangeSqOnFollow() + expandRangeSq;
 	}
 
 }
