@@ -16,6 +16,11 @@ See [Releases](https://github.com/Verclene/LittleMaidReengaged/releases)
 * [LittleMaidMobNX(for MC 1.8.x)](http://6docvc.net/) - by Verclene
   + \*Click "Minecraft"->"LittleMaidMobNX"
 
+## READ BEFORE REPORT BUGS
+***POST ONE ISSUE FOR EACH REPORT.***
+
+I close issues with each fixing bug. And you can see solved or unsolved problems quickly.
+
 ## Setting up the developing environment
 
 1. Make your GradleForge workspace multi-project
@@ -25,7 +30,7 @@ See [Releases](https://github.com/Verclene/LittleMaidReengaged/releases)
 4. Add this line to root/settings.gradle: `include 'LittleMaidReengaged'`
 5. Then run this command on root: `./gradlew setupDecompWorkspace --refresh-dependencies`
 
-###　To run client on the dev environment
+### To run client on the dev environment
 
 - Run this command: `./gradlew :LittleMaidReengaged:runClient` or `./gradlew :LittleMaidReengaged:runServer`
 - Or launch GradleStart or GradleStartServer from your IDE.
@@ -33,25 +38,42 @@ See [Releases](https://github.com/Verclene/LittleMaidReengaged/releases)
 
 ## Writing build.gradle for multiproject
 
-```gradle:build.gradle
+```
 sourceSets.main {
-	java.srcDirs project.projectDir.name
-	resources.srcDirs project.projectDir.name
-}
-jar {
-	doFirst {
-		archivesBaseName = "[1.9.4-1.10.x]LittleMaidReengaged"
-	}
-	
-	manifest {
-		attributes 'FMLCorePlugin' : 'net.blacklab.lmr.util.coremod.LMRECoremod'
-		attributes 'FMLCorePluginContainsFMLMod' : 'true'
-	}
-}
-tasks.withType(Jar) {compileJava.options.encoding = 'UTF-8'}
-tasks.withType(Jar) {compileApiJava.options.encoding = 'UTF-8'}
+   	java.srcDirs project.projectDir.name
+   	resources.srcDirs project.projectDir.name
+   }
+   jar {
+   	doFirst {
+   		archivesBaseName = "[1.9.4-1.10.x]LittleMaidReengaged"
+   	}
 
-// Replace ':EBLib***' to the project of EBLib in your workspace 
-dependencies { compile project(':EBLib194')}
+   	manifest {
+   		attributes 'FMLCorePlugin' : 'net.blacklab.lmr.util.coremod.LMRECoremod'
+   		attributes 'FMLCorePluginContainsFMLMod' : 'true'
+   	}
+   }
 
-version = "8.1.1.102"```
+   task generateChangeLog << {
+   	exec {
+   		executable "bash"
+   		args '-c', '"git log --date=short --pretty=format:\'%ad %an<%ae>%nHASH=%H%n%s%n%b%n\'' +
+   				' | sed -E \'s/HASH=(.+)/\\* \\1/g\'' +
+   				' | sed -E \'s/(.+)/\\t\\*\\t\\1/g\'' +
+   				' | sed -E \'s/\\t\\*\\t([0-9]+-[0-9]+-[0-9]+.+)/\\1/g\' > ChangeLog"'
+   	}
+   }
+
+   // Set arguments -PgenCL to generate ChangeLog(git configure required)
+   if (project.hasProperty('genCL')) {
+   	generateChangeLog.execute()
+   }
+
+   tasks.withType(Jar) {compileJava.options.encoding = 'UTF-8'}
+   tasks.withType(Jar) {compileApiJava.options.encoding = 'UTF-8'}
+
+   // Replace ':EBLib***' to the project of EBLib in your workspace
+   dependencies { compile project(':' + project.name + ':EBLib') }
+
+   version = "8.1.4.132"
+   ```
