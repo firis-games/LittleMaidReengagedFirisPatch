@@ -527,14 +527,14 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		ItemStack pItemStack;
+		ItemStack pItemStack = null;
 		if (index == handInventoryOffset + 1) {
 			pItemStack = offHandInventory[0];
 		} else if (index == handInventoryOffset) {
 			pItemStack = mainHandInventory[0];
-		} else if (index >= maxInventorySize) {
+		} else if (index >= maxInventorySize && index < handInventoryOffset) {
 			pItemStack = armorInventory[index-maxInventorySize];
-		} else {
+		} else if (index < maxInventorySize) {
 			pItemStack = mainInventory[index];
 		}
 
