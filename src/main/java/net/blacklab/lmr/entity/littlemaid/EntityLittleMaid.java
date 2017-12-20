@@ -3485,11 +3485,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 			setMaidFlags(maidFreedom, dataWatch_Flags_Freedom);
 		} else {
-			LittleMaidReengaged.Debug("Check Debug-%d/%s/%s", getEntityId(), isRemainsContract(), isFreedom());
-
-			NBTTagCompound tagCompound = new NBTTagCompound();
-			tagCompound.setBoolean("Freedom", pFlag);
-			syncNet(EnumPacketMode.SERVER_CHAMGE_FREEDOM, tagCompound);
 		}
 	}
 
