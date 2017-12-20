@@ -1,3 +1,30 @@
+2017-12-07 Verclene<xdev58bo@gmail.com>
+	*	* e3e546aedbb8daeaa9f148aaa8c167dbede2db33
+	*	8.1.6.140: Reinforce range check
+	*	- #130, #131
+
+
+2017-12-07 Verclene<xdev58bo@gmail.com>
+	*	* 2f77f779f303912c7e41a5005f0554f9d25b2bc6
+	*	8.1.6.139: Avoid OoBX for strange reference
+	*	- #130, #131
+
+
+2017-12-04 Verclene<xdev58bo@gmail.com>
+	*	* 69252e1720b1edc136d06b1b022f4325c48fde66
+	*	8.1.5.138: Adapt checkEntity for AttackOnCollide
+
+
+2017-12-01 Verclene<xdev58bo@gmail.com>
+	*	* 06f40808921425ce16bf2dcdb77a461a05b63932
+	*	8.1.5.137: Modify maid following
+
+
+2017-12-01 Verclene<xdev58bo@gmail.com>
+	*	* d71f5a4f351658885a9c8dcfac3d2d2a9c5d1239
+	*	8.1.5.136: Enhance searching targets of fencer, close #127
+
+
 2017-12-01 Verclene<xdev58bo@gmail.com>
 	*	* 482c1a3c291586835ea5e137d7106631b272f053
 	*	8.1.5.135: Expand teleport, fix #126

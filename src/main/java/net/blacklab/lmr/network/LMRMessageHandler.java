@@ -10,7 +10,7 @@ public class LMRMessageHandler implements IMessageHandler<LMRMessage, IMessage>
 	@Override//IMessageHandlerのメソッド
 	public IMessage onMessage(LMRMessage message, MessageContext ctx)
 	{
-		if(message.data != null) {
+		if(message.getTag() != null) {
 			if (ctx.side.isClient()) {
 				LittleMaidReengaged.proxy.onClientCustomPayLoad(message);
 			} else {

@@ -26,6 +26,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
@@ -66,12 +67,14 @@ public class GuiIFF extends GuiScreen {
 		// IFFをサーバーから取得
 		if (!Minecraft.getMinecraft().isSingleplayer()) {
 			int li = 0;
-			for (String ls : IFF.DefaultIFF.keySet()) {
-				byte ldata[] = new byte[4 + ls.length()];
-				NetworkHelper.setIntToPacket(ldata, 0, li);
-				NetworkHelper.setStrToPacket(ldata, 4, ls);
+			for (String ls : IFF.getUserIFF(null).keySet()) {
+				// TODO Too much packet with many entities
+				NBTTagCompound tagCompound = new NBTTagCompound();
+				tagCompound.setInteger("Index", li);
+				tagCompound.setString("Name", ls);
+
 				LittleMaidReengaged.Debug("RequestIFF %s(%d)", ls, li);
-				LMRNetwork.sendToServer(EnumPacketMode.SERVER_REQUEST_IFF, ldata);
+				LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_REQUEST_IFF, null, tagCompound);
 				li++;
 			}
 		}
@@ -191,7 +194,7 @@ public class GuiIFF extends GuiScreen {
 
 	public void clickSlot(int pIndex, boolean pDoubleClick, String pName, EntityLivingBase pEntity) {
 		if (pDoubleClick) {
-			int tt = IFF.getIFF(CommonHelper.getPlayerUUID(thePlayer), pName, pEntity.worldObj);
+			byte tt = IFF.getIFF(CommonHelper.getPlayerUUID(thePlayer), pName, pEntity.worldObj);
 			tt++;
 			if (tt > 2) {
 				tt = 0;
@@ -201,17 +204,10 @@ public class GuiIFF extends GuiScreen {
 
 			// サーバーへ変更値を送る。
 			int li = 0;
-			for (String ls : IFF.DefaultIFF.keySet()) {
-				if (ls.contains(pName)) {
-					byte[] ldata = new byte[pName.length() + 5];
-					ldata[0] = (byte) tt;
-					NetworkHelper.setIntToPacket(ldata, 1, li);
-					NetworkHelper.setStrToPacket(ldata, 5, pName);
-					LittleMaidReengaged.Debug("SendIFF %s(%d) = %d", pName, li, tt);
-					LMRNetwork.sendToServer(EnumPacketMode.SERVER_CHANGE_IFF, ldata);
-				}
-				li++;
-			}
+			NBTTagCompound tagCompound = new NBTTagCompound();
+			tagCompound.setByte("Value", tt);
+			tagCompound.setString("Name", pName);
+			LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_CHANGE_IFF, -1, tagCompound);
 
 			Entity player = mc.thePlayer;
 			player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("ui.button.click")), 1, 1);

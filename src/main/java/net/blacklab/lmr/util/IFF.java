@@ -1,19 +1,7 @@
 package net.blacklab.lmr.util;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
-import java.util.UUID;
-
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.OwnableEntityHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -24,8 +12,10 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * IFFを管理するためのクラス、ほぼマルチ用。
@@ -33,23 +23,23 @@ import net.minecraftforge.fml.relauncher.FMLInjectionData;
  */
 public class IFF {
 
-	public static final int iff_Enemy = 0;
-	public static final int iff_Unknown = 1;
-	public static final int iff_Friendry = 2;
+	public static final byte iff_Enemy = 0;
+	public static final byte iff_Unknown = 1;
+	public static final byte iff_Friendry = 2;
 
 	/**
 	 * ローカル用、若しくはマルチのデフォルト設定
 	 */
-	public static Map<String, Integer> DefaultIFF = new TreeMap<String, Integer>();
+	private static Map<String, Byte> DefaultIFF = new TreeMap<>();
 	/**
 	 * ユーザ毎のIFF
 	 */
-	public static Map<UUID, Map<String, Integer>> UserIFF = new HashMap<UUID, Map<String, Integer>>();
+	private static Map<UUID, Map<String, Byte>> UserIFF = new HashMap<>();
 
 	/**
 	 * IFFのゲット
 	 */
-	public static Map<String, Integer> getUserIFF(UUID pUsername) {
+	public static Map<String, Byte> getUserIFF(UUID pUsername) {
 		if (pUsername == null) {
 			return DefaultIFF;
 		}
@@ -59,7 +49,7 @@ public class IFF {
 
 		if (!UserIFF.containsKey(pUsername)) {
 			// IFFがないので作成
-			Map<String, Integer> lmap = new HashMap<String, Integer>();
+			Map<String, Byte> lmap = new HashMap<>();
 			lmap.putAll(DefaultIFF);
 			UserIFF.put(pUsername, lmap);
 		}
@@ -67,14 +57,14 @@ public class IFF {
 		return UserIFF.get(pUsername);
 	}
 
-	public static void setIFFValue(UUID pUsername, String pName, int pValue) {
-		Map<String, Integer> lmap = getUserIFF(pUsername);
+	public static void setIFFValue(UUID pUsername, String pName, byte pValue) {
+		Map<String, Byte> lmap = getUserIFF(pUsername);
 		lmap.put(pName, pValue);
 	}
 
-	public static int checkEntityStatic(String pName, Entity pEntity,
+	public static byte checkEntityStatic(String pName, Entity pEntity,
 			int pIndex, Map<String, Entity> pMap) {
-		int liff = IFF.iff_Unknown;
+		byte liff = IFF.iff_Unknown;
 		if (pEntity instanceof EntityLivingBase) {
 			if (pEntity instanceof EntityArmorStand) {
 				liff = iff_Friendry;
@@ -105,7 +95,7 @@ public class IFF {
 					break;
 				case 1:
 					// 自分の家畜
-					pName = (new StringBuilder()).append(pName).append(":Taim").toString();
+					pName = (new StringBuilder()).append(pName).append(":Tame").toString();
 					if (pEntity instanceof EntityTameable) {
 						((EntityTameable) pEntity).setTamed(true);
 					}
@@ -147,12 +137,12 @@ public class IFF {
 	/**
 	 * 敵味方識別判定
 	 */
-	public static int getIFF(UUID pUsername, String entityname, World world) {
+	public static byte getIFF(UUID pUsername, String entityname, World world) {
 		if (entityname == null) {
 			return LittleMaidReengaged.cfg_Aggressive ? iff_Enemy : iff_Friendry;
 		}
-		int lt = iff_Enemy;
-		Map<String, Integer> lmap = getUserIFF(pUsername);
+		byte lt = iff_Enemy;
+		Map<String, Byte> lmap = getUserIFF(pUsername);
 		if (lmap.containsKey(entityname)) {
 			lt = lmap.get(entityname);
 		} else if (lmap != DefaultIFF && DefaultIFF.containsKey(entityname)) {
@@ -173,7 +163,7 @@ public class IFF {
 			if (entityname.indexOf(":Contract") > -1) {
 				li = 1;
 			} else
-			if (entityname.indexOf(":Taim") > -1) {
+			if (entityname.indexOf(":Tame") > -1) {
 				li = 1;
 			} else
 			if (entityname.indexOf(":Others") > -1) {
@@ -217,7 +207,7 @@ public class IFF {
 			UUID loname = OwnableEntityHelper.getOwner((IEntityOwnable)entity);
 			if (loname.equals(pUsername)) {
 				// 自分の
-				lcname = (new StringBuilder()).append(lename).append(":Taim").toString();
+				lcname = (new StringBuilder()).append(lename).append(":Tame").toString();
 				li = 1;
 			} else {
 				// 他人の
@@ -273,7 +263,7 @@ public class IFF {
 		if (!(lfile.exists() && lfile.canRead())) {
 			return;
 		}
-		Map<String, Integer> lmap = getUserIFF(pUsername);
+		Map<String, Byte> lmap = getUserIFF(pUsername);
 
 		try {
 			FileReader fr = new FileReader(lfile);
@@ -283,7 +273,7 @@ public class IFF {
 			while ((s = br.readLine()) != null) {
 				String t[] = s.split("=");
 				if (t.length > 1) {
-					int i = Integer.valueOf(t[1]);
+					byte i = Byte.valueOf(t[1]);
 					if (i > 2) {
 						i = iff_Unknown;
 					}
@@ -302,14 +292,14 @@ public class IFF {
 		// IFF ファイルの書込み
 		LittleMaidReengaged.Debug("Save IFF, %s", pUsername.toString());
 		File lfile = getFile(pUsername);
-		Map<String, Integer> lmap = getUserIFF(pUsername);
+		Map<String, Byte> lmap = getUserIFF(pUsername);
 
 		try {
 			if ((lfile.exists() || lfile.createNewFile()) && lfile.canWrite()) {
 				FileWriter fw = new FileWriter(lfile);
 				BufferedWriter bw = new BufferedWriter(fw);
 
-				for (Map.Entry<String, Integer> me : lmap.entrySet()) {
+				for (Map.Entry<String, Byte> me : lmap.entrySet()) {
 					bw.write(String.format("%s=%d\r\n", me.getKey(),
 							me.getValue()));
 				}

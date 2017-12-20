@@ -23,9 +23,9 @@ public abstract class TextureBoxBase {
 		modelMountedYOffset = pMountedYOffset;
 	}
 
-	protected int getRandomColor(int pColor, Random pRand) {
-		List<Integer> llist = new ArrayList<Integer>();
-		for (int li = 0; li < 16; li++) {
+	protected byte getRandomColor(int pColor, Random pRand) {
+		List<Byte> llist = new ArrayList<Byte>();
+		for (byte li = 0; li < 16; li++) {
 			if ((pColor & 0x01) > 0) {
 				llist.add(li);
 			}
@@ -59,7 +59,7 @@ public abstract class TextureBoxBase {
 	/**
 	 * 野生のメイドの色をランダムで返す
 	 */
-	public int getRandomWildColor(Random pRand) {
+	public byte getRandomWildColor(Random pRand) {
 		return getRandomColor(getWildColorBits(), pRand);
 	}
 

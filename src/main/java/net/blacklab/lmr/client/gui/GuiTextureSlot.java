@@ -30,8 +30,8 @@ public class GuiTextureSlot extends GuiSlot {
 	public List<TextureBox> indexArmor;
 	public boolean mode;
 	public int texsel[] = new int[2];
-	public int color;
-	public int selectColor;
+	public byte color;
+	public byte selectColor;
 	private ItemStack armors[] = new ItemStack[] {
 			new ItemStack(Items.LEATHER_BOOTS),
 			new ItemStack(Items.LEATHER_LEGGINGS),
@@ -126,7 +126,7 @@ public class GuiTextureSlot extends GuiSlot {
 		if (!mode) {
 			for (int li = 0; li < 16; li++) {
 				int lx = var2 + 15 + 12 * li;
-				selectColor = (mouseX - (var2 + 15)) / 12;
+				selectColor = (byte)((mouseX - (var2 + 15)) / 12);
 				if ((selectColor < 0) && (selectColor > 15)) {
 					selectColor = -1;
 				}
@@ -185,7 +185,7 @@ public class GuiTextureSlot extends GuiSlot {
 			}
 		} else {
 			// テクスチャ表示
-			for (int li = 0; li < 16; li++) {
+			for (byte li = 0; li < 16; li++) {
 				GL11.glTranslatef(1F, 0, 0);
 				if (lbox.hasColor(li, isContract)) {
 					entity.setColor(li);

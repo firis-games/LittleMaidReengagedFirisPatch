@@ -161,7 +161,7 @@ public class ExperienceHandler {
 		if (isWaitRevive && deathCount > 0) {
 			return true;
 		} else if (!theMaid.worldObj.isRemote && theMaid.getHealth() <= 0f) {
-			theMaid.syncNet(EnumPacketMode.CLIENT_ONDEATH, new byte[]{});
+			theMaid.syncNet(EnumPacketMode.CLIENT_ONDEATH, null);
 		}
 		return false;
 	}

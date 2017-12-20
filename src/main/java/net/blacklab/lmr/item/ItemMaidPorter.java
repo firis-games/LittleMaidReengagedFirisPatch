@@ -73,7 +73,7 @@ public class ItemMaidPorter extends Item {
 
 				lMaid.setTextureNameMain(tagCompound.getString(LittleMaidReengaged.DOMAIN + ":MAIN_MODEL_NAME"));
 				lMaid.setTextureNameArmor(tagCompound.getString(LittleMaidReengaged.DOMAIN + ":ARMOR_MODEL_NAME"));
-				lMaid.setColor(tagCompound.getInteger(LittleMaidReengaged.DOMAIN + ":MAID_COLOR"));
+				lMaid.setColor((byte)tagCompound.getInteger(LittleMaidReengaged.DOMAIN + ":MAID_COLOR"));
 			} else {
 				return EnumActionResult.PASS;
 			}

@@ -165,13 +165,13 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	}
 
 	@Override
-	public void setColor(int pColor) {
+	public void setColor(byte pColor) {
 		textureData.setColor(pColor);
 //		color = pColor;
 	}
 
 	@Override
-	public int getColor() {
+	public byte getColor() {
 		return textureData.getColor();
 //		return color;
 	}

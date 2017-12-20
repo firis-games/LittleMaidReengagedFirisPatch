@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -162,43 +163,47 @@ public class ProxyClient extends ProxyCommon
 
 	@Override
 	public void onClientCustomPayLoad(LMRMessage pPayload) {
-		EnumPacketMode lmode = EnumPacketMode.getEnumPacketMode(pPayload.data[0]);
+		EnumPacketMode lmode = pPayload.getMode();
 		if (lmode == null) return;
+
 		LittleMaidReengaged.Debug("MODE: %s", lmode.toString());
-		EntityLittleMaid lemaid = null;
+
+		Entity lemaid = null;
 		if (lmode.withEntity) {
-			lemaid = LMRNetwork.getLittleMaid(pPayload.data, 1, Minecraft.getMinecraft().theWorld);
-			if (lemaid == null) return;
-			LMRNetwork.syncPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, 5, pPayload.data.length));
+			lemaid = Minecraft.getMinecraft().theWorld.getEntityByID(pPayload.getEntityId());
+			if (!(lemaid instanceof EntityLittleMaid)) return;
+
+			LMRNetwork.syncPayLoad(lmode, (EntityLittleMaid)lemaid, pPayload.getTag());
 		}
-		clientPayLoad(lmode, lemaid, Arrays.copyOfRange(pPayload.data, lmode.withEntity?5:1, pPayload.data.length));
+		clientPayLoad(lmode, (EntityLittleMaid) lemaid, pPayload.getTag());
 	}
 
-	private static void clientPayLoad(EnumPacketMode pMode, EntityLittleMaid lemaid, byte[] contents) {
+	private static void clientPayLoad(EnumPacketMode pMode, EntityLittleMaid lemaid, NBTTagCompound tagCompound) {
 		switch (pMode) {
 		case CLIENT_SWINGARM :
 			// 腕振り
-			byte larm = contents[0];
-			EnumSound lsound = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(contents, 1));
-			lemaid.setSwinging(larm, lsound, NetworkHelper.getIntFromPacket(contents, 5)==1);
-//			mod_LMM_littleMaidMob.Debug(String.format("SwingSound:%s", lsound.name()));
+			byte larm = tagCompound.getByte("Arm");
+			EnumSound lsound = EnumSound.getEnumSound(tagCompound.getInteger("Sound"));
+			lemaid.setSwinging(larm, lsound, tagCompound.getBoolean("Force"));
 			break;
 
 		case CLIENT_RESPOND_IFF :
 			// IFFの設定値を受信
-			int lval = contents[0];
-			int lindex = NetworkHelper.getIntFromPacket(contents, 1);
-			String lname = (String)IFF.DefaultIFF.keySet().toArray()[lindex];
+			byte lval = tagCompound.getByte("Value");
+			int lindex = tagCompound.getInteger("Index");
+			String lname = (String)IFF.getUserIFF(Minecraft.getMinecraft().thePlayer.getUniqueID()).keySet().toArray()[lindex];
+
 			LittleMaidReengaged.Debug("setIFF-CL %s(%d)=%d", lname, lindex, lval);
-			IFF.setIFFValue(null, lname, lval);
+			IFF.setIFFValue(Minecraft.getMinecraft().thePlayer.getUniqueID(), lname, lval);
 			break;
 
 		case CLIENT_PLAY_SOUND :
 			// 音声再生
-			EnumSound lsound9 = EnumSound.getEnumSound(NetworkHelper.getIntFromPacket(contents, 0));
-			LittleMaidReengaged.Debug(String.format("playSound:%s", lsound9.name()));
-			lemaid.playSound(lsound9, contents[4]==1);
+			EnumSound sound = EnumSound.getEnumSound(tagCompound.getInteger("Sound"));
+			lemaid.playSound(sound, tagCompound.getBoolean("Force"));
+			LittleMaidReengaged.Debug(String.format("playSound:%s", sound.name()));
 			break;
+
 		case CLIENT_ONDEATH :
 			lemaid.manualOnDeath();
 			break;

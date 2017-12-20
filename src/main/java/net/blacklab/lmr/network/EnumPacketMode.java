@@ -38,6 +38,9 @@ public enum EnumPacketMode {
 	/** Notify server of using dye. Decrements dye powder. **/
 	SERVER_DECREMENT_DYE	(0x26,  true),
 
+	/** Setting current Item **/
+	CLIENT_CURRENT_ITEM     (0x27,  true),
+
 	/** Change Freedom Mode from GUI **/
 	SERVER_CHAMGE_FREEDOM	(0x30,  true);
 

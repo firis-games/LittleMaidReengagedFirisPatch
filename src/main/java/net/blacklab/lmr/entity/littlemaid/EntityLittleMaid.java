@@ -1,26 +1,5 @@
 package net.blacklab.lmr.entity.littlemaid;
 
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Aimebow;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Bloodsuck;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Freedom;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_LooksSugar;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_OverDrive;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Register;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Tracer;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Wait;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Working;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterest;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterestAXIS;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_remainsContract;
-
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.sun.istack.internal.NotNull;
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -30,25 +9,7 @@ import net.blacklab.lmr.api.item.IItemSpecialSugar;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.client.sound.SoundLoader;
 import net.blacklab.lmr.client.sound.SoundRegistry;
-import net.blacklab.lmr.entity.ai.EntityAILMAttackArrow;
-import net.blacklab.lmr.entity.ai.EntityAILMAttackOnCollide;
-import net.blacklab.lmr.entity.ai.EntityAILMAvoidPlayer;
-import net.blacklab.lmr.entity.ai.EntityAILMBeg;
-import net.blacklab.lmr.entity.ai.EntityAILMBegMove;
-import net.blacklab.lmr.entity.ai.EntityAILMCollectItem;
-import net.blacklab.lmr.entity.ai.EntityAILMFindBlock;
-import net.blacklab.lmr.entity.ai.EntityAILMFleeRain;
-import net.blacklab.lmr.entity.ai.EntityAILMFollowOwner;
-import net.blacklab.lmr.entity.ai.EntityAILMMoveTowardsRestriction;
-import net.blacklab.lmr.entity.ai.EntityAILMOpenDoor;
-import net.blacklab.lmr.entity.ai.EntityAILMRestrictOpenDoor;
-import net.blacklab.lmr.entity.ai.EntityAILMRestrictRain;
-import net.blacklab.lmr.entity.ai.EntityAILMSwimming;
-import net.blacklab.lmr.entity.ai.EntityAILMTeleport;
-import net.blacklab.lmr.entity.ai.EntityAILMTracerMove;
-import net.blacklab.lmr.entity.ai.EntityAILMWait;
-import net.blacklab.lmr.entity.ai.EntityAILMWander;
-import net.blacklab.lmr.entity.ai.EntityAILMWatchClosest;
+import net.blacklab.lmr.entity.ai.*;
 import net.blacklab.lmr.entity.experience.ExperienceHandler;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
@@ -56,23 +17,14 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing.PlayRole;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
-import net.blacklab.lmr.entity.maidmodel.EquippedStabilizer;
-import net.blacklab.lmr.entity.maidmodel.IModelCaps;
-import net.blacklab.lmr.entity.maidmodel.IModelEntity;
-import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
-import net.blacklab.lmr.entity.maidmodel.TextureBox;
-import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
+import net.blacklab.lmr.entity.maidmodel.*;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
-import net.blacklab.lmr.util.Counter;
-import net.blacklab.lmr.util.EntityCaps;
-import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.IFF;
-import net.blacklab.lmr.util.SwingStatus;
+import net.blacklab.lmr.util.*;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
@@ -82,18 +34,9 @@ import net.blacklab.lmr.util.manager.LoaderSearcher;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAILeapAtTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
-import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
@@ -129,11 +72,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -151,6 +90,14 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import static net.blacklab.lmr.util.Statics.*;
+
 public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	// 定数はStaticsへ移動
@@ -166,7 +113,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	// TODO DataManagerは手探り
 	protected static final DataParameter<Float> dataWatch_Absoption		= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.FLOAT);
 	/** メイドカラー(byte) */
-	protected static final DataParameter<Integer> dataWatch_Color			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	protected static final DataParameter<Byte> dataWatch_Color			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.BYTE);
 	/**
 	 * MSB|0x0000 0000|LSB<br>
 	 *       |    |本体のテクスチャインデックス<br>
@@ -393,7 +340,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		textureData = new ModelConfigCompound(this, maidCaps);
 //		if (worldObj.isRemote) {
 			// 形態形成場
-			textureData.setColor(12);
+			textureData.setColor((byte)0xc);
 			TextureBox ltb[] = new TextureBox[2];
 			ltb[0] = ltb[1] = ModelManager.instance.getDefaultTexture(this);
 			setTexturePackName(ltb);
@@ -475,9 +422,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	protected void onSpawnWild() {
 		// 野生メイドの色設定処理
 		int nsize = 0;
-		int avaliableColor[] = new int[16];
+		byte avaliableColor[] = new byte[16];
 		TextureBoxBase box = getModelConfigCompound().textureBox[0];
-		for (int i=0; i<16; i++) {
+		for (byte i=0; i<16; i++) {
 			if ((box.wildColor & 1<<i) > 0) {
 				avaliableColor[nsize++] = i;
 			}
@@ -527,7 +474,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		// 独自分
 		// 19:maidColor
-		dataManager.register(EntityLittleMaid.dataWatch_Color, Integer.valueOf(0));
+		dataManager.register(EntityLittleMaid.dataWatch_Color, (byte)0xc);
 		// 20:選択テクスチャインデックス
 		// TODO いらん？
 		dataManager.register(EntityLittleMaid.dataWatch_Texture, Integer.valueOf(0));
@@ -693,7 +640,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	public void syncMaidArmorVisible() {
-		syncNet(EnumPacketMode.SYNC_ARMORFLAG, new byte[]{(byte) maidArmorVisible});
+		NBTTagCompound tagCompound = new NBTTagCompound();
+		tagCompound.setInteger("Visible", maidArmorVisible);
+		syncNet(EnumPacketMode.SYNC_ARMORFLAG, tagCompound);
 	}
 
 	/**
@@ -701,37 +650,32 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * 経験値ブースト値の取得
 	 */
 	public void requestExpBoost() {
-		syncNet(EnumPacketMode.SERVER_REQUEST_BOOST, new byte[]{});
+		syncNet(EnumPacketMode.SERVER_REQUEST_BOOST, null);
 	}
 
 	/**
 	 * 経験値ブーストの同期
 	 */
 	public void syncExpBoost() {
-		byte b[] = new byte[] {
-				0, 0, 0, 0
-		};
-		NetworkHelper.setIntToPacket(b, 0, getExpBooster());
-		syncNet(EnumPacketMode.SYNC_EXPBOOST, b);
+		NBTTagCompound tagCompound = new NBTTagCompound();
+		tagCompound.setInteger("Booster", getExpBooster());
+
+		syncNet(EnumPacketMode.SYNC_EXPBOOST, tagCompound);
 	}
 
 	public void syncModelNames() {
-		byte main[] = new byte[getModelNameMain().length()+1];
-		main[0] = 0;
-		NetworkHelper.setStrToPacket(main, 1, getModelNameMain());
-		syncNet(EnumPacketMode.SYNC_MODEL, main);
+		NBTTagCompound tagCompound = new NBTTagCompound();
+		tagCompound.setString("Main", getModelNameMain());
+		tagCompound.setString("Armor", getModelNameArmor());
 
-		byte armor[] = new byte[getModelNameArmor().length()+1];
-		armor[0] = 1;
-		NetworkHelper.setStrToPacket(armor, 1, getModelNameArmor());
-		syncNet(EnumPacketMode.SYNC_MODEL, armor);
+		syncNet(EnumPacketMode.SYNC_MODEL, tagCompound);
 	}
 
-	public void syncNet(EnumPacketMode pMode, byte[] contents) {
+	public void syncNet(EnumPacketMode pMode, NBTTagCompound tagCompound) {
 		if(worldObj.isRemote){
-			LMRNetwork.sendToServerWithEntityID(pMode, this, contents);
+			LMRNetwork.sendPacketToServer(pMode, getEntityId(), tagCompound);
 		}else{
-			LMRNetwork.sendToAllClientWithEntityID(pMode, this, contents);
+			LMRNetwork.sendPacketToAllPlayer(pMode, getEntityId(), tagCompound);
 		}
 	}
 
@@ -925,13 +869,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			// Server
 //			if((LMM_LittleMaidMobNX.cfg_ignoreForceSound || !force) && new Random().nextInt(LMM_LittleMaidMobNX.cfg_soundPlayChance)!=0) return;
 			LittleMaidReengaged.Debug("id:%d-%s, seps:%04x-%s", getEntityId(), "Server",  enumsound.index, enumsound.name());
-			byte[] lbuf = new byte[] {
-					0, 0, 0, 0,
-					0
-			};
-			NetworkHelper.setIntToPacket(lbuf, 0, enumsound.index);
-			lbuf[4] = (byte) (force ? 1 : 0);
-			syncNet(EnumPacketMode.CLIENT_PLAY_SOUND, lbuf);
+
+			NBTTagCompound tagCompound = new NBTTagCompound();
+			tagCompound.setInteger("Sound", enumsound.index);
+			tagCompound.setBoolean("Force", force);
+
+			syncNet(EnumPacketMode.CLIENT_PLAY_SOUND, tagCompound);
 		}
 	}
 
@@ -1275,7 +1218,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		par1nbtTagCompound.setLong("Anniversary", maidAnniversary);
 //		par1nbtTagCompound.setInteger("EXP", experienceValue);
 		par1nbtTagCompound.setInteger("DominantArm", getDominantArm());
-		par1nbtTagCompound.setInteger("Color", getColor());
+		par1nbtTagCompound.setByte("ColorB", getColor());
 		par1nbtTagCompound.setString("texName", textureData.getTextureName(0));
 		par1nbtTagCompound.setString("texArmor", textureData.getTextureName(1));
 		par1nbtTagCompound.setInteger("maidArmorVisible", maidArmorVisible);
@@ -1398,7 +1341,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if(textureNameArmor.isEmpty()){
 			textureNameArmor = "default_"+ModelManager.defaultModelName;
 		}
-		setColor(par1nbtTagCompound.getInteger("Color"));
+		if (par1nbtTagCompound.hasKey("Color")) {
+			setColor((byte)par1nbtTagCompound.getInteger("Color"));
+			par1nbtTagCompound.removeTag("Color");
+		} else {
+			setColor(par1nbtTagCompound.getByte("ColorB"));
+		}
 		refreshModels();
 //		if (FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer()) {
 //			syncModelNames();
@@ -1867,7 +1815,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 					continue;
 				}
 
-				String sname = SoundRegistry.getSoundRegisteredName(enumsound, textureNameMain, getColor());
+				String sname = SoundRegistry.getSoundRegisteredName(enumsound, textureNameMain, (int) getColor());
 				LittleMaidReengaged.Debug("STC %s,%d/FRS %s", textureNameMain, getColor(), sname);
 
 				if (sname == null || sname.isEmpty()) {
@@ -2221,7 +2169,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			// サーバーの方が先に起動するのでクライアント側が更新を受け取れない
 			if (firstload > 0) {
 				if (Minecraft.getMinecraft().theWorld != null && Minecraft.getMinecraft().thePlayer != null) {
-					syncNet(EnumPacketMode.SERVER_REQUEST_MODEL, new byte[]{});
+					syncNet(EnumPacketMode.SERVER_REQUEST_MODEL, null);
 					firstload = 0;
 				}
 			}
@@ -2378,7 +2326,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			// Auto-fix transparent maid
 			if (!isContract() && firstload > 0) {
 				if(((1 << getColor()) & (textureData.textureBox[0].wildColor)) == 0) {
-					int r = textureData.getWildColor();
+					byte r = textureData.getWildColor();
 					if (r < 0) {
 						onSpawnWithEgg();
 					} else {
@@ -2930,7 +2878,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								// カラーメイド
 								if (canChangeModel()) {
 									if (!worldObj.isRemote) {
-										setColor(15 - par3ItemStack.getItemDamage());
+										setColor((byte)(15 - par3ItemStack.getItemDamage()));
 									}
 									CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
 									return true;
@@ -3304,14 +3252,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			setSwinging(pArm, enumsound, force);
 		}
 		if (!worldObj.isRemote) {
-			byte[] lba = new byte[] {
-				(byte)pArm,
-				0, 0, 0, 0,
-				0, 0, 0, 0
-			};
-			NetworkHelper.setIntToPacket(lba, 1, enumsound.index);
-			NetworkHelper.setIntToPacket(lba, 5, force?1:0);
-			syncNet(EnumPacketMode.CLIENT_SWINGARM, lba);
+			NBTTagCompound tagCompound = new NBTTagCompound();
+			tagCompound.setByte("Arm", (byte) pArm);
+			tagCompound.setInteger("Sound", enumsound.index);
+			tagCompound.setBoolean("Force", force);
+
+			syncNet(EnumPacketMode.CLIENT_SWINGARM, tagCompound);
 		}
 	}
 
@@ -3539,7 +3485,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 			setMaidFlags(maidFreedom, dataWatch_Flags_Freedom);
 		} else {
-			syncNet(EnumPacketMode.SERVER_CHAMGE_FREEDOM, new byte[]{(byte) (pFlag?1:0)});
+			LittleMaidReengaged.Debug("Check Debug-%d/%s/%s", getEntityId(), isRemainsContract(), isFreedom());
+
+			NBTTagCompound tagCompound = new NBTTagCompound();
+			tagCompound.setBoolean("Freedom", pFlag);
+			syncNet(EnumPacketMode.SERVER_CHAMGE_FREEDOM, tagCompound);
 		}
 	}
 
@@ -3699,20 +3649,20 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	@Override
-	public int getColor() {
+	public byte getColor() {
 //		return textureData.getColor();
 		return dataManager.get(EntityLittleMaid.dataWatch_Color);
 	}
 
 	@Override
-	public void setColor(int index) {
+	public void setColor(byte index) {
 		textureData.setColor(index);
 		dataManager.set(EntityLittleMaid.dataWatch_Color, index);
 	}
 
 	public boolean updateMaidColor() {
 		// 同一性のチェック
-		int lc = getColor();
+		byte lc = getColor();
 		if (textureData.getColor() != lc) {
 			textureData.setColor(lc);
 			return true;

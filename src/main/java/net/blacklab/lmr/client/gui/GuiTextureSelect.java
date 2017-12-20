@@ -2,6 +2,7 @@ package net.blacklab.lmr.client.gui;
 
 import java.io.IOException;
 
+import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.opengl.EXTRescaleNormal;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -27,7 +28,7 @@ public class GuiTextureSelect extends GuiScreen {
 	protected GuiButton modeButton[] = new GuiButton[2];
 	public EntityLittleMaid target;
 	public int canSelectColor;
-	public int selectColor;
+	public byte selectColor;
 	protected boolean toServer;
 
 	public GuiTextureSelect(GuiScreen pOwner, EntityLittleMaid pTarget, int pColor, boolean pToServer) {
@@ -84,7 +85,10 @@ public class GuiTextureSelect extends GuiScreen {
 					// 色情報の設定
 //					theMaid.maidColor = selectPanel.color | 0x010000 | (selectColor << 8);
 					// サーバーへ染料の使用を通知
-					target.syncNet(EnumPacketMode.SERVER_DECREMENT_DYE, new byte[]{(byte) selectColor});
+					NBTTagCompound tagCompound = new NBTTagCompound();
+					tagCompound.setByte("Color", selectColor);
+
+					target.syncNet(EnumPacketMode.SERVER_DECREMENT_DYE, tagCompound);
 				}
 			}
 			break;

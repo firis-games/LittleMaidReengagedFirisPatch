@@ -1,25 +1,38 @@
 package net.blacklab.lmr.network;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.CompositeByteBuf;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class LMRMessage implements IMessage
 {
-	/** チャネル番号 */
-	public byte   ch;
-	/** 実データ */
-	public byte[] data;
-
-	public LMRMessage(){}
+	/**
+	 * 通信モード
+	 */
+	private EnumPacketMode mode;
 
 	/**
-	 * @param ch どこ宛かを示すチャネル番号。LMM宛か、MMMLib宛かを区別するために追加した
-	 * @param sendData 送信する実データ
-	 *  */
-	public LMRMessage(int ch, byte[] sendData)
+	 * 対象メイドID
+	 */
+	private Integer entityId;
+
+	/**
+	 * 通信内容NBT
+	 */
+	private NBTTagCompound tag;
+
+	public LMRMessage(){
+		// Keep empty
+	}
+
+	public LMRMessage(EnumPacketMode packetMode, Integer id, NBTTagCompound tagCompound)
 	{
-		this.ch		= (byte)ch;
-		this.data	= sendData;
+		mode = packetMode;
+		entityId = id;
+		tag = tagCompound;
 	}
 
 	/** IMessageのメソッド。ByteBufからデータを読み取る。
@@ -30,30 +43,35 @@ public class LMRMessage implements IMessage
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		try{
-			int len = buf.array().length;
-			//System.out.println("DEBUG INFO=READABLE BUF:"+buf.readableBytes());
-
-			if(len > 2)
-			{
-				ByteBuf bbuf = buf.slice(0, buf.readableBytes());
-				this.data = new byte[bbuf.readableBytes()-1];
-				this.ch =  bbuf.getByte(0);
-				bbuf.getBytes(1, this.data);
-			}
-			else
-			{
-				this.data = new byte[]{0};
-			}
-		}catch(Exception e){
-			e.printStackTrace();
+		try {
+			mode = EnumPacketMode.getEnumPacketMode(buf.readByte());
+			tag = ByteBufUtils.readTag(buf);
+			entityId = buf.readInt();
+		} catch (Exception e) {
+			// Prevent to send fragmented data
+			buf.clear();
 		}
 	}
 
 	@Override//IMessageのメソッド。ByteBufにデータを書き込む。
 	public void toBytes(ByteBuf buf)
 	{
-		buf.writeByte(this.ch);
-		buf.writeBytes(this.data);
+		buf.writeByte(mode.modeByte);
+		if (tag != null)
+			ByteBufUtils.writeTag(buf, tag);
+		if (entityId != null)
+			buf.writeInt(entityId);
+	}
+
+	public EnumPacketMode getMode() {
+		return mode;
+	}
+
+	public Integer getEntityId() {
+		return entityId;
+	}
+
+	public NBTTagCompound getTag() {
+		return tag;
 	}
 }

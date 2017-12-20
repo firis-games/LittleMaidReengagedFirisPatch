@@ -13,34 +13,34 @@ public interface IModelEntity {
 	 * @param pPackName
 	 * 設定されるテクスチャパックの名称（TextureBoxClient）
 	 */
-	public void setTexturePackName(TextureBox[] pTextureBox);
+	void setTexturePackName(TextureBox[] pTextureBox);
 	
 	/**
 	 * 現在のEntityに色を設定する。
 	 * @param pColor
 	 */
-	public void setColor(int pColor);
+	void setColor(byte pColor);
 
 	/**
 	 * 現在のEntityに設定されている色を返す。
 	 * @return
 	 */
-	public int getColor();
+	byte getColor();
 
-	public void setContract(boolean pContract);
-	public boolean isContract();
+	void setContract(boolean pContract);
+	boolean isContract();
 
-	public void setTextureBox(TextureBoxBase[] pTextureBox);
-	public TextureBoxBase[] getTextureBox();
+	void setTextureBox(TextureBoxBase[] pTextureBox);
+	TextureBoxBase[] getTextureBox();
 
-	public void setTextures(int pIndex, ResourceLocation[] pNames);
-	public ResourceLocation[] getTextures(int pIndex);
+	void setTextures(int pIndex, ResourceLocation[] pNames);
+	ResourceLocation[] getTextures(int pIndex);
 	
 	/**
 	 * 仕様変更により、これ以外は必要無くなる予定。
 	 * @return
 	 */
-	public ModelConfigCompound getModelConfigCompound();
+	ModelConfigCompound getModelConfigCompound();
 
 
 }

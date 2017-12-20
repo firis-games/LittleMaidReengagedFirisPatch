@@ -75,7 +75,7 @@ public class ModelConfigCompound  {
 	/**
 	 * 選択色
 	 */
-	public int color;
+	public byte color;
 	/**
 	 * 契約テクスチャを選択するかどうか
 	 */
@@ -264,7 +264,7 @@ public class ModelConfigCompound  {
 			if (textureBox[0] == null) {
 				// 指定色が無い場合は標準モデルに
 				textureBox[0] = textureBox[1] = ModelManager.instance.getDefaultTexture((IModelEntity)owner);
-				setColor(12);
+				setColor((byte)0xc);
 			} else {
 				textureBox[1] = textureBox[0];
 			}
@@ -340,15 +340,15 @@ public class ModelConfigCompound  {
 	}
 
 //	@Override
-	public boolean setColor(int pColor) {
+	public boolean setColor(byte pColor) {
 		boolean lf = (color != pColor);
 		color = pColor;
 		return lf;
 	}
 
 //	@Override
-	public int getColor() {
-		return color & 0x00ff;
+	public byte getColor() {
+		return color;
 	}
 
 //	@Override
@@ -385,7 +385,7 @@ public class ModelConfigCompound  {
 	/**
 	 * 野生の色をランダムで獲得する。
 	 */
-	public int getWildColor() {
+	public byte getWildColor() {
 		return textureBox[0].getRandomWildColor(owner.getRNG());
 	}
 
