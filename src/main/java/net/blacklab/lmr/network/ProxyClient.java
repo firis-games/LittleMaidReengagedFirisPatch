@@ -190,10 +190,9 @@ public class ProxyClient extends ProxyCommon
 		case CLIENT_RESPOND_IFF :
 			// IFFの設定値を受信
 			byte lval = tagCompound.getByte("Value");
-			int lindex = tagCompound.getInteger("Index");
-			String lname = (String)IFF.getUserIFF(Minecraft.getMinecraft().thePlayer.getUniqueID()).keySet().toArray()[lindex];
+			String lname = tagCompound.getString("Name");
 
-			LittleMaidReengaged.Debug("setIFF-CL %s(%d)=%d", lname, lindex, lval);
+			LittleMaidReengaged.Debug("setIFF-CL %s=%d", lname, lval);
 			IFF.setIFFValue(Minecraft.getMinecraft().thePlayer.getUniqueID(), lname, lval);
 			break;
 

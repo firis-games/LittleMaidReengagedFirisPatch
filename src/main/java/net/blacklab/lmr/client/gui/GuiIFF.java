@@ -57,7 +57,7 @@ public class GuiIFF extends GuiScreen {
 
 	public GuiIFF(World world, EntityPlayer player, EntityLittleMaid pEntity) {
 		super();
-		entityMap = new TreeMap<String, Entity>();
+		entityMap = new TreeMap<>();
 		initEntitys(world, true);
 
 		screenTitle = I18n.format("littleMaidMob.gui.iff.title");
@@ -67,7 +67,7 @@ public class GuiIFF extends GuiScreen {
 		// IFFをサーバーから取得
 		if (!Minecraft.getMinecraft().isSingleplayer()) {
 			int li = 0;
-			for (String ls : IFF.getUserIFF(null).keySet()) {
+			for (String ls : IFF.getUserIFF(player.getUniqueID()).keySet()) {
 				// TODO Too much packet with many entities
 				NBTTagCompound tagCompound = new NBTTagCompound();
 				tagCompound.setInteger("Index", li);

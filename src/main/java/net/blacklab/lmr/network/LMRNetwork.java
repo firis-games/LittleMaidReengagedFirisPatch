@@ -137,13 +137,12 @@ public class LMRNetwork
 
 		case SERVER_REQUEST_IFF :
 			// IFFGUI open
-			lindex = tagCompound.getInteger("Index");
 			lname = tagCompound.getString("Name");
 			value = IFF.getIFF(CommonHelper.getPlayerUUID(sender), lname, sender.worldObj);
 
-			sendIFFValue(sender, value, lindex);
+			sendIFFValue(sender, value, lname);
 
-			LittleMaidReengaged.Debug("getIFF-SV user:%s %s(%d)=%d", CommonHelper.getPlayerUUID(sender), lname, lindex, value);
+			LittleMaidReengaged.Debug("getIFF-SV user:%s %s=%d", CommonHelper.getPlayerUUID(sender), lname, value);
 			break;
 
 		case SERVER_SAVE_IFF :
@@ -193,11 +192,11 @@ public class LMRNetwork
 		}
 	}
 
-	protected static void sendIFFValue(EntityPlayer player, byte pValue, int pIndex) {
+	protected static void sendIFFValue(EntityPlayer player, byte pValue, String name) {
 		NBTTagCompound sendTag = new NBTTagCompound();
 
 		sendTag.setByte("Value", pValue);
-		sendTag.setInteger("Index", pIndex);
+		sendTag.setString("Name", name);
 
 		sendPacketToPlayer(EnumPacketMode.CLIENT_RESPOND_IFF, null, sendTag, player);
 	}
