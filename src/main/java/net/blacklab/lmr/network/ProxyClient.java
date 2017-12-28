@@ -1,7 +1,5 @@
 package net.blacklab.lmr.network;
 
-import java.util.Arrays;
-
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.gui.GuiIFF;
@@ -15,13 +13,14 @@ import net.blacklab.lmr.entity.renderfactory.RenderFactoryModelSelect;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
-import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleItemPickup;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -163,7 +162,7 @@ public class ProxyClient extends ProxyCommon
 
 	@Override
 	public void onClientCustomPayLoad(LMRMessage pPayload) {
-		EnumPacketMode lmode = pPayload.getMode();
+		LMRMessage.EnumPacketMode lmode = pPayload.getMode();
 		if (lmode == null) return;
 
 		LittleMaidReengaged.Debug("MODE: %s", lmode.toString());
@@ -178,7 +177,7 @@ public class ProxyClient extends ProxyCommon
 		clientPayLoad(lmode, (EntityLittleMaid) lemaid, pPayload.getTag());
 	}
 
-	private static void clientPayLoad(EnumPacketMode pMode, EntityLittleMaid lemaid, NBTTagCompound tagCompound) {
+	private static void clientPayLoad(LMRMessage.EnumPacketMode pMode, EntityLittleMaid lemaid, NBTTagCompound tagCompound) {
 		switch (pMode) {
 		case CLIENT_SWINGARM :
 			// 腕振り
@@ -206,6 +205,11 @@ public class ProxyClient extends ProxyCommon
 		case CLIENT_ONDEATH :
 			lemaid.manualOnDeath();
 			break;
+
+		case CLIENT_CURRENT_ITEM:
+			lemaid.maidInventory.currentItem = tagCompound.getInteger("Index");
+			lemaid.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.loadItemStackFromNBT(tagCompound.getCompoundTag("Stack")));
+
 		default:
 			break;
 		}

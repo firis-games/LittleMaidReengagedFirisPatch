@@ -10,12 +10,10 @@ public class LMRMessageHandler implements IMessageHandler<LMRMessage, IMessage>
 	@Override//IMessageHandlerのメソッド
 	public IMessage onMessage(LMRMessage message, MessageContext ctx)
 	{
-		if(message.getTag() != null) {
-			if (ctx.side.isClient()) {
-				LittleMaidReengaged.proxy.onClientCustomPayLoad(message);
-			} else {
-				LMRNetwork.onServerCustomPayload(ctx.side.isServer() ? ctx.getServerHandler().playerEntity : null, message);
-			}
+		if (ctx.side.isClient()) {
+			LittleMaidReengaged.proxy.onClientCustomPayLoad(message);
+		} else {
+			LMRNetwork.onServerCustomPayload(ctx.getServerHandler().playerEntity, message);
 		}
 		return null;//本来は返答用IMessageインスタンスを返すのだが、旧来のパケットの使い方をするなら必要ない。
 	}

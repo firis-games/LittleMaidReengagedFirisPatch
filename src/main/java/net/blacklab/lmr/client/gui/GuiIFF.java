@@ -11,11 +11,10 @@ import java.util.TreeMap;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.network.EnumPacketMode;
+import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
-import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -74,7 +73,7 @@ public class GuiIFF extends GuiScreen {
 				tagCompound.setString("Name", ls);
 
 				LittleMaidReengaged.Debug("RequestIFF %s(%d)", ls, li);
-				LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_REQUEST_IFF, null, tagCompound);
+				LMRNetwork.sendPacketToServer(LMRMessage.EnumPacketMode.SERVER_REQUEST_IFF, null, tagCompound);
 				li++;
 			}
 		}
@@ -207,7 +206,7 @@ public class GuiIFF extends GuiScreen {
 			NBTTagCompound tagCompound = new NBTTagCompound();
 			tagCompound.setByte("Value", tt);
 			tagCompound.setString("Name", pName);
-			LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_CHANGE_IFF, -1, tagCompound);
+			LMRNetwork.sendPacketToServer(LMRMessage.EnumPacketMode.SERVER_CHANGE_IFF, -1, tagCompound);
 
 			Entity player = mc.thePlayer;
 			player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("ui.button.click")), 1, 1);

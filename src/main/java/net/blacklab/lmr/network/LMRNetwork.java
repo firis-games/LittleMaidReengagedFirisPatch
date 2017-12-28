@@ -1,22 +1,16 @@
 package net.blacklab.lmr.network;
 
-import static net.blacklab.lmr.util.Statics.*;
-
-import java.util.Arrays;
-
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.helper.CommonHelper;
-import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,12 +28,12 @@ public class LMRNetwork
 		INSTANCE.registerMessage(LMRMessageHandler.class, LMRMessage.class, 0, Side.CLIENT);
 	}
 
-	public static void sendPacketToServer(EnumPacketMode mode, Integer id, NBTTagCompound tagCompound)
+	public static void sendPacketToServer(LMRMessage.EnumPacketMode mode, Integer id, NBTTagCompound tagCompound)
 	{
 		INSTANCE.sendToServer(new LMRMessage(mode, id, tagCompound));
 	}
 
-	public static void sendPacketToPlayer(EnumPacketMode mode, Integer id, NBTTagCompound tagCompound, EntityPlayer player)
+	public static void sendPacketToPlayer(LMRMessage.EnumPacketMode mode, Integer id, NBTTagCompound tagCompound, EntityPlayer player)
 	{
 		if(player instanceof EntityPlayerMP)
 		{
@@ -47,7 +41,7 @@ public class LMRNetwork
 		}
 	}
 
-	public static void sendPacketToAllPlayer(EnumPacketMode mode, Integer id, NBTTagCompound tagCompound)
+	public static void sendPacketToAllPlayer(LMRMessage.EnumPacketMode mode, Integer id, NBTTagCompound tagCompound)
 	{
 		INSTANCE.sendToAll(new LMRMessage(mode, id, tagCompound));
 	}
@@ -66,12 +60,13 @@ public class LMRNetwork
 	 * サーバーへIFFのセーブをリクエスト
 	 */
 	public static void requestSavingIFF() {
-		sendPacketToServer(EnumPacketMode.SERVER_SAVE_IFF, null, null);
+		sendPacketToServer(LMRMessage.EnumPacketMode.SERVER_SAVE_IFF, null, null);
 	}
 
 	public static void onServerCustomPayload(EntityPlayer sender, LMRMessage pPayload) {
 		// Turn true if the packet is sent from server
-		EnumPacketMode lmode = pPayload.getMode();
+		LMRMessage.EnumPacketMode lmode = pPayload.getMode();
+
 		if (lmode == null) return;
 
 		LittleMaidReengaged.Debug("MODE: %s", lmode.toString());
@@ -89,7 +84,7 @@ public class LMRNetwork
 		serverPayLoad(lmode, sender, (EntityLittleMaid) lemaid, pPayload.getTag());
 	}
 
-	private static void serverPayLoad(EnumPacketMode pMode, EntityPlayer sender, EntityLittleMaid lemaid, NBTTagCompound tagCompound) {
+	private static void serverPayLoad(LMRMessage.EnumPacketMode pMode, EntityPlayer sender, EntityLittleMaid lemaid, NBTTagCompound tagCompound) {
 		int lindex;
 		int lval;
 		String lname;
@@ -166,12 +161,27 @@ public class LMRNetwork
 			lemaid.syncMaidArmorVisible();
 			break;
 
+		case REQUEST_CURRENT_ITEM:
+			ItemStack stack = lemaid.getHeldItemMainhand();
+			if (stack != null) {
+				NBTTagCompound returnTag = new NBTTagCompound();
+				returnTag.setInteger("Index", lemaid.maidInventory.currentItem);
+
+				NBTTagCompound stackTag = new NBTTagCompound();
+				stack.writeToNBT(stackTag);
+
+				returnTag.setTag("Stack", stackTag);
+
+				sendPacketToPlayer(LMRMessage.EnumPacketMode.CLIENT_CURRENT_ITEM, lemaid.getEntityId(), returnTag, sender);
+			}
+			break;
+
 		default:
 			break;
 		}
 	}
 
-	protected static void syncPayLoad(EnumPacketMode pMode, EntityLittleMaid pMaid, NBTTagCompound tagCompound) {
+	protected static void syncPayLoad(LMRMessage.EnumPacketMode pMode, EntityLittleMaid pMaid, NBTTagCompound tagCompound) {
 		switch (pMode) {
 		case SYNC_ARMORFLAG:
 			pMaid.setMaidArmorVisible(tagCompound.getInteger("Visible"));
@@ -198,7 +208,7 @@ public class LMRNetwork
 		sendTag.setByte("Value", pValue);
 		sendTag.setString("Name", name);
 
-		sendPacketToPlayer(EnumPacketMode.CLIENT_RESPOND_IFF, null, sendTag, player);
+		sendPacketToPlayer(LMRMessage.EnumPacketMode.CLIENT_RESPOND_IFF, null, sendTag, player);
 	}
 
 }

@@ -21,13 +21,12 @@ import net.blacklab.lmr.entity.maidmodel.*;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
-import net.blacklab.lmr.network.EnumPacketMode;
 import net.blacklab.lmr.network.GuiHandler;
+import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.*;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.ItemHelper;
-import net.blacklab.lmr.util.helper.NetworkHelper;
 import net.blacklab.lmr.util.helper.OwnableEntityHelper;
 import net.blacklab.lmr.util.manager.EntityModeHandler;
 import net.blacklab.lmr.util.manager.LoaderSearcher;
@@ -642,7 +641,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void syncMaidArmorVisible() {
 		NBTTagCompound tagCompound = new NBTTagCompound();
 		tagCompound.setInteger("Visible", maidArmorVisible);
-		syncNet(EnumPacketMode.SYNC_ARMORFLAG, tagCompound);
+		syncNet(LMRMessage.EnumPacketMode.SYNC_ARMORFLAG, tagCompound);
 	}
 
 	/**
@@ -650,7 +649,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * 経験値ブースト値の取得
 	 */
 	public void requestExpBoost() {
-		syncNet(EnumPacketMode.SERVER_REQUEST_BOOST, null);
+		syncNet(LMRMessage.EnumPacketMode.SERVER_REQUEST_BOOST, null);
 	}
 
 	/**
@@ -660,7 +659,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		NBTTagCompound tagCompound = new NBTTagCompound();
 		tagCompound.setInteger("Booster", getExpBooster());
 
-		syncNet(EnumPacketMode.SYNC_EXPBOOST, tagCompound);
+		syncNet(LMRMessage.EnumPacketMode.SYNC_EXPBOOST, tagCompound);
 	}
 
 	public void syncModelNames() {
@@ -668,10 +667,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		tagCompound.setString("Main", getModelNameMain());
 		tagCompound.setString("Armor", getModelNameArmor());
 
-		syncNet(EnumPacketMode.SYNC_MODEL, tagCompound);
+		syncNet(LMRMessage.EnumPacketMode.SYNC_MODEL, tagCompound);
 	}
 
-	public void syncNet(EnumPacketMode pMode, NBTTagCompound tagCompound) {
+	public void syncNet(LMRMessage.EnumPacketMode pMode, NBTTagCompound tagCompound) {
+		LittleMaidReengaged.Debug("Id: %d, Send: %s", getEntityId(), pMode);
 		if(worldObj.isRemote){
 			LMRNetwork.sendPacketToServer(pMode, getEntityId(), tagCompound);
 		}else{
@@ -874,7 +874,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			tagCompound.setInteger("Sound", enumsound.index);
 			tagCompound.setBoolean("Force", force);
 
-			syncNet(EnumPacketMode.CLIENT_PLAY_SOUND, tagCompound);
+			syncNet(LMRMessage.EnumPacketMode.CLIENT_PLAY_SOUND, tagCompound);
 		}
 	}
 
@@ -2169,7 +2169,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			// サーバーの方が先に起動するのでクライアント側が更新を受け取れない
 			if (firstload > 0) {
 				if (Minecraft.getMinecraft().theWorld != null && Minecraft.getMinecraft().thePlayer != null) {
-					syncNet(EnumPacketMode.SERVER_REQUEST_MODEL, null);
+					syncNet(LMRMessage.EnumPacketMode.SERVER_REQUEST_MODEL, null);
+					syncNet(LMRMessage.EnumPacketMode.REQUEST_CURRENT_ITEM, null);
 					firstload = 0;
 				}
 			}
@@ -3257,7 +3258,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			tagCompound.setInteger("Sound", enumsound.index);
 			tagCompound.setBoolean("Force", force);
 
-			syncNet(EnumPacketMode.CLIENT_SWINGARM, tagCompound);
+			syncNet(LMRMessage.EnumPacketMode.CLIENT_SWINGARM, tagCompound);
 		}
 	}
 

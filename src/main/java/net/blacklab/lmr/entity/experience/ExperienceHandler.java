@@ -6,23 +6,19 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_DeathWait;
-import net.blacklab.lmr.network.EnumPacketMode;
+import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.ItemHelper;
-import net.blacklab.lmr.util.helper.MaidHelper;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 
 public class ExperienceHandler {
@@ -161,7 +157,7 @@ public class ExperienceHandler {
 		if (isWaitRevive && deathCount > 0) {
 			return true;
 		} else if (!theMaid.worldObj.isRemote && theMaid.getHealth() <= 0f) {
-			theMaid.syncNet(EnumPacketMode.CLIENT_ONDEATH, null);
+			theMaid.syncNet(LMRMessage.EnumPacketMode.CLIENT_ONDEATH, null);
 		}
 		return false;
 	}

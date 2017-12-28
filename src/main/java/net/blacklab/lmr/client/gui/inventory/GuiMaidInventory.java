@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
 
-import net.blacklab.lmr.network.EnumPacketMode;
+import net.blacklab.lmr.network.LMRMessage;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.opengl.GL11;
 
@@ -684,7 +684,7 @@ public class GuiMaidInventory extends GuiContainer {
 			// Synchronize
 			NBTTagCompound tagCompound = new NBTTagCompound();
 			tagCompound.setBoolean("Freedom", frdmbutton.toggle);
-			entitylittlemaid.syncNet(EnumPacketMode.SERVER_CHAMGE_FREEDOM, tagCompound);
+			entitylittlemaid.syncNet(LMRMessage.EnumPacketMode.SERVER_CHAMGE_FREEDOM, tagCompound);
 
 			break;
 		case 320:
