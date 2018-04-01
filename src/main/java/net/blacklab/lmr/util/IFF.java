@@ -139,7 +139,7 @@ public class IFF {
 	 */
 	public static byte getIFF(UUID pUsername, String entityname, World world) {
 		if (entityname == null) {
-			return LittleMaidReengaged.cfg_Aggressive ? iff_Enemy : iff_Friendry;
+			return iff_Friendry;
 		}
 		byte lt = iff_Enemy;
 		Map<String, Byte> lmap = getUserIFF(pUsername);
@@ -180,7 +180,7 @@ public class IFF {
 	 */
 	public static int getIFF(UUID pUsername, Entity entity) {
 		if (entity == null || !(entity instanceof EntityLivingBase)) {
-			return LittleMaidReengaged.cfg_Aggressive ? iff_Enemy : iff_Friendry;
+			return iff_Friendry;
 		}
 		String lename = EntityList.getEntityString(entity);
 		String lcname = lename;

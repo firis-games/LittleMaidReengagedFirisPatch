@@ -114,25 +114,22 @@ public class EventHookLMRE
 
 	public static boolean deleteDoppelganger(boolean loading, World worldObj, Entity entity) {
 		// ドッペル対策
-		if (LittleMaidReengaged.cfg_antiDoppelganger/* && maidAnniversary > 0L*/) {
-			for (int i = 0; i < worldObj.loadedEntityList.size(); i++) {
-				Entity entity1 = (Entity)worldObj.loadedEntityList.get(i);
-
+		for (int i = 0; i < worldObj.loadedEntityList.size(); i++) {
+			Entity entity1 = (Entity)worldObj.loadedEntityList.get(i);
 				if (!entity1.isDead && entity1 instanceof EntityLivingBase) {
-					EntityLivingBase elm = (EntityLivingBase)entity1;
-					if (elm.equals(entity)) continue;
+				EntityLivingBase elm = (EntityLivingBase)entity1;
+				if (elm.equals(entity)) continue;
 
-					boolean c1 = elm.getClass().getName().equals(entity.getClass().getName());
-					boolean c2 = elm.getUniqueID().equals(entity.getUniqueID());
+				boolean c1 = elm.getClass().getName().equals(entity.getClass().getName());
+				boolean c2 = elm.getUniqueID().equals(entity.getUniqueID());
 
-					if (c1 && c2) {
-						LittleMaidReengaged.Debug("REMOVE DOPPELGANGER UUID %s", entity.getUniqueID());
+				if (c1 && c2) {
+					LittleMaidReengaged.Debug("REMOVE DOPPELGANGER UUID %s", entity.getUniqueID());
 
-						if (entity.getEntityId() > elm.getEntityId()) {
-							elm.setDead();
-						} else {
-							return true;
-						}
+					if (entity.getEntityId() > elm.getEntityId()) {
+						elm.setDead();
+					} else {
+						return true;
 					}
 				}
 			}

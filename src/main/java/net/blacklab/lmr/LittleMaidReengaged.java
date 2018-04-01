@@ -39,6 +39,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 //github.com/Verclene/LittleMaidReengaged.git
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -96,15 +97,6 @@ public class LittleMaidReengaged {
 	public static int cfg_maxGroupSize = 3;
 	// @MLProp(info="It will despawn, if it lets things go. ")
 	public static boolean cfg_canDespawn = false;
-	// @MLProp(info="At local, make sure the name of the owner. ")
-	public static boolean cfg_checkOwnerName = false;
-	// @MLProp(info="Not to survive the doppelganger. ")
-	public static boolean cfg_antiDoppelganger = true;
-	// @MLProp(info="Enable LMM SpawnEgg Recipe. ")
-	public static boolean cfg_enableSpawnEgg = true;
-
-	// @MLProp(info="LittleMaid Voice distortion.")
-	public static boolean cfg_VoiceDistortion = false;
 
 	// @MLProp(info="Print Debug Massages.")
 	public static boolean cfg_PrintDebugMessage = false;
@@ -117,14 +109,7 @@ public class LittleMaidReengaged {
 	// 野生テクスチャ
 	public static boolean cfg_isFixedWildMaid = false;
 
-	// LivingSoundRate
-	public static float cfg_voiceRate = 0.1f;
-
-	// @MLProp(info="true: AlphaBlend(request power), false: AlphaTest(more fast)")
-	// public static boolean AlphaBlend = true;
-	// @MLProp(info="true: Will be hostile, false: Is a pacifist")
-	public static boolean cfg_Aggressive = true;
-	public static int cfg_maidOverdriveDelay = 64;
+	public static final float cfg_voiceRate = 0.2f;
 
 	@SidedProxy(clientSide = "net.blacklab.lmr.network.ProxyClient", serverSide = "net.blacklab.lmr.network.ProxyCommon")
 	public static ProxyCommon proxy;
@@ -198,55 +183,31 @@ public class LittleMaidReengaged {
 		randomSoundChance = new Random();
 
 		// Config
-		// エラーチェックのため試験的にimportしない形にしてみる
-		ConfigList cfg = new ConfigList();
-		try {
-			cfg.loadConfig(getName(), evt);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		cfg_Aggressive = cfg.getBoolean("Aggressive", true);
-		cfg_antiDoppelganger = cfg.getBoolean("antiDoppelganger", true);
-		cfg.setComment("canDespawn", "Whether a LittleMaid(no-contract) can despawn.");
-		cfg_canDespawn = cfg.getBoolean("canDespawn", false);
-		cfg.setComment("checkOwnerName", "Recommended to keep 'true'. If 'true', on SMP, each player can tame his/her own maids.");
-		cfg_checkOwnerName = cfg.getBoolean("checkOwnerName", true);
-		cfg.setComment("DeathMessage", "Print chat message when your maid dies.");
-		cfg_DeathMessage = cfg.getBoolean("DeathMessage", true);
-		cfg.setComment("VoiceDistortion", "If 'true', voices distorts like as vanila mobs.");
-		cfg_VoiceDistortion = cfg.getBoolean("VoiceDistortion", false);
-		cfg_Dominant = cfg.getBoolean("Dominant", false);
-		cfg.setComment("enableSpawnEgg", "If 'true', you can use a recipe of LittleMaid SpawnEgg.");
-		cfg_enableSpawnEgg = cfg.getBoolean("enableSpawnEgg", true);
-		cfg.setComment("maxGroupSize", "This config adjusts LittleMaids spawning.");
-		cfg_maxGroupSize = cfg.getInt("maxGroupSize", 3);
-		cfg.setComment("minGroupSize", "This config adjusts LittleMaids spawning.");
-		cfg_minGroupSize = cfg.getInt("minGroupSize", 1);
-		cfg.setComment("spawnLimit", "This config adjusts LittleMaids spawning.");
-		cfg_spawnLimit = cfg.getInt("spawnLimit", 20);
-		cfg.setComment("spawnWeight", "This config adjusts LittleMaids spawning.");
-		cfg_spawnWeight = cfg.getInt("spawnWeight", 5);
-		cfg.setComment("PrintDebugMessage", "Output messages for debugging to log. Usually this should be 'false'.");
-		cfg_PrintDebugMessage = cfg.getBoolean("PrintDebugMessage", false);
-		cfg.setComment("isModelAlphaBlend", "If 'false', alpha-blend of textures is disabled.");
-		cfg_isModelAlphaBlend = cfg.getBoolean("isModelAlphaBlend", true);
-		cfg.setComment("isFixedWildMaid", "If 'true', additional textures of LittleMaid(no-contract) will never used.");
-		cfg_isFixedWildMaid = cfg.getBoolean("isFixedWildMaid", false);
-		cfg_voiceRate = cfg.getFloat("voiceRate", 0.2f);
-		cfg.setComment("voiceRate", "Ratio of playing non-force sound");
+		Configuration cfg = new Configuration(evt.getSuggestedConfigurationFile());
+		cfg.load();
 
-		cfg_maidOverdriveDelay = cfg.getInt("maidOverdriveDelay", 32);
-		if (cfg_maidOverdriveDelay < 1) {
-			cfg_maidOverdriveDelay = 1;
-		} else if (cfg_maidOverdriveDelay > 128) {
-			cfg_maidOverdriveDelay = 128;
-		}
+		cfg_canDespawn = cfg.getBoolean("canDespawn", "General", false,
+				"Set whether non-contracted maids can despawn.");
+		cfg_DeathMessage = cfg.getBoolean("deathMessage", "General", true,
+				"Set whether prints death message of maids.");
+		cfg_Dominant = cfg.getBoolean("Dominant", "Advanced", false,
+				"Recommended to keep 'false'. If true, non-vanilla check is used for maid spawning.");
+		cfg_maxGroupSize = cfg.getInt("maxGroupSize", "Advanced", 3, 1, 20,
+				"Settings for maid spawning. Recommended to keep default.");
+		cfg_minGroupSize = cfg.getInt("minGroupSize", "Advanced", 1, 1, 20,
+				"Settings for maid spawning. Recommended to keep default.");
+		cfg_spawnLimit = cfg.getInt("spawnLimit", "Advanced", 20, 1, 30,
+				"Settings for maid spawning. Recommended to keep default.");
+		cfg_spawnWeight = cfg.getInt("spawnWeight", "Advanced", 5, 1, 9,
+				"Settings for maid spawning. Recommended to keep default.");
+		cfg_PrintDebugMessage = cfg.getBoolean("PrintDebugMessage", "Advanced", false,
+				"Print debug logs. Recommended to keep default.");
+		cfg_isModelAlphaBlend = cfg.getBoolean("isModelAlphaBlend", "Advanced", true,
+				"If your graphics SHOULD be too powerless to draw alpha-blend textures, turn this 'false'.");
+		cfg_isFixedWildMaid = cfg.getBoolean("isFixedWildMaid", "General", false,
+				"If 'true', only default-texture maid spawns. You can still change their textures after employing.");
 
-		try {
-			cfg.saveConfig(getName(), evt);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		cfg.save();
 
 //		latestVersion = Version.getLatestVersion("http://mc.el-blacklab.net/lmmnxversion.txt", 10000);
 
@@ -255,15 +216,13 @@ public class LittleMaidReengaged {
 
 		spawnEgg = new ItemMaidSpawnEgg();
 		GameRegistry.<Item>register(spawnEgg, new ResourceLocation(DOMAIN, "spawn_littlemaid_egg"));
-		if (cfg_enableSpawnEgg) {
-			GameRegistry.addRecipe(
-					new ItemStack(spawnEgg, 1),
-					new Object[] { "scs", "sbs", " e ", Character.valueOf('s'),
-							Items.SUGAR, Character.valueOf('c'),
-							new ItemStack(Items.DYE, 1, 3),
-							Character.valueOf('b'), Items.SLIME_BALL,
-							Character.valueOf('e'), Items.EGG, });
-		}
+		GameRegistry.addRecipe(
+				new ItemStack(spawnEgg, 1),
+				"scs", "sbs", " e ", Character.valueOf('s'),
+				Items.SUGAR, Character.valueOf('c'),
+				new ItemStack(Items.DYE, 1, 3),
+				Character.valueOf('b'), Items.SLIME_BALL,
+				Character.valueOf('e'), Items.EGG);
 
 		registerKey = new ItemTriggerRegisterKey();
 		GameRegistry.<Item>register(registerKey, new ResourceLocation(DOMAIN, "registerkey"));

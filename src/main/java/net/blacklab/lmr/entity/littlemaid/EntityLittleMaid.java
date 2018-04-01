@@ -326,7 +326,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //		isMaidChaseWait = false;
 		mstatTime = 6000;
 
-		maidOverDriveTime = new Counter(5, 300, -LittleMaidReengaged.cfg_maidOverdriveDelay);
+		maidOverDriveTime = new Counter(5, 300, -32);
 		workingCount = new Counter(11, 10, -10);
 		registerTick = new Counter(200, 200, -20);
 		mstatPlayingRole = PlayRole.NOTPLAYING;
@@ -1084,7 +1084,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			if (maidOverDriveTime.isEnable()) {
 				x = 128;
 			}else{
-				x = (int) (128 - maidOverDriveTime.getValue() * (128f / LittleMaidReengaged.cfg_maidOverdriveDelay));
+				x = (int) (128 - maidOverDriveTime.getValue() * (128f / 32));
 			}
 		}
 		if (registerTick.isDelay()) {
@@ -1801,15 +1801,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void onEntityUpdate() {
 		//音声再生
 		if(worldObj.isRemote&&!playingSound.isEmpty()){
-			float lpitch = LittleMaidReengaged.cfg_VoiceDistortion ? (rand.nextFloat() * 0.2F) + 0.95F : 1.0F;
-
 			Iterator<EnumSound> iterator = playingSound.iterator();
 			while(iterator.hasNext()){
 				EnumSound enumsound = iterator.next();
 				LittleMaidReengaged.Debug("REQ %s", enumsound);
 
 				if (!SoundLoader.isFoundSoundpack()) {
-					playSound(enumsound.DefaultValue, lpitch);
+					playSound(enumsound.DefaultValue, 1.0f);
 //					worldObj.playSound(posX, posY, posZ, SoundEvent.REGISTRY.getObject(new ResourceLocation(enumsound.DefaultValue)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
 					playingSound.remove(enumsound);
 					continue;
@@ -1837,7 +1835,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", getEntityId(), enumsound.index, enumsound.name(), sname));
 
 //				playSound(LittleMaidReengaged.DOMAIN+":"+sname, lpitch);
-				worldObj.playSound(posX, posY, posZ, new SoundEvent(new ResourceLocation(LittleMaidReengaged.DOMAIN+":"+sname)), getSoundCategory(), getSoundVolume(), lpitch, false);
+				worldObj.playSound(posX, posY, posZ, new SoundEvent(new ResourceLocation(LittleMaidReengaged.DOMAIN+":"+sname)), getSoundCategory(), getSoundVolume(), 1f, false);
 				playingSound.remove(enumsound);
 			}
 //			LMM_LittleMaidMobNX.proxy.playLittleMaidSound(worldObj, posX, posY, posZ, playingSound, getSoundVolume(), lpitch, false);
@@ -3139,7 +3137,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				EntityPlayer clientPlayer = LittleMaidReengaged.proxy.getClientPlayer();
 
 				if (!LittleMaidReengaged.proxy.isSinglePlayer()
-						|| LittleMaidReengaged.cfg_checkOwnerName
 						|| clientPlayer == null) {
 					lname = getMaidMasterUUID();
 				} else {
