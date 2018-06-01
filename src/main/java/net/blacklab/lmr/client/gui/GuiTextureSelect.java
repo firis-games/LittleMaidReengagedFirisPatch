@@ -27,14 +27,12 @@ public class GuiTextureSelect extends GuiScreen {
 	protected GuiTextureSlot selectPanel;
 	protected GuiButton modeButton[] = new GuiButton[2];
 	public EntityLittleMaid target;
-	public int canSelectColor;
 	public byte selectColor;
 	protected boolean toServer;
 
-	public GuiTextureSelect(GuiScreen pOwner, EntityLittleMaid pTarget, int pColor, boolean pToServer) {
+	public GuiTextureSelect(GuiScreen pOwner, EntityLittleMaid pTarget, boolean pToServer) {
 		owner = pOwner;
 		target = pTarget;
-		canSelectColor = pColor;
 		selectColor = pTarget.getColor();
 		toServer = pToServer;
 	}
@@ -84,7 +82,6 @@ public class GuiTextureSelect extends GuiScreen {
 				if (selectColor != selectPanel.color) {
 					// 色情報の設定
 //					theMaid.maidColor = selectPanel.color | 0x010000 | (selectColor << 8);
-					// サーバーへ染料の使用を通知
 					NBTTagCompound tagCompound = new NBTTagCompound();
 					tagCompound.setByte("Color", selectColor);
 
@@ -142,13 +139,16 @@ public class GuiTextureSelect extends GuiScreen {
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
+
 		RenderHelper.enableGUIStandardItemLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
+
 		TextureBox lbox = selectPanel.getSelectedBox();
 		GL11.glTranslatef(width / 2 - 115F, height - 5F, 100F);
 		GL11.glScalef(60F, -60F, 60F);
 		selectPanel.entity.renderYawOffset = -25F;
 		selectPanel.entity.rotationYawHead = -10F;
+
 		ResourceLocation ltex[];
 		if (selectPanel.mode) {
 			selectPanel.entity.textureData.textureBox[0] = GuiTextureSlot.getBlankBox();
@@ -161,11 +161,13 @@ public class GuiTextureSelect extends GuiScreen {
 			selectPanel.entity.setTextureNames();
 		}
 		mc.getRenderManager().doRenderEntity(selectPanel.entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+		/*
 		for (int li = 0; li < 16; li++) {
 			if (lbox.hasColor(li)) {
 				break;
 			}
 		}
+		*/
 		GL11.glDisable(EXTRescaleNormal.GL_RESCALE_NORMAL_EXT);
 		GL11.glPopMatrix();
 	

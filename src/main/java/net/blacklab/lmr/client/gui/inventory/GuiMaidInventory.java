@@ -647,18 +647,7 @@ public class GuiMaidInventory extends GuiContainer {
 			entitylittlemaid.syncModelNames();
 			break;
 		case 200 :
-			int ldye = 0;
-			if (mc.thePlayer.capabilities.isCreativeMode) {
-				ldye = 0xffff;
-			} else {
-				for (ItemStack lis : mc.thePlayer.inventory.mainInventory) {
-					if (lis != null && lis.getItem() == Items.DYE) {
-						ldye |= (1 << (15 - lis.getItemDamage()));
-					}
-				}
-			}
-			isChangeTexture = false;
-			mc.displayGuiScreen(new GuiTextureSelect(this, entitylittlemaid, ldye, true));
+			mc.displayGuiScreen(new GuiTextureSelect(this, entitylittlemaid, true));
 			break;
 		case 300 :
 			visarmorbutton[0].toggle=!visarmorbutton[0].toggle;

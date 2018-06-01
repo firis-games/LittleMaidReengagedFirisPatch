@@ -98,7 +98,7 @@ public class GuiTextureSlot extends GuiSlot {
 			texsel[1] = var1;
 		} else {
 			TextureBox lbox = getSelectedBox(var1);
-			if (lbox.hasColor(selectColor, isContract) && (owner.canSelectColor & (1 << selectColor)) > 0) {
+			if (lbox.hasColor(selectColor, isContract)) {
 				selected = var1;
 				texsel[0] = var1;
 				owner.selectColor = selectColor;
@@ -123,6 +123,17 @@ public class GuiTextureSlot extends GuiSlot {
 	protected void drawSlot(int var1, int var2, int var3, int var4, int var6, int var7) {
 		GL11.glPushMatrix();
 
+		TextureBox lbox;
+		if (mode) {
+			lbox = indexArmor.get(var1);
+			entity.textureData.textureBox[0] = blankBox;
+			entity.textureData.textureBox[1] = lbox;
+		} else {
+			lbox = indexTexture.get(var1);
+			entity.textureData.textureBox[0] = lbox;
+			entity.textureData.textureBox[1] = blankBox;
+		}
+
 		if (!mode) {
 			for (int li = 0; li < 16; li++) {
 				int lx = var2 + 15 + 12 * li;
@@ -134,23 +145,13 @@ public class GuiTextureSlot extends GuiSlot {
 					Gui.drawRect(lx, var3, lx + 11, var3 + 36, 0x88882222);
 				} else if (owner.selectColor == li) {
 					Gui.drawRect(lx, var3, lx + 11, var3 + 36, 0x88226622);
-				} else if ((owner.canSelectColor & (1 << li)) > 0) {
-					Gui.drawRect(lx, var3, lx + 11, var3 + 36, 0x88222288);
+				} else if (lbox.hasColor(li)) {
+					Gui.drawRect(lx, var3, lx + 11, var3 + 36, 0x66888888);
 				}
 			}
 		}
 
-		TextureBox lbox;
-		if (mode) {
-			lbox = indexArmor.get(var1);
-			entity.textureData.textureBox[0] = blankBox;
-			entity.textureData.textureBox[1] = lbox;
-		} else {
-			lbox = indexTexture.get(var1);
-			entity.textureData.textureBox[0] = lbox;
-			entity.textureData.textureBox[1] = blankBox;
-		}
-//		MMM_TextureManager.instance.checkTextureBoxServer(lbox);
+		//		MMM_TextureManager.instance.checkTextureBoxServer(lbox);
 		GL11.glDisable(GL11.GL_BLEND);
 
 		owner.drawString(this.owner.mc.fontRendererObj, lbox.textureName,

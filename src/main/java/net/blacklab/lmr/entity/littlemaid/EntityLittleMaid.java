@@ -2879,7 +2879,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 									if (!worldObj.isRemote) {
 										setColor((byte)(15 - par3ItemStack.getItemDamage()));
 									}
-									par3ItemStack.splitStack(1);
 									return true;
 								} else {
 									// TODO print block-message
