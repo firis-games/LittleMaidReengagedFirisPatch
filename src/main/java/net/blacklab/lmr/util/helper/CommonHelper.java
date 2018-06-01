@@ -122,43 +122,6 @@ public class CommonHelper {
 	}
 
 	/**
-	 * プレーヤのインベントリからアイテムを減らす
-	 */
-	public static ItemStack decPlayerInventory(EntityPlayer par1EntityPlayer, int par2Index, int par3DecCount) {
-		if (par1EntityPlayer == null) {
-			return null;
-		}
-
-		if (par2Index == -1) {
-			par2Index = par1EntityPlayer.inventory.currentItem;
-		}
-		ItemStack itemstack1 = par1EntityPlayer.inventory.getStackInSlot(par2Index);
-		if (itemstack1 == null) {
-			return null;
-		}
-
-		if (!par1EntityPlayer.capabilities.isCreativeMode) {
-			// クリエイティブだと減らない
-			itemstack1.stackSize -= par3DecCount;
-		}
-
-		if (itemstack1.getItem() instanceof ItemPotion) {
-			if(itemstack1.stackSize <= 0) {
-				par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Items.GLASS_BOTTLE, par3DecCount));
-				return null;
-			}
-			par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE, par3DecCount));
-		} else {
-			if (itemstack1.stackSize <= 0) {
-				par1EntityPlayer.inventory.setInventorySlotContents(par2Index, null);
-				return null;
-			}
-		}
-
-		return itemstack1;
-	}
-
-	/**
 		 * 視線の先にいる最初のEntityを返す
 		 * @param pEntity
 		 * 視点

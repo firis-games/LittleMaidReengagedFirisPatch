@@ -2757,7 +2757,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				// 紐で繋ぐ
 				setGotcha(par1EntityPlayer.getEntityId());
 				mstatgotcha = par1EntityPlayer;
-				CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+				par3ItemStack.splitStack(1);
 				playSound("entity.item.pickup");
 				return true;
 			}
@@ -2772,7 +2772,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 						return true;
 					} else if (par3ItemStack.getItem() == Items.CAKE) {
 						// 再契約
-						CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+						par3ItemStack.splitStack(1);
 						maidContractLimit = (24000 * 7);
 						setFreedom(false);
 						setTracer(false);
@@ -2813,7 +2813,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								if(par3ItemStack.getItem() instanceof IItemSpecialSugar){
 									cmode = ((IItemSpecialSugar)par3ItemStack.getItem()).onSugarInteract(worldObj, par1EntityPlayer, par3ItemStack, this);
 								}
-								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								par3ItemStack.splitStack(1);
 								eatSugar(false, true, false);
 								if(!cmode) return true;
 								worldObj.setEntityState(this, (byte)11);
@@ -2879,7 +2879,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 									if (!worldObj.isRemote) {
 										setColor((byte)(15 - par3ItemStack.getItemDamage()));
 									}
-									CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+									par3ItemStack.splitStack(1);
 									return true;
 								} else {
 									// TODO print block-message
@@ -2900,7 +2900,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								if (par3ItemStack.stackSize == 64) {
 									getMaidMasterEntity().addStat(AchievementsLMRE.ac_Boost);
 								}
-								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, par3ItemStack.stackSize);
+								par3ItemStack.splitStack(par3ItemStack.stackSize);
 								return true;
 							}
 							else if (par3ItemStack.getItem() == Items.BOOK) {
@@ -2939,12 +2939,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 										}
 									}
 								}
-								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								par3ItemStack.splitStack(1);
 								return true;
 							}
 							else if (isFreedom() && par3ItemStack.getItem() == Items.REDSTONE) {
 								// Tracer
-								CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+								par3ItemStack.splitStack(1);
 								setMaidWait(false);
 								setTracer(!isTracer());
 								if (isTracer()) {
@@ -2979,7 +2979,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				if (par3ItemStack != null) {
 					if (par3ItemStack.getItem() == Items.CAKE) {
 						// 契約
-						CommonHelper.decPlayerInventory(par1EntityPlayer, -1, 1);
+						par3ItemStack.splitStack(1);
 
 						deathTime = 0;
 						if (!worldObj.isRemote) {

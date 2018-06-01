@@ -105,17 +105,6 @@ public class LMRNetwork
 			byte color = tagCompound.getByte("Color");
 			// Synchronizing
 			lemaid.setColor(color);
-
-			if (!sender.capabilities.isCreativeMode) {
-				for (int li = 0; li < sender.inventory.mainInventory.length; li++) {
-					ItemStack lis = sender.inventory.mainInventory[li];
-					if (lis != null && lis.getItem() == Items.DYE) {
-						if (lis.getItemDamage() == (15 - color)) {
-							CommonHelper.decPlayerInventory(sender, li, 1);
-						}
-					}
-				}
-			}
 			break;
 
 		case SERVER_CHANGE_IFF :

@@ -495,7 +495,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 							if(!owner.worldObj.isRemote) {
 								owner.clearActivePotions();
 							}
-							CommonHelper.decPlayerInventory(pentityplayer, -1, 1);
+							// TODO これバケツなくなるで
+							pitemstack.splitStack(1);
 							return true;
 						}
 					}
