@@ -31,7 +31,7 @@ if (project.hasProperty('genCL')) {
 tasks.withType(Jar) {compileJava.options.encoding = 'UTF-8'}
 tasks.withType(Jar) {compileApiJava.options.encoding = 'UTF-8'}
 
-// Replace ':EBLib***' to the project of EBLib in your workspace 
-dependencies { compile project(':' + project.name + ':EBLib') }
+// Replace ':EBLib***' to the project of EBLib in your workspace
+dependencies { compile project(':LittleMaidReengaged:EBLib') }
 
 version = "8.1.6.141"
