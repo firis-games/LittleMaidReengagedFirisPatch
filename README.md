@@ -26,10 +26,12 @@ I close issues with each fixing bug. And you can see solved or unsolved problems
 1. Make your GradleForge workspace multi-project
 2. Install git
 3. Run this command on project root: `git clone --recursive https://github.com/Verclene/LittleMaidReengaged.git`
- * **WARNING** if you run this on Windows, you have to **enable symbolic link** before cloning. See: https://github.com/git-for-windows/git/wiki/Symbolic-Links
+  **WARNING:** if you run this on Windows, you have to **enable symbolic link** before cloning. See: https://github.com/git-for-windows/git/wiki/Symbolic-Links
 4. Add these lines to root/settings.gradle:
-`includeFlat 'LittleMaidReengaged'
-include 'LittleMaidReengaged:EBLib'`
+```
+includeFlat 'LittleMaidReengaged' 
+include 'LittleMaidReengaged:EBLib'
+```
 5. Then run this command on root: `./gradlew setupDecompWorkspace --refresh-dependencies`
 
 ### To run client on the dev environment
