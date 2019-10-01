@@ -1,15 +1,26 @@
-/.settings/
-/.project
-/eclipse/
-/.gradle/
-/build/
-/bin/
-/.classpath
-/run/
-/LittleMaidReengaged.1.9_Client.launch
-/LittleMaidReengaged.1.9_Server.launch
-/LittleMaidReengaged.1.9.4_Client.launch
-/LittleMaidReengaged.1.9.4_Server.launch
-/config/
-/crash-reports/
-/logs/
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+
+# minecraft forge
+mods
+/*.txt
