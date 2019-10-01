@@ -64,8 +64,7 @@ public class LittleMaidReengaged {
 	public static final String DOMAIN = "lmreengaged";
 	public static final String VERSION = "8.1.6.141";
 	public static final String ACCEPTED_MCVERSION = "[1.9.4,1.10.2]";
-	public static final String DEPENDENCIES = "required-after:Forge@[1.9.4-12.17.0.1976,);"
-			+ "required-after:net.blacklab.lib@[6.1.5.8,)";
+	public static final String DEPENDENCIES = "required-after:Forge@[1.9.4-12.17.0.1976,);";
 
 	/*
 	 * public static String[] cfg_comment = {

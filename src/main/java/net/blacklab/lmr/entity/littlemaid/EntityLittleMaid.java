@@ -893,7 +893,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				so = EnumSound.living_morning;
 			} else if (mstatTime < 12500) {
 				if (isContract()) {
-					Biome Biome = worldObj.getBiomeGenForCoords(getPosition());
+					Biome Biome = worldObj.getBiome(getPosition());
 					TempCategory ltemp = Biome.getTempCategory();
 					if (ltemp == TempCategory.COLD) {
 						so = EnumSound.living_cold;
