@@ -276,7 +276,7 @@ public class SoundLoader {
 				while (iterator.hasNext()) {
 					String soundName = (String) iterator.next();
 
-					List m = SoundRegistry.getPathListFromRegisteredName(soundName);
+					List<String> m = SoundRegistry.getPathListFromRegisteredName(soundName);
 					// サウンド登録名
 					output.add("  \"" + soundName + "\": {");
 
@@ -284,7 +284,7 @@ public class SoundLoader {
 					output.add("    \"category\": \"master\",");
 					output.add("    \"sounds\": [");
 					if (m!=null && !m.isEmpty()) {
-						Iterator n = m.iterator();
+						Iterator<String> n = m.iterator();
 						while (n.hasNext()) {
 							String path = (String) n.next();
 							output.add("      \""+LittleMaidReengaged.DOMAIN+":" + soundName + "//" + path + "\"" + (n.hasNext() ? "," : ""));

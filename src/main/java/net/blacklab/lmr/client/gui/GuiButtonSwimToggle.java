@@ -12,7 +12,7 @@ public class GuiButtonSwimToggle extends GuiButtonArmorToggle {
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 		// TODO 自動生成されたメソッド・スタブ
 		if(!visible) return;
 		handleHovered(mouseX, mouseY);
@@ -27,7 +27,7 @@ public class GuiButtonSwimToggle extends GuiButtonArmorToggle {
 		}else{
 			GlStateManager.color(1.0f, 1.0f, 1.0f, 0.5f);
 		}
-		drawTexturedModalRect(xPosition, yPosition, 48, toggle?0:16, 16, 16);
+		drawTexturedModalRect(this.x, this.y, 48, toggle?0:16, 16, 16);
 		GlStateManager.enableLighting();
 		GlStateManager.enableDepth();
 		GlStateManager.enableAlpha();

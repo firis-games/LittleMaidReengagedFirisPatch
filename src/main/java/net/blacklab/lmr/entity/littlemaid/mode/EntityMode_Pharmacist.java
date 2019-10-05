@@ -1,7 +1,6 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.SwingStatus;
@@ -36,12 +35,6 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
 	@Override
 	public void init() {
-		/* langファイルに移動
-		ModLoader.addLocalization("littleMaidMob.mode.Pharmacist", "Pharmacist");
-		ModLoader.addLocalization("littleMaidMob.mode.T-Pharmacist", "T-Pharmacist");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Pharmacist", "F-Pharmacist");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Pharmacist", "D-Pharmacist");
-		*/
 	}
 
 	@Override
@@ -57,12 +50,12 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
-		if (litemstack != null) {
+		if (!litemstack.isEmpty()) {
 			if (isTriggerItem(mmode_Pharmacist, litemstack) && owner.maidInventory.getInventorySlotContainItem(Items.BLAZE_POWDER) > 0) {
 				owner.setMaidMode(mmode_Pharmacist);
-				if (pentityplayer != null) {
-					pentityplayer.addStat(AchievementsLMRE.ac_Pharmacist);
-				}
+				//if (pentityplayer != null) {
+				//	pentityplayer.addStat(AchievementsLMRE.ac_Pharmacist);
+				//}
 				return true;
 			}
 		}
@@ -98,10 +91,10 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		switch (pMode) {
 		case mmode_Pharmacist :
 			litemstack = owner.getCurrentEquippedItem();
-			if (!(inventryPos > 0 && litemstack != null && !PotionUtils.getEffectsFromStack(litemstack).isEmpty())) {
+			if (!(inventryPos > 0 && !litemstack.isEmpty() && !PotionUtils.getEffectsFromStack(litemstack).isEmpty())) {
 				for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 					litemstack = owner.maidInventory.getStackInSlot(li);
-					if (litemstack != null) {
+					if (!litemstack.isEmpty()) {
 						// 対象は水ポーション
 						if (isTriggerItem(pMode, litemstack)) {
 							return li;
@@ -117,7 +110,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
 	@Override
 	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
-		if (par1ItemStack == null) {
+		if (par1ItemStack.isEmpty()) {
 			return false;
 		}
 		return par1ItemStack.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(par1ItemStack);
@@ -132,7 +125,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	public boolean isSearchBlock() {
 		if (!super.isSearchBlock()) return false;
 
-		if (owner.getCurrentEquippedItem() != null) {
+		if (!owner.getCurrentEquippedItem().isEmpty()) {
 			fDistance = Double.MAX_VALUE;
 			owner.clearTilePos();
 			owner.setSneaking(false);
@@ -146,15 +139,15 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		// 実行中判定
 		return owner.maidTileEntity instanceof TileEntityBrewingStand &&
 				(((TileEntityBrewingStand)owner.maidTileEntity).getField(0) > 0 ||
-						(owner.getCurrentEquippedItem() != null) || inventryPos > 0);
+						(!owner.getCurrentEquippedItem().isEmpty()) || inventryPos > 0);
 	}
 
 	@Override
 	public boolean checkBlock(String pMode, int px, int py, int pz) {
-		if (owner.getCurrentEquippedItem() == null) {
+		if (owner.getCurrentEquippedItem().isEmpty()) {
 			return false;
 		}
-		TileEntity ltile = owner.worldObj.getTileEntity(new BlockPos(px, py, pz));
+		TileEntity ltile = owner.getEntityWorld().getTileEntity(new BlockPos(px, py, pz));
 		if (!(ltile instanceof TileEntityBrewingStand)) {
 			return false;
 		}
@@ -176,7 +169,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	@Override
 	public boolean executeBlock(String pMode, int px, int py, int pz) {
 		TileEntityBrewingStand ltile = (TileEntityBrewingStand)owner.maidTileEntity;
-		if (owner.worldObj.getTileEntity(new BlockPos(px, py, pz)) != ltile) {
+		if (owner.getEntityWorld().getTileEntity(new BlockPos(px, py, pz)) != ltile) {
 			return false;
 		}
 
@@ -186,7 +179,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
 		// 蒸留待機
 //    	isMaidChaseWait = true;
-		if (ltile.getStackInSlot(0) != null || ltile.getStackInSlot(1) != null || ltile.getStackInSlot(2) != null || ltile.getStackInSlot(3) != null || !lswing.canAttack()) {
+		if (!ltile.getStackInSlot(0).isEmpty() || !ltile.getStackInSlot(1).isEmpty() || !ltile.getStackInSlot(2).isEmpty() || !ltile.getStackInSlot(3).isEmpty() || !lswing.canAttack()) {
 			// お仕事中
 			owner.setWorking(true);
 		}
@@ -196,13 +189,13 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 			// Get fuel value
 			// Blaze Power slot in stand
 			ItemStack blazeStackB = ltile.getStackInSlot(4);
-			if (ltile.getField(1) <= 0 && blazeStackB == null) {
+			if (ltile.getField(1) <= 0 && blazeStackB.isEmpty()) {
 				if (blaze_position >= 0) {
 					ItemStack blazeStackM = owner.maidInventory.getStackInSlot(blaze_position);
 					ltile.setInventorySlotContents(4, new ItemStack(Items.BLAZE_POWDER));
-					blazeStackM.stackSize--;
-					if (blazeStackM.stackSize <= 0) {
-						blazeStackM = null;
+					blazeStackM.shrink(1);
+					if (blazeStackM.getCount() <= 0) {
+						blazeStackM = ItemStack.EMPTY;
 					}
 					lflag = true;
 				} else {
@@ -212,7 +205,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
 			ItemStack lIngredientStack = ltile.getStackInSlot(3);
 
-			if (lIngredientStack != null && lIngredientStack.stackSize > 0 && ltile.getField(0) <= 0) {
+			if (!lIngredientStack.isEmpty() && lIngredientStack.getCount() > 0 && ltile.getField(0) <= 0) {
 				// 蒸留不能なので回収
 				LittleMaidReengaged.Debug("Impossible brewing.");
 				if (py <= owner.posY) {
@@ -220,7 +213,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				}
 				lflag = true;
 				if (owner.maidInventory.addItemStackToInventory(lIngredientStack)) {
-					ltile.setInventorySlotContents(3, null);
+					ltile.setInventorySlotContents(3, ItemStack.EMPTY);
 					owner.playSound("entity.item.pickup");
 					owner.setSwing(5, EnumSound.Null, false);
 				}
@@ -231,8 +224,8 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				LittleMaidReengaged.Debug("Complete.");
 				for (int li = 0; li < 3 && !lflag; li ++) {
 					litemstack1 = ltile.getStackInSlot(li);
-					if (litemstack1 != null && owner.maidInventory.addItemStackToInventory(litemstack1)) {
-						ltile.setInventorySlotContents(li, null);
+					if (!litemstack1.isEmpty() && owner.maidInventory.addItemStackToInventory(litemstack1)) {
+						ltile.setInventorySlotContents(li, ItemStack.EMPTY);
 						owner.playSound("entity.item.pickup");
 						owner.setSwing(5, EnumSound.cookingOver, false);
 						owner.addMaidExperience(0.25f);
@@ -247,14 +240,14 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 			}
 
 			litemstack1 = owner.maidInventory.getCurrentItem();
-			if (!lflag && (litemstack1 != null && litemstack1.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack1))) {
+			if (!lflag && (!litemstack1.isEmpty() && litemstack1.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack1))) {
 				// 水瓶をげっとれでぃ
 				LittleMaidReengaged.Debug("Ready bottle.");
 				int li = 0;
 				for (li = 0; li < 3 && !lflag; li++) {
-					if (ltile.getStackInSlot(li) == null) {
+					if (ltile.getStackInSlot(li).isEmpty()) {
 						ltile.setInventorySlotContents(li, litemstack1);
-						owner.maidInventory.setInventoryCurrentSlotContents(null);
+						owner.maidInventory.setInventoryCurrentSlotContents(ItemStack.EMPTY);
 						owner.playSound("entity.item.pickup");
 						owner.setSwing(5, EnumSound.cookingStart, false);
 						owner.getNextEquipItem();
@@ -263,14 +256,14 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					}
 				}
 			}
-			if (!lflag && (ltile.getStackInSlot(0) != null || ltile.getStackInSlot(1) != null || ltile.getStackInSlot(2) != null)
-					&& (owner.maidInventory.currentItem == -1 || (litemstack1 != null && litemstack1.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack1)))) {
+			if (!lflag && (!ltile.getStackInSlot(0).isEmpty() || !ltile.getStackInSlot(1).isEmpty() || !ltile.getStackInSlot(2).isEmpty())
+					&& (owner.maidInventory.currentItem == -1 || (!litemstack1.isEmpty() && litemstack1.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack1)))) {
 				// ポーション以外を検索
 				LittleMaidReengaged.Debug("Search stuff.");
 //				for (inventryPos = 0; inventryPos < owner.maidInventory.InventoryLittleMaid.maxInventorySize; inventryPos++) {
 				for (; inventryPos < owner.maidInventory.getSizeInventory(); inventryPos++) {
 					litemstack1 = owner.maidInventory.getStackInSlot(inventryPos);
-					if (litemstack1 != null && !(litemstack1.getItem() instanceof ItemPotion)) {
+					if (!litemstack1.isEmpty() && !(litemstack1.getItem() instanceof ItemPotion)) {
 						LittleMaidReengaged.Debug("Select item %s", litemstack1.getItem().getRegistryName());
 						owner.setEquipItem(inventryPos);
 						lflag = true;
@@ -279,18 +272,18 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				}
 			}
 
-			if (!lflag && lIngredientStack == null && (ltile.getStackInSlot(0) != null || ltile.getStackInSlot(1) != null || ltile.getStackInSlot(2) != null)) {
+			if (!lflag && lIngredientStack.isEmpty() && (!ltile.getStackInSlot(0).isEmpty() || !ltile.getStackInSlot(1).isEmpty() || !ltile.getStackInSlot(2).isEmpty())) {
 				// 手持ちのアイテムをぽーい
-				if (litemstack1 != null && !(litemstack1.getItem() instanceof ItemPotion) && BrewingRecipeRegistry.isValidIngredient(litemstack1)) {
+				if (!litemstack1.isEmpty() && !(litemstack1.getItem() instanceof ItemPotion) && BrewingRecipeRegistry.isValidIngredient(litemstack1)) {
 					LittleMaidReengaged.Debug("Set stuff %s", litemstack1.getItem().getRegistryName());
 					ltile.setInventorySlotContents(3, litemstack1);
-					owner.maidInventory.setInventorySlotContents(inventryPos, null);
+					owner.maidInventory.setInventorySlotContents(inventryPos, ItemStack.EMPTY);
 					owner.playSound("entity.item.pickup");
 					owner.setSwing(15, EnumSound.Null, false);
 					owner.addMaidExperience(3.5f);
 					lflag = true;
 				}
-				else if (litemstack1 == null || (litemstack1.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack1)) || !PotionUtils.getEffectsFromStack(litemstack1).isEmpty()) {
+				else if (litemstack1.isEmpty() || (litemstack1.getItem() instanceof ItemPotion && CommonHelper.hasEffect(litemstack1)) || !PotionUtils.getEffectsFromStack(litemstack1).isEmpty()) {
 					// 対象外アイテムを発見した時に終了
 					inventryPos = owner.maidInventory.getSizeInventory();
 					lflag = true;
@@ -303,7 +296,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
 
 			// 終了状態のキャンセル
-			if (owner.getSwingStatusDominant().index == -1 && lIngredientStack == null) {
+			if (owner.getSwingStatusDominant().index == -1 && lIngredientStack.isEmpty()) {
 				owner.getNextEquipItem();
 			}
 		} else {

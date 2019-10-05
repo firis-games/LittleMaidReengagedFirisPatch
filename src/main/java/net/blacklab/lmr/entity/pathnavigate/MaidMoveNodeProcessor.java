@@ -1,7 +1,6 @@
 package net.blacklab.lmr.entity.pathnavigate;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.pathfinding.WalkNodeProcessor;
@@ -22,7 +21,7 @@ public class MaidMoveNodeProcessor extends WalkNodeProcessor {
 	@Override
 	public PathPoint getStart() {
 		if (canSwim && entity.isInWater()) {
-			return this.openPoint(MathHelper.floor_double(entity.getEntityBoundingBox().minX), MathHelper.floor_double(entity.getEntityBoundingBox().minY + 0.5D), MathHelper.floor_double(entity.getEntityBoundingBox().minZ));
+			return this.openPoint(MathHelper.floor(entity.getEntityBoundingBox().minX), MathHelper.floor(entity.getEntityBoundingBox().minY + 0.5D), MathHelper.floor(entity.getEntityBoundingBox().minZ));
 		}
 		return super.getStart();
 	}
@@ -31,7 +30,7 @@ public class MaidMoveNodeProcessor extends WalkNodeProcessor {
 	public PathNodeType getPathNodeType(IBlockAccess x, int y, int z, int p_186330_4_) {
 		PathNodeType pathNodeType1 = super.getPathNodeType(x, y, z, p_186330_4_);
 		if (pathNodeType1 == PathNodeType.RAIL) {
-			pathNodeType1 = pathNodeType1.WALKABLE;
+			pathNodeType1 = PathNodeType.WALKABLE;
 		}
 		return pathNodeType1;
 	}
@@ -39,7 +38,7 @@ public class MaidMoveNodeProcessor extends WalkNodeProcessor {
 	@Override
 	public PathPoint getPathPointToCoords(double x, double y, double z) {
 		if (canSwim && entity.isInWater()) {
-			return this.openPoint(MathHelper.floor_double(x - (double)(entity.width / 2.0F)), MathHelper.floor_double(y + 0.5D), MathHelper.floor_double(z - (double)(entity.width / 2.0F)));
+			return this.openPoint(MathHelper.floor(x - (double)(entity.width / 2.0F)), MathHelper.floor(y + 0.5D), MathHelper.floor(z - (double)(entity.width / 2.0F)));
 		}
 		return super.getPathPointToCoords(x, y, z);
 	}
@@ -51,7 +50,7 @@ public class MaidMoveNodeProcessor extends WalkNodeProcessor {
 			int i = 0;
 
 			for (EnumFacing enumfacing : EnumFacing.values()) {
-				PathPoint pathpoint = this.getSafePoint(entity, currentPoint.xCoord + enumfacing.getFrontOffsetX(), currentPoint.yCoord + enumfacing.getFrontOffsetY(), currentPoint.zCoord + enumfacing.getFrontOffsetZ());
+				PathPoint pathpoint = this.getSafePoint(entity, currentPoint.x + enumfacing.getFrontOffsetX(), currentPoint.y + enumfacing.getFrontOffsetY(), currentPoint.z + enumfacing.getFrontOffsetZ());
 
 				if (pathpoint != null && !pathpoint.visited && pathpoint.distanceTo(targetPoint) < maxDistance) {
 					pathOptions[i++] = pathpoint;

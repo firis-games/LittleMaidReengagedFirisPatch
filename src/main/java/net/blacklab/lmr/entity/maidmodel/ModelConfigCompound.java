@@ -136,7 +136,7 @@ public class ModelConfigCompound  {
 		textureModel[1] = null;
 		textureModel[2] = null;
 
-		if (owner.worldObj.isRemote) {
+		if (owner.getEntityWorld().isRemote) {
 			return setTextureNamesClient();
 		}
 		return setTextureNamesServer();

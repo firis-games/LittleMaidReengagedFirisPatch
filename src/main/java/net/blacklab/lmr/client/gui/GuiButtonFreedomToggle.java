@@ -16,7 +16,7 @@ public class GuiButtonFreedomToggle extends GuiButtonSwimToggle {
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 		// TODO 自動生成されたメソッド・スタブ
 		if(!visible) return;
 		handleHovered(mouseX, mouseY);
@@ -32,7 +32,7 @@ public class GuiButtonFreedomToggle extends GuiButtonSwimToggle {
 		}else{
 			GlStateManager.color(colorb, colorb, colorb, 0.5f);
 		}
-		drawTexturedModalRect(xPosition, yPosition, 64, 0, 16, 16);
+		drawTexturedModalRect(this.x, this.y, 64, 0, 16, 16);
 		GlStateManager.enableLighting();
 		GlStateManager.enableDepth();
 		GlStateManager.enableAlpha();

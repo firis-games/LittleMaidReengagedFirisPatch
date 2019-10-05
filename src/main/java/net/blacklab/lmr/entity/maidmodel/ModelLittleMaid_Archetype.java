@@ -221,7 +221,7 @@ public class ModelLittleMaid_Archetype extends ModelLittleMaidBase {
 		if (lonGround > -9990F && !aimedBow) {
 			// 腕振り
 			float f6 = lonGround;
-			bipedBody.rotateAngleY = mh_sin(mh_sqrt_float(f6) * 3.141593F * 2.0F) * 0.2F;
+			bipedBody.rotateAngleY = mh_sin(mh_sqrt(f6) * 3.141593F * 2.0F) * 0.2F;
 			Skirt.rotateAngleY = bipedBody.rotateAngleY;
 			bipedRightArm.rotationPointZ = mh_sin(bipedBody.rotateAngleY) * 4F;
 			bipedRightArm.rotationPointX = -mh_cos(bipedBody.rotateAngleY) * 4F + 1.0F;

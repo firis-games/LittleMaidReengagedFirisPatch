@@ -3,7 +3,6 @@ package net.blacklab.lmr.entity.littlemaid.mode;
 import java.util.Iterator;
 import java.util.List;
 
-import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -34,13 +33,6 @@ public class EntityMode_Healer extends EntityModeBase {
 
 	@Override
 	public void init() {
-		// 登録モードの名称追加
-		/* langファイルに移動
-		ModLoader.addLocalization("littleMaidMob.mode.Healer", "Healer");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Healer", "F-Healer");
-		ModLoader.addLocalization("littleMaidMob.mode.T-Healer", "T-Healer");
-		ModLoader.addLocalization("littleMaidMob.mode.D-Healer", "D-Healer");
-		*/
 	}
 
 	@Override
@@ -58,12 +50,12 @@ public class EntityMode_Healer extends EntityModeBase {
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
-		if (litemstack != null) {
+		if (!litemstack.isEmpty()) {
 			if (isTriggerItem(mmode_Healer, litemstack)) {
 				owner.setMaidMode(mmode_Healer);
-				if (pentityplayer != null) {
-					pentityplayer.addStat(AchievementsLMRE.ac_Healer);
-				}
+				//if (pentityplayer != null) {
+				//	pentityplayer.addStat(AchievementsLMRE.ac_Healer);
+				//}
 				return true;
 			}
 		}
@@ -94,7 +86,7 @@ public class EntityMode_Healer extends EntityModeBase {
 			// Healer
 			for (int i = 0; i < owner.maidInventory.getSizeInventory(); i++) {
 				ItemStack is = owner.maidInventory.getStackInSlot(i);
-				if (is == null) continue;
+				if (is.isEmpty()) continue;
 				// 対象は食料かポーション
 				if (isTriggerItem(pMode, is)) {
 					return i;
@@ -107,7 +99,7 @@ public class EntityMode_Healer extends EntityModeBase {
 
 	@Override
 	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
-		if (par1ItemStack == null) {
+		if (par1ItemStack.isEmpty()) {
 			return false;
 		}
 		return par1ItemStack.getItem() instanceof ItemFood || (par1ItemStack.getItem() instanceof ItemPotion && CommonHelper.hasEffect(par1ItemStack));
@@ -161,15 +153,15 @@ public class EntityMode_Healer extends EntityModeBase {
 					}
 
 					ItemStack itemstack1 = owner.getCurrentEquippedItem();
-					if (itemstack1 != null) {
+					if (!itemstack1.isEmpty()) {
 						if (itemstack1.getItem() instanceof ItemFood) {
 							// 食料を突っ込む
 							if (h < 18) {
 								owner.setSwing(10, EnumSound.healing, true);
-								itemstack1 = ((ItemFood)itemstack1.getItem()).onItemUseFinish(itemstack1, owner.worldObj, lmaster);
-//	                        	owner.worldObj.playSoundAtEntity(lmaster, lmaster.getHurtSound(), 0.5F, (owner.rand.nextFloat() - owner.rand.nextFloat()) * 0.2F + 1.0F);
-								if (itemstack1.stackSize <= 0) {
-									itemstack1 = null;
+								itemstack1 = ((ItemFood)itemstack1.getItem()).onItemUseFinish(itemstack1, owner.getEntityWorld(), lmaster);
+//	                        	owner.getEntityWorld().playSoundAtEntity(lmaster, lmaster.getHurtSound(), 0.5F, (owner.rand.nextFloat() - owner.rand.nextFloat()) * 0.2F + 1.0F);
+								if (itemstack1.getCount() <= 0) {
+									itemstack1 = ItemStack.EMPTY;
 								}
 								owner.maidInventory.setInventoryCurrentSlotContents(itemstack1);
 								owner.getNextEquipItem();
@@ -179,10 +171,10 @@ public class EntityMode_Healer extends EntityModeBase {
 						else if (itemstack1.getItem() instanceof ItemPotion) {
 							boolean lswing = true;
 							// ポーションの効果が重複しないように使う
-							List list = PotionUtils.getEffectsFromStack(itemstack1);
+							List<PotionEffect> list = PotionUtils.getEffectsFromStack(itemstack1);
 							if (list != null) {
 								PotionEffect potioneffect;
-								for(Iterator iterator = list.iterator(); iterator.hasNext();) {
+								for(Iterator<PotionEffect> iterator = list.iterator(); iterator.hasNext();) {
 									potioneffect = (PotionEffect)iterator.next();
 									if (potioneffect.getPotion().equals(Potion.getPotionFromResourceLocation("instant_health"))) {
 										if ((6 << potioneffect.getAmplifier()) <= (lmaster.getMaxHealth() - lmaster.getHealth())) {
@@ -204,7 +196,7 @@ public class EntityMode_Healer extends EntityModeBase {
 							if (lswing) {
 								owner.setSwing(10, EnumSound.healing_potion, true);
 								owner.usePotionTotarget(lmaster);
-//	                        	owner.worldObj.playSoundAtEntity(lmaster, lmaster.getHurtSound(), 0.5F, (owner.rand.nextFloat() - owner.rand.nextFloat()) * 0.2F + 1.0F);
+//	                        	owner.getEntityWorld().playSoundAtEntity(lmaster, lmaster.getHurtSound(), 0.5F, (owner.rand.nextFloat() - owner.rand.nextFloat()) * 0.2F + 1.0F);
 								owner.getNextEquipItem();
 							}
 						}

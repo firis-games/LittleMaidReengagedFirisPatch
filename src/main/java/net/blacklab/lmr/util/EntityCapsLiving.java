@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -83,6 +84,7 @@ public class EntityCapsLiving implements IModelCaps {
 		return caps;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Object getCapsValue(int pIndex, Object... pArg) {
 		switch (pIndex) {
@@ -165,30 +167,34 @@ public class EntityCapsLiving implements IModelCaps {
 		case caps_isSprinting:
 			return owner.isSprinting();
 		case caps_PosBlockID:
-			return owner.worldObj.getBlockState(new BlockPos(
-					MathHelper.floor_double(owner.posX + (Double)pArg[0]),
-					MathHelper.floor_double(owner.posY + (Double)pArg[1]),
-					MathHelper.floor_double(owner.posZ + (Double)pArg[2]))).getBlock();
+			return owner.getEntityWorld().getBlockState(new BlockPos(
+					MathHelper.floor(owner.posX + (Double)pArg[0]),
+					MathHelper.floor(owner.posY + (Double)pArg[1]),
+					MathHelper.floor(owner.posZ + (Double)pArg[2]))).getBlock();
 		case caps_PosBlockState:
-			return owner.worldObj.getBlockState(new BlockPos(
-					MathHelper.floor_double(owner.posX + (Double)pArg[0]),
-					MathHelper.floor_double(owner.posY + (Double)pArg[1]),
-					MathHelper.floor_double(owner.posZ + (Double)pArg[2])));
+			return owner.getEntityWorld().getBlockState(new BlockPos(
+					MathHelper.floor(owner.posX + (Double)pArg[0]),
+					MathHelper.floor(owner.posY + (Double)pArg[1]),
+					MathHelper.floor(owner.posZ + (Double)pArg[2])));
 		case caps_PosBlockAir:
-			return !owner.worldObj.getBlockState(new BlockPos(
-					MathHelper.floor_double(owner.posX + (Double)pArg[0]),
-					MathHelper.floor_double(owner.posY + (Double)pArg[1]),
-					MathHelper.floor_double(owner.posZ + (Double)pArg[2]))).getBlock().isVisuallyOpaque();
+			
+			IBlockState state = owner.getEntityWorld().getBlockState(new BlockPos(
+					MathHelper.floor(owner.posX + (Double)pArg[0]),
+					MathHelper.floor(owner.posY + (Double)pArg[1]),
+					MathHelper.floor(owner.posZ + (Double)pArg[2])));
+			
+			return !state.getBlock().causesSuffocation(state);
+			
 		case caps_PosBlockLight:
-			return owner.worldObj.getBlockLightOpacity(new BlockPos(
-					MathHelper.floor_double(owner.posX + (Double)pArg[0]),
-					MathHelper.floor_double(owner.posY + (Double)pArg[1]),
-					MathHelper.floor_double(owner.posZ + (Double)pArg[2])));
+			return owner.getEntityWorld().getBlockLightOpacity(new BlockPos(
+					MathHelper.floor(owner.posX + (Double)pArg[0]),
+					MathHelper.floor(owner.posY + (Double)pArg[1]),
+					MathHelper.floor(owner.posZ + (Double)pArg[2])));
 		case caps_PosBlockPower:
-			return owner.worldObj.getStrongPower(new BlockPos(
-					MathHelper.floor_double(owner.posX + (Double)pArg[0]),
-					MathHelper.floor_double(owner.posY + (Double)pArg[1]),
-					MathHelper.floor_double(owner.posZ + (Double)pArg[2])));
+			return owner.getEntityWorld().getStrongPower(new BlockPos(
+					MathHelper.floor(owner.posX + (Double)pArg[0]),
+					MathHelper.floor(owner.posY + (Double)pArg[1]),
+					MathHelper.floor(owner.posZ + (Double)pArg[2])));
 		case caps_boundingBox:
 			if (pArg == null) {
 				return owner.getEntityBoundingBox();
@@ -214,11 +220,11 @@ public class EntityCapsLiving implements IModelCaps {
 
 		// World
 		case caps_WorldTotalTime:
-			return owner.worldObj.getWorldInfo().getWorldTotalTime();
+			return owner.getEntityWorld().getWorldInfo().getWorldTotalTime();
 		case caps_WorldTime:
-			return owner.worldObj.getWorldInfo().getWorldTime();
+			return owner.getEntityWorld().getWorldInfo().getWorldTime();
 		case caps_MoonPhase:
-			return owner.worldObj.getMoonPhase();
+			return owner.getEntityWorld().getMoonPhase();
 		case caps_TextureEntity:
 			return owner;
 		}

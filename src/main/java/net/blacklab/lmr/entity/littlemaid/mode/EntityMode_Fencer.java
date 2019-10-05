@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -21,7 +20,6 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
@@ -55,21 +53,6 @@ public class EntityMode_Fencer extends EntityModeBase {
 
 	@Override
 	public void init() {
-		// 登録モードの名称追加
-		/* langファイルに移動
-		ModLoader.addLocalization("littleMaidMob.mode.Fencer", "Fencer");
-		ModLoader.addLocalization("littleMaidMob.mode.Fencer", "ja_JP", "護衛剣士");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Fencer", "F-Fencer");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Fencer", "ja_JP", "自由剣士");
-		ModLoader.addLocalization("littleMaidMob.mode.T-Fencer", "T-Fencer");
-		ModLoader.addLocalization("littleMaidMob.mode.D-Fencer", "D-Fencer");
-		ModLoader.addLocalization("littleMaidMob.mode.Bloodsucker", "Bloodsucker");
-		ModLoader.addLocalization("littleMaidMob.mode.Bloodsucker", "ja_JP", "血に飢えた冥土");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Bloodsucker", "F-Bloodsucker");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Bloodsucker", "ja_JP", "通魔冥土");
-		ModLoader.addLocalization("littleMaidMob.mode.T-Bloodsucker", "T-Bloodsucker");
-		ModLoader.addLocalization("littleMaidMob.mode.D-Bloodsucker", "D-Bloodsucker");
-		*/
 		ModeTrigger.registerTrigger(mtrigger_Sword, new HashMap<>());
 		ModeTrigger.registerTrigger(mtrigger_Axe, new HashMap<>());
 	}
@@ -103,24 +86,24 @@ public class EntityMode_Fencer extends EntityModeBase {
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
-		if (litemstack != null) {
+		if (!litemstack.isEmpty()) {
 			if (isTriggerItem(mmode_Fencer, litemstack)) {
 				owner.setMaidMode(mmode_Fencer);
-				if (pentityplayer != null) {
-					pentityplayer.addStat(AchievementsLMRE.ac_Fencer);
-				}
-				if (litemstack.getItem() instanceof ItemSpade && pentityplayer != null) {
-					pentityplayer.addStat(AchievementsLMRE.ac_Buster);
-				}
+				//if (pentityplayer != null) {
+				//	pentityplayer.addStat(AchievementsLMRE.ac_Fencer);
+				//}
+				//if (litemstack.getItem() instanceof ItemSpade && pentityplayer != null) {
+				//	pentityplayer.addStat(AchievementsLMRE.ac_Buster);
+				//}
 				return true;
 			} else  if (isTriggerItem(mmode_Bloodsucker, litemstack)) {
 				owner.setMaidMode(mmode_Bloodsucker);
-				if (pentityplayer != null) {
-					pentityplayer.addStat(AchievementsLMRE.ac_RandomKiller);
-				}
-				if (litemstack.getItem() instanceof ItemSpade && pentityplayer != null) {
-					pentityplayer.addStat(AchievementsLMRE.ac_Buster);
-				}
+				//if (pentityplayer != null) {
+				//	pentityplayer.addStat(AchievementsLMRE.ac_RandomKiller);
+				//}
+				//if (litemstack.getItem() instanceof ItemSpade && pentityplayer != null) {
+				//	pentityplayer.addStat(AchievementsLMRE.ac_Buster);
+				//}
 				return true;
 			}
 		}
@@ -151,7 +134,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 		}
 
 		int li;
-		int ll = -1;
+		//int ll = -1;
 		double ld = 0;
 		double lld;
 		ItemStack litemstack;
@@ -161,7 +144,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 		case mmode_Fencer :
 			for (li = 0; li < owner.maidInventory.getSizeInventory() - 1; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
-				if (litemstack == null) continue;
+				if (litemstack.isEmpty()) continue;
 
 				// 剣
 				if (isTriggerItem(pMode, litemstack)) {
@@ -176,7 +159,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				catch (Exception e) {
 				}
 				if (lld > ld) {
-					ll = li;
+					//ll = li;
 					ld = lld;
 				}
 			}
@@ -184,7 +167,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 		case mmode_Bloodsucker :
 			for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
-				if (litemstack == null) continue;
+				if (litemstack.isEmpty()) continue;
 
 				// 斧
 				if (isTriggerItem(pMode, litemstack)) {
@@ -199,7 +182,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 				catch (Exception e) {
 				}
 				if (lld > ld) {
-					ll = li;
+					//ll = li;
 					ld = lld;
 				}
 			}
@@ -211,7 +194,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 
 	@Override
 	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
-		if (par1ItemStack == null) {
+		if (par1ItemStack.isEmpty()) {
 			return false;
 		}
 
@@ -239,7 +222,7 @@ public class EntityMode_Fencer extends EntityModeBase {
 	public boolean checkEntity(String pMode, Entity pEntity) {
 		// Distance from master
 		if (!owner.isFreedom() && owner.getMaidMasterEntity() != null &&
-				owner.getMaidMasterEntity().getDistanceSqToEntity(pEntity) >= getLimitRangeSqOnFollow()) {
+				owner.getMaidMasterEntity().getDistanceSq(pEntity) >= getLimitRangeSqOnFollow()) {
 			return false;
 		}
 

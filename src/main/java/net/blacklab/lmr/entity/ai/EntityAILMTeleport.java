@@ -1,6 +1,5 @@
 package net.blacklab.lmr.entity.ai;
 
-import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -38,7 +37,7 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 		}
 		
 		// If this maid gets too far from her master:
-		if (theMaid.getDistanceSqToEntity(theMaid.getMaidMasterEntity()) >= theMaid.getActiveModeClass().getLimitRangeSqOnFollow()) {
+		if (theMaid.getDistanceSq(theMaid.getMaidMasterEntity()) >= theMaid.getActiveModeClass().getLimitRangeSqOnFollow()) {
 			return true;
 		}
 		return false;
@@ -46,7 +45,7 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 	
 	@Override
 	public void startExecuting() {
-		theMaid.getNavigator().clearPathEntity();
+		theMaid.getNavigator().clearPath();
 	}
 	
 	@Override
@@ -67,9 +66,9 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 							continue;
 						}
 						BlockPos tPos = lMasterPos.add(x, y, z);
-						IBlockState tGround = theMaid.worldObj.getBlockState(tPos.add(0,-1,0)),
-								tFeet = theMaid.worldObj.getBlockState(tPos),
-								tHead = theMaid.worldObj.getBlockState(tPos.add(0, 1, 0));
+						IBlockState tGround = theMaid.getEntityWorld().getBlockState(tPos.add(0,-1,0)),
+								tFeet = theMaid.getEntityWorld().getBlockState(tPos),
+								tHead = theMaid.getEntityWorld().getBlockState(tPos.add(0, 1, 0));
 						if (tGround.getMaterial().isSolid() &&
 								tFeet.getMaterial().isReplaceable() &&
 								!tHead.getMaterial().isOpaque()/* &&
@@ -89,7 +88,7 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 	
 	@Override
 	public void resetTask() {
-		theMaid.getNavigator().clearPathEntity();
+		theMaid.getNavigator().clearPath();
 		theMaid.setAttackTarget(null);
 		theMaid.getWorkingCount().setValue(0);
 	}

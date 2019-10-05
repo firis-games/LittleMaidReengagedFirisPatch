@@ -1,6 +1,5 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
-import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -30,12 +29,6 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 
 	@Override
 	public void init() {
-		/* langファイルに移動
-		ModLoader.addLocalization("littleMaidMob.mode.Cooking", "Cooking");
-		ModLoader.addLocalization("littleMaidMob.mode.T-Cooking", "T-Cooking");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Cooking", "F-Cooking");
-		ModLoader.addLocalization("littleMaidMob.mode.D-Cooking", "D-Cooking");
-		*/
 	}
 
 	@Override
@@ -51,12 +44,12 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
-		if (litemstack != null) {
+		if (!litemstack.isEmpty()) {
 			if (ItemHelper.isItemBurned(litemstack)) {
 				owner.setMaidMode(mmode_Cooking);
-				if (pentityplayer != null) {
-					pentityplayer.addStat(AchievementsLMRE.ac_Cook);
-				}
+				//if (pentityplayer != null) {
+				//	pentityplayer.addStat(AchievementsLMRE.ac_Cook);
+				//}
 				return true;
 			}
 		}
@@ -108,7 +101,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		if (!super.isSearchBlock()) return false;
 
 		// 燃焼アイテムを持っている？
-		if (owner.getCurrentEquippedItem() != null && owner.maidInventory.getSmeltingItem() > -1) {
+		if (!owner.getCurrentEquippedItem().isEmpty() && owner.maidInventory.getSmeltingItem() > -1) {
 			fDistance = Double.MAX_VALUE;
 			owner.clearTilePos();
 			owner.setSneaking(false);
@@ -126,7 +119,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 
 	@Override
 	public boolean checkBlock(String pMode, int px, int py, int pz) {
-		TileEntity ltile = owner.worldObj.getTileEntity(new BlockPos(px, py, pz));
+		TileEntity ltile = owner.getEntityWorld().getTileEntity(new BlockPos(px, py, pz));
 		if (!(ltile instanceof TileEntityFurnace)) {
 			return false;
 		}
@@ -159,11 +152,11 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		if (owner.getSwingStatusDominant().canAttack()) {
 			// 完成品回収
 			litemstack = ltile.getStackInSlot(2);
-			if (litemstack != null) {
-				if (litemstack.stackSize > 0) {
-					li = litemstack.stackSize;
+			if (!litemstack.isEmpty()) {
+				if (litemstack.getCount() > 0) {
+					li = litemstack.getCount();
 					if (owner.maidInventory.addItemStackToInventory(litemstack)) {
-						dropExpOrb(litemstack, li - litemstack.stackSize);
+						dropExpOrb(litemstack, li - litemstack.getCount());
 						owner.playSound("entity.item.pickup");
 						owner.setSwing(5, EnumSound.cookingOver, false);
 						owner.addMaidExperience(4.2f);
@@ -173,24 +166,24 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 						lflag = true;
 					}
 				}
-				ltile.setInventorySlotContents(2, null);
+				ltile.setInventorySlotContents(2, ItemStack.EMPTY);
 			}
 
 			// 調理可能品を竈にぽーい
-			if (!lflag && ltile.getStackInSlot(0) == null) {
+			if (!lflag && ltile.getStackInSlot(0).isEmpty()) {
 				litemstack = ltile.getStackInSlot(2);
 				li = owner.maidInventory.getSmeltingItem();
 				owner.setEquipItem(li);
 				if (li > -1) {
 					litemstack = owner.maidInventory.getStackInSlot(li);
 					// レシピ対応品
-					if (litemstack.stackSize >= ltile.getInventoryStackLimit()) {
+					if (litemstack.getCount() >= ltile.getInventoryStackLimit()) {
 						ltile.setInventorySlotContents(0, litemstack.splitStack(ltile.getInventoryStackLimit()));
 					} else {
-						ltile.setInventorySlotContents(0, litemstack.splitStack(litemstack.stackSize));
+						ltile.setInventorySlotContents(0, litemstack.splitStack(litemstack.getCount()));
 					}
-					if (litemstack.stackSize <= 0) {
-						owner.maidInventory.setInventorySlotContents(li, null);
+					if (litemstack.getCount() <= 0) {
+						owner.maidInventory.setInventorySlotContents(li, ItemStack.EMPTY);
 					}
 					owner.playSound("entity.item.pickup");
 					owner.setSwing(5, EnumSound.cookingStart, false);
@@ -199,17 +192,17 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 			}
 
 			// 手持ちの燃料をぽーい
-			if (!lflag && ltile.getStackInSlot(1) == null && ltile.getStackInSlot(0) != null) {
+			if (!lflag && ltile.getStackInSlot(1).isEmpty() && !ltile.getStackInSlot(0).isEmpty()) {
 				owner.getNextEquipItem();
 				litemstack = owner.getCurrentEquippedItem();
 				if (ItemHelper.isItemBurned(litemstack)) {
-					if (litemstack.stackSize >= ltile.getInventoryStackLimit()) {
+					if (litemstack.getCount() >= ltile.getInventoryStackLimit()) {
 						ltile.setInventorySlotContents(1, litemstack.splitStack(ltile.getInventoryStackLimit()));
 					} else {
-						ltile.setInventorySlotContents(1, litemstack.splitStack(litemstack.stackSize));
+						ltile.setInventorySlotContents(1, litemstack.splitStack(litemstack.getCount()));
 					}
-					if (litemstack.stackSize <= 0) {
-						owner.maidInventory.setInventoryCurrentSlotContents(null);
+					if (litemstack.getCount() <= 0) {
+						owner.maidInventory.setInventoryCurrentSlotContents(ItemStack.EMPTY);
 					}
 					owner.getNextEquipItem();
 					owner.playSound("entity.item.pickup");
@@ -234,7 +227,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 			}
 
 			// 燃え終わってるのに燃料口に何かあるなら回収する
-			if (!lflag && !ltile.isBurning() && ltile.getStackInSlot(1) != null) {
+			if (!lflag && !ltile.isBurning() && !ltile.getStackInSlot(1).isEmpty()) {
 				ItemStack litemstack2 = ltile.removeStackFromSlot(1);
 				if (owner.maidInventory.addItemStackToInventory(litemstack2)) {
 					owner.playSound("entity.item.pickup");
@@ -265,16 +258,16 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 
 
 	public void dropExpOrb(ItemStack pItemStack, int pCount) {
-		if (!owner.worldObj.isRemote) {
+		if (!owner.getEntityWorld().isRemote) {
 			float var3 = pItemStack.getItem().getSmeltingExperience(pItemStack);
 			int var4;
 
 			if (var3 == 0.0F) {
 				pCount = 0;
 			} else if (var3 < 1.0F) {
-				var4 = MathHelper.floor_float(pCount * var3);
+				var4 = MathHelper.floor(pCount * var3);
 
-				if (var4 < MathHelper.ceiling_float_int(pCount * var3) && (float)Math.random() < pCount * var3 - var4) {
+				if (var4 < MathHelper.ceil(pCount * var3) && (float)Math.random() < pCount * var3 - var4) {
 					++var4;
 				}
 
@@ -284,7 +277,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 			while (pCount > 0) {
 				var4 = EntityXPOrb.getXPSplit(pCount);
 				pCount -= var4;
-				owner.worldObj.spawnEntityInWorld(new EntityXPOrb(owner.worldObj, owner.posX, owner.posY + 0.5D, owner.posZ + 0.5D, var4));
+				owner.getEntityWorld().spawnEntity(new EntityXPOrb(owner.getEntityWorld(), owner.posX, owner.posY + 0.5D, owner.posZ + 0.5D, var4));
 			}
 		}
 	}

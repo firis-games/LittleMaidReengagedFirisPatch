@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
-import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
@@ -70,12 +69,12 @@ public class EntityMode_Farmer extends EntityModeBase {
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
-		if (litemstack != null) {
+		if (!litemstack.isEmpty()) {
 			if (owner.getModeTrigger().isTriggerable(mtrigger_Hoe, litemstack, ItemHoe.class)) {
 				owner.setMaidMode(mmode_Farmer);
-				if (pentityplayer != null) {
-					pentityplayer.addStat(AchievementsLMRE.ac_Farmer);
-				}
+				//if (pentityplayer != null) {
+				//	pentityplayer.addStat(AchievementsLMRE.ac_Farmer);
+				//}
 				return true;
 			}
 		}
@@ -110,7 +109,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		case mmode_Farmer :
 			for (li = 0; li < owner.maidInventory.getSizeInventory() - 1; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
-				if (litemstack == null) continue;
+				if (litemstack.isEmpty()) continue;
 
 				// クワ
 				if (owner.getModeTrigger().isTriggerable(mtrigger_Hoe, litemstack, ItemHoe.class)) {
@@ -125,25 +124,25 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
-		if(pItemStack==null) return false;
+		if(pItemStack.isEmpty()) return false;
 		return true;//UtilModeFarmer.isHoe(owner, pItemStack)||UtilModeFarmer.isSeed(pItemStack.getItem())||UtilModeFarmer.isCrop(pItemStack.getItem());
 	}
 
 	@Override
 	public boolean isSearchBlock() {
-		return !owner.isMaidWait()&&(owner.getCurrentEquippedItem()!=null);
+		return !owner.isMaidWait()&&(!owner.getCurrentEquippedItem().isEmpty());
 	}
 
 	@Override
 	public boolean shouldBlock(String pMode) {
-		return owner.getCurrentEquippedItem() != null;
+		return !owner.getCurrentEquippedItem().isEmpty();
 	}
 
 	@Override
 	public boolean checkBlock(String pMode, int px, int py, int pz) {
 		if (!super.checkBlock(pMode, px, py, pz)) return false;
 
-		if(!VectorUtil.canMoveThrough(owner, 0.9D, px + 0.5D, py + 1.9D, pz + 0.5D, py==MathHelper.floor_double(owner.posY-1D), true, false)) return false;
+		if(!VectorUtil.canMoveThrough(owner, 0.9D, px + 0.5D, py + 1.9D, pz + 0.5D, py==MathHelper.floor(owner.posY-1D), true, false)) return false;
 		if(isUnfarmedLand(px,py,pz)) return true;
 		if(isFarmedLand(px,py,pz)){
 			/*耕地が見つかっても、
@@ -180,17 +179,17 @@ public class EntityMode_Farmer extends EntityModeBase {
 		boolean haveNothing = !owner.getModeTrigger().isTriggerable(mtrigger_Hoe, curStack, ItemHoe.class);
 
 		if (!haveNothing && isUnfarmedLand(px,py,pz) &&
-				curStack.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
+				curStack.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
 			owner.setSwing(10, EnumSound.Null, false);
 			owner.playLittleMaidSound(EnumSound.farmer_farm, false);
 
 			/*
 			if (owner.maidAvatar.capabilities.isCreativeMode) {
-				lis.stackSize = li;
+				lis.getCount() = li;
 			}
 			*/
-			if (curStack.stackSize <= 0) {
-				owner.maidInventory.setInventoryCurrentSlotContents(null);
+			if (curStack.getCount() <= 0) {
+				owner.maidInventory.setInventoryCurrentSlotContents(ItemStack.EMPTY);
 				owner.getNextEquipItem();
 			}
 //			owner.getNavigator().clearPathEntity();
@@ -200,22 +199,22 @@ public class EntityMode_Farmer extends EntityModeBase {
 			int index = getHadSeedIndex();
 			if(index!=-1){
 				ItemStack stack = owner.maidInventory.getStackInSlot(index);
-				int li = stack.stackSize;
-				stack.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px,py,pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F);
+				int li = stack.getCount();
+				stack.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px,py,pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F);
 				owner.playLittleMaidSound(EnumSound.farmer_plant, false);
 				if (owner.maidAvatar.capabilities.isCreativeMode) {
-					stack.stackSize = li;
+					stack.setCount(li);
 				}
 				owner.setSwing(10, EnumSound.Null, false);
-				if(stack.stackSize<=0){
-					owner.maidInventory.setInventorySlotContents(index, null);
+				if(stack.getCount()<=0){
+					owner.maidInventory.setInventorySlotContents(index, ItemStack.EMPTY);
 				}
 			}
 		}
 		if(isCropGrown(px,py,pz)){
 			// 収穫
 			BlockPos pos = new BlockPos(px,py,pz);
-			owner.worldObj.destroyBlock(pos, true);
+			owner.getEntityWorld().destroyBlock(pos, true);
 			owner.setSwing(10, EnumSound.Null, false);
 			owner.playLittleMaidSound(EnumSound.farmer_harvest, false);
 			owner.addMaidExperience(4f);
@@ -246,7 +245,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 	protected int getHadSeedIndex(){
 		for (int i=0; i < owner.maidInventory.getSizeInventory(); i++) {
 			ItemStack pStack;
-			if ((pStack = owner.maidInventory.getStackInSlot(i)) != null &&
+			if (!(pStack = owner.maidInventory.getStackInSlot(i)).isEmpty() &&
 					owner.getModeTrigger().isTriggerable(mtrigger_Seed, pStack, IPlantable.class)) {
 				return i;
 			}
@@ -257,28 +256,28 @@ public class EntityMode_Farmer extends EntityModeBase {
 	protected boolean isUnfarmedLand(int x, int y, int z){
 		//耕されておらず、直上が空気ブロック
 		//近くに水があるときにとりあえず耕す用
-		Block b = owner.worldObj.getBlockState(new BlockPos(x,y,z)).getBlock();
+		Block b = owner.getEntityWorld().getBlockState(new BlockPos(x,y,z)).getBlock();
 		return (Block.isEqualTo(b, Blocks.DIRT)||Block.isEqualTo(b, Blocks.GRASS))&&
-				owner.worldObj.isAirBlock(new BlockPos(x,y+1,z)) && isBlockWatered(x, y, z);
+				owner.getEntityWorld().isAirBlock(new BlockPos(x,y+1,z)) && isBlockWatered(x, y, z);
 	}
 
 	protected boolean isFarmedLand(int x, int y, int z){
 		//耕されていて、直上が空気ブロック
-		IBlockState state = owner.worldObj.getBlockState(new BlockPos(x,y,z));
+		IBlockState state = owner.getEntityWorld().getBlockState(new BlockPos(x,y,z));
 		if(state.getBlock() instanceof BlockFarmland){
-			return owner.worldObj.isAirBlock(new BlockPos(x,y+1,z));
+			return owner.getEntityWorld().isAirBlock(new BlockPos(x,y+1,z));
 		}
 		return false;
 	}
 
 	protected boolean isCropGrown(int x, int y, int z){
 		BlockPos position = new BlockPos(x, y, z);
-		IBlockState state = owner.worldObj.getBlockState(position);
+		IBlockState state = owner.getEntityWorld().getBlockState(position);
 		Block block = state.getBlock();
 
 		if(block instanceof BlockCrops){
 			// Max age -> Cannot glow(#34)
-			return !((BlockCrops)block).canGrow(owner.worldObj, position, state, owner.worldObj.isRemote);
+			return !((BlockCrops)block).canGrow(owner.getEntityWorld(), position, state, owner.getEntityWorld().isRemote);
 		}
 		return false;
 	}
@@ -286,13 +285,13 @@ public class EntityMode_Farmer extends EntityModeBase {
 	@SuppressWarnings("rawtypes")
 	protected boolean isBlockWatered(int x, int y, int z){
 		// 雨天時は検索範囲を制限
-		boolean flag = owner.worldObj.isRaining();
+		//boolean flag = owner.getEntityWorld().isRaining();
 		BlockPos pos = new BlockPos(x,y,z);
 		Iterator iterator = BlockPos.getAllInBoxMutable(pos.add(-WATER_RADIUS, 0, -WATER_RADIUS),
 				pos.add(WATER_RADIUS, 1, WATER_RADIUS)).iterator();
 		BlockPos.MutableBlockPos mutableblockpos;
 
-		IBlockState iState;
+		//IBlockState iState;
 		do
 		{
 			if (!iterator.hasNext())
@@ -302,7 +301,8 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 			mutableblockpos = (BlockPos.MutableBlockPos)iterator.next();
 		}
-		while ((iState = owner.worldObj.getBlockState(mutableblockpos)).getMaterial() != Material.WATER);
+		//while ((iState = owner.getEntityWorld().getBlockState(mutableblockpos)).getMaterial() != Material.WATER);
+		while ((owner.getEntityWorld().getBlockState(mutableblockpos)).getMaterial() != Material.WATER);
 
 		return true;
 	}

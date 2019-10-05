@@ -2,11 +2,11 @@ package net.blacklab.lmr.client.gui;
 
 
 import java.io.IOException;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -42,7 +42,7 @@ public class GuiIFF extends GuiScreen {
 	protected EntityPlayer thePlayer;
 
 	public Map<String, Entity> entityMap;
-	public static Map<Class, String> entityMapClass = new HashMap<Class, String>();
+	public static Set<ResourceLocation> entityMapClass = new HashSet<ResourceLocation>();
 	public static List<String> exclusionList = new ArrayList<String>();
 
 	protected String screenTitle;
@@ -83,8 +83,9 @@ public class GuiIFF extends GuiScreen {
 		// 表示用EntityListの初期化
 		if (entityMapClass.isEmpty()) {
 			try {
-				Map lmap = EntityList.CLASS_TO_NAME;// (Map)ModLoader.getPrivateValue(EntityList.class, null, 1);
-				entityMapClass.putAll(lmap);
+				//Map lmap = EntityList.CLASS_TO_NAME;// (Map)ModLoader.getPrivateValue(EntityList.class, null, 1);
+				Set<ResourceLocation> lmap = EntityList.getEntityNameList();
+				entityMapClass.addAll(lmap);
 			}
 			catch (Exception e) {
 				LittleMaidReengaged.Debug("EntityClassMap copy failed.");
@@ -94,6 +95,24 @@ public class GuiIFF extends GuiScreen {
 		if (entityMap == null) return;
 		if (!pForce && !entityMap.isEmpty()) return;
 
+		
+		//IFFの表示処理はあとで見直す
+		for (ResourceLocation mobrl : entityMapClass) {
+			Entity lentity = null;
+			int li = 0;
+			try {
+				// 表示用のEntityを作る
+				do {
+					lentity = EntityList.createEntityByIDFromName(mobrl, world);
+				} while (lentity != null && checkEntity(mobrl.toString(), lentity, li++));
+			} catch (Exception e) {
+				LittleMaidReengaged.Debug("Entity [" + mobrl.toString() + "] can't created.");
+			}
+			
+		}
+		
+		
+		/*
 		for (Map.Entry<Class, String> le : entityMapClass.entrySet()) {
 			if (Modifier.isAbstract(le.getKey().getModifiers())) continue;
 			LittleMaidReengaged.Debug("Add %s", le.getKey().getSimpleName());
@@ -109,6 +128,7 @@ public class GuiIFF extends GuiScreen {
 				LittleMaidReengaged.Debug("Entity [" + le.getValue() + "] can't created.");
 			}
 		}
+		*/
 	}
 
 	@Override
@@ -122,7 +142,7 @@ public class GuiIFF extends GuiScreen {
 
 		drawDefaultBackground();
 		selectPanel.drawScreen(px, py, pf);
-		drawCenteredString(this.mc.fontRendererObj, I18n.format(screenTitle), width / 2, 20, 0xffffff);
+		drawCenteredString(this.mc.fontRenderer, I18n.format(screenTitle), width / 2, 20, 0xffffff);
 		super.drawScreen(px, py, pf);
 
 /*
@@ -193,7 +213,7 @@ public class GuiIFF extends GuiScreen {
 
 	public void clickSlot(int pIndex, boolean pDoubleClick, String pName, EntityLivingBase pEntity) {
 		if (pDoubleClick) {
-			byte tt = IFF.getIFF(CommonHelper.getPlayerUUID(thePlayer), pName, pEntity.worldObj);
+			byte tt = IFF.getIFF(CommonHelper.getPlayerUUID(thePlayer), pName, pEntity.getEntityWorld());
 			tt++;
 			if (tt > 2) {
 				tt = 0;
@@ -208,14 +228,14 @@ public class GuiIFF extends GuiScreen {
 			tagCompound.setString("Name", pName);
 			LMRNetwork.sendPacketToServer(LMRMessage.EnumPacketMode.SERVER_CHANGE_IFF, -1, tagCompound);
 
-			Entity player = mc.thePlayer;
+			Entity player = mc.player;
 			player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("ui.button.click")), 1, 1);
 		}
 	}
 
 	public void drawSlot(int pSlotindex, int pX, int pY, int pDrawheight, String pName, Entity pEntity) {
 		// 名前と敵味方識別の描画
-		int tt = IFF.getIFF(CommonHelper.getPlayerUUID(thePlayer), pName, pEntity.worldObj);
+		int tt = IFF.getIFF(CommonHelper.getPlayerUUID(thePlayer), pName, pEntity.world);
 		int c = 0xffffff;
 		switch (tt) {
 		case IFF.iff_Friendry:
@@ -228,10 +248,10 @@ public class GuiIFF extends GuiScreen {
 			c = 0xff3f3f;
 			break;
 		}
-		drawString(this.mc.fontRendererObj, GuiIFF.IFFString[tt],
-				(width - this.mc.fontRendererObj.getStringWidth(GuiIFF.IFFString[tt])) / 2, pY + 18, c);
-		drawString(this.mc.fontRendererObj, pName,
-				(width - this.mc.fontRendererObj.getStringWidth(pName)) / 2, pY + 6, 0xffffff);
+		drawString(this.mc.fontRenderer, GuiIFF.IFFString[tt],
+				(width - this.mc.fontRenderer.getStringWidth(GuiIFF.IFFString[tt])) / 2, pY + 18, c);
+		drawString(this.mc.fontRenderer, pName,
+				(width - this.mc.fontRenderer.getStringWidth(pName)) / 2, pY + 6, 0xffffff);
 	}
 
 }

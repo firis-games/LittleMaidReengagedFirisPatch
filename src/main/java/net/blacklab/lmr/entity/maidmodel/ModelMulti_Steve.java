@@ -165,8 +165,8 @@ public class ModelMulti_Steve extends ModelMultiBase {
 		if ((onGrounds[0] > -9990F || onGrounds[1] > -9990F) && !aimedBow) {
 			// 腕振り
 			lf = (float)Math.PI * 2.0F;
-			lf1 = mh_sin(mh_sqrt_float(onGrounds[0]) * lf);
-			lf2 = mh_sin(mh_sqrt_float(onGrounds[1]) * lf);
+			lf1 = mh_sin(mh_sqrt(onGrounds[0]) * lf);
+			lf2 = mh_sin(mh_sqrt(onGrounds[1]) * lf);
 			bipedTorso.rotateAngleY = (lf1 - lf2) * 0.2F;
 			
 			// R

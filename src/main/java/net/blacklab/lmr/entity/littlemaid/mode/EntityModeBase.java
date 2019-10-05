@@ -213,7 +213,7 @@ public abstract class EntityModeBase {
 	 * 限界距離を超えた時の処理
 	 */
 	public void farrangeBlock() {
-		owner.getNavigator().clearPathEntity();
+		owner.getNavigator().clearPath();
 	}
 
 	/**

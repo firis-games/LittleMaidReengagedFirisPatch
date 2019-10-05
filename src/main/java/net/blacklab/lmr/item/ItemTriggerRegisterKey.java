@@ -2,8 +2,11 @@ package net.blacklab.lmr.item;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +18,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTriggerRegisterKey extends Item {
 
@@ -29,12 +34,13 @@ public class ItemTriggerRegisterKey extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn,
-			EntityPlayer playerIn, EnumHand pHand) {
-		NBTTagCompound tagCompound = itemStackIn.getTagCompound();
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+	{
+		ItemStack stack = playerIn.getHeldItem(handIn);
+		NBTTagCompound tagCompound = stack.getTagCompound();
 		if(tagCompound==null) {
 			tagCompound = new NBTTagCompound();
-			itemStackIn.setTagCompound(tagCompound);
+			stack.setTagCompound(tagCompound);
 		}
 
 		int index = 0;
@@ -49,15 +55,16 @@ public class ItemTriggerRegisterKey extends Item {
 //		modeString = TriggerSelect.selector.get(index);
 		tagCompound.setString(RK_MODE_TAG, modeString);
 
-		if(!worldIn.isRemote)
-			playerIn.addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.changeregistermode", modeString));
+		if(!worldIn.isRemote) {
+			playerIn.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.changeregistermode", modeString));
+		}
 
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 	}
 
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn,
-			List tooltip, boolean advanced) {
+	@SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
 		NBTTagCompound tagCompound = stack.getTagCompound();
 		if(tagCompound != null) {
 			tooltip.add("Mode: "+tagCompound.getString(RK_MODE_TAG));

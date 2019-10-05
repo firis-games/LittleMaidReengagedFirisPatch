@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
-import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger.Status;
@@ -47,12 +46,6 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 
 	@Override
 	public void init() {
-		/* langファイルに移動
-		ModLoader.addLocalization("littleMaidMob.mode.Torcher", "Torcher");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Torcher", "F-Torcher");
-		ModLoader.addLocalization("littleMaidMob.mode.D-Torcher", "D-Torcher");
-		ModLoader.addLocalization("littleMaidMob.mode.T-Torcher", "T-Torcher");
-		*/
 		Map<Item, Status> defaultTrigger = new HashMap<>();
 		defaultTrigger.put(Item.getItemFromBlock(Blocks.TORCH), Status.TRIGGER);
 		
@@ -72,12 +65,12 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
-		if (litemstack != null) {
+		if (!litemstack.isEmpty()) {
 			if (owner.getModeTrigger().isTriggerable(mtrigger_Torch, litemstack)) {
 				owner.setMaidMode(mmode_Torcher);
-				if (pentityplayer != null) {
-					pentityplayer.addStat(AchievementsLMRE.ac_TorchLayer);
-				}
+				//if (pentityplayer != null) {
+				//	pentityplayer.addStat(AchievementsLMRE.ac_TorchLayer);
+				//}
 				return true;
 			}
 		}
@@ -111,7 +104,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		case mmode_Torcher :
 			for (li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
-				if (litemstack == null) continue;
+				if (litemstack.isEmpty()) continue;
 
 				// 松明
 				if (isTriggerItem(pMode, litemstack)) {
@@ -126,7 +119,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 
 	@Override
 	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
-		if (par1ItemStack == null) {
+		if (par1ItemStack.isEmpty()) {
 			return false;
 		}
 		return owner.getModeTrigger().isTriggerable(mtrigger_Torch, par1ItemStack);
@@ -139,16 +132,16 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 
 	@Override
 	public boolean isSearchBlock() {
-		return !owner.isMaidWait()&&(owner.getCurrentEquippedItem()!=null);
+		return !owner.isMaidWait()&&(!owner.getCurrentEquippedItem().isEmpty());
 	}
 
 	@Override
 	public boolean shouldBlock(String pMode) {
-		return !(owner.getCurrentEquippedItem() == null);
+		return !(owner.getCurrentEquippedItem().isEmpty());
 	}
 
 	protected int getBlockLighting(int px, int py, int pz) {
-		World worldObj = owner.worldObj;
+		World worldObj = owner.getEntityWorld();
 		//離れすぎている
 		if (!MaidHelper.isTargetReachable(owner, new Vec3d(px, py, pz), 0)) return 15;
 
@@ -167,7 +160,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		// アイテムを置けない場合
 		Item heldItem = owner.getHeldItem(EnumHand.MAIN_HAND).getItem();
 		if (heldItem instanceof ItemBlock) {
-			if (!canPlaceItemBlockOnSide(owner.worldObj, px, py - 1, pz, EnumFacing.UP, owner.maidAvatar, owner.getHeldItem(EnumHand.MAIN_HAND), (ItemBlock) heldItem)) {
+			if (!canPlaceItemBlockOnSide(owner.getEntityWorld(), px, py - 1, pz, EnumFacing.UP, owner.maidAvatar, owner.getHeldItem(EnumHand.MAIN_HAND), (ItemBlock) heldItem)) {
 				return false;
 			}
 		}
@@ -185,20 +178,20 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 	@Override
 	public boolean executeBlock(String pMode, int px, int py, int pz) {
 		ItemStack lis = owner.getCurrentEquippedItem();
-		if (lis == null) return false;
+		if (lis.isEmpty()) return false;
 
 		if(lis.getItem()!=Item.getItemFromBlock(Blocks.TORCH)) return false;
 
-		int li = lis.stackSize;
+		int li = lis.getCount();
 		// TODO:当たり判定をどうするか
-		if (lis.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(px, py - 1, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
+		if (lis.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px, py - 1, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
 			owner.setSwing(10, EnumSound.installation, false);
 			owner.addMaidExperience(0.32f);
 			if (owner.maidAvatar.capabilities.isCreativeMode) {
-				lis.stackSize = li;
+				lis.setCount(li);
 			}
-			if (lis.stackSize <= 0) {
-				owner.maidInventory.setInventoryCurrentSlotContents(null);
+			if (lis.getCount() <= 0) {
+				owner.maidInventory.setInventoryCurrentSlotContents(ItemStack.EMPTY);
 				owner.getNextEquipItem();
 			}
 		}
@@ -239,7 +232,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 			return false;
 		}
 
-		return par1World.canBlockBePlaced(Block.getBlockFromItem(pItemBlock), new BlockPos(par2, par3, par4), false, par5, (Entity)null, par7ItemStack);
+		return par1World.mayPlace(Block.getBlockFromItem(pItemBlock), new BlockPos(par2, par3, par4), false, par5, (Entity)null);
 	}
 
 	@Override
@@ -248,9 +241,9 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 /*
 		if (pMode == mmode_Torcher && owner.getNextEquipItem()) {
 			ItemStack lis = owner.getCurrentEquippedItem();
-			int lic = lis.stackSize;
+			int lic = lis.getCount();
 			Item lii = lis.getItem();
-			World lworld = owner.worldObj;
+			World lworld = owner.getEntityWorld();
 
 			// 周囲を検索
 			int lxx = MathHelper.floor_double(owner.posX);
@@ -282,14 +275,14 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 				}
 			}
 
-			if (ll < 8 && lis.onItemUse(owner.maidAvatar, owner.worldObj, new BlockPos(ltx, lty, ltz), EnumFacing.UP, 0.5F, 1.0F, 0.5F)) {
+			if (ll < 8 && lis.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(ltx, lty, ltz), EnumFacing.UP, 0.5F, 1.0F, 0.5F)) {
 //				mod_LMM_littleMaidMob.Debug("torch-inst: %d, %d, %d: %d", ltx, lty, ltz, ll);
 				owner.setSwing(10, LMM_EnumSound.installation, false);
 				owner.getNavigator().clearPathEntity();
 				if (owner.maidAvatar.capabilities.isCreativeMode) {
-					lis.stackSize = lic;
+					lis.getCount() = lic;
 				}
-				if (lis.stackSize <= 0) {
+				if (lis.getCount() <= 0) {
 					owner.maidInventory.setInventoryCurrentSlotContents(null);
 					owner.getNextEquipItem();
 				}
@@ -304,8 +297,8 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		Path pathEntity = owner.getNavigator().getPath();
 		if (pathEntity == null) return;
 		PathPoint destination = pathEntity.getFinalPathPoint();
-		if (!checkBlock(owner.getMaidModeString(), destination.xCoord, destination.yCoord, destination.zCoord)) {
-			owner.getNavigator().clearPathEntity();
+		if (!checkBlock(owner.getMaidModeString(), destination.x, destination.y, destination.z)) {
+			owner.getNavigator().clearPath();
 		}
 	}
 

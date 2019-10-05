@@ -35,6 +35,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 public class ProxyClient extends ProxyCommon
 {
 	public void rendererRegister() {
+		
 		ModelLoader.setCustomModelResourceLocation(
 				LittleMaidReengaged.spawnEgg, 0, new ModelResourceLocation(
 						LittleMaidReengaged.DOMAIN+":spawn_littlemaid_egg", "inventory"));
@@ -44,14 +45,13 @@ public class ProxyClient extends ProxyCommon
 		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.registerKey, 1,
 				new ModelResourceLocation(LittleMaidReengaged.DOMAIN+":registerkey",
 						"inventory"));
-
 		String porter_modelName_A = LittleMaidReengaged.DOMAIN + ":maidporter_0";
 		String porter_modelName_B = LittleMaidReengaged.DOMAIN + ":maidporter_1";
 //		ModelLoader.addVariantName(LittleMaidReengaged.maidPorter, LittleMaidReengaged.DOMAIN + ":maidporter_0", LittleMaidReengaged.DOMAIN + ":maidporter_1");
 		ModelBakery.registerItemVariants(LittleMaidReengaged.maidPorter, new ResourceLocation(porter_modelName_A), new ResourceLocation(porter_modelName_B));
 		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.maidPorter, 0, new ModelResourceLocation(porter_modelName_A, "inventory"));
 		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.maidPorter, 1, new ModelResourceLocation(porter_modelName_B, "inventory"));
-
+		
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());
 		RenderingRegistry.registerEntityRenderingHandler(EntityMarkerDummy.class, new RenderFactoryMarkerDummy());
@@ -77,7 +77,7 @@ public class ProxyClient extends ProxyCommon
 		// アイテム回収のエフェクト
 		// TODO:こっちを使うか？
 //		mc.effectRenderer.addEffect(new EntityPickupFX(mc.theWorld, entity, avatar, -0.5F));
-		CommonHelper.mc.effectRenderer.addEffect(new ParticleItemPickup(CommonHelper.mc.theWorld, entity, pAvatar, 0.1F));
+		CommonHelper.mc.effectRenderer.addEffect(new ParticleItemPickup(CommonHelper.mc.world, entity, pAvatar, 0.1F));
 	}
 
 	// TODO いらん？
@@ -95,7 +95,7 @@ public class ProxyClient extends ProxyCommon
 
 	public EntityPlayer getClientPlayer()
 	{
-		return Minecraft.getMinecraft().thePlayer;
+		return Minecraft.getMinecraft().player;
 	}
 
 	/* 呼び出し箇所なし
@@ -169,7 +169,7 @@ public class ProxyClient extends ProxyCommon
 
 		Entity lemaid = null;
 		if (lmode.withEntity) {
-			lemaid = Minecraft.getMinecraft().theWorld.getEntityByID(pPayload.getEntityId());
+			lemaid = Minecraft.getMinecraft().world.getEntityByID(pPayload.getEntityId());
 			if (!(lemaid instanceof EntityLittleMaid)) return;
 
 			LMRNetwork.syncPayLoad(lmode, (EntityLittleMaid)lemaid, pPayload.getTag());
@@ -192,7 +192,7 @@ public class ProxyClient extends ProxyCommon
 			String lname = tagCompound.getString("Name");
 
 			LittleMaidReengaged.Debug("setIFF-CL %s=%d", lname, lval);
-			IFF.setIFFValue(Minecraft.getMinecraft().thePlayer.getUniqueID(), lname, lval);
+			IFF.setIFFValue(Minecraft.getMinecraft().player.getUniqueID(), lname, lval);
 			break;
 
 		case CLIENT_PLAY_SOUND :
@@ -208,7 +208,7 @@ public class ProxyClient extends ProxyCommon
 
 		case CLIENT_CURRENT_ITEM:
 			lemaid.maidInventory.currentItem = tagCompound.getInteger("Index");
-			lemaid.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.loadItemStackFromNBT(tagCompound.getCompoundTag("Stack")));
+			lemaid.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(tagCompound.getCompoundTag("Stack")));
 
 		default:
 			break;

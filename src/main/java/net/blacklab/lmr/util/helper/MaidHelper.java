@@ -2,10 +2,8 @@ package net.blacklab.lmr.util.helper;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 
 public class MaidHelper {
 
@@ -45,13 +43,13 @@ public class MaidHelper {
 	/** Can maid reach target? **/
 	public static boolean isTargetReachable(EntityLittleMaid pMaid, Vec3d pTarget, double expandRangeSq) {
 		if (pMaid.isFreedom()) {
-			return pMaid.getHomePosition().distanceSq(pTarget.xCoord, pTarget.yCoord, pTarget.zCoord)
+			return pMaid.getHomePosition().distanceSq(pTarget.x, pTarget.y, pTarget.z)
 					<= pMaid.getActiveModeClass().getFreedomTrackingRangeSq() + expandRangeSq;
 		}
 		if (pMaid.getMaidMasterEntity() == null) {
 			return true;
 		}
-		return pMaid.getMaidMasterEntity().getDistanceSq(pTarget.xCoord, pTarget.yCoord, pTarget.zCoord)
+		return pMaid.getMaidMasterEntity().getDistanceSq(pTarget.x, pTarget.y, pTarget.z)
 				<= pMaid.getActiveModeClass().getLimitRangeSqOnFollow() + expandRangeSq;
 	}
 

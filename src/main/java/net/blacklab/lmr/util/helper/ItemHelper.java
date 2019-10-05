@@ -20,7 +20,7 @@ public class ItemHelper {
 	public static boolean hasSugar(EntityLittleMaid maid){
 		boolean flag = false;
 		for(ItemStack stack: maid.maidInventory.mainInventory){
-			if(stack==null) continue;
+			if(stack.isEmpty()) continue;
 			if(isSugar(stack.getItem())){
 				flag = false;
 				break;
@@ -30,19 +30,20 @@ public class ItemHelper {
 	}
 
 	public static boolean isItemBurned(ItemStack pItemstack) {
-		return (pItemstack != null &&
+		return (!pItemstack.isEmpty() &&
 				TileEntityFurnace.getItemBurnTime(pItemstack) > 0);
 	}
 
 	public static boolean isItemSmelting(ItemStack pItemstack) {
-		return (pItemstack != null && FurnaceRecipes.instance().getSmeltingResult(pItemstack) != null);
+		return (!pItemstack.isEmpty() && FurnaceRecipes.instance().getSmeltingResult(pItemstack) != null);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean isItemExplord(ItemStack pItemstack) {
-		if (pItemstack == null)
+		if (pItemstack.isEmpty())
 			return false;
 		Item li = pItemstack.getItem();
-		return (pItemstack != null && li instanceof ItemBlock && Block.getBlockFromItem(li).getMaterial(Block.getBlockFromItem(li).getDefaultState()) == Material.TNT);
+		return (!pItemstack.isEmpty() && li instanceof ItemBlock && Block.getBlockFromItem(li).getMaterial(Block.getBlockFromItem(li).getDefaultState()) == Material.TNT);
 	}
 
 }

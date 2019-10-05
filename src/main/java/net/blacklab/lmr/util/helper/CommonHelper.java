@@ -18,12 +18,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -69,10 +69,10 @@ public class CommonHelper {
 	 */
 	public static boolean hasEffect(ItemStack pItemStack) {
 		// マジClientSIDEとか辞めてほしい。
-		if (pItemStack != null) {
+		if (!pItemStack.isEmpty()) {
 			Item litem = pItemStack.getItem();
 			if (litem instanceof ItemPotion) {
-				List llist = PotionUtils.getEffectsFromStack(pItemStack);
+				List<PotionEffect> llist = PotionUtils.getEffectsFromStack(pItemStack);
 				return llist != null && !llist.isEmpty();
 			}
 		}
@@ -85,7 +85,7 @@ public class CommonHelper {
 	 * @return
 	 */
 	public static double getAttackVSEntity(ItemStack pItemStack) {
-		AttributeModifier lam = (AttributeModifier)pItemStack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND).get(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName());
+		AttributeModifier lam = (AttributeModifier)pItemStack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND).get(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
 		return lam == null ? 0 : lam.getAmount();
 	}
 
@@ -102,9 +102,9 @@ public class CommonHelper {
 		PathNavigate lpn = pEntity.getNavigator();
 		float lspeed = 1.0F;
 		// 向きに合わせて距離を調整
-		int i = (pTarget.getPos().getY() == MathHelper.floor_double(pEntity.posY) && flag) ? 2 : 1;
+		int i = (pTarget.getPos().getY() == MathHelper.floor(pEntity.posY) && flag) ? 2 : 1;
 		try {
-			switch (pEntity.worldObj.getBlockState(pTarget.getPos()).getValue(BlockHorizontal.FACING)) {
+			switch (pEntity.getEntityWorld().getBlockState(pTarget.getPos()).getValue(BlockHorizontal.FACING)) {
 			case SOUTH:
 				return lpn.tryMoveToXYZ(pTarget.getPos().getX(), pTarget.getPos().getY(), pTarget.getPos().getZ() + i, lspeed);
 			case NORTH:
@@ -113,6 +113,8 @@ public class CommonHelper {
 				return lpn.tryMoveToXYZ(pTarget.getPos().getX() + 1, pTarget.getPos().getY(), pTarget.getPos().getZ(), lspeed);
 			case WEST:
 				return lpn.tryMoveToXYZ(pTarget.getPos().getX() - i, pTarget.getPos().getY(), pTarget.getPos().getZ(), lspeed);
+			default:
+				break;
 			}
 		} catch (IllegalArgumentException exception) {
 			LittleMaidReengaged.Debug("Failed to get direction of tile. Maybe non-vanilla chest?");
@@ -138,9 +140,10 @@ public class CommonHelper {
 					pEntity.posX, pEntity.posY + pEntity.getEyeHeight(), pEntity.posZ);
 	//		Vec3 lvpos = pEntity.getPosition(pDelta).addVector(0D, pEntity.getEyeHeight(), 0D);
 			Vec3d lvlook = pEntity.getLook(pDelta);
-			Vec3d lvview = lvpos.addVector(lvlook.xCoord * pRange, lvlook.yCoord * pRange, lvlook.zCoord * pRange);
+			Vec3d lvview = lvpos.addVector(lvlook.x * pRange, lvlook.y * pRange, lvlook.z * pRange);
 			Entity ltarget = null;
-			List llist = pEntity.worldObj.getEntitiesWithinAABBExcludingEntity(pEntity, pEntity.getEntityBoundingBox().addCoord(lvlook.xCoord * pRange, lvlook.yCoord * pRange, lvlook.zCoord * pRange).expand(pExpand, pExpand, pExpand));
+			List<Entity> llist = pEntity.getEntityWorld()
+					.getEntitiesWithinAABBExcludingEntity(pEntity, pEntity.getEntityBoundingBox().contract(lvlook.x * pRange, lvlook.y * pRange, lvlook.z * pRange).expand(pExpand, pExpand, pExpand));
 			double ltdistance = pRange * pRange;
 
 			for (int var13 = 0; var13 < llist.size(); ++var13) {
@@ -148,10 +151,10 @@ public class CommonHelper {
 
 				if (lentity.canBeCollidedWith()) {
 					float lexpand = lentity.getCollisionBorderSize() + 0.3F;
-					AxisAlignedBB laabb = lentity.getEntityBoundingBox().expand(lexpand, lexpand, lexpand);
+					AxisAlignedBB laabb = lentity.getEntityBoundingBox().grow(lexpand, lexpand, lexpand);
 					RayTraceResult lmop = laabb.calculateIntercept(lvpos, lvview);
 
-					if (laabb.isVecInside(lvpos)) {
+					if (laabb.contains(lvpos)) {
 						if (0.0D < ltdistance || ltdistance == 0.0D) {
 							ltarget = lentity;
 							ltdistance = 0.0D;
@@ -172,7 +175,7 @@ public class CommonHelper {
 	public static String getDeadSource(DamageSource source) {
 		String ls = source.getDamageType();
 	
-		Entity lentity = source.getSourceOfDamage();
+		Entity lentity = source.getTrueSource();
 		if (lentity != null) {
 			if (lentity instanceof EntityPlayer) {
 				ls += ":" + lentity.getName();

@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,6 +104,9 @@ public class ModelManager {
 	public static final String[] searchFileNamePrefix = new String[]{"littleMaidMob","mmmlibx","ModelMulti","LittleMaidMob"};
 
 	public void init() {
+		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/modelmulti/", "ModelMulti_");
+		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littlemaid/", "ModelMulti_");
+		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littlemaid/", "ModelLittleMaid_");
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/ModelMulti/", "ModelMulti_");
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littleMaid/", "ModelMulti_");
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littleMaid/", "ModelLittleMaid_");
@@ -471,6 +473,7 @@ public class ModelManager {
 						textures.add(lts);
 						LittleMaidReengaged.Debug("getTextureName-append-texturePack-%s", pn);
 					}
+					//lts.addTexture(lindex, fname);
 					lts.addTexture(lindex, fname);
 					return true;
 				}
@@ -502,9 +505,12 @@ public class ModelManager {
 						String lt1 = "mob/littleMaid";
 						String lt2 = "mob/ModelMulti";
 						addTextureName(zipentry.getName(), pSearch);
-						if(FMLCommonHandler.instance().getSide()==Side.CLIENT&&
-								(zipentry.getName().startsWith(lt1)||zipentry.getName().startsWith(lt2)))
+						if(FMLCommonHandler.instance().getSide()==Side.CLIENT &&
+								(zipentry.getName().startsWith(lt1) 
+										|| zipentry.getName().startsWith(lt2)
+										|| (!zipentry.getName().equals(zipentry.getName().toLowerCase())))) {
 							OldZipTexturesWrapper.keys.add(zipentry.getName());
+						}
 					}
 				}
 			} while(true);

@@ -3,27 +3,19 @@ package net.blacklab.lmr.entity.littlemaid.trigger;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.Constants.NBT;
 
 public class ModeTrigger implements Serializable {
 	
@@ -122,7 +114,7 @@ public class ModeTrigger implements Serializable {
 	}
 	
 	public boolean isTriggerable(String pSelector, ItemStack pStack, Class<?> itemClass) {
-		if (pStack == null) {
+		if (pStack.isEmpty()) {
 			return false;
 		}
 		
@@ -131,7 +123,7 @@ public class ModeTrigger implements Serializable {
 	}
 	
 	public boolean isTriggerable(String pSelector, ItemStack pStack) {
-		if (pStack == null) {
+		if (pStack.isEmpty()) {
 			return false;
 		}
 		

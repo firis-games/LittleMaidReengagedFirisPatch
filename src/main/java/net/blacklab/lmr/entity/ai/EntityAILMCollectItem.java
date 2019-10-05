@@ -35,11 +35,13 @@ public class EntityAILMCollectItem extends EntityAIBase {
 	public boolean shouldExecute() {
 		if(theMaid.isMaidWaitEx()) return false;
 		if (theMaid.maidInventory.getFirstEmptyStack() > -1) {
-			List llist = theMaid.worldObj.getEntitiesWithinAABB(EntityItem.class, theMaid.getEntityBoundingBox().expand(8F, 2D, 8F));
+			List<EntityItem> llist = theMaid.getEntityWorld()
+					.getEntitiesWithinAABB(EntityItem.class, 
+							theMaid.getEntityBoundingBox().grow(8F, 2D, 8F));
 			if (!llist.isEmpty()) {
 				int li = theMaid.getRNG().nextInt(llist.size());
-				EntityItem ei = (EntityItem)llist.get(li);
-				EntityPlayer ep = theMaid.getMaidMasterEntity() != null ? theMaid.getMaidMasterEntity() : theMaid.worldObj.getClosestPlayerToEntity(theMaid, 16F);
+				EntityItem ei = llist.get(li);
+				EntityPlayer ep = theMaid.getMaidMasterEntity() != null ? theMaid.getMaidMasterEntity() : theMaid.getEntityWorld().getClosestPlayerToEntity(theMaid, 16F);
 
 				NBTTagCompound p = new NBTTagCompound();
 				ei.writeEntityToNBT(p);
@@ -50,7 +52,7 @@ public class EntityAILMCollectItem extends EntityAIBase {
 								ei.posY,
 								ei.posZ - MathHelper.cos(ep.rotationYaw * 0.01745329252F) * 2.0D) > 7.5D))
 				{
-					ItemStack lstack = ei.getEntityItem();
+					ItemStack lstack = ei.getItem();
 					if (!ItemHelper.isSugar(lstack.getItem())) {
 						if (!theMaid.isActiveModeClass()) {
 							return false;
@@ -79,14 +81,14 @@ public class EntityAILMCollectItem extends EntityAIBase {
 	}
 
 	@Override
-	public boolean continueExecuting() {
-		return !targetItem.isDead && (theMaid.maidInventory.getFirstEmptyStack() > -1) && theMaid.getDistanceSqToEntity(targetItem) < 100D;
+	public boolean shouldContinueExecuting() {
+		return !targetItem.isDead && (theMaid.maidInventory.getFirstEmptyStack() > -1) && theMaid.getDistanceSq(targetItem) < 100D;
 	}
 
 	@Override
 	public void resetTask() {
 		targetItem = null;
-		theMaid.getNavigator().clearPathEntity();
+		theMaid.getNavigator().clearPath();
 //		theMaid.getNavigator().setAvoidsWater(lastAvoidWater);
 	}
 
@@ -107,7 +109,7 @@ public class EntityAILMCollectItem extends EntityAIBase {
 	public boolean canEntityItemBeSeen(Entity entity) {
 		// アイテムの可視判定
 //		return theMaid.worldObj.rayTraceBlocks(new Vec3(theMaid.posX, theMaid.posY + (double)theMaid.getEyeHeight(), theMaid.posZ), new Vec3(entity.posX, entity.posY + ((entity.getEntityBoundingBox().minY - entity.getEntityBoundingBox().minY) / 2), entity.posZ)) == null;
-		return VectorUtil.canMoveThrough(theMaid, 0D, MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ), false, true, false);
+		return VectorUtil.canMoveThrough(theMaid, 0D, MathHelper.floor(entity.posX), MathHelper.floor(entity.posY), MathHelper.floor(entity.posZ), false, true, false);
 	}
 
 }

@@ -83,7 +83,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return null;
 	}
 
@@ -92,10 +92,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		return null;
 	}
 
-	@Override
-	public boolean canCommandSenderUseCommand(int var1, String var2) {
-		return false;
-	}
+	@Override public boolean canUseCommand(int i, String s){ return false; }
 
 	@Override
 	public void addStat(StatBase par1StatBase, int par2) {}
@@ -122,7 +119,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	@Override
 	public void onItemPickup(Entity entity, int i) {
 		// アイテム回収のエフェクト
-		if (worldObj.isRemote) {
+		if (getEntityWorld().isRemote) {
 			// Client
 			LittleMaidReengaged.proxy.onItemPickup(this, entity, i);
 		} else {
@@ -132,7 +129,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 
 	@Override
 	public void onCriticalHit(Entity par1Entity) {
-		if (worldObj.isRemote) {
+		if (getEntityWorld().isRemote) {
 			// Client
 			LittleMaidReengaged.proxy.onCriticalHit(this, par1Entity);
 		} else {
@@ -141,7 +138,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 
 	@Override
 	public void onEnchantmentCritical(Entity par1Entity) {
-		if (worldObj.isRemote) {
+		if (getEntityWorld().isRemote) {
 			LittleMaidReengaged.proxy.onEnchantmentCritical(this, par1Entity);
 		} else {
 		}
@@ -178,7 +175,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	}
 
 	protected Entity getEntityServer() {
-		return worldObj.isRemote ? null : this;
+		return getEntityWorld().isRemote ? null : this;
 	}
 
 	// Item使用関連
@@ -338,10 +335,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 //		// チャットメッセージは使わない。
 //	}
 
-	@Override
-	public void addChatMessage(ITextComponent var1) {
-		// チャットメッセージは使わない。
-	}
+	@Override public void sendMessage(ITextComponent component) {}
 
 	// 不要？
 
@@ -386,7 +380,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	}
 
 	@Override
-	public Collection getActivePotionEffects() {
+	public Collection<PotionEffect> getActivePotionEffects() {
 		return avatar.getActivePotionEffects();
 	}
 
@@ -421,7 +415,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 
 	public void getValueVector(double atx, double aty, double atz, double atl) {
 		// EntityLittleMaidから値をコピー
-		double l = MathHelper.sqrt_double(atl);
+		double l = MathHelper.sqrt(atl);
 		appendX = atx / l;
 		appendY = aty / l;
 		appendZ = atz / l;
@@ -451,7 +445,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 	 */
 	public void getValueVectorFire(double atx, double aty, double atz, double atl) {
 		// EntityLittleMaidから値をコピー
-		double l = MathHelper.sqrt_double(atl);
+		double l = MathHelper.sqrt(atl);
 		appendX = atx / l;
 		appendY = aty / l;
 		appendZ = atz / l;

@@ -8,6 +8,7 @@ import java.util.zip.ZipInputStream;
 
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
@@ -18,7 +19,7 @@ public abstract class ManagerBase {
 	/**
 	 * 追加処理の本体
 	 */
-	protected abstract boolean append(Class pclass);
+	protected abstract boolean append(Class<? extends EntityModeBase> pclass);
 
 
 	protected void load() {

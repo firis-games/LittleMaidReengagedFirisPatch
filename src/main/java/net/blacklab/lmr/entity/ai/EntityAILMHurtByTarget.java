@@ -32,7 +32,7 @@ public class EntityAILMHurtByTarget extends EntityAIHurtByTarget {
 		if(theMaid.isMaidWaitEx()) return false;
 		if (theMaid.isContract() && !theMaid.isBlocking() && theMaid.getMaidMasterEntity() != null) {
 			// フェンサー系は主に対する攻撃に反応
-			EntityLivingBase lentity = theMaid.getMaidMasterEntity().getAITarget();
+			EntityLivingBase lentity = theMaid.getMaidMasterEntity().getLastAttackedEntity();
 			if (isSuitableTarget(lentity, false)) {
 				theMaid.setRevengeTarget(lentity);
 				return true;
@@ -49,12 +49,12 @@ public class EntityAILMHurtByTarget extends EntityAIHurtByTarget {
 	@Override
 	public void updateTask() {
 		super.updateTask();
-		String s1 = taskOwner.getAITarget() == null ? "Null" : taskOwner.getAITarget().getClass().toString();
+		String s1 = taskOwner.getLastAttackedEntity() == null ? "Null" : taskOwner.getLastAttackedEntity().getClass().toString();
 		String s2 = taskOwner.getAttackTarget() == null ? "Null" : taskOwner.getAttackTarget().getClass().toString();
 		System.out.println(String.format("ID:%d, target:%s, attack:%s", taskOwner.getEntityId(), s1, s2));
 
 		// 殴られた仕返し
-		EntityLivingBase leliving = taskOwner.getAITarget();
+		EntityLivingBase leliving = taskOwner.getLastAttackedEntity();
 		if (leliving != null && leliving != taskOwner.getAttackTarget()) {
 			taskOwner.setAttackTarget(null);
 			System.out.println(String.format("ID:%d, ChangeTarget.", taskOwner.getEntityId()));
@@ -124,8 +124,8 @@ public class EntityAILMHurtByTarget extends EntityAIHurtByTarget {
 		if (var3 == null) {
 			return false;
 		}
-		int var4 = var3.xCoord - MathHelper.floor_double(par1EntityLiving.posX);
-		int var5 = var3.zCoord - MathHelper.floor_double(par1EntityLiving.posZ);
+		int var4 = var3.x - MathHelper.floor(par1EntityLiving.posX);
+		int var5 = var3.z - MathHelper.floor(par1EntityLiving.posZ);
 		return var4 * var4 + var5 * var5 <= 2.25D;
 	}
 

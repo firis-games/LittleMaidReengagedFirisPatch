@@ -51,24 +51,24 @@ public class GuiSlotMobSelect extends GuiSlot {
 	}
 
 	@Override
-	protected void drawSlot(int var1, int var2, int var3, int var4, int a, int b) {
+	protected void drawSlot(int slotIndex, int xPos, int yPos, int heightIn, int mouseXIn, int mouseYIn, float partialTicks) {
 		// 基本スロットの描画、細かい所はオーナー側で
 		// Entityの確保
-		String s = ownerGui.entityMap.keySet().toArray()[var1].toString();
+		String s = ownerGui.entityMap.keySet().toArray()[slotIndex].toString();
 		boolean lf = GuiIFF.exclusionList.contains(s);
 		EntityLivingBase entityliving = lf ? null : (EntityLivingBase) ownerGui.entityMap.get(s);
 		if(entityliving==null) return;
 		
 		// 独自描画
-		ownerGui.drawSlot(var1, var2, var3, var4, s, entityliving);
+		ownerGui.drawSlot(slotIndex, xPos, yPos, heightIn, s, entityliving);
 		
 		// 除外判定
 		if (lf) {
-			ownerGui.drawString(ownerGui.mc.fontRendererObj, "NoImage",
-					var2 + 15, var3 + 12, 0xffffff);
+			ownerGui.drawString(ownerGui.mc.fontRenderer, "NoImage",
+					xPos + 15, yPos + 12, 0xffffff);
 			return;
 		}
-		entityliving.setWorld(mc.theWorld);
+		entityliving.setWorld(mc.world);
 		
 		// 伽羅の表示
 //		GL11.glEnable(32826 /* GL_RESCALE_NORMAL_EXT */);
@@ -78,12 +78,12 @@ public class GuiSlotMobSelect extends GuiSlot {
 		if (entityliving.height > 2F) {
 			f1 = f1 * 3F / entityliving.height;
 		}
-		float lxp = ((var1 & 1) == 0) ? var2 + 30F : ownerGui.width - var2 - 30F;
-		GL11.glTranslatef(lxp, var3 + 30F, 50F + f1);
+		float lxp = ((slotIndex & 1) == 0) ? xPos + 30F : ownerGui.width - xPos - 30F;
+		GL11.glTranslatef(lxp, yPos + 30F, 50F + f1);
 		GL11.glScalef(-f1, f1, f1);
 		GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
 		float f5 = lxp - mouseX;
-		float f6 = (float) ((var3 + 30) - 10) - mouseY;
+		float f6 = (float) ((yPos + 30) - 10) - mouseY;
 		GL11.glRotatef(135F, 0.0F, 1.0F, 0.0F);
 		RenderHelper.enableStandardItemLighting();
 		GL11.glRotatef(-135F, 0.0F, 1.0F, 0.0F);
@@ -96,7 +96,7 @@ public class GuiSlotMobSelect extends GuiSlot {
 		//GL11.glTranslatef(0.0F, entityliving.yOffset, 0.0F);
 		Minecraft.getMinecraft().getRenderManager().playerViewY = 180F;
 		try {
-			Minecraft.getMinecraft().getRenderManager().doRenderEntity(entityliving,
+			Minecraft.getMinecraft().getRenderManager().renderEntity(entityliving,
 					0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		} catch (Exception e) {
 			GuiIFF.exclusionList.add(s);

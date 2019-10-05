@@ -48,12 +48,6 @@ public class EntityMode_Playing extends EntityModeBase {
 
 	@Override
 	public void init() {
-		/* langファイルに移動
-		ModLoader.addLocalization("littleMaidMob.mode.Playing", "Playing");
-		// ModLoader.addLocalization("littleMaidMob.mode.T-Playing", "Playing");
-		// ModLoader.addLocalization("littleMaidMob.mode.F-Playing", "Playing");
-		// ModLoader.addLocalization("littleMaidMob.mode.D-Playing", "Playing");
-		*/
 	}
 
 	@Override
@@ -84,9 +78,9 @@ public class EntityMode_Playing extends EntityModeBase {
 
 	protected boolean movePlaying() {
 		//
-		int x = MathHelper.floor_double(owner.posX);
-		int y = MathHelper.floor_double(owner.posY);
-		int z = MathHelper.floor_double(owner.posZ);
+		int x = MathHelper.floor(owner.posX);
+		int y = MathHelper.floor(owner.posY);
+		int z = MathHelper.floor(owner.posZ);
 		Path pe = null;
 
 		// CW方向に検索領域を広げる
@@ -97,7 +91,7 @@ public class EntityMode_Playing extends EntityModeBase {
 				for (int b = 0; b < a; b++) {
 					// N
 					for (int c = 0; c < 4; c++) {
-						if (checkSnows(x, y, z, owner.worldObj)) {
+						if (checkSnows(x, y, z, owner.getEntityWorld())) {
 							pe = owner.getNavigator().getPathToXYZ(x, y - 1, z);
 //							pe = owner.getNavigator().getEntityPathToXYZ(owner, x, y - 1, z, 10F, true, false, false, true);
 							if (pe != null) {
@@ -129,11 +123,11 @@ public class EntityMode_Playing extends EntityModeBase {
 			if (!owner.getNextEquipItem()) {
 				owner.setAttackTarget(null);
 
-				owner.getNavigator().clearPathEntity();
+				owner.getNavigator().clearPath();
 				fcounter = 1;
 			} else if (owner.getAttackTarget() == null) {
 				// メイドとプレーヤー（無差別）をターゲットに
-				List<Entity> list = owner.worldObj.getEntitiesWithinAABBExcludingEntity(owner, owner.getEntityBoundingBox().expand(16D, 4D, 16D));
+				List<Entity> list = owner.getEntityWorld().getEntitiesWithinAABBExcludingEntity(owner, owner.getEntityBoundingBox().grow(16D, 4D, 16D));
 				for (Entity e : list) {
 					if (e != null && (e instanceof EntityPlayer || e instanceof EntityLittleMaid)) {
 						if (owner.getRNG().nextBoolean()) {
@@ -170,10 +164,10 @@ public class EntityMode_Playing extends EntityModeBase {
 			// 雪原へ到着
 			if (owner.getNavigator().noPath()) {
 				if (checkSnows(
-						MathHelper.floor_double(owner.posX),
-						MathHelper.floor_double(owner.posY),
-						MathHelper.floor_double(owner.posZ),
-						owner.worldObj)) {
+						MathHelper.floor(owner.posX),
+						MathHelper.floor(owner.posY),
+						MathHelper.floor(owner.posZ),
+						owner.getEntityWorld())) {
 //					owner.isMaidChaseWait = true;
 					//1.8検討
 					//owner.attackTime = 30;
@@ -211,11 +205,11 @@ public class EntityMode_Playing extends EntityModeBase {
 			}
 //			owner.isMaidChaseWait = true;
 			owner.setJumping(false);
-			owner.getNavigator().clearPathEntity();
+			owner.getNavigator().clearPath();
 			owner.getLookHelper().setLookPosition(
-					MathHelper.floor_double(owner.posX),
-					MathHelper.floor_double(owner.posY - 1D),
-					MathHelper.floor_double(owner.posZ),
+					MathHelper.floor(owner.posX),
+					MathHelper.floor(owner.posY - 1D),
+					MathHelper.floor(owner.posZ),
 					30F, 40F);
 			owner.setSitting(true);
 			break;
@@ -235,9 +229,9 @@ public class EntityMode_Playing extends EntityModeBase {
 //			isMaidChaseWait = true;
 			owner.setSneaking(true);
 			owner.getLookHelper().setLookPosition(
-					MathHelper.floor_double(owner.posX),
-					MathHelper.floor_double(owner.posY - 1D),
-					MathHelper.floor_double(owner.posZ),
+					MathHelper.floor(owner.posX),
+					MathHelper.floor(owner.posY - 1D),
+					MathHelper.floor(owner.posZ),
 					30F, 40F);
 			break;
 		}
@@ -253,21 +247,21 @@ public class EntityMode_Playing extends EntityModeBase {
 		owner.playingTick = 0;
 		if (owner.isFreedom() || !owner.isContractEX()) {
 			// 自由行動中の固体は虎視眈々と隙をうかがう。
-			if (owner.worldObj.isDaytime()) {
+			if (owner.getEntityWorld().isDaytime()) {
 				// 昼間のお遊び
 
 				// 雪原判定
 				if (!owner.isPlaying()) {
 					// TODO:お遊び判定
-					int xx = MathHelper.floor_double(owner.posX);
-					int yy = MathHelper.floor_double(owner.posY);
-					int zz = MathHelper.floor_double(owner.posZ);
+					int xx = MathHelper.floor(owner.posX);
+					int yy = MathHelper.floor(owner.posY);
+					int zz = MathHelper.floor(owner.posZ);
 
 					// 3x3が雪の平原ならお遊び判定が発生
 					boolean f = true;
 					for (int z = -1; z < 2; z++) {
 						for (int x = -1; x < 2; x++) {
-							f &= Block.isEqualTo(owner.worldObj.getBlockState(new BlockPos(xx + x, yy, zz + z)).getBlock(), Blocks.SNOW_LAYER);
+							f &= Block.isEqualTo(owner.getEntityWorld().getBlockState(new BlockPos(xx + x, yy, zz + z)).getBlock(), Blocks.SNOW_LAYER);
 						}
 					}
 					int lpr = owner.getRNG().nextInt(100) - 97;
@@ -308,7 +302,7 @@ public class EntityMode_Playing extends EntityModeBase {
 
 	@Override
 	public float attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		if (par1DamageSource.getSourceOfDamage() instanceof EntitySnowball) {
+		if (par1DamageSource.getTrueSource() instanceof EntitySnowball) {
 			// お遊び判定用、雪玉かどうか判定
 			owner.setMaidDamegeSound(EnumSound.hurt_snow);
 			if (!owner.isContractEX() || (owner.isFreedom() && owner.maidMode.equals(EntityMode_Basic.mmode_Escort))) {
@@ -325,7 +319,7 @@ public class EntityMode_Playing extends EntityModeBase {
 	public boolean setMode(String pMode) {
 		switch (pMode) {
 		case mmode_Playing :
-			if(!owner.worldObj.isDaytime()) return false;
+			if(!owner.getEntityWorld().isDaytime()) return false;
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(true);
 			owner.setBloodsuck(false);
@@ -337,11 +331,11 @@ public class EntityMode_Playing extends EntityModeBase {
 
 	@Override
 	public int getNextEquipItem(String pMode) {
-		ItemStack litemstack = null;
+		ItemStack litemstack = ItemStack.EMPTY;
 		if (owner.isPlaying()) {
 			for (int li = 0; li < owner.maidInventory.getSizeInventory(); li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
-				if (litemstack == null) continue;
+				if (litemstack.isEmpty()) continue;
 
 				// 雪球
 				if (litemstack.getItem() instanceof ItemSnowball) {

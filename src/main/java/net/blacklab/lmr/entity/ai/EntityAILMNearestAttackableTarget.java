@@ -6,12 +6,10 @@ import java.util.List;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
-import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Fencer;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.MathHelper;
@@ -62,8 +60,10 @@ public class EntityAILMNearestAttackableTarget<T extends EntityLivingBase> exten
 			lfollowRange = getTargetDistance();
 		}
 
-		List<T> llist = this.taskOwner.worldObj.getEntitiesWithinAABB(targetClass, taskOwner.getEntityBoundingBox().expand(lfollowRange, 8.0D, lfollowRange));
-
+		List<T> llist = this.taskOwner.getEntityWorld()
+				.getEntitiesWithinAABB(targetClass, 
+						taskOwner.getEntityBoundingBox().grow(lfollowRange, 8.0D, lfollowRange));
+		
 		if (theMaid.getMaidMasterEntity() != null && !theMaid.isBloodsuck()) {
 			// ソーターを主中心へ
 			theNearestAttackableTargetSorter.setEntity(theMaid.getMaidMasterEntity());
@@ -96,19 +96,7 @@ public class EntityAILMNearestAttackableTarget<T extends EntityLivingBase> exten
 		fretryCounter = 0;
 	}
 
-	@Override
-	public boolean continueExecuting() {
-		/*
-		if (theMaid.getActiveModeClass() != null && theMaid.getActiveModeClass().isSearchEntity()) {
-			if (!theMaid.getActiveModeClass().checkEntity(theMaid.getMaidModeInt(), targetEntity)) {
-				return false;
-			}
-		}
-		*/
-		return super.continueExecuting();
-	}
-
-//	@Override
+	//	@Override
 	protected boolean isSuitableTargetLM(Entity pTarget, boolean par2) {
 		// LMM用にカスタム
 		// 非生物も対象のため別クラス
@@ -179,8 +167,8 @@ public class EntityAILMNearestAttackableTarget<T extends EntityLivingBase> exten
 		if (var3 == null) {
 			return false;
 		}
-		int var4 = var3.xCoord - MathHelper.floor_double(par1EntityLiving.posX);
-		int var5 = var3.zCoord - MathHelper.floor_double(par1EntityLiving.posZ);
+		int var4 = var3.x - MathHelper.floor(par1EntityLiving.posX);
+		int var5 = var3.z - MathHelper.floor(par1EntityLiving.posZ);
 		return var4 * var4 + var5 * var5 <= 2.25D;
 	}
 

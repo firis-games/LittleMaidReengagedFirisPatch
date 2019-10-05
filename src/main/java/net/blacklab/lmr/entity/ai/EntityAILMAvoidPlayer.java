@@ -66,24 +66,24 @@ public class EntityAILMAvoidPlayer extends EntityAIBase implements
 			return false;
 		}
 		// 移動先の距離が近い
-		if (theMaster.getDistanceSq(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord) < theMaid.getDistanceSqToMaster()) {
+		if (theMaster.getDistanceSq(vec3d.x, vec3d.y, vec3d.z) < theMaid.getDistanceSqToMaster()) {
 			return false;
 		}
 
-		avoidPath = entityPathNavigate.getPathToXYZ(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
+		avoidPath = entityPathNavigate.getPathToXYZ(vec3d.x, vec3d.y, vec3d.z);
 
 		if (avoidPath == null) {
 			return false;
 		}
 
 		PathPoint pathpoint = avoidPath.getFinalPathPoint();
-		return pathpoint == null ? false : pathpoint.xCoord == (int)vec3d.xCoord && pathpoint.zCoord == (int)vec3d.zCoord;
+		return pathpoint == null ? false : pathpoint.x == (int)vec3d.x && pathpoint.z == (int)vec3d.z;
 	}
 
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		if(theMaster==null) return false;
-		return !entityPathNavigate.noPath() && theMaid.getDistanceSqToEntity(theMaster) < 144D;
+		return !entityPathNavigate.noPath() && theMaid.getDistanceSq(theMaster) < 144D;
 	}
 
 	@Override

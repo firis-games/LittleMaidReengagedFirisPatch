@@ -2,11 +2,11 @@ package net.blacklab.lmr.client.entity;
 
 import java.util.Map;
 
-import net.blacklab.lmr.entity.maidmodel.TextureBox;
-import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
+import net.blacklab.lmr.entity.maidmodel.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
 import net.blacklab.lmr.util.EntityCapsLiving;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.EntityLiving;
@@ -54,8 +54,8 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	}
 */
 	@Override
-	public float getBrightness(float par1) {
-		return worldObj == null ? 0.0F : super.getBrightness(par1);
+	public float getBrightness() {
+		return this.getEntityWorld() == null ? 0.0F : super.getBrightness();
 	}
 
 	// EntityCaps
@@ -218,7 +218,7 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	}
 
 	@Override
-	public int getBrightnessForRender(float par1) {
+	public int getBrightnessForRender() {
 		// 一定の明るさを返す
 		return 0x00f000f0;
 	}

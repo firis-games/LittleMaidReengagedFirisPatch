@@ -43,7 +43,7 @@ public class RenderEntityMarkerDummy extends Render {
 		GL11.glColor3f(1F, 1F, 1F);
 		if (entity instanceof EntityMarkerDummy) {
 			int cc = ((EntityMarkerDummy) entity).getColor();
-			int ca = MathHelper.floor_float(((EntityMarkerDummy) entity)
+			int ca = MathHelper.floor(((EntityMarkerDummy) entity)
 					.getAlpha(1.0F) * 256);
 
 			int i = tessellator.getBuffer().getColorIndex(ca);

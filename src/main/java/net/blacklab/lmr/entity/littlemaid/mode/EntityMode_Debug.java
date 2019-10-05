@@ -41,7 +41,7 @@ public class EntityMode_Debug extends EntityMode_Basic {
 		if(!DevMode.DEVELOPMENT_DEBUG_MODE) return false;
 		ItemStack litemstackl0 = owner.maidInventory.getStackInSlot(17);
 		ItemStack litemstackl1 = owner.maidInventory.getStackInSlot(16);
-		if (litemstackl0 != null && litemstackl1 != null) {
+		if (!litemstackl0.isEmpty() && !litemstackl1.isEmpty()) {
 			if (litemstackl0.getItem() == LittleMaidReengaged.spawnEgg && litemstackl1.getItem() == Item.getItemFromBlock(Blocks.BARRIER)) {
 				owner.setMaidMode(mmode_Debug);
 				return true;

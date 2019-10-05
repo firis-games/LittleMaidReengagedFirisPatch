@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
 
-import net.blacklab.lmr.network.LMRMessage;
-import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -18,6 +16,7 @@ import net.blacklab.lmr.client.gui.GuiTextureSelect;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
+import net.blacklab.lmr.network.LMRMessage;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -27,9 +26,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -162,14 +160,14 @@ public class GuiMaidInventory extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		String mInventoryString = I18n.format(maidInventory.getName());
-		mc.fontRendererObj.drawString(mInventoryString, 168 - mc.fontRendererObj.getStringWidth(mInventoryString), 64, 0x404040);
-		mc.fontRendererObj.drawString(I18n.format(playerInventory.getName()), 8, 114, 0x404040);
+		mc.fontRenderer.drawString(mInventoryString, 168 - mc.fontRenderer.getStringWidth(mInventoryString), 64, 0x404040);
+		mc.fontRenderer.drawString(I18n.format(playerInventory.getName()), 8, 114, 0x404040);
 
 		//fontRenderer.drawString(StatCollector.translateToLocal("littleMaidMob.text.Health"), 86, 8, 0x404040);
 		//fontRenderer.drawString(StatCollector.translateToLocal("littleMaidMob.text.AP"), 86, 32, 0x404040);
 
 		if (RenderInfoPart.getRenderingPart() == 2) {
-			mc.fontRendererObj.drawString(I18n.format(
+			mc.fontRenderer.drawString(I18n.format(
 					"littleMaidMob.mode.".concat(entitylittlemaid.getMaidModeStringForDisplay())), 7, 64, 0x404040);
 		}
 
@@ -276,8 +274,8 @@ public class GuiMaidInventory extends GuiContainer {
 		if (entitylittlemaid.hurtResistantTime < 10) {
 			flag1 = false;
 		}
-		int i1 = MathHelper.ceiling_float_int(entitylittlemaid.func_110138_aP());
-		int j1 = MathHelper.ceiling_float_int(entitylittlemaid.prevHealth);
+		int i1 = MathHelper.ceil(entitylittlemaid.func_110138_aP());
+		int j1 = MathHelper.ceil(entitylittlemaid.prevHealth);
 		rand.setSeed(updateCounter * 0x4c627);
 
 		// AP
@@ -348,12 +346,12 @@ public class GuiMaidInventory extends GuiContainer {
 
 		//経験値ブースト
 		drawGradientRect(guiLeft+112, guiTop-16, guiLeft+xSize-16, guiTop, 0x80202020, 0x80202020);
-		drawCenteredString(fontRendererObj, String.format("x%d", booster), guiLeft+112+(xSize-128)/2, guiTop-12, 0xffffff);
+		drawCenteredString(fontRenderer, String.format("x%d", booster), guiLeft+112+(xSize-128)/2, guiTop-12, 0xffffff);
 
 		// LV数値
 //		GlStateManager.pushMatrix();
 		String lvString = String.format("Lv. %d", entitylittlemaid.getMaidLevel());
-		mc.fontRendererObj.drawString(lvString, guiLeft + 108, guiTop + 13 - mc.fontRendererObj.FONT_HEIGHT/2, 0xff303030);
+		mc.fontRenderer.drawString(lvString, guiLeft + 108, guiTop + 13 - mc.fontRenderer.FONT_HEIGHT/2, 0xff303030);
 //		mc.fontRendererObj.drawString(lvString, guiLeft + 109, guiTop + 13 - mc.fontRendererObj.FONT_HEIGHT/2, 0xfff0f0f0);
 //		GlStateManager.popMatrix();
 
@@ -362,7 +360,7 @@ public class GuiMaidInventory extends GuiContainer {
 		if (RenderInfoPart.getRenderingPart() == 0) {
 			float lhealth = entitylittlemaid.getHealth();
 			if (lhealth > 20) {
-				mc.fontRendererObj.drawString(String.format("x%d", MathHelper.floor_float((lhealth-1) / 20)), guiLeft + 95, guiTop + 64, 0x404040);
+				mc.fontRenderer.drawString(String.format("x%d", MathHelper.floor((lhealth-1) / 20)), guiLeft + 95, guiTop + 64, 0x404040);
 			}
 		}
 
@@ -382,8 +380,8 @@ public class GuiMaidInventory extends GuiContainer {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(ICONS);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		int orgnHealth = MathHelper.ceiling_float_int(entitylittlemaid.getHealth());
-		int orgnLasthealth = orgnHealth + MathHelper.ceiling_float_int(entitylittlemaid.getLastDamage());
+		int orgnHealth = MathHelper.ceil(entitylittlemaid.getHealth());
+		int orgnLasthealth = orgnHealth + MathHelper.ceil(entitylittlemaid.getLastDamage());
 		this.rand.setSeed(updateCounter * 312871);
 		//		FoodStats var7 = entitylittlemaid.getFoodStats();
 //		int var8 = var7.getFoodLevel();
@@ -391,14 +389,14 @@ public class GuiMaidInventory extends GuiContainer {
 		IAttributeInstance var10 = entitylittlemaid.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
 		float maxHealth = (float) var10.getAttributeValue();
 		float origAbsorption = entitylittlemaid.getAbsorptionAmount();
-		int maxHealthRows = MathHelper.ceiling_float_int((maxHealth + origAbsorption) / 20.0F);
-		int healthRows = MathHelper.ceiling_float_int(orgnHealth / 20f);
+		int maxHealthRows = MathHelper.ceil((maxHealth + origAbsorption) / 20.0F);
+		int healthRows = MathHelper.ceil(orgnHealth / 20f);
 		int var17 = Math.max(10 - (maxHealthRows - 2), 3);
 		float absorption = origAbsorption;
 		int var21 = -1;
 
 		if (entitylittlemaid.isPotionActive(Potion.getPotionById(10))) {
-			var21 = updateCounter % MathHelper.ceiling_float_int(maxHealth + 5.0F);
+			var21 = updateCounter % MathHelper.ceil(maxHealth + 5.0F);
 		}
 
 		int ldrawx;
@@ -430,7 +428,7 @@ public class GuiMaidInventory extends GuiContainer {
 
 		// LP
 		if (RenderInfoPart.getRenderingPart() == 0) {
-			for (int li = maxHealthRows > healthRows ? 9 : MathHelper.ceiling_float_int((maxHealth + origAbsorption - 2)/2f) % 10; li >= 0; --li) {
+			for (int li = maxHealthRows > healthRows ? 9 : MathHelper.ceil((maxHealth + origAbsorption - 2)/2f) % 10; li >= 0; --li) {
 				int var23 = 16;
 				if (entitylittlemaid.isPotionActive(Potion.getPotionById(19))) {
 					var23 += 36;
@@ -438,7 +436,7 @@ public class GuiMaidInventory extends GuiContainer {
 					var23 += 72;
 				}
 
-//				int var25 = MathHelper.ceiling_float_int((li + 1) / 10.0F);
+//				int var25 = MathHelper.ceil((li + 1) / 10.0F);
 				ldrawx = guiLeft + li % 10 * 8 + 7;
 				ldrawy = guiTop + 64;
 
@@ -488,8 +486,8 @@ public class GuiMaidInventory extends GuiContainer {
 		ldrawy = guiTop + 46;
 		if (entitylittlemaid.isInsideOfMaterial(Material.WATER)) {
 			int var23 = entitylittlemaid.getAir();
-			int var35 = MathHelper.ceiling_double_int((var23 - 2) * 10.0D / 300.0D);
-			int var25 = MathHelper.ceiling_double_int(var23 * 10.0D / 300.0D) - var35;
+			int var35 = MathHelper.ceil((var23 - 2) * 10.0D / 300.0D);
+			int var25 = MathHelper.ceil(var23 * 10.0D / 300.0D) - var35;
 
 			for (int var26 = 0; var26 < var35 + var25; ++var26) {
 				ldrawx = guiLeft + var26 * 8 + 86;
@@ -541,8 +539,8 @@ public class GuiMaidInventory extends GuiContainer {
 			if (entitylittlemaid.textureData.textureBox[0] != null) {
 				String ls1 = entitylittlemaid.textureData.getTextureName(0);
 				String ls2 = entitylittlemaid.textureData.getTextureName(1);
-				int ltw1 = this.mc.fontRendererObj.getStringWidth(ls1);
-				int ltw2 = this.mc.fontRendererObj.getStringWidth(ls2);
+				int ltw1 = this.mc.fontRenderer.getStringWidth(ls1);
+				int ltw2 = this.mc.fontRenderer.getStringWidth(ls2);
 				int ltwmax = (ltw1 > ltw2) ? ltw1 : ltw2;
 				int lbx = 52 - ltwmax / 2;
 				int lby = 68;
@@ -552,10 +550,10 @@ public class GuiMaidInventory extends GuiContainer {
 				GlStateManager.disableDepth();
 				GlStateManager.colorMask(true, true, true, false);
 				drawGradientRect(lbx - 3, lby - 4, lbx + ltwmax + 3, lby + 8, lcolor, lcolor);
-				drawString(this.mc.fontRendererObj, ls1, 52 - ltw1 / 2, lby - 2, -1);
+				drawString(this.mc.fontRenderer, ls1, 52 - ltw1 / 2, lby - 2, -1);
 				lcolor = jj > 46 ? 0xc0882222 : 0xc0000000;
 				drawGradientRect(lbx - 3, lby + 8, lbx + ltwmax + 3, lby + 16 + 4, lcolor, lcolor);
-				drawString(this.mc.fontRendererObj, ls2, 52 - ltw2 / 2, lby + 10, -1);
+				drawString(this.mc.fontRenderer, ls2, 52 - ltw2 / 2, lby + 10, -1);
 				GlStateManager.enableLighting();
 				GlStateManager.enableDepth();
 				GlStateManager.colorMask(true, true, true, true);
@@ -577,11 +575,11 @@ public class GuiMaidInventory extends GuiContainer {
 			GlStateManager.disableLighting();
 			GlStateManager.disableDepth();
 			GlStateManager.colorMask(true, true, true, false);
-			String str = I18n.format("littleMaidMob.gui.text.expboost");
-			int width = fontRendererObj.getStringWidth(str);
+			String str = I18n.format("littlemaidmob.gui.text.expboost");
+			int width = fontRenderer.getStringWidth(str);
 			int centerx = guiLeft + 48 + xSize/2;
-			drawGradientRect(centerx - width/2 - 4, guiTop, centerx + width/2 + 4, guiTop + fontRendererObj.FONT_HEIGHT, 0xc0202020, 0xc0202020);
-			drawCenteredString(fontRendererObj, str, centerx, guiTop, 0xffffff);
+			drawGradientRect(centerx - width/2 - 4, guiTop, centerx + width/2 + 4, guiTop + fontRenderer.FONT_HEIGHT, 0xc0202020, 0xc0202020);
+			drawCenteredString(fontRenderer, str, centerx, guiTop, 0xffffff);
 			GlStateManager.enableLighting();
 			GlStateManager.enableDepth();
 			GlStateManager.colorMask(true, true, true, true);
@@ -731,10 +729,10 @@ public class GuiMaidInventory extends GuiContainer {
 								.append(potioneffect.getAmplifier())
 								.toString())).toString();
 			}
-			mc.fontRendererObj.drawString(ls, lx + 10 + 18, ly + 6, 0xffffff);
+			mc.fontRenderer.drawString(ls, lx + 10 + 18, ly + 6, 0xffffff);
 			// TODO ここもよく分からん
 			String s1 = Potion.getPotionDurationString(potioneffect, 1);
-			mc.fontRendererObj.drawString(s1, lx + 10 + 18, ly + 6 + 10, 0x7f7f7f);
+			mc.fontRenderer.drawString(s1, lx + 10 + 18, ly + 6 + 10, 0x7f7f7f);
 			ly += lh;
 		}
 	}

@@ -1,7 +1,6 @@
 package net.blacklab.lmr.entity.littlemaid;
 
 import java.util.Collection;
-import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
@@ -49,7 +48,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	public EntityLittleMaidAvatarMP(World par1World)
 	{
-		super(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(par1World == null ? 0 : par1World.provider.getDimension()),
+		super(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(par1World == null ? 0 : par1World.provider.getDimension()),
 				CommonHelper.newGameProfile("1", "LMM_EntityLittleMaidAvatar"));
 	}
 
@@ -129,7 +128,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return null;
 	}
 
@@ -137,11 +136,8 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	protected SoundEvent getDeathSound() {
 		return null;
 	}
-
-	@Override
-	public boolean canCommandSenderUseCommand(int var1, String var2) {
-		return false;
-	}
+	
+	@Override public boolean canUseCommand(int i, String s){ return false; }
 
 	@Override
 	public void addStat(StatBase par1StatBase, int par2) {}
@@ -173,7 +169,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	@Override
 	public void onItemPickup(Entity entity, int i) {
 		// アイテム回収のエフェクト
-		if (worldObj.isRemote) {
+		if (getEntityWorld().isRemote) {
 			// Client
 			LittleMaidReengaged.proxy.onItemPickup(this, entity, i);
 		} else {
@@ -184,7 +180,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	// TODO 現状無意味ですねわかります
 	@Override
 	public void onCriticalHit(Entity par1Entity) {
-		if (worldObj.isRemote) {
+		if (getEntityWorld().isRemote) {
 			// Client
 			LittleMaidReengaged.proxy.onCriticalHit(this, par1Entity);
 		} else {
@@ -193,7 +189,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	@Override
 	public void onEnchantmentCritical(Entity par1Entity) {
-		if (worldObj.isRemote) {
+		if (getEntityWorld().isRemote) {
 			LittleMaidReengaged.proxy.onEnchantmentCritical(this, par1Entity);
 		} else {
 		}
@@ -247,7 +243,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		// アイテムが壊れたので次の装備を選択
 		// TODO Maybe will not be called
 //		super.destroyCurrentEquippedItem();
-		inventory.setInventorySlotContents(inventory.currentItem, (ItemStack)null);
+		inventory.setInventorySlotContents(inventory.currentItem, ItemStack.EMPTY);
 		avatar.getNextEquipItem();
 	}
 
@@ -257,7 +253,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	}
 
 	protected Entity getEntityServer() {
-		return worldObj.isRemote ? null : this;
+		return getEntityWorld().isRemote ? null : this;
 	}
 
 	// Item使用関連
@@ -394,10 +390,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 //		// チャットメッセージは使わない。
 //	}
 
-	@Override
-	public void addChatMessage(ITextComponent var1) {
-		// チャットメッセージは使わない。
-	}
+	@Override public void sendMessage(ITextComponent component) {}
 
 	// 不要？
 
@@ -446,7 +439,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	}
 
 	@Override
-	public Collection getActivePotionEffects() {
+	public Collection<PotionEffect> getActivePotionEffects() {
 		return avatar.getActivePotionEffects();
 	}
 
@@ -479,7 +472,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	public void getValueVector(double atx, double aty, double atz, double atl) {
 		// EntityLittleMaidから値をコピー
-		double l = MathHelper.sqrt_double(atl);
+		double l = MathHelper.sqrt(atl);
 		appendX = atx / l;
 		appendY = aty / l;
 		appendZ = atz / l;
@@ -509,7 +502,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	 */
 	public void getValueVectorFire(double atx, double aty, double atz, double atl) {
 		// EntityLittleMaidから値をコピー
-		double l = MathHelper.sqrt_double(atl);
+		double l = MathHelper.sqrt(atl);
 		appendX = atx / l;
 		appendY = aty / l;
 		appendZ = atz / l;
@@ -643,7 +636,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	public void sendContainerToPlayer(Container containerIn) {
 	}
 
-	@Override
-	public void updateCraftingInventory(Container containerToSend, List<ItemStack> itemsList) {
-	}
+	//@Override
+	//public void updateCraftingInventory(Container containerToSend, List<ItemStack> itemsList) {
+	//}
 }

@@ -130,7 +130,7 @@ public class GuiTextureSelect extends GuiScreen {
 	public void drawScreen(int par1, int par2, float par3) {
 		drawDefaultBackground();
 		selectPanel.drawScreen(par1, par2, par3);
-		drawCenteredString(mc.fontRendererObj, I18n.format(screenTitle), width / 2, 4, 0xffffff);
+		drawCenteredString(mc.fontRenderer, I18n.format(screenTitle), width / 2, 4, 0xffffff);
 		
 		super.drawScreen(par1, par2, par3);
 		
@@ -160,7 +160,7 @@ public class GuiTextureSelect extends GuiScreen {
 			selectPanel.entity.setColor(selectColor);
 			selectPanel.entity.setTextureNames();
 		}
-		mc.getRenderManager().doRenderEntity(selectPanel.entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+		mc.getRenderManager().renderEntity(selectPanel.entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		/*
 		for (int li = 0; li < 16; li++) {
 			if (lbox.hasColor(li)) {

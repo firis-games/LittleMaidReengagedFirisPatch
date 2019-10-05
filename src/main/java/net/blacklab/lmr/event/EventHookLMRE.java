@@ -33,7 +33,7 @@ public class EventHookLMRE
 	{
 		if(event.getEntityPlayer() instanceof EntityLittleMaidAvatarSP)
 		{
-			if(event.getItem()!=null)
+			if(event.getItem() != null)
 			{
 				event.setCanceled(true);
 			}
@@ -86,7 +86,7 @@ public class EventHookLMRE
 
 	@SubscribeEvent
 	public void onLivingAttack(LivingAttackEvent event) {
-		Entity entity = event.getSource().getEntity();
+		Entity entity = event.getSource().getTrueSource();
 		if (entity instanceof EntityLittleMaidAvatarMP) {
 			((EntityLittleMaidAvatarMP) entity).avatar.addMaidExperience(0.16f * event.getAmount());
 		}
@@ -94,7 +94,7 @@ public class EventHookLMRE
 
 	@SubscribeEvent
 	public void onLivingHurt(LivingHurtEvent event) {
-		Entity entity = event.getSource().getSourceOfDamage();
+		Entity entity = event.getSource().getTrueSource();
 		if (entity instanceof EntityArrow && ((EntityArrow) entity).shootingEntity instanceof EntityLittleMaid) {
 			((EntityLittleMaid)((EntityArrow) entity).shootingEntity).addMaidExperience(0.18f * event.getAmount());
 		}

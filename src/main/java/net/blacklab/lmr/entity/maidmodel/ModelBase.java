@@ -85,24 +85,24 @@ public abstract class ModelBase extends AbstractModelBase {
 		return MathHelper.cos(f);
 	}
 
-	public static final float mh_sqrt_float(float f) {
-		return MathHelper.sqrt_float(f);
+	public static final float mh_sqrt(float f) {
+		return MathHelper.sqrt(f);
 	}
 
-	public static final float mh_sqrt_double(double d) {
-		return MathHelper.sqrt_double(d);
+	public static final float mh_sqrt(double d) {
+		return MathHelper.sqrt(d);
 	}
 
-	public static final int mh_floor_float(float f) {
-		return MathHelper.floor_float(f);
+	public static final int mh_floor(float f) {
+		return MathHelper.floor(f);
 	}
 
-	public static final int mh_floor_double(double d) {
-		return MathHelper.floor_double(d);
+	public static final int mh_floor(double d) {
+		return MathHelper.floor(d);
 	}
 
-	public static final long mh_floor_double_long(double d) {
-		return MathHelper.floor_double_long(d);
+	public static final long mh_floor_long(double d) {
+		return MathHelper.floor(d);
 	}
 
 	public static final float mh_abs(float f) {
@@ -110,11 +110,11 @@ public abstract class ModelBase extends AbstractModelBase {
 	}
 
 	public static final double mh_abs_max(double d, double d1) {
-		return MathHelper.abs_max(d, d1);
+		return MathHelper.absMax(d, d1);
 	}
 
 	public static final int mh_bucketInt(int i, int j) {
-		return MathHelper.bucketInt(i, j);
+		return MathHelper.intFloorDiv(i, j);
 	}
 
 	public static final boolean mh_stringNullOrLengthZero(String s) {
@@ -122,7 +122,7 @@ public abstract class ModelBase extends AbstractModelBase {
 	}
 
 	public static final int mh_getRandomIntegerInRange(Random random, int i, int j) {
-		return MathHelper.getRandomIntegerInRange(random, i, j);
+		return MathHelper.getInt(random, i, j);
 	}
 
 }

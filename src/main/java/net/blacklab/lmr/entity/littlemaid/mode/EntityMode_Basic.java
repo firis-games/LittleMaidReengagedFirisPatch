@@ -100,7 +100,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getCurrentEquippedItem();
-		if (litemstack != null) {
+		if (!litemstack.isEmpty()) {
 			if (owner.getModeTrigger().isTriggerable(EntityMode_Farmer.mtrigger_Hoe, litemstack, ItemHoe.class)) {
 				owner.setMaidMode(mmode_FarmPorter);
 				return true;
@@ -169,7 +169,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 
 	@Override
 	public boolean checkBlock(String pMode, int px, int py, int pz) {
-		TileEntity ltile = owner.worldObj.getTileEntity(new BlockPos(px, py, pz));
+		TileEntity ltile = owner.getEntityWorld().getTileEntity(new BlockPos(px, py, pz));
 		if (!(ltile instanceof IInventory)) {
 			return false;
 		}
@@ -197,7 +197,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	@Override
 	public boolean overlooksBlock(String pMode) {
 		// チェストカートの検索
-		List<TileEntity> list = owner.worldObj.loadedTileEntityList;
+		List<TileEntity> list = owner.getEntityWorld().loadedTileEntityList;
 		for (TileEntity lentity : list) {
 			if(!(lentity instanceof TileEntityChest)) continue;
 			if (!fusedTiles.contains(lentity)) {
@@ -336,10 +336,10 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		}
 
 		TileEntity ltile = (TileEntity)myInventory;
-		Block lblock = owner.worldObj.getBlockState(ltile.getPos()).getBlock();
+		Block lblock = owner.getEntityWorld().getBlockState(ltile.getPos()).getBlock();
 		myChest = myInventory;
 		if (lblock instanceof BlockChest) {
-			myChest = ((BlockChest)lblock).getLockableContainer(owner.worldObj, ltile.getPos());
+			myChest = ((BlockChest)lblock).getLockableContainer(owner.getEntityWorld(), ltile.getPos());
 		}
 
 		return myChest != null;
@@ -351,23 +351,23 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			// 砂糖、時計、被っているヘルム以外のアイテムを突っ込む
 			ItemStack is;
 			LittleMaidReengaged.Debug(String.format("getChest:%d", maidSearchCount));
-			while ((is = owner.maidInventory.getStackInSlot(maidSearchCount)) == null && maidSearchCount < InventoryLittleMaid.maxInventorySize) {
+			while ((is = owner.maidInventory.getStackInSlot(maidSearchCount)).isEmpty() && maidSearchCount < InventoryLittleMaid.maxInventorySize) {
 				maidSearchCount++;
 			}
 
-			if (is != null){
+			if (!is.isEmpty()){
 				EventLMRE.ItemPutChestEvent event = new EventLMRE.ItemPutChestEvent(owner,myChest,is,maidSearchCount);
 				if(!VEventBus.instance.post(event)){
 //					mod_littleMaidMob.Debug("getchest2.");
 					boolean f = false;
-					for (int j = 0; j < myChest.getSizeInventory() && is.stackSize > 0; j++)
+					for (int j = 0; j < myChest.getSizeInventory() && is.getCount() > 0; j++)
 					{
 						ItemStack isc = myChest.getStackInSlot(j);
-						if (isc == null)
+						if (isc.isEmpty())
 						{
 //							mod_littleMaidMob.Debug(String.format("%s -> NULL", is.getItemName()));
 							myChest.setInventorySlotContents(j, is.copy());
-							is.stackSize = 0;
+							is.setCount(0);
 							f = true;
 							break;
 						}
@@ -375,19 +375,19 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 						{
 //							mod_littleMaidMob.Debug(String.format("%s -> %s", is.getItemName(), isc.getItemName()));
 							f = true;
-							isc.stackSize += is.stackSize;
-							if (isc.stackSize > isc.getMaxStackSize())
+							isc.setCount(isc.getCount() + is.getCount());
+							if (isc.getCount() > isc.getMaxStackSize())
 							{
-								is.stackSize = isc.stackSize - isc.getMaxStackSize();
-								isc.stackSize = isc.getMaxStackSize();
+								is.setCount(isc.getCount() - isc.getMaxStackSize());
+								isc.setCount(isc.getMaxStackSize());
 							} else {
-								is.stackSize = 0;
+								is.setCount(0);
 								break;
 							}
 						}
 					}
-					if (is.stackSize <= 0) {
-						owner.maidInventory.setInventorySlotContents(maidSearchCount, null);
+					if (is.getCount() <= 0) {
+						owner.maidInventory.setInventorySlotContents(maidSearchCount, ItemStack.EMPTY);
 					}
 					if (f) {
 						owner.playSound("entity.item.pickup");
@@ -420,8 +420,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			// チェスト付カートとか
 			Entity lentity = (Entity)myInventory;
 			if (!lentity.isDead) {
-				if (owner.getDistanceSqToEntity(lentity) < 5D)	{
-					owner.getNavigator().clearPathEntity();
+				if (owner.getDistanceSq(lentity) < 5D)	{
+					owner.getNavigator().clearPath();
 					if (myChest == null) {
 						myChest = (IInventory)lentity;
 						fusedTiles.add(myChest);
@@ -435,7 +435,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 				} else {
 					// チェストまでのパスを作る
 					if (!owner.isMaidWaitEx()) {
-						double distance = owner.getDistanceSqToEntity(lentity);
+						double distance = owner.getDistanceSq(lentity);
 						if (distance == lastdistance) {
 							// TODO: 現状無意味
 							LittleMaidReengaged.Debug("Assert.");
@@ -478,21 +478,21 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		if (owner.isContract()) {
 			// 契約状態
 			if (owner.isEntityAlive() && owner.isMaidContractOwner(pentityplayer)) {
-				if (pitemstack != null) {
+				if (!pitemstack.isEmpty()) {
 					// 追加分の処理
 					// TODO いる？
 					//owner.setPathToEntity(null);
 					if (owner.isRemainsContract()) {
 						if (pitemstack.getItem() instanceof ItemAppleGold) {
 							// ゴールデンアッポー
-							if(!owner.worldObj.isRemote) {
-								((ItemAppleGold)pitemstack.getItem()).onItemUseFinish(pitemstack, owner.worldObj, owner.maidAvatar);
+							if(!owner.getEntityWorld().isRemote) {
+								((ItemAppleGold)pitemstack.getItem()).onItemUseFinish(pitemstack, owner.getEntityWorld(), owner.maidAvatar);
 							}
 							return true;
 						}
 						else if (pitemstack.getItem() instanceof ItemBucketMilk && !owner.getActivePotionEffects().isEmpty()) {
 							// 牛乳に相談だ
-							if(!owner.worldObj.isRemote) {
+							if(!owner.getEntityWorld().isRemote) {
 								owner.clearActivePotions();
 							}
 							// TODO これバケツなくなるで

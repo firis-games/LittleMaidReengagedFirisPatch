@@ -1,14 +1,13 @@
 package net.blacklab.lmr;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import net.blacklab.lib.config.ConfigList;
+import org.apache.logging.log4j.Logger;
+
 import net.blacklab.lib.vevent.VEventBus;
-import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -31,16 +30,17 @@ import net.blacklab.lmr.util.manager.StabilizerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.BiomeDictionary;
 //github.com/Verclene/LittleMaidReengaged.git
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -48,9 +48,11 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(
 		modid = LittleMaidReengaged.DOMAIN,
@@ -59,12 +61,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 		acceptedMinecraftVersions=LittleMaidReengaged.ACCEPTED_MCVERSION,
 		dependencies = LittleMaidReengaged.DEPENDENCIES/*,
 		updateJSON = "http://mc.el-blacklab.net/lmr-version.json"*/)
+@EventBusSubscriber
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
 	public static final String VERSION = "8.1.6.141";
-	public static final String ACCEPTED_MCVERSION = "[1.9.4,1.10.2]";
-	public static final String DEPENDENCIES = "required-after:Forge@[1.9.4-12.17.0.1976,);";
+	public static final String ACCEPTED_MCVERSION = "[1.12.2]";
+	public static final String DEPENDENCIES = "required-after:forge@[1.12.2-14.23.5.2768,);";
 
 	/*
 	 * public static String[] cfg_comment = {
@@ -85,6 +88,8 @@ public class LittleMaidReengaged {
 	 * "AchievementID = used Achievement index.(0 = Disable)",
 	 * "UniqueEntityId = UniqueEntityId(0 is AutoAssigned. max 255)" };
 	 */
+	
+	public static Logger logger;
 
 	// @MLProp(info="Relative spawn weight. The lower the less common. 10=pigs. 0=off")
 	public static int cfg_spawnWeight = 5;
@@ -132,14 +137,26 @@ public class LittleMaidReengaged {
 		Debug("Side=%s; ".concat(format), isRemote, pVals);
 	}
 
-	public String getName() {
-		return "LittleMaidReengaged";
-	}
+	//public String getName() {
+	//	return "LittleMaidReengaged";
+	//}
 
 	public static Random randomSoundChance;
+	
+	@SuppressWarnings("unchecked")
+	public LittleMaidReengaged() {
+		if (CommonHelper.isClient) {
+			List<IResourcePack> defaultResourcePacks = (List<IResourcePack>)ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), new String[] { "defaultResourcePacks", "field_110449_ao" });
+
+			defaultResourcePacks.add(new SoundResourcePack());
+			defaultResourcePacks.add(new OldZipTexturesWrapper());
+		}
+	}
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
+		logger = evt.getModLog();
+		
 		// MMMLibからの引継ぎ
 		// ClassLoaderを初期化
 
@@ -210,11 +227,14 @@ public class LittleMaidReengaged {
 
 //		latestVersion = Version.getLatestVersion("http://mc.el-blacklab.net/lmmnxversion.txt", 10000);
 
-		EntityRegistry.registerModEntity(EntityLittleMaid.class,
-				"LittleMaid", 0, instance, 80, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(LittleMaidReengaged.DOMAIN, "littlemaid"),
+				EntityLittleMaid.class,
+    			"littlemaid", 0, instance, 80, 1, true);
 
+		/*
 		spawnEgg = new ItemMaidSpawnEgg();
 		GameRegistry.<Item>register(spawnEgg, new ResourceLocation(DOMAIN, "spawn_littlemaid_egg"));
+		
 		GameRegistry.addRecipe(
 				new ItemStack(spawnEgg, 1),
 				"scs", "sbs", " e ", Character.valueOf('s'),
@@ -231,9 +251,10 @@ public class LittleMaidReengaged {
 
 		maidPorter = new ItemMaidPorter();
 		GameRegistry.register(maidPorter, new ResourceLocation(DOMAIN, "maidporter"));
+		*/
 
-		// 実績追加
-		AchievementsLMRE.initAchievements();
+		//// 実績追加
+		//AchievementsLMRE.initAchievements();
 
 		// AIリストの追加
 		EntityModeManager.init();
@@ -241,8 +262,8 @@ public class LittleMaidReengaged {
 		// アイテムスロット更新用のパケット
 		LMRNetwork.init(DOMAIN);
 
-		// Register model and renderer
-		proxy.rendererRegister();
+		//// Register model and renderer
+		//proxy.rendererRegister();
 	}
 
 	@EventHandler
@@ -250,14 +271,6 @@ public class LittleMaidReengaged {
 		proxy.loadSounds();
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-
-		if (CommonHelper.isClient) {
-			List<IResourcePack> defaultResourcePacks = ObfuscationReflectionHelper
-					.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(),
-							"defaultResourcePacks", "field_110449_ao");
-			defaultResourcePacks.add(new SoundResourcePack());
-			defaultResourcePacks.add(new OldZipTexturesWrapper());
-		}
 
 		MinecraftForge.EVENT_BUS.register(new EventHookLMRE());
 		VEventBus.instance.registerListener(new EventHookLMRE());
@@ -281,19 +294,19 @@ public class LittleMaidReengaged {
 
 				if(biome != null &&
 						(
-								(BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.HOT) ||
-//										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.COLD) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.WET) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.DRY) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SAVANNA) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.CONIFEROUS) ||
-//										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.LUSH) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.MUSHROOM) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.FOREST) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.PLAINS) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SANDY) ||
-//										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SNOWY) ||
-										BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.BEACH))
+								(BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT) ||
+//										BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD) ||
+										BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET) ||
+										BiomeDictionary.hasType(biome, BiomeDictionary.Type.DRY) ||
+										BiomeDictionary.hasType(biome, BiomeDictionary.Type.SAVANNA) ||
+										BiomeDictionary.hasType(biome, BiomeDictionary.Type.CONIFEROUS) ||
+//										BiomeDictionary.hasType(biome, BiomeDictionary.Type.LUSH) ||
+										BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM) ||
+										BiomeDictionary.hasType(biome, BiomeDictionary.Type.FOREST) ||
+										BiomeDictionary.hasType(biome, BiomeDictionary.Type.PLAINS) ||
+										BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) ||
+//										BiomeDictionary.hasType(biome, BiomeDictionary.Type.SNOWY) ||
+										BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
 								)
 						)
 				{
@@ -317,5 +330,32 @@ public class LittleMaidReengaged {
 		IFF.loadIFFs();
 
 	}
+	
+	
+	@SubscribeEvent
+    protected static void registerItems(RegistryEvent.Register<Item> event) {
+		
+		spawnEgg = new ItemMaidSpawnEgg();
+		//メイドさんスポーンエッグ
+		event.getRegistry().register(spawnEgg
+    			.setRegistryName(DOMAIN, "spawn_littlemaid_egg"));
+		
+		
+		registerKey = new ItemTriggerRegisterKey();
+		event.getRegistry().register(registerKey
+    			.setRegistryName(DOMAIN, "registerkey"));
+		
+		maidPorter = new ItemMaidPorter();
+		event.getRegistry().register(maidPorter
+    			.setRegistryName(DOMAIN, "maidporter"));
+	}
+	
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    protected static void registerModels(ModelRegistryEvent event)
+    {
+    	// Register model and renderer
+    	proxy.rendererRegister();
+    }
 
 }

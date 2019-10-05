@@ -28,7 +28,7 @@ public class EntityModeManager extends ManagerBase {
 	}
 
 	@Override
-	protected boolean append(Class pclass) {
+	protected boolean append(Class<? extends EntityModeBase> pclass) {
 		// プライオリティー順に追加
 		// ソーター使う？
 		if (!EntityModeBase.class.isAssignableFrom(pclass)) {
@@ -37,7 +37,7 @@ public class EntityModeManager extends ManagerBase {
 		
 		try {
 			EntityModeBase lemb = null;
-			lemb = (EntityModeBase)pclass.getConstructor(EntityLittleMaid.class).newInstance((EntityLittleMaid)null);
+			lemb = pclass.getConstructor(EntityLittleMaid.class).newInstance((EntityLittleMaid)null);
 			lemb.init();
 			
 			//既存

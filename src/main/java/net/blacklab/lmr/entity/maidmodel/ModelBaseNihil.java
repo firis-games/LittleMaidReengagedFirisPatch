@@ -1,7 +1,6 @@
 package net.blacklab.lmr.entity.maidmodel;
 
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
 

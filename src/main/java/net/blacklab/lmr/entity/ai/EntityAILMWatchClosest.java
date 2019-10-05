@@ -18,10 +18,10 @@ public class EntityAILMWatchClosest extends EntityAIWatchClosest {
 	}
 
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		// サイレンサー
 		try {
-			return super.continueExecuting();
+			return super.shouldContinueExecuting();
 		} catch (NullPointerException exception) {}
 		return false;
 	}

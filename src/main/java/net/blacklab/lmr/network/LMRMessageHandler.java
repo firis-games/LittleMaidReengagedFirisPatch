@@ -13,7 +13,7 @@ public class LMRMessageHandler implements IMessageHandler<LMRMessage, IMessage>
 		if (ctx.side.isClient()) {
 			LittleMaidReengaged.proxy.onClientCustomPayLoad(message);
 		} else {
-			LMRNetwork.onServerCustomPayload(ctx.getServerHandler().playerEntity, message);
+			LMRNetwork.onServerCustomPayload(ctx.getServerHandler().player, message);
 		}
 		return null;//本来は返答用IMessageインスタンスを返すのだが、旧来のパケットの使い方をするなら必要ない。
 	}

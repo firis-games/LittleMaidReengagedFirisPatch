@@ -33,7 +33,7 @@ public class EntityAILMBegMove extends EntityAIBase {
 	}
 
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		return shouldExecute();
 	}
 
@@ -43,7 +43,7 @@ public class EntityAILMBegMove extends EntityAIBase {
 		// http://forum.minecraftuser.jp/viewtopic.php?f=13&t=23347&start=220
 		// 這い寄れ！
 		if (theMaid.aiBeg.getDistanceSq() < 3.5D || thePlayer==null) {
-			theMaid.getNavigator().clearPathEntity();
+			theMaid.getNavigator().clearPath();
 		} else {
 			theMaid.getNavigator().tryMoveToEntityLiving(thePlayer, moveSpeed);
 		}

@@ -1,8 +1,6 @@
 package net.blacklab.lmr.util.helper;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.minecraft.item.Item;
-import scala.language;
 
 public class LoaderHelper {
 	

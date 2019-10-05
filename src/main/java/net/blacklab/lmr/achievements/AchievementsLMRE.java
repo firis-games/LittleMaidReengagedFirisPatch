@@ -1,12 +1,8 @@
 package net.blacklab.lmr.achievements;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.stats.Achievement;
-import net.minecraftforge.common.AchievementPage;
-
 public class AchievementsLMRE {
 
+	/*
 	// 契約
 	public static Achievement ac_Contract;
 
@@ -75,5 +71,6 @@ public class AchievementsLMRE {
 				};
 		AchievementPage.registerAchievementPage(new AchievementPage("LittleMaidReengaged", achievements));
 	}
+	*/
 
 }

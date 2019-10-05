@@ -16,7 +16,7 @@ public class EntityAILMRestrictRain extends EntityAIBase implements
 
 	@Override
 	public boolean shouldExecute() {
-		return isEnable && theEntity.worldObj.isRaining();
+		return isEnable && theEntity.getEntityWorld().isRaining();
 	}
 
 	@Override

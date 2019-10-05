@@ -182,8 +182,8 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 		if ((onGrounds[0] > -9990F || onGrounds[1] > -9990F) && !aimedBow) {
 			// 腕振り
 			float f6, f7, f8;
-			f6 = mh_sin(mh_sqrt_float(onGrounds[0]) * (float)Math.PI * 2.0F);
-			f7 = mh_sin(mh_sqrt_float(onGrounds[1]) * (float)Math.PI * 2.0F);
+			f6 = mh_sin(mh_sqrt(onGrounds[0]) * (float)Math.PI * 2.0F);
+			f7 = mh_sin(mh_sqrt(onGrounds[1]) * (float)Math.PI * 2.0F);
 			bipedTorso.setRotateAngleY((f6 - f7) * 0.2F);
 			Skirt.addRotateAngleY(bipedTorso.rotateAngleY);
 			bipedRightArm.addRotateAngleY(bipedTorso.rotateAngleY);

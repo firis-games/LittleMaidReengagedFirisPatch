@@ -1,7 +1,8 @@
 package net.blacklab.lmr.inventory;
 
+import java.util.List;
+
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -72,7 +73,7 @@ public class ContainerInventoryLittleMaid extends Container {
 				 */
 				public boolean isItemValid(ItemStack par1ItemStack)
 				{
-					if (par1ItemStack == null) return false;
+					if (par1ItemStack.isEmpty()) return false;
 					boolean flag = littlemaidInventory.isItemValidForSlot(InventoryLittleMaid.maxInventorySize+armorIndex, par1ItemStack);
 					LittleMaidReengaged.Debug("SLOT-INDEX: %d; VALID? %s", getSlotIndex(), flag);
 					return flag;
@@ -101,12 +102,14 @@ public class ContainerInventoryLittleMaid extends Container {
 	}
 
 	@Override
-	public void putStacksInSlots(ItemStack[] p_75131_1_) {
-		super.putStacksInSlots(p_75131_1_);
+	@SideOnly(Side.CLIENT)
+    public void setAll(List<ItemStack> p_190896_1_) {
+		super.setAll(p_190896_1_);
 		checkAchievements();
 	}
 
 	protected void checkAchievements() {
+		@SuppressWarnings("unused")
 		boolean flag = true;
 		Slot slot;
 		Item item;
@@ -119,8 +122,8 @@ public class ContainerInventoryLittleMaid extends Container {
 		flag &= (slot = getSlot(57)).getHasStack() && (item = slot.getStack().getItem()) instanceof ItemArmor &&
 				((ItemArmor)item).getArmorMaterial() == ArmorMaterial.DIAMOND;
 
-		if (flag && !owner.worldObj.isRemote)
-			owner.getMaidMasterEntity().addStat(AchievementsLMRE.ac_Overprtct);
+		//if (flag && !owner.getEntityWorld().isRemote)
+		//	owner.getMaidMasterEntity().addStat(AchievementsLMRE.ac_Overprtct);
 	}
 
 	@Override
@@ -131,13 +134,13 @@ public class ContainerInventoryLittleMaid extends Container {
 //		if(entitylittlemaid.isDead || entitylittlemaid.isOpenInventory()) {
 			return false;
 		}
-		return entityplayer.getDistanceSqToEntity(entitylittlemaid) <= 64D;
+		return entityplayer.getDistanceSq(entitylittlemaid) <= 64D;
 	}
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int pIndex) {
-		ItemStack litemstack = null;
-		Slot slot = (Slot)inventorySlots.get(pIndex);
+		ItemStack litemstack = ItemStack.EMPTY;
+		Slot slot = inventorySlots.get(pIndex);
 		if (slot != null && slot.getHasStack()) {
 			ItemStack itemstack1 = slot.getStack();
 
@@ -145,19 +148,19 @@ public class ContainerInventoryLittleMaid extends Container {
 			int lline = numRows * 9;
 			if (pIndex < lline) {
 				if (!this.mergeItemStack(itemstack1, lline, lline + 36, true)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else if (pIndex >= lline && pIndex < lline + 36) {
 				if (!this.mergeItemStack(itemstack1, 0, lline, false)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else {
 				if (!this.mergeItemStack(itemstack1, 0, lline + 36, false)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			}
-			if (itemstack1.stackSize == 0) {
-				slot.putStack(null);
+			if (itemstack1.getCount() == 0) {
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}

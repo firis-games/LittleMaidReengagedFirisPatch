@@ -8,7 +8,6 @@ import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -60,7 +59,7 @@ public class LMRNetwork
 	 * サーバーへIFFのセーブをリクエスト
 	 */
 	public static void requestSavingIFF() {
-		sendPacketToServer(LMRMessage.EnumPacketMode.SERVER_SAVE_IFF, null, null);
+		sendPacketToServer(LMRMessage.EnumPacketMode.SERVER_SAVE_IFF, 0, null);
 	}
 
 	public static void onServerCustomPayload(EntityPlayer sender, LMRMessage pPayload) {
@@ -73,7 +72,7 @@ public class LMRNetwork
 
 		Entity lemaid = null;
 		if (lmode.withEntity) {
-			lemaid = sender.worldObj.getEntityByID(pPayload.getEntityId());
+			lemaid = sender.getEntityWorld().getEntityByID(pPayload.getEntityId());
 			if (!(lemaid instanceof EntityLittleMaid)) return;
 
 			LittleMaidReengaged.Debug("Check Debug-%d/%s/%s",
@@ -85,8 +84,8 @@ public class LMRNetwork
 	}
 
 	private static void serverPayLoad(LMRMessage.EnumPacketMode pMode, EntityPlayer sender, EntityLittleMaid lemaid, NBTTagCompound tagCompound) {
-		int lindex;
-		int lval;
+		//int lindex;
+		//int lval;
 		String lname;
 
 		switch (pMode) {
@@ -122,7 +121,7 @@ public class LMRNetwork
 		case SERVER_REQUEST_IFF :
 			// IFFGUI open
 			lname = tagCompound.getString("Name");
-			value = IFF.getIFF(CommonHelper.getPlayerUUID(sender), lname, sender.worldObj);
+			value = IFF.getIFF(CommonHelper.getPlayerUUID(sender), lname, sender.getEntityWorld());
 
 			sendIFFValue(sender, value, lname);
 

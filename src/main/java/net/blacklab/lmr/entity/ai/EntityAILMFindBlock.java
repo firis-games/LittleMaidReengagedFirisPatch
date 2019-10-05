@@ -38,10 +38,10 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 		}
 
 		// ターゲットをサーチ
-		int lx = MathHelper.floor_double(theMaid.posX);
-		int ly = MathHelper.floor_double(theMaid.posY);
-		int lz = MathHelper.floor_double(theMaid.posZ);
-		int vt = MathHelper.floor_float(((theMaid.rotationYawHead * 4F) / 360F) + 2.5F) & 3;
+		int lx = MathHelper.floor(theMaid.posX);
+		int ly = MathHelper.floor(theMaid.posY);
+		int lz = MathHelper.floor(theMaid.posZ);
+		int vt = MathHelper.floor(((theMaid.rotationYawHead * 4F) / 360F) + 2.5F) & 3;
 		int xx = lx;
 		int yy = ly;
 		int zz = lz;
@@ -130,7 +130,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 	}
 
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		if (theMaid.isActiveModeClass()) {
 			theMaid.getActiveModeClass().updateBlock();
 		}

@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
  * Entityのデータ読み取り用のクラス
  * 別にEntityにインターフェース付けてもOK
  */
+@SuppressWarnings("deprecation")
 public class EntityCaps extends EntityCapsLiving {
 
 	private EntityLittleMaid owner;
@@ -142,7 +143,7 @@ public class EntityCaps extends EntityCapsLiving {
 //		case caps_Arms:
 		case caps_HeadMount:
 			// TODO 従来HeadMountとか使ってた部分は全部削除した方がすっきりすると思う．
-			return owner.maidInventory.armorInventory[3];
+			return owner.maidInventory.armorInventory.get(3);
 //		case caps_HardPoint:
 		case caps_stabiliser:
 			return owner.maidStabilizer;

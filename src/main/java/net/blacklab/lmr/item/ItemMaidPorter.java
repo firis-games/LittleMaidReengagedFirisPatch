@@ -2,11 +2,13 @@ package net.blacklab.lmr.item;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,7 +31,8 @@ public class ItemMaidPorter extends Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+	{
 		NBTTagCompound stackTag = stack.getTagCompound();
 		if (stackTag != null) {
 			String customName = stackTag.getString(LittleMaidReengaged.DOMAIN + ":MAID_NAME");
@@ -43,8 +46,9 @@ public class ItemMaidPorter extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) 
+	{
+		ItemStack stack = player.getHeldItem(hand);
 		if (worldIn.isRemote) {
 			return EnumActionResult.PASS;
 		}
@@ -62,8 +66,8 @@ public class ItemMaidPorter extends Item {
 					}
 				}.addMaidExperienceWithoutEvent(experience);
 				lMaid.setLocationAndAngles(pos.getX(), pos.getY()+1, pos.getZ(), 0, 0);
-				worldIn.spawnEntityInWorld(lMaid);
-				lMaid.processInteract(playerIn, EnumHand.MAIN_HAND, new ItemStack(Items.CAKE));
+				worldIn.spawnEntity(lMaid);
+				lMaid.processInteract(player, EnumHand.MAIN_HAND);
 
 				if (!customName.isEmpty()) {
 					lMaid.setCustomNameTag(customName);
@@ -78,7 +82,7 @@ public class ItemMaidPorter extends Item {
 				return EnumActionResult.PASS;
 			}
 		}
-		playerIn.setItemStackToSlot(hand==EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, null);
+		player.setItemStackToSlot(hand==EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 		return EnumActionResult.SUCCESS;
 	}
 }

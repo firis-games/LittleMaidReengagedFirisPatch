@@ -1,7 +1,6 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -46,26 +45,6 @@ public class EntityMode_Shearer extends EntityModeBase {
 
 	@Override
 	public void init() {
-		// 登録モードの名称追加
-		/* langファイルに移動
-		ModLoader.addLocalization("littleMaidMob.mode.Ripper", "Ripper");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Ripper", "F-Ripper");
-		ModLoader.addLocalization("littleMaidMob.mode.D-Ripper", "D-Ripper");
-		ModLoader.addLocalization("littleMaidMob.mode.T-Ripper", "T-Ripper");
-		ModLoader.addLocalization("littleMaidMob.mode.Ripper", "ja_JP", "毛狩り隊");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Ripper", "ja_JP", "毛狩り隊");
-		ModLoader.addLocalization("littleMaidMob.mode.D-Ripper", "ja_JP", "毛狩り隊");
-		ModLoader.addLocalization("littleMaidMob.mode.T-Ripper", "ja_JP", "毛狩り隊");
-		ModLoader.addLocalization("littleMaidMob.mode.TNT-D", "TNT-D");
-		ModLoader.addLocalization("littleMaidMob.mode.F-TNT-D", "TNT-D");
-		ModLoader.addLocalization("littleMaidMob.mode.D-TNT-D", "TNT-D");
-		ModLoader.addLocalization("littleMaidMob.mode.T-TNT-D", "TNT-D");
-//		ModLoader.addLocalization("littleMaidMob.mode.TNT-D", "ja_JP", "TNT-D");
-		ModLoader.addLocalization("littleMaidMob.mode.Detonator", "Detonator");
-		ModLoader.addLocalization("littleMaidMob.mode.F-Detonator", "F-Detonator");
-		ModLoader.addLocalization("littleMaidMob.mode.D-Detonator", "D-Detonator");
-		ModLoader.addLocalization("littleMaidMob.mode.T-Detonator", "T-Detonator");
-		*/
 	}
 
 	@Override
@@ -125,7 +104,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 	@Override
 	public void updateAITick(String pMode) {
 		ItemStack litemstack = owner.maidInventory.getCurrentItem();
-		if (litemstack != null
+		if (!litemstack.isEmpty()
 				&& (owner.getAttackTarget() instanceof EntityCreeper/* || owner.getAttackTarget().getClass().isAssignableFrom(EntityTNTPrimed.class)*/)) {
 			if (pMode.equals(mmode_Ripper)) {
 				owner.setMaidMode(mmode_TNTD);
@@ -158,7 +137,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 				if (owner.isMovementBlocked() || timeSinceIgnited > 22) {
 					owner.getLookHelper().setLookPositionWithEntity(owner.getMaidMasterEntity(), 40F, 40F);
 				}
-				LittleMaidReengaged.Debug(String.format("ID:%d(%s)-dom:%d(%d)", owner.getEntityId(), owner.worldObj.isRemote ? "C" : "W", owner.getDominantArm(), owner.maidInventory.currentItem));
+				LittleMaidReengaged.Debug(String.format("ID:%d(%s)-dom:%d(%d)", owner.getEntityId(), owner.getEntityWorld().isRemote ? "C" : "W", owner.getDominantArm(), owner.maidInventory.currentItem));
 
 				if (owner.maidInventory.isItemExplord(owner.maidInventory.currentItem) && timeSinceIgnited++ > 30) {
 					// TODO:自爆威力を対応させたいけど無理ぽ？
@@ -168,8 +147,8 @@ public class EntityMode_Shearer extends EntityModeBase {
 					timeSinceIgnited = -1;
 					owner.setDead();
 					// Mobによる破壊の是非
-					boolean lflag = owner.worldObj.getGameRules().getBoolean("mobGriefing");
-					owner.worldObj.createExplosion(owner, owner.posX, owner.posY, owner.posZ, 3F, lflag);
+					boolean lflag = owner.getEntityWorld().getGameRules().getBoolean("mobGriefing");
+					owner.getEntityWorld().createExplosion(owner, owner.posX, owner.posY, owner.posZ, 3F, lflag);
 				}
 			}
 		}
@@ -178,12 +157,12 @@ public class EntityMode_Shearer extends EntityModeBase {
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();;
-		if (litemstack != null) {
+		if (!litemstack.isEmpty()) {
 			if (litemstack.getItem() instanceof ItemShears) {
 				owner.setMaidMode(mmode_Ripper);
-				if (pentityplayer != null) {
-					pentityplayer.addStat(AchievementsLMRE.ac_Shearer);
-				}
+				//if (pentityplayer != null) {
+				//	pentityplayer.addStat(AchievementsLMRE.ac_Shearer);
+				//}
 				return true;
 			}
 			if (ItemHelper.isItemExplord(litemstack)) {
@@ -229,7 +208,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 		case mmode_TNTD :
 			for (li = 0; li < owner.maidInventory.getSizeInventory() - 1; li++) {
 				litemstack = owner.maidInventory.getStackInSlot(li);
-				if (litemstack == null) continue;
+				if (litemstack.isEmpty()) continue;
 
 				// はさみ
 				if (isTriggerItem(pMode, litemstack)) {
@@ -252,7 +231,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 
 	@Override
 	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
-		if (par1ItemStack == null) {
+		if (par1ItemStack.isEmpty()) {
 			return false;
 		}
 
@@ -295,12 +274,12 @@ public class EntityMode_Shearer extends EntityModeBase {
 				owner.setSwing(20, EnumSound.attack_bloodsuck, false);
 				owner.addMaidExperience(4.5f);
 			} else {
-				owner.maidAvatar.interact(pEntity, owner.getCurrentEquippedItem(), EnumHand.MAIN_HAND);
+				owner.maidAvatar.interactOn(pEntity, EnumHand.MAIN_HAND);
 				owner.setSwing(20, EnumSound.attack, false);
 				owner.addMaidExperience(2.1f);
 			}
-			if (lis.stackSize <= 0) {
-				owner.maidInventory.setInventoryCurrentSlotContents(null);
+			if (lis.getCount() <= 0) {
+				owner.maidInventory.setInventoryCurrentSlotContents(ItemStack.EMPTY);
 				owner.getNextEquipItem();
 			}
 		}

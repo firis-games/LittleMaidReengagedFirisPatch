@@ -17,10 +17,10 @@ public class EntityAILMOpenDoor extends EntityAIOpenDoor {
 	}
 
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		// TODO 自動生成されたメソッド・スタブ
 		LittleMaidReengaged.Debug("DOOR CONTINUE");
-		return super.continueExecuting();
+		return super.shouldContinueExecuting();
 	}
 
 	@Override

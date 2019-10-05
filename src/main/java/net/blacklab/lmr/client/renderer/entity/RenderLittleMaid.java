@@ -7,7 +7,6 @@ import org.lwjgl.opengl.GL11;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
-import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -17,14 +16,12 @@ import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderLittleMaid extends RenderModelMulti {
+public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 
 	// Method
 	public RenderLittleMaid(RenderManager manager,float f) {
@@ -74,7 +71,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 			lmm = (EntityLittleMaid) par1EntityLiving;
 
 			for (int i=0; i<4; i++) {
-				if (lmm.maidInventory.armorItemInSlot(i) != null) {
+				if (!lmm.maidInventory.armorItemInSlot(i).isEmpty()) {
 					render(par1EntityLiving, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, i);
 				}
 			}
@@ -214,7 +211,7 @@ public class RenderLittleMaid extends RenderModelMulti {
 				while (heldItemIterator.hasNext()) {
 					ItemStack itemstack = (ItemStack) heldItemIterator.next();
 
-					if (itemstack != null)
+					if (!itemstack.isEmpty())
 					{
 						GlStateManager.pushMatrix();
 
@@ -253,9 +250,9 @@ public class RenderLittleMaid extends RenderModelMulti {
 	}
 
 	@Override
-	public void setModelValues(EntityLivingBase par1EntityLiving, double par2,
+	public void setModelValues(EntityLittleMaid par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
-		EntityLittleMaid lmaid = (EntityLittleMaid)par1EntityLiving;
+		EntityLittleMaid lmaid = par1EntityLiving;
 		super.setModelValues(par1EntityLiving, par2, par4, par6, par8, par9, pEntityCaps);
 
 //		modelMain.setRender(this);
@@ -387,13 +384,10 @@ public class RenderLittleMaid extends RenderModelMulti {
 	}
 */
 	@Override
-	public void doRender(EntityLiving par1EntityLiving,
+	public void doRender(EntityLittleMaid par1EntityLiving,
 			double par2, double par4, double par6, float par8, float par9) {
-		if (!(par1EntityLiving instanceof EntityLittleMaid)) {
-			return;
-		}
 
-		EntityLittleMaid lmm = (EntityLittleMaid)par1EntityLiving;
+		EntityLittleMaid lmm = par1EntityLiving;
 
 		fcaps = lmm.maidCaps;
 //		doRenderLitlleMaid(lmm, par2, par4, par6, par8, par9);
@@ -404,10 +398,10 @@ public class RenderLittleMaid extends RenderModelMulti {
 	}
 
 	@Override
-	public void renderLivingAt(EntityLivingBase par1EntityLiving, double par2, double par4, double par6) {
+	public void renderLivingAt(EntityLittleMaid par1EntityLiving, double par2, double par4, double par6) {
 		super.renderLivingAt(par1EntityLiving, par2, par4, par6);
 
-		EntityLittleMaid llmm = (EntityLittleMaid)par1EntityLiving;
+		EntityLittleMaid llmm = par1EntityLiving;
 		// 追加分
 		for (int li = 0; li < llmm.maidEntityModeList.size(); li++) {
 			llmm.maidEntityModeList.get(li).showSpecial(this, par2, par4, par6);
@@ -415,13 +409,8 @@ public class RenderLittleMaid extends RenderModelMulti {
 	}
 
 	@Override
-	protected int getColorMultiplier(EntityLivingBase par1EntityLiving, float par2, float par3) {
-		return ((EntityLittleMaid)par1EntityLiving).colorMultiplier(par2, par3);
+	protected int getColorMultiplier(EntityLittleMaid par1EntityLiving, float par2, float par3) {
+		return par1EntityLiving.colorMultiplier(par2, par3);
 	}
-
-    public void renderLivingLabel(Entity p_147906_1_, String p_147906_2_, double p_147906_3_, double p_147906_5_, double p_147906_7_, int p_147906_9_)
-    {
-    	super.renderLivingLabel(p_147906_1_, p_147906_2_, p_147906_3_, p_147906_5_, p_147906_7_, p_147906_9_);
-    }
-
+	
 }

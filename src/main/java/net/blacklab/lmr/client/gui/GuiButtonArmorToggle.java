@@ -65,8 +65,7 @@ public class GuiButtonArmorToggle extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-		// TODO 自動生成されたメソッド・スタブ
+	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 		if(!visible) return;
 		handleHovered(mouseX, mouseY);
 		GlStateManager.pushMatrix();
@@ -80,7 +79,7 @@ public class GuiButtonArmorToggle extends GuiButton {
 		}else{
 			GlStateManager.color(1.0f, 1.0f, 1.0f, 0.5f);
 		}
-		drawTexturedModalRect(xPosition, yPosition, toggle?16*(toggleNode+1):0, 16*toggleLight, 16, 16);
+		drawTexturedModalRect(x, y, toggle?16*(toggleNode+1):0, 16*toggleLight, 16, 16);
 		GlStateManager.enableLighting();
 		GlStateManager.enableDepth();
 		GlStateManager.enableAlpha();
@@ -89,7 +88,7 @@ public class GuiButtonArmorToggle extends GuiButton {
 	}
 
 	protected void handleHovered(int mouseX, int mouseY) {
-		hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
+		hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + width && mouseY < this.y + height;
 	}
 
 	@Override

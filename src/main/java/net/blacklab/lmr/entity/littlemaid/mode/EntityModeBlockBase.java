@@ -1,6 +1,7 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 
 public abstract class EntityModeBlockBase extends EntityModeBase {
@@ -53,7 +54,7 @@ public abstract class EntityModeBlockBase extends EntityModeBase {
 	 */
 	protected boolean checkWorldMaid(TileEntity pTile) {
 		// 世界のメイドから
-		for (Object lo : owner.worldObj.loadedEntityList) {
+		for (Entity lo : owner.getEntityWorld().loadedEntityList) {
 			if (lo == owner) continue;
 			if (lo instanceof EntityLittleMaid) {
 				EntityLittleMaid lem = (EntityLittleMaid)lo;

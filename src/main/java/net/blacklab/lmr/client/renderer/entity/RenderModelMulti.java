@@ -11,13 +11,11 @@ import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderModelMulti extends RenderLiving {
+public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiving<T> {
 
 	public ModelBaseSolo modelMain;
 	public ModelBaseDuo modelFATT;
@@ -35,12 +33,12 @@ public class RenderModelMulti extends RenderLiving {
 		//setRenderPassModel(modelFATT);
 	}
 
-	protected int showArmorParts(EntityLivingBase par1EntityLiving, int par2, float par3) {
+	protected int showArmorParts(T par1EntityLiving, int par2, float par3) {
 		// アーマーの表示設定
 		modelFATT.renderParts = par2;
 		modelFATT.renderCount = 0;
 		ItemStack is = ((List<ItemStack>)par1EntityLiving.getArmorInventoryList()).get(par2);
-		if (is != null && is.stackSize > 0) {
+		if (!is.isEmpty() && is.getCount() > 0) {
 			modelFATT.showArmorParts(par2);
 			return is.isItemEnchanted() ? 15 : 1;
 		}
@@ -49,14 +47,14 @@ public class RenderModelMulti extends RenderLiving {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityLivingBase entityliving, float f) {
+	protected void preRenderCallback(EntityLiving entityliving, float f) {
 		Float lscale = (Float)modelMain.getCapsValue(IModelCaps.caps_ScaleFactor);
 		if (lscale != null) {
 			GL11.glScalef(lscale, lscale, lscale);
 		}
 	}
 
-	public void setModelValues(EntityLivingBase par1EntityLiving, double par2,
+	public void setModelValues(T par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
 		if (par1EntityLiving instanceof IModelEntity) {
 			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
@@ -83,7 +81,7 @@ public class RenderModelMulti extends RenderLiving {
 		modelFATT.isAlphablend = true;
 		modelMain.renderCount = 0;
 		modelFATT.renderCount = 0;
-		modelMain.lighting = modelFATT.lighting = par1EntityLiving.getBrightnessForRender(par8);
+		modelMain.lighting = modelFATT.lighting = par1EntityLiving.getBrightnessForRender();
 
 		modelMain.setCapsValue(IModelCaps.caps_heldItemLeft, (Integer)0);
 		modelMain.setCapsValue(IModelCaps.caps_heldItemRight, (Integer)0);
@@ -98,21 +96,21 @@ public class RenderModelMulti extends RenderLiving {
 	}
 
 //	public void renderModelMulti(EntityLivingBase par1EntityLiving, double par2,
-	public void renderModelMulti(EntityLiving par1EntityLiving, double par2,
+	public void renderModelMulti(T par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
 		setModelValues(par1EntityLiving, par2, par4, par6, par8, par9, pEntityCaps);
 		super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
 	}
 
 	@Override
-	public void doRender(EntityLiving par1EntityLiving, double par2,
+	public void doRender(T par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9) {
 		fcaps = (IModelCaps)par1EntityLiving;
 		renderModelMulti(par1EntityLiving, par2, par4, par6, par8, par9, fcaps);
 	}
 
 	@Override
-	protected void renderLeash(EntityLiving par1EntityLiving, double par2,
+	protected void renderLeash(T par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9) {
 		// 縄の位置のオフセット
 		float lf = 0F;
@@ -123,7 +121,7 @@ public class RenderModelMulti extends RenderLiving {
 	}
 
 	@Override
-	protected void renderModel(EntityLivingBase par1EntityLiving, float par2,
+	protected void renderModel(T par1EntityLiving, float par2,
 			float par3, float par4, float par5, float par6, float par7) {
 		if (!par1EntityLiving.isInvisible()) {
 			modelMain.setArmorRendering(true);
@@ -161,7 +159,7 @@ public class RenderModelMulti extends RenderLiving {
 	*/
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity var1) {
+	protected ResourceLocation getEntityTexture(T var1) {
 		// テクスチャリソースを返すところだけれど、基本的に使用しない。
 		return null;
 	}

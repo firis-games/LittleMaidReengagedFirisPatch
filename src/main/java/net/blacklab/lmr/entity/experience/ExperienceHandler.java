@@ -34,7 +34,7 @@ public class ExperienceHandler {
 	// 復帰までに最低限必要になる時間
 	private int pauseCount = 0;
 	private int requiredSugarToRevive = 0;
-	private DamageSource deadCause = DamageSource.generic;
+	private DamageSource deadCause = DamageSource.GENERIC;
 
 	public ExperienceHandler(EntityLittleMaid maid) {
 		theMaid = maid;
@@ -50,10 +50,10 @@ public class ExperienceHandler {
 			modifyamount += (Math.min(level, 50)-30)/2;
 		}
 		if (level > 50) {
-			modifyamount += MathHelper.floor_float((Math.min(level, 75)-50)/2.5f);
+			modifyamount += MathHelper.floor((Math.min(level, 75)-50)/2.5f);
 		}
 		if (level > 75) {
-			modifyamount += MathHelper.floor_float((Math.min(level, 150)-75)/7.5f);
+			modifyamount += MathHelper.floor((Math.min(level, 150)-75)/7.5f);
 		}
 		if (level > 150) {
 			modifyamount += (Math.min(level, 300)-150)/15;
@@ -80,7 +80,7 @@ public class ExperienceHandler {
 		LittleMaidReengaged.Debug("HOOK CATCH");
 		if (theMaid.getMaidLevel() >= 20 && !cause.getDamageType().equals("outOfWorld") && !cause.getDamageType().equals("lmmnx_timeover") && !isWaitRevive) {
 			// 復帰に必要な砂糖はレベルが低いほど大きく，猶予は少なく
-			LittleMaidReengaged.Debug("DISABLING Remote=%s", theMaid.worldObj.isRemote);
+			LittleMaidReengaged.Debug("DISABLING Remote=%s", theMaid.getEntityWorld().isRemote);
 			theMaid.playSound("dig.glass");
 			deathCount = (int) Math.min(1200, 200 + Math.pow(theMaid.getMaidLevel()-20, 1.8));
 			pauseCount = (int) Math.max(100, 600 - (theMaid.getMaidLevel()-20)*6.5);
@@ -94,7 +94,7 @@ public class ExperienceHandler {
 	}
 
 	public void onUpdate() {
-		if (!theMaid.worldObj.isRemote && isWaitRevive) {
+		if (!theMaid.getEntityWorld().isRemote && isWaitRevive) {
 			LittleMaidReengaged.Debug("COUNT %d/%d", deathCount, pauseCount);
 			// 死亡判定
 			if (--deathCount <= 0 && !theMaid.isDead) {
@@ -106,7 +106,7 @@ public class ExperienceHandler {
 				theMaid.playSound("mob.ghast.death");
 				theMaid.playSound("dig.glass");
 				if (theMaid.getMaidMasterEntity() != null) {
-					theMaid.getMaidMasterEntity().addChatComponentMessage(new TextComponentTranslation("littleMaidMob.chat.text.timedeath", CommonHelper.getDeadSource(deadCause)));
+					theMaid.getMaidMasterEntity().sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.timedeath", CommonHelper.getDeadSource(deadCause)));
 				}
 			}
 
@@ -122,9 +122,9 @@ public class ExperienceHandler {
 			// 砂糖を持っているか？
 			int sugarCount = 0;
 			for (int i=0; i<18 && sugarCount < requiredSugarToRevive; i++) {
-				ItemStack stack = theMaid.maidInventory.mainInventory[i];
-				if (stack!=null && ItemHelper.isSugar(stack.getItem())) {
-					sugarCount += stack.stackSize;
+				ItemStack stack = theMaid.maidInventory.mainInventory.get(i);
+				if (!stack.isEmpty() && ItemHelper.isSugar(stack.getItem())) {
+					stack.setCount(sugarCount + stack.getCount());
 				}
 			}
 			// 砂糖が規定数以上ある場合は死亡猶予
@@ -132,15 +132,15 @@ public class ExperienceHandler {
 				deathCount++;
 				// 復帰
 				if (deathCount > 0 && pauseCount <= 0) {
-					theMaid.setHealth(Math.min(8f + Math.min(24f, MathHelper.floor_float((theMaid.getMaidLevel()-20)/100f*24f)), theMaid.getMaxHealth()));
+					theMaid.setHealth(Math.min(8f + Math.min(24f, MathHelper.floor((theMaid.getMaidLevel()-20)/100f*24f)), theMaid.getMaxHealth()));
 					theMaid.eatSugar(false,false,false);
 					for(int i=0; i<18 && requiredSugarToRevive > 0; i++) {
-						ItemStack stack = theMaid.maidInventory.mainInventory[i];
-						if (stack!=null && ItemHelper.isSugar(stack.getItem())) {
-							int consumesize = Math.min(stack.stackSize, requiredSugarToRevive);
-							stack.stackSize -= consumesize;
-							if (stack.stackSize <= 0) {
-								stack = null;
+						ItemStack stack = theMaid.maidInventory.mainInventory.get(i);
+						if (!stack.isEmpty() && ItemHelper.isSugar(stack.getItem())) {
+							int consumesize = Math.min(stack.getCount(), requiredSugarToRevive);
+							stack.setCount(stack.getCount() - consumesize);
+							if (stack.getCount() <= 0) {
+								stack = ItemStack.EMPTY;
 							}
 							requiredSugarToRevive -= consumesize;
 						}
@@ -156,7 +156,7 @@ public class ExperienceHandler {
 	public boolean onDeathUpdate() {
 		if (isWaitRevive && deathCount > 0) {
 			return true;
-		} else if (!theMaid.worldObj.isRemote && theMaid.getHealth() <= 0f) {
+		} else if (!theMaid.getEntityWorld().isRemote && theMaid.getHealth() <= 0f) {
 			theMaid.syncNet(LMRMessage.EnumPacketMode.CLIENT_ONDEATH, null);
 		}
 		return false;
@@ -171,7 +171,7 @@ public class ExperienceHandler {
 		if (causeType != null && !causeType.isEmpty()) {
 			NBTTagCompound causeEntityTag = tagCompound.getCompoundTag(LittleMaidReengaged.DOMAIN + ":HADNLER_DEATH_CAUSE_E");
 			if (causeEntityTag != null) {
-				Entity entity = EntityList.createEntityFromNBT(causeEntityTag, theMaid.worldObj);
+				Entity entity = EntityList.createEntityFromNBT(causeEntityTag, theMaid.getEntityWorld());
 				if (entity != null) {
 					deadCause = new EntityDamageSource(causeType, entity);
 				} else {
@@ -187,9 +187,9 @@ public class ExperienceHandler {
 		tagCompound.setInteger(LittleMaidReengaged.DOMAIN + ":EXP_HANDLER_DEATH_PCNT", pauseCount);
 		tagCompound.setInteger(LittleMaidReengaged.DOMAIN + ":EXP_HANDLER_DEATH_REQ", requiredSugarToRevive);
 		tagCompound.setString(LittleMaidReengaged.DOMAIN + ":EXP_HANDLER_DEATH_CAUSE_T", deadCause.getDamageType());
-		if (deadCause.getSourceOfDamage() != null) {
+		if (deadCause.getTrueSource() != null) {
 			NBTTagCompound causeEntityTag = new NBTTagCompound();
-			deadCause.getSourceOfDamage().writeToNBT(causeEntityTag);
+			deadCause.getTrueSource().writeToNBT(causeEntityTag);
 			tagCompound.setTag(LittleMaidReengaged.DOMAIN + ":EXP_HANDLER_DEATH_CAUSE_E", causeEntityTag);
 		}
 	}

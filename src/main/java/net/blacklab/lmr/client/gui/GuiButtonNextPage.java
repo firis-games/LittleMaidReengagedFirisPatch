@@ -27,13 +27,14 @@ public class GuiButtonNextPage extends GuiButton
     /**
      * Draws this button to the screen.
      */
-    public void drawButton(Minecraft par1Minecraft, int par2, int par3)
+    @Override
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
     {
         if (this.visible)
         {
-            boolean flag = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
+            boolean flag = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            par1Minecraft.getTextureManager().bindTexture(bookGuiTextures);
+            mc.getTextureManager().bindTexture(bookGuiTextures);
             int k = 0;
             int l = 192;
 
@@ -47,7 +48,7 @@ public class GuiButtonNextPage extends GuiButton
                 l += 13;
             }
 
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, k, l, 23, 13);
+            this.drawTexturedModalRect(this.x, this.y, k, l, 23, 13);
         }
     }
 }

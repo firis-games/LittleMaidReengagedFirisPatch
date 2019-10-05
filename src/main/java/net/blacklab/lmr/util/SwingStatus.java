@@ -37,7 +37,7 @@ public class SwingStatus {
 		onGround = 0F;
 		attackTime = 0;
 		itemInUseCount = 0;
-		itemInUse = null;
+		itemInUse = ItemStack.EMPTY;
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class SwingStatus {
 			try{
 				itemstack = pEntity.maidInventory.getStackInSlot(index);
 			}catch(Exception e){ return; }
-			Entity lrentity = pEntity.worldObj.isRemote ? null : pEntity;
+			Entity lrentity = pEntity.getEntityWorld().isRemote ? null : pEntity;
 
 			if (itemstack != itemInUse) {
 				clearItemInUse(lrentity);
@@ -105,7 +105,7 @@ public class SwingStatus {
 		if (index > -1) {
 			return pEntity.maidInventory.getStackInSlot(index);
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	public boolean canAttack() {
@@ -157,7 +157,7 @@ public class SwingStatus {
 	}
 
 	public boolean isUsingItem() {
-		return itemInUse != null;
+		return !itemInUse.isEmpty();
 	}
 
 	public int getItemInUseDuration() {
@@ -170,8 +170,8 @@ public class SwingStatus {
 	 * サーバーの時はEntityを設定する。
 	 */
 	public void stopUsingItem(Entity pEntity) {
-		if (itemInUse != null && pEntity instanceof EntityPlayer) {
-			itemInUse.onPlayerStoppedUsing(pEntity.worldObj, (EntityPlayer)pEntity, itemInUseCount);
+		if (!itemInUse.isEmpty() && pEntity instanceof EntityPlayer) {
+			itemInUse.onPlayerStoppedUsing(pEntity.getEntityWorld(), (EntityPlayer)pEntity, itemInUseCount);
 		}
 
 		clearItemInUse(pEntity);
@@ -183,7 +183,7 @@ public class SwingStatus {
 	 * サーバーの時はEntityを設定する。
 	 */
 	public void clearItemInUse(Entity pEntity) {
-		itemInUse = null;
+		itemInUse = ItemStack.EMPTY;
 		itemInUseCount = 0;
 		/*
 		if (pEntity != null) {
@@ -217,7 +217,7 @@ public class SwingStatus {
 
 	protected void updateItemUse(Entity pEntity, int par2) {
 		if (itemInUse.getItemUseAction() == EnumAction.DRINK) {
-			pEntity.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.generic.drink")), 0.5F, pEntity.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+			pEntity.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.generic.drink")), 0.5F, pEntity.getEntityWorld().rand.nextFloat() * 0.1F + 0.9F);
 		}
 
 		Random rand = new Random();
@@ -234,7 +234,7 @@ public class SwingStatus {
 				var5.rotateAroundY(-pEntity.rotationYaw * (float)Math.PI / 180.0F);
 				var5 = var5.addVector(pEntity.posX, pEntity.posY + (double)pEntity.getEyeHeight(), pEntity.posZ);
 				*/
-				pEntity.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, pEntity.posX, pEntity.posY, pEntity.posZ, (rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+				pEntity.getEntityWorld().spawnParticle(EnumParticleTypes.ITEM_CRACK, pEntity.posX, pEntity.posY, pEntity.posZ, (rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
 			}
 
 
@@ -242,17 +242,16 @@ public class SwingStatus {
 		}
 	}
 
-	@SuppressWarnings("null")
 	protected void onItemUseFinish(EntityPlayer pEntityPlayer) {
-		if (this.itemInUse != null) {
+		if (!this.itemInUse.isEmpty()) {
 			this.updateItemUse(pEntityPlayer, 16);
-			int var1 = this.itemInUse.stackSize;
+			int var1 = this.itemInUse.getCount();
 
 			// TODO いる？
-			ItemStack var2 = itemInUse.onItemUseFinish(pEntityPlayer.worldObj, pEntityPlayer);
+			ItemStack var2 = itemInUse.onItemUseFinish(pEntityPlayer.getEntityWorld(), pEntityPlayer);
 
-			if (var2 != this.itemInUse || var2 != null && var2.stackSize != var1) {
-				if (var2.stackSize == 0) {
+			if (var2 != this.itemInUse || !var2.isEmpty() && var2.getCount() != var1) {
+				if (var2.getCount() == 0) {
 					pEntityPlayer.inventory.setInventorySlotContents(index, null);
 				} else {
 					pEntityPlayer.inventory.setInventorySlotContents(index, var2);

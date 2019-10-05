@@ -21,7 +21,7 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAILM {
 
 	public EntityAILMTracerMove(EntityLittleMaid pEntityLittleMaid) {
 		theMaid = pEntityLittleMaid;
-		world = pEntityLittleMaid.worldObj;
+		world = pEntityLittleMaid.getEntityWorld();
 		isEnable = false;
 
 		setMutexBits(1);
@@ -53,17 +53,17 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAILM {
 	}
 
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		return shouldExecute() || !theMaid.getNavigator().noPath();
 	}
 
 	protected void doExecute() {
 		// ルート策定
 		// ターゲットをサーチ
-		int ox = MathHelper.floor_double(theMaid.posX);
-		int oy = MathHelper.floor_double(theMaid.posY);
-		int oz = MathHelper.floor_double(theMaid.posZ);
-		int vt = MathHelper.floor_float(((theMaid.rotationYawHead * 4F) / 360F) + 2.5F) & 3;
+		int ox = MathHelper.floor(theMaid.posX);
+		int oy = MathHelper.floor(theMaid.posY);
+		int oz = MathHelper.floor(theMaid.posZ);
+		int vt = MathHelper.floor(((theMaid.rotationYawHead * 4F) / 360F) + 2.5F) & 3;
 		int xx = ox;
 		int yy = oy;
 		int zz = oz;
@@ -154,6 +154,7 @@ public class EntityAILMTracerMove extends EntityAIBase implements IEntityAILM {
 	/**
 	 * 指定座標のブロックは探しているものか？
 	 */
+	@SuppressWarnings("deprecation")
 	protected boolean checkBlock(int px, int py, int pz) {
 		IBlockState iState = world.getBlockState(new BlockPos(px, py + 1, pz));
 		return world.isBlockPowered(new BlockPos(px,py,pz)) && (iState.getBlock().getMaterial(iState) == Material.AIR);
