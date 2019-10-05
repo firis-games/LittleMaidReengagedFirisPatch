@@ -197,10 +197,17 @@ public class EntityMode_Farmer extends EntityModeBase {
 		if(isFarmedLand(px,py,pz)){
 			//種を持っている
 			int index = getHadSeedIndex();
-			if(index!=-1){
+			if(index != -1){
+				
+				int svCurrentIdx = owner.maidInventory.currentItem;
+				owner.maidInventory.currentItem = index;
+				
 				ItemStack stack = owner.maidInventory.getStackInSlot(index);
 				int li = stack.getCount();
 				stack.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px,py,pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F);
+				
+				owner.maidInventory.currentItem = svCurrentIdx;
+				
 				owner.playLittleMaidSound(EnumSound.farmer_plant, false);
 				if (owner.maidAvatar.capabilities.isCreativeMode) {
 					stack.setCount(li);
