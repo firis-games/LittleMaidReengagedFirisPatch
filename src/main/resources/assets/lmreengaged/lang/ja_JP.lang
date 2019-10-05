@@ -78,9 +78,9 @@ littleMaidMob.mode.Bloodsucker=血に飢えた冥土
 littleMaidMob.mode.F-Bloodsucker=通魔冥土
 littleMaidMob.mode.T-Bloodsucker=縄張冥土
 
-littleMaidMob.mode.Ripper=毛狩り隊
-littleMaidMob.mode.F-Ripper=自由毛狩り隊
-littleMaidMob.mode.T-Ripper=赤石毛狩り隊
+littleMaidMob.mode.Shearer=毛狩り隊
+littleMaidMob.mode.F-Shearer=自由毛狩り隊
+littleMaidMob.mode.T-Shearer=赤石毛狩り隊
 littleMaidMob.mode.TNT-D=TNT-D
 littleMaidMob.mode.F-TNT-D=TNT-D
 littleMaidMob.mode.T-TNT-D=TNT-D
