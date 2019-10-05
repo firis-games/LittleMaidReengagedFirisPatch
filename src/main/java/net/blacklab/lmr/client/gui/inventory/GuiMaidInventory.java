@@ -64,6 +64,7 @@ public class GuiMaidInventory extends GuiContainer {
 
 		private static int renderingPart = 0;
 
+		/*
 		public static int getEnabledCounts() {
 			int count = 0;
 			for (boolean s: renderInfo) {
@@ -71,6 +72,7 @@ public class GuiMaidInventory extends GuiContainer {
 			}
 			return count;
 		}
+		*/
 
 		public static void setEnabled(int index, boolean flag) {
 			renderInfo[index] = flag;
@@ -135,7 +137,6 @@ public class GuiMaidInventory extends GuiContainer {
 		topTicks = entitylittlemaid.ticksExisted;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
 		super.initGui();
@@ -241,6 +242,18 @@ public class GuiMaidInventory extends GuiContainer {
 		GlStateManager.disableTexture2D();
 		GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
 */
+		
+		int mouseX = par1;
+		int mouseY = par2;
+		//ツールチップ表示
+		for (GuiButton guibutton : this.buttonList)
+        {
+			int xAxis = (mouseX - (width - this.xSize) / 2);
+    		int yAxis = (mouseY - (height - this.ySize) / 2);
+			if (guibutton instanceof GuiButtonArmorToggle) {
+				((GuiButtonArmorToggle) guibutton).drawButtonForegroundLayer(xAxis, yAxis);
+			}
+        }
 	}
 
 	@Override
@@ -391,7 +404,7 @@ public class GuiMaidInventory extends GuiContainer {
 		float origAbsorption = entitylittlemaid.getAbsorptionAmount();
 		int maxHealthRows = MathHelper.ceil((maxHealth + origAbsorption) / 20.0F);
 		int healthRows = MathHelper.ceil(orgnHealth / 20f);
-		int var17 = Math.max(10 - (maxHealthRows - 2), 3);
+		//int var17 = Math.max(10 - (maxHealthRows - 2), 3);
 		float absorption = origAbsorption;
 		int var21 = -1;
 
@@ -503,6 +516,7 @@ public class GuiMaidInventory extends GuiContainer {
 
 	@Override
 	public void drawScreen(int i, int j, float f) {
+		this.drawDefaultBackground();
 		if ((entitylittlemaid.ticksExisted - topTicks) % 30 == 0) {
 			if (!RenderInfoPart.islocked())RenderInfoPart.shiftPart();
 			RenderInfoPart.lock();
@@ -575,7 +589,7 @@ public class GuiMaidInventory extends GuiContainer {
 			GlStateManager.disableLighting();
 			GlStateManager.disableDepth();
 			GlStateManager.colorMask(true, true, true, false);
-			String str = I18n.format("littlemaidmob.gui.text.expboost");
+			String str = I18n.format("littleMaidMob.gui.text.expboost");
 			int width = fontRenderer.getStringWidth(str);
 			int centerx = guiLeft + 48 + xSize/2;
 			drawGradientRect(centerx - width/2 - 4, guiTop, centerx + width/2 + 4, guiTop + fontRenderer.FONT_HEIGHT, 0xc0202020, 0xc0202020);
@@ -584,6 +598,8 @@ public class GuiMaidInventory extends GuiContainer {
 			GlStateManager.enableDepth();
 			GlStateManager.colorMask(true, true, true, true);
 		}
+
+		this.renderHoveredToolTip(i, j);
 
 	}
 
@@ -701,7 +717,7 @@ public class GuiMaidInventory extends GuiContainer {
 		// ポーションエフェクトの表示
 		int lx = guiLeft - 124;
 		int ly = guiTop;
-		Collection collection = entitylittlemaid.getActivePotionEffects();
+		Collection<PotionEffect> collection = entitylittlemaid.getActivePotionEffects();
 		if (collection.isEmpty()) {
 			return;
 		}
@@ -709,8 +725,8 @@ public class GuiMaidInventory extends GuiContainer {
 		if (collection.size() > 5) {
 			lh = 132 / (collection.size() - 1);
 		}
-		for (Iterator iterator = entitylittlemaid.getActivePotionEffects().iterator(); iterator.hasNext();) {
-			PotionEffect potioneffect = (PotionEffect) iterator.next();
+		for (Iterator<PotionEffect> iterator = entitylittlemaid.getActivePotionEffects().iterator(); iterator.hasNext();) {
+			PotionEffect potioneffect = iterator.next();
 			Potion potion = potioneffect.getPotion();//Potion.potionTypes[potioneffect.getPotionID()];
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
@@ -736,5 +752,4 @@ public class GuiMaidInventory extends GuiContainer {
 			ly += lh;
 		}
 	}
-
 }
