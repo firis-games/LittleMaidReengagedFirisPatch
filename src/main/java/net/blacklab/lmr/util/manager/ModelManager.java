@@ -94,6 +94,7 @@ public class ModelManager {
 	 * Entity毎にデフォルトテクスチャを参照。
 	 * 構築方法はEntityListを参照のこと。
 	 */
+	@SuppressWarnings("rawtypes")
 	protected Map<Class, TextureBox> defaultTextures = new HashMap<Class, TextureBox>();
 
 	protected Map<IModelEntity, int[]> stackGetTexturePack = new HashMap<IModelEntity, int[]>();
@@ -104,9 +105,6 @@ public class ModelManager {
 	public static final String[] searchFileNamePrefix = new String[]{"littleMaidMob","mmmlibx","ModelMulti","LittleMaidMob"};
 
 	public void init() {
-		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/modelmulti/", "ModelMulti_");
-		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littlemaid/", "ModelMulti_");
-		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littlemaid/", "ModelLittleMaid_");
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/ModelMulti/", "ModelMulti_");
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littleMaid/", "ModelMulti_");
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littleMaid/", "ModelLittleMaid_");
@@ -400,6 +398,7 @@ public class ModelManager {
 	 * 「MMM_ModelBiped」を継承していればマルチモデルとしてクラスを登録する。
 	 * @param fname
 	 */
+	@SuppressWarnings({ "unused", "unchecked", "rawtypes" })
 	protected void addModelClass(String fname, String[] pSearch) {
 		// モデルを追加
 		int lfindprefix = fname.indexOf(pSearch[2]);
@@ -450,7 +449,7 @@ public class ModelManager {
 		}
 
 //		LittleMaidReengaged.Debug("MMM_TextureManager.addTextureName : %s # %s # %s # %s", fname, pSearch[0], pSearch[1], pSearch[2]);
-		if (fname.startsWith(pSearch[1])) {
+		if (fname.toLowerCase().startsWith(pSearch[1].toLowerCase())) {
 			int i = fname.lastIndexOf("/");
 			if (pSearch[1].length() < i) {
 				String pn = fname.substring(pSearch[1].length(), i);
@@ -543,7 +542,7 @@ public class ModelManager {
 					} else if(nfile.getName().endsWith(".png")) {
 						String s = nfile.getPath().replace('\\', '/');
 
-						int i = s.indexOf(pSearch[1]);
+						int i = s.toLowerCase().indexOf(pSearch[1].toLowerCase());
 						if (i > -1) {
 							// 対象はテクスチャディレクトリ
 							addTextureName(s.substring(i), pSearch);
@@ -718,6 +717,8 @@ public class ModelManager {
 	public void setDefaultTexture(IModelEntity pEntity, TextureBox pBox) {
 		setDefaultTexture(pEntity.getClass(), pBox);
 	}
+	
+	@SuppressWarnings("rawtypes")
 	public void setDefaultTexture(Class pEntityClass, TextureBox pBox) {
 		defaultTextures.put(pEntityClass, pBox);
 		LittleMaidReengaged.Debug("appendDefaultTexture:%s(%s)",
@@ -730,6 +731,7 @@ public class ModelManager {
 	public TextureBox getDefaultTexture(IModelEntity pEntity) {
 		return getDefaultTexture(pEntity.getClass());
 	}
+	@SuppressWarnings("rawtypes")
 	public TextureBox getDefaultTexture(Class pEntityClass) {
 		if (defaultTextures.containsKey(pEntityClass)) {
 			return defaultTextures.get(pEntityClass);
