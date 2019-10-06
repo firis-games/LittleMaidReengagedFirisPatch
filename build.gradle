@@ -84,3 +84,13 @@ jar {
         attributes('FMLCorePlugin': 'net.blacklab.lmr.util.coremod.LMRECoremod', 'FMLCorePluginContainsFMLMod': 'true')
     }
 }
+
+task devJar(type: Jar) {
+    from sourceSets.main.java
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+artifacts {
+    archives devJar
+} 
