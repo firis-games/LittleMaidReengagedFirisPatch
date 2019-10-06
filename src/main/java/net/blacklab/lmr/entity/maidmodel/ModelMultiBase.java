@@ -3,6 +3,7 @@ package net.blacklab.lmr.entity.maidmodel;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -277,4 +278,25 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 		return false;
 	}
 
+	
+	
+	public static final float mh_sqrt_float(float f) {
+		return MathHelper.sqrt(f);
+	}
+
+	public static final float mh_sqrt_double(double d) {
+		return MathHelper.sqrt(d);
+	}
+
+	public static final int mh_floor_float(float f) {
+		return MathHelper.floor(f);
+	}
+
+	public static final int mh_floor_double(double d) {
+		return MathHelper.floor(d);
+	}
+
+	public static final long mh_floor_double_long(double d) {
+		return MathHelper.floor(d);
+	}
 }
