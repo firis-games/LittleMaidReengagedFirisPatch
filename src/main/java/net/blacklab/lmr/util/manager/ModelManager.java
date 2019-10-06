@@ -216,8 +216,15 @@ public class ModelManager {
 			if (ltb.modelName.isEmpty()) {
 				ltb.setModels(defaultModelName, null, ldm);
 			} else {
+				//大文字小文字の差は無視する
 				if (modelMap.containsKey(ltb.modelName)) {
 					ltb.setModels(ltb.modelName, modelMap.get(ltb.modelName), ldm);
+				}
+				for (String key : modelMap.keySet()) {
+					if (key.toLowerCase().equals(ltb.modelName.toLowerCase())) {
+						ltb.setModels(key, modelMap.get(ltb.modelName), ldm);
+						break;
+					}
 				}
 			}
 		}
