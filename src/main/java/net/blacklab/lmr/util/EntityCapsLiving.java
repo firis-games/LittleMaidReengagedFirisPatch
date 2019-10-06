@@ -98,10 +98,13 @@ public class EntityCapsLiving implements IModelCaps {
 			return owner.ticksExisted;
 		case caps_heldItems:
 		case caps_currentEquippedItem:
-			return owner.getHeldItemMainhand();
+			ItemStack mainhand = owner.getHeldItemMainhand();
+			if (mainhand.isEmpty()) mainhand = null;
+			return mainhand;
 		case caps_currentArmor:
-			return ((List<ItemStack>)owner.getArmorInventoryList()).get((Integer) pArg[0]);
-			//return owner.getEquipmentInSlot((Integer)pArg[0] + 1);
+			ItemStack aromor = ((List<ItemStack>)owner.getArmorInventoryList()).get((Integer) pArg[0]);
+			if (aromor.isEmpty()) aromor = null;
+			return aromor;
 		case caps_posX:
 			return owner.posX;
 		case caps_posY:
