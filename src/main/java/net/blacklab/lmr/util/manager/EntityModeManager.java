@@ -6,7 +6,6 @@ import java.util.List;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
-import net.blacklab.lmr.util.FileList;
 
 public class EntityModeManager extends ManagerBase {
 

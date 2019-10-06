@@ -192,6 +192,11 @@ public class ModelManager {
 		for (String[] lst : searchPrefix) {
 			// mods
 			searchFiles(FileList.dirMods, lst);
+			
+			// 開発専用処理
+			if (FileList.developIncludeDirMods != null) {
+				searchFiles(FileList.developIncludeDirMods, lst);
+			}
 
 			for (File classpathDir :
 					FileList.dirClasspath) {

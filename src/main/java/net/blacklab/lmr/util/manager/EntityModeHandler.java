@@ -13,7 +13,6 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 public class EntityModeHandler extends LoaderHandler {
 	
 	private List<Class<? extends EntityModeBase>> modeClasses;
-	private List<EntityModeBase> entityModes;
 	
 	public EntityModeHandler() {
 		modeClasses = new ArrayList<>();
