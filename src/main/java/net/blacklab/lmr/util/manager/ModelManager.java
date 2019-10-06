@@ -217,9 +217,6 @@ public class ModelManager {
 				ltb.setModels(defaultModelName, null, ldm);
 			} else {
 				//大文字小文字の差は無視する
-				if (modelMap.containsKey(ltb.modelName)) {
-					ltb.setModels(ltb.modelName, modelMap.get(ltb.modelName), ldm);
-				}
 				for (String key : modelMap.keySet()) {
 					if (key.toLowerCase().equals(ltb.modelName.toLowerCase())) {
 						ltb.setModels(key, modelMap.get(ltb.modelName), ldm);
@@ -558,6 +555,18 @@ public class ModelManager {
 						if (i > -1) {
 							// 対象はテクスチャディレクトリ
 							addTextureName(s.substring(i), pSearch);
+							String lt1 = "mob/littleMaid";
+							String lt2 = "mob/ModelMulti";
+							String loc = s.substring(i);
+							if (loc.startsWith("/")) {
+								loc = loc.substring(1);
+							}
+							if(FMLCommonHandler.instance().getSide()==Side.CLIENT &&
+									(loc.startsWith(lt1) 
+											|| loc.startsWith(lt2)
+											|| (!loc.equals(loc.toLowerCase())))) {
+								OldZipTexturesWrapper.keys.add(loc);
+							}
 //							addTextureName(s.substring(i).replace('\\', '/'));
 						}
 					}/* else {
