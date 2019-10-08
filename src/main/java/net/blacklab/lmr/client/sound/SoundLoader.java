@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.logging.log4j.Level;
 
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -29,7 +27,6 @@ import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.manager.ModelManager;
-import net.minecraftforge.fml.common.FMLLog;
 
 /**
  * 新サウンドローディング(from 4.3)
@@ -252,7 +249,7 @@ public class SoundLoader {
 		}
 		if (!jsonDir.exists()) {
 			if (!jsonDir.mkdir()) {
-				FMLLog.log(Level.ERROR, "[LittleMaidReengaged]Making LittleMaidReengaged directory failed.");
+				LittleMaidReengaged.logger.error("[LittleMaidReengaged]Making LittleMaidReengaged directory failed.");
 				found = false;
 				return;
 			}
@@ -261,7 +258,7 @@ public class SoundLoader {
 		// JSON書き込み
 		File jsonFile = new File(jsonDir, "sounds.json");
 		if (jsonFile.isDirectory()) {
-			FMLLog.log(Level.ERROR, "[LittleMaidReengaged]There is sounds.json folder?");
+			LittleMaidReengaged.logger.error("[LittleMaidReengaged]There is sounds.json folder?");
 			found = false;
 			return;
 		}
@@ -272,7 +269,7 @@ public class SoundLoader {
 			// トップブロック
 			output.add("{");
 
-				Iterator iterator = SoundRegistry.getRegisteredNamesList().iterator();
+				Iterator<String> iterator = SoundRegistry.getRegisteredNamesList().iterator();
 				while (iterator.hasNext()) {
 					String soundName = (String) iterator.next();
 

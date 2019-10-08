@@ -264,12 +264,14 @@ public class LittleMaidReengaged {
 
 		//// Register model and renderer
 		//proxy.rendererRegister();
+		
+		//音声ロード
+		proxy.loadSounds();
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		proxy.loadSounds();
-
+		
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
 		MinecraftForge.EVENT_BUS.register(new EventHookLMRE());

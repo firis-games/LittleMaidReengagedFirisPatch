@@ -13,7 +13,6 @@ import net.blacklab.lib.obj.Pair;
 import net.blacklab.lib.obj.SinglePair;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.FileList;
 
 public class SoundRegistry {
 
@@ -38,6 +37,7 @@ public class SoundRegistry {
 		ratioMap = new HashMap<String, Float>();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void registerSoundName(EnumSound enumSound, String texture, Integer color, String name) {
 		// サウンド・ネームの登録
 		Map<Pair<String, Integer>, String> map = instR.registerMap.get(enumSound);
@@ -166,11 +166,17 @@ public class SoundRegistry {
 	}
 
 	public static boolean isSoundNameRegistered(String name) {
-		return getRegisteredNamesList().contains(name);
+		//mc1.12.2対応
+		for (String key : getRegisteredNamesList()) {
+			if(key.toLowerCase().equals(name.toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static List<String> getPathListFromRegisteredName(String name) {
-		return instR.pathMap.get(name);
+		return instR.pathMap.get(convertPathNameFromMc1_12_2(name));
 	}
 
 	public static String getPathFromRegisteredName(String name){
@@ -188,6 +194,38 @@ public class SoundRegistry {
 
 	public static InputStream getSoundStream(EnumSound sound, String texture, Integer color) {
 		return getSoundStream(getSoundRegisteredName(sound, texture, color));
+	}
+	
+	public static String convertPathNameFromMc1_12_2(String name) {
+		String keyName = name;
+		//mc1.12.2対応
+		for (String key : instR.pathMap.keySet()) {
+			if(key.toLowerCase().equals(name.toLowerCase())) {
+				keyName = key;
+				break;
+			}
+		}
+		return keyName;
+	}
+	
+	/**
+	 * mc1.12.2はリソースパスが小文字として扱われるため
+	 * Sound取得時に正確な名前を取得する必要がある
+	 * @param name
+	 * @return
+	 */
+	public static String convertPathNameListFromMc1_12_2(String name) {
+		String keyName = name;
+		//mc1.12.2対応
+		for (List<String> list : instR.pathMap.values()) {
+			for (String key : list) {
+				if(key.toLowerCase().equals(name.toLowerCase())) {
+					keyName = key;
+					break;
+				}				
+			}
+		}
+		return keyName;
 	}
 
 }

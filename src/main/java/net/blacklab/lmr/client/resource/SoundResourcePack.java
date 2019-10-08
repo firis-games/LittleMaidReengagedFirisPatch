@@ -1,8 +1,12 @@
 package net.blacklab.lmr.client.resource;
 
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,7 +17,6 @@ import com.google.common.collect.ImmutableSet;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.sound.SoundRegistry;
-import net.blacklab.lmr.util.FileList;
 import net.minecraft.client.resources.DefaultResourcePack;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
@@ -42,10 +45,18 @@ public class SoundResourcePack implements IResourcePack {
 	private InputStream getResourceStream(ResourceLocation resource) {
 		InputStream lis = null;
 		if (resource.getResourcePath().endsWith("sounds.json")) {
-			return LittleMaidReengaged.class.getClassLoader().getResourceAsStream("LittleMaidReengaged/sounds.json");
+			
+			Path sound = Paths.get("mods/LittleMaidReengaged/sounds.json");
+			try {
+				return new FileInputStream(sound.toFile());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			//return LittleMaidReengaged.class.getClassLoader().getResourceAsStream("LittleMaidReengaged/sounds.json");
 		}
 		if (resource.getResourcePath().endsWith(".ogg")) {
-			lis = LittleMaidReengaged.class.getClassLoader().getResourceAsStream(decodePathGetPath(resource));
+			String soundPath = SoundRegistry.convertPathNameListFromMc1_12_2(decodePathGetPath(resource));
+			lis = LittleMaidReengaged.class.getClassLoader().getResourceAsStream(soundPath);
 		}
 		return lis;
 	}
@@ -85,17 +96,15 @@ public class SoundResourcePack implements IResourcePack {
 		return gs.length>1 ? gs[1] : null;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public static final Set lmmxResourceDomains = ImmutableSet.of(LittleMaidReengaged.DOMAIN);
+	public static final Set<String> lmmxResourceDomains = ImmutableSet.of(LittleMaidReengaged.DOMAIN);
 
 	@Override
-	@SuppressWarnings("rawtypes")
-	public Set getResourceDomains() {
+	public Set<String> getResourceDomains() {
 		return lmmxResourceDomains;
 	}
 
 	@Override
-	public IMetadataSection getPackMetadata(MetadataSerializer par1MetadataSerializer, String par2Str)
+	public <T extends IMetadataSection> T getPackMetadata(MetadataSerializer par1MetadataSerializer, String par2Str)
 	{ //throws IOException {
 		return null;
 	}
