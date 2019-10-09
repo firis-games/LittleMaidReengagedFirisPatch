@@ -30,6 +30,8 @@ import javax.annotation.Nullable;
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
+import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.api.item.IItemSpecialSugar;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
@@ -808,11 +810,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 	public static ArrayList<EntityAITaskEntry> getEntityAITasks_taskEntries(EntityAITasks task)
 	{
-		return (ArrayList<EntityAITaskEntry>) task.taskEntries;
+		return new ArrayList<>(task.taskEntries);
 	}
 	public static ArrayList<EntityAITaskEntry> getEntityAITasks_executingTaskEntries(EntityAITasks task)
 	{
-		return (ArrayList<EntityAITaskEntry>) task.taskEntries;
+		return new ArrayList<>(task.taskEntries);
 	}
 
 	/**
@@ -1223,7 +1225,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	@Override
-	public boolean canAttackClass(Class par1Class) {
+	public boolean canAttackClass(Class <? extends EntityLivingBase > par1Class) {
 		// IFFの設定、クラス毎の判定しかできないので使わない。
 		return true;
 	}
@@ -1643,9 +1645,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if (par1DamageSource == DamageSource.FALL) {
 			setMaidDamegeSound(EnumSound.hurt_fall);
 			if (isContractEX() && par2>=19 && par2<getHealth()) {
-				//EntityPlayer player;
-				//if ((player = getMaidMasterEntity()) != null)
-				//	player.addStat(AchievementsLMRE.ac_Ashikubi);
+				//進捗
+				AchievementsLMRE.grantAC(getMaidMasterEntity(), AC.Ashikubi);
 			}
 		}
 		if(!par1DamageSource.isUnblockable() && isBlocking()) {
@@ -1980,6 +1981,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onLivingUpdate() {
 		float lhealth = getHealth();
@@ -2962,9 +2964,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								// test TNT-D
 								maidOverDriveTime.setValue(par3ItemStack.getCount() * 10);
 								playSound("mob.zombie.infect");
-								//if (par3ItemStack.getCount() == 64) {
-								//	getMaidMasterEntity().addStat(AchievementsLMRE.ac_Boost);
-								//}
+								if (par3ItemStack.getCount() == 64) {
+									//進捗
+									AchievementsLMRE.grantAC(getMaidMasterEntity(), AC.Boost);
+								}
 								par3ItemStack.splitStack(par3ItemStack.getCount());
 								return true;
 							}
@@ -3048,9 +3051,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 						deathTime = 0;
 						if (!getEntityWorld().isRemote) {
-							//if (AchievementsLMRE.ac_Contract != null) {
-							//	par1EntityPlayer.addStat(AchievementsLMRE.ac_Contract);
-							//}
+							//進捗
+							AchievementsLMRE.grantAC(par1EntityPlayer, AC.Contract);
 							setContract(true);
 							getNavigator().clearPath();
 							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
@@ -3445,9 +3447,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 
 			if (getEntityWorld().getTotalWorldTime() - maidAnniversary > 24000 * 365) {
-				EntityPlayer player;
-				//if ((player = getMaidMasterEntity()) != null)
-				//	player.addStat(AchievementsLMRE.ac_MyFavorite);
+				//進捗
+				AchievementsLMRE.grantAC(getMaidMasterEntity(), AC.MyFavorite);
 			}
 		}
 

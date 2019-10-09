@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:sugar"
+        },
+        "title": {
+            "translate": "achievement.myfavorite"
+        },
+        "description": {
+            "translate": "achievement.myfavorite.desc"
+        }
+    },
+    "parent": "lmreengaged:root",
+    "criteria": {
+        "done": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

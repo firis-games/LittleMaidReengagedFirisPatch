@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:cake"
+        },
+        "title": {
+            "translate": "achievement.contract"
+        },
+        "description": {
+            "translate": "achievement.contract.desc"
+        }
+    },
+    "parent": "lmreengaged:root",
+    "criteria": {
+        "done": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

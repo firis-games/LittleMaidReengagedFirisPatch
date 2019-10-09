@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
+import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -20,6 +22,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
@@ -89,21 +92,18 @@ public class EntityMode_Fencer extends EntityModeBase {
 		if (!litemstack.isEmpty()) {
 			if (isTriggerItem(mmode_Fencer, litemstack)) {
 				owner.setMaidMode(mmode_Fencer);
-				//if (pentityplayer != null) {
-				//	pentityplayer.addStat(AchievementsLMRE.ac_Fencer);
-				//}
-				//if (litemstack.getItem() instanceof ItemSpade && pentityplayer != null) {
-				//	pentityplayer.addStat(AchievementsLMRE.ac_Buster);
-				//}
+				//進捗
+				AchievementsLMRE.grantAC(pentityplayer, AC.Fencer);
+				if (litemstack.getItem() instanceof ItemSpade && pentityplayer != null) {
+					AchievementsLMRE.grantAC(pentityplayer, AC.Buster);
+				}
 				return true;
 			} else  if (isTriggerItem(mmode_Bloodsucker, litemstack)) {
 				owner.setMaidMode(mmode_Bloodsucker);
-				//if (pentityplayer != null) {
-				//	pentityplayer.addStat(AchievementsLMRE.ac_RandomKiller);
-				//}
-				//if (litemstack.getItem() instanceof ItemSpade && pentityplayer != null) {
-				//	pentityplayer.addStat(AchievementsLMRE.ac_Buster);
-				//}
+				AchievementsLMRE.grantAC(pentityplayer, AC.RandomKiller);
+				if (litemstack.getItem() instanceof ItemSpade && pentityplayer != null) {
+					AchievementsLMRE.grantAC(pentityplayer, AC.Buster);
+				}
 				return true;
 			}
 		}

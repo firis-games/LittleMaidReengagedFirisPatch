@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:diamond_axe"
+        },
+        "title": {
+            "translate": "achievement.bloodsucker"
+        },
+        "description": {
+            "translate": "achievement.bloodsucker.desc"
+        }
+    },
+    "parent": "lmreengaged:root",
+    "criteria": {
+        "done": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

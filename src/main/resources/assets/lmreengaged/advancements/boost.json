@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:gunpowder"
+        },
+        "title": {
+            "translate": "achievement.boost"
+        },
+        "description": {
+            "translate": "achievement.boost.desc"
+        }
+    },
+    "parent": "lmreengaged:root",
+    "criteria": {
+        "done": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:diamond_chestplate"
+        },
+        "title": {
+            "translate": "achievement.overprtct"
+        },
+        "description": {
+            "translate": "achievement.overprtct.desc"
+        }
+    },
+    "parent": "lmreengaged:root",
+    "criteria": {
+        "done": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

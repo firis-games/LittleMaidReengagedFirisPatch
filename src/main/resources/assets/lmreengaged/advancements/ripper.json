@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:shears"
+        },
+        "title": {
+            "translate": "achievement.ripper"
+        },
+        "description": {
+            "translate": "achievement.ripper.desc"
+        }
+    },
+    "parent": "lmreengaged:root",
+    "criteria": {
+        "done": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

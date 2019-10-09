@@ -3,6 +3,8 @@ package net.blacklab.lmr.entity.littlemaid.mode;
 import java.util.Iterator;
 import java.util.List;
 
+import net.blacklab.lmr.achievements.AchievementsLMRE;
+import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -53,9 +55,8 @@ public class EntityMode_Healer extends EntityModeBase {
 		if (!litemstack.isEmpty()) {
 			if (isTriggerItem(mmode_Healer, litemstack)) {
 				owner.setMaidMode(mmode_Healer);
-				//if (pentityplayer != null) {
-				//	pentityplayer.addStat(AchievementsLMRE.ac_Healer);
-				//}
+				//進捗
+				AchievementsLMRE.grantAC(pentityplayer, AC.Healer);
 				return true;
 			}
 		}

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
+import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger.Status;
@@ -68,9 +70,8 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		if (!litemstack.isEmpty()) {
 			if (owner.getModeTrigger().isTriggerable(mtrigger_Torch, litemstack)) {
 				owner.setMaidMode(mmode_Torcher);
-				//if (pentityplayer != null) {
-				//	pentityplayer.addStat(AchievementsLMRE.ac_TorchLayer);
-				//}
+				//進捗
+				AchievementsLMRE.grantAC(pentityplayer, AC.TorchLayer);
 				return true;
 			}
 		}

@@ -2,6 +2,8 @@ entity.lmreengaged.LittleMaid.name=リトルメイド
 
 item.lmreengaged:spawn_littlemaid_egg.name=スポーン リトルメイド
 
+advancements.root=LittleMaidReengaged
+advancements.root.desc=メイドさんといっしょ
 achievement.contract=悟り。
 achievement.contract.desc=リトルメイドを雇用する
 achievement.fencer=お護りしますご主人様!

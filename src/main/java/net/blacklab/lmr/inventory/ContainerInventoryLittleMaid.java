@@ -3,6 +3,8 @@ package net.blacklab.lmr.inventory;
 import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
+import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -122,8 +124,9 @@ public class ContainerInventoryLittleMaid extends Container {
 		flag &= (slot = getSlot(57)).getHasStack() && (item = slot.getStack().getItem()) instanceof ItemArmor &&
 				((ItemArmor)item).getArmorMaterial() == ArmorMaterial.DIAMOND;
 
-		//if (flag && !owner.getEntityWorld().isRemote)
-		//	owner.getMaidMasterEntity().addStat(AchievementsLMRE.ac_Overprtct);
+		//進捗
+		if (flag && !owner.getEntityWorld().isRemote)
+			AchievementsLMRE.grantAC(owner.getMaidMasterEntity(), AC.Overprtct);
 	}
 
 	@Override

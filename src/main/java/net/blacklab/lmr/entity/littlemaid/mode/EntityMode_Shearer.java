@@ -1,6 +1,8 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
+import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -160,9 +162,8 @@ public class EntityMode_Shearer extends EntityModeBase {
 		if (!litemstack.isEmpty()) {
 			if (litemstack.getItem() instanceof ItemShears) {
 				owner.setMaidMode(mmode_Ripper);
-				//if (pentityplayer != null) {
-				//	pentityplayer.addStat(AchievementsLMRE.ac_Shearer);
-				//}
+				//進捗
+				AchievementsLMRE.grantAC(pentityplayer, AC.Shearer);
 				return true;
 			}
 			if (ItemHelper.isItemExplord(litemstack)) {

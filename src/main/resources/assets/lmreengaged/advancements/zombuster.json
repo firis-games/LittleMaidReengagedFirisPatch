@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:iron_shovel"
+        },
+        "title": {
+            "translate": "achievement.zombuster"
+        },
+        "description": {
+            "translate": "achievement.zombuster.desc"
+        }
+    },
+    "parent": "lmreengaged:root",
+    "criteria": {
+        "done": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

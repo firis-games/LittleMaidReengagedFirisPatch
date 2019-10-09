@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:diamond_axe"
+        },
+        "title": {
+            "translate": "achievement.blazingstar"
+        },
+        "description": {
+            "translate": "achievement.blazingstar.desc"
+        }
+    },
+    "parent": "lmreengaged:root",
+    "criteria": {
+        "done": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}
