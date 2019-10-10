@@ -31,7 +31,13 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class InventoryLittleMaid extends InventoryPlayer {
 	
-	public int timesInventoryChanged = 0;
+	public boolean inventoryChanged = false;
+	
+	@Override
+	public void markDirty() {
+		super.markDirty();
+        this.inventoryChanged = true;
+    }
 	
 	/**
 	 * 最大インベントリ数

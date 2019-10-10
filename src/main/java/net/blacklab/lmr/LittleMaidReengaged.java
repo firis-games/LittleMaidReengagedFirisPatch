@@ -313,8 +313,7 @@ public class LittleMaidReengaged {
 						)
 				{
 					EntityRegistry.addSpawn(EntityLittleMaid.class, cfg_spawnWeight, cfg_minGroupSize, cfg_maxGroupSize, EnumCreatureType.CREATURE, biome);
-					System.out.println("Registering spawn in " + biome.getBiomeName());
-					Debug("Registering maids to spawn in " + biome.getBiomeName());
+					Debug("Registering maids to spawn in " + biome);
 				}
 			}
 		}

@@ -2351,9 +2351,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		isSwingInProgress = maidAvatar.isSwingInProgress = lmss.isSwingInProgress;
 
 		// 持ち物の確認
-		if (maidInventory.getTimesChanged() != maidInventory.timesInventoryChanged) {
+		if (maidInventory.inventoryChanged) {
 			onInventoryChanged();
-			maidInventory.timesInventoryChanged = maidInventory.getTimesChanged();
+			maidInventory.inventoryChanged = false;
 		}
 
 		if (!getEntityWorld().isRemote) {
