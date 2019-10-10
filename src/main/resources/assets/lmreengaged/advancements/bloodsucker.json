@@ -4,10 +4,10 @@
             "item": "minecraft:diamond_axe"
         },
         "title": {
-            "translate": "achievement.blazingstar"
+            "translate": "achievement.bloodsucker"
         },
         "description": {
-            "translate": "achievement.blazingstar.desc"
+            "translate": "achievement.bloodsucker.desc"
         }
     },
     "parent": "lmreengaged:root",

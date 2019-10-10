@@ -4,10 +4,10 @@
             "item": "minecraft:bow"
         },
         "title": {
-            "translate": "achievement.archer"
+            "translate": "achievement.blazingstar"
         },
         "description": {
-            "translate": "achievement.archer.desc"
+            "translate": "achievement.blazingstar.desc"
         }
     },
     "parent": "lmreengaged:root",

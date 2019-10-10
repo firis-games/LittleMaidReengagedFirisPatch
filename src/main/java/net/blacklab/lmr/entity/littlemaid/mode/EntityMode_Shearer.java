@@ -163,7 +163,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 			if (litemstack.getItem() instanceof ItemShears) {
 				owner.setMaidMode(mmode_Ripper);
 				//進捗
-				AchievementsLMRE.grantAC(pentityplayer, AC.Shearer);
+				AchievementsLMRE.grantAC(pentityplayer, AC.Ripper);
 				return true;
 			}
 			if (ItemHelper.isItemExplord(litemstack)) {

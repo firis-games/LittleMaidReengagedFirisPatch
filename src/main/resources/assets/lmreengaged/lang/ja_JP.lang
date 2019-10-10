@@ -39,9 +39,9 @@ achievement.boost.desc="砂糖の代わりには…ならないね．"
 achievement.myfavorite=My Favorite Things
 achievement.myfavorite.desc="ほとんど甘いものです．"
 
-littleMaidMob.mode.Torcher=移動時照明確保係
-littleMaidMob.mode.F-Torcher=待機時照明確保係
-littleMaidMob.mode.T-Torcher=巡回照明確保係
+littleMaidMob.mode.TorchLayer=移動時照明確保係
+littleMaidMob.mode.F-TorchLayer=待機時照明確保係
+littleMaidMob.mode.T-TorchLayer=巡回照明確保係
 
 littleMaidMob.mode.Archer=護衛射手
 littleMaidMob.mode.F-Archer=自由射手

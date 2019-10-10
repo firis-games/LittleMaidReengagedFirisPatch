@@ -1,13 +1,13 @@
 {
     "display": {
         "icon": {
-            "item": "minecraft:diamond_axe"
+            "item": "minecraft:diamond_sword"
         },
         "title": {
-            "translate": "achievement.bloodsucker"
+            "translate": "achievement.fencer"
         },
         "description": {
-            "translate": "achievement.bloodsucker.desc"
+            "translate": "achievement.fencer.desc"
         }
     },
     "parent": "lmreengaged:root",

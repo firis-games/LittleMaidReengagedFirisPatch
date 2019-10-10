@@ -25,17 +25,17 @@ public class AchievementsLMRE {
 		// 各モード
 		Fencer("fencer"),
 		Archer("archer"),
-		Cook("cook"),
+		Cook("cooking"),
 		Farmer("farmer"),
 		Healer("healer"),
 		Pharmacist("pharmacist"),
-		Shearer("shearer"),
-		TorchLayer("torchLayer"),
+		Ripper("ripper"),
+		Torcher("torcher"),
 		
 		// モード拡張
-		RandomKiller("randomKiller"),
+		RandomKiller("bloodsucker"),
 		Buster("buster"),
-		BlazingStar("blazingStar"),
+		BlazingStar("blazingstar"),
 		
 		// アクション
 		MyFavorite("myfavorite"),

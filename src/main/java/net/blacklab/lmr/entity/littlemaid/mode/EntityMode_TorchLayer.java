@@ -71,7 +71,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 			if (owner.getModeTrigger().isTriggerable(mtrigger_Torch, litemstack)) {
 				owner.setMaidMode(mmode_Torcher);
 				//進捗
-				AchievementsLMRE.grantAC(pentityplayer, AC.TorchLayer);
+				AchievementsLMRE.grantAC(pentityplayer, AC.Torcher);
 				return true;
 			}
 		}
