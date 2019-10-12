@@ -1,0 +1,27 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"scs",
+		"sbs",
+		" e "
+	],
+	"key": {
+		"s": {
+			"item": "minecraft:sugar"
+		},
+		"c": {
+			"item": "minecraft:dye",
+			"data": 3
+		},
+		"b": {
+			"item": "minecraft:slime_ball"
+		},
+		"e": {
+			"item": "minecraft:egg"
+		}
+	},
+	"result": {
+		"item": "lmreengaged:spawn_littlemaid_egg",
+		"data": 0
+	}
+}

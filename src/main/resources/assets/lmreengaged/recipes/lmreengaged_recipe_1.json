@@ -1,0 +1,17 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+	{
+		"item": "minecraft:egg"
+	},
+	{
+		"item": "minecraft:sugar"
+	},
+	{
+		"item": "minecraft:nether_wart"
+	}
+	],
+	"result": {
+		"item": "lmreengaged:registerkey"
+	}
+}
