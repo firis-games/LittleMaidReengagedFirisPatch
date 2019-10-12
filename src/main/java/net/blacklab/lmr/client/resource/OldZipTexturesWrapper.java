@@ -9,7 +9,6 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.util.FileList;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.MetadataSerializer;
@@ -35,7 +34,7 @@ public class OldZipTexturesWrapper implements IResourcePack {
 	}
 
 	@Override
-	public IMetadataSection getPackMetadata(MetadataSerializer arg0,
+	public <T extends IMetadataSection> T getPackMetadata(MetadataSerializer arg0,
 			String arg1) throws IOException {
 		return null;
 	}
@@ -64,11 +63,18 @@ public class OldZipTexturesWrapper implements IResourcePack {
 	 * @return
 	 */
 	public String texturesResourcePath(ResourceLocation path) {
+		
 		String key = path.getResourcePath();
 		if(key.startsWith("/")) key = key.substring(1);
 		
-		key = "assets/minecraft/" + key;
-		
+		//旧式用の判定処理
+		if (key.toLowerCase().startsWith("mob/modelmulti")
+				|| key.toLowerCase().startsWith("mob/littlemaid")) {
+			//旧方式は何も加工しない
+		} else {
+			key = "assets/minecraft/" + key;
+		}
+
 		return key;
 	}
 	
