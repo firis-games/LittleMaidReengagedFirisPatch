@@ -1,4 +1,5 @@
 entity.lmreengaged.LittleMaid.name=LittleMaid
+entity.littlemaid.name=LittleMaid
 
 item.lmreengaged:spawn_littlemaid_egg.name=Spawn LittleMaid
 item.lmreengaged:registerkey.name=§eTrigger Item Registerer

@@ -1,4 +1,5 @@
 entity.lmreengaged.LittleMaid.name=リトルメイド
+entity.littlemaid.name=リトルメイド
 
 item.lmreengaged:spawn_littlemaid_egg.name=スポーン リトルメイド
 item.lmreengaged:registerkey.name=§eTrigger Item Registerer
