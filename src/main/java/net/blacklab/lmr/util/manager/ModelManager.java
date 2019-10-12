@@ -287,7 +287,7 @@ public class ModelManager {
 		TextureBox lbox = new TextureBox("Crafter_Steve", new String[] {"", "", ""});
 		lbox.fileName = "";
 
-		lbox.addTexture(0x0c, "/assets/minecraft/textures/entity/steve.png");
+		lbox.addTexture(0x0c, "/assets/minecraft/textures/entity/lmsteve/steve.png");
 		if (armorFilenamePrefix != null && armorFilenamePrefix.length > 0) {
 			for (String ls : armorFilenamePrefix) {
 				Map<Integer, ResourceLocation> lmap = new HashMap<Integer, ResourceLocation>();
