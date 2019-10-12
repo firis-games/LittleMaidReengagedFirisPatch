@@ -1,6 +1,8 @@
 entity.lmreengaged.LittleMaid.name=リトルメイド
 
 item.lmreengaged:spawn_littlemaid_egg.name=スポーン リトルメイド
+item.lmreengaged:registerkey.name=§eTrigger Item Registerer
+item.lmreengaged:maidporter.name=メイド ポーター
 
 advancements.root=LittleMaidReengaged
 advancements.root.desc=メイドさんといっしょ
@@ -118,4 +120,22 @@ littleMaidMob.gui.toggle.swim.disable=水泳モードを無効にする
 littleMaidMob.gui.toggle.freedom.enable=自由行動に切り替え
 littleMaidMob.gui.toggle.freedom.disable=自由行動を解除
 
+littleMaidMob.gui.text.expboost=お砂糖ブースト
+
 littleMaidMob.gui.iff.title=敵対／友好切り替え
+
+littleMaidMob.chat.text.changeregistermode=トリガー登録モードが変更されました: %s
+littleMaidMob.chat.text.readyregistration=トリガーとして登録するアイテムを右クリックします: %s
+littleMaidMob.chat.text.cancelregistration=登録がキャンセルされました
+littleMaidMob.chat.text.addtrigger=トリガーアイテムが登録されました: %s
+littleMaidMob.chat.text.removetrigger=トリガーアイテムが削除されました: %s
+littleMaidMob.chat.text.warningcount=WARNING: 登録数が残っています: %d
+littleMaidMob.chat.text.endcount=登録数が残っていません。キーをもう一度作成して下さい。
+littleMaidMob.chat.text.death=Your %s was killed by %s
+littleMaidMob.chat.text.timedeath=Your %s can no longer endure pain from %s
+
+system.lmmnx.chat.text.newversion=
+system.lmmnx.chat.text.checkversion=
+
+
+

@@ -137,5 +137,5 @@ littleMaidMob.chat.text.endcount=The number of registrations are no longer left.
 littleMaidMob.chat.text.death=Your %s was killed by %s
 littleMaidMob.chat.text.timedeath=Your %s can no longer endure pain from %s
 
-system.lmmnx.chat.text.newversion=New version avaliable
-system.lmmnx.chat.text.checkversion=Go to: http://el-blacklab.net/
+system.lmmnx.chat.text.newversion=
+system.lmmnx.chat.text.checkversion=
