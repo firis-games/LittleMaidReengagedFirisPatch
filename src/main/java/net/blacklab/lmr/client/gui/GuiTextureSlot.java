@@ -15,6 +15,7 @@ import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiSlot;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.Items;
@@ -151,6 +152,9 @@ public class GuiTextureSlot extends GuiSlot {
 			}
 		}
 
+		//アーマー選択画面の文字が2行目以降おかしくなる
+		//enableAlpha担っている場合文字が正常に表示されないみたい
+		GlStateManager.disableAlpha();
 		//		MMM_TextureManager.instance.checkTextureBoxServer(lbox);
 		GL11.glDisable(GL11.GL_BLEND);
 
@@ -198,6 +202,7 @@ public class GuiTextureSlot extends GuiSlot {
 				}
 			}
 		}
+		
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
