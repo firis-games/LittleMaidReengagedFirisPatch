@@ -272,10 +272,13 @@ public class EntityMode_Playing extends EntityModeBase {
 						// mod_littleMaidMob.Debug(String.format("playRole-%d:%d", entityId, playingRole));
 					}
 
-				} else if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
-					// 夜の部終了
+				//} else if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
+				//	// 夜の部終了
+				//	owner.setPlayingRole(PlayRole.NOTPLAYING);
+				//	fcounter = 0;
+				} else if (owner.getEntityWorld().rand.nextInt(100) <= 50) {
+					//確率でいったん解除する
 					owner.setPlayingRole(PlayRole.NOTPLAYING);
-					fcounter = 0;
 				} else {
 					// お遊びの実行をここに書く？
 					if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
@@ -285,6 +288,7 @@ public class EntityMode_Playing extends EntityModeBase {
 				}
 
 			} else {
+				//夜になったら終了する
 				if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
 					// 昼の部終了
 					owner.setPlayingRole(PlayRole.NOTPLAYING);
