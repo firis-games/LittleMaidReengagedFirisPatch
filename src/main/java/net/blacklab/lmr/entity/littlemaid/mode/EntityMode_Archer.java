@@ -62,8 +62,8 @@ public class EntityMode_Archer extends EntityModeBase {
 
 //		ltasks[1].addTask(1, new EntityAIOwnerHurtByTarget(owner));
 //		ltasks[1].addTask(2, new EntityAIOwnerHurtTarget(owner));
-		ltasks[1].addTask(3, new EntityAILMHurtByTarget(owner, true));
-		ltasks[1].addTask(4, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
+		ltasks[1].addTask(1, new EntityAILMHurtByTarget(owner, true));
+		ltasks[1].addTask(2, new EntityAILMNearestAttackableTarget<EntityLivingBase>(owner, EntityLivingBase.class, 0, true));
 
 		owner.addMaidMode(mmode_Archer, ltasks);
 
@@ -73,7 +73,7 @@ public class EntityMode_Archer extends EntityModeBase {
 		ltasks2[1] = new EntityAITasks(owner.aiProfiler);
 
 		ltasks2[1].addTask(1, new EntityAILMHurtByTarget(owner, true));
-		ltasks2[1].addTask(2, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
+		ltasks2[1].addTask(2, new EntityAILMNearestAttackableTarget<EntityLivingBase>(owner, EntityLivingBase.class, 0, true));
 
 		owner.addMaidMode(mmode_Blazingstar, ltasks2);
 	}
@@ -193,6 +193,7 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void updateAITick(String pMode) {
 		if (owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0) {

@@ -143,7 +143,7 @@ public class CommonHelper {
 			Vec3d lvview = lvpos.addVector(lvlook.x * pRange, lvlook.y * pRange, lvlook.z * pRange);
 			Entity ltarget = null;
 			List<Entity> llist = pEntity.getEntityWorld()
-					.getEntitiesWithinAABBExcludingEntity(pEntity, pEntity.getEntityBoundingBox().contract(lvlook.x * pRange, lvlook.y * pRange, lvlook.z * pRange).expand(pExpand, pExpand, pExpand));
+					.getEntitiesWithinAABBExcludingEntity(pEntity, pEntity.getEntityBoundingBox().contract(lvlook.x * pRange, lvlook.y * pRange, lvlook.z * pRange).grow(pExpand, pExpand, pExpand));
 			double ltdistance = pRange * pRange;
 
 			for (int var13 = 0; var13 < llist.size(); ++var13) {

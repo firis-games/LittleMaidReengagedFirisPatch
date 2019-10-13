@@ -8,7 +8,6 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Archer;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.SwingStatus;
-import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -72,6 +71,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 		EntityLivingBase entityliving = fMaid.getAttackTarget();
 		if(fMaid.isMaidWaitEx()) return false;
 
+		//ターゲット
 		if (!fEnable || entityliving == null || entityliving.isDead) {
 			fMaid.setAttackTarget(null);
 			//fMaid.setTarget(null);
@@ -208,9 +208,9 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 					boolean lcanattack = true;
 					boolean ldotarget = false;
 					double tpr = Math.sqrt(atl);
-					Entity lentity = CommonHelper.getRayTraceEntity(fMaid.maidAvatar, tpr + 1.0F, 1.0F, 1.0F);
+					//Entity lentity = CommonHelper.getRayTraceEntity(fMaid.maidAvatar, tpr + 1.0F, 1.0F, 1.0F);
 					ItemStack headstack = fInventory.armorInventory.get(3);
-					Item helmid = headstack.isEmpty() ? null : headstack.getItem();
+					Item helmid = headstack.getItem();
 
 					/*
 					if (helmid == Items.DIAMOND_HELMET || helmid == Items.GOLDEN_HELMET) {
@@ -222,9 +222,10 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 					}
 					*/
 
-					if (lentity == fTarget) {
-						ldotarget = true;
-					}
+					//if (lentity == fTarget) {
+					//	ldotarget = true;
+					//}
+					ldotarget = true;
 					lcanattack &= (milsq > 3D || il < 0D);
 					lcanattack &= ldotarget;
 					// 横移動

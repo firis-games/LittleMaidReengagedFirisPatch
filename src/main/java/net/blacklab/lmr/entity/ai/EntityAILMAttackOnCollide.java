@@ -107,15 +107,9 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 			resetTask();
 			return false;
 		}
-
-		if (theMaid.getActiveModeClass().isSearchEntity()) {
-			if (!theMaid.getActiveModeClass().checkEntity(theMaid.getMaidModeString(), entityTarget)) {
-				return  false;
-			}
-		} else {
-			if (!MaidHelper.isTargetReachable(theMaid, lentity, 0)) {
-				return false;
-			}
+		
+		if (!MaidHelper.isTargetReachable(this.theMaid, lentity, 0.0D)) {
+			return false;
 		}
 
 		if (!entityTarget.isEntityAlive()) {
@@ -171,7 +165,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 					lel = ((EntityCreature)entityTarget).getAttackTarget();
 				}
 				else if (entityTarget instanceof EntityLivingBase) {
-					lel = ((EntityLivingBase)entityTarget).getLastAttackedEntity();
+					lel = ((EntityLivingBase)entityTarget).getRevengeTarget();
 				}
 				if (lel == theMaid) {
 					ItemStack li = theMaid.getCurrentEquippedItem();
