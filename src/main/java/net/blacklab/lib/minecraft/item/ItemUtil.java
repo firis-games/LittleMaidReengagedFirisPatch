@@ -7,7 +7,6 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-@SuppressWarnings("ALL")
 public class ItemUtil {
 	
 	public static Item getItemByStringId(String id){
@@ -15,7 +14,7 @@ public class ItemUtil {
 	}
 
 	public static boolean isHelm(ItemStack stack){
-		if(stack!=null){
+		if(!stack.isEmpty()){
 			if(stack.getItem() instanceof ItemArmor){
 				if(((ItemArmor)stack.getItem()).armorType == EntityEquipmentSlot.HEAD){
 					return true;
@@ -26,7 +25,7 @@ public class ItemUtil {
 	}
 	
 	public static int getFoodAmount(ItemStack pStack) {
-		if (pStack == null) {
+		if (pStack.isEmpty()) {
 			return -1;
 		}
 		if (pStack.getItem() instanceof ItemFood) {

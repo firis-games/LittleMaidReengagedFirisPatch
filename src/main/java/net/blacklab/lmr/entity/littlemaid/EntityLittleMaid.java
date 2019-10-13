@@ -1470,7 +1470,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public boolean canBeCollidedWith() {
 		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
 			ItemStack litemstack = mstatMasterEntity.getHeldItemMainhand();
-			return (litemstack == null) || (litemstack.getItem() == Items.SADDLE);
+			return litemstack.isEmpty() || (litemstack.getItem() == Items.SADDLE);
 		}
 		return super.canBeCollidedWith();
 	}
@@ -1604,7 +1604,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	public float getInterestedAngle(float f) {
-		if (maidInventory.armorInventory.get(3) != null) {
+		if (!maidInventory.armorInventory.get(3).isEmpty()) {
 			return 0f;
 		}
 		return (prevRotateAngleHead + (rotateAngleHead - prevRotateAngleHead) * f) * ((looksWithInterestAXIS ? 0.08F : -0.08F) * (float)Math.PI);
@@ -1686,7 +1686,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		Entity entity = par1DamageSource.getTrueSource();
 		boolean force = true;
 
-		if(entity instanceof EntitySnowball) force = false;
+		if(par1DamageSource.getTrueSource() instanceof EntitySnowball) force = false;
 
 		if(par1DamageSource.getDamageType().equalsIgnoreCase("thrown"))
 		{
@@ -1735,7 +1735,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 
 		// EXP penalty
-		if (entity instanceof EntityPlayer || par1DamageSource.getDamageType().equals("inWall") ||
+		if (par1DamageSource.getTrueSource() instanceof EntityPlayer || par1DamageSource.getDamageType().equals("inWall") ||
 				par1DamageSource.getDamageType().equals("inFire") || par1DamageSource.getDamageType().equals("inLava") ||
 				par1DamageSource.getDamageType().equals("anvil") || par1DamageSource.getDamageType().equals("fall") ||
 				par1DamageSource.getDamageType().equals("cactus") || par1DamageSource.getDamageType().equals("onFire")) {
@@ -1762,7 +1762,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 					//fleeingTick = 0;
 					return true;
 				}
-			} else if (maidInventory.getCurrentItem() == null) {
+			} else if (maidInventory.getCurrentItem().isEmpty()) {
 				return true;
 			}
 			//1.8検討
@@ -1790,7 +1790,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 */
 	public void usePotionTotarget(EntityLivingBase entityliving) {
 		ItemStack itemstack = maidInventory.getCurrentItem();
-		if (itemstack != null && itemstack.getItem() instanceof ItemPotion) {
+		if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemPotion) {
 			// ポーション効果の発動
 			itemstack.shrink(1);
 			List<PotionEffect> list = PotionUtils.getEffectsFromStack(itemstack);
@@ -1800,9 +1800,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 					potioneffect = (PotionEffect)iterator.next();
 					addMaidExperience(0.49f*(potioneffect.getDuration()==0?240:potioneffect.getDuration())/20);
 				}
-			}
-			if(itemstack.getCount() <= 0) {
-				maidInventory.setInventoryCurrentSlotContents(null);
 			}
 			maidInventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
 		}
@@ -2141,7 +2138,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				if (!getEntityWorld().isRemote) {
 					Entity lattackentity = getAttackTarget();
 					if (lattackentity == null) {
-						lattackentity = getLastAttackedEntity();
+						lattackentity = getRevengeTarget();
 					}
 					if (lattackentity != null) {
 						Path pe = getNavigator().getPathToEntityLiving(lattackentity);//getPathEntityToEntity(this, lattackentity, 16F, true, false, false, true);
@@ -2269,7 +2266,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			// 属性を解除
 			latt.removeModifier(attCombatSpeed);
 			if (isContract()) {
-				if (!isFreedom() || (getLastAttackedEntity() != null || getAttackTarget() != null)) {
+				if (!isFreedom() || (getRevengeTarget() != null || getAttackTarget() != null)) {
 					// 属性を設定
 					latt.applyModifier(attCombatSpeed);
 				}
@@ -2329,7 +2326,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			rotateAngleHead = rotateAngleHead + (0.0F - rotateAngleHead) * 0.4F;
 		}
 
-		if (getAttackTarget() != null || getLastAttackedEntity() != null) {
+		if (getAttackTarget() != null || getRevengeTarget() != null) {
 			setWorking(true);
 		}
 		// お仕事カウンター
@@ -2535,7 +2532,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void onInventoryChanged() {
 		checkClockMaid();
 		checkHeadMount();
-		if (getActiveModeClass() != null && getHandSlotForModeChange() != null)
+		if (getActiveModeClass() != null && !getHandSlotForModeChange().isEmpty())
 			if (maidInventory.isChanged(InventoryLittleMaid.handInventoryOffset) ||
 					maidInventory.isChanged(InventoryLittleMaid.handInventoryOffset + 1)) {
 				setMaidModeAuto(getMaidMasterEntity());

@@ -108,7 +108,7 @@ public class ModelRenderer {
 		setTextureSize(pModelBase.textureWidth, pModelBase.textureHeight);
 		
 		rotatePriority = RotXYZ;
-		itemstack = null;
+		itemstack = ItemStack.EMPTY;
 		adjust = true;
 		matrix = BufferUtils.createFloatBuffer(16);
 		isInvertX = false;
@@ -388,7 +388,7 @@ public class ModelRenderer {
 
 	// TODO レイヤー化したので本質的に要らない？
 	protected void renderItems(EntityLivingBase pEntityLiving, Render pRender, boolean pRealBlock, EnumAction pAction) {
-		if (itemstack == null) return;
+		if (itemstack.isEmpty()) return;
 		
 		// アイテムのレンダリング
 		GL11.glPushMatrix();

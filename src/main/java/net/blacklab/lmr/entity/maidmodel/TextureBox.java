@@ -90,14 +90,14 @@ public class TextureBox extends TextureBoxBase {
 	public ResourceLocation getArmorTextureName(int pIndex, ItemStack itemstack) {
 		// indexは0x40,0x50番台
 		// lightも追加
-		if(itemstack == null || !(itemstack.getItem() instanceof ItemArmor)) return null;
+		if(itemstack.isEmpty() || !(itemstack.getItem() instanceof ItemArmor)) return null;
 		int renderIndex = ((ItemArmor)itemstack.getItem()).renderIndex;
 		int l = 0;
 		if (itemstack.getMaxDamage() > 0) {
 			l = (10 * itemstack.getItemDamage() / itemstack.getMaxDamage());
 		}
 
-		if (armors.isEmpty() || itemstack == null) return null;
+		if (armors.isEmpty() || itemstack.isEmpty()) return null;
 		if (!(itemstack.getItem() instanceof ItemArmor)) return null;
 
 		// 不具合修正
