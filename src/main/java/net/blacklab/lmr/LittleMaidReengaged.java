@@ -1,6 +1,7 @@
 package net.blacklab.lmr;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -290,30 +291,31 @@ public class LittleMaidReengaged {
 		// MMM_TextureManager.instance.getTextureBox("default_Orign"));
 
 		if (cfg_spawnWeight > 0) {
+			
+			//メイドさんのスポーンバイオーム
+			List<BiomeDictionary.Type> spawnBiomeList = new ArrayList<>();
+			spawnBiomeList.add(BiomeDictionary.Type.WET);
+			spawnBiomeList.add(BiomeDictionary.Type.DRY);
+			spawnBiomeList.add(BiomeDictionary.Type.SAVANNA);
+			spawnBiomeList.add(BiomeDictionary.Type.CONIFEROUS);
+			spawnBiomeList.add(BiomeDictionary.Type.MUSHROOM);
+			spawnBiomeList.add(BiomeDictionary.Type.FOREST);
+			spawnBiomeList.add(BiomeDictionary.Type.PLAINS);
+			spawnBiomeList.add(BiomeDictionary.Type.SANDY);
+			spawnBiomeList.add(BiomeDictionary.Type.BEACH);			
+			
 			Iterator<Biome> biomeIterator = Biome.REGISTRY.iterator();
 			while(biomeIterator.hasNext()) {
 				Biome biome = biomeIterator.next();
-
-				if(biome != null &&
-						(
-								(BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT) ||
-//										BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD) ||
-										BiomeDictionary.hasType(biome, BiomeDictionary.Type.WET) ||
-										BiomeDictionary.hasType(biome, BiomeDictionary.Type.DRY) ||
-										BiomeDictionary.hasType(biome, BiomeDictionary.Type.SAVANNA) ||
-										BiomeDictionary.hasType(biome, BiomeDictionary.Type.CONIFEROUS) ||
-//										BiomeDictionary.hasType(biome, BiomeDictionary.Type.LUSH) ||
-										BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM) ||
-										BiomeDictionary.hasType(biome, BiomeDictionary.Type.FOREST) ||
-										BiomeDictionary.hasType(biome, BiomeDictionary.Type.PLAINS) ||
-										BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) ||
-//										BiomeDictionary.hasType(biome, BiomeDictionary.Type.SNOWY) ||
-										BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
-								)
-						)
-				{
-					EntityRegistry.addSpawn(EntityLittleMaid.class, cfg_spawnWeight, cfg_minGroupSize, cfg_maxGroupSize, EnumCreatureType.CREATURE, biome);
-					Debug("Registering maids to spawn in " + biome);
+				if (biome == null) continue;
+				
+				//Biomeタイプが一致した場合にスポーン設定を行う
+				for (BiomeDictionary.Type biomeType : spawnBiomeList) {
+					if (BiomeDictionary.hasType(biome, biomeType)) {
+						EntityRegistry.addSpawn(EntityLittleMaid.class, cfg_spawnWeight, cfg_minGroupSize, cfg_maxGroupSize, EnumCreatureType.CREATURE, biome);
+						Debug("Registering maids to spawn in " + biome);
+						break;
+					}
 				}
 			}
 		}
