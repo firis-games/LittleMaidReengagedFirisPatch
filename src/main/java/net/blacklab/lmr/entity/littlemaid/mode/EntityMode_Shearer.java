@@ -75,9 +75,9 @@ public class EntityMode_Shearer extends EntityModeBase {
 		ltasks[0].addTask(12, new EntityAIWatchClosest(owner, EntityLivingBase.class, 10F));
 		ltasks[0].addTask(12, new EntityAILookIdle(owner));
 
-		ltasks[1].addTask(1, new EntityAILMNearestAttackableTarget(owner, EntityCreeper.class, 0, true));
+		ltasks[1].addTask(1, new EntityAILMNearestAttackableTarget<>(owner, EntityCreeper.class, 0, true));
 		ltasks[1].addTask(2, new EntityAILMNearestAttackableTarget(owner, EntityTNTPrimed.class, 0, true));
-		ltasks[1].addTask(3, new EntityAILMNearestAttackableTarget(owner, EntitySheep.class, 0, true));
+		ltasks[1].addTask(3, new EntityAILMNearestAttackableTarget<>(owner, EntitySheep.class, 0, true));
 
 		owner.addMaidMode(mmode_Ripper, ltasks);
 
@@ -86,7 +86,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 		EntityAITasks[] ltasks2 = new EntityAITasks[2];
 		ltasks2[0] = ltasks[0];
 		ltasks2[1] = new EntityAITasks(owner.aiProfiler);
-		ltasks2[1].addTask(1, new EntityAILMNearestAttackableTarget(owner, EntityCreeper.class, 0, true));
+		ltasks2[1].addTask(1, new EntityAILMNearestAttackableTarget<>(owner, EntityCreeper.class, 0, true));
 		ltasks2[1].addTask(2, new EntityAILMNearestAttackableTarget(owner, EntityTNTPrimed.class, 0, true));
 
 		owner.addMaidMode(mmode_TNTD, ltasks2);
@@ -96,7 +96,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 		EntityAITasks[] ltasks3 = new EntityAITasks[2];
 		ltasks3[0] = pDefaultMove;
 		ltasks3[1] = new EntityAITasks(owner.aiProfiler);
-		ltasks2[1].addTask(1, new EntityAILMNearestAttackableTarget(owner, EntityLivingBase.class, 0, true));
+		ltasks2[1].addTask(1, new EntityAILMNearestAttackableTarget<>(owner, EntityLivingBase.class, 0, true));
 
 		owner.addMaidMode(mmode_Detonator, ltasks3);
 

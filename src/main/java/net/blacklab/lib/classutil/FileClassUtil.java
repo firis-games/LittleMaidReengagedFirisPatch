@@ -1,6 +1,5 @@
 package net.blacklab.lib.classutil;
 
-@SuppressWarnings("ALL")
 public class FileClassUtil {
 
 	/**

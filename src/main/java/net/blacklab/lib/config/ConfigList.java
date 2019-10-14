@@ -11,7 +11,6 @@ import java.util.Map;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@SuppressWarnings("ALL")
 public class ConfigList {
 	private final List<ConfigKey> list;
 	private final Map<String, String> commentMap;

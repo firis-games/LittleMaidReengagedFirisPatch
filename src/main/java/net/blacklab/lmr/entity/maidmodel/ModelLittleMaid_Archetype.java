@@ -163,7 +163,6 @@ public class ModelLittleMaid_Archetype extends ModelLittleMaidBase {
 		GL11.glTranslatef(-0.05F, -0.075F, 0.1F);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Deprecated
 	public boolean isItemHolder() {
 		// アイテムを持っているときに手を前に出すかどうか。

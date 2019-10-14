@@ -4,7 +4,6 @@ package net.blacklab.lmr.entity.maidmodel;
 /**
  * スタビライザー搭載機
  */
-@SuppressWarnings("deprecation")
 public class ModelLittleMaid_AC extends ModelMultiMMMBase {
 
 	public ModelRenderer bipedHead;

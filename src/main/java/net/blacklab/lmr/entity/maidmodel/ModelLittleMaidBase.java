@@ -5,7 +5,6 @@ import org.lwjgl.opengl.GL11;
 /**
  * LMM用に最適化
  */
-@SuppressWarnings("deprecation")
 public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 
 	//fields
