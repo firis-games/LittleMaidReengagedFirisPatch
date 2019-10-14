@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -30,7 +29,7 @@ public class ItemTriggerRegisterKey extends Item {
 
 	public ItemTriggerRegisterKey() {
 		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":registerkey");
-		setCreativeTab(CreativeTabs.MISC);
+		//setCreativeTab(CreativeTabs.MISC);
 	}
 
 	@Override
