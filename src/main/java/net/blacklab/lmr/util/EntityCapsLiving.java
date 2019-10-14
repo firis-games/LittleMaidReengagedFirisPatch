@@ -91,9 +91,11 @@ public class EntityCapsLiving implements IModelCaps {
 		case caps_Entity:
 			return owner;
 		case caps_health:
-			return (int)owner.getHealth();
+			int iCapsHealth = (int) (owner.getHealth() / owner.getMaxHealth() * 20F);
+			return Math.min(iCapsHealth, 20);
 		case caps_healthFloat:
-			return owner.getHealth();
+			float fCapsHealth = (owner.getHealth() / owner.getMaxHealth() * 20F);
+			return Math.min(fCapsHealth, 20F);
 		case caps_ticksExisted:
 			return owner.ticksExisted;
 		case caps_heldItems:
