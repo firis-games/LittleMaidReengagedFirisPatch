@@ -20,7 +20,7 @@ public class FileList {
 	public static String dirMinecraftPath	= "";
 
 	static {
-		Object[] injectionData = FMLInjectionData.data();
+		//Object[] injectionData = FMLInjectionData.data();
 		dirMinecraft = (File) FMLInjectionData.data()[6];
 		dirMinecraftPath = FileClassUtil.getLinuxAntiDotName(dirMinecraft.getAbsolutePath());
 		if (dirMinecraftPath.endsWith("/")) {
@@ -29,10 +29,10 @@ public class FileList {
 		dirMods = new File(dirMinecraft, "mods");
 
 		// Check if version directory exists
-		File dirModsVersion = new File(dirMods, (String)injectionData[4]);
-		if (dirModsVersion.isDirectory()) {
-			dirMods = dirModsVersion;
-		}
+		//File dirModsVersion = new File(dirMods, (String)injectionData[4]);
+		//if (dirModsVersion.isDirectory()) {
+		//	dirMods = dirModsVersion;
+		//}
 
 		// List 'files' up in mods
 		filesMods = new ArrayList<>();
