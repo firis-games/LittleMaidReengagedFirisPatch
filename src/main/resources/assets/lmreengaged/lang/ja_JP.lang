@@ -138,5 +138,7 @@ littleMaidMob.chat.text.timedeath=Your %s can no longer endure pain from %s
 system.lmmnx.chat.text.newversion=
 system.lmmnx.chat.text.checkversion=
 
-
+littleMaidMob.mode.SugarCane=自給自足農家
+littleMaidMob.mode.F-SugarCane=サトウキビ農家
+littleMaidMob.mode.T-SugarCane=サトウキビ農家(赤石)
 

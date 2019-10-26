@@ -140,3 +140,8 @@ littleMaidMob.chat.text.timedeath=Your %s can no longer endure pain from %s
 
 system.lmmnx.chat.text.newversion=
 system.lmmnx.chat.text.checkversion=
+
+littleMaidMob.mode.SugarCane=SugarCane Harvester
+littleMaidMob.mode.F-SugarCane=SugarCane Farmer
+littleMaidMob.mode.T-SugarCane=SugarCane Farmer(Trace RS)
+
