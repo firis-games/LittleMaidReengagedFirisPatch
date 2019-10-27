@@ -26,7 +26,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 
 	@Override
 	public int priority() {
-		return 6000;
+		return 9000;
 	}
 
 	@Override
@@ -75,7 +75,15 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 
 	@Override
 	public int getNextEquipItem(String pMode) {
+		
 		int li;
+		
+		//手持ちが燃料かチェックする
+		ItemStack hand = owner.getHandSlotForModeChange();
+		if (ItemHelper.isItemBurned(hand)) {
+			return InventoryLittleMaid.handInventoryOffset;
+		}
+		
 		// モードに応じた識別判定、速度優先
 		switch (pMode) {
 		case mmode_Cooking :
