@@ -209,12 +209,12 @@ public class EntityMode_Healer extends EntityModeBase {
 
 	@Override
 	public double getDistanceSqToStartFollow() {
-		return 9D;
+		return 3 * 3;
 	}
 
 	@Override
 	public double getLimitRangeSqOnFollow() {
-		return 16D;
+		return 12 * 12;
 	}
 
 }
