@@ -1641,11 +1641,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	@Override
-	protected void damageEntity(DamageSource par1DamageSource, float par2) {
+	protected void damageEntity(DamageSource par1DamageSource, float damageAmount) {
 		// ダメージソースに応じて音声変更
 		if (par1DamageSource == DamageSource.FALL) {
 			setMaidDamegeSound(EnumSound.hurt_fall);
-			if (isContractEX() && par2>=19 && par2<getHealth()) {
+			if (isContractEX() && damageAmount>=19 && damageAmount<getHealth()) {
 				//進捗
 				AchievementsLMRE.grantAC(getMaidMasterEntity(), AC.Ashikubi);
 			}
@@ -1653,7 +1653,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if(!par1DamageSource.isUnblockable() && isBlocking()) {
 			// ブロッキング
 //			par2 = (1.0F + par2) * 0.5F;
-			LittleMaidReengaged.Debug(String.format("Blocking success ID:%d, %f -> %f" , getEntityId(), par2, (par2 = (1.0F + par2) * 0.5F)));
+			LittleMaidReengaged.Debug(String.format("Blocking success ID:%d, %f -> %f" , getEntityId(), damageAmount, (damageAmount = (1.0F + damageAmount) * 0.5F)));
 			setMaidDamegeSound(EnumSound.hurt_guard);
 		}
 		//デバッグ
@@ -1661,12 +1661,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		// 被ダメ
 		float llasthealth = getHealth();
-		if (par2 > 0 && getActiveModeClass() != null && !getActiveModeClass().damageEntity(maidMode, par1DamageSource, par2)) {
-			getAvatarIF().W_damageEntity(par1DamageSource, par2);
+		if (damageAmount > 0 && getActiveModeClass() != null && !getActiveModeClass().damageEntity(maidMode, par1DamageSource, damageAmount)) {
+			getAvatarIF().W_damageEntity(par1DamageSource, damageAmount);
 //			super.damageEntity(par1DamageSource, par2);
 
 			// ダメージを受けると待機を解除
 			setMaidWait(false);
+			
+			this.getCombatTracker().trackDamage(par1DamageSource, llasthealth, damageAmount);
 		}
 
 		/*
@@ -1674,7 +1676,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			maidDamegeSound = LMM_EnumSound.hurt_nodamege;
 		}
 		*/
-		LittleMaidReengaged.Debug(String.format("GetDamage ID:%d, %s, %f/ %f" , getEntityId(), par1DamageSource.damageType, llasthealth - getHealth(), par2));
+		LittleMaidReengaged.Debug(String.format("GetDamage ID:%d, %s, %f/ %f" , getEntityId(), par1DamageSource.damageType, llasthealth - getHealth(), damageAmount));
 //		super.damageEntity(par1DamageSource, par2);
 	}
 
@@ -2459,18 +2461,22 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
-		if (getEntityWorld().isRemote || getExperienceHandler().onDeath(par1DamageSource)) {
-			return;
-		}
+		
+		//既存の復活機能を無効化
+		//if (getEntityWorld().isRemote || getExperienceHandler().onDeath(par1DamageSource)) {
+		//	return;
+		//}
+		
+		//チャットメッセージの設定をConfigと差し替え
+		Boolean showDeathMessages = this.world.getGameRules().getBoolean("showDeathMessages");
+		this.world.getGameRules().setOrCreateGameRule("showDeathMessages", ((Boolean)LittleMaidReengaged.cfg_DeathMessage).toString());
 
+		//死亡メッセージはMinecraftの機能で表示するように変更
 		super.onDeath(par1DamageSource);
-
-		// 死因を表示
-//		if (!getEntityWorld().isRemote) {
-			if (LittleMaidReengaged.cfg_DeathMessage && getMaidMasterEntity() != null) {
-				getMaidMasterEntity().sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.death", CommonHelper.getDeadSource(par1DamageSource)));
-			}
-//		}
+		
+		//死亡メッセージ設定の復元
+		this.world.getGameRules().setOrCreateGameRule("showDeathMessages", showDeathMessages.toString());
+		
 	}
 
 	/**
