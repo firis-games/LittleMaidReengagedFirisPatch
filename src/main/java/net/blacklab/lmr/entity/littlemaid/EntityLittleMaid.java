@@ -4149,4 +4149,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public ModeTrigger getModeTrigger() {
 		return modeTrigger;
 	}
+	
+	/**
+	 * メイドさんの契約期間を強制的にクリアする
+	 */
+	public void clearMaidContractLimit() {
+		maidContractLimit = 0;
+	}
 }

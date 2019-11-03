@@ -1,5 +1,7 @@
 package net.blacklab.lmc.common.item;
 
+import static net.blacklab.lmr.util.Statics.dataWatch_Flags_remainsContract;
+
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -7,6 +9,7 @@ import javax.annotation.Nullable;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.LittleMaidHelper;
 import net.blacklab.lmr.LittleMaidReengaged.LMItems;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -58,12 +61,26 @@ public class LMItemMaidSouvenir extends Item {
 			double z = position.getZ() + 0.5;
 			
 			//メイドさんのスポーン
-			LittleMaidHelper.spawnEntityFromItemStack(stack, worldIn, x, y, z);
+			Entity entity = LittleMaidHelper.spawnEntityFromItemStack(stack, worldIn, x, y, z);
+			
+			//ストライキ状態にする
+			if (entity != null) {
+				EntityLittleMaid maid = (EntityLittleMaid) entity;
+				
+				//契約時間をリセット
+				maid.clearMaidContractLimit();
+				//ストライキを設定する
+				maid.setMaidFlags(true, dataWatch_Flags_remainsContract);
+				
+			}
 			
 			//アイテムを消費
 			//クリエイティブでも消費させる
 			//stack.shrink(1);
 			player.setHeldItem(hand, ItemStack.EMPTY);
+			
+			//1秒のCoolDownTimeを設定
+			player.getCooldownTracker().setCooldown(this, 20 * 1);
 			
 			return EnumActionResult.SUCCESS;
 

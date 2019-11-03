@@ -50,10 +50,10 @@ public class LittleMaidHelper {
 	/**
 	 * ItemStackからメイドさんをスポーンさせる
 	 */
-	public static void spawnEntityFromItemStack(ItemStack stack, World world, double x, double y, double z) {
+	public static Entity spawnEntityFromItemStack(ItemStack stack, World world, double x, double y, double z) {
 		
 		if (stack.hasTagCompound() == false
-				|| !stack.getTagCompound().hasKey("Mob")) return;
+				|| !stack.getTagCompound().hasKey("Mob")) return null;
 		
 		NBTTagCompound entityNBT = (NBTTagCompound) stack.getTagCompound().getTag("Mob");
 		
@@ -65,6 +65,7 @@ public class LittleMaidHelper {
 				world.spawnEntity(entity);
 			}
 		}
+		return entity;
 	}
 	
 	
