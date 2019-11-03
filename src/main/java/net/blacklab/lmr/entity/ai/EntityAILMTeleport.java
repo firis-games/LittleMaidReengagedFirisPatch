@@ -1,9 +1,14 @@
 package net.blacklab.lmr.entity.ai;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import scala.util.Random;
 
@@ -31,6 +36,10 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 		if (theMaid == null) {
 			return false;
 		}
+		
+		//20tickに1回判断を行う
+		if (theMaid.ticksExisted % 20 != 0) return false; 
+		
 		if (theMaid.getActiveModeClass() == null || theMaid.getMaidMasterEntity() == null ||
 				theMaid.isFreedom() || theMaid.isMaidWait() || theMaid.isSitting() || theMaid.isWorkingDelay()) {
 			return false;
@@ -54,33 +63,36 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 		
 		EntityPlayer lMaster = theMaid.getMaidMasterEntity();
 		if (lMaster != null) {
+			
 			BlockPos lMasterPos = lMaster.getPosition();
 			System.out.println("MASTER=" + lMasterPos.toString());
+			
+			List<BlockPos> posList = new ArrayList<>();
+			
+			//5x5のプレイヤーの範囲パスを取得
+			for (BlockPos addPos : BlockPos.getAllInBox(-2, -1, -2, 2, 2, 2)) {
+				
+				BlockPos tPos = lMasterPos.add(addPos);
 
-			int x, y, z, i = 0;
-			BlockPos[] lCoordinates = new BlockPos[3];
-			for (z = -2; z <= 2 && i < 3; z++) {
-				for (x = -2; x <= 2 && i < 3; x++) {
-					for (y = -1; y <= 1 && i < 3; y++) {
-						if (x == 0 && y == 0 && z == 0) {
-							continue;
-						}
-						BlockPos tPos = lMasterPos.add(x, y, z);
-						IBlockState tGround = theMaid.getEntityWorld().getBlockState(tPos.add(0,-1,0)),
-								tFeet = theMaid.getEntityWorld().getBlockState(tPos),
-								tHead = theMaid.getEntityWorld().getBlockState(tPos.add(0, 1, 0));
-						if (tGround.getMaterial().isSolid() &&
-								tFeet.getMaterial().isReplaceable() &&
-								!tHead.getMaterial().isOpaque()/* &&
-								VectorUtil.canBlockBeSeen(lMaster, tPos.getX(), tPos.getY(), tPos.getZ(), false, true, false)*/) {
-							lCoordinates[i++] = tPos;
-						}
-					}
+				//player座標は無視
+				if (tPos.equals(lMasterPos)) {
+					continue;
+				}
+				
+				//テレポートブロック判定
+				if (isTeleportArea(tPos)) {
+					posList.add(tPos);
 				}
 			}
-			if (i > 0) {
-				BlockPos tDest = lCoordinates[new Random().nextInt(i)];
-				theMaid.setPosition(tDest.getX(), tDest.getY(), tDest.getZ());
+			
+			//テレポート
+			if (posList.size() > 0) {
+				BlockPos tDest = posList.get(new Random().nextInt(posList.size()));
+				theMaid.setPosition(
+						(double)(tDest.getX()) + 0.5D, 
+						tDest.getY(), 
+						((double)tDest.getZ()) + 0.5D);
+				
 				resetTask();
 			}
 		}
@@ -92,5 +104,46 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 		theMaid.setAttackTarget(null);
 		theMaid.getWorkingCount().setValue(0);
 	}
-
+	
+	
+	/**
+	 * 対象の座標がテレポート可能か判断する
+	 * @param pos
+	 * @return
+	 */
+	private boolean isTeleportArea(BlockPos pos) {
+		
+		//基準座標から3×3の範囲も同条件を満たしているかを判断する
+		for (BlockPos cPos : BlockPos.getAllInBox(-1, 0, -1, 1, 0, 1)) {
+			if (!isTeleportBlockPos(pos.add(cPos))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * isTeleportAreaチェック用
+	 * BlockPos単位で判断を行う
+	 * @param pos
+	 * @return
+	 */
+	private boolean isTeleportBlockPos(BlockPos pos) {
+		
+		IBlockState tGround = theMaid.getEntityWorld().getBlockState(pos.add(0, -1, 0));
+		IBlockState tFeet = theMaid.getEntityWorld().getBlockState(pos);
+		IBlockState tHead = theMaid.getEntityWorld().getBlockState(pos.add(0, 1, 0));
+		
+		//下のブロックが固体ブロックか水の場合だけ許可
+		//足元が置き換え可能なブロックか
+		//頭の部分が空気ブロックか
+		if ((tGround.getMaterial().isSolid() || tGround.getBlock() == Blocks.WATER)
+				&& tFeet.getMaterial().isReplaceable()
+				&& tHead.getMaterial() == Material.AIR) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 }
