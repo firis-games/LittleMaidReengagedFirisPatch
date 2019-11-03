@@ -29,10 +29,14 @@ public class LMRConfig {
 	public static boolean cfg_Dominant = false;
 	// アルファブレンド
 	public static boolean cfg_isModelAlphaBlend = false;
+	
 	// 野生テクスチャ
 	public static boolean cfg_isFixedWildMaid = false;
 
 	public static final float cfg_voiceRate = 0.2f;
+	
+	/** メイドの土産 */
+	public static boolean cfg_isResurrection = true;
 	
 	/**
 	 * Config初期化
@@ -45,24 +49,37 @@ public class LMRConfig {
 
 		cfg_canDespawn = cfg.getBoolean("canDespawn", "General", false,
 				"Set whether non-contracted maids can despawn.");
+		
 		cfg_DeathMessage = cfg.getBoolean("deathMessage", "General", true,
 				"Set whether prints death message of maids.");
+		
 		cfg_Dominant = cfg.getBoolean("Dominant", "Advanced", false,
 				"Recommended to keep 'false'. If true, non-vanilla check is used for maid spawning.");
+		
 		cfg_maxGroupSize = cfg.getInt("maxGroupSize", "Advanced", 3, 1, 20,
 				"Settings for maid spawning. Recommended to keep default.");
+		
 		cfg_minGroupSize = cfg.getInt("minGroupSize", "Advanced", 1, 1, 20,
 				"Settings for maid spawning. Recommended to keep default.");
+		
 		cfg_spawnLimit = cfg.getInt("spawnLimit", "Advanced", 20, 1, 30,
 				"Settings for maid spawning. Recommended to keep default.");
+		
 		cfg_spawnWeight = cfg.getInt("spawnWeight", "Advanced", 5, 1, 9,
 				"Settings for maid spawning. Recommended to keep default.");
+		
 		cfg_PrintDebugMessage = cfg.getBoolean("PrintDebugMessage", "Advanced", false,
 				"Print debug logs. Recommended to keep default.");
+		
 		cfg_isModelAlphaBlend = cfg.getBoolean("isModelAlphaBlend", "Advanced", true,
 				"If your graphics SHOULD be too powerless to draw alpha-blend textures, turn this 'false'.");
+		
 		cfg_isFixedWildMaid = cfg.getBoolean("isFixedWildMaid", "General", false,
 				"If 'true', only default-texture maid spawns. You can still change their textures after employing.");
+
+		//メイドの土産設定
+		cfg_isResurrection = cfg.getBoolean("isResurrection", "General", true,
+				"If 'true', Drops a resurrection item when a maid dies.");
 
 		cfg.save();
 	}

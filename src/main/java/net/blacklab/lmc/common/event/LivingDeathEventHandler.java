@@ -2,6 +2,7 @@ package net.blacklab.lmc.common.event;
 
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.LittleMaidHelper;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.minecraft.entity.item.EntityItem;
@@ -23,6 +24,8 @@ public class LivingDeathEventHandler {
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent(priority=EventPriority.HIGHEST)
 	public static void onLivingDeathEvent(LivingDeathEvent event) {
+		
+		if (!LMRConfig.cfg_isResurrection) return;
 		
 		//メイドさんのみ処理を行う
 		if (event.getEntityLiving() != null && event.getEntityLiving() instanceof EntityLittleMaid) {
