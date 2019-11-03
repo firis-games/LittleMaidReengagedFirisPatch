@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
 import net.blacklab.lmr.util.helper.RendererHelper;
@@ -140,7 +141,7 @@ public class RenderEntitySelect extends RenderModelMulti {
 			}
 
 			//Outer
-			if(LittleMaidReengaged.cfg_isModelAlphaBlend) GL11.glEnable(GL11.GL_BLEND);
+			if(LMRConfig.cfg_isModelAlphaBlend) GL11.glEnable(GL11.GL_BLEND);
 			OUTER:{
 				if(mmodel.modelOuter==null) break OUTER;
 				GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

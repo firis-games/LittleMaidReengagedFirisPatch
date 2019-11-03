@@ -22,6 +22,7 @@ import org.objectweb.asm.tree.TypeInsnNode;
 import com.google.common.collect.Lists;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 
@@ -76,7 +77,7 @@ public class Transformer implements IClassTransformer, Opcodes {
 
 	public static void Debug(String pText, Object... pData) {
 		// デバッグメッセージ
-		if(LittleMaidReengaged.cfg_PrintDebugMessage)
+		if(LMRConfig.cfg_PrintDebugMessage)
 		{
 			System.out.println(String.format("Transformer-" + pText, pData));
 		}

@@ -8,6 +8,7 @@ import java.util.zip.ZipInputStream;
 
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
@@ -158,11 +159,11 @@ public abstract class ManagerBase {
 		}
 		catch (Exception exception) {
 			LittleMaidReengaged.Debug("get%sClass-Exception.(%s)", getPreFix(), lclassname);
-			if(DevMode.DEVELOPMENT_DEBUG_MODE && LittleMaidReengaged.cfg_PrintDebugMessage) exception.printStackTrace();
+			if(DevMode.DEVELOPMENT_DEBUG_MODE && LMRConfig.cfg_PrintDebugMessage) exception.printStackTrace();
 		}
 		catch (Error error) {
 			LittleMaidReengaged.Debug("get%sClass-Error: %s", getPreFix(), lclassname);
-			if(DevMode.DEVELOPMENT_DEBUG_MODE && LittleMaidReengaged.cfg_PrintDebugMessage) error.printStackTrace();
+			if(DevMode.DEVELOPMENT_DEBUG_MODE && LMRConfig.cfg_PrintDebugMessage) error.printStackTrace();
 		}
 
 	}

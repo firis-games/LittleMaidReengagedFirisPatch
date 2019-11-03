@@ -21,6 +21,7 @@ import java.util.zip.ZipInputStream;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
@@ -442,11 +443,11 @@ public class ModelManager {
 			}
 			catch (Exception exception) {
 				LittleMaidReengaged.Debug("getModelClass-Exception: %s", fname);
-				if(DevMode.DEVELOPMENT_DEBUG_MODE || LittleMaidReengaged.cfg_PrintDebugMessage) exception.printStackTrace();
+				if(DevMode.DEVELOPMENT_DEBUG_MODE || LMRConfig.cfg_PrintDebugMessage) exception.printStackTrace();
 			}
 			catch (Error error) {
 				LittleMaidReengaged.Debug("getModelClass-Error: %s", fname);
-				if(DevMode.DEVELOPMENT_DEBUG_MODE || LittleMaidReengaged.cfg_PrintDebugMessage) error.printStackTrace();
+				if(DevMode.DEVELOPMENT_DEBUG_MODE || LMRConfig.cfg_PrintDebugMessage) error.printStackTrace();
 			}
 		}
 	}

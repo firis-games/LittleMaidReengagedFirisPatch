@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import net.blacklab.lib.obj.Pair;
 import net.blacklab.lib.obj.SinglePair;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.util.EnumSound;
 
 public class SoundRegistry {
@@ -57,7 +58,7 @@ public class SoundRegistry {
 	public static Float getLivingVoiceRatio(String name) {
 		Float f = ratioMap.get(name);
 		if (f == null) {
-			f = LittleMaidReengaged.cfg_voiceRate;
+			f = LMRConfig.cfg_voiceRate;
 		}
 		return f;
 	}

@@ -38,6 +38,7 @@ import net.blacklab.lmr.api.item.IItemSpecialSugar;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.client.sound.SoundLoader;
 import net.blacklab.lmr.client.sound.SoundRegistry;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.ai.EntityAILMAttackArrow;
 import net.blacklab.lmr.entity.ai.EntityAILMAttackOnCollide;
 import net.blacklab.lmr.entity.ai.EntityAILMAvoidPlayer;
@@ -463,7 +464,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void onSpawnWithEgg() {
 		// テクスチャーをランダムで選択
 		String ls;
-		if (LittleMaidReengaged.cfg_isFixedWildMaid) {
+		if (LMRConfig.cfg_isFixedWildMaid) {
 			ls = "default_Orign";
 		} else {
 			ls = ModelManager.instance.getRandomTextureString(rand);
@@ -909,7 +910,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void playSound(EnumSound enumsound, boolean force) {
 		if (getEntityWorld().isRemote && enumsound!=EnumSound.Null && maidSoundInterval <= 0) {
 			if (!force) {
-				if(Math.random() > LittleMaidReengaged.cfg_voiceRate) {
+				if(Math.random() > LMRConfig.cfg_voiceRate) {
 					return;
 				}
 			}
@@ -927,7 +928,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void playLittleMaidSound(EnumSound enumsound, boolean force) {
 		// 音声の再生
 		if (enumsound == EnumSound.Null) return;
-//		if (!force && rand.nextFloat() > LittleMaidReengaged.cfg_voiceRate) return;
+//		if (!force && rand.nextFloat() > LMRConfig.cfg_voiceRate) return;
 		if (!getEntityWorld().isRemote) {
 			// Server
 //			if((LMM_LittleMaidMobNX.cfg_ignoreForceSound || !force) && new Random().nextInt(LMM_LittleMaidMobNX.cfg_soundPlayChance)!=0) return;
@@ -1004,13 +1005,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	@Override
 	protected boolean canDespawn() {
 		// デスポーン判定
-		return isTamed()||hasCustomName() ? false : LittleMaidReengaged.cfg_canDespawn;
+		return isTamed()||hasCustomName() ? false : LMRConfig.cfg_canDespawn;
 	}
 
 	@Override
 	public boolean getCanSpawnHere() {
 		// スポーン可能か？
-		if (LittleMaidReengaged.cfg_spawnLimit <= getMaidCount()) {
+		if (LMRConfig.cfg_spawnLimit <= getMaidCount()) {
 			LittleMaidReengaged.Debug("Spawn Limit.");
 			return false;
 		}
@@ -1023,7 +1024,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			return false;
 		}
 		*/
-		if (LittleMaidReengaged.cfg_Dominant) {
+		if (LMRConfig.cfg_Dominant) {
 			// ドミナント
 			return getEntityWorld().checkNoEntityCollision(getEntityBoundingBox())
 					&& getEntityWorld().getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
@@ -1885,7 +1886,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				if ((enumsound.index & 0xf00) == EnumSound.living_daytime.index) {
 					// LivingSound LivingVoiceRateを確認
 					Float ratio = SoundRegistry.getLivingVoiceRatio(sname);
-					if (ratio == null) ratio = LittleMaidReengaged.cfg_voiceRate;
+					if (ratio == null) ratio = LMRConfig.cfg_voiceRate;
 					// カットオフ
 					if (rand.nextFloat() > ratio) {
 						playingSound.remove(enumsound);
@@ -2469,7 +2470,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		
 		//チャットメッセージの設定をConfigと差し替え
 		Boolean showDeathMessages = this.world.getGameRules().getBoolean("showDeathMessages");
-		this.world.getGameRules().setOrCreateGameRule("showDeathMessages", ((Boolean)LittleMaidReengaged.cfg_DeathMessage).toString());
+		this.world.getGameRules().setOrCreateGameRule("showDeathMessages", ((Boolean)LMRConfig.cfg_DeathMessage).toString());
 
 		//死亡メッセージはMinecraftの機能で表示するように変更
 		super.onDeath(par1DamageSource);

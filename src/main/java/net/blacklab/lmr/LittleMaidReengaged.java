@@ -13,6 +13,7 @@ import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.event.EventHookLMRE;
 import net.blacklab.lmr.item.ItemMaidPorter;
@@ -42,7 +43,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.BiomeDictionary;
 //github.com/Verclene/LittleMaidReengaged.git
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -97,6 +97,7 @@ public class LittleMaidReengaged {
 	
 	public static Logger logger;
 
+	/*
 	// @MLProp(info="Relative spawn weight. The lower the less common. 10=pigs. 0=off")
 	public static int cfg_spawnWeight = 5;
 	// @MLProp(info="Maximum spawn count in the World.")
@@ -120,6 +121,7 @@ public class LittleMaidReengaged {
 	public static boolean cfg_isFixedWildMaid = false;
 
 	public static final float cfg_voiceRate = 0.2f;
+	*/
 
 	@SidedProxy(clientSide = "net.blacklab.lmr.network.ProxyClient", serverSide = "net.blacklab.lmr.network.ProxyCommon")
 	public static ProxyCommon proxy;
@@ -147,7 +149,7 @@ public class LittleMaidReengaged {
 
 	public static void Debug(String pText, Object... pVals) {
 		// デバッグメッセージ
-		if (cfg_PrintDebugMessage || DevMode.DEVELOPMENT_DEBUG_MODE) {
+		if (LMRConfig.cfg_PrintDebugMessage || DevMode.DEVELOPMENT_DEBUG_MODE) {
 			System.out.println(String.format("littleMaidMob-" + pText, pVals));
 		}
 	}
@@ -217,7 +219,9 @@ public class LittleMaidReengaged {
 
 		randomSoundChance = new Random();
 
-		// Config
+		// Config初期化
+		LMRConfig.init(evt.getSuggestedConfigurationFile());
+		/*
 		Configuration cfg = new Configuration(evt.getSuggestedConfigurationFile());
 		cfg.load();
 
@@ -243,6 +247,7 @@ public class LittleMaidReengaged {
 				"If 'true', only default-texture maid spawns. You can still change their textures after employing.");
 
 		cfg.save();
+		*/
 
 //		latestVersion = Version.getLatestVersion("http://mc.el-blacklab.net/lmmnxversion.txt", 10000);
 
@@ -311,7 +316,7 @@ public class LittleMaidReengaged {
 		// MMM_TextureManager.instance.setDefaultTexture(LMM_EntityLittleMaid.class,
 		// MMM_TextureManager.instance.getTextureBox("default_Orign"));
 
-		if (cfg_spawnWeight > 0) {
+		if (LMRConfig.cfg_spawnWeight > 0) {
 			
 			//メイドさんのスポーンバイオーム
 			List<BiomeDictionary.Type> spawnBiomeList = new ArrayList<>();
@@ -333,7 +338,11 @@ public class LittleMaidReengaged {
 				//Biomeタイプが一致した場合にスポーン設定を行う
 				for (BiomeDictionary.Type biomeType : spawnBiomeList) {
 					if (BiomeDictionary.hasType(biome, biomeType)) {
-						EntityRegistry.addSpawn(EntityLittleMaid.class, cfg_spawnWeight, cfg_minGroupSize, cfg_maxGroupSize, EnumCreatureType.CREATURE, biome);
+						EntityRegistry.addSpawn(EntityLittleMaid.class, 
+								LMRConfig.cfg_spawnWeight, 
+								LMRConfig.cfg_minGroupSize, 
+								LMRConfig.cfg_maxGroupSize, 
+								EnumCreatureType.CREATURE, biome);
 						Debug("Registering maids to spawn in " + biome);
 						break;
 					}

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.TextureOffset;
@@ -47,7 +47,7 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 			return;
 		}
 		if (isAlphablend) {
-			if (LittleMaidReengaged.cfg_isModelAlphaBlend) {
+			if (LMRConfig.cfg_isModelAlphaBlend) {
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			} else {

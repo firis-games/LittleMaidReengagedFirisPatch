@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
@@ -24,10 +24,10 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	public RenderModelMulti(RenderManager manager,float pShadowSize) {
 		super(manager, null, pShadowSize);
 		modelFATT = new ModelBaseDuo(this);
-		modelFATT.isModelAlphablend = LittleMaidReengaged.cfg_isModelAlphaBlend;
+		modelFATT.isModelAlphablend = LMRConfig.cfg_isModelAlphaBlend;
 		modelFATT.isRendering = true;
 		modelMain = new ModelBaseSolo(this);
-		modelMain.isModelAlphablend = LittleMaidReengaged.cfg_isModelAlphaBlend;
+		modelMain.isModelAlphablend = LMRConfig.cfg_isModelAlphaBlend;
 		modelMain.capsLink = modelFATT;
 		mainModel = modelMain;
 		//setRenderPassModel(modelFATT);
