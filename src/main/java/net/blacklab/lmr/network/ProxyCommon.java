@@ -2,6 +2,7 @@ package net.blacklab.lmr.network;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 public class ProxyCommon
@@ -27,4 +28,6 @@ public class ProxyCommon
 	public Object getClientGuiElement(int iD, EntityPlayer player, World world, int x, int y, int z) {
 		return null;
 	}
+	
+	public void spawnParticle(BlockPos pos, int spawnNo) {}
 }

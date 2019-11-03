@@ -9,6 +9,8 @@ import java.util.Random;
 import org.apache.logging.log4j.Logger;
 
 import net.blacklab.lib.vevent.VEventBus;
+import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
+import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -29,12 +31,14 @@ import net.blacklab.lmr.util.manager.LoaderSearcher;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.manager.StabilizerManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.BiomeDictionary;
 //github.com/Verclene/LittleMaidReengaged.git
 import net.minecraftforge.common.MinecraftForge;
@@ -52,6 +56,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -123,9 +128,22 @@ public class LittleMaidReengaged {
 	public static LittleMaidReengaged instance;
 
 	// Item
+	/*
 	public static ItemMaidSpawnEgg spawnEgg;
 	public static ItemTriggerRegisterKey registerKey;
 	public static ItemMaidPorter maidPorter;
+	*/
+	
+	/**
+     * アイテムインスタンス保持用
+     */
+    @ObjectHolder(LittleMaidReengaged.DOMAIN)
+    public static class LMItems{
+    	public final static ItemMaidSpawnEgg SPAWN_LITTLEMAID_EGG = null;
+    	public final static ItemTriggerRegisterKey REGISTERKEY = null;
+    	public final static ItemMaidPorter MAIDPORTER = null;
+    	public final static Item MAID_SOUVENIR = null;
+    }
 
 	public static void Debug(String pText, Object... pVals) {
 		// デバッグメッセージ
@@ -228,10 +246,13 @@ public class LittleMaidReengaged {
 
 //		latestVersion = Version.getLatestVersion("http://mc.el-blacklab.net/lmmnxversion.txt", 10000);
 
+		/*
 		EntityRegistry.registerModEntity(new ResourceLocation(LittleMaidReengaged.DOMAIN, "littlemaid"),
 				EntityLittleMaid.class,
     			"littlemaid", 0, instance, 80, 1, true);
-
+    	*/
+		registerEntities();
+		
 		/*
 		spawnEgg = new ItemMaidSpawnEgg();
 		GameRegistry.<Item>register(spawnEgg, new ResourceLocation(DOMAIN, "spawn_littlemaid_egg"));
@@ -338,19 +359,20 @@ public class LittleMaidReengaged {
 	@SubscribeEvent
     protected static void registerItems(RegistryEvent.Register<Item> event) {
 		
-		spawnEgg = new ItemMaidSpawnEgg();
 		//メイドさんスポーンエッグ
-		event.getRegistry().register(spawnEgg
+		event.getRegistry().register(new ItemMaidSpawnEgg()
     			.setRegistryName(DOMAIN, "spawn_littlemaid_egg"));
 		
-		
-		registerKey = new ItemTriggerRegisterKey();
-		event.getRegistry().register(registerKey
+		event.getRegistry().register(new ItemTriggerRegisterKey()
     			.setRegistryName(DOMAIN, "registerkey"));
 		
-		maidPorter = new ItemMaidPorter();
-		event.getRegistry().register(maidPorter
+		event.getRegistry().register(new ItemMaidPorter()
     			.setRegistryName(DOMAIN, "maidporter"));
+		
+		//メイドの土産
+    	event.getRegistry().register(new LMItemMaidSouvenir()
+    			.setRegistryName(DOMAIN, "maid_souvenir")
+    			.setUnlocalizedName("maid_souvenir"));
 	}
 	
     @SubscribeEvent
@@ -359,6 +381,36 @@ public class LittleMaidReengaged {
     {
     	// Register model and renderer
     	proxy.rendererRegister();
+    	
+    	// メイドの土産
+		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_SOUVENIR, 0,
+				new ModelResourceLocation(LMItems.MAID_SOUVENIR.getRegistryName(), "inventory"));
+		
+    }
+    
+    
+    /**
+     * Entity登録イベント
+     * 互換のためイベントでの挙動はさせない
+     * @SubscribeEvent
+     * public void registerEntities(RegistryEvent.Register<EntityEntry> event)
+     */
+    public void registerEntities() {
+    	int entityId = 0;
+    	
+    	//Little Maid
+    	EntityRegistry.registerModEntity(new ResourceLocation(LittleMaidReengaged.DOMAIN, "littlemaid"),
+				EntityLittleMaid.class,
+    			"littlemaid", entityId, instance, 80, 1, true);
+    	entityId++;
+    	
+    	//AntiDamage EntityItem
+    	EntityRegistry.registerModEntity(new ResourceLocation(LittleMaidReengaged.DOMAIN, "entityitem_antidamage"), 
+    			LMEntityItemAntiDamage.class, 
+    			"Anti Dmage EntityItem", 
+    			entityId, 
+    			instance, 32, 5, true);
+    	entityId++;
     }
 
 }

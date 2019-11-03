@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.api.event.EventLMRE;
@@ -2898,7 +2899,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								}
 								return true;
 							}
-							else if (par3ItemStack.getItem()==LittleMaidReengaged.registerKey &&
+							else if (par3ItemStack.getItem()==LMItems.REGISTERKEY &&
 									!par1EntityPlayer.getEntityWorld().isRemote) {
 								// トリガーセット
 								if (registerTick.isEnable()) {

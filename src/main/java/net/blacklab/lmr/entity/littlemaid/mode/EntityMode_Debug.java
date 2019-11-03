@@ -1,6 +1,6 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
-import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.DevMode;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -42,7 +42,7 @@ public class EntityMode_Debug extends EntityMode_Basic {
 		ItemStack litemstackl0 = owner.maidInventory.getStackInSlot(17);
 		ItemStack litemstackl1 = owner.maidInventory.getStackInSlot(16);
 		if (!litemstackl0.isEmpty() && !litemstackl1.isEmpty()) {
-			if (litemstackl0.getItem() == LittleMaidReengaged.spawnEgg && litemstackl1.getItem() == Item.getItemFromBlock(Blocks.BARRIER)) {
+			if (litemstackl0.getItem() == LMItems.SPAWN_LITTLEMAID_EGG && litemstackl1.getItem() == Item.getItemFromBlock(Blocks.BARRIER)) {
 				owner.setMaidMode(mmode_Debug);
 				return true;
 			}

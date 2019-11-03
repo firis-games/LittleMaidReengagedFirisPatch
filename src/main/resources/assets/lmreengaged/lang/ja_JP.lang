@@ -142,3 +142,6 @@ littleMaidMob.mode.SugarCane=自給自足農家
 littleMaidMob.mode.F-SugarCane=サトウキビ農家
 littleMaidMob.mode.T-SugarCane=サトウキビ農家(赤石)
 
+item.maid_souvenir.name=メイドの土産
+item.maid_souvenir.info=メイドさんがもどってくる
+

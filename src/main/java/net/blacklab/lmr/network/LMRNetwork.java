@@ -1,5 +1,6 @@
 package net.blacklab.lmr.network;
 
+import net.blacklab.lmc.common.network.PacketSpawnParticleS2C;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.IFF;
@@ -10,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,6 +27,11 @@ public class LMRNetwork
 
 		INSTANCE.registerMessage(LMRMessageHandler.class, LMRMessage.class, 0, Side.SERVER);
 		INSTANCE.registerMessage(LMRMessageHandler.class, LMRMessage.class, 0, Side.CLIENT);
+		
+		//パーティクル生成
+		int idx = 1;
+		INSTANCE.registerMessage(PacketSpawnParticleS2C.class, PacketSpawnParticleS2C.MessageSpawnParticle.class, idx++, Side.CLIENT);
+				
 	}
 
 	public static void sendPacketToServer(LMRMessage.EnumPacketMode mode, Integer id, NBTTagCompound tagCompound)
@@ -199,4 +206,15 @@ public class LMRNetwork
 		sendPacketToPlayer(LMRMessage.EnumPacketMode.CLIENT_RESPOND_IFF, null, sendTag, player);
 	}
 
+	
+	/**
+	 * パーティクル生成
+	 * @param pos
+	 * @param particleNo
+	 */
+	public static void PacketSpawnParticleS2C(BlockPos pos, int particleNo) {
+		INSTANCE.sendToAll(
+				new PacketSpawnParticleS2C.MessageSpawnParticle(pos, particleNo));
+		
+	}
 }

@@ -145,3 +145,6 @@ littleMaidMob.mode.SugarCane=SugarCane Harvester
 littleMaidMob.mode.F-SugarCane=SugarCane Farmer
 littleMaidMob.mode.T-SugarCane=SugarCane Farmer(Trace RS)
 
+item.maid_souvenir.name=Maid Souvenir
+item.maid_souvenir.info=Maid returns
+

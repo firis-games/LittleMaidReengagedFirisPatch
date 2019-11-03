@@ -1,6 +1,7 @@
 package net.blacklab.lmr.network;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.gui.GuiIFF;
 import net.blacklab.lmr.client.gui.inventory.GuiMaidInventory;
@@ -22,7 +23,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -37,20 +40,20 @@ public class ProxyClient extends ProxyCommon
 	public void rendererRegister() {
 		
 		ModelLoader.setCustomModelResourceLocation(
-				LittleMaidReengaged.spawnEgg, 0, new ModelResourceLocation(
+				LMItems.SPAWN_LITTLEMAID_EGG, 0, new ModelResourceLocation(
 						LittleMaidReengaged.DOMAIN+":spawn_littlemaid_egg", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.registerKey, 0,
+		ModelLoader.setCustomModelResourceLocation(LMItems.REGISTERKEY, 0,
 				new ModelResourceLocation(LittleMaidReengaged.DOMAIN+":registerkey",
 						"inventory"));
-		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.registerKey, 1,
+		ModelLoader.setCustomModelResourceLocation(LMItems.REGISTERKEY, 1,
 				new ModelResourceLocation(LittleMaidReengaged.DOMAIN+":registerkey",
 						"inventory"));
 		String porter_modelName_A = LittleMaidReengaged.DOMAIN + ":maidporter_0";
 		String porter_modelName_B = LittleMaidReengaged.DOMAIN + ":maidporter_1";
 //		ModelLoader.addVariantName(LittleMaidReengaged.maidPorter, LittleMaidReengaged.DOMAIN + ":maidporter_0", LittleMaidReengaged.DOMAIN + ":maidporter_1");
-		ModelBakery.registerItemVariants(LittleMaidReengaged.maidPorter, new ResourceLocation(porter_modelName_A), new ResourceLocation(porter_modelName_B));
-		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.maidPorter, 0, new ModelResourceLocation(porter_modelName_A, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(LittleMaidReengaged.maidPorter, 1, new ModelResourceLocation(porter_modelName_B, "inventory"));
+		ModelBakery.registerItemVariants(LMItems.MAIDPORTER, new ResourceLocation(porter_modelName_A), new ResourceLocation(porter_modelName_B));
+		ModelLoader.setCustomModelResourceLocation(LMItems.MAIDPORTER, 0, new ModelResourceLocation(porter_modelName_A, "inventory"));
+		ModelLoader.setCustomModelResourceLocation(LMItems.MAIDPORTER, 1, new ModelResourceLocation(porter_modelName_B, "inventory"));
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());
@@ -240,6 +243,26 @@ public class ProxyClient extends ProxyCommon
 
 		public void cancel(){
 			isRunning = false;
+		}
+	}
+	
+	
+	@Override
+	public void spawnParticle(BlockPos pos, int spawnType) {
+		World world = Minecraft.getMinecraft().world;
+		
+		//爆発エフェクト
+		if (world.isRemote) {
+			for (int k = 0; k < 10; ++k) {
+                double d2 = world.rand.nextGaussian() * 0.02D;
+                double d0 = world.rand.nextGaussian() * 0.02D;
+                double d1 = world.rand.nextGaussian() * 0.02D;
+                world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, 
+                		(pos.getX() - 1.0) + world.rand.nextFloat() * 2, 
+                		pos.getY() + world.rand.nextFloat(), 
+                		(pos.getZ() - 1.0) + world.rand.nextFloat() * 2,
+                		d2, d0, d1);
+            }
 		}
 	}
 }
