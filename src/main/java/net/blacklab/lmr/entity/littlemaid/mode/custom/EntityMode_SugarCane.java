@@ -183,6 +183,18 @@ public class EntityMode_SugarCane extends EntityModeBase {
 		//サトウキビを収穫できるかの判断
 		if (isHarvestingReeds(px, py, pz)) return true;
 		
+		
+		//5秒に1回判断する
+		//メイドモードの切り替え
+		//if (owner.ticksExisted % 100 == 0) {
+		//	if (pMode.equals(mode_SugarCane)) {
+		//		if(owner.getAIMoveSpeed() > 0.5F) owner.setAIMoveSpeed(0.5F);
+		//		if(owner.maidInventory.getFirstEmptyStack() < 0){
+		//			owner.setMaidMode(EntityMode_Basic.mmode_SugarCanePorter);
+		//		}
+		//	}
+		//}
+		
 		//サトウキビの収穫を判断する
 		return false;
 
@@ -209,7 +221,7 @@ public class EntityMode_SugarCane extends EntityModeBase {
 		if (pMode.equals(mode_SugarCane)) {
 			if(owner.getAIMoveSpeed() > 0.5F) owner.setAIMoveSpeed(0.5F);
 			if(owner.maidInventory.getFirstEmptyStack() < 0){
-				owner.setMaidMode(EntityMode_Basic.mmode_FarmPorter);
+				owner.setMaidMode(EntityMode_Basic.mmode_SugarCanePorter);
 			}
 		}
 		

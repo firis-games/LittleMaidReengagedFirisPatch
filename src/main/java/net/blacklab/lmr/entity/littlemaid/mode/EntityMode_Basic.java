@@ -9,6 +9,7 @@ import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMWildWatchClosest;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_SugarCane;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.CommonHelper;
@@ -34,6 +35,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	public static final String mmode_Wild			= "Wild";
 	public static final String mmode_Escort			= "Escort";
 	public static final String mmode_FarmPorter		= "FarmPort";
+	public static final String mmode_SugarCanePorter= "SugarCanePort";
 
 	private IInventory myInventory;
 	private IInventory myChest;
@@ -94,7 +96,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		ltasks[1] = pDefaultTargeting;
 		owner.addMaidMode(mmode_Escort, ltasks);
 		owner.addMaidMode(mmode_FarmPorter, ltasks);
-
+		owner.addMaidMode(mmode_SugarCanePorter, ltasks);
 	}
 
 	@Override
@@ -103,6 +105,11 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		if (!litemstack.isEmpty()) {
 			if (owner.getModeTrigger().isTriggerable(EntityMode_Farmer.mtrigger_Hoe, litemstack, ItemHoe.class)) {
 				owner.setMaidMode(mmode_FarmPorter);
+				return true;
+			}
+			if (owner.getModeTrigger().isTriggerable(EntityMode_SugarCane.trigger_SugarCane, litemstack)) {
+				owner.setMaidMode(mmode_SugarCanePorter);
+				//進捗があったらここに設定する
 				return true;
 			}
 		}
@@ -131,6 +138,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			return true;
 		case mmode_FarmPorter :
 			return true;
+		case mmode_SugarCanePorter :
+			return true;
 		}
 //		owner.getNavigator().clearPathEntity()
 		return false;
@@ -150,7 +159,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	@Override
 	public boolean isSearchBlock() {
 		if ((owner.getMaidModeString().equals(mmode_Escort) ||
-				owner.getMaidModeString().equals(mmode_FarmPorter))
+				owner.getMaidModeString().equals(mmode_FarmPorter) ||
+				owner.getMaidModeString().equals(mmode_SugarCanePorter))
 				&& owner.isFreedom() && !owner.isMaidWait() &&
 				owner.maidInventory.getFirstEmptyStack() == -1) {
 			// 対象をまだ見つけていないときは検索を行う。
@@ -181,7 +191,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		// 世界のメイドから
 		if (checkWorldMaid(ltile)) return false;
 		// 使用済みチェック
-		if (fusedTiles.contains(ltile)) {
+		if (fusedTiles.contains((IInventory)ltile)) {
 			// 既に通り過ぎた場所よッ！
 			return false;
 		}
@@ -200,7 +210,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		List<TileEntity> list = owner.getEntityWorld().loadedTileEntityList;
 		for (TileEntity lentity : list) {
 			if(!(lentity instanceof TileEntityChest)) continue;
-			if (!fusedTiles.contains(lentity)) {
+			if (!fusedTiles.contains((IInventory)lentity)) {
 				if (((IInventory)lentity).getSizeInventory() < 18) {
 					// インベントリが一定サイズ以下はスキップ
 					continue;
@@ -513,7 +523,16 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 				!owner.getWorkingCount().isEnable()){
 			owner.setMaidMode(EntityMode_Farmer.mmode_Farmer);
 		}
+		if(pMode.equals(mmode_SugarCanePorter) &&
+				owner.maidInventory.getFirstEmptyStack()>-1 &&
+				!owner.getWorkingCount().isEnable()){
+			owner.setMaidMode(EntityMode_SugarCane.mode_SugarCane);
+		}
 		super.updateAITick(pMode);
+		
+		//一定時間ごとにリセットtyes
+		if (owner.ticksExisted % 100 == 0) fusedTiles.clear();
+		
 	}
 
 }
