@@ -30,6 +30,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * 野生モード
+ * 通常モード
+ * 農家チェスト格納モード
+ *　サトウキビ農家格納モード
+ */
 public class EntityMode_Basic extends EntityModeBlockBase {
 
 	public static final String mmode_Wild			= "Wild";
@@ -530,7 +536,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		}
 		super.updateAITick(pMode);
 		
-		//一定時間ごとにリセットtyes
+		//一定時間ごとにリセット検索したチェストをリセット
 		if (owner.ticksExisted % 100 == 0) fusedTiles.clear();
 		
 	}

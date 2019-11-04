@@ -19,6 +19,10 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 
+/**
+ * ヒーラーメイド
+ *
+ */
 public class EntityMode_Healer extends EntityModeBase {
 
 	public static final String mmode_Healer		= "Healer";

@@ -30,6 +30,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+/**
+ * たいまつメイド
+ *
+ */
 public class EntityMode_TorchLayer extends EntityModeBase {
 
 	public static final String mmode_Torcher = "TorchLayer";
@@ -229,7 +233,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		}
 
 		IBlockState iState = par1World.getBlockState(new BlockPos(par2, par3, par4));
-		if (iState.getBlock().getMaterial(iState) instanceof MaterialLiquid) {
+		if (iState.getMaterial() instanceof MaterialLiquid) {
 			return false;
 		}
 

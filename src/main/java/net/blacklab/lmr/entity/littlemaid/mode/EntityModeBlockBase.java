@@ -4,6 +4,10 @@ import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 
+/**
+ * TileEntityに対する作業を行うモードの基底クラス
+ *
+ */
 public abstract class EntityModeBlockBase extends EntityModeBase {
 
 //	protected TileEntity fTile;

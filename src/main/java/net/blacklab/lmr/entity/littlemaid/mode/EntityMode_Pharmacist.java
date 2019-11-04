@@ -19,6 +19,10 @@ import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 
+/**
+ * ポーション調合メイド
+ *
+ */
 public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
 	public static final String mmode_Pharmacist = "Pharmacist";

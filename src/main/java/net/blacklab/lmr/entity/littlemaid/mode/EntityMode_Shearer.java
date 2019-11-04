@@ -24,6 +24,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
+/**
+ * 毛狩りとクリーパー無効化
+ *
+ */
 public class EntityMode_Shearer extends EntityModeBase {
 
 	public static final String mmode_Ripper		= "Shearer";

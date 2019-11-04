@@ -27,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
 /**
+ * 剣士とオノ
  * 独自基準としてモード定数は0x0080は平常、0x00c0は血まみれモードと区別。
  */
 public class EntityMode_Fencer extends EntityModeBase {

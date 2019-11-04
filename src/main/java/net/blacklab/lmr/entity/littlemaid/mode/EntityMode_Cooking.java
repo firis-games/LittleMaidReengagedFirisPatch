@@ -15,6 +15,10 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
+/**
+ * コックメイドさん
+ *
+ */
 public class EntityMode_Cooking extends EntityModeBlockBase {
 
 	public static final String mmode_Cooking = "Cooking";

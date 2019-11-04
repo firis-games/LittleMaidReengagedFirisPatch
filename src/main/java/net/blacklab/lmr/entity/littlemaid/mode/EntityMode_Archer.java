@@ -29,6 +29,10 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+/**
+ * 弓士メイドさん
+ *
+ */
 public class EntityMode_Archer extends EntityModeBase {
 
 	public static final String mmode_Archer			= "Archer";

@@ -21,6 +21,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+/**
+ * 雪遊び
+ *
+ */
 public class EntityMode_Playing extends EntityModeBase {
 	
 	public static enum PlayRole {
