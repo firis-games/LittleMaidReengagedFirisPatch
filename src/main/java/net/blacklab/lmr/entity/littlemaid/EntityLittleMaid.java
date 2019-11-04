@@ -34,7 +34,6 @@ import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.api.event.EventLMRE;
-import net.blacklab.lmr.api.item.IItemSpecialSugar;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.client.sound.SoundLoader;
 import net.blacklab.lmr.client.sound.SoundRegistry;
@@ -1263,7 +1262,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if (isContractEX()) {
 			return ItemHelper.isSugar(par1ItemStack.getItem());
 		}
-		return par1ItemStack.getItem() == Items.CAKE;
+		return ItemHelper.isCake(par1ItemStack);
 	}
 
 
@@ -2839,11 +2838,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				// Issue #35: 契約失効時の処理を優先化
 				if(!isRemainsContract() && !par3ItemStack.isEmpty()){
 					// ストライキ
-					if (par3ItemStack.getItem() == Items.SUGAR) {
+					if (ItemHelper.isSugar(par3ItemStack.getItem())) {
 						// 受取拒否
 						getEntityWorld().setEntityState(this, (byte)10);
 						return true;
-					} else if (par3ItemStack.getItem() == Items.CAKE) {
+					} else if (ItemHelper.isCake(par3ItemStack)) {
 						// 再契約
 						par3ItemStack.splitStack(1);
 						maidContractLimit = (24000 * 7);
@@ -2882,10 +2881,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 							// 通常
 							if (ItemHelper.isSugar(par3ItemStack.getItem())) {
 								// モード切替
-								boolean cmode = true;
-								if(par3ItemStack.getItem() instanceof IItemSpecialSugar){
-									cmode = ((IItemSpecialSugar)par3ItemStack.getItem()).onSugarInteract(getEntityWorld(), par1EntityPlayer, par3ItemStack, this);
-								}
+								boolean cmode = ItemHelper.onSugarInteract(this, par1EntityPlayer, par3ItemStack);
+								//boolean cmode = true;
+								//if(par3ItemStack.getItem() instanceof IItemSpecialSugar){
+								//	cmode = ((IItemSpecialSugar)par3ItemStack.getItem()).onSugarInteract(getEntityWorld(), par1EntityPlayer, par3ItemStack, this);
+								//}
 								par3ItemStack.splitStack(1);
 								eatSugar(false, true, false);
 								if(!cmode) return true;
@@ -3050,7 +3050,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			} else {
 				// 未契約
 				if (!par3ItemStack.isEmpty()) {
-					if (par3ItemStack.getItem() == Items.CAKE) {
+					if (ItemHelper.isCake(par3ItemStack)) {
 						// 契約
 						par3ItemStack.splitStack(1);
 
@@ -3413,11 +3413,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 		}
 		if(item == null || stack.isEmpty() || index == -1) return;
-		if(item == Items.SUGAR){
-			eatSugar(true, true, mode==EnumConsumeSugar.RECONTRACT);
-		}else if(item instanceof IItemSpecialSugar){
-			//モノグサ実装。良い子の皆さんはちゃんとif使うように…
-			eatSugar(((IItemSpecialSugar)item).onSugarEaten(this, mode, stack), true, mode==EnumConsumeSugar.RECONTRACT);
+		//if(item == Items.SUGAR){
+		//	eatSugar(true, true, mode==EnumConsumeSugar.RECONTRACT);
+		//}else if(item instanceof IItemSpecialSugar){
+		//	//モノグサ実装。良い子の皆さんはちゃんとif使うように…
+		//	eatSugar(((IItemSpecialSugar)item).onSugarEaten(this, mode, stack), true, mode==EnumConsumeSugar.RECONTRACT);
+		//}
+		if (ItemHelper.isSugar(item)) {
+			eatSugar(ItemHelper.onSugarEaten(this, mode, stack), true, mode==EnumConsumeSugar.RECONTRACT);
 		}
 		if (mode == EnumConsumeSugar.RECONTRACT) {
 			addMaidExperience(3.5f);
