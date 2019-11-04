@@ -1260,7 +1260,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public boolean isBreedingItem(ItemStack par1ItemStack) {
 		// お好みは何？
 		if (isContractEX()) {
-			return ItemHelper.isSugar(par1ItemStack.getItem());
+			return ItemHelper.isSugar(par1ItemStack);
 		}
 		return ItemHelper.isCake(par1ItemStack);
 	}
@@ -2838,7 +2838,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				// Issue #35: 契約失効時の処理を優先化
 				if(!isRemainsContract() && !par3ItemStack.isEmpty()){
 					// ストライキ
-					if (ItemHelper.isSugar(par3ItemStack.getItem())) {
+					if (ItemHelper.isSugar(par3ItemStack)) {
 						// 受取拒否
 						getEntityWorld().setEntityState(this, (byte)10);
 						return true;
@@ -2879,7 +2879,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 						}
 						if (isRemainsContract()) {
 							// 通常
-							if (ItemHelper.isSugar(par3ItemStack.getItem())) {
+							if (ItemHelper.isSugar(par3ItemStack)) {
 								// モード切替
 								boolean cmode = ItemHelper.onSugarInteract(this, par1EntityPlayer, par3ItemStack);
 								//boolean cmode = true;
@@ -3405,7 +3405,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			ItemStack ts = stacklist.get(i);
 			if (ts.isEmpty())continue;
 			Item ti = ts.getItem();
-			if (ItemHelper.isSugar(ti)){
+			if (ItemHelper.isSugar(ts)){
 				stack = ts;
 				item = ti;
 				index = i;
@@ -3419,7 +3419,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		//	//モノグサ実装。良い子の皆さんはちゃんとif使うように…
 		//	eatSugar(((IItemSpecialSugar)item).onSugarEaten(this, mode, stack), true, mode==EnumConsumeSugar.RECONTRACT);
 		//}
-		if (ItemHelper.isSugar(item)) {
+		if (ItemHelper.isSugar(stack)) {
 			eatSugar(ItemHelper.onSugarEaten(this, mode, stack), true, mode==EnumConsumeSugar.RECONTRACT);
 		}
 		if (mode == EnumConsumeSugar.RECONTRACT) {

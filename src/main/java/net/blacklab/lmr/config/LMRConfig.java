@@ -1,6 +1,8 @@
 package net.blacklab.lmr.config;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 import net.minecraftforge.common.config.Configuration;
 
@@ -37,6 +39,12 @@ public class LMRConfig {
 	
 	/** メイドの土産 */
 	public static boolean cfg_isResurrection = true;
+	
+	/** 砂糖アイテムID */
+	public static List<String> cfg_sugar_item_ids = null;
+
+	/** ケーキアイテムID */
+	public static List<String> cfg_cake_item_ids = null;
 	
 	/**
 	 * Config初期化
@@ -80,6 +88,14 @@ public class LMRConfig {
 		//メイドの土産設定
 		cfg_isResurrection = cfg.getBoolean("isResurrection", "General", true,
 				"If 'true', Drops a resurrection item when a maid dies.");
+		
+		//指定IDを砂糖として認識する
+		String[] sugarItemIds = new String[] {"minecraft:sugar"};
+		cfg_sugar_item_ids = Arrays.asList(cfg.getStringList("Sugar", "Custom", sugarItemIds, "Set the item ID to be treated the same as maid sugar."));
+
+		//指定IDを砂糖として認識する
+		String[] cakeItemIds = new String[] {"minecraft:cake"};
+		cfg_cake_item_ids = Arrays.asList(cfg.getStringList("Cake", "Custom", cakeItemIds, "Set the item ID to be treated the same as maid cake."));
 
 		cfg.save();
 	}

@@ -123,7 +123,7 @@ public class ExperienceHandler {
 			int sugarCount = 0;
 			for (int i=0; i<18 && sugarCount < requiredSugarToRevive; i++) {
 				ItemStack stack = theMaid.maidInventory.mainInventory.get(i);
-				if (!stack.isEmpty() && ItemHelper.isSugar(stack.getItem())) {
+				if (!stack.isEmpty() && ItemHelper.isSugar(stack)) {
 					stack.setCount(sugarCount + stack.getCount());
 				}
 			}
@@ -136,7 +136,7 @@ public class ExperienceHandler {
 					theMaid.eatSugar(false,false,false);
 					for(int i=0; i<18 && requiredSugarToRevive > 0; i++) {
 						ItemStack stack = theMaid.maidInventory.mainInventory.get(i);
-						if (!stack.isEmpty() && ItemHelper.isSugar(stack.getItem())) {
+						if (!stack.isEmpty() && ItemHelper.isSugar(stack)) {
 							int consumesize = Math.min(stack.getCount(), requiredSugarToRevive);
 							stack.setCount(stack.getCount() - consumesize);
 							if (stack.getCount() <= 0) {

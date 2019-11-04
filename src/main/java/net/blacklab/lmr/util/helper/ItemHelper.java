@@ -1,6 +1,7 @@
 package net.blacklab.lmr.util.helper;
 
 import net.blacklab.lmr.api.item.IItemSpecialSugar;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid.EnumConsumeSugar;
 import net.minecraft.block.Block;
@@ -20,9 +21,20 @@ public class ItemHelper {
 	 * @param item
 	 * @return
 	 */
-	public static boolean isSugar(Item item) {
-		if(item==null) return false;
-		return item==Items.SUGAR || item instanceof IItemSpecialSugar;
+	public static boolean isSugar(ItemStack sugar) {
+		
+		//砂糖判断
+		if (!sugar.isEmpty() && sugar.getItem() == Items.SUGAR) return true;
+		
+		//IItemSpecialSugar判断
+		if (!sugar.isEmpty() && sugar.getItem() instanceof IItemSpecialSugar) return true;
+		
+		//設定から判断
+		if (!sugar.isEmpty()) {
+			if (LMRConfig.cfg_sugar_item_ids.contains(sugar.getItem().getRegistryName().toString())) return true;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -67,7 +79,7 @@ public class ItemHelper {
 		boolean flag = false;
 		for(ItemStack stack: maid.maidInventory.mainInventory){
 			if(stack.isEmpty()) continue;
-			if(isSugar(stack.getItem())){
+			if(isSugar(stack)){
 				flag = false;
 				break;
 			}
@@ -81,7 +93,14 @@ public class ItemHelper {
 	 * @return
 	 */
 	public static boolean isCake(ItemStack cake) {
+		
+		//ケーキ判断
 		if (!cake.isEmpty() && cake.getItem() == Items.CAKE) return true;
+		
+		//設定から判断
+		if (!cake.isEmpty()) {
+			if (LMRConfig.cfg_cake_item_ids.contains(cake.getItem().getRegistryName().toString())) return true;
+		}
 		return false;
 	}
 

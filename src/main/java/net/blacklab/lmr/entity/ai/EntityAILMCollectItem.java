@@ -53,7 +53,7 @@ public class EntityAILMCollectItem extends EntityAIBase {
 								ei.posZ - MathHelper.cos(ep.rotationYaw * 0.01745329252F) * 2.0D) > 7.5D))
 				{
 					ItemStack lstack = ei.getItem();
-					if (!ItemHelper.isSugar(lstack.getItem())) {
+					if (!ItemHelper.isSugar(lstack)) {
 						if (!theMaid.isActiveModeClass()) {
 							return false;
 						}
