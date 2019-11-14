@@ -115,6 +115,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
 import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -1291,6 +1292,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		par1nbtTagCompound.setString("textureArmorNameForClient", textureNameArmor);
 		par1nbtTagCompound.setBoolean("isMadeTextureNameFlag", isMadeTextureNameFlag);
 
+		//カスタム分
+		par1nbtTagCompound.setInteger("WaitMotion", maidWaitMotion);
+		
 		NBTTagCompound prevtargettag = new NBTTagCompound();
 		par1nbtTagCompound.setTag("prevtarget", prevtargettag);
 		// HomePosition
@@ -1448,6 +1452,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		getExperienceHandler().readEntityFromNBT(par1nbtTagCompound);
 		
 		modeTrigger.readFromNBT(par1nbtTagCompound);
+		
+		//カスタム分
+		maidWaitMotion = par1nbtTagCompound.getInteger("WaitMotion");
+
 	}
 
 	public boolean canBePushed()
@@ -2906,6 +2914,19 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								}
 								return true;
 							}
+							//お座りモーション判定
+							else if (par3ItemStack.getItem() == Item.getItemFromBlock(Blocks.CARPET)) {
+								
+								//カーペットは消費しない
+
+								//♪の表示
+								getEntityWorld().setEntityState(this, (byte)11);
+								//効果音
+								playSound("entity.item.pickup");
+								
+								maidWaitMotion = maidWaitMotion == 1 ? 0 : 1;
+								return true;
+							}
 							else if (par3ItemStack.getItem()==LMItems.REGISTERKEY &&
 									!par1EntityPlayer.getEntityWorld().isRemote) {
 								// トリガーセット
@@ -4159,5 +4180,36 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 */
 	public void clearMaidContractLimit() {
 		maidContractLimit = 0;
+	}
+	
+	
+	
+	//お座りモーションフラグ
+	//0:通常
+	//1:お座り
+	private int maidWaitMotion = 0;
+	
+	/**
+	 * お座りモーション中か判断する
+	 * @return
+	 */
+	public boolean isMotionSitting() {
+		if (this.isMaidWait()) {
+			if (maidWaitMotion == 1) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * お座りモーションテスト実装
+	 * isRidingを直接の場合は影響が大きいので
+	 * Render用のisRidingを実装
+	 * @return
+	 */
+	public boolean isRidingRender() {
+		if (this.isMotionSitting()) return true;
+		return this.isRiding();
 	}
 }

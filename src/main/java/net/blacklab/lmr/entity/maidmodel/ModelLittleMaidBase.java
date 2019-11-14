@@ -163,7 +163,12 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 			bipedLeftLeg.setRotateAngleY(-0.3141593F);
 //			mainFrame.rotationPointY += 5.00F;
 		}
-
+		
+		//カスタム設定
+		//お座りモーションの場合はモデル側で位置を調整する
+		if (motionSitting) {
+			mainFrame.rotationPointY += 5.00F;
+		}
 
 		// アイテム持ってるときの腕振りを抑える+表示角オフセット
 		if (heldItem[1] != 0) {

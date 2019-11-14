@@ -93,6 +93,8 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		modelMain.setCapsValue(IModelCaps.caps_isChild, par1EntityLiving.isChild());
 		modelMain.setCapsValue(IModelCaps.caps_entityIdFactor, 0F);
 		modelMain.setCapsValue(IModelCaps.caps_ticksExisted, par1EntityLiving.ticksExisted);
+		//カスタム設定
+		modelMain.setCapsValue(IModelCaps.caps_motionSitting, false);
 	}
 
 //	public void renderModelMulti(EntityLivingBase par1EntityLiving, double par2,

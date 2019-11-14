@@ -20,6 +20,7 @@ public interface IModelCaps {
 	public static final int caps_isChild			= 0x0003;
 	/** リアルタイムでEntityのサイズを更新する **/
 	public static final int caps_isUpdateSize		= 0x0004;
+	
 	// ModelBiped
 	public static final int caps_heldItemLeft		= 0x0010;
 	public static final int caps_heldItemRight		= 0x0011;
@@ -151,6 +152,10 @@ public interface IModelCaps {
 	/** 発光テクスチャの色補正 */
 	public static final int caps_textureLightColor	= 0x0314;
 
+	
+	//カスタム追加分
+	//お座りモーション
+	public static final int caps_motionSitting      = 0x0401;
 
 	/**
 	 * モデルが実装している機能をリストに入れて返す。

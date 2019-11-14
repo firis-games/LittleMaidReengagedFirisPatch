@@ -267,7 +267,7 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 		modelMain.setCapsValue(IModelCaps.caps_onGround,
 				lmaid.mstatSwingStatus[0].getSwingProgress(par9),
 				lmaid.mstatSwingStatus[1].getSwingProgress(par9));
-		modelMain.setCapsValue(IModelCaps.caps_isRiding, lmaid.isRiding());
+		modelMain.setCapsValue(IModelCaps.caps_isRiding, lmaid.isRidingRender());
 		modelMain.setCapsValue(IModelCaps.caps_isSneak, lmaid.isSneaking());
 		modelMain.setCapsValue(IModelCaps.caps_aimedBow, lmaid.isAimebow());
 		modelMain.setCapsValue(IModelCaps.caps_isWait, lmaid.isMaidWait());
@@ -275,6 +275,10 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 		modelMain.setCapsValue(IModelCaps.caps_entityIdFactor, lmaid.entityIdFactor);
 		modelMain.setCapsValue(IModelCaps.caps_ticksExisted, lmaid.ticksExisted);
 		modelMain.setCapsValue(IModelCaps.caps_dominantArm, lmaid.getDominantArm());
+
+		//カスタム設定
+		modelMain.setCapsValue(IModelCaps.caps_motionSitting, lmaid.isMotionSitting());
+
 		modelFATT.setModelAttributes(mainModel);
 		// だが無意味だ
 //		plittleMaid.textureModel0.isChild = plittleMaid.textureModel1.isChild = plittleMaid.textureModel2.isChild = plittleMaid.isChild();

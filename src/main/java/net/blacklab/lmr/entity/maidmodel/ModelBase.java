@@ -26,6 +26,8 @@ public abstract class ModelBase extends AbstractModelBase {
 	public List<ModelRenderer> boxList = new ArrayList<ModelRenderer>();
 	private Map<String, TextureOffset> modelTextureMap = new HashMap<String, TextureOffset>();
 
+	//カスタム設定
+	public boolean motionSitting = false;
 
 
 	// ModelBase互換関数群
