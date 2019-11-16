@@ -4198,6 +4198,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			if (maidWaitMotion == 1) {
 				return true;
 			}
+		} else if (this.maidFreedom 
+				&& EntityMode_Basic.mmode_Escort.equals(this.getMaidModeString())) {
+			//自由行動モード
+			if (this.motionX == 0.0D && this.motionZ == 0.0D) {
+				return true;
+			}			
 		}
 		return false;
 	}
