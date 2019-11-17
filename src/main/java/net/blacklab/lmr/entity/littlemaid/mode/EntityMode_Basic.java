@@ -9,6 +9,7 @@ import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMWildWatchClosest;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_Lumberjack;
 import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_SugarCane;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -23,6 +24,7 @@ import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemAppleGold;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
@@ -35,6 +37,7 @@ import net.minecraft.util.math.BlockPos;
  * 通常モード
  * 農家チェスト格納モード
  *　サトウキビ農家格納モード
+ *　木こり格納モード
  */
 public class EntityMode_Basic extends EntityModeBlockBase {
 
@@ -42,6 +45,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	public static final String mmode_Escort			= "Escort";
 	public static final String mmode_FarmPorter		= "FarmPort";
 	public static final String mmode_SugarCanePorter= "SugarCanePort";
+	public static final String mmode_LumberjackPorter= "LumberjackPort";
 
 	private IInventory myInventory;
 	private IInventory myChest;
@@ -101,8 +105,11 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		ltasks[0] = pDefaultMove;
 		ltasks[1] = pDefaultTargeting;
 		owner.addMaidMode(mmode_Escort, ltasks);
+		
 		owner.addMaidMode(mmode_FarmPorter, ltasks);
 		owner.addMaidMode(mmode_SugarCanePorter, ltasks);
+		owner.addMaidMode(mmode_LumberjackPorter, ltasks);
+		
 	}
 
 	@Override
@@ -115,6 +122,12 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			}
 			if (owner.getModeTrigger().isTriggerable(EntityMode_SugarCane.trigger_SugarCane, litemstack)) {
 				owner.setMaidMode(mmode_SugarCanePorter);
+				//進捗があったらここに設定する
+				return true;
+			}
+			if (owner.getModeTrigger().isTriggerable(EntityMode_Lumberjack.trigger_Lumberjack, litemstack, ItemAxe.class)
+					&& !owner.getModeTrigger().isTriggerable(EntityMode_Lumberjack.trigger_Lumberjack, owner.getHeldItemOffhand(), ItemAxe.class)) {
+				owner.setMaidMode(mmode_LumberjackPorter);
 				//進捗があったらここに設定する
 				return true;
 			}
@@ -146,6 +159,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			return true;
 		case mmode_SugarCanePorter :
 			return true;
+		case mmode_LumberjackPorter :
+			return true;
 		}
 //		owner.getNavigator().clearPathEntity()
 		return false;
@@ -166,7 +181,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	public boolean isSearchBlock() {
 		if ((owner.getMaidModeString().equals(mmode_Escort) ||
 				owner.getMaidModeString().equals(mmode_FarmPorter) ||
-				owner.getMaidModeString().equals(mmode_SugarCanePorter))
+				owner.getMaidModeString().equals(mmode_SugarCanePorter) ||
+				owner.getMaidModeString().equals(mmode_LumberjackPorter))
 				&& owner.isFreedom() && !owner.isMaidWait() &&
 				owner.maidInventory.getFirstEmptyStack() == -1) {
 			// 対象をまだ見つけていないときは検索を行う。
@@ -534,6 +550,12 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 				!owner.getWorkingCount().isEnable()){
 			owner.setMaidMode(EntityMode_SugarCane.mode_SugarCane);
 		}
+		if(pMode.equals(mmode_LumberjackPorter) &&
+				owner.maidInventory.getFirstEmptyStack()>-1 &&
+				!owner.getWorkingCount().isEnable()){
+			owner.setMaidMode(EntityMode_Lumberjack.mode_Lumberjack);
+		}
+		
 		super.updateAITick(pMode);
 		
 		//一定時間ごとにリセット検索したチェストをリセット
