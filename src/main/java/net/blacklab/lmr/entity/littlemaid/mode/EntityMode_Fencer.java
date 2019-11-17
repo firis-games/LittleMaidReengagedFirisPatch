@@ -203,7 +203,9 @@ public class EntityMode_Fencer extends EntityModeBase {
 		case mmode_Fencer:
 			return owner.getModeTrigger().isTriggerable(mtrigger_Sword, par1ItemStack, ItemSword.class);
 		case mmode_Bloodsucker:
-			return owner.getModeTrigger().isTriggerable(mtrigger_Axe, par1ItemStack, ItemAxe.class);
+			boolean ret1 = owner.getModeTrigger().isTriggerable(mtrigger_Axe, par1ItemStack, ItemAxe.class);
+			boolean ret2 = owner.getModeTrigger().isTriggerable(mtrigger_Axe, owner.getHeldItemOffhand(), ItemAxe.class);
+			return ret1 && ret2;
 		}
 		return super.isTriggerItem(pMode, par1ItemStack);
 	}
