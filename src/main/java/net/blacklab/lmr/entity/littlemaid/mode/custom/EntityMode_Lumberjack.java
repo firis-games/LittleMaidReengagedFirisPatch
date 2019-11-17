@@ -443,17 +443,44 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		this.fellingBlockPosList = new ArrayList<>();
 		this.fellingLeafBlockPosList = new ArrayList<>();
 		
-		//伐採範囲をサーチ(暫定)
+		//伐採範囲をサーチ
 		BlockPos basePos = new BlockPos(px, py, pz);
-		for (BlockPos pos : BlockPos.getAllInBox(basePos.up(20).north(7).west(7), 
-				basePos.down(2).south(7).east(7))) {
-			//原木
+		
+		//ベースブロックを追加する
+		fellingBlockPosList.add(basePos);
+		
+		//破壊対象の原木を取得
+		getAdjacentBlock(basePos, fellingBlockPosList, fellingLeafBlockPosList);
+		
+	}
+	
+	/**
+	 * 隣接する原木ブロックを再帰的に取得する
+	 * @param basePos
+	 * @return
+	 */
+	private void getAdjacentBlock(BlockPos basePos, List<BlockPos> logList, List<BlockPos> leafList) {
+		//256ブロック以上は処理を停止する
+		if (logList.size() > 1024) return;
+		if (leafList.size() > 1024) return;
+		
+		for (EnumFacing facing : EnumFacing.VALUES) {
+			BlockPos pos = basePos.offset(facing);
+			//原木判断
 			if (this.isLog(pos.getX(), pos.getY(), pos.getZ())) {
-				fellingBlockPosList.add(pos);
-			//葉
+				if (!logList.contains(pos)) {
+					logList.add(pos);
+					//再起呼び
+					getAdjacentBlock(pos, logList, leafList);
+				}
 			} else if (this.isLeaf(pos.getX(), pos.getY(), pos.getZ())) {
-				fellingLeafBlockPosList.add(pos);
+				if (!leafList.contains(pos)) {
+					leafList.add(pos);
+					getAdjacentBlock(pos, logList, leafList);
+				}
 			}
 		}
 	}
+	
+	
 }
