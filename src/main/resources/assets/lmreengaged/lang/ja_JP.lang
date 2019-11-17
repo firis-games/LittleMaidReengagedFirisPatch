@@ -145,3 +145,7 @@ littleMaidMob.mode.T-SugarCane=サトウキビ農家(赤石)
 item.maid_souvenir.name=メイドの土産
 item.maid_souvenir.info=メイドさんがもどってくる
 
+littleMaidMob.mode.Lumberjack=木こりの小娘
+littleMaidMob.mode.F-Lumberjack=木こりメイド
+littleMaidMob.mode.T-Lumberjack=木こりメイド(赤石)
+
