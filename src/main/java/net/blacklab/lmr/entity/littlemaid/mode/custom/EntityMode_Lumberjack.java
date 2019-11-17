@@ -11,6 +11,7 @@ import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.state.IBlockState;
@@ -44,6 +45,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 	private int fellingTime = 0;
 	private boolean isFelling = false;
 	private List<BlockPos> fellingBlockPosList = null;
+	private List<BlockPos> fellingLeafBlockPosList = null;
 	
 	/**
 	 * コンストラクタ
@@ -237,20 +239,13 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 			//初回
 			if (this.isFelling == false) {
 				
-				this.fellingBlockPosList = new ArrayList<>();
-				
-				//伐採範囲をサーチ(暫定)
-				BlockPos basePos = new BlockPos(px,py,pz);
-				for (BlockPos pos : BlockPos.getAllInBox(basePos.up(12).north(5).west(5), 
-						basePos.down(5).south(5).east(5))) {
-					if (this.isLog(pos.getX(), pos.getY(), pos.getZ())) {
-						fellingBlockPosList.add(pos);
-					}
-				}
+				//伐採範囲をサーチ
+				this.setFellingBlock(px, py, pz);
 				
 				//ブロックの数で必要な時間を加算する
 				this.isFelling = true;
-				this.fellingTime = fellingBlockPosList.size() * 10;
+				this.fellingTime = fellingBlockPosList.size() * 10
+						+ fellingLeafBlockPosList.size() * 1;
 				
 			//伐採中アニメーション
 			} else if (this.fellingTime > 0) {
@@ -264,9 +259,13 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 				for (BlockPos pos : this.fellingBlockPosList) {
 					owner.getEntityWorld().destroyBlock(pos, true);
 				}
+				for (BlockPos pos : this.fellingLeafBlockPosList) {
+					owner.getEntityWorld().destroyBlock(pos, true);
+				}
 				
 				//ツールに伐採ダメージ
 				//耐久度が足りなくても一括破壊は動かす
+				//葉ブロック分は無視
 				curStack.damageItem(this.fellingBlockPosList.size(), owner.maidAvatar);
 				
 				owner.playLittleMaidSound(EnumSound.farmer_harvest, false);
@@ -276,6 +275,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 				this.isFelling = false;
 				this.fellingTime = 0;
 				this.fellingBlockPosList = null;
+				this.fellingLeafBlockPosList = null;
 				
 				//植えれる場合は苗木を植える
 				int saplingIndex = this.getSaplingItemStackIndex();
@@ -415,5 +415,45 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 			}
 		}
 		return -1;
+	}
+	
+	/**
+	 * 葉ブロックかどうかの判断を行う
+	 * 
+	 * @return
+	 */
+	private boolean isLeaf(int px, int py, int pz) {
+		
+		BlockPos pos = new BlockPos(px, py, pz);
+		IBlockState state = owner.world.getBlockState(pos);
+		
+		//対象がBlockLeavesを継承したブロックであること
+		if (state.getBlock() instanceof BlockLeaves) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * 破壊対象のブロックを変数へセットする
+	 * 葉ブロックも考慮する
+	 */
+	private void setFellingBlock(int px, int py, int pz) {
+		this.fellingBlockPosList = new ArrayList<>();
+		this.fellingLeafBlockPosList = new ArrayList<>();
+		
+		//伐採範囲をサーチ(暫定)
+		BlockPos basePos = new BlockPos(px, py, pz);
+		for (BlockPos pos : BlockPos.getAllInBox(basePos.up(20).north(7).west(7), 
+				basePos.down(2).south(7).east(7))) {
+			//原木
+			if (this.isLog(pos.getX(), pos.getY(), pos.getZ())) {
+				fellingBlockPosList.add(pos);
+			//葉
+			} else if (this.isLeaf(pos.getX(), pos.getY(), pos.getZ())) {
+				fellingLeafBlockPosList.add(pos);
+			}
+		}
 	}
 }
