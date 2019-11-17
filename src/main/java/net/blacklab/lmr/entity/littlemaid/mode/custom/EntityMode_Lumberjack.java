@@ -364,23 +364,27 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		BlockPos pos = new BlockPos(px, py, pz);
 		IBlockState state = owner.world.getBlockState(pos);
 		
+		//対象が原木を継承したブロックであること
+		if (!(state.getBlock() instanceof BlockLog)) {
+			return false;
+		}
+		
 		//オフハンドアイテム
 		ItemStack logStack = owner.getHeldItemOffhand();
-		
-		//対象が原木を継承したブロックであること
+		//カスタム動作はなし
 		if (logStack.isEmpty()) {
-			if (state.getBlock() instanceof BlockLog) {
-				return true;
-			}
-		} else {
-			int meta = state.getBlock().getMetaFromState(state);
-			ItemStack metaStack = new ItemStack(state.getBlock(), 1, meta);
-			if (metaStack.getItem() == logStack.getItem()
-					&& metaStack.getMetadata() == logStack.getMetadata()) {
-				return true;
-			}
+			return true;
 		}
+
+		int meta = state.getBlock().getMetaFromState(state);
+		ItemStack metaStack = new ItemStack(state.getBlock(), 1, meta);
+		if (metaStack.getItem() == logStack.getItem()
+				&& metaStack.getMetadata() == logStack.getMetadata()) {
+			return true;
+		}
+		
 		return false;
+
 	}
 	
 	/**
