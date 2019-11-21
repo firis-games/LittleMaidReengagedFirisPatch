@@ -8,22 +8,16 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
+//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-repositories {
-    maven {
-    	name = "JEI"
-        url = "http://dvs1.progwml6.com/files/maven"
-    }
-}
 
-version = "8.1.6.141.fp.009"
-group= "net.blacklab.lmr" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "LittleMaidReengaged_FirisPatch"
+version = "1.12.2"
+group = "littlemaidmodel" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "SampleMaidModel"
 
-sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
+    sourceCompatibility = targetCompatibility = '1.8'
 }
 
 minecraft {
@@ -33,7 +27,7 @@ minecraft {
     // the mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   snapshot are built nightly.
     // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
+    // Use non-default mappings at your own risk. they may not always work.
     // simply re-run your setup task after changing the mappings to update your workspace.
     mappings = "snapshot_20171003"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
@@ -60,8 +54,8 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    compile "mezz.jei:jei_1.12.2:4.10.0.198"
     compile fileTree(dir: './mods', include: '*.jar')
+
 }
 
 processResources {
@@ -85,31 +79,12 @@ processResources {
 
 [compileJava, compileTestJava].each{ it.options.encoding = 'UTF-8' }
 
-// ASM
-jar {
-    manifest {
-        attributes('FMLCorePlugin': 'net.blacklab.lmr.util.coremod.LMRECoremod', 'FMLCorePluginContainsFMLMod': 'true')
-    }
-}
-
-//Develop Mod
-task devJar(type: Jar) {
-    from sourceSets.main.java
+//Create LittleMaid Model Zip File
+task zipBuild(type: Zip, dependsOn: jar) {
+	archiveName = "littleMaidMob-${archivesBaseName}-${version}.${extension}"
     from sourceSets.main.output
-    classifier = 'dev'
-}
-
-//Create LittleMaidModelProject File
-task zipBuild(type: Zip, dependsOn: devJar) {
-	archiveName = "LittleMaidModelProject-${version}.${extension}"
-   	from "/LittleMaidModelProject"
-    into('mods') {
-	    from "/build/libs/${archivesBaseName}-${version}-dev.jar"
-    }
 }
 
 artifacts {
-    archives devJar
     archives zipBuild
-} 
-
+}

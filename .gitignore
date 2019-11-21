@@ -22,5 +22,5 @@ eclipse
 run
 
 # minecraft forge
-mods
+/mods
 /*.txt
