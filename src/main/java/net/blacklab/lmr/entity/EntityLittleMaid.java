@@ -10,6 +10,7 @@ import net.minecraft.world.World;
  * 暫定対応としてダミークラスを用意
  *
  */
+@Deprecated
 public class EntityLittleMaid extends net.blacklab.lmr.entity.littlemaid.EntityLittleMaid {
 	public EntityLittleMaid(World par1World) {
 		super(par1World);
