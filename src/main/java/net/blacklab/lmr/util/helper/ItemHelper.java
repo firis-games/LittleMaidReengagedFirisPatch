@@ -110,7 +110,8 @@ public class ItemHelper {
 	}
 
 	public static boolean isItemSmelting(ItemStack pItemstack) {
-		return (!pItemstack.isEmpty() && FurnaceRecipes.instance().getSmeltingResult(pItemstack) != null);
+		return (!pItemstack.isEmpty() 
+				&& !FurnaceRecipes.instance().getSmeltingResult(pItemstack).isEmpty());
 	}
 
 	@SuppressWarnings("deprecation")
