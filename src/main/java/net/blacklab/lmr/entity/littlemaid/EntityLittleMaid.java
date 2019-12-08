@@ -771,7 +771,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// モード切替に応じた処理系を確保
 		maidAvatar.stopActiveHand();
 		setSitting(false);
-		setSneaking(false);
+//		setSneaking(false);
 //		setActiveModeClass(null);
 //		aiJumpTo.setEnable(true);
 //		aiFollow.setEnable(true);
