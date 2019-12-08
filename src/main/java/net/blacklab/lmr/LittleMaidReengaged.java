@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
+import net.blacklab.lmc.common.item.LMItemMaidCarry;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.config.LMRConfig;
@@ -145,6 +146,7 @@ public class LittleMaidReengaged {
     	public final static ItemTriggerRegisterKey REGISTERKEY = null;
     	public final static ItemMaidPorter MAIDPORTER = null;
     	public final static Item MAID_SOUVENIR = null;
+    	public final static Item MAID_CARRY = null;
     }
 
 	public static void Debug(String pText, Object... pVals) {
@@ -382,6 +384,12 @@ public class LittleMaidReengaged {
     	event.getRegistry().register(new LMItemMaidSouvenir()
     			.setRegistryName(DOMAIN, "maid_souvenir")
     			.setUnlocalizedName("maid_souvenir"));
+    	
+    	//メイドキャリー
+    	event.getRegistry().register(new LMItemMaidCarry()
+    			.setRegistryName(DOMAIN, "maid_carry")
+    			.setUnlocalizedName("maid_carry"));
+    	
 	}
 	
     @SubscribeEvent
@@ -394,6 +402,10 @@ public class LittleMaidReengaged {
     	// メイドの土産
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_SOUVENIR, 0,
 				new ModelResourceLocation(LMItems.MAID_SOUVENIR.getRegistryName(), "inventory"));
+
+		// メイドキャリー
+		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_CARRY, 0,
+				new ModelResourceLocation(LMItems.MAID_CARRY.getRegistryName(), "inventory"));
 		
     }
     

@@ -1,10 +1,10 @@
 package net.blacklab.lmc.common.helper;
 
-import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
@@ -17,14 +17,15 @@ public class LittleMaidHelper {
 	/**
 	 * メイドさんからスポーンアイテムを生成
 	 */
-	public static ItemStack getItemStackFromEntity(EntityLiving entityliving) {
+	@SuppressWarnings("deprecation")
+	public static ItemStack getItemStackFromEntity(EntityLiving entityliving, ItemStack spawnItem) {
 		
 		ItemStack stack = ItemStack.EMPTY;
 		
 		//メイドさん以外は何もしない
 		if (!(entityliving instanceof EntityLittleMaid)) return stack;
 		
-		stack = new ItemStack(LMItems.MAID_SOUVENIR);
+		stack = spawnItem;
 		
 		NBTTagCompound entityNBT = new NBTTagCompound();
 		entityliving.writeToNBT(entityNBT);
@@ -43,6 +44,18 @@ public class LittleMaidHelper {
 		stackNBT.setTag("Mob", entityNBT);
 		
 		stack.setTagCompound(stackNBT);
+		
+		//Tooltip表示用設定追加
+		EntityLittleMaid entityMaid = (EntityLittleMaid)entityliving;
+		//オーナー名
+		EntityPlayer player = (EntityPlayer) entityMaid.getOwner();
+		if (player != null) {
+			String playerName = player.getName();
+			stack.getTagCompound().setString("maid_owner", playerName);
+		}
+		
+		//メイド名
+		stack.getTagCompound().setString("maid_name", entityMaid.getName());
 		
 		return stack;
 	}

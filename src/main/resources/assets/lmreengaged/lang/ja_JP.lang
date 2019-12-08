@@ -149,3 +149,6 @@ littleMaidMob.mode.Lumberjack=木こりの小娘
 littleMaidMob.mode.F-Lumberjack=木こりメイド
 littleMaidMob.mode.T-Lumberjack=木こりメイド(赤石)
 
+item.maid_carry.name=メイドキャリー
+item.maid_carry.info=メイドさんの休憩所
+

@@ -2,11 +2,11 @@ package net.blacklab.lmc.common.event;
 
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.LittleMaidHelper;
+import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -21,7 +21,6 @@ public class LivingDeathEventHandler {
 	 * イベントの優先度は高め
 	 * @param event
 	 */
-	@SuppressWarnings("deprecation")
 	@SubscribeEvent(priority=EventPriority.HIGHEST)
 	public static void onLivingDeathEvent(LivingDeathEvent event) {
 		
@@ -42,18 +41,7 @@ public class LivingDeathEventHandler {
 			entityMaid.extinguish();
 
 			//メイドの土産
-			ItemStack maidSouvenir = LittleMaidHelper.getItemStackFromEntity(entityMaid);
-			
-			//Tooltip表示用設定追加
-			//オーナー名
-			EntityPlayer player = (EntityPlayer) entityMaid.getOwner();
-			if (player != null) {
-				String playerName = player.getName();
-				maidSouvenir.getTagCompound().setString("maid_owner", playerName);
-			}
-			
-			//メイド名
-			maidSouvenir.getTagCompound().setString("maid_name", entityMaid.getName());
+			ItemStack maidSouvenir = LittleMaidHelper.getItemStackFromEntity(entityMaid, new ItemStack(LMItems.MAID_SOUVENIR));
 			
 			World world = entityMaid.getEntityWorld();
 			

@@ -152,3 +152,6 @@ littleMaidMob.mode.Lumberjack=Lumberjack girl
 littleMaidMob.mode.F-Lumberjack=Lumberjack Maid
 littleMaidMob.mode.T-Lumberjack=Lumberjack Maid(Trace RS)
 
+item.maid_carry.name=Maid Carry
+item.maid_carry.info=Maid rest room
+
