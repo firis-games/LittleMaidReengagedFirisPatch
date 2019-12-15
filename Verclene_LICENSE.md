@@ -3,7 +3,8 @@
 The following License is applied to LittleMaidReengaged.
 
 ## License
-(2.-4.) Refer to http://forum.minecraftuser.jp/viewtopic.php?t=176
+~~(2.-4.) Refer to http://forum.minecraftuser.jp/viewtopic.php?t=176~~  
+(2.-4.) Refer to https://github.com/firis-games/LittleMaidReengagedFirisPatch/blob/master/MMM_LICENSE.md
 
 1. **Definitions**.
   * **Licensed Material** means all material to which the Licensor applied this License.
