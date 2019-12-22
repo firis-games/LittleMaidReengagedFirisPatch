@@ -4193,7 +4193,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void clearMaidContractLimit() {
 		maidContractLimit = 0;
 	}
-		
+	
+	/**
+	 * お座りモーション判断用
+	 */
+	private int tickisMotionSitting = 0;
+	
 	/**
 	 * お座りモーション中か判断する
 	 * @return
@@ -4206,10 +4211,19 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 		} else if (this.maidFreedom 
 				&& EntityMode_Basic.mmode_Escort.equals(this.getMaidModeString())) {
+			//自由モードでの判断
+			this.tickisMotionSitting += 1;
+			int coolTime = 20;
 			//自由行動モード
 			if (this.motionX == 0.0D && this.motionZ == 0.0D) {
-				return true;
-			}			
+				if (coolTime <= this.tickisMotionSitting) {
+					return true;
+				}
+				return false;
+			}
+			this.tickisMotionSitting = 0;
+		} else {
+			this.tickisMotionSitting = 0;
 		}
 		return false;
 	}
