@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
@@ -364,8 +365,19 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		BlockPos pos = new BlockPos(px, py, pz);
 		IBlockState state = owner.world.getBlockState(pos);
 		
+		boolean ret = false;
 		//対象が原木を継承したブロックであること
-		if (!(state.getBlock() instanceof BlockLog)) {
+		if (state.getBlock() instanceof BlockLog) {
+			ret = true;
+		}
+		
+		//原木ブロック設定
+		if (!ret && LMRConfig.cfg_lj_log_block_ids.contains(
+				state.getBlock().getRegistryName().toString())) {
+			ret = true;
+		}
+		
+		if (!ret) {
 			return false;
 		}
 		
@@ -416,6 +428,11 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 				if (Block.getBlockFromItem(stack.getItem()) instanceof BlockSapling) {
 					return i;
 				}
+				//苗木アイテム判定
+				if (LMRConfig.cfg_lj_sapling_item_ids.contains(
+						stack.getItem().getRegistryName().toString())) {
+					return i;
+				}
 			}
 		}
 		return -1;
@@ -433,6 +450,12 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		
 		//対象がBlockLeavesを継承したブロックであること
 		if (state.getBlock() instanceof BlockLeaves) {
+			return true;
+		}
+		
+		//葉ブロック設定
+		if (LMRConfig.cfg_lj_leaf_block_ids.contains(
+				state.getBlock().getRegistryName().toString())) {
 			return true;
 		}
 		

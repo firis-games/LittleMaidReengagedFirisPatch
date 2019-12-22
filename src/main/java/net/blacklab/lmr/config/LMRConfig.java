@@ -46,6 +46,15 @@ public class LMRConfig {
 	/** ケーキアイテムID */
 	public static List<String> cfg_cake_item_ids = null;
 	
+	/** 原木ブロックID */
+	public static List<String> cfg_lj_log_block_ids = null;
+
+	/** 葉ブロックID */
+	public static List<String> cfg_lj_leaf_block_ids = null;
+
+	/** 苗アイテムID */
+	public static List<String> cfg_lj_sapling_item_ids = null;
+	
 	/**
 	 * Config初期化
 	 */
@@ -96,8 +105,34 @@ public class LMRConfig {
 		//指定IDを砂糖として認識する
 		String[] cakeItemIds = new String[] {"minecraft:cake"};
 		cfg_cake_item_ids = Arrays.asList(cfg.getStringList("Cake", "Custom", cakeItemIds, "Set the item ID to be treated the same as maid cake."));
-
+		
+		//木こり設定
+		initLumberjack(cfg);
+		
 		cfg.save();
 	}
 	
+	/**
+	 * 木こり用設定
+	 */
+	public static void initLumberjack(Configuration cfg) {
+		
+		//指定IDを原木として認識する
+		String[] logBlockIds = new String[] {"minecraft:log"};
+		cfg_lj_log_block_ids = Arrays.asList(
+				cfg.getStringList("Log", "Lumberjack", logBlockIds, "Set the block ID to be processed in the same way as the log.")
+		);
+		
+		//指定IDを葉ブロックとして認識する
+		String[] leafBlockIds = new String[] {"minecraft:leaves"};
+		cfg_lj_leaf_block_ids = Arrays.asList(
+				cfg.getStringList("Leaf", "Lumberjack", leafBlockIds, "Set the block ID to be processed in the same way as the leaf.")
+		);
+		
+		//指定IDを苗木として認識する
+		String[] saplingItemIds = new String[] {"minecraft:sapling"};
+		cfg_lj_sapling_item_ids = Arrays.asList(
+				cfg.getStringList("Sapling", "Lumberjack", saplingItemIds, "Set the item ID to be processed in the same way as the sapling.")
+		);
+	}
 }
