@@ -151,4 +151,18 @@ littleMaidMob.chat.text.endcount=物品剩余使用次数耗尽,物品损坏.
 littleMaidMob.chat.text.timedeath=你的 %s 不能忍受来自 %s 的痛苦
 
 system.lmmnx.chat.text.newversion=检查到新版本
-system.lmmnx.chat.text.checkversion=前往: http://el-blacklab.net/
+system.lmmnx.chat.text.checkversion=前往:
+
+littleMaidMob.mode.SugarCane=甘蔗种植模式
+littleMaidMob.mode.F-SugarCane=自由-甘蔗种植模式
+littleMaidMob.mode.T-SugarCane=巡逻-甘蔗种植模式
+
+item.maid_souvenir.name=女仆的纪念品
+item.maid_souvenir.info=使女仆酱复活
+
+littleMaidMob.mode.Lumberjack=伐木模式
+littleMaidMob.mode.F-Lumberjack=自由-伐木模式
+littleMaidMob.mode.T-Lumberjack=巡逻-伐木模式
+
+item.maid_carry.name=女仆储存蛋
+item.maid_carry.info=随身携带女仆酱
