@@ -207,6 +207,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * 自由設定値。
 	 */
 	public static final DataParameter<Integer> dataWatch_Free			= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	
+	/** お座りモーションフラグ */
+	//0:通常
+	//1:お座り
+	protected static final DataParameter<Integer> dataWatch_WaitMotion	= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	
 
 //	protected long maidContractLimit;		// 契約失効日
 	protected int maidContractLimit;		// 契約期間
@@ -566,6 +572,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		defaultWidth = width;
 		defaultHeight = height;
+		
+		//お座り状態
+		dataManager.register(EntityLittleMaid.dataWatch_WaitMotion, Integer.valueOf(0));
+		
 	}
 
 	public void initModeList() {
@@ -1293,7 +1303,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		par1nbtTagCompound.setBoolean("isMadeTextureNameFlag", isMadeTextureNameFlag);
 
 		//カスタム分
-		par1nbtTagCompound.setInteger("WaitMotion", maidWaitMotion);
+		par1nbtTagCompound.setInteger("WaitMotion", dataManager.get(EntityLittleMaid.dataWatch_WaitMotion));
 		
 		NBTTagCompound prevtargettag = new NBTTagCompound();
 		par1nbtTagCompound.setTag("prevtarget", prevtargettag);
@@ -1454,7 +1464,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		modeTrigger.readFromNBT(par1nbtTagCompound);
 		
 		//カスタム分
-		maidWaitMotion = par1nbtTagCompound.getInteger("WaitMotion");
+		dataManager.set(EntityLittleMaid.dataWatch_WaitMotion, par1nbtTagCompound.getInteger("WaitMotion"));
 
 	}
 
@@ -2924,7 +2934,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								//効果音
 								playSound("entity.item.pickup");
 								
+								int maidWaitMotion = dataManager.get(EntityLittleMaid.dataWatch_WaitMotion);
 								maidWaitMotion = maidWaitMotion == 1 ? 0 : 1;
+								dataManager.set(EntityLittleMaid.dataWatch_WaitMotion, maidWaitMotion);
 								return true;
 							}
 							else if (par3ItemStack.getItem()==LMItems.REGISTERKEY &&
@@ -4181,19 +4193,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void clearMaidContractLimit() {
 		maidContractLimit = 0;
 	}
-	
-	
-	
-	//お座りモーションフラグ
-	//0:通常
-	//1:お座り
-	private int maidWaitMotion = 0;
-	
+		
 	/**
 	 * お座りモーション中か判断する
 	 * @return
 	 */
 	public boolean isMotionSitting() {
+		int maidWaitMotion = dataManager.get(EntityLittleMaid.dataWatch_WaitMotion);
 		if (this.isMaidWait()) {
 			if (maidWaitMotion == 1) {
 				return true;
