@@ -10,8 +10,8 @@ import org.apache.logging.log4j.Logger;
 
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
-import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
 import net.blacklab.lmc.common.item.LMItemMaidCarry;
+import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.config.LMRConfig;
@@ -23,7 +23,6 @@ import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.network.ProxyCommon;
-import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
@@ -149,13 +148,19 @@ public class LittleMaidReengaged {
     	public final static Item MAID_CARRY = null;
     }
 
+    /**
+     * 開発用デバッグログ
+     */
 	public static void Debug(String pText, Object... pVals) {
 		// デバッグメッセージ
-		if (LMRConfig.cfg_PrintDebugMessage || DevMode.DEVELOPMENT_DEBUG_MODE) {
+		if (LMRConfig.cfg_PrintDebugMessage) {
 			System.out.println(String.format("littleMaidMob-" + pText, pVals));
 		}
 	}
-
+	
+    /**
+     * 開発用デバッグログ
+     */
 	public static void Debug(boolean isRemote, String format, Object... pVals) {
 		Debug("Side=%s; ".concat(format), isRemote, pVals);
 	}
