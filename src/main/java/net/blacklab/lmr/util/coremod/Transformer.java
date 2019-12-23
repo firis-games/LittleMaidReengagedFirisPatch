@@ -21,7 +21,6 @@ import org.objectweb.asm.tree.TypeInsnNode;
 
 import com.google.common.collect.Lists;
 
-import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.minecraft.launchwrapper.IClassTransformer;
 
@@ -64,6 +63,7 @@ public class Transformer implements IClassTransformer, Opcodes {
 
 			put("mmmlibx/lib/MMM_EntityCaps", "net/blacklab/lmr/util/EntityCapsLiving");
 			put("littleMaidMobX/EntityCaps", "net/blacklab/lmr/util/EntityCaps");
+			put("net/blacklab/lmr/entity/EntityLittleMaid", "net/blacklab/lmr/entity/littlemaid/EntityLittleMaid");
 		}
 		private void addModelClassToTransform(String pName) {
 			put("MMM_" + pName, newPackageString + pName);
