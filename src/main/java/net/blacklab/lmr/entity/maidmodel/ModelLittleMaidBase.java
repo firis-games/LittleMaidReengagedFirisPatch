@@ -166,7 +166,7 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 		
 		//カスタム設定
 		//お座りモーションの場合はモデル側で位置を調整する
-		if (motionSitting) {
+		if (motionSitting && isRiding) {
 			mainFrame.rotationPointY += 5.00F;
 		}
 
