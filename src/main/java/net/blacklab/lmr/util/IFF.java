@@ -183,7 +183,7 @@ public class IFF {
 		if (entity == null || !(entity instanceof EntityLivingBase)) {
 			return iff_Friendry;
 		}
-		String lename = EntityList.getEntityString(entity);
+		String lename = EntityList.getKey(entity).toString();
 		String lcname = lename;
 		if (lename == null) {
 			// 名称未定義MOB、プレーヤーとか？
