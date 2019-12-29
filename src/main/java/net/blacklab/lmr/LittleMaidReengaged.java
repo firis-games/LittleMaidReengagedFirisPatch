@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
+import net.blacklab.lmc.common.helper.ReflectionHelper;
 import net.blacklab.lmc.common.item.LMItemMaidCarry;
 import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
@@ -361,8 +362,11 @@ public class LittleMaidReengaged {
 				//カスタムスポーン設定
 				if (!isSpawn) {
 					for(String spawnBiome : LMRConfig.cfg_spawn_biomes) {
+						
+						String biomeName = ReflectionHelper.getField(Biome.class, biome, "biomeName", "field_76791_y");
+						
 						//バイオーム名 or バイオームID
-						if (spawnBiome.equals(biome.getBiomeName())
+						if (spawnBiome.equals(biomeName)
 								|| spawnBiome.equals(biome.getRegistryName().toString())) {
 							isSpawn = true;
 							break;
