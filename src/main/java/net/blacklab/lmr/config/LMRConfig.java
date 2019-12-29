@@ -55,6 +55,12 @@ public class LMRConfig {
 	/** 苗アイテムID */
 	public static List<String> cfg_lj_sapling_item_ids = null;
 	
+	/** デフォルトスポーン有効化設定 */
+	public static boolean cfg_spawn_default_enable = true;
+	
+	/** カスタムスポーン バイオームID or バイオーム名 */
+	public static List<String> cfg_spawn_biomes = null;
+	
 	/**
 	 * Config初期化
 	 */
@@ -109,6 +115,9 @@ public class LMRConfig {
 		//木こり設定
 		initLumberjack(cfg);
 		
+		//メイドスポーン設定
+		initSpawnBiome(cfg);
+		
 		cfg.save();
 	}
 	
@@ -134,5 +143,25 @@ public class LMRConfig {
 		cfg_lj_sapling_item_ids = Arrays.asList(
 				cfg.getStringList("Sapling", "Lumberjack", saplingItemIds, "Set the item ID to be processed in the same way as the sapling.")
 		);
+	}
+	
+	/**
+	 * カスタムスポーン設定
+	 */
+	public static void initSpawnBiome(Configuration cfg) {
+		
+		//カスタムスポーン有効設定
+		cfg_spawn_default_enable = cfg.getBoolean("SpawnDefaultEnable", "Custom", true,
+				"Enable the default spawn for Maid.");
+		
+		//スポーンバイオーム設定
+		String[] biomeList = new String[] {
+				"Plains",
+				"minecraft:plains"};
+		cfg_spawn_biomes = Arrays.asList(
+				cfg.getStringList("SpawnBiomeList", "Custom", biomeList, 
+						"Setting for Maid custom spawn Biome Name or Biome Id.")
+		);
+		
 	}
 }

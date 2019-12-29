@@ -335,25 +335,51 @@ public class LittleMaidReengaged {
 			spawnBiomeList.add(BiomeDictionary.Type.FOREST);
 			spawnBiomeList.add(BiomeDictionary.Type.PLAINS);
 			spawnBiomeList.add(BiomeDictionary.Type.SANDY);
-			spawnBiomeList.add(BiomeDictionary.Type.BEACH);			
+			spawnBiomeList.add(BiomeDictionary.Type.BEACH);
 			
 			Iterator<Biome> biomeIterator = Biome.REGISTRY.iterator();
+			
+			//バイオーム単位でスポーン設定を行う
 			while(biomeIterator.hasNext()) {
+				
 				Biome biome = biomeIterator.next();
 				if (biome == null) continue;
 				
-				//Biomeタイプが一致した場合にスポーン設定を行う
-				for (BiomeDictionary.Type biomeType : spawnBiomeList) {
-					if (BiomeDictionary.hasType(biome, biomeType)) {
-						EntityRegistry.addSpawn(EntityLittleMaid.class, 
-								LMRConfig.cfg_spawnWeight, 
-								LMRConfig.cfg_minGroupSize, 
-								LMRConfig.cfg_maxGroupSize, 
-								EnumCreatureType.CREATURE, biome);
-						Debug("Registering maids to spawn in " + biome);
-						break;
+				boolean isSpawn = false;
+				
+				//デフォルトスポーン設定
+				if (!isSpawn && LMRConfig.cfg_spawn_default_enable) {
+					//Biomeタイプが一致した場合にスポーン設定を行う
+					for (BiomeDictionary.Type biomeType : spawnBiomeList) {
+						if (BiomeDictionary.hasType(biome, biomeType)) {
+							isSpawn = true;
+							break;
+						}
 					}
 				}
+				
+				//カスタムスポーン設定
+				if (!isSpawn) {
+					for(String spawnBiome : LMRConfig.cfg_spawn_biomes) {
+						//バイオーム名 or バイオームID
+						if (spawnBiome.equals(biome.getBiomeName())
+								|| spawnBiome.equals(biome.getRegistryName().toString())) {
+							isSpawn = true;
+							break;
+						}
+					}
+				}
+				
+				//スポーン対象の場合はスポーン設定
+				if (isSpawn) {
+					EntityRegistry.addSpawn(EntityLittleMaid.class, 
+							LMRConfig.cfg_spawnWeight, 
+							LMRConfig.cfg_minGroupSize, 
+							LMRConfig.cfg_maxGroupSize, 
+							EnumCreatureType.CREATURE, biome);
+					Debug("Registering maids to spawn in " + biome);
+				}
+				
 			}
 		}
 
