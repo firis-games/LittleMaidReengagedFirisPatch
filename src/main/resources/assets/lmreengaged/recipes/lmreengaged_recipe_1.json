@@ -1,19 +1,23 @@
 {
 	"type": "forge:ore_shaped",
 	"pattern": [
-		"scs",
-		"sds",
-		"scs"
+		"ses",
+		"dcd",
+		"ses"
 	],
 	"key": {
 		"s": {
 			"item": "minecraft:sugar"
 		},
 		"d": {
-			"item": "minecraft:diamond"
+			"item": "minecraft:dye",
+			"data": 4
 		},
 		"c": {
 			"item": "minecraft:cake"
+		},
+		"e": {
+			"item": "minecraft:egg"
 		}
 	},
 	"result": {
