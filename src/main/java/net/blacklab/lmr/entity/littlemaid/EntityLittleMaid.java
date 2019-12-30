@@ -4238,4 +4238,51 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if (this.isMotionSitting()) return true;
 		return this.isRiding();
 	}
+	
+	
+	/**
+	 * 水中で息継ぎできるかの判定
+	 * のはず
+	 */
+	@Override
+	public boolean canBreatheUnderwater()
+    {
+		//水上歩行が有効化されている場合はtrueとする
+        return LMRConfig.cfg_test_water_walking;
+    }
+	
+	/**
+	 * メイドさんの移動制御処理
+	 * 
+	 * 水上にいる場合も地上と同じ扱いにする処理を試験的に追加する
+	 */
+	@Override
+    public void travel(float strafe, float vertical, float forward) {
+		
+		//水上歩行有効化（設定が有効かつ水中判定の場合）
+		if (LMRConfig.cfg_test_water_walking && this.inWater) {
+			//変数保存
+			boolean onGround = this.onGround;
+			boolean inWater = this.inWater;
+			
+			//状態の強制書き換え
+			this.onGround = true;
+			this.inWater = false;
+			
+			super.travel(strafe, vertical, forward);
+
+			//状態の変数復元
+			this.onGround = onGround;
+			this.inWater = inWater;
+
+			//浮力を与える
+			this.motionY = 0.05D;
+			
+		//通常状態
+		} else {
+			super.travel(strafe, vertical, forward);
+		}
+		
+		
+	}
 }

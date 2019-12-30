@@ -1,5 +1,6 @@
 package net.blacklab.lmr.entity.ai;
 
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
@@ -81,8 +82,10 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAILM {
 		if (theMaid.isSitting()) {
 			return;
 		}
+		
 		// 指定距離以上ならダッシュ
-		if(!theMaid.isInWater()){
+		// 水上歩行術の場合は水中でも同じ扱いとする
+		if(!theMaid.isInWater() || LMRConfig.cfg_test_water_walking){
 			theMaid.setSprinting(toDistance > sprintDist);
 			if (--field_48310_h > 0) {
 				return;

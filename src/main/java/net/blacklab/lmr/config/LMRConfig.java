@@ -118,6 +118,9 @@ public class LMRConfig {
 		//メイドスポーン設定
 		initSpawnBiome(cfg);
 		
+		//試験機能
+		initTest(cfg);
+		
 		cfg.save();
 	}
 	
@@ -164,4 +167,23 @@ public class LMRConfig {
 		);
 		
 	}
+	
+	
+	/** 試験機能 ******************************/
+	/** 水上歩行術 */
+	public static boolean cfg_test_water_walking  = true;
+	
+	/**
+	 * 試験的に実装した機能の設定
+	 */
+	public static void initTest(Configuration cfg) {
+		
+		//水上歩行術
+		cfg_test_water_walking = cfg.getBoolean("MaidWaterWalking", "Test", false,
+				"Enable Maid's water walking technique.");
+		
+	}
+	
+	/****************************************/
+	
 }
