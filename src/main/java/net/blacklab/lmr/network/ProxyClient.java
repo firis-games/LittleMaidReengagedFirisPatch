@@ -1,5 +1,8 @@
 package net.blacklab.lmr.network;
 
+import java.util.Map;
+
+import net.blacklab.lmc.client.layer.LMCRidingMaidLayer;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
@@ -18,6 +21,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleItemPickup;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -264,5 +268,22 @@ public class ProxyClient extends ProxyCommon
                 		d2, d0, d1);
             }
 		}
+	}
+	
+	/**
+	 * プレイヤーレイヤー登録
+	 */
+	@Override
+	public void initLayerRenderer() {
+		
+		Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().getSkinMap();
+		
+		RenderPlayer render;
+		render = skinMap.get("default");
+		render.addLayer(new LMCRidingMaidLayer());
+
+		render = skinMap.get("slim");
+		render.addLayer(new LMCRidingMaidLayer());
+		
 	}
 }

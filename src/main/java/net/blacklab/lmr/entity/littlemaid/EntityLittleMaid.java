@@ -4235,6 +4235,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * @return
 	 */
 	public boolean isRidingRender() {
+		if (this.clientRidingRender) return true;
 		if (this.isMotionSitting()) return true;
 		return this.isRiding();
 	}
@@ -4282,7 +4283,20 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		} else {
 			super.travel(strafe, vertical, forward);
 		}
-		
-		
+	}
+	
+	
+	/**
+	 * クライアント側から設定するモーション値
+	 */
+	protected boolean clientRidingRender = false;
+	
+	/**
+	 * クライアント側による強制設定
+	 * 騎乗処理からのみ呼び出される想定
+	 */
+	@SideOnly(Side.CLIENT)
+	public void setClientRidingRender(boolean clientRidingRender) {
+		this.clientRidingRender = clientRidingRender;
 	}
 }

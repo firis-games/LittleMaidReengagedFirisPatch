@@ -311,6 +311,9 @@ public class LittleMaidReengaged {
 
 		MinecraftForge.EVENT_BUS.register(new EventHookLMRE());
 		VEventBus.instance.registerListener(new EventHookLMRE());
+		
+		//レイヤー登録
+		proxy.initLayerRenderer();
 	}
 
 	// public static ProxyClient.CountThread countThread;

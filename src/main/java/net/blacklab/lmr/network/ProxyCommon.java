@@ -30,4 +30,7 @@ public class ProxyCommon
 	}
 	
 	public void spawnParticle(BlockPos pos, int spawnNo) {}
+	
+	public void initLayerRenderer() {}
+	
 }
