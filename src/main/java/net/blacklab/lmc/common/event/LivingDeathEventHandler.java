@@ -8,6 +8,7 @@ import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -39,6 +40,11 @@ public class LivingDeathEventHandler {
 			
 			//炎上を消去
 			entityMaid.extinguish();
+			
+			//ポーション効果をすべて無効化
+			for (PotionEffect effect : entityMaid.getActivePotionEffects()) {
+				entityMaid.removePotionEffect(effect.getPotion());
+			}
 
 			//メイドの土産
 			ItemStack maidSouvenir = LittleMaidHelper.getItemStackFromEntity(entityMaid, new ItemStack(LMItems.MAID_SOUVENIR));
