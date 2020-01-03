@@ -19,6 +19,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -365,26 +366,18 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		BlockPos pos = new BlockPos(px, py, pz);
 		IBlockState state = owner.world.getBlockState(pos);
 		
-		boolean ret = false;
-		//対象が原木を継承したブロックであること
-		if (state.getBlock() instanceof BlockLog) {
-			ret = true;
-		}
-		
-		//原木ブロック設定
-		if (!ret && LMRConfig.cfg_lj_log_block_ids.contains(
-				state.getBlock().getRegistryName().toString())) {
-			ret = true;
-		}
-		
+		//原木ブロックチェック
+		boolean ret = isLogBlock(state.getBlock());
 		if (!ret) {
 			return false;
 		}
 		
 		//オフハンドアイテム
 		ItemStack logStack = owner.getHeldItemOffhand();
+		ret = isLogBlock(Block.getBlockFromItem(logStack.getItem()));
+		
 		//カスタム動作はなし
-		if (logStack.isEmpty()) {
+		if (!ret) {
 			return true;
 		}
 
@@ -397,6 +390,27 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		
 		return false;
 
+	}
+	
+	/**
+	 * 対象ブロックが原木判定か確認する
+	 */
+	public boolean isLogBlock(Block block) {
+		
+		boolean ret = false;
+		
+		//対象が原木を継承したブロックであること
+		if (block instanceof BlockLog) {
+			ret = true;
+		}
+		
+		//原木ブロック設定
+		if (!ret && LMRConfig.cfg_lj_log_block_ids.contains(
+				block.getRegistryName().toString())) {
+			ret = true;
+		}
+		
+		return ret;
 	}
 	
 	/**
@@ -421,21 +435,62 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 	 * @return
 	 */
 	private int getSaplingItemStackIndex() {
+		
+		//例外処理追加
+		//オフハンドに原木 or 苗木 でないものを持っている場合は
+		//植林を行わない
+		ItemStack offStack = owner.getHeldItemOffhand();
+		boolean isOffSapling = false;
+		if (!offStack.isEmpty()) {
+			isOffSapling = isSaplingItem(offStack.getItem());
+			if (!isLogBlock(Block.getBlockFromItem(offStack.getItem()))
+					&& !isOffSapling) {
+				return -1;
+			}
+		}
+		
 		for (int i = 0; i < owner.maidInventory.getSizeInventory(); i++) {
 			ItemStack stack = owner.maidInventory.getStackInSlot(i);
 			//決めうちで判断
 			if (!stack.isEmpty()) {
-				if (Block.getBlockFromItem(stack.getItem()) instanceof BlockSapling) {
-					return i;
-				}
-				//苗木アイテム判定
-				if (LMRConfig.cfg_lj_sapling_item_ids.contains(
-						stack.getItem().getRegistryName().toString())) {
-					return i;
+				
+				if (isOffSapling) {
+					//カスタム苗木判定
+					if (stack.getItem() == offStack.getItem()
+							&& stack.getMetadata() == offStack.getMetadata()) {
+						return i;
+					}
+				}else{
+					//標準苗木判定
+					if (isSaplingItem(stack.getItem())) {
+						return i;
+					}
 				}
 			}
 		}
 		return -1;
+	}
+	
+	/**
+	 * 対象アイテムが苗木判定か確認する
+	 */
+	private boolean isSaplingItem(Item item) {
+		
+		//nullの場合無効
+		if (item == null) return false;
+		
+		//苗木
+		if (Block.getBlockFromItem(item) instanceof BlockSapling) {
+			return true;
+		}
+		
+		//苗木アイテム判定
+		if (LMRConfig.cfg_lj_sapling_item_ids.contains(
+				item.getRegistryName().toString())) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
