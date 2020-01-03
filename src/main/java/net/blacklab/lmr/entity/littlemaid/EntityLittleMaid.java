@@ -2956,7 +2956,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								return true;
 							}
 							//バケツのみ
-							else if (par3ItemStack.getItem() == Items.BUCKET) {
+							else if (LMRConfig.cfg_custom_maid_milk
+									&& par3ItemStack.getItem() == Items.BUCKET) {
 								
 								//ハートの表示
 								getEntityWorld().setEntityState(this, (byte)7);

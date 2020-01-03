@@ -61,6 +61,9 @@ public class LMRConfig {
 	/** カスタムスポーン バイオームID or バイオーム名 */
 	public static List<String> cfg_spawn_biomes = null;
 	
+	/** メイドミルク */
+	public static boolean cfg_custom_maid_milk = false;
+	
 	/**
 	 * Config初期化
 	 */
@@ -117,6 +120,10 @@ public class LMRConfig {
 		
 		//メイドスポーン設定
 		initSpawnBiome(cfg);
+		
+		//メイドミルクの設定
+		cfg_custom_maid_milk = cfg.getBoolean("MaidMilk", "Custom", false,
+				"Enable maid milk.");
 		
 		//試験機能
 		initTest(cfg);
