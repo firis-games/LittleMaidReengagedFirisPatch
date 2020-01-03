@@ -2939,6 +2939,22 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								dataManager.set(EntityLittleMaid.dataWatch_WaitMotion, maidWaitMotion);
 								return true;
 							}
+							//ミルク
+							else if (par3ItemStack.getItem() == Items.MILK_BUCKET) {
+								
+								//バフデバフを全てクリア
+								//♪の表示
+								getEntityWorld().setEntityState(this, (byte)11);
+								
+								//効果音
+								playSound("entity.item.pickup");
+								
+								//ポーション効果をリセット
+								this.clearActivePotions();
+								par1EntityPlayer.setHeldItem(hand, new ItemStack(Items.BUCKET));
+								
+								return true;
+							}
 							else if (par3ItemStack.getItem()==LMItems.REGISTERKEY &&
 									!par1EntityPlayer.getEntityWorld().isRemote) {
 								// トリガーセット
