@@ -2,6 +2,7 @@ package net.blacklab.lmc.client.event;
 
 import net.blacklab.lmc.common.helper.LittleMaidHelper;
 import net.blacklab.lmc.common.item.LMItemMaidCarry;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -67,6 +68,12 @@ public class RenderPlayerEventHandler {
 		
 		//メイドさん位置調整
 		GlStateManager.translate(0, 0.9F, -0.35F);
+		
+		
+		//微調整 PFLMの標準設定は0.5F
+		//GlStateManager.translate(0, -0.5F, 0);
+		GlStateManager.translate(0, LMRConfig.cfg_custom_riding_height_adjustment, 0);
+		
 		
 		//スニーク位置調整
 		rotateSneaking(player);

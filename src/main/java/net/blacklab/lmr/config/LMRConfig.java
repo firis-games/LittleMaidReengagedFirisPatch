@@ -64,6 +64,9 @@ public class LMRConfig {
 	/** メイドミルク */
 	public static boolean cfg_custom_maid_milk = false;
 	
+	/** 騎乗高さ調整 */
+	public static float cfg_custom_riding_height_adjustment = 0.0F;
+	
 	/**
 	 * Config初期化
 	 */
@@ -124,6 +127,10 @@ public class LMRConfig {
 		//メイドミルクの設定
 		cfg_custom_maid_milk = cfg.getBoolean("MaidMilk", "Custom", false,
 				"Enable maid milk.");
+		
+		//騎乗メイドの高さ設定
+		cfg_custom_riding_height_adjustment = cfg.getFloat("RidingHeightAdjustment", "Custom", 0.0F, -2.0F, 2.0F, 
+				"Riding mode height adjustment.Standard setting of PFLM is -0.5.");
 		
 		//試験機能
 		initTest(cfg);
