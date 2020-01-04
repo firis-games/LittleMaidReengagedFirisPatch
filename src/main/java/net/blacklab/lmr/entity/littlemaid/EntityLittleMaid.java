@@ -4335,4 +4335,33 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void setClientRidingRender(boolean clientRidingRender) {
 		this.clientRidingRender = clientRidingRender;
 	}
+	
+	/**
+	 * クライアント側から設定する擬似騎乗処理用
+	 */
+	private EntityPlayer clinetRidingEntity = null;
+	
+	/**
+	 * クライアント側からのみ擬似騎乗設定を行える
+	 */
+	@SideOnly(Side.CLIENT)
+	public void setClinetRidingEntity(EntityPlayer clinetRidingEntity) {
+		this.clinetRidingEntity = clinetRidingEntity;
+	}
+	
+	@Override
+	public Entity getRidingEntity() {
+		if (clinetRidingEntity != null) return clinetRidingEntity;
+        return super.getRidingEntity();
+    }
+	
+	/**
+	 * 擬似騎乗の場合はisRidingRenderで制御を行うためfalseを返す
+	 * 通常騎乗扱いにすると向きによって体の方向がぶれるため
+	 */
+	@Override
+	public boolean isRiding() {
+		if (clinetRidingEntity != null) return false;
+		return super.isRiding();
+	}
 }

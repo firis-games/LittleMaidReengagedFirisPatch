@@ -1,8 +1,6 @@
 package net.blacklab.lmr.network;
 
-import java.util.Map;
-
-import net.blacklab.lmc.client.layer.LMCRidingMaidLayer;
+import net.blacklab.lmc.client.event.RenderPlayerEventHandler;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
@@ -21,7 +19,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleItemPickup;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -32,6 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 /**
@@ -271,19 +269,13 @@ public class ProxyClient extends ProxyCommon
 	}
 	
 	/**
-	 * プレイヤーレイヤー登録
+	 * 描画イベントの登録
 	 */
 	@Override
-	public void initLayerRenderer() {
+	public void initClientRendererEventRegister() {
 		
-		Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().getSkinMap();
-		
-		RenderPlayer render;
-		render = skinMap.get("default");
-		render.addLayer(new LMCRidingMaidLayer());
-
-		render = skinMap.get("slim");
-		render.addLayer(new LMCRidingMaidLayer());
+		//擬似騎乗描画用
+		MinecraftForge.EVENT_BUS.register(new RenderPlayerEventHandler());
 		
 	}
 }

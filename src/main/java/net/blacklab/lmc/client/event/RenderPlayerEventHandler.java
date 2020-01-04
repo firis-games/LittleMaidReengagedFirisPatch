@@ -1,27 +1,36 @@
-package net.blacklab.lmc.client.layer;
+package net.blacklab.lmc.client.event;
 
 import net.blacklab.lmc.common.helper.LittleMaidHelper;
 import net.blacklab.lmc.common.item.LMItemMaidCarry;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * メイド騎乗用
- * @author computer
- *
- */
-public final class LMCRidingMaidLayer implements LayerRenderer<EntityPlayer> {
+public class RenderPlayerEventHandler {
 	
+	/**
+	 * プレイヤー描画
+	 * @param event
+	 */
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onRenderPlayerEventPost(RenderPlayerEvent.Post event) {
+		this.doRender(event.getEntityPlayer(), event.getPartialRenderTick());
+	}
+
 	protected EntityLittleMaid maid = null;
 	
-	@Override
-	public void doRenderLayer(EntityPlayer player, float limbSwing, float limbSwingAmount,
-			float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	//左上スロット
+	protected static final int cfgPlayerSlotIndex = 9;
+	
+	public void doRender(EntityPlayer player, float partialticks) {
 		
 		if (!this.isRender(player)) {
 			maid = null;
@@ -30,36 +39,42 @@ public final class LMCRidingMaidLayer implements LayerRenderer<EntityPlayer> {
 		
 		//リトルメイド取得
 		if (maid == null) {
-			ItemStack stack = player.inventory.getStackInSlot(9);
+			ItemStack stack = player.inventory.getStackInSlot(cfgPlayerSlotIndex);
 			Entity entity = LittleMaidHelper.spawnEntityFromItemStack(stack, player.getEntityWorld(), 0, 0, 0);
 			if (entity != null && entity instanceof EntityLittleMaid) {
 				maid = (EntityLittleMaid) entity;
 				
+				//擬似騎乗状態を設定
 				maid.setMaidWait(false);
 				maid.setClientRidingRender(true);
+				maid.setClinetRidingEntity(player);
 			}
 		}
 		
 		if (maid == null) return;
 		
+		//アニメーション（目パチ用）
+		maid.ticksExisted = player.ticksExisted;
+		
 		GlStateManager.pushMatrix();
 		
-		//ブロックを描画
+		//描画処理
 		//========================================
+		//方向をプレイヤーに合わせる
+		float rotation = 0.0F;
+		rotation = -(player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialticks);
+		GlStateManager.rotate(rotation, 0.0F, 1.0f, 0.0F);
+		
+		//メイドさん位置調整
+		GlStateManager.translate(0, 0.9F, -0.35F);
+		
 		//スニーク位置調整
 		rotateSneaking(player);
 		
-		//GlStateManager.scale(0.75F, 0.75F, 0.75F);
-		//GlStateManager.rotate(90, 0, 1, 0);
-		
-		GlStateManager.rotate(180, 1, 0, 0);
-		GlStateManager.translate(0, -0.5F, -0.35F);
-		
-		
-		//GlStateManager.translate(-1F, -0.75F, 0.5F);
-		
+		//メイドさん描画
 		float f = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw);
 		Minecraft.getMinecraft().getRenderManager().renderEntity(maid, 0.0D, 0.0D, 0.0D, f, 0.0F, true);
+		Minecraft.getMinecraft().getRenderManager().setRenderShadow(true);
 		//========================================
 		
 		GlStateManager.popMatrix();
@@ -74,19 +89,14 @@ public final class LMCRidingMaidLayer implements LayerRenderer<EntityPlayer> {
 		
 		boolean ret = false;
 		
-		//左上のスロットをチェックする
-		ItemStack stack = player.inventory.getStackInSlot(9);
+		//メイドキャリーのチェック
+		ItemStack stack = player.inventory.getStackInSlot(cfgPlayerSlotIndex);
 		if (stack.getItem() instanceof LMItemMaidCarry
 				&& stack.hasTagCompound()) {
 			ret = true;
 		}
 		
 		return ret;
-	}
-	
-	@Override
-	public boolean shouldCombineTextures() {
-		return false;
 	}
 	
 	/**
@@ -96,9 +106,9 @@ public final class LMCRidingMaidLayer implements LayerRenderer<EntityPlayer> {
 	private void rotateSneaking(EntityPlayer player) {
 		
 		if (player.isSneaking()) {
-			GlStateManager.translate(0F, 0.2F, 0F);
+			GlStateManager.translate(0F, -0.15F, -0.2F);
 			GlStateManager.rotate(90F / (float) Math.PI, 1.0F, 0.0F, 0.0F);
 		}
 	}
-
+	
 }
