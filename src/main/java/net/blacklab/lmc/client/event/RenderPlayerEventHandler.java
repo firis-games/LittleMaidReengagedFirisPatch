@@ -23,7 +23,11 @@ public class RenderPlayerEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onRenderPlayerEventPost(RenderPlayerEvent.Post event) {
+		
+		if (event.getEntityPlayer() == null) return;
+		
 		this.doRender(event.getEntityPlayer(), event.getPartialRenderTick());
+		
 	}
 
 	protected EntityLittleMaid maid = null;
@@ -33,7 +37,7 @@ public class RenderPlayerEventHandler {
 	
 	public void doRender(EntityPlayer player, float partialticks) {
 		
-		if (!this.isRender(player)) {
+		if (!this.isRender(player) || player.isRiding()) {
 			maid = null;
 			return;
 		}
