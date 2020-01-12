@@ -415,6 +415,17 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		}
 		return -1;
 	}
+	
+	public int getInventorySlotContainItemId(String itemId) {
+		// 指定されたアイテムクラスの物を持っていれば返す
+		for (int j = 0; j < getSizeInventory(); j++) {
+			if (!getStackInSlot(j).isEmpty()
+					&& getStackInSlot(j).getItem().getRegistryName().toString().equals(itemId)) {
+				return j;
+			}
+		}
+		return -1;
+	}
 
 	public int getSmeltingItem() {
 		// 調理可能アイテムを返す

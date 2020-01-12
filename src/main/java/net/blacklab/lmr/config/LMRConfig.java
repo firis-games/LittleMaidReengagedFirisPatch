@@ -67,6 +67,9 @@ public class LMRConfig {
 	/** 騎乗高さ調整 */
 	public static float cfg_custom_riding_height_adjustment = 0.0F;
 	
+	/** 矢（弾丸）アイテムID */
+	public static List<String> cfg_ac_arrow_item_ids = null;
+	
 	/**
 	 * Config初期化
 	 */
@@ -132,6 +135,9 @@ public class LMRConfig {
 		cfg_custom_riding_height_adjustment = cfg.getFloat("RidingHeightAdjustment", "Custom", 0.0F, -2.0F, 2.0F, 
 				"Riding mode height adjustment.Standard setting of PFLM is -0.5.");
 		
+		//アーチャー設定
+		initArcher(cfg);
+		
 		//試験機能
 		initTest(cfg);
 		
@@ -178,6 +184,20 @@ public class LMRConfig {
 		cfg_spawn_biomes = Arrays.asList(
 				cfg.getStringList("SpawnBiomeList", "Custom", biomeList, 
 						"Setting for Maid custom spawn Biome Name or Biome Id.")
+		);
+		
+	}
+	
+	
+	/**
+	 * アーチャー用設定
+	 */
+	public static void initArcher(Configuration cfg) {
+		
+		//指定IDを矢として認識する
+		String[] arrowItemIds = new String[] {"minecraft:arrow"};
+		cfg_ac_arrow_item_ids = Arrays.asList(
+				cfg.getStringList("Arrow", "Archer", arrowItemIds, "Set the item ID to be processed in the same way as the arrow or bullet.")
 		);
 		
 	}

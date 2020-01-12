@@ -6,6 +6,7 @@ import java.util.List;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -180,7 +181,7 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	@Override
 	public boolean checkEntity(String pMode, Entity pEntity) {
-		if (owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0) return false;
+		if (!isInventoryArrowItem()) return false;
 		if (!MaidHelper.isTargetReachable(owner, pEntity, 18 * 18)) return false;
 
 		return !owner.getIFF(pEntity);
@@ -200,7 +201,7 @@ public class EntityMode_Archer extends EntityModeBase {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void updateAITick(String pMode) {
-		if (owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0) {
+		if (!isInventoryArrowItem()) {
 			owner.setAttackTarget(null);
 		}
 
@@ -273,6 +274,24 @@ public class EntityMode_Archer extends EntityModeBase {
 	@Override
 	public double getFreedomTrackingRangeSq() {
 		return 21 * 21;
+	}
+	
+	/**
+	 * 対象アイテムが苗木判定か確認する
+	 */
+	private boolean isInventoryArrowItem() {
+		
+		//矢ｸﾗｽ判定
+		if (!(owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0)) {
+			return true;
+		}
+		//ItemIdで判定
+		for (String itemId : LMRConfig.cfg_ac_arrow_item_ids) {
+			if (!(owner.maidInventory.getInventorySlotContainItemId(itemId) < 0)) {
+				return true;
+			}			
+		}
+		return false;
 	}
 
 }
