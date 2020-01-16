@@ -155,3 +155,6 @@ littleMaidMob.mode.T-Lumberjack=Lumberjack Maid(Trace RS)
 item.maid_carry.name=Maid Carry
 item.maid_carry.info=Maid rest room
 
+item.maid_sugar.name=Maid Sugar
+item.maid_sugar.info=I can not eat
+

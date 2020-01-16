@@ -152,3 +152,6 @@ littleMaidMob.mode.T-Lumberjack=木こりメイド(赤石)
 item.maid_carry.name=メイドキャリー
 item.maid_carry.info=メイドさんの休憩所
 
+item.maid_sugar.name=メイドシュガー
+item.maid_sugar.info=たべられません
+

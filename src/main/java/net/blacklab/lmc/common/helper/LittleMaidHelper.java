@@ -26,19 +26,9 @@ public class LittleMaidHelper {
 		if (!(entityliving instanceof EntityLittleMaid)) return stack;
 		
 		stack = spawnItem;
-		
-		NBTTagCompound entityNBT = new NBTTagCompound();
-		entityliving.writeToNBT(entityNBT);
-    	
-    	//一部パラメータをリセット
-    	//被ダメ無敵時間
-		entityNBT.setShort("HurtTime", (short) 0);
-		//モーメント
-		entityNBT.setTag("Motion", newDoubleNBTList(0.0D, 0.0D, 0.0D));
-		//落下距離
-		entityNBT.setFloat("FallDistance", 0.0F);
-		//EntityId
-		entityNBT.setString("id", getEntityId(entityliving));
+
+		//EntityLivingをNBT化
+		NBTTagCompound entityNBT = getNBTTagFromEntityLiving(entityliving);
 
 		NBTTagCompound stackNBT = new NBTTagCompound();
 		stackNBT.setTag("Mob", entityNBT);
@@ -56,6 +46,35 @@ public class LittleMaidHelper {
 		
 		//メイド名
 		stack.getTagCompound().setString("maid_name", entityMaid.getName());
+		
+		return stack;
+	}
+	
+	/**
+	 * メイドさんNBTからスポーンアイテムを生成
+	 */
+	public static ItemStack getItemStackFromNBT(NBTTagCompound entityNBT, ItemStack spawnItem) {
+		
+		ItemStack stack = spawnItem;
+		
+		NBTTagCompound stackNBT = new NBTTagCompound();
+		stackNBT.setTag("Mob", entityNBT);
+		
+		stack.setTagCompound(stackNBT);
+		
+		/*
+		//Tooltip表示用設定追加
+		EntityLittleMaid entityMaid = (EntityLittleMaid)entityliving;
+		//オーナー名
+		EntityPlayer player = (EntityPlayer) entityMaid.getOwner();
+		if (player != null) {
+			String playerName = player.getName();
+			stack.getTagCompound().setString("maid_owner", playerName);
+		}
+		
+		//メイド名
+		stack.getTagCompound().setString("maid_name", entityMaid.getName());
+		*/
 		
 		return stack;
 	}
@@ -98,7 +117,7 @@ public class LittleMaidHelper {
 	/**
 	 * EntityLivingからMobIdを取得する
 	 */
-	protected static String getEntityId(EntityLiving entityliving) {
+	public static String getEntityId(EntityLiving entityliving) {
 		String mobid = "";
 		net.minecraftforge.fml.common.registry.EntityEntry entry = 
 				net.minecraftforge.fml.common.registry.EntityRegistry.getEntry(entityliving.getClass());
@@ -108,8 +127,26 @@ public class LittleMaidHelper {
 		return mobid;
 	}
 	
-	
-	
-	
-	
+	/**
+	 * EntityLivingからNBTを生成する
+	 * @return
+	 */
+	public static NBTTagCompound getNBTTagFromEntityLiving(EntityLiving entityliving) {
+		
+		//NBTタグ生成
+		NBTTagCompound entityNBT = new NBTTagCompound();
+		entityliving.writeToNBT(entityNBT);
+    	
+    	//一部パラメータをリセット
+    	//被ダメ無敵時間
+		entityNBT.setShort("HurtTime", (short) 0);
+		//モーメント
+		entityNBT.setTag("Motion", newDoubleNBTList(0.0D, 0.0D, 0.0D));
+		//落下距離
+		entityNBT.setFloat("FallDistance", 0.0F);
+		//EntityId
+		entityNBT.setString("id", getEntityId(entityliving));
+		
+		return entityNBT;
+	}
 }

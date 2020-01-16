@@ -13,6 +13,7 @@ import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.ReflectionHelper;
 import net.blacklab.lmc.common.item.LMItemMaidCarry;
 import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
+import net.blacklab.lmc.common.item.LMItemMaidSugar;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.config.LMRConfig;
@@ -147,6 +148,7 @@ public class LittleMaidReengaged {
     	public final static ItemMaidPorter MAIDPORTER = null;
     	public final static Item MAID_SOUVENIR = null;
     	public final static Item MAID_CARRY = null;
+    	public final static Item MAID_SUGAR = null;
     }
 
     /**
@@ -428,6 +430,11 @@ public class LittleMaidReengaged {
     			.setRegistryName(DOMAIN, "maid_carry")
     			.setUnlocalizedName("maid_carry"));
     	
+    	//メイドシュガー
+    	event.getRegistry().register(new LMItemMaidSugar()
+    			.setRegistryName(DOMAIN, "maid_sugar")
+    			.setUnlocalizedName("maid_sugar"));
+    	
 	}
 	
     @SubscribeEvent
@@ -444,6 +451,10 @@ public class LittleMaidReengaged {
 		// メイドキャリー
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_CARRY, 0,
 				new ModelResourceLocation(LMItems.MAID_CARRY.getRegistryName(), "inventory"));
+		
+		// メイドシュガー
+		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_SUGAR, 0,
+				new ModelResourceLocation(LMItems.MAID_SUGAR.getRegistryName(), "inventory"));
 		
     }
     

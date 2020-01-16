@@ -3125,25 +3125,29 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 						deathTime = 0;
 						if (!getEntityWorld().isRemote) {
+							
+							//初回契約メソッドをまとめる
+							this.setFirstContract(par1EntityPlayer);
+							
 							//進捗
-							AchievementsLMRE.grantAC(par1EntityPlayer, AC.Contract);
-							setContract(true);
-							getNavigator().clearPath();
-							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
+							//AchievementsLMRE.grantAC(par1EntityPlayer, AC.Contract);
+							//setContract(true);
+							//getNavigator().clearPath();
+							//OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
 
 							playLittleMaidSound(EnumSound.getCake, true);
 //							playLittleMaidSound(LMM_EnumSound.getCake, true);
 //							playTameEffect(true);
 							getEntityWorld().setEntityState(this, (byte)7);
-							// 契約記念日と、初期契約期間
-							maidContractLimit = (24000 * 7);
-							maidAnniversary = getEntityWorld().getTotalWorldTime();
+							//// 契約記念日と、初期契約期間
+							//maidContractLimit = (24000 * 7);
+							//maidAnniversary = getEntityWorld().getTotalWorldTime();
 
-							setHealth(20);
-							setPlayingRole(PlayRole.NOTPLAYING);
-							setMaidWait(false);
-							setFreedom(false);
-							setMaidMode(EntityMode_Basic.mmode_Escort);
+							//setHealth(20);
+							//setPlayingRole(PlayRole.NOTPLAYING);
+							//setMaidWait(false);
+							//setFreedom(false);
+							//setMaidMode(EntityMode_Basic.mmode_Escort);
 							// テクスチャのアップデート:いらん？
 //							LMM_Net.sendToAllEClient(this, new byte[] {LMM_Net.LMN_Client_UpdateTexture, 0, 0, 0, 0});
 
@@ -3218,6 +3222,35 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void setContract(boolean flag) {
 		super.setTamed(flag);
 		textureData.setContract(flag);
+	}
+	/**
+	 * 初回契約用メソッド
+	 * 
+	 * エフェクトは実行しない
+	 */
+	public void setFirstContract(EntityPlayer player) {
+		boolean contractFlag = true;
+		super.setTamed(contractFlag);
+		textureData.setContract(contractFlag);
+		
+		//初期設定
+		
+		//進捗設定
+		AchievementsLMRE.grantAC(player, AC.Contract);
+		
+		setContract(true);
+		getNavigator().clearPath();
+		OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(player));
+
+		// 契約記念日と、初期契約期間
+		maidContractLimit = (24000 * 7);
+		maidAnniversary = getEntityWorld().getTotalWorldTime();
+
+		setHealth(20);
+		setPlayingRole(PlayRole.NOTPLAYING);
+		setMaidWait(false);
+		setFreedom(false);
+		setMaidMode(EntityMode_Basic.mmode_Escort);		
 	}
 
 	/**
