@@ -1,0 +1,25 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+	{
+		"item": "minecraft:sugar"
+	},
+	{
+		"item": "minecraft:sugar"
+	},
+	{
+		"item": "minecraft:sugar"
+	},
+		{
+		"item": "minecraft:sugar"
+	},
+	{
+		"item": "minecraft:dye",
+		"data": 5
+	}
+	],
+	"result": {
+		"item": "lmreengaged:maid_sugar",
+		"count": 4
+	}
+}
