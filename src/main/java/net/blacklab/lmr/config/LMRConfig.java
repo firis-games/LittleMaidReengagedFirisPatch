@@ -67,6 +67,9 @@ public class LMRConfig {
 	/** 騎乗高さ調整 */
 	public static float cfg_custom_riding_height_adjustment = 0.0F;
 	
+	/** 弓（銃）アイテムID */
+	public static List<String> cfg_ac_bow_item_ids = null;
+	
 	/** 矢（弾丸）アイテムID */
 	public static List<String> cfg_ac_arrow_item_ids = null;
 	
@@ -201,6 +204,12 @@ public class LMRConfig {
 	 * アーチャー用設定
 	 */
 	public static void initArcher(Configuration cfg) {
+		
+		//指定IDを弓として認識する
+		String[] bowItemIds = new String[] {"minecraft:bow"};
+		cfg_ac_bow_item_ids = Arrays.asList(
+				cfg.getStringList("Bow", "Archer", bowItemIds, "Set the item ID to be processed in the same way as the Bow or Gun.")
+		);
 		
 		//指定IDを矢として認識する
 		String[] arrowItemIds = new String[] {"minecraft:arrow"};
