@@ -15,8 +15,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -117,7 +118,8 @@ public class LMItemMaidSugar extends Item {
 		}
 		
 		//動物のメイド変身
-		if (animalMaidTag != null && isAnimalMaid(living, player)) {
+		//タグを持っている場合は無条件でアニマル形態と判断する
+		if (animalMaidTag != null) {
 			
 			//メイドさんを生成する
 			EntityLittleMaid littleMaid = (EntityLittleMaid) EntityList.createEntityFromNBT(animalMaidTag, world);
@@ -193,12 +195,20 @@ public class LMItemMaidSugar extends Item {
 		if (living instanceof EntityLittleMaid) return false;
 
 		//テイム系Mob
-		if (living instanceof EntityTameable) {
+		if (living instanceof IEntityOwnable) {
 			
-			EntityTameable tameableEntity = (EntityTameable) living;
+			IEntityOwnable tameableEntity = (IEntityOwnable) living;
 			
 			//ご主人様判定
 			if (player.getUniqueID().equals(tameableEntity.getOwnerId())) {
+				return true;
+			}
+		//馬系Mob
+		} else if (living instanceof AbstractHorse) {
+			
+			AbstractHorse targetEntity = (AbstractHorse) living;
+			//ご主人様判定
+			if (player.getUniqueID().equals(targetEntity.getOwnerUniqueId())) {
 				return true;
 			}
 		}
