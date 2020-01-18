@@ -70,6 +70,9 @@ public class LMRConfig {
 	/** 矢（弾丸）アイテムID */
 	public static List<String> cfg_ac_arrow_item_ids = null;
 	
+	/** アニマルメイド判定 */
+	public static List<String> cfg_custom_animal_maid_mob_ids = null;
+	
 	/**
 	 * Config初期化
 	 */
@@ -135,6 +138,11 @@ public class LMRConfig {
 		cfg_custom_riding_height_adjustment = cfg.getFloat("RidingHeightAdjustment", "Custom", 0.0F, -2.0F, 2.0F, 
 				"Riding mode height adjustment.Standard setting of PFLM is -0.5.");
 		
+		//指定IDを砂糖として認識する
+		String[] animalMaidMobIds = new String[] {"minecraft:rabbit"};
+		cfg_custom_animal_maid_mob_ids = Arrays.asList(cfg.getStringList("AnimalMaidMobs", "Custom", animalMaidMobIds,
+				"Set a Mob ID that can be transformed into an Animal Maid."));
+
 		//アーチャー設定
 		initArcher(cfg);
 		

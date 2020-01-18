@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import net.blacklab.lmc.common.helper.LittleMaidHelper;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.minecraft.client.resources.I18n;
@@ -211,6 +212,10 @@ public class LMItemMaidSugar extends Item {
 			if (player.getUniqueID().equals(targetEntity.getOwnerUniqueId())) {
 				return true;
 			}
+		//カスタムMob
+		} else if (LMRConfig.cfg_custom_animal_maid_mob_ids.contains(
+				LittleMaidHelper.getEntityId(living))) {
+			return true;
 		}
 		return false;
 	}
