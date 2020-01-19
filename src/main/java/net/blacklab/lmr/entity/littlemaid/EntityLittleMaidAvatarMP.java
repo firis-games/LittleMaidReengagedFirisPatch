@@ -22,6 +22,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatisticsManagerServer;
+import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
@@ -164,6 +165,9 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 		// TODO EntityPlayerをOverrideしていないばっかりにこの値が変わっていなかった？
 		ticksSinceLastSwing++;
+		
+		//Cooldownカウント実行
+		this.getCooldownTracker().tick();
 	}
 
 	@Override
@@ -639,4 +643,10 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	//@Override
 	//public void updateCraftingInventory(Container containerToSend, List<ItemStack> itemsList) {
 	//}
+	
+	@Override
+	protected CooldownTracker createCooldownTracker()
+    {
+        return new CooldownTracker();
+    }
 }
