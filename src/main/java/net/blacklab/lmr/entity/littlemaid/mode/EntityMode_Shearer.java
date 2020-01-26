@@ -53,6 +53,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 	public void init() {
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addEntityMode(EntityAITasks pDefaultMove, EntityAITasks pDefaultTargeting) {
 
@@ -123,6 +124,9 @@ public class EntityMode_Shearer extends EntityModeBase {
 			owner.setMaidMode(mmode_Ripper);
 //    		getNextEquipItem();
 		}
+		
+		//一定時間後にターゲット解除
+		this.resetTarget(pMode);
 	}
 
 	@Override
@@ -371,4 +375,27 @@ public class EntityMode_Shearer extends EntityModeBase {
 		return false;
 	}
 
+	
+	private static final int resetTargetTime = 200;
+	private int resetTargetTimeCount = resetTargetTime;
+	
+	/**
+	 * 一定時間ごとにターゲットを初期化する
+	 * @param pMode
+	 */
+	private void resetTarget(String pMode) {
+		//毛刈りモードのみ
+		if (mmode_Ripper.equals(pMode)) {
+			if (owner.getAttackTarget() != null) {
+				resetTargetTimeCount--;
+				//リセットタイム
+				if (resetTargetTimeCount <= 0) {
+					owner.setAttackTarget(null);
+				}
+			} else {
+				resetTargetTimeCount = resetTargetTime;
+			}
+		}
+	}
+	
 }
