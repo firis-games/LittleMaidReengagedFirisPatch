@@ -2,6 +2,7 @@ package net.blacklab.lmr.entity.littlemaid.mode;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
@@ -139,8 +140,29 @@ public class EntityMode_Farmer extends EntityModeBase {
 		return !owner.getCurrentEquippedItem().isEmpty();
 	}
 
+	/**
+	 * 一定時間後に範囲対象外とするブロックを管理する
+	 */
+	private checkBlockBlackListManager checkBlockManager = new checkBlockBlackListManager();
+	
 	@Override
 	public boolean checkBlock(String pMode, int px, int py, int pz) {
+
+		//処理対象外の場合は強制でfalse
+		if (checkBlockManager.isBlackList(px, py, pz)) return false;
+
+		boolean ret = checkBlockProc(pMode, px, py, pz);
+		
+		//処理対象外のカウントダウン
+		if (ret) {
+			checkBlockManager.setCountDown(px, py, pz);
+		}
+		
+		return ret;
+		
+	}
+	
+	private boolean checkBlockProc(String pMode, int px, int py, int pz) {
 		if (!super.checkBlock(pMode, px, py, pz)) return false;
 
 		if(!VectorUtil.canMoveThrough(owner, 0.9D, px + 0.5D, py + 1.9D, pz + 0.5D, py==MathHelper.floor(owner.posY-1D), true, false)) return false;
@@ -229,6 +251,10 @@ public class EntityMode_Farmer extends EntityModeBase {
 			executeBlock(pMode, px, py-1, pz);
 //			return true;
 		}
+		
+		//管理対象から除外する
+		this.checkBlockManager.clearPos(px, py, pz);
+		
 		return false;
 	}
 
@@ -242,6 +268,10 @@ public class EntityMode_Farmer extends EntityModeBase {
 				}
 			}catch(NullPointerException e){}
 			clearCount=0;
+		}
+		//一定時間ごとにリセット
+		if (pMode.equals(mmode_Farmer)) {
+			this.checkBlockManager.reset();
 		}
 	}
 
@@ -315,4 +345,80 @@ public class EntityMode_Farmer extends EntityModeBase {
 		return true;
 	}
 	
+	
+	/**
+	 * ブロック操作系の職業メイドさんでブラックリストブロックを管理する
+	 */
+	public static class checkBlockBlackListManager {
+		
+		//作業対象外とするまでの時間（Tickではないみたい）
+		private final int graceTime = 40;
+		
+		//作業対象外座標のリセット時間(600秒)
+		private final int allResetTimeTick = 12000;
+		
+		/**
+		 * 一定時間にリセットする
+		 */
+		private Map<BlockPos, Integer> checkBlockBlackList = new HashMap<>();
+		
+		/**
+		 * ブラックリストをリセットタイマー
+		 */
+		private int resetCountTimer = allResetTimeTick;
+		
+		/**
+		 * 対象の座標が処理対象外か確認する
+		 */
+		public boolean isBlackList(int x, int y, int z) {
+			BlockPos pos = new BlockPos(x, y, z);
+			if (checkBlockBlackList.containsKey(pos)) {
+				Integer count = checkBlockBlackList.get(pos);
+				if (count <= 0) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		/**
+		 * ブラックリスト用のカウントダウン
+		 * 0になるとisBlackListがtrueになる
+		 */
+		public void setCountDown(int x, int y, int z) {
+			BlockPos pos = new BlockPos(x, y, z);
+			if (!checkBlockBlackList.containsKey(pos)) {
+				checkBlockBlackList.put(pos, graceTime);
+			}
+			if (checkBlockBlackList.containsKey(pos)) {
+				Integer count = checkBlockBlackList.get(pos);
+				count--;
+				checkBlockBlackList.put(pos, count);
+				if (count <= 0) {
+					checkBlockBlackList.put(pos, 0);
+				}
+			}
+		}
+		
+		/**
+		 * 実行した場合に一旦クリアする
+		 */
+		public void clearPos(int x, int y, int z) {
+			BlockPos pos = new BlockPos(x, y, z);
+			if (checkBlockBlackList.containsKey(pos)) {
+				checkBlockBlackList.remove(pos);
+			}
+		}
+		
+		/**
+		 * 初期化する
+		 */
+		public void reset() {
+			this.resetCountTimer--;
+			if (0 >= resetCountTimer) {
+				checkBlockBlackList.clear();
+				resetCountTimer = allResetTimeTick;
+			}
+		}
+	}
 }
