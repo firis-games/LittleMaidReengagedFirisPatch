@@ -76,6 +76,9 @@ public class LMRConfig {
 	/** アニマルメイド判定 */
 	public static List<String> cfg_custom_animal_maid_mob_ids = null;
 	
+	/** hwyla連携 */
+	public static boolean cfg_plugin_hwyla = true;
+	
 	/**
 	 * Config初期化
 	 */
@@ -151,6 +154,10 @@ public class LMRConfig {
 		
 		//試験機能
 		initTest(cfg);
+		
+		//Hwyla連携
+		cfg_plugin_hwyla = cfg.getBoolean("Hwyla", "Plugin", true,
+				"Enable Hwyla　integration.");
 		
 		cfg.save();
 	}
