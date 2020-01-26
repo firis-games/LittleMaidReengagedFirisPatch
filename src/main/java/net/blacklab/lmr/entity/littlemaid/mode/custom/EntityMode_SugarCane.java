@@ -6,6 +6,7 @@ import java.util.Map;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Farmer.checkBlockBlackListManager;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger.Status;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
@@ -167,10 +168,31 @@ public class EntityMode_SugarCane extends EntityModeBase {
 	}
 	
 	/**
+	 * 一定時間後に範囲対象外とするブロックを管理する
+	 */
+	private checkBlockBlackListManager checkBlockManager = new checkBlockBlackListManager();
+	
+	/**
 	 * サトウキビを植えることができる場所を探す
 	 */
 	@Override
 	public boolean checkBlock(String pMode, int px, int py, int pz) {
+		//処理対象外の場合は強制でfalse
+		if (checkBlockManager.isBlackList(px, py, pz)) return false;
+
+		boolean ret = checkBlockProc(pMode, px, py, pz);
+		
+		//処理対象外のカウントダウン
+		if (ret) {
+			checkBlockManager.setCountDown(px, py, pz);
+		}
+		
+		return ret;
+	}
+	/**
+	 * サトウキビを植えることができる場所を探す
+	 */
+	private boolean checkBlockProc(String pMode, int px, int py, int pz) {
 		
 		if (!super.checkBlock(pMode, px, py, pz)) return false;
 
@@ -242,6 +264,10 @@ public class EntityMode_SugarCane extends EntityModeBase {
 				if (curStack.isEmpty()) {
 					owner.getNextEquipItem();
 				}
+				
+				//管理対象から除外する
+				this.checkBlockManager.clearPos(px, py, pz);
+				
 				return true;
 			}
 		}
@@ -255,8 +281,15 @@ public class EntityMode_SugarCane extends EntityModeBase {
 			owner.playLittleMaidSound(EnumSound.farmer_harvest, false);
 			owner.addMaidExperience(4f);
 			executeBlock(pMode, px, py-1, pz);
+			
+			//管理対象から除外する
+			this.checkBlockManager.clearPos(px, py, pz);
+			
 			return true;
 		}
+		
+		//管理対象から除外する
+		this.checkBlockManager.clearPos(px, py, pz);
 		
 		return false;
 	}
@@ -273,6 +306,10 @@ public class EntityMode_SugarCane extends EntityModeBase {
 				}
 			}catch(NullPointerException e){}
 			clearCount=0;
+		}
+		//一定時間ごとにリセット
+		if (pMode.equals(mode_SugarCane)) {
+			this.checkBlockManager.reset();
 		}
 	}
 
