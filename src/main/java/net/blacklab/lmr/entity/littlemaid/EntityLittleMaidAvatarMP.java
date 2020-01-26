@@ -699,4 +699,13 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
     }
 	/***********************************************************************************/
 	
+	/**
+	 * 別ModからsetPositionAndUpdateを呼ばれた場合にエラーが発生する
+	 * this.connectionを利用しないようにメソッドを変更
+	 */
+	@Override
+	public void setPositionAndUpdate(double x, double y, double z)
+	{
+		this.setPosition(x, y, z);
+	}
 }
