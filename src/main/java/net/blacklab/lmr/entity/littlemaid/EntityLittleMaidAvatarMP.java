@@ -25,6 +25,7 @@ import net.minecraft.stats.StatisticsManagerServer;
 import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -649,4 +650,53 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
     {
         return new CooldownTracker();
     }
+	
+	/***********************************************************************************/
+	/** EntityPlayerのdataManagerのIDとEntityLittleMaidのdataManagerのIDが混在しておかしくなる       */
+	/** 特定の条件下で例えばLEFT_SHOULDER_ENTITYがLittleMaid側のfloatを取得してしまう                              */
+	/** 極力dataManagerを利用しているところを潰す　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　  */
+	/***********************************************************************************/
+	@Override
+	public NBTTagCompound getLeftShoulderEntity()
+    {
+		//LEFT_SHOULDER_ENTITY
+        return new NBTTagCompound();
+    }
+
+	@Override
+    protected void setLeftShoulderEntity(NBTTagCompound tag)
+    {
+    	//LEFT_SHOULDER_ENTITY
+    }
+
+	@Override
+    public NBTTagCompound getRightShoulderEntity()
+    {
+    	//RIGHT_SHOULDER_ENTITY
+		return new NBTTagCompound();
+    }
+	
+	@Override
+    protected void setRightShoulderEntity(NBTTagCompound tag)
+    {
+    	//RIGHT_SHOULDER_ENTITY
+    }
+	
+	//Score系は対応済み
+	
+	//メイドさんのハンドに差し替え
+	@Override
+    public EnumHandSide getPrimaryHand()
+    {
+    	//MAIN_HAND
+        return avatar.getPrimaryHand();
+    }
+
+	@Override
+    public void setPrimaryHand(EnumHandSide hand)
+    {
+    	//MAIN_HAND
+    }
+	/***********************************************************************************/
+	
 }
