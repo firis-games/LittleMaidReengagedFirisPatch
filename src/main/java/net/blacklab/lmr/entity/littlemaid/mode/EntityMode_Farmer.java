@@ -190,8 +190,11 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	@Override
 	public boolean executeBlock(String pMode, int px, int py, int pz) {
+		
+		boolean ret = false;
+		
 		ItemStack curStack = owner.getCurrentEquippedItem();
-
+		
 		if (pMode.equals(mmode_Farmer)) {
 			if(owner.getAIMoveSpeed() > 0.5F) owner.setAIMoveSpeed(0.5F);
 			if(owner.maidInventory.getFirstEmptyStack() < 0){
@@ -216,6 +219,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 				owner.getNextEquipItem();
 			}
 //			owner.getNavigator().clearPathEntity();
+			ret = true;
 		}
 		if(isFarmedLand(px,py,pz)){
 			//種を持っている
@@ -239,6 +243,9 @@ public class EntityMode_Farmer extends EntityModeBase {
 				if(stack.getCount()<=0){
 					owner.maidInventory.setInventorySlotContents(index, ItemStack.EMPTY);
 				}
+
+				ret = true;
+
 			}
 		}
 		if(isCropGrown(px,py,pz)){
@@ -249,11 +256,14 @@ public class EntityMode_Farmer extends EntityModeBase {
 			owner.playLittleMaidSound(EnumSound.farmer_harvest, false);
 			owner.addMaidExperience(4f);
 			executeBlock(pMode, px, py-1, pz);
-//			return true;
+			ret = true;
 		}
 		
-		//管理対象から除外する
-		this.checkBlockManager.clearPos(px, py, pz);
+		if (ret) {
+			//管理対象から除外する
+			this.checkBlockManager.clearPos(px, py, pz);
+			return true;
+		}
 		
 		return false;
 	}
