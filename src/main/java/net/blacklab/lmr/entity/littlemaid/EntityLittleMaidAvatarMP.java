@@ -435,27 +435,29 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	@Override
 	public void addPotionEffect(PotionEffect par1PotionEffect) {
-		avatar.addPotionEffect(par1PotionEffect);
+		if (avatar != null) avatar.addPotionEffect(par1PotionEffect);
 	}
 
 	@Override
 	public PotionEffect getActivePotionEffect(Potion par1Potion) {
-		return avatar.getActivePotionEffect(par1Potion);
+		return avatar == null ? super.getActivePotionEffect(par1Potion) 
+				: avatar.getActivePotionEffect(par1Potion);
 	}
 
 	@Override
 	public Collection<PotionEffect> getActivePotionEffects() {
-		return avatar.getActivePotionEffects();
+		return avatar == null ? super.getActivePotionEffects() 
+				: avatar.getActivePotionEffects();
 	}
 
 	@Override
 	public void clearActivePotions() {
-		avatar.clearActivePotions();
+		if (avatar != null) avatar.clearActivePotions();
 	}
 
 	@Override
 	protected void onChangedPotionEffect(PotionEffect par1PotionEffect, boolean par2) {
-		avatar.onChangedPotionEffect(par1PotionEffect, par2);
+		if (avatar != null) avatar.onChangedPotionEffect(par1PotionEffect, par2);
 	}
 
 	public void getValue() {
