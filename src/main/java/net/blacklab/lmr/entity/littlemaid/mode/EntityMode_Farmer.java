@@ -8,7 +8,7 @@ import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
+import net.blacklab.lmr.entity.littlemaid.trigger.ModeTriggerRegisterHelper;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.block.Block;
@@ -48,8 +48,9 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 	@Override
 	public void init() {
-		ModeTrigger.registerTrigger(mtrigger_Hoe, new HashMap<>());
-		ModeTrigger.registerTrigger(mtrigger_Seed, new HashMap<>());
+		ModeTriggerRegisterHelper.register(mmode_Farmer, mtrigger_Hoe);
+		//メイドモードをFarmerSeedで種を設定できるように想定
+		ModeTriggerRegisterHelper.register(mmode_Farmer + "Seed", mtrigger_Seed);
 	}
 
 	@Override

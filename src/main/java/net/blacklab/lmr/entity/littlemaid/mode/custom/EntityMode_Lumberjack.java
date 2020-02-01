@@ -1,14 +1,13 @@
 package net.blacklab.lmr.entity.littlemaid.mode.custom;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
-import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
+import net.blacklab.lmr.entity.littlemaid.trigger.ModeTriggerRegisterHelper;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.block.Block;
@@ -65,7 +64,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 	@Override
 	public void init() {
 		//Classで判断する
-		ModeTrigger.registerTrigger(trigger_Lumberjack, new HashMap<>());
+		ModeTriggerRegisterHelper.register(mode_Lumberjack, trigger_Lumberjack);
 	}
 	
 	/**

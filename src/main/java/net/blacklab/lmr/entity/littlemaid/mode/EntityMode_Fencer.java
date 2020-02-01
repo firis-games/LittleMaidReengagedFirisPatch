@@ -1,6 +1,5 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -9,7 +8,7 @@ import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
+import net.blacklab.lmr.entity.littlemaid.trigger.ModeTriggerRegisterHelper;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.Counter;
 import net.blacklab.lmr.util.helper.CommonHelper;
@@ -57,8 +56,8 @@ public class EntityMode_Fencer extends EntityModeBase {
 
 	@Override
 	public void init() {
-		ModeTrigger.registerTrigger(mtrigger_Sword, new HashMap<>());
-		ModeTrigger.registerTrigger(mtrigger_Axe, new HashMap<>());
+		ModeTriggerRegisterHelper.register(mmode_Fencer, mtrigger_Sword);
+		ModeTriggerRegisterHelper.register(mmode_Bloodsucker, mtrigger_Axe);
 	}
 
 	@Override

@@ -7,8 +7,8 @@ import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Farmer.checkBlockBlackListManager;
-import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger.Status;
+import net.blacklab.lmr.entity.littlemaid.trigger.ModeTriggerRegisterHelper;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.block.BlockReed;
@@ -59,7 +59,7 @@ public class EntityMode_SugarCane extends EntityModeBase {
 		Map<Item, Status> trigger = new HashMap<>();
 		trigger.put(Items.REEDS, Status.TRIGGER);
 		
-		ModeTrigger.registerTrigger(trigger_SugarCane, trigger);
+		ModeTriggerRegisterHelper.register(mode_SugarCane, trigger_SugarCane, trigger);
 	}
 
 	/**

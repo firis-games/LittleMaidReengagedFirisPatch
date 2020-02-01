@@ -2,7 +2,6 @@ package net.blacklab.lmr.entity.littlemaid.mode;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
@@ -12,7 +11,7 @@ import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
-import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger.Status;
+import net.blacklab.lmr.entity.littlemaid.trigger.ModeTriggerRegisterHelper;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -56,21 +55,7 @@ public class EntityMode_Archer extends EntityModeBase {
 
 	@Override
 	public void init() {
-		
-		//
-		Map<Item, Status> triggerBow = new HashMap<>();
-		for (String bow : LMRConfig.cfg_ac_bow_item_ids) {
-			
-			String[] bowIds = bow.split(":");
-			if (bowIds.length == 2) {
-				Item bowItem = Item.REGISTRY.getObject(new ResourceLocation(bowIds[0], bowIds[1]));
-				if (bowItem != null) {
-					triggerBow.put(bowItem, Status.TRIGGER);
-				}
-			}
-		}
-		
-		ModeTrigger.registerTrigger(mtrigger_Bow, triggerBow);
+		ModeTriggerRegisterHelper.register(mmode_Archer, mtrigger_Bow);
 		ModeTrigger.registerTrigger(mtrigger_Arrow, new HashMap<>());
 	}
 

@@ -79,6 +79,9 @@ public class LMRConfig {
 	/** hwyla連携 */
 	public static boolean cfg_plugin_hwyla = true;
 	
+	/** trigger 判断用 アイテムID */
+	public static List<String> cfg_trigger_item_ids = null;
+	
 	/**
 	 * Config初期化
 	 */
@@ -151,6 +154,17 @@ public class LMRConfig {
 
 		//アーチャー設定
 		initArcher(cfg);
+		
+		//triggerの設定化
+		String[] triggerItemIds = new String[] {
+				"archer:minecraft:bow",
+				"fencer:minecraft:iron_sword",
+				"farmer:minecraft:iron_hoe",
+				"lumberjack:minecraft:iron_axe"
+		};
+		cfg_trigger_item_ids = Arrays.asList(
+				cfg.getStringList("ItemIds", "Trigger", triggerItemIds, "Set the item ID of the trigger used for maid mode judgment.ex [maidmode]:[modid]:[itemid]")
+		);
 		
 		//試験機能
 		initTest(cfg);
