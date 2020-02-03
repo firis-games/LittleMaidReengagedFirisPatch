@@ -2966,12 +2966,28 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 								playSound("entity.cow.milk");
 								
 								//牛乳の取得
-								par3ItemStack.shrink(1);
-								if (par3ItemStack.isEmpty()) {
-									par1EntityPlayer.setHeldItem(hand, new ItemStack(Items.MILK_BUCKET));
-								} else {
-									par1EntityPlayer.dropItem(new ItemStack(Items.MILK_BUCKET), false);
+								ItemStack milkStack = new ItemStack(Items.MILK_BUCKET);
+								
+								//○○印のミルク名を設定
+								if (LMRConfig.cfg_secret_maid_milk) {
+									String milkLabel = LMRConfig.cfg_secret_maid_milk_producer_default;
+									if (this.hasCustomName()) {
+										milkLabel = this.getCustomNameTag();
+									}
+									
+									//整形
+									milkLabel = String.format(LMRConfig.cfg_secret_maid_milk_producer_label, milkLabel);
+									
+									//名前をセット
+									NBTTagCompound milkTag = new NBTTagCompound();
+									NBTTagCompound displayTag = new NBTTagCompound();
+									displayTag.setString("Name", milkLabel);
+									milkTag.setTag("display", displayTag);
+									milkStack.setTagCompound(milkTag);
 								}
+								
+								//手持ちのアイテムを減らしてミルクバケツをセットする
+								setItemStackPlayerHand(milkStack, hand, par1EntityPlayer);
 
 								return true;
 							}
@@ -4397,4 +4413,26 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		if (clinetRidingEntity != null) return false;
 		return super.isRiding();
 	}
+	
+	/**
+	 * 指定ハンドのアイテムを消費してItemStackをプレイヤーにセットする
+	 */
+	private void setItemStackPlayerHand(ItemStack setStack, EnumHand hand, EntityPlayer player) {
+        
+		ItemStack handStack = player.getHeldItem(hand);
+		
+		//1つ消費
+		handStack.shrink(1);
+		
+		//アイテムセット
+		if (handStack.isEmpty()) {
+			//空の場合
+			player.setHeldItem(hand, setStack);
+		} else {
+			//在庫がある場合
+			if (!player.inventory.addItemStackToInventory(setStack)) {
+                player.dropItem(setStack, false);
+            }
+		}
+    }
 }

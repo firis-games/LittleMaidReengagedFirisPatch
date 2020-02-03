@@ -82,6 +82,11 @@ public class LMRConfig {
 	/** trigger 判断用 アイテムID */
 	public static List<String> cfg_trigger_item_ids = null;
 	
+	/** メイドミルクの特殊表示 */
+	public static boolean cfg_secret_maid_milk = false;
+	public static String cfg_secret_maid_milk_producer_default = "";
+	public static String cfg_secret_maid_milk_producer_label = "";
+	
 	/**
 	 * Config初期化
 	 */
@@ -173,6 +178,9 @@ public class LMRConfig {
 		cfg_plugin_hwyla = cfg.getBoolean("Hwyla", "Plugin", true,
 				"Enable Hwyla　integration.");
 		
+		//秘密機能
+		initSecret(cfg);
+		
 		cfg.save();
 	}
 	
@@ -257,5 +265,24 @@ public class LMRConfig {
 	}
 	
 	/****************************************/
+	
+	/**
+	 * メイドさんの秘密機能のConfig
+	 * @param cfg
+	 */
+	public static void initSecret(Configuration cfg) {
+		
+		//メイドミルク表示設定
+		cfg_secret_maid_milk = cfg.getBoolean("MaidMilkLabel", "Secret", false,
+				"Enable producer labeling for maid milk.");
+
+		//デフォルトメイドさんの表示
+		cfg_secret_maid_milk_producer_default = cfg.getString("MaidMilkLabel_DefaultMaidName", "Secret", "メイドさん",
+				"Maid milk default littlemaid name.");
+
+		//メイドミルク表示のラベル設定
+		cfg_secret_maid_milk_producer_label = cfg.getString("MaidMilkLabel_DisplayLabel", "Secret", "%s印のミルク",
+				"Maid milk producer display label.");
+	}
 	
 }
