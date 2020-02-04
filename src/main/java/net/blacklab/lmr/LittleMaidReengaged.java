@@ -33,6 +33,7 @@ import net.blacklab.lmr.util.manager.EntityModeManager;
 import net.blacklab.lmr.util.manager.LoaderSearcher;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.manager.StabilizerManager;
+import net.firis.lmt.common.LMTCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourcePack;
@@ -481,6 +482,9 @@ public class LittleMaidReengaged {
     			entityId, 
     			instance, 32, 5, true);
     	entityId++;
+    	
+    	//リトルメイドテスト用モジュール
+    	LMTCore.registerEntities(entityId);
     }
 
 }
