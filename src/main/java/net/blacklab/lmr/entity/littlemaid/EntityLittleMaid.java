@@ -3318,6 +3318,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public EntityPlayer getMaidMasterEntity() {
 		// 主を獲得
 		if (isContract()) {
+			/*
 			EntityPlayer entityplayer = mstatMasterEntity;
 			if (mstatMasterEntity == null || mstatMasterEntity.isDead) {
 				UUID lname;
@@ -3343,6 +3344,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 			}
 			return entityplayer;
+			*/
+			UUID uuid = this.getOwnerId();
+			return uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
 		}
 		return null;
 	}
