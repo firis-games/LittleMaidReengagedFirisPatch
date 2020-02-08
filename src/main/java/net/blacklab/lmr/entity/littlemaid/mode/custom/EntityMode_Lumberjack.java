@@ -227,7 +227,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		if (pMode.equals(mode_Lumberjack)) {
 			if(owner.getAIMoveSpeed() > 0.5F) owner.setAIMoveSpeed(0.5F);
 			if(owner.maidInventory.getFirstEmptyStack() < 0){
-				owner.setMaidMode(EntityMode_Basic.mmode_SugarCanePorter);
+				owner.setMaidMode(EntityMode_Basic.mmode_LumberjackPorter);
 			}
 		}
 		
@@ -315,6 +315,14 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 				}
 			}catch(NullPointerException e){}
 			clearCount=0;
+		}
+		
+		//運びモードへの切り替え判定
+		if (pMode.equals(mode_Lumberjack) && owner.ticksExisted % 600 == 0) {
+			if(owner.getAIMoveSpeed() > 0.5F) owner.setAIMoveSpeed(0.5F);
+			if(owner.maidInventory.getFirstEmptyStack() < 0){
+				owner.setMaidMode(EntityMode_Basic.mmode_LumberjackPorter);
+			}
 		}
 	}
 
@@ -473,7 +481,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 	/**
 	 * 対象アイテムが苗木判定か確認する
 	 */
-	private boolean isSaplingItem(Item item) {
+	public static boolean isSaplingItem(Item item) {
 		
 		//nullの場合無効
 		if (item == null) return false;

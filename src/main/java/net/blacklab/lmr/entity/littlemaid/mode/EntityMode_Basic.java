@@ -294,7 +294,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 					}
 					// チェストに収納
 					owner.setWorking(true);
-					putChest();
+					putChest(pMode);
 					return true;
 				//} else {
 				//	// 見失った
@@ -377,16 +377,45 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		return myChest != null;
 	}
 
-	protected void putChest() {
+	protected void putChest(String pMode) {
 		// チェストに近接
 		if (owner.getSwingStatusDominant().canAttack() && myChest != null) {
 			// 砂糖、時計、被っているヘルム以外のアイテムを突っ込む
 			ItemStack is;
 			LittleMaidReengaged.Debug(String.format("getChest:%d", maidSearchCount));
-			while ((is = owner.maidInventory.getStackInSlot(maidSearchCount)).isEmpty() && maidSearchCount < InventoryLittleMaid.maxInventorySize) {
-				maidSearchCount++;
+			if (mmode_LumberjackPorter.equals(pMode)) {
+				//木こりメイドさんのアイテム格納処理
+				boolean isFirstSapling = false;
+				is = owner.maidInventory.getStackInSlot(maidSearchCount);
+				
+				//苗木判定
+				for (int idx = 0; idx < maidSearchCount; idx++) {
+					ItemStack sapling = owner.maidInventory.getStackInSlot(idx);
+					if (EntityMode_Lumberjack.isSaplingItem(sapling.getItem())) {
+						isFirstSapling = true;
+						break;
+					}
+				}
+				
+				for (; maidSearchCount < InventoryLittleMaid.maxInventorySize; maidSearchCount++) {
+					is = owner.maidInventory.getStackInSlot(maidSearchCount);
+					//苗木判定
+					if (!isFirstSapling && !is.isEmpty() && EntityMode_Lumberjack.isSaplingItem(is.getItem())) {
+						//1回目の苗木の場合はスキップ
+						isFirstSapling = true;
+						continue;
+					}
+					//空じゃない場合は続き
+					if (!is.isEmpty()) {
+						break;
+					}
+				}
+			} else {
+				while ((is = owner.maidInventory.getStackInSlot(maidSearchCount)).isEmpty() && maidSearchCount < InventoryLittleMaid.maxInventorySize) {
+					maidSearchCount++;
+				}
 			}
-
+			
 			if (!is.isEmpty()){
 				EventLMRE.ItemPutChestEvent event = new EventLMRE.ItemPutChestEvent(owner,myChest,is,maidSearchCount);
 				if(!VEventBus.instance.post(event)){
@@ -463,7 +492,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 						owner.getLookHelper().setLookPositionWithEntity(lentity, 30F, 40F);
 					}
 					// チェストに収納
-					putChest();
+					putChest(pMode);
 				} else {
 					// チェストまでのパスを作る
 					if (!owner.isMaidWaitEx()) {
