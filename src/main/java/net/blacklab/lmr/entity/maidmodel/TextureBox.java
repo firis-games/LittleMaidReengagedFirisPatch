@@ -107,6 +107,12 @@ public class TextureBox extends TextureBoxBase {
 		{
 			renderIndex = renderIndex % ModelManager.armorFilenamePrefix.length;
 		}
+		//他のMODのアーマーでrenderIndexが-1の場合armorFilenamePrefixのArrayIndexOutOfBoundsExceptionとなる
+		if (renderIndex < 0) {
+			//革製品に強制的に設定する
+			renderIndex = 0;
+		}
+		
 		return getArmorTextureName(pIndex, ModelManager.armorFilenamePrefix[renderIndex], l);
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
