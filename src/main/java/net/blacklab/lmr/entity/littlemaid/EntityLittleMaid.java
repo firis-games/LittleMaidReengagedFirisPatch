@@ -35,6 +35,7 @@ import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
+import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid.MaidMotion;
 import net.blacklab.lmr.client.sound.SoundLoader;
 import net.blacklab.lmr.client.sound.SoundRegistry;
 import net.blacklab.lmr.config.LMRConfig;
@@ -1622,9 +1623,19 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return looksWithInterest && !isHeadMount();
 	}
 
+	/**
+	 * 首傾げ制御
+	 * 固定モーション用分岐を追加
+	 * @param f
+	 * @return
+	 */
 	public float getInterestedAngle(float f) {
 		if (!maidInventory.armorInventory.get(3).isEmpty()) {
 			return 0f;
+		}
+		//固定モーション分岐
+		if (this.maidMotion == MaidMotion.LOOKSUGAR) {
+			return 0.99999994F * ((looksWithInterestAXIS ? 0.08F : -0.08F) * (float)Math.PI);
 		}
 		return (prevRotateAngleHead + (rotateAngleHead - prevRotateAngleHead) * f) * ((looksWithInterestAXIS ? 0.08F : -0.08F) * (float)Math.PI);
 	}
@@ -3505,7 +3516,15 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setMaidFlags(pFlag, dataWatch_Flags_LooksSugar);
 	}
 
+	/**
+	 * 砂糖をみているか判定
+	 * 固定モーション用分岐追加
+	 * @return
+	 */
 	public boolean isLookSuger() {
+		if (this.maidMotion == MaidMotion.LOOKSUGAR) {
+			return true;
+		}
 		return mstatLookSuger;
 	}
 
@@ -4439,4 +4458,16 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
             }
 		}
     }
+	
+	
+	/**
+	 * メイドさん固定描画用
+	 */
+	private MaidMotion maidMotion = MaidMotion.NONE;
+	public MaidMotion getMaidMotion() {
+		return this.maidMotion;
+	}
+	public void setMaidMotion(MaidMotion motion) {
+		this.maidMotion = motion;
+	}
 }
