@@ -3363,11 +3363,23 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return null;
 	}
 
-	public boolean isMaidContractOwner(UUID pname) {
-		return pname.equals(CommonHelper.getPlayerUUID(mstatMasterEntity));
-	}
+	//未使用削除
+	//public boolean isMaidContractOwner(UUID pname) {
+	//	return pname.equals(CommonHelper.getPlayerUUID(mstatMasterEntity));
+	//}
 
+	/**
+	 * メイドさんのご主人様判定を行う
+	 * @param pentity
+	 * @return
+	 */
 	public boolean isMaidContractOwner(EntityPlayer pentity) {
+		
+		//みんなのメイドさん
+		if (LMRConfig.cfg_cstm_everyones_maid && pentity != null) {
+			return true;
+		}
+		
 		return pentity == getMaidMasterEntity();
 
 //		return pentity == mstatMasterEntity;

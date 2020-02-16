@@ -87,6 +87,9 @@ public class LMRConfig {
 	public static String cfg_secret_maid_milk_producer_default = "";
 	public static String cfg_secret_maid_milk_producer_label = "";
 	
+	/** みんなのメイドさん */
+	public static boolean cfg_cstm_everyones_maid = false;
+	
 	/**
 	 * Config初期化
 	 */
@@ -170,6 +173,10 @@ public class LMRConfig {
 		cfg_trigger_item_ids = Arrays.asList(
 				cfg.getStringList("ItemIds", "Trigger", triggerItemIds, "Set the item ID of the trigger used for maid mode judgment.ex [maidmode]:[modid]:[itemid]")
 		);
+		
+		//みんなのメイドさん
+		cfg_cstm_everyones_maid = cfg.getBoolean("EveryonesMaid", "Custom", false,
+				"Maid listening to instructions other than the master.");
 		
 		//試験機能
 		initTest(cfg);
