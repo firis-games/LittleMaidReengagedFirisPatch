@@ -2696,7 +2696,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			maidInventory.setInventorySlotContents(InventoryLittleMaid.handInventoryOffset + 1, stack);
 		} else if (slotIn.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
 			maidInventory.setInventorySlotContents(slotIn.getIndex() + InventoryLittleMaid.maxInventorySize, stack);
-//			setTextureNames();
+			//アーマースロット変更時にテクスチャを再設定する
+			setTextureNames();
 		} else {
 			// TODO What was this used for?
 /*
