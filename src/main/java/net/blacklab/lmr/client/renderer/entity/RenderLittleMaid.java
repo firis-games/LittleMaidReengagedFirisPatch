@@ -472,6 +472,12 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 				break;
 		}
 		
+		//共通設定
+		//腕降り制御に使われている
+		modelMain.setCapsValue(IModelCaps.caps_onGround,
+				par1EntityLiving.mstatSwingStatus[0].getSwingProgress(par9),
+				par1EntityLiving.mstatSwingStatus[1].getSwingProgress(par9));
+		
 		return true;
 	}
 	
