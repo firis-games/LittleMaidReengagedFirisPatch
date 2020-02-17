@@ -14,25 +14,39 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiving<T> {
 
+	//メイド用モデル
 	public ModelBaseSolo modelMain;
+	//メイド防具用モデル
 	public ModelBaseDuo modelFATT;
+	//メイドモデル用パラメータ管理クラス
 	public IModelCaps fcaps;
 
-	public RenderModelMulti(RenderManager manager,float pShadowSize) {
+	/**
+	 * コンストラクタ
+	 */
+	public RenderModelMulti(RenderManager manager, float pShadowSize) {
+		
 		super(manager, null, pShadowSize);
+		
+		//アーマー描画用モデル初期化
 		modelFATT = new ModelBaseDuo(this);
 		modelFATT.isModelAlphablend = LMRConfig.cfg_isModelAlphaBlend;
 		modelFATT.isRendering = true;
+		
+		//メイド本体描画用モデル初期化
 		modelMain = new ModelBaseSolo(this);
 		modelMain.isModelAlphablend = LMRConfig.cfg_isModelAlphaBlend;
 		modelMain.capsLink = modelFATT;
 		mainModel = modelMain;
 		//setRenderPassModel(modelFATT);
 	}
-
+	
 	protected int showArmorParts(T par1EntityLiving, int par2, float par3) {
 		// アーマーの表示設定
 		modelFATT.renderParts = par2;
@@ -46,9 +60,15 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		return -1;
 	}
 
+	/**
+	 * caps_ScaleFactorをもとに描画前に全体サイズを変更する
+	 */
 	@Override
-	protected void preRenderCallback(EntityLiving entityliving, float f) {
+	protected void preRenderCallback(EntityLiving entitylivingbaseIn, float partialTickTime) {
+		
+		//スケール設定を取得
 		Float lscale = (Float)modelMain.getCapsValue(IModelCaps.caps_ScaleFactor);
+		
 		if (lscale != null) {
 			GL11.glScalef(lscale, lscale, lscale);
 		}
@@ -56,6 +76,7 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 
 	public void setModelValues(T par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
+		
 		if (par1EntityLiving instanceof IModelEntity) {
 			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
 			modelMain.model = ltentity.getModelConfigCompound().textureModel[0];
@@ -104,12 +125,21 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
 	}
 
+	/*
 	@Override
 	public void doRender(T par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9) {
 		fcaps = (IModelCaps)par1EntityLiving;
 		renderModelMulti(par1EntityLiving, par2, par4, par6, par8, par9, fcaps);
 	}
+	*/
+	
+	/**
+	 * Rendererのメイン処理
+	 */
+	@Override
+	abstract public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks);
+	
 
 	@Override
 	protected void renderLeash(T par1EntityLiving, double par2,

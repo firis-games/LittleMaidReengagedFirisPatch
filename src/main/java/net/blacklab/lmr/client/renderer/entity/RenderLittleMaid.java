@@ -1,254 +1,34 @@
 package net.blacklab.lmr.client.renderer.entity;
 
-import java.util.Iterator;
-
-import org.lwjgl.opengl.GL11;
-
+import net.blacklab.lmr.client.renderer.layer.MMMLayerArmor;
+import net.blacklab.lmr.client.renderer.layer.MMMLayerHeldItem;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
-import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
-import net.blacklab.lmr.util.helper.RendererHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
-import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * リトルメイドRenderer
+ * 
+ * メイドさんを描画するRenderer
+ */
+@SideOnly(Side.CLIENT)
 public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 
-	// Method
-	public RenderLittleMaid(RenderManager manager,float f) {
-		super(manager,f);
-
-		addLayer(new MMMLayerHeldItem(this));
-		addLayer(new MMMLayerArmor(this));
-	}
-
+	
 	/**
-	 * 防具描画レイヤー
+	 * コンストラクタ
 	 */
-	public class MMMLayerArmor extends LayerArmorBase{
-
-		//レイヤーと化した防具描画
-
-		public RenderLivingBase p1;
-		public RenderLivingBase field_177190_a;
-		public float field_177184_f;
-		public float field_177185_g;
-		public float field_177192_h;
-		public float field_177187_e;
-		public boolean field_177193_i;
-		public EntityLittleMaid lmm;
-
-		public static final float renderScale = 0.0625F;
-
-		public MMMLayerArmor(RenderLivingBase p_i46125_1_) {
-			super(p_i46125_1_);
-			p1 = p_i46125_1_;
-//			this.modelLeggings = mmodel;
-//			this.modelArmor = mmodel;
-		}
-
-		@Override
-		protected void initArmor() {
-		}
-
-		@Override
-		protected void setModelSlotVisible(ModelBase paramModelBase, EntityEquipmentSlot paramInt) {
-			ModelBaseDuo model = (ModelBaseDuo) paramModelBase;
-			model.showArmorParts(paramInt.getIndex());
-		}
-
-		@Override
-		public void doRenderLayer(EntityLivingBase par1EntityLiving, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-			lmm = (EntityLittleMaid) par1EntityLiving;
-
-			for (int i=0; i<4; i++) {
-				if (!lmm.maidInventory.armorItemInSlot(i).isEmpty()) {
-					render(par1EntityLiving, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, i);
-				}
-			}
-		}
-
-		public void render(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, int renderParts) {
-//			boolean lri = (renderCount & 0x0f) == 0;
-			//総合
-			modelFATT.showArmorParts(renderParts);
-
-			//Inner
-			INNER:{
-				if(modelFATT.textureInner!=null){
-					ResourceLocation texInner = modelFATT.textureInner[renderParts];
-					if(texInner!=null&&lmm.isArmorVisible(0)) try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
-						GL11.glEnable(GL11.GL_BLEND);
-						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-						modelFATT.modelInner.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, fcaps);
-						modelFATT.modelInner.setLivingAnimations(fcaps, limbSwing, limbSwingAmount, partialTicks);
-						modelFATT.modelInner.render(fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-					}catch(Exception e){ break INNER; }
-				} else {
-//					modelFATT.modelInner.render(lmm.maidCaps, par2, par3, lmm.ticksExisted, par5, par6, renderScale, true);
-				}
-			}
-
-			// 発光Inner
-			INNERLIGHT: if (modelFATT.modelInner!=null) {
-				ResourceLocation texInnerLight = modelFATT.textureInnerLight[renderParts];
-				if (texInnerLight != null&&lmm.isArmorVisible(1)) {
-					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(texInnerLight);
-						GL11.glEnable(GL11.GL_BLEND);
-						GL11.glDisable(GL11.GL_ALPHA_TEST);
-						GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-						GL11.glDepthFunc(GL11.GL_LEQUAL);
-
-						RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-						if (modelFATT.textureLightColor == null) {
-							GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-						} else {
-							//発光色を調整
-							GL11.glColor4f(
-									modelFATT.textureLightColor[0],
-									modelFATT.textureLightColor[1],
-									modelFATT.textureLightColor[2],
-									modelFATT.textureLightColor[3]);
-						}
-						modelFATT.modelInner.render(fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-						RendererHelper.setLightmapTextureCoords(modelFATT.lighting);
-						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-						GL11.glDisable(GL11.GL_BLEND);
-						GL11.glEnable(GL11.GL_ALPHA_TEST);
-					}catch(Exception e){ break INNERLIGHT; }
-				}
-			}
-
-//			Minecraft.getMinecraft().getTextureManager().deleteTexture(lmm.getTextures(0)[renderParts]);
-			//Outer
-//			if(LittleMaidReengaged.cfg_isModelAlphaBlend) GL11.glEnable(GL11.GL_BLEND);
-			OUTER:{
-				if(modelFATT.textureOuter!=null){
-					ResourceLocation texOuter = modelFATT.textureOuter[renderParts];
-					if(texOuter!=null&&lmm.isArmorVisible(2)) try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
-						GL11.glEnable(GL11.GL_BLEND);
-						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-						modelFATT.modelOuter.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, fcaps);
-						modelFATT.modelOuter.setLivingAnimations(fcaps, limbSwing, limbSwingAmount, partialTicks);
-						modelFATT.modelOuter.render(fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-					}catch(Exception e){break OUTER;}
-				}else{
-//					modelFATT.modelOuter.render(lmm.maidCaps, limbSwing, par3, lmm.ticksExisted, par5, par6, renderScale, true);
-				}
-			}
-
-			// 発光Outer
-			OUTERLIGHT: if (modelFATT.modelOuter!=null) {
-				ResourceLocation texOuterLight = modelFATT.textureOuterLight[renderParts];
-				if (texOuterLight != null&&lmm.isArmorVisible(3)) {
-					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(texOuterLight);
-						GL11.glEnable(GL11.GL_BLEND);
-						GL11.glEnable(GL11.GL_ALPHA_TEST);
-						GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-						GL11.glDepthFunc(GL11.GL_LEQUAL);
-
-						RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-						if (modelFATT.textureLightColor == null) {
-							GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-						} else {
-							//発光色を調整
-							GL11.glColor4f(
-									modelFATT.textureLightColor[0],
-									modelFATT.textureLightColor[1],
-									modelFATT.textureLightColor[2],
-									modelFATT.textureLightColor[3]);
-						}
-						if(lmm.isArmorVisible(1)) modelFATT.modelOuter.render(fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-						RendererHelper.setLightmapTextureCoords(modelFATT.lighting);
-						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-						GL11.glDisable(GL11.GL_BLEND);
-						GL11.glEnable(GL11.GL_ALPHA_TEST);
-					}catch(Exception e){ break OUTERLIGHT; }
-					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				}
-			}
-		}
+	public RenderLittleMaid(RenderManager manager, float f) {
+		
+		super(manager, f);
+		
+		//描画用Layer登録
+		this.addLayer(new MMMLayerHeldItem(this));
+		this.addLayer(new MMMLayerArmor(this));
 	}
-
-	/**
-	 * 手持ちアイテムレイヤー
-	 */
-	public class MMMLayerHeldItem extends LayerHeldItem{
-
-		//レイヤーと化したアイテム描画
-
-		protected RenderLivingBase renderer;
-		public MMMLayerHeldItem(RenderLivingBase p_i46115_1_) {
-			super(p_i46115_1_);
-			renderer = p_i46115_1_;
-		}
-
-		@Override
-		public void doRenderLayer(EntityLivingBase p_177141_1_,
-				float p_177141_2_, float p_177141_3_, float p_177141_4_,
-				float p_177141_5_, float p_177141_6_, float p_177141_7_,
-				float p_177141_8_) {
-			EntityLittleMaid lmm = (EntityLittleMaid) p_177141_1_;
-
-			if(!lmm.isMaidWait()){
-
-				Iterator<ItemStack> heldItemIterator = lmm.getHeldEquipment().iterator();
-				int i = 0, handindexes[] = {lmm.getDominantArm(), lmm.getDominantArm() == 1 ? 0 : 1};
-
-				while (heldItemIterator.hasNext()) {
-					ItemStack itemstack = (ItemStack) heldItemIterator.next();
-
-					if (!itemstack.isEmpty())
-					{
-						GlStateManager.pushMatrix();
-
-						// Use dominant arm as mainhand.
-						modelMain.model.Arms[handindexes[i]].postRender(0.0625F);
-
-						if (lmm.isSneaking()) {
-							GlStateManager.translate(0.0F, 0.2F, 0.0F);
-						}
-						boolean flag = handindexes[i] == 1;
-
-						GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
-						GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-						/* 初期モデル構成で
-						 * x: 手の甲に垂直な方向(-で向かって右に移動)
-						 * y: 体の面に垂直な方向(-で向かって背面方向に移動)
-						 * z: 腕に平行な方向(-で向かって手の先方向に移動)
-						 */
-						GlStateManager.translate(flag ? -0.0125F : 0.0125F, 0.05f, -0.15f);
-						Minecraft.getMinecraft().getItemRenderer().renderItemSide(lmm, itemstack,
-								flag ?
-										ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND :
-										ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND,
-								flag);
-						GlStateManager.popMatrix();
-					}
-
-					i++;
-				}
-
-			}
-
-		}
-
-
-	}
-
+	
 	@Override
 	public void setModelValues(EntityLittleMaid par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
@@ -393,6 +173,8 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 		renderString(plittleMaid, px, py, pz, f, f1);
 	}
 */
+	/**
+	パラメータ名を書き直し
 	@Override
 	public void doRender(EntityLittleMaid par1EntityLiving,
 			double par2, double par4, double par6, float par8, float par9) {
@@ -400,11 +182,24 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 		EntityLittleMaid lmm = par1EntityLiving;
 
 		fcaps = lmm.maidCaps;
-//		doRenderLitlleMaid(lmm, par2, par4, par6, par8, par9);
+
 		renderModelMulti(lmm, par2, par4, par6, par8, par9, fcaps);
-//		renderString(lmm, par2, par4, par6, par8, par9);
-		// ロープ
-//		func_110827_b(lmm, par2, par4 - modelMain.model.getLeashOffset(lmm.maidCaps), par6, par8, par9);
+
+	}
+	*/
+	
+	/**
+	 * Rendererのメイン処理
+	 */
+	@Override
+	public void doRender(EntityLittleMaid entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		
+		//モデルパラメータセット
+		fcaps = entity.maidCaps;
+		
+		//マルチモデルの描画
+		renderModelMulti(entity, x, y, z, entityYaw, partialTicks, fcaps);
+		
 	}
 
 	@Override
