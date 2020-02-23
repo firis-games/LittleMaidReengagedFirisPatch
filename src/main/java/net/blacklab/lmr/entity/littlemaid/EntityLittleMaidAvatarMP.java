@@ -1,6 +1,7 @@
 package net.blacklab.lmr.entity.littlemaid;
 
 import java.util.Collection;
+import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -26,6 +28,7 @@ import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -710,4 +713,19 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	{
 		this.setPosition(x, y, z);
 	}
+	
+	
+	/**
+	 * 別Modから特殊なレシピ操作されるとパケットが送信されるため落ちる
+	 * （アイテムを拾った際にレシピ追加など）
+	 * レシピ関連処理を握りつぶす
+	 */
+	@Override
+	public void unlockRecipes(List<IRecipe> p_192021_1_){}
+	
+	@Override
+	public void unlockRecipes(ResourceLocation[] p_193102_1_) {}
+	
+	@Override
+	public void resetRecipes(List<IRecipe> p_192022_1_) {}
 }
