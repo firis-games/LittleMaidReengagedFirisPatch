@@ -6,11 +6,13 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.DevMode;
 import net.firis.lmt.client.renderer.RendererLittleMaidTest;
 import net.firis.lmt.client.renderer.RendererMaidChicken;
+import net.firis.lmt.client.renderer.RendererMaidPlayer;
 import net.firis.lmt.common.entity.EntityLittleMaidTest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderChicken;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.util.ResourceLocation;
@@ -73,6 +75,16 @@ public class LMTCore {
 		
 		entityMap.put(EntityChicken.class, new RendererMaidChicken((RenderChicken) renderer));
 		
+		
+		//Playerのスキンも差し替え
+		Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().skinMap;
+		
+		RenderPlayer renderPlayer = skinMap.get("default");
+		RendererMaidPlayer renderMaidPlayer = new RendererMaidPlayer(renderPlayer);
+		
+		Minecraft.getMinecraft().getRenderManager().playerRenderer = renderMaidPlayer;
+		skinMap.put("default", renderMaidPlayer);
+		skinMap.put("slim", renderMaidPlayer);
 	}
 
 }
