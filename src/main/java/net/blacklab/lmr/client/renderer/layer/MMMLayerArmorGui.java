@@ -108,6 +108,10 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 				Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
 			}catch(Exception e){}
 
+			//透過設定
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			
 //			mmodel.modelInner.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
 //			mmodel.modelInner.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
 			mmodel.modelInner.mainFrame.render(renderScale);
