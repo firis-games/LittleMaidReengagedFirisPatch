@@ -226,6 +226,7 @@ public class ProxyClient extends ProxyCommon
 
 	public int soundCount = 0;
 
+	/*
 	public static class CountThread extends Thread{
 
 		public boolean isRunning = true;
@@ -251,6 +252,7 @@ public class ProxyClient extends ProxyCommon
 			isRunning = false;
 		}
 	}
+	*/
 	
 	
 	@Override
@@ -280,6 +282,9 @@ public class ProxyClient extends ProxyCommon
 		
 		//擬似騎乗描画用
 		MinecraftForge.EVENT_BUS.register(new RenderPlayerEventHandler());
+		
+		//リトルメイドテスト用モジュール
+		LMTCore.initClientRendererEventRegister();
 		
 	}
 }
