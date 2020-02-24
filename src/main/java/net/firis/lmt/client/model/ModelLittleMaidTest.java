@@ -3,6 +3,7 @@ package net.firis.lmt.client.model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -146,6 +147,86 @@ public class ModelLittleMaidTest extends ModelBase {
 	@Override
 	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
 	{
+		this.setAnimationDefault(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+				
+		//待機モーションテスト
+		/*
+		if (false) {
+			float lx = MathHelper.sin(ageInTicks * 0.067F) * 0.05F -0.7F;
+			ModelHelper.setRotateAngle(bipedRightArm, lx, 0.0F, -0.4F);
+			ModelHelper.setRotateAngle(bipedLeftArm, lx, 0.0F, 0.4F);			
+		}
+		*/
+		
+	}
+	
+	public void setDefaultPause() {
+		
+	}
+	
+	/**
+	 * 初期モーションの設定
+	 * 腕降り足降りの制御とかもここに含まれている
+	 * 
+	 */
+	public void setAnimationDefault(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+		
+		mainFrame.setRotationPoint(0F, 8F, 0F);
+		
+		bipedTorso.setRotationPoint(0F, 0F, 0F);
+		ModelHelper.setRotateAngle(bipedTorso, 0F, 0F, 0F);
+		
+		bipedNeck.setRotationPoint(0F, 0F, 0F);
+		ModelHelper.setRotateAngle(bipedNeck, 0F, 0F, 0F);
+		
+		bipedPelvic.setRotationPoint(0F, 7F, 0F);
+		ModelHelper.setRotateAngle(bipedPelvic, 0F, 0F, 0F);
+
+		bipedHead.setRotationPoint(0F, 0F, 0F);
+		//bipedHead.setRotateAngleDegY(netHeadYaw);
+		//bipedHead.setRotateAngleDegX(headPitch);
+		bipedHead.rotateAngleY = netHeadYaw * ModelHelper.degFactor;
+		bipedHead.rotateAngleX = headPitch * ModelHelper.degFactor;
+		
+		bipedBody.setRotationPoint(0F, 0F, 0F);
+		ModelHelper.setRotateAngle(bipedBody, 0F, 0F, 0F);
+
+		bipedRightArm.setRotationPoint(-3.0F, 1.6F, 0F);
+		ModelHelper.setRotateAngle(bipedRightArm, MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 2.0F * limbSwingAmount * 0.5F, 0F, 0F);
+		bipedLeftArm.setRotationPoint(3.0F, 1.6F, 0F);
+		ModelHelper.setRotateAngle(bipedLeftArm, MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F, 0F, 0F);
+		bipedRightLeg.setRotationPoint(-1F, 0F, 0F);
+		ModelHelper.setRotateAngle(bipedRightLeg, MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount, 0F, 0F);
+		bipedLeftLeg.setRotationPoint(1F, 0F, 0F);
+		ModelHelper.setRotateAngle(bipedLeftLeg, MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 1.4F * limbSwingAmount, 0F, 0F);
+
+		Skirt.setRotationPoint(0F, 0F, 0F);
+		ModelHelper.setRotateAngle(Skirt, 0F, 0F, 0F);
+		
+		
+		
+		//腕降りとかの制御？
+		
+		/*
+		// 腕ふり、腿上げ
+		float lf1 = MathHelper.cos(limbSwing * 0.6662F);
+		float lf2 = MathHelper.cos((float) (limbSwing * 0.6662F + Math.PI));
+		this.bipedRightArm.rotateAngleX = lf2 * 2.0F * limbSwingAmount * 0.5F;
+		this.bipedLeftArm.rotateAngleX = lf1 * 2.0F * limbSwingAmount * 0.5F;
+		this.bipedRightLeg.rotateAngleX = lf1 * 1.4F * limbSwingAmount;
+		this.bipedLeftLeg.rotateAngleX = lf2 * 1.4F * limbSwingAmount;
+		*/
+		
+		//腕を横方向にする制御
+		// 通常
+		float la, lc;
+		la = MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+		lc = 0.5F + MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		bipedRightArm.rotateAngleX += la;
+		bipedLeftArm.rotateAngleX += -la;
+		bipedRightArm.rotateAngleZ += lc;
+		bipedLeftArm.rotateAngleZ += -lc;
+		
 		
 	}
 }
