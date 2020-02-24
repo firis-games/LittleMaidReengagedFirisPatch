@@ -15,7 +15,7 @@ public class RendererMaidPlayer extends RenderPlayer {
 	private static final ResourceLocation MAID_TEXTURES = new ResourceLocation("textures/entity/littlemaid/mob_littlemaid.png");
 	
 	
-	protected ModelBase dummyMainModel = new ModelPlayer(0.0F, false);
+	protected static ModelBase dummyMainModel = new ModelPlayer(0.0F, false);
 	
 	/**
 	 * コンストラクタ
@@ -48,6 +48,6 @@ public class RendererMaidPlayer extends RenderPlayer {
 	@Override
 	public ModelPlayer getMainModel()
     {
-        return (ModelPlayer) this.dummyMainModel;
+        return (ModelPlayer) dummyMainModel;
     }
 }
