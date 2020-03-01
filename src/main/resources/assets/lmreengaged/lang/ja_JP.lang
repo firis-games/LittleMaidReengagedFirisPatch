@@ -155,3 +155,10 @@ item.maid_carry.info=メイドさんの休憩所
 item.maid_sugar.name=メイドシュガー
 item.maid_sugar.info=たべられません
 
+commands.lmcommand.usage=メイドさんコマンドの使い方
+commands.lmcommand.error=コマンドエラーですよ、ご主人さま
+commands.lmcommand.call.success=お呼びですか、ご主人さま
+commands.lmcommand.call.failure=近くにメイドさんはいないようだ...
+commands.lmcommand.call.failure.maid=近くに%sはいないようだ...
+commands.lmcommand.list.failure=近くにメイドさんはいないようだ...
+

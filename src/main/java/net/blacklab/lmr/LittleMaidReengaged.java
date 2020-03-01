@@ -9,6 +9,7 @@ import java.util.Random;
 import org.apache.logging.log4j.Logger;
 
 import net.blacklab.lib.vevent.VEventBus;
+import net.blacklab.lmc.common.command.LMCommand;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.ReflectionHelper;
 import net.blacklab.lmc.common.item.LMItemMaidCarry;
@@ -56,6 +57,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -486,5 +488,19 @@ public class LittleMaidReengaged {
     	//リトルメイドテスト用モジュール
     	LMTCore.registerEntities(entityId);
     }
+    
+    /**
+     * サーバーサイドの登録処理
+     * @param event
+     */
+	@EventHandler
+	public void serverStatingEvent(FMLServerStartingEvent event) {
+		
+		//メイドさんコマンドの追加
+		event.registerServerCommand(new LMCommand());
+		
+	}
+     
+    
 
 }

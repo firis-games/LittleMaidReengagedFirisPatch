@@ -158,3 +158,10 @@ item.maid_carry.info=Maid rest room
 item.maid_sugar.name=Maid Sugar
 item.maid_sugar.info=I can not eat
 
+commands.lmcommand.usage=LittleMaid Command
+commands.lmcommand.error=Command Error
+commands.lmcommand.call.success=Call me, master
+commands.lmcommand.call.failure=Looks like there is no maid nearby.
+commands.lmcommand.call.failure.maid=Looks like there is no %s nearby.
+commands.lmcommand.list.failure=Looks like there is no maid nearby.
+
