@@ -310,7 +310,8 @@ public class EntityMode_Playing extends EntityModeBase {
 
 	@Override
 	public float attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		if (par1DamageSource.getTrueSource() instanceof EntitySnowball) {
+		
+		if (par1DamageSource.getImmediateSource() instanceof EntitySnowball) {
 			// お遊び判定用、雪玉かどうか判定
 			owner.setMaidDamegeSound(EnumSound.hurt_snow);
 			if (!owner.isContractEX() || (owner.isFreedom() && owner.maidMode.equals(EntityMode_Basic.mmode_Escort))) {
