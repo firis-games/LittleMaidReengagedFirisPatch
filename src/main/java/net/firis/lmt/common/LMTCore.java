@@ -19,6 +19,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * テスト用リトルメイド管理用
@@ -61,8 +63,8 @@ public class LMTCore {
 				}
     	});
 	}
-
 	
+	@SideOnly(Side.CLIENT)
 	public static void initClientRendererEventRegister() {
 		
 		//開発環境のみ実行
