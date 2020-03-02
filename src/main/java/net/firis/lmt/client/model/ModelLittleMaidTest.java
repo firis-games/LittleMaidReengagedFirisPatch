@@ -3,6 +3,9 @@ package net.firis.lmt.client.model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -136,6 +139,8 @@ public class ModelLittleMaidTest extends ModelBase {
 	{
 		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 		
+		this.setAnimationSwingArms(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
+		
 		//全体をまとめて描画する
 		this.mainFrame.render(scale);
 		
@@ -226,7 +231,107 @@ public class ModelLittleMaidTest extends ModelBase {
 		bipedLeftArm.rotateAngleX += -la;
 		bipedRightArm.rotateAngleZ += lc;
 		bipedLeftArm.rotateAngleZ += -lc;
+	}
+	
+	
+	/**
+	 * 腕降り制御
+	 * onGroundsの数値をもとに腕降りを制御する
+	 */
+	public void setAnimationSwingArms(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+		
+		float onGrounds[] = new float[] {0.0F, 0.0F};
+		
+		EntityPlayer player = (EntityPlayer) entityIn;
+		
+		//利き腕取得
+		EnumHandSide dominantHand = player.getPrimaryHand();
+		boolean isDominantRight = dominantHand == EnumHandSide.RIGHT;
+		
+		//右か左かの判断
+		boolean isMainHand = EnumHand.MAIN_HAND == player.swingingHand;
+		
+		//左利きの場合は左右逆転する
+		if (!isDominantRight) {
+			isMainHand = !isMainHand;
+		}
+		
+		//腕降り
+		/*　tick単位での腕降り制御位置
+		腕を振った時にplayer.swingProgressにこの値が設定される
+		0.16666667
+		0.16666667
+		0.16666667
+		0.33333334
+		0.33333334
+		0.33333334
+		0.5
+		0.5
+		0.5
+		0.6666667
+		0.6666667
+		0.6666667
+		0.8333333
+		0.8333333
+		0.8333333
+		*/
+		if (isMainHand) {
+			//右降り
+			onGrounds[0] = player.swingProgress;
+			onGrounds[1] = 0.0F;
+		} else {
+			//左降り
+			onGrounds[0] = 0.0F;
+			onGrounds[1] = player.swingProgress;
+		}
 		
 		
+		if ((onGrounds[0] > -9990F || onGrounds[1] > -9990F)) {
+			
+			// 腕振り
+			float f6, f7, f8;
+			f6 = MathHelper.sin(MathHelper.sqrt(onGrounds[0]) * (float)Math.PI * 2.0F);
+			f7 = MathHelper.sin(MathHelper.sqrt(onGrounds[1]) * (float)Math.PI * 2.0F);
+			
+			bipedTorso.rotateAngleY = (f6 - f7) * 0.2F;
+			Skirt.rotateAngleY += bipedTorso.rotateAngleY;
+			bipedRightArm.rotateAngleY += bipedTorso.rotateAngleY;
+			bipedLeftArm.rotateAngleY += bipedTorso.rotateAngleY;
+			bipedPelvic.rotateAngleY += bipedTorso.rotateAngleY;
+			bipedHead.rotateAngleY += -bipedTorso.rotateAngleY;
+			Skirt.rotateAngleY += -bipedTorso.rotateAngleY;
+			
+			// R
+			if (onGrounds[0] > 0F) {
+				f6 = 1.0F - onGrounds[0];
+				f6 *= f6;
+				f6 *= f6;
+				f6 = 1.0F - f6;
+				f7 = MathHelper.sin(f6 * (float)Math.PI);
+				f8 = MathHelper.sin(onGrounds[0] * (float)Math.PI) * -(bipedHead.rotateAngleX - 0.7F) * 0.75F;
+				
+				bipedRightArm.rotateAngleX += -f7 * 1.2F - f8;
+				bipedRightArm.rotateAngleY += bipedTorso.rotateAngleY * 2.0F;
+				bipedRightArm.rotateAngleZ += MathHelper.sin(onGrounds[0] * 3.141593F) * -0.4F;
+			} else {
+				bipedRightArm.rotateAngleX += bipedTorso.rotateAngleY;
+			}
+			// L
+			if (onGrounds[1] > 0F) {
+				f6 = 1.0F - onGrounds[1];
+				f6 *= f6;
+				f6 *= f6;
+				f6 = 1.0F - f6;
+				f7 = MathHelper.sin(f6 * (float)Math.PI);
+				f8 = MathHelper.sin(onGrounds[1] * (float)Math.PI) * -(bipedHead.rotateAngleX - 0.7F) * 0.75F;
+				
+				bipedLeftArm.rotateAngleX -= f7 * 1.2F - f8;
+				bipedLeftArm.rotateAngleY += bipedTorso.rotateAngleY * 2.0F;
+				bipedLeftArm.rotateAngleZ += MathHelper.sin(onGrounds[1] * 3.141593F) * 0.4F;
+				
+			} else {
+				bipedLeftArm.rotateAngleX += bipedTorso.rotateAngleY;
+			}
+		}
 	}
 }
