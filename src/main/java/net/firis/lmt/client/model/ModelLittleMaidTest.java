@@ -137,9 +137,15 @@ public class ModelLittleMaidTest extends ModelBase {
 	@Override
 	public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
 	{
+		//デフォルトモーション設定
 		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 		
+		//腕振りモーション設定
 		this.setAnimationSwingArms(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
+		
+		//スニークモーション設定
+		this.setAnimationSneak(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
+		
 		
 		//全体をまとめて描画する
 		this.mainFrame.render(scale);
@@ -171,7 +177,7 @@ public class ModelLittleMaidTest extends ModelBase {
 	
 	/**
 	 * 初期モーションの設定
-	 * 腕降り足降りの制御とかもここに含まれている
+	 * 腕振り足振りの制御とかもここに含まれている
 	 * 
 	 */
 	public void setAnimationDefault(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
@@ -210,7 +216,7 @@ public class ModelLittleMaidTest extends ModelBase {
 		
 		
 		
-		//腕降りとかの制御？
+		//腕振りとかの制御？
 		
 		/*
 		// 腕ふり、腿上げ
@@ -235,8 +241,8 @@ public class ModelLittleMaidTest extends ModelBase {
 	
 	
 	/**
-	 * 腕降り制御
-	 * onGroundsの数値をもとに腕降りを制御する
+	 * 腕振り制御
+	 * onGroundsの数値をもとに腕振りを制御する
 	 */
 	public void setAnimationSwingArms(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
 		
@@ -256,8 +262,8 @@ public class ModelLittleMaidTest extends ModelBase {
 			isMainHand = !isMainHand;
 		}
 		
-		//腕降り
-		/*　tick単位での腕降り制御位置
+		//腕振り
+		/*　tick単位での腕振り制御位置
 		腕を振った時にplayer.swingProgressにこの値が設定される
 		0.16666667
 		0.16666667
@@ -276,11 +282,11 @@ public class ModelLittleMaidTest extends ModelBase {
 		0.8333333
 		*/
 		if (isMainHand) {
-			//右降り
+			//右振り
 			onGrounds[0] = player.swingProgress;
 			onGrounds[1] = 0.0F;
 		} else {
-			//左降り
+			//左振り
 			onGrounds[0] = 0.0F;
 			onGrounds[1] = player.swingProgress;
 		}
@@ -333,5 +339,34 @@ public class ModelLittleMaidTest extends ModelBase {
 				bipedLeftArm.rotateAngleX += bipedTorso.rotateAngleY;
 			}
 		}
+	}
+	
+	/**
+	 * スニークモーションを設定する
+	 */
+	public void setAnimationSneak(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+		
+		EntityPlayer player = (EntityPlayer) entityIn;
+		
+		if (!player.isSneaking()) return;
+		
+		// しゃがみ
+		bipedTorso.rotateAngleX += 0.5F;
+		bipedNeck.rotateAngleX -= 0.5F;
+		bipedRightArm.rotateAngleX += 0.2F;
+		bipedLeftArm.rotateAngleX += 0.2F;
+
+		bipedPelvic.rotationPointY += -0.5F;
+		bipedPelvic.rotationPointZ += -0.6F;
+		bipedPelvic.rotateAngleX += -0.5F;
+		
+		bipedHead.rotationPointY = 1.0F;
+
+		Skirt.rotationPointY -= 0.25F;
+		Skirt.rotationPointZ += 0.00F;
+		Skirt.rotateAngleX += 0.2F;
+		
+		bipedTorso.rotationPointY += 1.00F;
+					
 	}
 }
