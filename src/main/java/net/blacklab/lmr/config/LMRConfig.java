@@ -90,6 +90,9 @@ public class LMRConfig {
 	/** みんなのメイドさん */
 	public static boolean cfg_cstm_everyones_maid = false;
 	
+	/** 開発用テストモジュールの有効化設定 */
+	public static boolean cfg_developer_test_module = false;
+	
 	/**
 	 * Config初期化
 	 */
@@ -187,6 +190,10 @@ public class LMRConfig {
 		
 		//秘密機能
 		initSecret(cfg);
+		
+		//開発者用テストモジュール有効化設定
+		cfg_developer_test_module = cfg.getBoolean("TestModule", "Develop", false,
+				"developer only.");
 		
 		cfg.save();
 	}

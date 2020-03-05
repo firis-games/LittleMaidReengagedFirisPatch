@@ -3,6 +3,7 @@ package net.firis.lmt.common;
 import java.util.Map;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.util.DevMode;
 import net.firis.lmt.client.renderer.RendererLittleMaidTest;
 import net.firis.lmt.client.renderer.RendererMaidChicken;
@@ -36,7 +37,7 @@ public class LMTCore {
 	public static int registerEntities(int entityId) {
 		
 		//開発環境のみ実行
-		if (!DevMode.DEVELOPMENT_DEBUG_MODE) return entityId;
+		if (!DevMode.DEVELOPMENT_DEBUG_MODE || !LMRConfig.cfg_developer_test_module) return entityId;
 		
 		//テストメイドの登録
 		EntityRegistry.registerModEntity(new ResourceLocation(LittleMaidReengaged.DOMAIN, "littlemaidtest"),
@@ -52,7 +53,7 @@ public class LMTCore {
 	public static void rendererRegister() {
 
 		//開発環境のみ実行
-		if (!DevMode.DEVELOPMENT_DEBUG_MODE) return;
+		if (!DevMode.DEVELOPMENT_DEBUG_MODE || !LMRConfig.cfg_developer_test_module) return;
 
 		//テストメイドさん描画用クラス登録
     	RenderingRegistry.registerEntityRenderingHandler(
@@ -68,7 +69,7 @@ public class LMTCore {
 	public static void initClientRendererEventRegister() {
 		
 		//開発環境のみ実行
-		if (!DevMode.DEVELOPMENT_DEBUG_MODE) return;
+		if (!DevMode.DEVELOPMENT_DEBUG_MODE || !LMRConfig.cfg_developer_test_module) return;
 
 		//テスト用処理
 		//にわとりのrenderを独自renderへ差し替え
