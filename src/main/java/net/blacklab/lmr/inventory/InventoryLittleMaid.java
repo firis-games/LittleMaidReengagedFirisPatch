@@ -129,7 +129,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	@Override
 	public String getName() {
-		return "LOSE";
+		return "littlemaid.inventory.name";
 	}
 
 	@Override

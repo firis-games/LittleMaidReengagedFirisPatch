@@ -165,3 +165,5 @@ commands.lmcommand.call.failure=Looks like there is no maid nearby.
 commands.lmcommand.call.failure.maid=Looks like there is no %s nearby.
 commands.lmcommand.list.failure=Looks like there is no maid nearby.
 
+littlemaid.inventory.name=ROSE
+
