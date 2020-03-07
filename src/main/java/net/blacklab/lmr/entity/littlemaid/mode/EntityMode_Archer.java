@@ -1,5 +1,6 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,6 +43,18 @@ public class EntityMode_Archer extends EntityModeBase {
 	
 	public static final String mtrigger_Bow			= "Archer:Bow";
 	public static final String mtrigger_Arrow		= "Archer:Arrow";
+	
+	/** 矢（弾丸）と判断するクラス */
+	public static final List<Class <? extends Item>> arrowClassList = initArrowClassList();
+	
+	/**
+	 * 矢（弾丸）クラスリスト初期化
+	 */
+	public static List<Class <? extends Item>> initArrowClassList() {
+		List<Class <? extends Item>> list = new ArrayList<>();
+		list.add(ItemArrow.class);
+		return list;
+	}
 
 	@Override
 	public int priority() {
@@ -282,10 +295,13 @@ public class EntityMode_Archer extends EntityModeBase {
 	 */
 	private boolean isInventoryArrowItem() {
 		
-		//矢ｸﾗｽ判定
-		if (!(owner.maidInventory.getInventorySlotContainItem(ItemArrow.class) < 0)) {
-			return true;
+		//矢(弾丸)ｸﾗｽ判定
+		for (Class<? extends Item> classItem : arrowClassList) {
+			if (!(owner.maidInventory.getInventorySlotContainItem(classItem) < 0)) {
+				return true;
+			}
 		}
+		
 		//ItemIdで判定
 		for (String itemId : LMRConfig.cfg_ac_arrow_item_ids) {
 			if (!(owner.maidInventory.getInventorySlotContainItemId(itemId) < 0)) {
