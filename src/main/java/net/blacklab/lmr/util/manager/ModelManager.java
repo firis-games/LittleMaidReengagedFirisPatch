@@ -220,7 +220,7 @@ public class ModelManager {
 				//大文字小文字の差は無視する
 				for (String key : modelMap.keySet()) {
 					if (key.toLowerCase().equals(ltb.modelName.toLowerCase())) {
-						ltb.setModels(key, modelMap.get(ltb.modelName), ldm);
+						ltb.setModels(ltb.modelName, modelMap.get(key), ldm);
 						break;
 					}
 				}
