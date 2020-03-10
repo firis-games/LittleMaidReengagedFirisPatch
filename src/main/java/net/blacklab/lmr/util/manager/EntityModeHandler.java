@@ -10,6 +10,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 
+@Deprecated
 public class EntityModeHandler extends LoaderHandler {
 	
 	private List<Class<? extends EntityModeBase>> modeClasses;

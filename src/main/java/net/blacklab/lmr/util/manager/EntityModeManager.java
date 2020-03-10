@@ -7,6 +7,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 
+@Deprecated
 public class EntityModeManager extends ManagerBase {
 
 	public static final String prefix = "EntityMode";

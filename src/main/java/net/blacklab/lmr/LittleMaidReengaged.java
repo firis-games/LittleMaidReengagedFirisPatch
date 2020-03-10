@@ -29,10 +29,8 @@ import net.blacklab.lmr.network.ProxyCommon;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
-import net.blacklab.lmr.util.manager.EntityModeHandler;
-import net.blacklab.lmr.util.manager.EntityModeManager;
-import net.blacklab.lmr.util.manager.LoaderSearcher;
 import net.blacklab.lmr.util.manager.ModelManager;
+import net.blacklab.lmr.util.manager.PluginManager;
 import net.blacklab.lmr.util.manager.StabilizerManager;
 import net.firis.lmt.common.LMTCore;
 import net.minecraft.client.Minecraft;
@@ -297,7 +295,13 @@ public class LittleMaidReengaged {
 		//AchievementsLMRE.initAchievements();
 
 		// AIリストの追加
-		EntityModeManager.init();
+		//EntityModeManager.init();
+		
+		//Pluginクラスをロードする登録処理
+		PluginManager.preInitPluginLoad(evt);
+		
+		//Plugin初期化処理
+		PluginManager.preInitRegisterPlugin(evt);
 
 		// アイテムスロット更新用のパケット
 		LMRNetwork.init(DOMAIN);
@@ -319,6 +323,7 @@ public class LittleMaidReengaged {
 		
 		//描画イベント登録
 		proxy.initClientRendererEventRegister();
+
 	}
 
 	// public static ProxyClient.CountThread countThread;
@@ -398,8 +403,8 @@ public class LittleMaidReengaged {
 		// モードリストを構築
 //		EntityModeManager.loadEntityMode();
 //		EntityModeManager.showLoadedModes();
-		LoaderSearcher.INSTANCE.register(EntityModeHandler.class);
-		LoaderSearcher.INSTANCE.startSearch();
+		//LoaderSearcher.INSTANCE.register(EntityModeHandler.class);
+		//LoaderSearcher.INSTANCE.startSearch();
 
 		// サウンドのロード
 		// TODO ★ proxy.loadSounds();

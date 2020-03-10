@@ -23,6 +23,7 @@ import net.blacklab.lmr.util.FileList;
  * @author Verclene
  *
  */
+@Deprecated
 public class LoaderSearcher {
 	
 	public static LoaderSearcher INSTANCE = new LoaderSearcher();
