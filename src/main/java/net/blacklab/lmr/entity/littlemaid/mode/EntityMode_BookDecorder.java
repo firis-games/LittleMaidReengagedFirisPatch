@@ -41,7 +41,7 @@ public class EntityMode_BookDecorder extends EntityModeBase {
 						owner.textureData.textureBox[0],
 						owner.textureData.textureBox[1]
 				};
-				int lcolor = owner.getColor();
+				//int lcolor = owner.getColor();
 				boolean lflag = false;
 				for (String lt : lcommands) {
 					lcom = lt.split(":");
@@ -51,7 +51,7 @@ public class EntityMode_BookDecorder extends EntityModeBase {
 						
 						try {
 							if (lcom[0].equals("color")) {
-								lcolor = Integer.valueOf(lcom[1]) & 0x0f;
+								//lcolor = Integer.valueOf(lcom[1]) & 0x0f;
 								lflag = true;
 							}
 							else if (lcom[0].equals("texture")) {

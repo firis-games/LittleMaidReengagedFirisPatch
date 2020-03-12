@@ -2,20 +2,19 @@ package net.blacklab.lmr.client.gui;
 
 import java.io.IOException;
 
-import net.blacklab.lmr.network.LMRMessage;
-import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.opengl.EXTRescaleNormal;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
+import net.blacklab.lmr.network.LMRMessage;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * 選択時にサーバーへ染料の使用を通知するための処理。
@@ -149,7 +148,7 @@ public class GuiTextureSelect extends GuiScreen {
 		selectPanel.entity.renderYawOffset = -25F;
 		selectPanel.entity.rotationYawHead = -10F;
 
-		ResourceLocation ltex[];
+		//ResourceLocation ltex[];
 		if (selectPanel.mode) {
 			selectPanel.entity.textureData.textureBox[0] = GuiTextureSlot.getBlankBox();
 			selectPanel.entity.textureData.textureBox[1] = lbox;

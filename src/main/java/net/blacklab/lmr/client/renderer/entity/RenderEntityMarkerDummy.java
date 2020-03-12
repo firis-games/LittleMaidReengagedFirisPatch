@@ -8,11 +8,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-public class RenderEntityMarkerDummy extends Render {
+public class RenderEntityMarkerDummy extends Render<EntityMarkerDummy> {
 
 	public RenderEntityMarkerDummy() {
 		super(Minecraft.getMinecraft().getRenderManager());
@@ -20,7 +19,7 @@ public class RenderEntityMarkerDummy extends Render {
 	}
 
 	@Override
-	public void doRender(Entity entity, double d, double d1, double d2,
+	public void doRender(EntityMarkerDummy entity, double d, double d1, double d2,
 			float f, float f1) {
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -78,9 +77,9 @@ public class RenderEntityMarkerDummy extends Render {
 		GL11.glPopMatrix();
 		
 	}
-
+	
 	@Override
-	protected ResourceLocation getEntityTexture(Entity var1) {
+	protected ResourceLocation getEntityTexture(EntityMarkerDummy entity) {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}

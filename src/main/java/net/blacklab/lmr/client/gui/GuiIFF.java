@@ -222,7 +222,7 @@ public class GuiIFF extends GuiScreen {
 			IFF.setIFFValue(CommonHelper.getPlayerUUID(thePlayer), pName, tt);
 
 			// サーバーへ変更値を送る。
-			int li = 0;
+			//int li = 0;
 			NBTTagCompound tagCompound = new NBTTagCompound();
 			tagCompound.setByte("Value", tt);
 			tagCompound.setString("Name", pName);
