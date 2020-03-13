@@ -42,7 +42,9 @@ public class ModelManager {
 	 */
 	public static ModelManager instance = new ModelManager();
 
+	@Deprecated
 	public static String nameTextureIndex = "config/mod_MMM_textureList.cfg";
+	
 	public static String defaultModelName = "Orign";
 
 	public static final int tx_oldwild		= 0x10; //16;
@@ -79,24 +81,28 @@ public class ModelManager {
 	 * ローカルで保持しているモデルのリスト
 	 */
 	protected Map<String, ModelMultiBase[]> modelMap = new TreeMap<String, ModelMultiBase[]>();
+	
 	/**
 	 * ローカルで保持しているテクスチャパック
 	 */
 	private List<TextureBox> textures = new ArrayList<TextureBox>();
+	
 	/**
 	 * サーバー側での管理番号を識別するのに使う、クライアント用。
 	 */
+	@Deprecated
 	public Map<TextureBox, Integer> textureServerIndex = new HashMap<TextureBox, Integer>();
+	
 	/**
 	 * サーバー・クライアント間でテクスチャパックの名称リストの同期を取るのに使う、サーバー用。
 	 */
+	@Deprecated
 	public List<TextureBoxServer> textureServer = new ArrayList<TextureBoxServer>();
 	/**
 	 * Entity毎にデフォルトテクスチャを参照。
 	 * 構築方法はEntityListを参照のこと。
 	 */
-	@SuppressWarnings("rawtypes")
-	protected Map<Class, TextureBox> defaultTextures = new HashMap<Class, TextureBox>();
+	protected Map<Class<?>, TextureBox> defaultTextures = new HashMap<>();
 
 	protected Map<IModelEntity, int[]> stackGetTexturePack = new HashMap<IModelEntity, int[]>();
 	protected Map<IModelEntity, Object[]> stackSetTexturePack = new HashMap<IModelEntity, Object[]>();
@@ -151,6 +157,7 @@ public class ModelManager {
 	 * @param pBoxBase
 	 * @return
 	 */
+	@Deprecated
 	public TextureBox getTextureBox(TextureBoxBase pBoxBase) {
 		if (pBoxBase instanceof TextureBox) {
 			return (TextureBox)pBoxBase;
@@ -160,6 +167,7 @@ public class ModelManager {
 		return null;
 	}
 
+	@Deprecated
 	public TextureBoxServer getTextureBoxServer(String pName) {
 		for (TextureBoxServer lbox : textureServer) {
 			if (lbox.textureName.equals(pName)) {
@@ -169,6 +177,7 @@ public class ModelManager {
 		return null;
 	}
 
+	@Deprecated
 	public TextureBoxServer getTextureBoxServer(int pIndex) {
 //		LittleMaidReengaged.Debug("getTextureBoxServer: %d / %d", pIndex, textureServer.size());
 		if (textureServer.size() > pIndex) {
@@ -304,6 +313,7 @@ public class ModelManager {
 	}
 
 
+	@Deprecated
 	public boolean loadTextureServer() {
 		// サーバー用テクスチャ名称のインデクッスローダー
 		// 先ずは手持ちのテクスチャパックを追加する。
@@ -357,6 +367,7 @@ public class ModelManager {
 		return false;
 	}
 
+	@Deprecated
 	public void saveTextureServer() {
 		// サーバー用テクスチャ名称のインデクッスセーバー
 		File lfile = FMLCommonHandler.instance().getMinecraftServerInstance().getFile(nameTextureIndex);
@@ -387,6 +398,7 @@ public class ModelManager {
 	/**
 	 * テクスチャインデックスを構築。
 	 */
+	@Deprecated
 	public void initTextureList(boolean pFlag) {
 		LittleMaidReengaged.Debug("Clear TextureBoxServer.");
 		textureServerIndex.clear();
@@ -679,10 +691,25 @@ public class ModelManager {
 		return lreturn;
 	}
 
+	/**
+	 * スポーン用モデル名をランダムに取得する
+	 */
 	public String getRandomTextureString(Random pRand) {
-		return getRandomTexture(pRand).textureName;
+		//return getRandomTexture(pRand).textureName;
+		
+		// 野生色があるものをリストアップ
+		List<TextureBox> llist = new ArrayList<>();
+		for (TextureBox lbox : this.textures) {
+			if (lbox.getWildColorBits() > 0) {
+				llist.add(lbox);
+			}
+		}
+		TextureBox wild = llist.get(pRand.nextInt(llist.size()));
+		
+		return wild.textureName;
 	}
 
+	@Deprecated
 	public TextureBoxServer getRandomTexture(Random pRand) {
 		if (textureServer.isEmpty()) {
 			return null;
@@ -704,6 +731,7 @@ public class ModelManager {
 	 * @param pPackName
 	 * @return
 	 */
+	@Deprecated
 	public int getIndexTextureBoxServer(IModelEntity pEntity, String pPackName) {
 		for (int li = 0; li < textureServer.size(); li++) {
 			if (textureServer.get(li).textureName.equals(pPackName)) {
@@ -729,6 +757,7 @@ public class ModelManager {
 	 * @param pBox
 	 * @return
 	 */
+	@Deprecated
 	public int getIndexTextureBoxServerIndex(TextureBox pBox) {
 		return textureServerIndex.get(pBox);
 	}
@@ -736,12 +765,12 @@ public class ModelManager {
 	/**
 	 * Entityに対応するデフォルトのテクスチャを設定する。
 	 */
+	@Deprecated
 	public void setDefaultTexture(IModelEntity pEntity, TextureBox pBox) {
 		setDefaultTexture(pEntity.getClass(), pBox);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public void setDefaultTexture(Class pEntityClass, TextureBox pBox) {
+	public void setDefaultTexture(Class<?> pEntityClass, TextureBox pBox) {
 		defaultTextures.put(pEntityClass, pBox);
 		LittleMaidReengaged.Debug("appendDefaultTexture:%s(%s)",
 				pEntityClass.getSimpleName(), pBox == null ? "NULL" : pBox.textureName);
@@ -753,12 +782,12 @@ public class ModelManager {
 	public TextureBox getDefaultTexture(IModelEntity pEntity) {
 		return getDefaultTexture(pEntity.getClass());
 	}
-	@SuppressWarnings("rawtypes")
-	public TextureBox getDefaultTexture(Class pEntityClass) {
+	
+	public TextureBox getDefaultTexture(Class<?> pEntityClass) {
 		if (defaultTextures.containsKey(pEntityClass)) {
 			return defaultTextures.get(pEntityClass);
 		}
-		Class lsuper = pEntityClass.getSuperclass();
+		Class<?> lsuper = pEntityClass.getSuperclass();
 		if (lsuper != null) {
 			TextureBox lbox = getDefaultTexture(lsuper);
 			if (lbox != null) {

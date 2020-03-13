@@ -209,17 +209,18 @@ public class LittleMaidReengaged {
 		// テクスチャパックの構築
 		ModelManager.instance.init();
 		ModelManager.instance.loadTextures();
-		// ロード
-		if (CommonHelper.isClient) {
-			// テクスチャパックの構築
-//			MMM_TextureManager.loadTextures();
-//			MMM_StabilizerManager.loadStabilizer();
-			// テクスチャインデックスの構築
-			Debug("Localmode: InitTextureList.");
-			ModelManager.instance.initTextureList(true);
-		} else {
-			ModelManager.instance.loadTextureServer();
-		}
+
+//		// ロード
+//		if (CommonHelper.isClient) {
+//			// テクスチャパックの構築
+////			MMM_TextureManager.loadTextures();
+////			MMM_StabilizerManager.loadStabilizer();
+//			// テクスチャインデックスの構築
+//			Debug("Localmode: InitTextureList.");
+//			ModelManager.instance.initTextureList(true);
+//		} else {
+//			ModelManager.instance.loadTextureServer();
+//		}
 
 		// FileManager.setSrcPath(evt.getSourceFile());
 		// MMM_cfg_init();

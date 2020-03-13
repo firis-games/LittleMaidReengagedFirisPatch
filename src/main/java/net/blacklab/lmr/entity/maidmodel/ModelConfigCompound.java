@@ -136,10 +136,11 @@ public class ModelConfigCompound  {
 		textureModel[1] = null;
 		textureModel[2] = null;
 
-		if (owner.getEntityWorld().isRemote) {
-			return setTextureNamesClient();
-		}
-		return setTextureNamesServer();
+		//if (owner.getEntityWorld().isRemote) {
+		//	return setTextureNamesClient();
+		//}
+		//return setTextureNamesServer();
+		return setTextureNamesClient();
 	}
 
 	/**
@@ -206,6 +207,7 @@ public class ModelConfigCompound  {
 		return lf;
 	}
 
+	@Deprecated
 	protected boolean setTextureNamesServer() {
 		// Server
 		boolean lf = false;
@@ -395,7 +397,8 @@ public class ModelConfigCompound  {
 	 */
 	public void setTextureInitServer(String pName) {
 		LittleMaidReengaged.Debug("request Init Texture: %s", pName);
-		textureBox[0] = textureBox[1] = ModelManager.instance.getTextureBoxServer(pName);
+		//textureBox[0] = textureBox[1] = ModelManager.instance.getTextureBoxServer(pName);
+		textureBox[0] = textureBox[1] = ModelManager.instance.getTextureBox(pName);
 //		setTextureNames();
 		if (textureBox[0] == null) {
 			throw new NullPointerException("TEXTURE BOX IS NULL");

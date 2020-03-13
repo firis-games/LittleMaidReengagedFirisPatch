@@ -2,6 +2,7 @@ package net.blacklab.lmr.entity.maidmodel;
 
 import net.blacklab.lmr.util.helper.NetworkHelper;
 
+@Deprecated
 public class TextureBoxServer extends TextureBoxBase {
 
 	// ローカルでモデルを保持している時にリンク

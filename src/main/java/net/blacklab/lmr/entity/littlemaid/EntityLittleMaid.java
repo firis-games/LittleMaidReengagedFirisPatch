@@ -4063,7 +4063,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 
 	private TextureBoxBase modelBoxAutoSelect(String pName) {
-		return getEntityWorld().isRemote ? ModelManager.instance.getTextureBox(pName) : ModelManager.instance.getTextureBoxServer(pName);
+		//return getEntityWorld().isRemote ? ModelManager.instance.getTextureBox(pName) : ModelManager.instance.getTextureBoxServer(pName);
+		return ModelManager.instance.getTextureBox(pName);
 	}
 
 	@Override
