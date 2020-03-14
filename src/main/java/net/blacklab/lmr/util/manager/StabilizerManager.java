@@ -11,6 +11,7 @@ import net.blacklab.lmr.entity.maidmodel.ModelStabilizerBase;
 /**
  * 追加パーツたるスタビライザーを管理する
  */
+@Deprecated
 public class StabilizerManager extends ManagerBase {
 
 	public static final String preFix = "ModelStabilizer";
@@ -31,6 +32,7 @@ public class StabilizerManager extends ManagerBase {
 	}
 
 	@Override
+	@SuppressWarnings("rawtypes")
 	protected boolean append(Class pclass) {
 		if (!(ModelStabilizerBase.class).isAssignableFrom(pclass)) {
 			return false;

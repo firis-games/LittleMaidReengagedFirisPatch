@@ -14,6 +14,8 @@ import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
+
+@Deprecated
 public abstract class ManagerBase {
 
 	protected abstract String getPreFix();
@@ -36,6 +38,7 @@ public abstract class ManagerBase {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void startSearch(File root, boolean dev){
 		if(dev){
 			if (root.isDirectory()) {
@@ -123,6 +126,8 @@ public abstract class ManagerBase {
 
 	}
 
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void loadClass(String pname) {
 		String lclassname = "";
 		// 対象ファイルをクラスとしてロード

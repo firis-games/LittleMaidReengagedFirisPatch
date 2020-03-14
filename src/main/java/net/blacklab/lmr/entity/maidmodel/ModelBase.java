@@ -14,7 +14,7 @@ public abstract class ModelBase extends AbstractModelBase {
 	
 	public static final float PI = (float)Math.PI;
 
-	public Render render;
+	public Render<?> render;
 
 	// ModelBaseとある程度互換
 	public int textureWidth = 64;

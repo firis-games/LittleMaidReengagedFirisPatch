@@ -31,7 +31,6 @@ import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.manager.PluginManager;
-import net.blacklab.lmr.util.manager.StabilizerManager;
 import net.firis.lmt.common.LMTCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -204,7 +203,7 @@ public class LittleMaidReengaged {
 			}
 		}
 
-		StabilizerManager.init();
+//		StabilizerManager.init();
 
 		// テクスチャパックの構築
 		ModelManager.instance.init();
