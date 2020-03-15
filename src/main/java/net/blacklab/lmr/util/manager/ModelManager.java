@@ -65,7 +65,8 @@ public class ModelManager {
 	public static final int tx_armor1light	= 0x80; //128;
 	public static final int tx_armor2light	= 0x90; //144;
 	
-	public static String[] armorFilenamePrefix;
+	public static String[] armorFilenamePrefix = new String[]{
+			"leather", "chainmail", "iron", "diamond", "gold"};
 	
 	/**
 	 * 旧タイプのファイル名
@@ -200,6 +201,7 @@ public class ModelManager {
 		return null;
 	}
 
+	@Deprecated
 	protected void getArmorPrefix() {
 		//1.8検討
 		armorFilenamePrefix = new String[]{"leather","chainmail","iron","diamond","gold"};
@@ -884,6 +886,8 @@ public class ModelManager {
 
 		}
 		
+		//スティーブモデルの登録
+		buildCrafterTexture();
 		
 		//TextureBoxとMultiModelの紐づけ
 		//デフォルトモデル設定
