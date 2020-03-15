@@ -2,9 +2,9 @@ package net.blacklab.lmr.util.loader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +25,7 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 	/**
 	 * テクスチャ保管用
 	 */
-	public static Map<String, List<String>> textureMap = new HashMap<>();
+	public static Map<String, List<String>> textureMap = new TreeMap<>();
 	
 	/**
 	 * テクスチャが存在する階層設定
