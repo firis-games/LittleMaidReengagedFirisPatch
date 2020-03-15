@@ -51,7 +51,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (!litemstack.isEmpty()) {
-			if (ItemHelper.isItemBurned(litemstack)) {
+			if (isTriggerItem(mmode_Cooking, litemstack)) {
 				owner.setMaidMode(mmode_Cooking);
 				//進捗
 				AchievementsLMRE.grantAC(pentityplayer, AC.Cook);
@@ -59,6 +59,18 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
+		if (par1ItemStack.isEmpty()) {
+			return false;
+		}
+		switch (pMode) {
+		case mmode_Cooking:
+			return ItemHelper.isItemBurned(par1ItemStack);
+		}
+		return super.isTriggerItem(pMode, par1ItemStack);
 	}
 
 	@Override
@@ -84,7 +96,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		
 		//手持ちが燃料かチェックする
 		ItemStack hand = owner.getHandSlotForModeChange();
-		if (ItemHelper.isItemBurned(hand)) {
+		if (isTriggerItem(mmode_Cooking, hand)) {
 			return InventoryLittleMaid.handInventoryOffset;
 		}
 		
@@ -106,7 +118,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 
 	@Override
 	public boolean checkItemStack(ItemStack pItemStack) {
-		return ItemHelper.isItemBurned(pItemStack) || ItemHelper.isItemSmelting(pItemStack);
+		return isTriggerItem(mmode_Cooking, pItemStack) || ItemHelper.isItemSmelting(pItemStack);
 	}
 
 	@Override
@@ -127,7 +139,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 	public boolean shouldBlock(String pMode) {
 		return owner.maidTileEntity instanceof TileEntityFurnace &&
 				(((TileEntityFurnace)owner.maidTileEntity).isBurning() ||
-				ItemHelper.isItemBurned(owner.getCurrentEquippedItem()));
+						isTriggerItem(mmode_Cooking, owner.getCurrentEquippedItem()));
 	}
 
 	@Override
@@ -208,7 +220,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 			if (!lflag && ltile.getStackInSlot(1).isEmpty() && !ltile.getStackInSlot(0).isEmpty()) {
 				owner.getNextEquipItem();
 				litemstack = owner.getCurrentEquippedItem();
-				if (ItemHelper.isItemBurned(litemstack)) {
+				if (isTriggerItem(mmode_Cooking, litemstack)) {
 					if (litemstack.getCount() >= ltile.getInventoryStackLimit()) {
 						ltile.setInventorySlotContents(1, litemstack.splitStack(ltile.getInventoryStackLimit()));
 					} else {
@@ -246,7 +258,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 					owner.playSound("entity.item.pickup");
 					owner.setSwing(5, EnumSound.Null, false);
 					owner.getNextEquipItem();
-					lflag = ItemHelper.isItemBurned(owner.getCurrentEquippedItem());
+					lflag = isTriggerItem(mmode_Cooking, owner.getCurrentEquippedItem());
 				} else {
 					ltile.setInventorySlotContents(1, litemstack2);
 				}

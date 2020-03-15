@@ -74,7 +74,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (!litemstack.isEmpty()) {
-			if (owner.getModeTrigger().isTriggerable(mtrigger_Hoe, litemstack, ItemHoe.class)) {
+			if (isTriggerItem(mmode_Farmer, litemstack)) {
 				owner.setMaidMode(mmode_Farmer);
 				//進捗
 				AchievementsLMRE.grantAC(pentityplayer, AC.Farmer);
@@ -82,6 +82,18 @@ public class EntityMode_Farmer extends EntityModeBase {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
+		if (par1ItemStack.isEmpty()) {
+			return false;
+		}
+		switch (pMode) {
+		case mmode_Farmer:
+			return owner.getModeTrigger().isTriggerable(mtrigger_Hoe, par1ItemStack, ItemHoe.class);
+		}
+		return super.isTriggerItem(pMode, par1ItemStack);
 	}
 
 	@Override
@@ -115,7 +127,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 				if (litemstack.isEmpty()) continue;
 
 				// クワ
-				if (owner.getModeTrigger().isTriggerable(mtrigger_Hoe, litemstack, ItemHoe.class)) {
+				if (isTriggerItem(mmode_Farmer, litemstack)) {
 					return li;
 				}
 			}
@@ -203,7 +215,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 			}
 		}
 
-		boolean haveNothing = !owner.getModeTrigger().isTriggerable(mtrigger_Hoe, curStack, ItemHoe.class);
+		boolean haveNothing = !isTriggerItem(mmode_Farmer, curStack);
 
 		if (!haveNothing && isUnfarmedLand(px,py,pz) &&
 				curStack.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {

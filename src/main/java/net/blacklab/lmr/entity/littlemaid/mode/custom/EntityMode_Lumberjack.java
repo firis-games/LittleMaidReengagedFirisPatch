@@ -76,7 +76,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 			return false;
 		}
 		switch (pMode) {
-		case trigger_Lumberjack:
+		case mode_Lumberjack:
 			//メインハンドが斧かつオフハンドが斧でない
 			boolean ret1 = owner.getModeTrigger().isTriggerable(trigger_Lumberjack, par1ItemStack, ItemAxe.class);
 			boolean ret2 = !owner.getModeTrigger().isTriggerable(trigger_Lumberjack, owner.getHeldItemOffhand(), ItemAxe.class);
@@ -114,7 +114,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (!litemstack.isEmpty()) {
-			if (isTriggerItem(trigger_Lumberjack, litemstack)) {
+			if (isTriggerItem(mode_Lumberjack, litemstack)) {
 				owner.setMaidMode(mode_Lumberjack);
 				//進捗があったらここに設定する
 				
@@ -161,7 +161,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack.isEmpty()) continue;
 				// 木こり
-				if (this.isTriggerItem(trigger_Lumberjack, litemstack)) {
+				if (this.isTriggerItem(mode_Lumberjack, litemstack)) {
 					return li;
 				}
 			}
@@ -232,7 +232,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		}
 		
 		//トリガーアイテムの判断
-		boolean haveNothing = !this.isTriggerItem(trigger_Lumberjack, curStack);
+		boolean haveNothing = !this.isTriggerItem(mode_Lumberjack, curStack);
 
 		//原木を伐採できるかを判断する
 		if (!haveNothing && isHarvesting(px, py, pz)) {
@@ -339,7 +339,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		for (int i=0; i < owner.maidInventory.getSizeInventory(); i++) {
 			ItemStack pStack;
 			if (!(pStack = owner.maidInventory.getStackInSlot(i)).isEmpty() &&
-					this.isTriggerItem(trigger_Lumberjack, pStack)) {
+					this.isTriggerItem(mode_Lumberjack, pStack)) {
 				return i;
 			}
 		}

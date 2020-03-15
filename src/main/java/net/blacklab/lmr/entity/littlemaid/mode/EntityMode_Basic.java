@@ -115,7 +115,9 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getCurrentEquippedItem();
-		if (!litemstack.isEmpty()) {
+		ItemStack modeChangeStack = owner.getHandSlotForModeChange();
+		
+		if (!litemstack.isEmpty() && modeChangeStack.isEmpty()) {
 			if (owner.getModeTrigger().isTriggerable(EntityMode_Farmer.mtrigger_Hoe, litemstack, ItemHoe.class)) {
 				owner.setMaidMode(mmode_FarmPorter);
 				return true;

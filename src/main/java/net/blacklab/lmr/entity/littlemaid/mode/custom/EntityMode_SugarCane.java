@@ -91,7 +91,7 @@ public class EntityMode_SugarCane extends EntityModeBase {
 	public boolean changeMode(EntityPlayer pentityplayer) {
 		ItemStack litemstack = owner.getHandSlotForModeChange();
 		if (!litemstack.isEmpty()) {
-			if (owner.getModeTrigger().isTriggerable(trigger_SugarCane, litemstack)) {
+			if (isTriggerItem(mode_SugarCane, litemstack)) {
 				owner.setMaidMode(mode_SugarCane);
 				//進捗があったらここに設定する
 				
@@ -99,6 +99,18 @@ public class EntityMode_SugarCane extends EntityModeBase {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	protected boolean isTriggerItem(String pMode, ItemStack par1ItemStack) {
+		if (par1ItemStack.isEmpty()) {
+			return false;
+		}
+		switch (pMode) {
+		case mode_SugarCane:
+			return owner.getModeTrigger().isTriggerable(trigger_SugarCane, par1ItemStack);
+		}
+		return super.isTriggerItem(pMode, par1ItemStack);
 	}
 
 	/**
@@ -138,7 +150,7 @@ public class EntityMode_SugarCane extends EntityModeBase {
 				litemstack = owner.maidInventory.getStackInSlot(li);
 				if (litemstack.isEmpty()) continue;
 				// サトウキビ
-				if (owner.getModeTrigger().isTriggerable(trigger_SugarCane, litemstack)) {
+				if (isTriggerItem(mode_SugarCane, litemstack)) {
 					return li;
 				}
 			}
@@ -248,7 +260,7 @@ public class EntityMode_SugarCane extends EntityModeBase {
 		}
 		
 		//トリガーアイテムの判断
-		boolean haveNothing = !owner.getModeTrigger().isTriggerable(trigger_SugarCane, curStack);
+		boolean haveNothing = !isTriggerItem(mode_SugarCane, curStack);
 
 		//サトウキビを植えれるか判断
 		if (!haveNothing && isPlantingReeds(px, py, pz)) {
@@ -334,7 +346,7 @@ public class EntityMode_SugarCane extends EntityModeBase {
 		for (int i=0; i < owner.maidInventory.getSizeInventory(); i++) {
 			ItemStack pStack;
 			if (!(pStack = owner.maidInventory.getStackInSlot(i)).isEmpty() &&
-					owner.getModeTrigger().isTriggerable(trigger_SugarCane, pStack)) {
+					isTriggerItem(mode_SugarCane, pStack)) {
 				return i;
 			}
 		}
