@@ -75,9 +75,7 @@ public class LivingDeathEventHandler {
 			entityMaid.extinguish();
 			
 			//ポーション効果をすべて無効化
-			for (PotionEffect effect : entityMaid.getActivePotionEffects()) {
-				entityMaid.removePotionEffect(effect.getPotion());
-			}
+			entityMaid.clearActivePotions();
 
 			//メイドの土産
 			ItemStack maidSouvenir = LittleMaidHelper.getItemStackFromEntity(entityMaid, new ItemStack(LMItems.MAID_SOUVENIR));
