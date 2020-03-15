@@ -53,6 +53,9 @@ public class OldZipTexturesWrapper implements IResourcePack {
 	public boolean resourceExists(ResourceLocation arg0) {
 		
 		String key = texturesResourcePath(arg0);
+		if (key == null) {
+			return false;
+		}
 		
 		return containsKey(key) == null ? false : true;
 	}
@@ -65,6 +68,9 @@ public class OldZipTexturesWrapper implements IResourcePack {
 	public String texturesResourcePath(ResourceLocation path) {
 		
 		String key = path.getResourcePath();
+		
+		if (!key.endsWith(".png")) return null;
+
 		if(key.startsWith("/")) key = key.substring(1);
 		
 		//旧式用の判定処理

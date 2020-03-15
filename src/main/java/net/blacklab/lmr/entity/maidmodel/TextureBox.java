@@ -34,6 +34,7 @@ public class TextureBox extends TextureBoxBase {
 	/**
 	 * pName, pTextureDir, pClassPrefix
 	 */
+	@Deprecated
 	public String[] textureDir;
 	/**
 	 * テクスチャの格納されているパックの名前（モデルに関係なし）
@@ -62,7 +63,7 @@ public class TextureBox extends TextureBoxBase {
 			packegeName = pTextureName;
 			modelName = "";
 		}
-		textureDir = pSearch;
+		//textureDir = pSearch;
 	}
 
 	public void setModels(String pModelName, ModelMultiBase[] pModels, ModelMultiBase[] pDefModels) {
@@ -208,7 +209,7 @@ public class TextureBox extends TextureBoxBase {
 		lbox.packegeName = packegeName;
 		lbox.fileName = fileName;
 		lbox.modelName = modelName;
-		lbox.textureDir = textureDir;
+		//lbox.textureDir = textureDir;
 		lbox.textures = textures;
 		lbox.armors = armors;
 		lbox.models = models;

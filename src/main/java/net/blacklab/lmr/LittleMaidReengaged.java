@@ -29,6 +29,7 @@ import net.blacklab.lmr.network.ProxyCommon;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
+import net.blacklab.lmr.util.loader.LMFileLoader;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.manager.PluginManager;
 import net.firis.lmt.common.LMTCore;
@@ -202,12 +203,18 @@ public class LittleMaidReengaged {
 				FileList.dirClasspath.add(pathFile);
 			}
 		}
+		
+		//リトルメイドファイルローダー
+		LMFileLoader.instance.load();
+		
+		//マルチモデルセットアップ
+		ModelManager.instance.createLittleMaidModels();
 
 //		StabilizerManager.init();
 
 		// テクスチャパックの構築
-		ModelManager.instance.init();
-		ModelManager.instance.loadTextures();
+//		ModelManager.instance.init();
+//		ModelManager.instance.loadTextures();
 
 //		// ロード
 //		if (CommonHelper.isClient) {
@@ -311,6 +318,7 @@ public class LittleMaidReengaged {
 		
 		//音声ロード
 		proxy.loadSounds();
+		
 	}
 
 	@EventHandler

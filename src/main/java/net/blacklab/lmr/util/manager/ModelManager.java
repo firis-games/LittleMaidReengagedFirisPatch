@@ -8,6 +8,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,11 +31,14 @@ import net.blacklab.lmr.entity.maidmodel.TextureBoxServer;
 import net.blacklab.lmr.util.DevMode;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.helper.CommonHelper;
+import net.blacklab.lmr.util.loader.LMMultiModelHandler;
+import net.blacklab.lmr.util.loader.LMTextureHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
+@SuppressWarnings("deprecation")
 public class ModelManager {
 
 	/**
@@ -60,10 +64,13 @@ public class ModelManager {
 	public static final int tx_eyewild		= 0x70; //112;
 	public static final int tx_armor1light	= 0x80; //128;
 	public static final int tx_armor2light	= 0x90; //144;
+	
 	public static String[] armorFilenamePrefix;
+	
 	/**
 	 * 旧タイプのファイル名
 	 */
+	@Deprecated
 	protected static String defNames[] = {
 		"mob_littlemaid0.png", "mob_littlemaid1.png",
 		"mob_littlemaid2.png", "mob_littlemaid3.png",
@@ -104,13 +111,18 @@ public class ModelManager {
 	 */
 	protected Map<Class<?>, TextureBox> defaultTextures = new HashMap<>();
 
+	@Deprecated
 	protected Map<IModelEntity, int[]> stackGetTexturePack = new HashMap<IModelEntity, int[]>();
+	@Deprecated
 	protected Map<IModelEntity, Object[]> stackSetTexturePack = new HashMap<IModelEntity, Object[]>();
 
+	@Deprecated
 	protected List<String[]> searchPrefix = new ArrayList<String[]>();
 
+	@Deprecated
 	public static final String[] searchFileNamePrefix = new String[]{"littleMaidMob","mmmlibx","ModelMulti","LittleMaidMob"};
 
+	@Deprecated
 	public void init() {
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/ModelMulti/", "ModelMulti_");
 		addSearch("littleMaidMob", "/assets/minecraft/textures/entity/littleMaid/", "ModelMulti_");
@@ -119,6 +131,7 @@ public class ModelManager {
 		addSearch("littleMaidMob", "/mob/littleMaid/", "ModelLittleMaid_");
 	}
 
+	@Deprecated
 	protected String[] getSearch(String pName) {
 		for (String[] lss : searchPrefix) {
 			if (lss[0].equals(pName)) {
@@ -131,6 +144,7 @@ public class ModelManager {
 	/**
 	 * 追加対象となる検索対象ファイル群とそれぞれの検索文字列を設定する。
 	 */
+	@Deprecated
 	public void addSearch(String pName, String pTextureDir, String pClassPrefix) {
 		searchPrefix.add(new String[] {pName, pTextureDir, pClassPrefix});
 	}
@@ -191,7 +205,7 @@ public class ModelManager {
 		armorFilenamePrefix = new String[]{"leather","chainmail","iron","diamond","gold"};
 	}
 
-
+	@Deprecated
 	public boolean loadTextures() {
 		LittleMaidReengaged.Debug("loadTexturePacks.");
 		// アーマーのファイル名を識別するための文字列を獲得する
@@ -276,6 +290,7 @@ public class ModelManager {
 		return false;
 	}
 
+	@Deprecated
 	private void searchFiles(File ln, String[] lst) {
 		LittleMaidReengaged.Debug("getTexture[%s:%s].", lst[0], lst[1]);
 		// mods
@@ -420,6 +435,7 @@ public class ModelManager {
 	 * 「MMM_ModelBiped」を継承していればマルチモデルとしてクラスを登録する。
 	 * @param fname
 	 */
+	@Deprecated
 	@SuppressWarnings({ "unused", "unchecked", "rawtypes" })
 	protected void addModelClass(String fname, String[] pSearch) {
 		// モデルを追加
@@ -464,6 +480,7 @@ public class ModelManager {
 		}
 	}
 
+	@Deprecated
 	protected boolean addTextureName(String fname, String[] pSearch) {
 		// パッケージにテクスチャを登録
 		if (!fname.startsWith("/")) {
@@ -503,6 +520,7 @@ public class ModelManager {
 		return false;
 	}
 
+	@Deprecated
 	protected boolean addTexturesZip(File file, String[] pSearch) {
 		//
 		if (file == null || file.isDirectory()) {
@@ -546,6 +564,7 @@ public class ModelManager {
 		}
 	}
 
+	@Deprecated
 	protected boolean addTexturesDir(File file, File root, String[] pSearch) {
 		// modsフォルダに突っ込んであるものも検索、再帰で。
 		if (file == null) {
@@ -595,6 +614,7 @@ public class ModelManager {
 		}
 	}
 
+	@Deprecated
 	protected int getIndex(String name) {
 		// 名前からインデックスを取り出す
 		for (int i = 0; i < defNames.length; i++) {
@@ -797,11 +817,140 @@ public class ModelManager {
 		}
 		return null;
 	}
-
-
-
-	/*
-	 * サーバークライアント間でのテクスチャ管理関数群
+	
+	/**
+	 * LMFileLoaderで読み込んだ情報をもとにメイドさんモデルをセットアップする
 	 */
+	public void createLittleMaidModels() {
+		
+		LittleMaidReengaged.logger.info("createLittleMaidModels : start");
+		
+		//マルチモデル生成
+		for (String key : LMMultiModelHandler.multiModelClassMap.keySet()) {
+			
+			Class<? extends ModelMultiBase> clazz;
+			
+			try {
+				
+				//マルチモデルクラスをインスタンス化
+				clazz = LMMultiModelHandler.multiModelClassMap.get(key);
+				
+				ModelMultiBase mmBase[] = new ModelMultiBase[3];
+			
+				Constructor<? extends ModelMultiBase> constructorMMBase = clazz.getConstructor(float.class);
+				mmBase[0] = constructorMMBase.newInstance(0.0F);
+				float[] lsize = mmBase[0].getArmorModelsSize();
+				mmBase[1] = constructorMMBase.newInstance(lsize[0]);
+				mmBase[2] = constructorMMBase.newInstance(lsize[1]);
+
+				modelMap.put(key, mmBase);
+				
+				//モデルロードメッセージ
+				LittleMaidReengaged.logger.info(String.format("ModelManager-Load-MultiModel : %s", key));
+
+			} catch (Exception e) {
+				LittleMaidReengaged.logger.error(String.format("ModelManager-MultiModelInstanceException : %s", ""));
+				if (LMRConfig.cfg_PrintDebugMessage) e.printStackTrace();
+			}
+			
+		}
+		
+		//テクスチャを生成
+		for (String key : LMTextureHandler.textureMap.keySet()) {
+			
+			//TextureBox生成
+			TextureBox textureBox = new TextureBox(key, new String[]{"", "", ""});
+			textures.add(textureBox);
+			
+			//TextureBoxにテクスチャを登録
+			for (String texturePath : LMTextureHandler.textureMap.get(key)) {
+				//bind用texture
+				String bindTexturePath = texturePath.replace("assets/minecraft/", "");
+				int colorIndex = LMTextureHandler.getColorIndex(texturePath);
+				
+				//colorごとに追加
+				textureBox.addTexture(colorIndex, bindTexturePath);
+				
+				//旧テクスチャパス対応
+				//OldZipTexturesWrapperで差し替えて対応する
+				if(FMLCommonHandler.instance().getSide() == Side.CLIENT &&
+						((!texturePath.equals(texturePath.toLowerCase())))) {
+					OldZipTexturesWrapper.keys.add(texturePath);
+				}	
+			}
+			
+			//モデルロードメッセージ
+			LittleMaidReengaged.logger.info(String.format("ModelManager-Load-Texture : %s", key));
+
+		}
+		
+		
+		//TextureBoxとMultiModelの紐づけ
+		//デフォルトモデル設定
+		ModelMultiBase[] defaultModel = modelMap.get(defaultModelName);
+		if (defaultModel == null && !modelMap.isEmpty()) {
+			defaultModel = (ModelMultiBase[])modelMap.values().toArray()[0];
+		}
+		
+		//TextureBoxベースでメイドモデルを紐づける
+		for (TextureBox textureBox : textures) {
+			if (!textureBox.modelName.isEmpty()) {
+				for (String key : modelMap.keySet()) {
+					//モデル名に一致するモデルをTextureBoxへ設定する
+					if (key.toLowerCase().equals(textureBox.modelName.toLowerCase())) {
+						textureBox.setModels(textureBox.modelName, modelMap.get(key), defaultModel);
+						break;
+					}
+				}				
+			} else {
+				//モデル名の設定がない場合は標準モデルを設定する
+				textureBox.setModels(defaultModelName, null, defaultModel);
+			}
+		}
+		
+		//マルチモデル側からテクスチャを設定する場合に利用する
+		//基本的に使用されていない
+		for (Entry<String, ModelMultiBase[]> entryModelMap : modelMap.entrySet()) {
+			String modelTexture = entryModelMap.getValue()[0].getUsingTexture();
+			if (modelTexture != null) {
+				if (getTextureBox(modelTexture + "_" + entryModelMap.getKey()) == null) {
+					TextureBox textureBox = null;
+					for (TextureBox ltb : textures) {
+						if (ltb.packegeName.equals(modelTexture)) {
+							textureBox = ltb;
+							break;
+						}
+					}
+					if (textureBox != null) {
+						textureBox = textureBox.duplicate();
+						textureBox.setModels(entryModelMap.getKey(), null, entryModelMap.getValue());
+						textures.add(textureBox);
+					}
+				}
+			}
+		}
+
+		//TextureBoxのモデルがnullのものを削除する
+		Iterator<TextureBox> iteratorTextures = textures.iterator();
+		while(iteratorTextures.hasNext()){
+			TextureBox textureBox = iteratorTextures.next();
+			if (textureBox.models == null) {
+				iteratorTextures.remove();
+			}
+		}
+		
+		//野生持ちTextureBoxをdefaultModelに設定する
+		for (TextureBox lbox : textures) {
+			if(lbox.getWildColorBits()>0){
+				setDefaultTexture(EntityLivingBase.class, lbox);
+			}
+		}
+
+		//defaultモデルの設定
+		setDefaultTexture(EntityLivingBase.class, getTextureBox("default_" + defaultModelName));
+		
+		LittleMaidReengaged.logger.info("createLittleMaidModels : end");
+
+	}
 
 }
