@@ -4,6 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.MathHelper;
@@ -137,15 +138,18 @@ public class ModelLittleMaidTest extends ModelBase {
 	@Override
 	public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
 	{
-		//デフォルトモーション設定
+		//モーション設定
 		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 		
-		//腕振りモーション設定
-		this.setAnimationSwingArms(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 		
-		//スニークモーション設定
-		this.setAnimationSneak(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
-		
+		//アーマーと共用モデルのため一度表示制御をリセット
+		this.bipedHead.showModel = true;
+		this.bipedBody.showModel = true;
+		this.bipedRightArm.showModel = true;
+		this.bipedLeftArm.showModel = true;
+		this.Skirt.showModel = true;
+		this.bipedRightLeg.showModel = true;
+		this.bipedLeftLeg.showModel = true;
 		
 		//全体をまとめて描画する
 		this.mainFrame.render(scale);
@@ -158,8 +162,15 @@ public class ModelLittleMaidTest extends ModelBase {
 	@Override
 	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
 	{
+		//標準待機アニメーション
 		this.setAnimationDefault(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
-				
+
+		//腕振りモーション設定
+		this.setAnimationSwingArms(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+		
+		//スニークモーション設定
+		this.setAnimationSneak(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+
 		//待機モーションテスト
 		/*
 		if (false) {
@@ -368,5 +379,51 @@ public class ModelLittleMaidTest extends ModelBase {
 		
 		bipedTorso.rotationPointY += 1.00F;
 					
+	}
+	
+	
+	/**
+	 * アーマー描画用に部位ごとに描画する処理を追加する
+	 * 
+	 * マルチモデルではModelRenderer側に表示非表示の制御を拡張している(setVisible)
+	 * showModelで同様の制御が可能
+	 */
+	public void renderArmor(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slot) {
+		
+		//モーション設定
+		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
+		
+		//全部非表示設定
+		this.bipedHead.showModel = false;
+		this.bipedBody.showModel = false;
+		this.bipedRightArm.showModel = false;
+		this.bipedLeftArm.showModel = false;
+		this.Skirt.showModel = false;
+		this.bipedRightLeg.showModel = false;
+		this.bipedLeftLeg.showModel = false;
+
+		//各パーツごとに描画部位が異なる
+		//必要な部位のみ表示
+		if (EntityEquipmentSlot.HEAD == slot) {
+			//頭を描画する
+			this.bipedHead.showModel = true;
+			
+		} else if (EntityEquipmentSlot.CHEST == slot) {
+			//上着を描画する
+			this.bipedBody.showModel = true;
+			this.bipedRightArm.showModel = true;
+			this.bipedLeftArm.showModel = true;
+			
+		} else if (EntityEquipmentSlot.LEGS == slot) {
+			//スカートを描画する
+			this.Skirt.showModel = true;
+			
+		} else if (EntityEquipmentSlot.FEET == slot) {
+			//下着を描画する
+			this.bipedRightLeg.showModel = true;
+			this.bipedLeftLeg.showModel = true;
+		}
+		
+		this.mainFrame.render(scale);
 	}
 }
