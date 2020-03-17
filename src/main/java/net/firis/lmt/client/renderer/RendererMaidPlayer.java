@@ -15,6 +15,8 @@ public class RendererMaidPlayer extends RenderPlayer {
 	
 	private static final ResourceLocation MAID_TEXTURES = new ResourceLocation("textures/entity/playermaid/player_littlemaid_00.png");
 	
+	private static final ResourceLocation MAID_TEXTURES_DAMAGE = new ResourceLocation("textures/entity/playermaid/player_littlemaid_01.png");
+	
 	
 	protected static ModelBase dummyMainModel = new ModelPlayer(0.0F, false);
 	
@@ -43,6 +45,11 @@ public class RendererMaidPlayer extends RenderPlayer {
 	 */
 	@Override
 	public ResourceLocation getEntityTexture(AbstractClientPlayer entity) {
+		
+		if(entity.getHealth() <= 5) {
+			return MAID_TEXTURES_DAMAGE;
+		}
+		
 		return MAID_TEXTURES;
 	}
 	
