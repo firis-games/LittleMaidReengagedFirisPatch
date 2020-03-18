@@ -6,7 +6,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.util.DevMode;
 import net.firis.lmt.client.renderer.RendererLittleMaidTest;
-import net.firis.lmt.client.renderer.RendererMaidPlayer;
+import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
 import net.firis.lmt.common.entity.EntityLittleMaidTest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
@@ -79,7 +79,9 @@ public class LMTCore {
 		Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().skinMap;
 		
 		RenderPlayer renderPlayer = skinMap.get("default");
-		RendererMaidPlayer renderMaidPlayer = new RendererMaidPlayer(renderPlayer);
+		//RendererMaidPlayer renderMaidPlayer = new RendererMaidPlayer(renderPlayer);
+		RendererMaidPlayerMultiModel renderMaidPlayer = new RendererMaidPlayerMultiModel(renderPlayer);
+		
 		
 		Minecraft.getMinecraft().getRenderManager().playerRenderer = renderMaidPlayer;
 		skinMap.put("default", renderMaidPlayer);
