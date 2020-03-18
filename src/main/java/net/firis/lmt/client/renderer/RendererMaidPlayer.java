@@ -2,6 +2,7 @@ package net.firis.lmt.client.renderer;
 
 import net.firis.lmt.client.model.ModelLittleMaidTest;
 import net.firis.lmt.client.renderer.layer.LayerArmorLittleMaidTest;
+import net.firis.lmt.client.renderer.layer.LayerHeldItemLittleMaidTest;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelPlayer;
@@ -37,6 +38,7 @@ public class RendererMaidPlayer extends RenderPlayer {
 		
 		//layer追加
 		this.addLayer(new LayerArmorLittleMaidTest(this));
+		this.addLayer(new LayerHeldItemLittleMaidTest(this));
 		
 	}
 
