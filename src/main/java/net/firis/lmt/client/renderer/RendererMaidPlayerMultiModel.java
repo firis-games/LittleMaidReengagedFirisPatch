@@ -18,6 +18,10 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	
 	protected static ModelBase dummyMainModel = new ModelPlayer(0.0F, false);
 	
+	//あかりちゃんの設定
+	public static String testTexure = "MMM_Akari";
+	public static Integer testTexureColorIndex = 8;
+	
 	//マルチモデルテクスチャBox
 	protected TextureBox textureBox;
 	
@@ -37,7 +41,7 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		this.shadowSize = 0.5F;
 		
 		//テクスチャBox固定で初期化
-		this.textureBox = ModelManager.instance.getTextureBox("MMM_Akari");
+		this.textureBox = ModelManager.instance.getTextureBox(testTexure);
 		
 		//layer追加
 		
@@ -49,7 +53,7 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	@Override
 	public ResourceLocation getEntityTexture(AbstractClientPlayer entity) {
 		//あかりちゃんのcolorindex
-		return textureBox.getTextureName(8);
+		return textureBox.getTextureName(testTexureColorIndex);
 	}
 	
 	/**
