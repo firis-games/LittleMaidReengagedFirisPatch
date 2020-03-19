@@ -1,8 +1,10 @@
 package net.firis.lmt.client.renderer;
 
+import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.firis.lmt.client.model.ModelLittleMaidMultiModel;
+import net.firis.lmt.client.renderer.layer.LayerHeldItemLittleMaidMultiModel;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelPlayer;
@@ -44,6 +46,7 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		this.textureBox = ModelManager.instance.getTextureBox(testTexure);
 		
 		//layer追加
+		this.addLayer(new LayerHeldItemLittleMaidMultiModel(this));
 		
 	}
 
@@ -65,4 +68,11 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
         return (ModelPlayer) dummyMainModel;
     }
 	
+	/**
+	 * model情報を取得する
+	 * @return
+	 */
+	public ModelMultiBase getLittleMaidMultiModel() {
+		return (ModelMultiBase) this.textureBox.models[0];
+	}
 }
