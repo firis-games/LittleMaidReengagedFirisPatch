@@ -4,6 +4,7 @@ import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.firis.lmt.client.model.ModelLittleMaidMultiModel;
+import net.firis.lmt.client.renderer.layer.LayerArmorLittleMaidMultiModel;
 import net.firis.lmt.client.renderer.layer.LayerHeldItemLittleMaidMultiModel;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
@@ -25,7 +26,7 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	public static Integer testTexureColorIndex = 8;
 	
 	//マルチモデルテクスチャBox
-	protected TextureBox textureBox;
+	public TextureBox textureBox;
 	
 	/**
 	 * コンストラクタ
@@ -47,6 +48,7 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		
 		//layer追加
 		this.addLayer(new LayerHeldItemLittleMaidMultiModel(this));
+		this.addLayer(new LayerArmorLittleMaidMultiModel(this));
 		
 	}
 
