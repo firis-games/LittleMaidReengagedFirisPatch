@@ -150,6 +150,7 @@ public class LittleMaidReengaged {
     	public final static Item MAID_SOUVENIR = null;
     	public final static Item MAID_CARRY = null;
     	public final static Item MAID_SUGAR = null;
+    	public final static Item PLAYER_MAID_BOOK = null;
     }
 
     /**
@@ -451,6 +452,8 @@ public class LittleMaidReengaged {
     			.setRegistryName(DOMAIN, "maid_sugar")
     			.setUnlocalizedName("maid_sugar"));
     	
+		//テスト用モジュール登録
+		LMTCore.registerItems(event);
 	}
 	
     @SubscribeEvent
@@ -471,6 +474,8 @@ public class LittleMaidReengaged {
 		// メイドシュガー
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_SUGAR, 0,
 				new ModelResourceLocation(LMItems.MAID_SUGAR.getRegistryName(), "inventory"));
+		
+		LMTCore.registerModels(event);
 		
     }
     

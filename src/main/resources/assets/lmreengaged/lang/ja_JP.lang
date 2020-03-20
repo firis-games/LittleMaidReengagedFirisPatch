@@ -164,3 +164,5 @@ commands.lmcommand.list.failure=近くにメイドさんはいないようだ...
 
 littlemaid.inventory.name=ROSE
 
+item.player_maid_book.name=メイドさんになる本
+

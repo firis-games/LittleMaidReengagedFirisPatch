@@ -5,6 +5,7 @@ import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -33,6 +34,12 @@ public class PlayerModelManager {
 	 */
 	private static TextureBox getPlayerTexureBox(EntityPlayer player) {
 		
+		//個別設定がある場合はこっち
+		NBTTagCompound nbt = player.getEntityData();
+		if (nbt.hasKey("maidModel")) {
+			return ModelManager.instance.getTextureBox(nbt.getString("maidModel"));
+		}
+		
 		if (cacheTextureBox == null) {
 			cacheTextureBox = ModelManager.instance.getTextureBox(testTexure);
 		}
@@ -58,6 +65,12 @@ public class PlayerModelManager {
 	 */
 	public static ResourceLocation getPlayerTexture(EntityPlayer player) {
 		
+		//個別設定がある場合はこっち
+		NBTTagCompound nbt = player.getEntityData();
+		if (nbt.hasKey("maidTexture")) {
+			return new ResourceLocation(nbt.getString("maidTexture"));
+		}
+		
 		TextureBox textureBox = getPlayerTexureBox(player);
 		
 		//メイドさん本体のテクスチャを返却する
@@ -73,6 +86,22 @@ public class PlayerModelManager {
 	 */
 	public static ModelMultiBase getArmorModel(EntityPlayer player, EntityEquipmentSlot slot) {
 		
+		//特別処理
+		/*
+		if (slot == EntityEquipmentSlot.HEAD) {
+			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.PartySet1_ACUL");
+			return textureBox.models[1];
+		}
+		if (slot == EntityEquipmentSlot.CHEST) {
+			TextureBox textureBox = ModelManager.instance.getTextureBox("littlePorters.Blue_LP");
+			return textureBox.models[1];
+		}
+		if (slot == EntityEquipmentSlot.LEGS) {
+			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.ExpeditionSet1_ACUL");
+			return textureBox.models[1];
+		}
+		*/
+		
 		TextureBox textureBox = getPlayerTexureBox(player);
 		
 		//メイドさんのアーマーモデルを返却する
@@ -85,6 +114,22 @@ public class PlayerModelManager {
 	 * 暫定対応としていろいろ設定を固定化
 	 */
 	public static ResourceLocation getArmorTexture(EntityPlayer player, EntityEquipmentSlot slot) {
+		
+		//特別処理
+		/*
+		if (slot == EntityEquipmentSlot.HEAD) {
+			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.PartySet1_ACUL");
+			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+		}
+		if (slot == EntityEquipmentSlot.CHEST) {
+			TextureBox textureBox = ModelManager.instance.getTextureBox("littlePorters.Blue_LP");
+			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+		}
+		if (slot == EntityEquipmentSlot.LEGS) {
+			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.ExpeditionSet1_ACUL");
+			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+		}
+		*/
 		
 		TextureBox textureBox = getPlayerTexureBox(player);
 		

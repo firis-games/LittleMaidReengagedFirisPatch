@@ -167,3 +167,5 @@ commands.lmcommand.list.failure=Looks like there is no maid nearby.
 
 littlemaid.inventory.name=ROSE
 
+item.player_maid_book.name=Player Maid Model
+
