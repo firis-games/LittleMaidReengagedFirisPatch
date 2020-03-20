@@ -3,6 +3,7 @@ package net.blacklab.lmr.entity.ai;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
+import net.minecraft.pathfinding.PathNavigateGround;
 
 public class EntityAILMRestrictOpenDoor extends EntityAIRestrictOpenDoor {
 
@@ -21,6 +22,9 @@ public class EntityAILMRestrictOpenDoor extends EntityAIRestrictOpenDoor {
 		if(theMaid==null) return;
 		if(theMaid.isInWater()) return;
 		super.startExecuting();
+		
+		((PathNavigateGround)this.theMaid.getNavigator()).setBreakDoors(true);
+		((PathNavigateGround)this.theMaid.getNavigator()).setEnterDoors(true);
 	}
 
 	@Override
