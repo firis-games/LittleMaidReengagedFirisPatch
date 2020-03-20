@@ -97,10 +97,6 @@ public class LayerHeldItemLittleMaidMultiModel extends LayerHeldItem {
     protected void translateToHand(EnumHandSide handSide)
     {
     	float scale = 0.0625F;
-    	if (EnumHandSide.RIGHT == handSide) {
-    		this.renderer.getLittleMaidMultiModel().Arms[0].postRender(scale);
-     	} else if(EnumHandSide.LEFT == handSide) {
-    		this.renderer.getLittleMaidMultiModel().Arms[1].postRender(scale);   		
-    	}
+    	this.renderer.getLittleMaidMultiModel().armsPostRenderer(handSide, scale);
     }
 }

@@ -2,10 +2,8 @@ package net.firis.lmt.client.renderer.layer;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.util.manager.ModelManager;
 import net.firis.lmt.client.model.ModelLittleMaidMultiModelArmor;
-import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
-import net.firis.lmt.common.modelcaps.PlayerModelCaps;
+import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
@@ -18,25 +16,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class LayerArmorLittleMaidMultiModel extends LayerArmorBase<ModelLittleMaidMultiModelArmor> {
 
-	private RendererMaidPlayerMultiModel renderer;
+	private ModelLittleMaidMultiModelArmor armorModel;
 	
 	public LayerArmorLittleMaidMultiModel(RenderLivingBase<?> rendererIn) {
 		super(rendererIn);
 		
-		this.renderer = (RendererMaidPlayerMultiModel) rendererIn;
+		this.armorModel = new ModelLittleMaidMultiModelArmor();
 	}
 
 	@Override
-	protected void initArmor() {
-		
-	}
+	protected void initArmor() {}
 
 	@Override
-	protected void setModelSlotVisible(ModelLittleMaidMultiModelArmor modelIn, EntityEquipmentSlot slotIn) {
-		//アーマーの表示設定
-		modelIn.showArmorParts(slotIn.getIndex());
-	}
+	protected void setModelSlotVisible(ModelLittleMaidMultiModelArmor modelIn, EntityEquipmentSlot slotIn) {}
 	
+	/**
+	 * Layerの描画
+	 */
 	@Override
 	public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
@@ -48,33 +44,31 @@ public class LayerArmorLittleMaidMultiModel extends LayerArmorBase<ModelLittleMa
 
 	/**
 	 * 防具を描画する
-	 * @param entityLivingBaseIn
-	 * @param limbSwing
-	 * @param limbSwingAmount
-	 * @param partialTicks
-	 * @param ageInTicks
-	 * @param netHeadYaw
-	 * @param headPitch
-	 * @param scale
-	 * @param slotIn
 	 */
-	private void renderArmorLayer(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slotIn)
+	private void renderArmorLayer(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slot)
     {
+		//対象スロットの描画対象チェック
 		EntityPlayer player = (EntityPlayer) entityLivingBaseIn;
-		if (player.inventory.armorItemInSlot(slotIn.getIndex()).isEmpty()) return;
+		if (player.inventory.armorItemInSlot(slot.getIndex()).isEmpty()) return;
 		
 		//テクスチャバインド
-		Minecraft.getMinecraft().getTextureManager().bindTexture(
-				this.renderer.textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0));
+		Minecraft.getMinecraft().getTextureManager().bindTexture(PlayerModelManager.getArmorTexture(player, slot));
+		
+		//透過設定
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		//アーマー描画
-		PlayerModelCaps caps = new PlayerModelCaps(player);
-		//モデルにCaps情報を設定する
-		caps.setModelMultiBaseCapsFromModelCaps(this.renderer.textureBox.models[2]);
-		this.renderer.textureBox.models[2].showArmorParts(slotIn.getIndex(), 0);
-		this.renderer.textureBox.models[2].render(caps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, true);
+		//防具モデルの準備
+		this.armorModel.initArmorModel(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, slot);
+
+		//防具モデル描画調整
+		//setRotationAnglesはLayerArmorBaseで呼ばれていないようなのでコメントアウト
+		//this.armorModel.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityLivingBaseIn);
+		this.armorModel.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
+
+		//防具モデル描画
+		this.armorModel.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		
     }
 
 }
