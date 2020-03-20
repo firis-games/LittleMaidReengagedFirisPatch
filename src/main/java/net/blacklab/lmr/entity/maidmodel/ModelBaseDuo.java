@@ -69,6 +69,12 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	@Override
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
 		boolean lri = (renderCount & 0x0f) == 0;
+		
+		//法線の再計算
+		//GlStateManager.enableRescaleNormal();
+		//GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glEnable(GL11.GL_NORMALIZE);
+		
 		if (modelInner != null) {
 			if (textureInner != null && lri) {
 				if (textureInner[renderParts] != null) {

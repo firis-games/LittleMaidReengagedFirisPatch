@@ -54,6 +54,11 @@ public class LayerArmorLittleMaidMultiModel extends LayerArmorBase<ModelLittleMa
 		//テクスチャバインド
 		Minecraft.getMinecraft().getTextureManager().bindTexture(PlayerModelManager.getArmorTexture(player, slot));
 		
+		//法線の再計算
+		//GlStateManager.enableRescaleNormal();
+		//GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glEnable(GL11.GL_NORMALIZE);
+		
 		//透過設定
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

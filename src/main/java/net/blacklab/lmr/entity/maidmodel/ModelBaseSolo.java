@@ -46,6 +46,12 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 			isAlphablend = false;
 			return;
 		}
+		
+		//法線の再計算
+		//GlStateManager.enableRescaleNormal();
+		//GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glEnable(GL11.GL_NORMALIZE);
+		
 		if (isAlphablend) {
 			if (LMRConfig.cfg_isModelAlphaBlend) {
 				GL11.glEnable(GL11.GL_BLEND);

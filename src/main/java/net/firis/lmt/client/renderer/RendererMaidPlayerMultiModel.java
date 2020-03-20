@@ -1,5 +1,7 @@
 package net.firis.lmt.client.renderer;
 
+import org.lwjgl.opengl.GL11;
+
 import net.firis.lmt.client.model.ModelLittleMaidMultiModel;
 import net.firis.lmt.client.renderer.layer.LayerArmorLittleMaidMultiModel;
 import net.firis.lmt.client.renderer.layer.LayerHeldItemLittleMaidMultiModel;
@@ -75,6 +77,11 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	
 		//パラメータを初期化
 		((ModelLittleMaidMultiModel) this.mainModel).initPlayerModel(entity, x, y, z, entityYaw, partialTicks);
+		
+		//法線の再計算
+		//GlStateManager.enableRescaleNormal();
+		//GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glEnable(GL11.GL_NORMALIZE);
 		
 		//描画処理
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
