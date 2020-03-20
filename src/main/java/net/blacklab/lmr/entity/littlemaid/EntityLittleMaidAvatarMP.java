@@ -7,6 +7,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.CommonHelper;
+import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -728,4 +729,14 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	
 	@Override
 	public void resetRecipes(List<IRecipe> p_192022_1_) {}
+	
+	@Override
+	public PlayerAdvancements getAdvancements()
+    {
+		EntityPlayer player = this.avatar.getMaidMasterEntity();
+		if (player instanceof EntityPlayerMP) {
+			return ((EntityPlayerMP) player).getAdvancements();
+		}
+		return super.getAdvancements();
+    }
 }
