@@ -308,9 +308,6 @@ public class LittleMaidReengaged {
 		//Pluginクラスをロードする登録処理
 		PluginManager.preInitPluginLoad(evt);
 		
-		//Plugin初期化処理
-		PluginManager.preInitRegisterPlugin(evt);
-
 		// アイテムスロット更新用のパケット
 		LMRNetwork.init(DOMAIN);
 
@@ -333,6 +330,8 @@ public class LittleMaidReengaged {
 		//描画イベント登録
 		proxy.initClientRendererEventRegister();
 
+		//Plugin初期化処理
+		PluginManager.initRegisterPlugin(event);
 	}
 
 	// public static ProxyClient.CountThread countThread;

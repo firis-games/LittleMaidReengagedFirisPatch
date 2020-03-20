@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
 import net.minecraftforge.fml.common.discovery.asm.ModAnnotation;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 
@@ -79,9 +80,9 @@ public class PluginManager {
 	}
 	
 	/**
-	 * preInitでプラグインの処理を行う
+	 * initでプラグインの処理を行う
 	 */
-	public static void preInitRegisterPlugin(FMLPreInitializationEvent event) {
+	public static void initRegisterPlugin(FMLInitializationEvent event) {
 
 		//メイドモードの登録処理を優先順で行う
 		for (EventPriority priority : priorityList) {
