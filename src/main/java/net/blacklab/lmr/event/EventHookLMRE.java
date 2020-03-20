@@ -22,6 +22,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -154,5 +155,21 @@ public class EventHookLMRE
 				event.setCanceled(true);
 			}
 		}
+	}
+	
+	/**
+	 * 攻撃の仕返し先をプレイヤーアバターからメイドさんへ変更
+	 * @param event
+	 */
+	@SubscribeEvent
+	public void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event) {
+		
+		EntityLivingBase target = event.getTarget();
+		
+		if (target instanceof EntityLittleMaidAvatarMP) {
+			EntityLittleMaidAvatarMP avatarTarget = (EntityLittleMaidAvatarMP) target;
+			event.getEntityLiving().setRevengeTarget(avatarTarget.getMaid());
+		}
+		
 	}
 }
