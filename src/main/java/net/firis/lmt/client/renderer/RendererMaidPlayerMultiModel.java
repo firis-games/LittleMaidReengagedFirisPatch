@@ -87,4 +87,23 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 		
 	}
+	
+	@Override
+	public void renderRightArm(AbstractClientPlayer clientPlayer) {
+		this.renderFirstPersonArm(clientPlayer);
+	}
+	
+	@Override
+	public void renderLeftArm(AbstractClientPlayer clientPlayer) {
+		this.renderFirstPersonArm(clientPlayer);		
+	}
+	
+	/**
+	 * 一人称視点の手を描画する
+	 */
+	protected void renderFirstPersonArm(AbstractClientPlayer clientPlayer) {
+		
+		((ModelLittleMaidMultiModel) this.mainModel).renderFirstPersonArm(clientPlayer);
+		
+	}
 }

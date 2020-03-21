@@ -3,7 +3,9 @@ package net.firis.lmt.client.model;
 import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -101,5 +103,28 @@ public class ModelLittleMaidMultiModel extends ModelBase {
     		this.playerModel.Arms[1].postRender(scale);   		
     	}
 	}
+	
+	/**
+	 * 一人称視点の手を描画する
+	 * @param player
+	 * @param handSide
+	 */
+	public void renderFirstPersonArm(EntityPlayer player) {
+		
+		//プレイヤーモデルの準備
+		playerModel = PlayerModelManager.getPlayerModel(player);
+		playerModel.showAllParts();
+		playerCaps = getModelCaps(playerModel, player);
+		
+		//テクスチャバインド
+		Minecraft.getMinecraft().getTextureManager().bindTexture(PlayerModelManager.getPlayerTexture(player));
+		
+		//お手ての位置調整
+		GlStateManager.translate(0.0F, 0.25F, 0.0F);
+
+		//お手てを描画
+		playerModel.renderFirstPersonHand(playerCaps);
+	}
+	
 	
 }
