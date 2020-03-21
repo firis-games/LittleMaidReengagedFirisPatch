@@ -1,12 +1,15 @@
 package net.firis.lmt.client.renderer.layer;
 
 import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
+import net.firis.lmt.common.modelcaps.PlayerModelCaps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 
@@ -74,6 +77,19 @@ public class LayerHeldItemLittleMaidMultiModel extends LayerHeldItem {
             //GlStateManager.translate((flag ? -1.0F : 1.0F) * 0.05F, 0.06f, -0.5f);
             GlStateManager.translate(flag ? -0.0125F : 0.0125F, 0.05f, -0.15f);
             
+            //Block系アイテムの位置調整
+            if (EnumAction.BLOCK == PlayerModelCaps.getPlayerAction((EntityPlayer) entitylivingbaseIn, handSide)) {
+            	if (!flag) {
+            		//右手調整
+            		GlStateManager.rotate(55, 0.0F, 1.0F, 0.0F);
+                	GlStateManager.translate(-0.15F, 0.2F, 0.0F);
+            	} else {
+            		//左手調整
+            		GlStateManager.rotate(55, 0.0F, -1.0F, 0.0F);
+                	GlStateManager.translate(0.04F, 0.2F, 0.0F);
+            	}
+            }
+            
             //スニーク調整
             if (entitylivingbaseIn.isSneaking()) {
                 GlStateManager.translate((flag ? -1.0F : 1.0F) * 0F, 0.0f, 0.02f);
@@ -88,10 +104,6 @@ public class LayerHeldItemLittleMaidMultiModel extends LayerHeldItem {
     
     /**
      * 腕の位置へ調整する
-     * 
-     * 防具描画の制御でshowModelがfalseになるため
-     * 強制的にtrueへ設定
-     * マルチモデルと同様に親のモデルも調整する
      */
     @Override
     protected void translateToHand(EnumHandSide handSide)

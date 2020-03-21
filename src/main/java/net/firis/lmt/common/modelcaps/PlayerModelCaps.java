@@ -191,20 +191,9 @@ public class PlayerModelCaps implements IModelCaps {
 			
 		//弓構え
 		case caps_aimedBow:
-			ItemStack mainStack = owner.getHeldItemMainhand();
-            ItemStack offStack = owner.getHeldItemOffhand();
-            //手持ちアイテムあり かつ アイテム使用中
-            if (!mainStack.isEmpty() && owner.getItemInUseCount() > 0) {
-            	if (mainStack.getItemUseAction() == EnumAction.BOW) {
-            		return true;
-            	}
-            }
-            if (!offStack.isEmpty() && owner.getItemInUseCount() > 0) {
-            	if (offStack.getItemUseAction() == EnumAction.BOW) {
-            		return true;
-            	}
-            }
-			return false;
+			//プレイヤーが弓構え
+			return getPlayerAction(owner, EnumHandSide.RIGHT) == EnumAction.BOW 
+			|| getPlayerAction(owner, EnumHandSide.LEFT) == EnumAction.BOW;
 			
 		//Entityごとの揺らぎを持たせているらしい？
 		case caps_entityIdFactor:
@@ -214,10 +203,14 @@ public class PlayerModelCaps implements IModelCaps {
 		case caps_dominantArm:
 			return owner.getPrimaryHand() == EnumHandSide.RIGHT ? 0 : 1;
 		
-		//アイテムを持った時の腕振り制御（未使用・後方互換用）
+		//アイテムを持った時の腕振り制御
 		case caps_heldItemLeft:
+			if (EnumAction.BLOCK == getPlayerAction(owner, EnumHandSide.LEFT)) return 3.5F;
+			return 0.0F;
+			
 		case caps_heldItemRight:
-			return 0;
+			if (EnumAction.BLOCK == getPlayerAction(owner, EnumHandSide.RIGHT)) return 3.5F;
+			return 0.0F;
 			
 		//メイドさん待機モーション
 		case caps_isWait:
@@ -318,8 +311,28 @@ public class PlayerModelCaps implements IModelCaps {
 			onGrounds[0] = 0.0F;
 			onGrounds[1] = this.owner.swingProgress;
 		}
-		
 		return onGrounds;
+	}
+	
+	/**
+	 * プレイヤーのEnumActionを取得する
+	 * 右手と左手で判断する
+	 */
+	public static EnumAction getPlayerAction(EntityPlayer player, EnumHandSide handSide) {
+		
+		//利き手を考慮して判断する
+		ItemStack itemStack;
+		if (player.getPrimaryHand() == handSide) {
+			itemStack = player.getHeldItemMainhand();
+		} else {
+			itemStack = player.getHeldItemOffhand();
+		}
+        
+        //手持ちアイテムあり かつ アイテム使用中
+        if (!itemStack.isEmpty() && player.getItemInUseCount() > 0) {
+       		return itemStack.getItemUseAction();
+        }
+        return EnumAction.NONE;
 	}
 	
 }
