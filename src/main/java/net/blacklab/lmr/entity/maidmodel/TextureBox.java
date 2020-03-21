@@ -248,5 +248,12 @@ public class TextureBox extends TextureBoxBase {
 		}
 		return lflag;
 	}
+	
+	public ResourceLocation getTextureNameDefault() {
+		for (Integer index : textures.keySet()) {
+			return textures.get(index);
+		}
+		return null;
+	}
 
 }

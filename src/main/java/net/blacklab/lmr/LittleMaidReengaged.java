@@ -65,15 +65,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(
 		modid = LittleMaidReengaged.DOMAIN,
-		name = "LittleMaidReengaged",
+		name = LittleMaidReengaged.NAME,
 		version = LittleMaidReengaged.VERSION,
 		acceptedMinecraftVersions=LittleMaidReengaged.ACCEPTED_MCVERSION,
-		dependencies = LittleMaidReengaged.DEPENDENCIES/*,
+		dependencies = LittleMaidReengaged.DEPENDENCIES,
+		guiFactory = "net.firis.lmt.config.FirisConfigGuiFactory"
+		/*,
 		updateJSON = "http://mc.el-blacklab.net/lmr-version.json"*/)
 @EventBusSubscriber
 public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
+	public static final String NAME = "LittleMaidReengaged";
 	public static final String VERSION = "8.1.6.141.fp.025";
 	public static final String ACCEPTED_MCVERSION = "[1.12.2]";
 	public static final String DEPENDENCIES = "required-after:forge@[1.12.2-14.23.5.2768,);";
@@ -316,6 +319,9 @@ public class LittleMaidReengaged {
 		
 		//音声ロード
 		proxy.loadSounds();
+		
+		//テスト用preInit
+		LMTCore.preInit(evt);
 		
 	}
 

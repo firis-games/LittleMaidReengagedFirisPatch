@@ -10,6 +10,8 @@ import net.firis.lmt.client.renderer.RendererLittleMaidTest;
 import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
 import net.firis.lmt.common.entity.EntityLittleMaidTest;
 import net.firis.lmt.common.item.LMItemPlayerMaidBook;
+import net.firis.lmt.config.ConfigChangedEventHandler;
+import net.firis.lmt.config.FirisConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.Render;
@@ -19,9 +21,11 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -104,6 +108,10 @@ public class LMTCore {
 		Minecraft.getMinecraft().getRenderManager().playerRenderer = renderMaidPlayer;
 		skinMap.put("default", renderMaidPlayer);
 		skinMap.put("slim", renderMaidPlayer);
+		
+		
+		//GuiConfig更新イベント登録
+		MinecraftForge.EVENT_BUS.register(ConfigChangedEventHandler.class);
 	}
 	
 	/**
@@ -131,6 +139,19 @@ public class LMTCore {
 		// メイドさんになる本
 		ModelLoader.setCustomModelResourceLocation(LMItems.PLAYER_MAID_BOOK, 0,
 				new ModelResourceLocation(LMItems.PLAYER_MAID_BOOK.getRegistryName(), "inventory"));
+	}
+	
+	/**
+	 * テスト用preInit
+	 * @param event
+	 */
+	public static void preInit(FMLPreInitializationEvent event) {
+		
+		if (!isLMTCore()) return;
+		
+		//設定読込
+        FirisConfig.init(event.getModConfigurationDirectory());
+        
 	}
 	
 }

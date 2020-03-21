@@ -3,9 +3,9 @@ package net.firis.lmt.common.manager;
 import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.manager.ModelManager;
+import net.firis.lmt.config.FirisConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -17,9 +17,11 @@ import net.minecraft.util.ResourceLocation;
  */
 public class PlayerModelManager {
 
+	/*
 	//あかりちゃんの設定
 	private static String testTexure = "MMM_Akari";
 	private static Integer testTexureColorIndex = 8;
+	*/
 	
 	//内部保持用textureBox
 	private static TextureBox cacheTextureBox = null;
@@ -32,8 +34,9 @@ public class PlayerModelManager {
 	 * @param player
 	 * @return
 	 */
-	private static TextureBox getPlayerTexureBox(EntityPlayer player) {
+	private static TextureBox getPlayerTexureBox(EntityPlayer player, String textureName) {
 		
+		/*
 		//個別設定がある場合はこっち
 		NBTTagCompound nbt = player.getEntityData();
 		if (nbt.hasKey("maidModel")) {
@@ -42,6 +45,13 @@ public class PlayerModelManager {
 		
 		if (cacheTextureBox == null) {
 			cacheTextureBox = ModelManager.instance.getTextureBox(testTexure);
+		}
+		*/
+		
+		//設定から取得するように変更
+		cacheTextureBox = ModelManager.instance.getTextureBox(textureName);
+		if (cacheTextureBox == null) {
+			cacheTextureBox = ModelManager.instance.getTextureBox(FirisConfig.DEFAULT_MAID_MODEL);			
 		}
 		return cacheTextureBox;
 	}
@@ -52,7 +62,7 @@ public class PlayerModelManager {
 	 */
 	public static ModelMultiBase getPlayerModel(EntityPlayer player) {
 		
-		TextureBox textureBox = getPlayerTexureBox(player);
+		TextureBox textureBox = getPlayerTexureBox(player, FirisConfig.cfg_maid_model);
 		
 		//メイドさん本体のモデルを返却する
 		return textureBox.models[0];
@@ -65,16 +75,23 @@ public class PlayerModelManager {
 	 */
 	public static ResourceLocation getPlayerTexture(EntityPlayer player) {
 		
+		/*
 		//個別設定がある場合はこっち
 		NBTTagCompound nbt = player.getEntityData();
 		if (nbt.hasKey("maidTexture")) {
 			return new ResourceLocation(nbt.getString("maidTexture"));
 		}
-		
 		TextureBox textureBox = getPlayerTexureBox(player);
-		
-		//メイドさん本体のテクスチャを返却する
 		return textureBox.getTextureName(testTexureColorIndex);
+		*/
+		
+		TextureBox textureBox = getPlayerTexureBox(player, FirisConfig.cfg_maid_model);
+		ResourceLocation rlTexture = textureBox.getTextureName(FirisConfig.cfg_maid_color);
+		if (rlTexture == null) {
+			rlTexture = textureBox.getTextureNameDefault();
+		}
+		//メイドさん本体のテクスチャを返却する
+		return rlTexture;
 	}
 	
 	
@@ -102,7 +119,24 @@ public class PlayerModelManager {
 		}
 		*/
 		
-		TextureBox textureBox = getPlayerTexureBox(player);
+		String textureName = "";
+		switch (slot) {
+		case HEAD:
+			textureName = FirisConfig.cfg_armor_model_head;
+			break;
+		case CHEST:
+			textureName = FirisConfig.cfg_armor_model_body;
+			break;
+		case LEGS:
+			textureName = FirisConfig.cfg_armor_model_leg;
+			break;
+		case FEET:
+			textureName = FirisConfig.cfg_armor_model_boots;
+			break;
+		default:
+		}
+		
+		TextureBox textureBox = getPlayerTexureBox(player, textureName);
 		
 		//メイドさんのアーマーモデルを返却する
 		return textureBox.models[1];
@@ -131,7 +165,24 @@ public class PlayerModelManager {
 		}
 		*/
 		
-		TextureBox textureBox = getPlayerTexureBox(player);
+		String textureName = "";
+		switch (slot) {
+		case HEAD:
+			textureName = FirisConfig.cfg_armor_model_head;
+			break;
+		case CHEST:
+			textureName = FirisConfig.cfg_armor_model_body;
+			break;
+		case LEGS:
+			textureName = FirisConfig.cfg_armor_model_leg;
+			break;
+		case FEET:
+			textureName = FirisConfig.cfg_armor_model_boots;
+			break;
+		default:
+		}
+		
+		TextureBox textureBox = getPlayerTexureBox(player, textureName);
 		
 		//メイドさんのアーマーテクスチャを返却する
 		return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
