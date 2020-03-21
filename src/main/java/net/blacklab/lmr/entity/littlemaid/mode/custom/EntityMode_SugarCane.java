@@ -325,7 +325,7 @@ public class EntityMode_SugarCane extends EntityModeBase {
 		}
 		
 		//運びモードへの切り替え判定
-		if (pMode.equals(mode_SugarCane) && owner.ticksExisted % 600 == 0) {
+		if (pMode.equals(mode_SugarCane) && owner.ticksExisted % 200 == 0) {
 			if(owner.getAIMoveSpeed() > 0.5F) owner.setAIMoveSpeed(0.5F);
 			if(owner.maidInventory.getFirstEmptyStack() < 0){
 				owner.setMaidMode(EntityMode_Basic.mmode_SugarCanePorter);

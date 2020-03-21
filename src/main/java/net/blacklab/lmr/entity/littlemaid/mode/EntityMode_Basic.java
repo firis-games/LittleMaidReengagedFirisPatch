@@ -1,7 +1,9 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -24,9 +26,7 @@ import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemAppleGold;
-import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemBucketMilk;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
@@ -46,6 +46,24 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	public static final String mmode_FarmPorter		= "FarmPort";
 	public static final String mmode_SugarCanePorter= "SugarCanePort";
 	public static final String mmode_LumberjackPorter= "LumberjackPort";
+	public static final String mmode_RipperPorter   = "ShearerPort";
+	
+	//porterモード -> 戻す先のモード
+	public static final Map<String, String> mmode_list_ModePorter = initMmodeListModePorter();
+	public static Map<String, String> initMmodeListModePorter() {
+		Map<String, String> porterMap = new HashMap<>();
+		
+		//農家メイドさん
+		porterMap.put(mmode_FarmPorter, EntityMode_Farmer.mmode_Farmer);
+		//サトウキビ農家メイドさん
+		porterMap.put(mmode_SugarCanePorter, EntityMode_SugarCane.mode_SugarCane);
+		//木こりメイドさん
+		porterMap.put(mmode_LumberjackPorter, EntityMode_Lumberjack.mode_Lumberjack);
+		//毛刈りメイドさん
+		porterMap.put(mmode_RipperPorter, EntityMode_Shearer.mmode_Ripper);
+		
+		return porterMap;
+	}
 
 	private IInventory myInventory;
 	private IInventory myChest;
@@ -106,35 +124,18 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		ltasks[1] = pDefaultTargeting;
 		owner.addMaidMode(mmode_Escort, ltasks);
 		
-		owner.addMaidMode(mmode_FarmPorter, ltasks);
-		owner.addMaidMode(mmode_SugarCanePorter, ltasks);
-		owner.addMaidMode(mmode_LumberjackPorter, ltasks);
-		
+		//各職業の運び屋メイドさんモードを追加
+		for (String porterMode : mmode_list_ModePorter.keySet()) {
+			owner.addMaidMode(porterMode, ltasks);
+		}		
 	}
 
 	@Override
 	public boolean changeMode(EntityPlayer pentityplayer) {
-		ItemStack litemstack = owner.getCurrentEquippedItem();
-		ItemStack modeChangeStack = owner.getHandSlotForModeChange();
 		
-		if (!litemstack.isEmpty() && modeChangeStack.isEmpty()) {
-			if (owner.getModeTrigger().isTriggerable(EntityMode_Farmer.mtrigger_Hoe, litemstack, ItemHoe.class)) {
-				owner.setMaidMode(mmode_FarmPorter);
-				return true;
-			}
-			if (owner.getModeTrigger().isTriggerable(EntityMode_SugarCane.trigger_SugarCane, litemstack)) {
-				owner.setMaidMode(mmode_SugarCanePorter);
-				//進捗があったらここに設定する
-				return true;
-			}
-			if (owner.getModeTrigger().isTriggerable(EntityMode_Lumberjack.trigger_Lumberjack, litemstack, ItemAxe.class)
-					&& !owner.getModeTrigger().isTriggerable(EntityMode_Lumberjack.trigger_Lumberjack, owner.getHeldItemOffhand(), ItemAxe.class)) {
-				owner.setMaidMode(mmode_LumberjackPorter);
-				//進捗があったらここに設定する
-				return true;
-			}
-		}
+		//通常モードへ移行
 		owner.setMaidMode(mmode_Escort);
+		
 		return true;
 	}
 
@@ -157,13 +158,13 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 				owner.setEquipItem(li, -1);
 			}
 			return true;
-		case mmode_FarmPorter :
-			return true;
-		case mmode_SugarCanePorter :
-			return true;
-		case mmode_LumberjackPorter :
+		}
+		
+		//運び屋モードの判定
+		if (mmode_list_ModePorter.containsKey(pMode)) {
 			return true;
 		}
+		
 //		owner.getNavigator().clearPathEntity()
 		return false;
 	}
@@ -181,10 +182,12 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 
 	@Override
 	public boolean isSearchBlock() {
-		if ((owner.getMaidModeString().equals(mmode_Escort) ||
-				owner.getMaidModeString().equals(mmode_FarmPorter) ||
-				owner.getMaidModeString().equals(mmode_SugarCanePorter) ||
-				owner.getMaidModeString().equals(mmode_LumberjackPorter))
+		
+		//運び屋モードの場合はtrue
+		boolean isPorterMode = mmode_list_ModePorter.containsKey(owner.getMaidModeString());
+		
+		//各運び屋モード かつ 自由行動 かつ 待機状態ではない かつ インベントリの空きがない場合は継続
+		if (isPorterMode
 				&& owner.isFreedom() && !owner.isMaidWait() &&
 				owner.maidInventory.getFirstEmptyStack() == -1) {
 			// 対象をまだ見つけていないときは検索を行う。
@@ -571,22 +574,21 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	
 	@Override
 	public void updateAITick(String pMode) {
-		if(pMode.equals(mmode_FarmPorter) &&
-				owner.maidInventory.getFirstEmptyStack()>-1 &&
-				!owner.getWorkingCount().isEnable()){
-			owner.setMaidMode(EntityMode_Farmer.mmode_Farmer);
-		}
-		if(pMode.equals(mmode_SugarCanePorter) &&
-				owner.maidInventory.getFirstEmptyStack()>-1 &&
-				!owner.getWorkingCount().isEnable()){
-			owner.setMaidMode(EntityMode_SugarCane.mode_SugarCane);
-		}
-		if(pMode.equals(mmode_LumberjackPorter) &&
-				owner.maidInventory.getFirstEmptyStack()>-1 &&
-				!owner.getWorkingCount().isEnable()){
-			owner.setMaidMode(EntityMode_Lumberjack.mode_Lumberjack);
-		}
 		
+		//運び屋モードの場合はtrue
+		boolean isPorterMode = mmode_list_ModePorter.containsKey(pMode);
+		
+		//運び屋モードの場合は元のモードへ戻す
+		if (isPorterMode &&
+				owner.maidInventory.getFirstEmptyStack() > -1 &&
+				!owner.getWorkingCount().isEnable()) {
+			
+			//元の職業へ戻す
+			String beforMode = mmode_list_ModePorter.get(pMode);
+			owner.setMaidMode(beforMode);
+			owner.getNextEquipItem();
+		}
+
 		super.updateAITick(pMode);
 		
 		//一定時間ごとにリセット検索したチェストをリセット
