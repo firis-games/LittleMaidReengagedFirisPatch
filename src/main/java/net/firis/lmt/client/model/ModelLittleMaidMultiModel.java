@@ -1,5 +1,6 @@
 package net.firis.lmt.client.model;
 
+import net.blacklab.lmr.entity.maidmodel.ModelLittleMaidBase;
 import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
@@ -38,7 +39,15 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 	 */
 	public void initPlayerModel(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		
-		EntityPlayer player = (EntityPlayer) entity;
+		initPlayerModel((EntityPlayer) entity);
+		
+	}
+	
+	/**
+	 * モデルを利用するための設定を行う
+	 * @param player
+	 */
+	public void initPlayerModel(EntityPlayer player) {
 		
 		//プレイヤーモデルの準備
 		playerModel = PlayerModelManager.getPlayerModel(player);
@@ -112,9 +121,7 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 	public void renderFirstPersonArm(EntityPlayer player) {
 		
 		//プレイヤーモデルの準備
-		playerModel = PlayerModelManager.getPlayerModel(player);
-		playerModel.showAllParts();
-		playerCaps = getModelCaps(playerModel, player);
+		this.initPlayerModel(player);
 		
 		//テクスチャバインド
 		Minecraft.getMinecraft().getTextureManager().bindTexture(PlayerModelManager.getPlayerTexture(player));
@@ -126,5 +133,43 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 		playerModel.renderFirstPersonHand(playerCaps);
 	}
 	
+	/**
+	 * マルチモデルのpostRenderを呼び出す
+	 * 
+	 * 描画位置の調整
+	 */
+	public void modelPostRender(EnumMultiModelPartsType modelType, EntityPlayer player, float scale) {
+		
+		//プレイヤーモデルの準備
+		this.initPlayerModel(player);
+		
+		
+		//メイドベースの場合のみ調整する
+		if (!(this.playerModel instanceof ModelLittleMaidBase)) return;
+		
+		ModelLittleMaidBase maidModel = (ModelLittleMaidBase) this.playerModel;
+		
+		//位置調整
+		switch (modelType) {
+		case HEAD:
+			if (maidModel.bipedHead == null) return;
+			maidModel.bipedHead.postRender(scale);
+			break;
+		case BODY:
+			if (maidModel.bipedBody == null) return;
+			maidModel.bipedBody.postRender(scale);
+			break;
+		}
+	}
+	
+	/**
+	 * postRender用のパーツ定義
+	 * @author firis-games
+	 *
+	 */
+	public enum EnumMultiModelPartsType {
+		HEAD,
+		BODY;
+	}
 	
 }

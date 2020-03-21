@@ -4,6 +4,9 @@ import org.lwjgl.opengl.GL11;
 
 import net.firis.lmt.client.model.ModelLittleMaidMultiModel;
 import net.firis.lmt.client.renderer.layer.LayerArmorLittleMaidMultiModel;
+import net.firis.lmt.client.renderer.layer.LayerCustomHeadLittleMaid;
+import net.firis.lmt.client.renderer.layer.LayerElytraLittleMaid;
+import net.firis.lmt.client.renderer.layer.LayerEntityOnShoulderLittleMaid;
 import net.firis.lmt.client.renderer.layer.LayerHeldItemLittleMaidMultiModel;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -40,6 +43,11 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		this.addLayer(new LayerHeldItemLittleMaidMultiModel(this));
 		this.addLayer(new LayerArmorLittleMaidMultiModel(this));
 		
+		//Player用のlayerを一部改造
+        this.addLayer(new LayerElytraLittleMaid(this));
+        this.addLayer(new LayerCustomHeadLittleMaid(this));
+        this.addLayer(new LayerEntityOnShoulderLittleMaid(renderManager, this));
+        
 	}
 
 	/**
@@ -106,4 +114,5 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		((ModelLittleMaidMultiModel) this.mainModel).renderFirstPersonArm(clientPlayer);
 		
 	}
+	
 }
