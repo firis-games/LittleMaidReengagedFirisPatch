@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.firis.lmt.client.model.ModelLittleMaidMultiModel;
 import net.firis.lmt.client.renderer.layer.LayerArmorLittleMaidMultiModel;
+import net.firis.lmt.client.renderer.layer.LayerArrowLittleMaid;
 import net.firis.lmt.client.renderer.layer.LayerCustomHeadLittleMaid;
 import net.firis.lmt.client.renderer.layer.LayerElytraLittleMaid;
 import net.firis.lmt.client.renderer.layer.LayerEntityOnShoulderLittleMaid;
@@ -47,6 +48,8 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
         this.addLayer(new LayerElytraLittleMaid(this));
         this.addLayer(new LayerCustomHeadLittleMaid(this));
         this.addLayer(new LayerEntityOnShoulderLittleMaid(renderManager, this));
+        this.addLayer(new LayerArrowLittleMaid(this));
+        
         
 	}
 
