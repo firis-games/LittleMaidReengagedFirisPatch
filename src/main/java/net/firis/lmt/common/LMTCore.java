@@ -5,7 +5,6 @@ import java.util.Map;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.util.DevMode;
 import net.firis.lmt.client.renderer.RendererLittleMaidTest;
 import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
 import net.firis.lmt.common.entity.EntityLittleMaidTest;
@@ -43,8 +42,11 @@ public class LMTCore {
 	 * @return
 	 */
 	public static boolean isLMTCore() {
-		//開発環境のみ実行
-		if (!DevMode.DEVELOPMENT_DEBUG_MODE || !LMRConfig.cfg_developer_test_module) return false;
+		
+		////開発環境のみ実行
+		//if (!DevMode.DEVELOPMENT_DEBUG_MODE || !LMRConfig.cfg_developer_test_module) return false;
+		
+		if (!LMRConfig.cfg_prottype_maid_avatar) return false;
 		
 		return true;
 	}

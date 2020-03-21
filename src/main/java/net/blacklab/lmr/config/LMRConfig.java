@@ -93,6 +93,9 @@ public class LMRConfig {
 	/** 開発用テストモジュールの有効化設定 */
 	public static boolean cfg_developer_test_module = false;
 	
+	/** 試験中の追加機能 メイドアバター */
+	public static boolean cfg_prottype_maid_avatar = false;
+	
 	/**
 	 * Config初期化
 	 */
@@ -297,6 +300,10 @@ public class LMRConfig {
 		//メイドミルク表示のラベル設定
 		cfg_secret_maid_milk_producer_label = cfg.getString("MaidMilkLabel_DisplayLabel", "Secret", "%s印のミルク",
 				"Maid milk producer display label.");
+		
+		//プロトタイプ機能
+		cfg_prottype_maid_avatar = cfg.getBoolean("PlayerMaidAvatar", "xProttype", false,
+				"Player looks like a LittleMaid.This is a work in progress.");
 	}
 	
 }
