@@ -7,6 +7,7 @@ import java.util.Map;
 import net.blacklab.lmr.entity.maidmodel.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.blacklab.lmr.util.helper.ItemHelper;
+import net.firis.lmt.client.event.LittleMaidAvatarClientTickEventHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -102,7 +103,11 @@ public class PlayerModelCaps implements IModelCaps {
 		case caps_onGround:
 			return this.getOnGrounds();
 		case caps_isRiding:
-			return owner.isRiding();
+			//疑似お座りモーションを管理する
+			return owner.isRiding() || LittleMaidAvatarClientTickEventHandler.lmAvatarAction.getStat(owner);
+		case caps_motionSitting:
+			//疑似お座りモーション
+			return LittleMaidAvatarClientTickEventHandler.lmAvatarAction.getStat(owner);
 		case caps_isRidingPlayer:
 			return false;
 		case caps_isChild:
@@ -214,11 +219,11 @@ public class PlayerModelCaps implements IModelCaps {
 			
 		//メイドさん待機モーション
 		case caps_isWait:
-			return false;
+			return LittleMaidAvatarClientTickEventHandler.lmAvatarWaitAction.getStat(owner);
 			
 		//砂糖を持った時の首傾げ
 		case caps_isLookSuger:
-			return ItemHelper.isSugar(this.owner.getHeldItemMainhand()); 
+			return ItemHelper.isSugar(this.owner.getHeldItemMainhand());
 		}
 
 		return null;
@@ -240,6 +245,7 @@ public class PlayerModelCaps implements IModelCaps {
 		caps.add(IModelCaps.caps_entityIdFactor);
 		caps.add(IModelCaps.caps_ticksExisted);
 		caps.add(IModelCaps.caps_dominantArm);
+		caps.add(IModelCaps.caps_motionSitting);
 		
 		return caps;
 	}

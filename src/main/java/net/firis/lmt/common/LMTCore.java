@@ -5,6 +5,8 @@ import java.util.Map;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.config.LMRConfig;
+import net.firis.lmt.client.event.KeyBindingHandler;
+import net.firis.lmt.client.event.LittleMaidAvatarClientTickEventHandler;
 import net.firis.lmt.client.renderer.RendererLittleMaidTest;
 import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
 import net.firis.lmt.common.entity.EntityLittleMaidTest;
@@ -114,6 +116,12 @@ public class LMTCore {
 		
 		//GuiConfig更新イベント登録
 		MinecraftForge.EVENT_BUS.register(ConfigChangedEventHandler.class);
+		
+		
+		KeyBindingHandler.init();
+		
+		MinecraftForge.EVENT_BUS.register(KeyBindingHandler.class);
+		MinecraftForge.EVENT_BUS.register(LittleMaidAvatarClientTickEventHandler.class);
 	}
 	
 	/**
