@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import net.firis.lmt.common.modelcaps.PlayerModelCaps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
+import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -68,17 +71,41 @@ public class LittleMaidAvatarClientTickEventHandler {
 	 */
 	protected static void onClientTickEventLittleMaidAvatar(ClientTickEvent event) {
 		
+		boolean isMotionReset = false;
+		
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		
 		//アクション解除
+		//腕振り
+		if (!isMotionReset && player.swingProgress != 0.0F) {
+			isMotionReset = true;
+		}
+		
+		//右クリック
+		if (!isMotionReset) {
+	        if (EnumAction.NONE != PlayerModelCaps.getPlayerAction(player, EnumHandSide.RIGHT)
+	        		|| EnumAction.NONE != PlayerModelCaps.getPlayerAction(player, EnumHandSide.LEFT)) {
+				isMotionReset = true;	        	
+	        }
+		}
+		
+		//アクション解除
 		//縦方向は重力が発生してるので微調整して判断
-		if (player.motionX != 0.0D || player.motionZ != 0.0D
-				|| player.motionY > 0.0D) {
+		if (!isMotionReset) {
+			if (player.motionX != 0.0D || player.motionZ != 0.0D
+					|| player.motionY > 0.0D) {
+				isMotionReset = true;
+			}
+		}
+		
+		if (isMotionReset) {
+			//モーションリセット
 			lmAvatarAction.setStat(player, false);
 			lmAvatarWaitAction.setStat(player, false);
 			lmAvatarWaitCounter.setStat(player, player.ticksExisted);
+			
 		} else {
-			//静止状態と判断
+			//モーション継続状態と判断
 			Integer counter = lmAvatarWaitCounter.getStat(player);
 			
 			//初期化
@@ -90,4 +117,5 @@ public class LittleMaidAvatarClientTickEventHandler {
 			}
 		}
 	}
+	
 }
