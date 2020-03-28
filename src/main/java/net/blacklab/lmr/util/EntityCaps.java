@@ -150,7 +150,9 @@ public class EntityCaps extends EntityCapsLiving {
 		case caps_Items:
 			ItemStack[] lstacks = new ItemStack[owner.mstatSwingStatus.length];
 			for (SwingStatus ls : owner.mstatSwingStatus) {
-				lstacks[li++] = ls.getItemStack(owner);
+				ItemStack stack = ls.getItemStack(owner);
+				stack = stack.isEmpty() ? null : stack;
+				lstacks[li++] = stack;
 			}
 			return lstacks;
 		case caps_Actions:
