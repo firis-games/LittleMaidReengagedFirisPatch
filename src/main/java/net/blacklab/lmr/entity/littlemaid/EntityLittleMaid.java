@@ -1058,6 +1058,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			getEntityWorld().spawnEntity(entityitem);
 			mstatgotcha = null;
 		}
+		
+		//PlayerAvatarも消去
+		this.maidAvatar.setDead();
+		
 		super.setDead();
 	}
 
