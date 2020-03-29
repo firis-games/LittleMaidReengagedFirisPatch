@@ -18,6 +18,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatBase;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -572,4 +573,18 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	//メイドさんのハンドに差し替え
+	@Override
+    public EnumHandSide getPrimaryHand()
+    {
+    	//MAIN_HAND
+        return avatar.getPrimaryHand();
+    }
+
+	@Override
+    public void setPrimaryHand(EnumHandSide hand)
+    {
+    	//MAIN_HAND
+    }
 }
