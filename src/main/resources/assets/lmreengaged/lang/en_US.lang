@@ -173,3 +173,10 @@ littleMaidMob.mode.Angler=Angler girl
 littleMaidMob.mode.F-Angler=Angler Maid
 littleMaidMob.mode.T-Angler=Angler Maid(Trace RS)
 
+littleMaidMob.mode.F-FarmPort=Farm Carry
+littleMaidMob.mode.F-LumberjackPort=Lumberjack Carry
+littleMaidMob.mode.F-SugarCanePort=SugarCane Carry
+littleMaidMob.mode.F-ShearerPort=Shearer Carry
+littleMaidMob.mode.F-AnglerPort=Angler Carry
+
+

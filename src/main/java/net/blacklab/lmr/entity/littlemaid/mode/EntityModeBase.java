@@ -367,5 +367,16 @@ public abstract class EntityModeBase {
 	public float getSugarConsumingMultiply() {
 		return 1f;
 	}
+	
+	/**
+	 * チェストに置くときの判定
+	 * 除外するものをTrueにする
+	 * 職業ごとにチェストに置かないアイテムを判定する
+	 * 標準の場合はfalse
+	 * @return
+	 */
+	public boolean isCancelPutChestItemStack(String pMode, ItemStack stack, int slotIndedx) {
+		return false;
+	}
 
 }

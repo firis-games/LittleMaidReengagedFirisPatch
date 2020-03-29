@@ -394,4 +394,12 @@ public class EntityMode_SugarCane extends EntityModeBase {
 		}
 		return false;
 	}
+	
+	/**
+	 * サトウキビは気にせず格納する
+	 */
+	@Override
+	public boolean isCancelPutChestItemStack(String pMode, ItemStack stack, int slotIndedx) {
+		return false;
+	}
 }

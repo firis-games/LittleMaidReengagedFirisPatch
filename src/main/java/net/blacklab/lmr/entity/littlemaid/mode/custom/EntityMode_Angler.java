@@ -432,4 +432,18 @@ public class EntityMode_Angler extends EntityModeBase {
 		return result;
 	}
 	
+	/**
+	 * isTriggerItemを使う場合はisTriggerItem側で職業判定をちゃんとやっていること
+	 */
+	@Override
+	public boolean isCancelPutChestItemStack(String pMode, ItemStack stack, int slotIndedx) {
+		
+		String mode = pMode;
+		if (EntityMode_Basic.mmode_AnglerPorter.equals(pMode)) {
+			mode = mode_Angler;
+		}
+		
+		return this.isTriggerItem(mode, stack);
+	}
+	
 }

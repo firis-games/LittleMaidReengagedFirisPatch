@@ -170,4 +170,9 @@ littleMaidMob.mode.Angler=釣り師の小娘
 littleMaidMob.mode.F-Angler=釣り人メイド
 littleMaidMob.mode.T-Angler=釣り人メイド(赤石)
 
+littleMaidMob.mode.F-FarmPort=作物の運び屋
+littleMaidMob.mode.F-LumberjackPort=木材の運び屋
+littleMaidMob.mode.F-SugarCanePort=お砂糖運び隊
+littleMaidMob.mode.F-ShearerPort=もふもふ運び隊
+littleMaidMob.mode.F-AnglerPort=おさかな運び隊
 

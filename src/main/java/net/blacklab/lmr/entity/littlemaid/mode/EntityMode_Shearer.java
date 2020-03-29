@@ -406,4 +406,18 @@ public class EntityMode_Shearer extends EntityModeBase {
 		}
 	}
 	
+	/**
+	 * isTriggerItemを使う場合はisTriggerItem側で職業判定をちゃんとやっていること
+	 */
+	@Override
+	public boolean isCancelPutChestItemStack(String pMode, ItemStack stack, int slotIndedx) {
+		
+		String mode = pMode;
+		if (EntityMode_Basic.mmode_RipperPorter.equals(pMode)) {
+			mode = mmode_Ripper;
+		}
+		
+		return this.isTriggerItem(mode, stack);
+	}
+	
 }

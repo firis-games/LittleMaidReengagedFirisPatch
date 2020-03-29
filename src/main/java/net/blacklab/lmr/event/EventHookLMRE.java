@@ -1,5 +1,7 @@
 package net.blacklab.lmr.event;
 
+import java.util.Iterator;
+
 import net.blacklab.lib.vevent.SubscribeVEvent;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.event.EventLMRE;
@@ -7,18 +9,15 @@ import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaidAvatarMP;
 import net.blacklab.lmr.entity.littlemaid.IEntityLittleMaidAvatar;
-import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
-import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Farmer;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -141,19 +140,28 @@ public class EventHookLMRE
 	@SubscribeVEvent
 	public void onItemPutChest(EventLMRE.ItemPutChestEvent event){
 		LittleMaidReengaged.Debug("HOOK");
+		
 		EntityLittleMaid maid = event.maid;
 		ItemStack stack = event.stack;
+		String maidModeString = maid.getMaidModeString();
 
+		//砂糖扱いのアイテムと時計を除外する
 		if(ItemHelper.isSugar(stack) || stack.getItem() == Items.CLOCK){
 			event.setCanceled(true);
 		}
-
-		if(maid.getMaidModeString().equals(EntityMode_Basic.mmode_FarmPorter)){
-			if(event.maidStackIndex <= 13
-					&& maid.getModeTrigger().isTriggerable(EntityMode_Farmer.mtrigger_Seed, stack, IPlantable.class)
-					|| maid.getModeTrigger().isTriggerable(EntityMode_Farmer.mtrigger_Hoe, stack, ItemHoe.class)){
-				event.setCanceled(true);
+		
+		//各職業のアイテム除外判定
+		boolean isCancelPut = false;
+		Iterator<EntityModeBase> maidModeIterator = maid.maidEntityModeList.iterator();
+		while (maidModeIterator.hasNext()) {
+			EntityModeBase maidMode = maidModeIterator.next();
+			isCancelPut = maidMode.isCancelPutChestItemStack(maidModeString, stack, event.maidStackIndex);
+			if (isCancelPut) {
+				break;
 			}
+		}
+		if (isCancelPut) {
+			event.setCanceled(true);
 		}
 	}
 	

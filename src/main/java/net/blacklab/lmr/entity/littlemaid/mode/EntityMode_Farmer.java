@@ -95,6 +95,15 @@ public class EntityMode_Farmer extends EntityModeBase {
 		}
 		return super.isTriggerItem(pMode, par1ItemStack);
 	}
+	
+	/**
+	 * 種アイテムのトリガー判断処理
+	 * @param itemStack
+	 * @return
+	 */
+	private boolean isTriggerItemSeed(ItemStack stack) {
+		return owner.getModeTrigger().isTriggerable(mtrigger_Seed, stack, IPlantable.class);
+	}
 
 	@Override
 	public boolean setMode(String pMode) {
@@ -314,7 +323,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 		for (int i=0; i < owner.maidInventory.getSizeInventory(); i++) {
 			ItemStack pStack;
 			if (!(pStack = owner.maidInventory.getStackInSlot(i)).isEmpty() &&
-					owner.getModeTrigger().isTriggerable(mtrigger_Seed, pStack, IPlantable.class)) {
+					this.isTriggerItemSeed(pStack)) {
 				return i;
 			}
 		}
@@ -450,5 +459,26 @@ public class EntityMode_Farmer extends EntityModeBase {
 				resetCountTimer = allResetTimeTick;
 			}
 		}
+	}
+	
+	@Override
+	public boolean isCancelPutChestItemStack(String pMode, ItemStack stack, int slotIndedx) {
+		
+		String mode = pMode;
+		if (EntityMode_Basic.mmode_FarmPorter.equals(pMode)) {
+			mode = mmode_Farmer;
+		}
+		
+		//農家メイドさんの場合の判定
+		if (mmode_Farmer.equals(mode)) {
+			
+			//13番目のスロットまで
+			//種はのこす
+			if(slotIndedx <= 13 && this.isTriggerItemSeed(stack)) {
+				return true;
+			}
+		}
+		
+		return this.isTriggerItem(mode, stack);
 	}
 }
