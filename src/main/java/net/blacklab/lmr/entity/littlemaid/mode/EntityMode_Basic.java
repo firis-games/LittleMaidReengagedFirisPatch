@@ -11,6 +11,7 @@ import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.entity.ai.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.ai.EntityAILMWildWatchClosest;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_Angler;
 import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_Lumberjack;
 import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_SugarCane;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
@@ -47,6 +48,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	public static final String mmode_SugarCanePorter= "SugarCanePort";
 	public static final String mmode_LumberjackPorter= "LumberjackPort";
 	public static final String mmode_RipperPorter   = "ShearerPort";
+	public static final String mmode_AnglerPorter   = "AnglerPort";
 	
 	//porterモード -> 戻す先のモード
 	public static final Map<String, String> mmode_list_ModePorter = initMmodeListModePorter();
@@ -61,6 +63,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		porterMap.put(mmode_LumberjackPorter, EntityMode_Lumberjack.mode_Lumberjack);
 		//毛刈りメイドさん
 		porterMap.put(mmode_RipperPorter, EntityMode_Shearer.mmode_Ripper);
+		//釣り師メイドさん
+		porterMap.put(mmode_AnglerPorter, EntityMode_Angler.mode_Angler);
 		
 		return porterMap;
 	}

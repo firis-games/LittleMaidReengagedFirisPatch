@@ -169,3 +169,7 @@ littlemaid.inventory.name=ROSE
 
 item.player_maid_book.name=Player Maid Model
 
+littleMaidMob.mode.Angler=Angler girl
+littleMaidMob.mode.F-Angler=Angler Maid
+littleMaidMob.mode.T-Angler=Angler Maid(Trace RS)
+

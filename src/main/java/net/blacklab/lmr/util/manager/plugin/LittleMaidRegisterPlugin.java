@@ -13,6 +13,7 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Pharmacist;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Shearer;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_TorchLayer;
+import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_Angler;
 import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_Lumberjack;
 import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_SugarCane;
 import net.blacklab.lmr.util.manager.MaidModeManager;
@@ -43,6 +44,7 @@ public class LittleMaidRegisterPlugin implements ILittleMaidPlugin {
 		//カスタム職業
 		manager.register(EntityMode_Lumberjack.class);
 		manager.register(EntityMode_SugarCane.class);
+		manager.register(EntityMode_Angler.class);
 		
 	}
 }

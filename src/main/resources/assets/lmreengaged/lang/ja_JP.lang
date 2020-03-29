@@ -166,3 +166,8 @@ littlemaid.inventory.name=ROSE
 
 item.player_maid_book.name=メイドさんになる本
 
+littleMaidMob.mode.Angler=釣り師の小娘
+littleMaidMob.mode.F-Angler=釣り人メイド
+littleMaidMob.mode.T-Angler=釣り人メイド(赤石)
+
+
