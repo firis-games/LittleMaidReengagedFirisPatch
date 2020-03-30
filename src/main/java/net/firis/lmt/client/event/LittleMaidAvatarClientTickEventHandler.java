@@ -71,40 +71,47 @@ public class LittleMaidAvatarClientTickEventHandler {
 	 */
 	protected static void onClientTickEventLittleMaidAvatar(ClientTickEvent event) {
 		
-		boolean isMotionReset = false;
+		boolean isMotionSittingReset = false;
+		boolean isMotionWaitReset = false;
 		
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		
 		//アクション解除
 		//腕振り
-		if (!isMotionReset && player.swingProgress != 0.0F) {
-			isMotionReset = true;
+		if (!isMotionWaitReset && player.swingProgress != 0.0F) {
+			isMotionWaitReset = true;
 		}
 		
 		//右クリック
-		if (!isMotionReset) {
+		if (!isMotionWaitReset) {
 	        if (EnumAction.NONE != PlayerModelCaps.getPlayerAction(player, EnumHandSide.RIGHT)
 	        		|| EnumAction.NONE != PlayerModelCaps.getPlayerAction(player, EnumHandSide.LEFT)) {
-				isMotionReset = true;	        	
+	        	isMotionWaitReset = true;	        	
 	        }
 		}
 		
 		//アクション解除
 		//縦方向は重力が発生してるので微調整して判断
-		if (!isMotionReset) {
+		if (!isMotionWaitReset || !isMotionSittingReset) {
 			if (player.motionX != 0.0D || player.motionZ != 0.0D
 					|| player.motionY > 0.0D) {
-				isMotionReset = true;
+				isMotionWaitReset = true;
+				isMotionSittingReset = true;
 			}
 		}
 		
-		if (isMotionReset) {
-			//モーションリセット
-			lmAvatarAction.setStat(player, false);
+		if (isMotionWaitReset) {
+			//待機モーションリセット
 			lmAvatarWaitAction.setStat(player, false);
 			lmAvatarWaitCounter.setStat(player, player.ticksExisted);
+		}
+		if (isMotionSittingReset) {
+			//お座りモーションリセット
+			lmAvatarAction.setStat(player, false);
+		}
+		
+		if (!isMotionWaitReset && !isMotionSittingReset) {
 			
-		} else {
 			//モーション継続状態と判断
 			Integer counter = lmAvatarWaitCounter.getStat(player);
 			
