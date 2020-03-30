@@ -15,6 +15,7 @@ import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_Angler;
 import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_Lumberjack;
 import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_SugarCane;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
+import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.block.Block;
@@ -591,6 +592,9 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			String beforMode = mmode_list_ModePorter.get(pMode);
 			owner.setMaidMode(beforMode);
 			owner.getNextEquipItem();
+			
+			//インベントリの同期
+			LMRNetwork.syncLittleMaidInventory(owner);
 		}
 
 		super.updateAITick(pMode);

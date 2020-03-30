@@ -3,6 +3,7 @@ package net.blacklab.lmr.network;
 import net.blacklab.lmc.common.network.PacketSpawnParticleS2C;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.network.LMRMessage.EnumPacketMode;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.helper.CommonHelper;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -158,7 +160,7 @@ public class LMRNetwork
 
 		case REQUEST_CURRENT_ITEM:
 			ItemStack stack = lemaid.getHeldItemMainhand();
-			if (stack != null) {
+			if (!stack.isEmpty()) {
 				NBTTagCompound returnTag = new NBTTagCompound();
 				returnTag.setInteger("Index", lemaid.maidInventory.currentItem);
 
@@ -170,7 +172,7 @@ public class LMRNetwork
 				sendPacketToPlayer(LMRMessage.EnumPacketMode.CLIENT_CURRENT_ITEM, lemaid.getEntityId(), returnTag, sender);
 			}
 			break;
-
+			
 		default:
 			break;
 		}
@@ -216,5 +218,15 @@ public class LMRNetwork
 		INSTANCE.sendToAll(
 				new PacketSpawnParticleS2C.MessageSpawnParticle(pos, particleNo));
 		
+	}
+	
+	/**
+	 * メイドさんのインベントリ同期
+	 */
+	public static void syncLittleMaidInventory(EntityLittleMaid maid) {
+		
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setTag("Inventory", maid.maidInventory.writeToNBT(new NBTTagList()));
+		sendPacketToAllPlayer(EnumPacketMode.SERVER_LITTLE_MAID_INVENTORY, maid.getEntityId(), nbt);
 	}
 }

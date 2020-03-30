@@ -272,6 +272,9 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	}
 
 	public ItemStack getCurrentItem() {
+		
+		int currentItem = this.entityLittleMaid.getDataWatchCurrentItem();
+		
 		if (currentItem >= handInventoryOffset + 1) {
 			return offHandInventory.get(currentItem - (handInventoryOffset + 1));
 		}

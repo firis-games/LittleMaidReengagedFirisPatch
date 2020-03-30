@@ -23,12 +23,11 @@ public class ContainerInventoryLittleMaid extends Container {
 	protected final int numRows;
 	protected final EntityLittleMaid owner;
 
-	public ContainerInventoryLittleMaid(IInventory playerInventory, EntityLittleMaid pEntity) {
+	public ContainerInventoryLittleMaid(IInventory playerInventory, InventoryLittleMaid maidInventory, EntityLittleMaid pEntity) {
 //		super(pEntity.maidInventory, !pEntity.worldObj.isRemote, pEntity.maidAvatar);
 		inventorySlots.clear();
 		inventoryItemStacks.clear();
 
-		InventoryLittleMaid maidInventory = pEntity.maidInventory;
 		owner = pEntity;
 		numRows = 2;
 		littlemaidInventory = maidInventory;

@@ -33,7 +33,7 @@ public class GuiHandler implements IGuiHandler
 			case GUI_ID_INVVENTORY:
 				if(maidServer!=null)
 				{
-					o = new ContainerInventoryLittleMaid(player.inventory, maidServer);
+					o = new ContainerInventoryLittleMaid(player.inventory, maidServer.maidInventory, maidServer);
 					maidServer = null;
 				}
 				break;

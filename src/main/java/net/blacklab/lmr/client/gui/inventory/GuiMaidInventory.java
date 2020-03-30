@@ -15,6 +15,7 @@ import net.blacklab.lmr.client.gui.GuiButtonNextPage;
 import net.blacklab.lmr.client.gui.GuiTextureSelect;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.inventory.ClientInventoryLittleMaid;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
 import net.blacklab.lmr.network.LMRMessage;
 import net.minecraft.block.material.Material;
@@ -121,7 +122,7 @@ public class GuiMaidInventory extends GuiContainer {
 
 	// Method
 	public GuiMaidInventory(EntityPlayer pPlayer, EntityLittleMaid elmaid) {
-		super(new ContainerInventoryLittleMaid(pPlayer.inventory, elmaid));
+		super(new ContainerInventoryLittleMaid(pPlayer.inventory, new ClientInventoryLittleMaid(elmaid), elmaid));
 		rand = new Random();
 		playerInventory = pPlayer.inventory;
 		maidInventory = elmaid.maidInventory;

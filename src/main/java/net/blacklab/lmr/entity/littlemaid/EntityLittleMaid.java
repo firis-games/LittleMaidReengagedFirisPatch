@@ -213,6 +213,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	//1:お座り
 	protected static final DataParameter<Integer> dataWatch_WaitMotion	= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
 	
+	//手持ちアイテムのIDを強制で設定する用
+	protected static final DataParameter<Integer> dataWatch_CurrentItem	= EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.VARINT);
+	
+	public int getDataWatchCurrentItem() {
+		return this.dataManager.get(dataWatch_CurrentItem);
+	}
+	
 
 //	protected long maidContractLimit;		// 契約失効日
 	protected int maidContractLimit;		// 契約期間
@@ -576,6 +583,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		
 		//お座り状態
 		dataManager.register(EntityLittleMaid.dataWatch_WaitMotion, Integer.valueOf(0));
+		
+		//手持ちアイテム同期用
+		dataManager.register(EntityLittleMaid.dataWatch_CurrentItem, Integer.valueOf(-1));
 		
 	}
 
@@ -2205,7 +2215,18 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void onUpdate() {
 		int litemuse = 0;
 //		resetNavigator();
+		
+		//手持ちアイテムの同期
+		if (!this.world.isRemote) {
+			int currentItem = dataManager.get(EntityLittleMaid.dataWatch_CurrentItem);
+			if (currentItem != this.maidInventory.currentItem) {
+				dataManager.set(EntityLittleMaid.dataWatch_CurrentItem, this.maidInventory.currentItem);
+			}
+		} else {
+			this.maidInventory.currentItem = dataManager.get(EntityLittleMaid.dataWatch_CurrentItem);
+		}
 
+		this.getHeldEquipment();
 		if (registerTick.isDelay()){
 			registerTick.onUpdate();
 
@@ -3455,6 +3476,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// TODO Waiting?
 //		int li = maidMode & 0x0080;
 		setMaidWaitCount(50);
+		
+		//インベントリの同期
+		LMRNetwork.syncLittleMaidInventory(this);
 	}
 
 	// 腕振り

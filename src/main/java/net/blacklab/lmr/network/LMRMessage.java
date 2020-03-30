@@ -117,7 +117,10 @@ public class LMRMessage implements IMessage
 		REQUEST_CURRENT_ITEM    (0x28,  true),
 
 		/** Change Freedom Mode from GUI **/
-		SERVER_CHAMGE_FREEDOM	(0x30,  true);
+		SERVER_CHAMGE_FREEDOM	(0x30,  true),
+		
+		/** メイドさんのインベントリ同期 */
+		SERVER_LITTLE_MAID_INVENTORY(0x41,  true);
 
 		public byte modeByte;
 		public boolean withEntity;
