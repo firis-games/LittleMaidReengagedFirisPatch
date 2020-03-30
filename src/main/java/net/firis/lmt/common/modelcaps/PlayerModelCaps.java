@@ -27,6 +27,12 @@ public class PlayerModelCaps implements IModelCaps {
 	
 	private final EntityPlayer owner;
 	
+	private boolean isFirstPerson = false;
+	
+	public void setFirstPerson(boolean flg) {
+		this.isFirstPerson = flg;
+	}
+	
 	public PlayerModelCaps(EntityPlayer player) {
 		this.owner = player;
 	}
@@ -103,6 +109,7 @@ public class PlayerModelCaps implements IModelCaps {
 		case caps_onGround:
 			return this.getOnGrounds();
 		case caps_isRiding:
+			if (this.isFirstPerson) return false;
 			//疑似お座りモーションを管理する
 			return owner.isRiding() || LittleMaidAvatarClientTickEventHandler.lmAvatarAction.getStat(owner);
 		case caps_motionSitting:
@@ -123,6 +130,7 @@ public class PlayerModelCaps implements IModelCaps {
 		case caps_isSwingInProgress:
 			return owner.isSwingInProgress;
 		case caps_isSneak:
+			if (this.isFirstPerson) return false;
 			return owner.isSneaking();
 		case caps_isBurning:
 			return owner.isBurning();
@@ -219,6 +227,7 @@ public class PlayerModelCaps implements IModelCaps {
 			
 		//メイドさん待機モーション
 		case caps_isWait:
+			if (this.isFirstPerson) return false;
 			return LittleMaidAvatarClientTickEventHandler.lmAvatarWaitAction.getStat(owner);
 			
 		//砂糖を持った時の首傾げ

@@ -39,7 +39,7 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 	 */
 	public void initPlayerModel(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		
-		initPlayerModel((EntityPlayer) entity);
+		this.initPlayerModel((EntityPlayer) entity, false);
 		
 	}
 	
@@ -47,11 +47,11 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 	 * モデルを利用するための設定を行う
 	 * @param player
 	 */
-	public void initPlayerModel(EntityPlayer player) {
+	public void initPlayerModel(EntityPlayer player, boolean isFirstPerson) {
 		
 		//プレイヤーモデルの準備
 		playerModel = PlayerModelManager.getPlayerModel(player);
-		playerCaps = getModelCaps(playerModel, player);
+		playerCaps = getModelCaps(playerModel, player, isFirstPerson);
 		
 		playerModel.showAllParts();
 		
@@ -94,9 +94,11 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 	 * @param player
 	 * @return
 	 */
-	protected PlayerModelCaps getModelCaps(ModelMultiBase modelMain, EntityPlayer player) {
+	protected PlayerModelCaps getModelCaps(ModelMultiBase modelMain, EntityPlayer player, boolean isFirstPerson) {
 		
 		PlayerModelCaps caps = new PlayerModelCaps(player);
+		
+		caps.setFirstPerson(isFirstPerson);
 		
 		//モデルにCaps情報を設定する
 		caps.setModelMultiBaseCapsFromModelCaps(modelMain);
@@ -121,7 +123,7 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 	public void renderFirstPersonArm(EntityPlayer player) {
 		
 		//プレイヤーモデルの準備
-		this.initPlayerModel(player);
+		this.initPlayerModel(player, true);
 		
 		//テクスチャバインド
 		Minecraft.getMinecraft().getTextureManager().bindTexture(PlayerModelManager.getPlayerTexture(player));
@@ -141,7 +143,7 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 	public void modelPostRender(EnumMultiModelPartsType modelType, EntityPlayer player, float scale) {
 		
 		//プレイヤーモデルの準備
-		this.initPlayerModel(player);
+		this.initPlayerModel(player, false);
 		
 		
 		//メイドベースの場合のみ調整する
