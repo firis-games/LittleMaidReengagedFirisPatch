@@ -2076,7 +2076,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		try {
 			super.onLivingUpdate();
-		} catch (NullPointerException exception) {
+		} catch (Exception exception) {
+			System.out.println("EntityLittleMaid.onLivingUpdate.super");
 			exception.printStackTrace();
 		}
 
@@ -2628,6 +2629,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			pIndex = -1;
 		}
 			maidInventory.currentItem = pIndex;
+			this.dataManager.set(dataWatch_CurrentItem, maidInventory.currentItem);
 //		}
 		int li = mstatSwingStatus[pArm].index;
 		if (li != pIndex) {
