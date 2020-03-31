@@ -110,6 +110,15 @@ public class ItemHelper {
 	}
 
 	public static boolean isItemSmelting(ItemStack pItemstack) {
+		
+		//料理対象外の場合は
+		if (!pItemstack.isEmpty()) {
+			if (LMRConfig.cfg_cock_no_cooking_item_ids.contains(pItemstack.getItem().getRegistryName().toString())) {
+				//料理対象外の場合はfalseを返す
+				return false;
+			}
+		}
+		
 		return (!pItemstack.isEmpty() 
 				&& !FurnaceRecipes.instance().getSmeltingResult(pItemstack).isEmpty());
 	}

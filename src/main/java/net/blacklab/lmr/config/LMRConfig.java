@@ -73,6 +73,9 @@ public class LMRConfig {
 	/** 矢（弾丸）アイテムID */
 	public static List<String> cfg_ac_arrow_item_ids = null;
 	
+	/** かまどの料理対象外アイテム */
+	public static List<String> cfg_cock_no_cooking_item_ids = null;
+	
 	/** アニマルメイド判定 */
 	public static List<String> cfg_custom_animal_maid_mob_ids = null;
 	
@@ -143,7 +146,7 @@ public class LMRConfig {
 		String[] sugarItemIds = new String[] {"minecraft:sugar"};
 		cfg_sugar_item_ids = Arrays.asList(cfg.getStringList("Sugar", "Custom", sugarItemIds, "Set the item ID to be treated the same as maid sugar."));
 
-		//指定IDを砂糖として認識する
+		//指定IDをケーキとして認識する
 		String[] cakeItemIds = new String[] {"minecraft:cake"};
 		cfg_cake_item_ids = Arrays.asList(cfg.getStringList("Cake", "Custom", cakeItemIds, "Set the item ID to be treated the same as maid cake."));
 		
@@ -161,7 +164,7 @@ public class LMRConfig {
 		cfg_custom_riding_height_adjustment = cfg.getFloat("RidingHeightAdjustment", "Custom", 0.0F, -2.0F, 2.0F, 
 				"Riding mode height adjustment.Standard setting of PFLM is -0.5.");
 		
-		//指定IDを砂糖として認識する
+		//指定IDをアニマルメイドの変更対象として認識する
 		String[] animalMaidMobIds = new String[] {"minecraft:rabbit"};
 		cfg_custom_animal_maid_mob_ids = Arrays.asList(cfg.getStringList("AnimalMaidMobs", "Custom", animalMaidMobIds,
 				"Set a Mob ID that can be transformed into an Animal Maid."));
@@ -197,6 +200,11 @@ public class LMRConfig {
 		//開発者用テストモジュール有効化設定
 		cfg_developer_test_module = cfg.getBoolean("TestModule", "Develop", false,
 				"developer only.");
+		
+		//指定IDを調理しない
+		String[] noCookingItemIds = new String[] {"minecraft:iron_sword", "minecraft:golden_sword"};
+		cfg_cock_no_cooking_item_ids = Arrays.asList(cfg.getStringList("NotCookingItemIds", "Cock", noCookingItemIds,
+				"Set the item ID that does not cook in the furnace."));
 		
 		cfg.save();
 	}
