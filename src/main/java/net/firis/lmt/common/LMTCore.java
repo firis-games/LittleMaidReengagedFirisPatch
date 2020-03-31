@@ -7,27 +7,19 @@ import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.config.LMRConfig;
 import net.firis.lmt.client.event.KeyBindingHandler;
 import net.firis.lmt.client.event.LittleMaidAvatarClientTickEventHandler;
-import net.firis.lmt.client.renderer.RendererLittleMaidTest;
 import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
-import net.firis.lmt.common.entity.EntityLittleMaidTest;
 import net.firis.lmt.common.item.LMItemPlayerMaidBook;
 import net.firis.lmt.config.ConfigChangedEventHandler;
 import net.firis.lmt.config.FirisConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -61,12 +53,13 @@ public class LMTCore {
 		//開発環境のみ実行
 		if (!isLMTCore()) return entityId;
 		
+		/*
 		//テストメイドの登録
 		EntityRegistry.registerModEntity(new ResourceLocation(LittleMaidReengaged.DOMAIN, "littlemaidtest"),
 				EntityLittleMaidTest.class,
     			"littlemaidtest", entityId, LittleMaidReengaged.instance, 80, 1, true);
     	entityId++;
-		
+    	*/
 		
 		return entityId;
 		
@@ -77,6 +70,7 @@ public class LMTCore {
 		//開発環境のみ実行
 		if (!isLMTCore()) return;
 
+		/*
 		//テストメイドさん描画用クラス登録
     	RenderingRegistry.registerEntityRenderingHandler(
     			EntityLittleMaidTest.class, new IRenderFactory<EntityLittleMaidTest>() {
@@ -85,6 +79,7 @@ public class LMTCore {
 					return new RendererLittleMaidTest(manager);
 				}
     	});
+    	*/
 	}
 	
 	@SideOnly(Side.CLIENT)
