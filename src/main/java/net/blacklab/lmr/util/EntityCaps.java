@@ -6,13 +6,13 @@ import java.util.Map;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHandSide;
 
 
 /**
  * Entityのデータ読み取り用のクラス
  * 別にEntityにインターフェース付けてもOK
  */
-@SuppressWarnings("deprecation")
 public class EntityCaps extends EntityCapsLiving {
 
 	private EntityLittleMaid owner;
@@ -49,7 +49,7 @@ public class EntityCaps extends EntityCapsLiving {
 		caps.put("dominantArm", caps_dominantArm);
 //		caps.put("render", caps_render);
 //		caps.put("Arms", caps_Arms);
-		caps.put("HeadMount", caps_HeadMount);
+//		caps.put("HeadMount", caps_HeadMount);
 //		caps.put("HardPoint", caps_HardPoint);
 		caps.put("stabiliser", caps_stabiliser);
 		caps.put("Items", caps_Items);
@@ -141,9 +141,9 @@ public class EntityCaps extends EntityCapsLiving {
 //			return owner.textureModel0 == null ? null : owner.textureModel0.getHeight();
 //		case caps_render:
 //		case caps_Arms:
-		case caps_HeadMount:
-			// TODO 従来HeadMountとか使ってた部分は全部削除した方がすっきりすると思う．
-			return owner.maidInventory.armorInventory.get(3);
+////		case caps_HeadMount:
+////			// TODO 従来HeadMountとか使ってた部分は全部削除した方がすっきりすると思う．
+////			return owner.maidInventory.armorInventory.get(3);
 //		case caps_HardPoint:
 		case caps_stabiliser:
 			return owner.maidStabilizer;
@@ -179,12 +179,17 @@ public class EntityCaps extends EntityCapsLiving {
 			return owner.getInterestedAngle((Float)pArg[0]);
 //		case caps_currentArmor:
 //			return owner.getCurrentItemOrArmor((Integer)pArg[0] + 1);
-//		case caps_currentEquippedItem:
-//			return owner.getCurrentEquippedItem();
+		case caps_heldItems:
+		case caps_currentEquippedItem:
+			return getItemStackNull(owner.getCurrentEquippedItem());
 		case caps_PartsVisible:
 			return owner.textureData.selectValue;
 		case caps_textureData:
 			return owner.textureData;
+		case caps_heldItemRight:
+			return getItemStackNull(getHandSideItemStack(EnumHandSide.RIGHT));
+		case caps_heldItemLeft:
+			return getItemStackNull(getHandSideItemStack(EnumHandSide.LEFT));
 		}
 
 		return super.getCapsValue(pIndex, pArg);
@@ -197,6 +202,30 @@ public class EntityCaps extends EntityCapsLiving {
 			owner.textureData.selectValue = (Integer)pArg[0];
 		}
 		return super.setCapsValue(pIndex, pArg);
+	}
+	
+	/**
+	 * 空の場合はnullに変換するItemStack
+	 * @return
+	 */
+	private ItemStack getItemStackNull(ItemStack stack) {
+		return stack.isEmpty() ? null : stack;
+	}
+	
+	/**
+	 * 右手or左手のアイテムを取得する
+	 * @param handSide
+	 * @return
+	 */
+	private ItemStack getHandSideItemStack(EnumHandSide handSide) {
+		EnumHandSide mainSide = this.owner.getDominantArm() == 0 ? EnumHandSide.RIGHT : EnumHandSide.LEFT;
+		if (mainSide == handSide) {
+			//利き手
+			return this.owner.getCurrentEquippedItem();
+		} else {
+			//オフハンド
+			return this.owner.getHeldItemOffhand();
+		}
 	}
 
 }

@@ -84,7 +84,6 @@ public class EntityCapsLiving implements IModelCaps {
 		return caps;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public Object getCapsValue(int pIndex, Object... pArg) {
 		switch (pIndex) {
@@ -182,13 +181,13 @@ public class EntityCapsLiving implements IModelCaps {
 					MathHelper.floor(owner.posY + (Double)pArg[1]),
 					MathHelper.floor(owner.posZ + (Double)pArg[2])));
 		case caps_PosBlockAir:
-			
 			IBlockState state = owner.getEntityWorld().getBlockState(new BlockPos(
 					MathHelper.floor(owner.posX + (Double)pArg[0]),
 					MathHelper.floor(owner.posY + (Double)pArg[1]),
 					MathHelper.floor(owner.posZ + (Double)pArg[2])));
-			
-			return !state.getBlock().causesSuffocation(state);
+			//移動可能ブロックかつ通常ブロックではない
+			//Block.causesSuffocationから変更
+			return !(state.getMaterial().blocksMovement() && state.isFullCube());
 			
 		case caps_PosBlockLight:
 			return owner.getEntityWorld().getBlockLightOpacity(new BlockPos(
