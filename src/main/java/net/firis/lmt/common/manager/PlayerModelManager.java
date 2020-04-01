@@ -94,6 +94,14 @@ public class PlayerModelManager {
 		return rlTexture;
 	}
 	
+	public static ResourceLocation getPlayerTextureLight(EntityPlayer player) {
+		
+		TextureBox textureBox = getPlayerTexureBox(player, FirisConfig.cfg_maid_model);
+		ResourceLocation rlTexture = textureBox.getTextureName(19);
+		
+		return rlTexture;
+	}
+	
 	
 	/**
 	 * メイドさんアーマーモデル取得

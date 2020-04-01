@@ -1,7 +1,10 @@
 package net.firis.lmt.client.model;
 
+import org.lwjgl.opengl.GL11;
+
 import net.blacklab.lmr.entity.maidmodel.ModelLittleMaidBase;
 import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
+import net.blacklab.lmr.util.helper.RendererHelper;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
 import net.minecraft.client.Minecraft;
@@ -11,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -78,12 +82,52 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 		playerModel.setLivingAnimations(playerCaps, limbSwing, limbSwingAmount, partialTickTime);
 	}
 	
-	
+	/**
+	 * メイドさん本体の描画
+	 */
 	@Override
 	public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
 	{
+		EntityPlayer player = (EntityPlayer) entityIn;
+		
+		GL11.glEnable(GL11.GL_NORMALIZE);
+		
+		Minecraft.getMinecraft().getTextureManager().bindTexture(PlayerModelManager.getPlayerTexture(player));
+		
 		//描画する
 		playerModel.render(playerCaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, true);
+		
+		
+		//発光テクスチャ
+		ResourceLocation lightTexture = PlayerModelManager.getPlayerTextureLight(player);
+		if (lightTexture != null) {
+			
+			
+			int lighting = player.getBrightnessForRender();
+			
+			//発光テクスチャの描画
+			Minecraft.getMinecraft().getTextureManager().bindTexture(lightTexture);
+			//Minecraft.getMinecraft().getTextureManager().bindTexture(PlayerModelManager.getPlayerTexture(player));
+			float var4 = 1.0F;
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_ALPHA_TEST);
+			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+			GL11.glDepthFunc(GL11.GL_LEQUAL);
+			
+			RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, var4);
+			
+			playerModel.render(playerCaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, true);
+			
+			RendererHelper.setLightmapTextureCoords(lighting);
+			
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GL11.glDepthMask(true);
+			
+		}
+		
+		
 	}
 	
 	/**
