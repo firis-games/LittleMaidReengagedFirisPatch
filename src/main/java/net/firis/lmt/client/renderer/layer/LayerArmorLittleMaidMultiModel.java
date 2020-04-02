@@ -3,8 +3,6 @@ package net.firis.lmt.client.renderer.layer;
 import org.lwjgl.opengl.GL11;
 
 import net.firis.lmt.client.model.ModelLittleMaidMultiModelArmor;
-import net.firis.lmt.common.manager.PlayerModelManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
@@ -52,8 +50,6 @@ public class LayerArmorLittleMaidMultiModel extends LayerArmorBase<ModelLittleMa
 		if (player.inventory.armorItemInSlot(slot.getIndex()).isEmpty()) return;
 		
 		//テクスチャバインド
-		Minecraft.getMinecraft().getTextureManager().bindTexture(PlayerModelManager.getArmorTexture(player, slot));
-		
 		//法線の再計算
 		//GlStateManager.enableRescaleNormal();
 		//GL11.glEnable(GL12.GL_RESCALE_NORMAL);

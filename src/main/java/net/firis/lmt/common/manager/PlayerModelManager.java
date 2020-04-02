@@ -1,5 +1,8 @@
 package net.firis.lmt.common.manager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.manager.ModelManager;
@@ -109,7 +112,7 @@ public class PlayerModelManager {
 	 * innerModel = 1
 	 * outerModel = 2
 	 */
-	public static ModelMultiBase getArmorModel(EntityPlayer player, EntityEquipmentSlot slot) {
+	public static List<ModelMultiBase> getArmorModels(EntityPlayer player, EntityEquipmentSlot slot) {
 		
 		//特別処理
 		/*
@@ -146,8 +149,14 @@ public class PlayerModelManager {
 		
 		TextureBox textureBox = getPlayerTexureBox(player, textureName);
 		
+		List<ModelMultiBase> modelList = new ArrayList<>();
+		
 		//メイドさんのアーマーモデルを返却する
-		return textureBox.models[1];
+		//innerモデルとouterモデルを取得する
+		modelList.add(textureBox.models[1]);
+		modelList.add(textureBox.models[2]);
+
+		return modelList;
 	}
 	
 	/**
@@ -155,7 +164,7 @@ public class PlayerModelManager {
 	 * 
 	 * 暫定対応としていろいろ設定を固定化
 	 */
-	public static ResourceLocation getArmorTexture(EntityPlayer player, EntityEquipmentSlot slot) {
+	public static List<ResourceLocation> getArmorTexture(EntityPlayer player, EntityEquipmentSlot slot) {
 		
 		//特別処理
 		/*
@@ -192,7 +201,63 @@ public class PlayerModelManager {
 		
 		TextureBox textureBox = getPlayerTexureBox(player, textureName);
 		
+		List<ResourceLocation> texturelList = new ArrayList<>();
+		
+		texturelList.add(textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0));
+		texturelList.add(textureBox.getArmorTextureName(ModelManager.tx_armor2, "leather", 0));
+		
 		//メイドさんのアーマーテクスチャを返却する
-		return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+		return texturelList;
+	}
+	
+	/**
+	 * メイドさんモデルのテクスチャを取得
+	 * 
+	 * 暫定対応としていろいろ設定を固定化
+	 */
+	public static List<ResourceLocation> getArmorLightTexture(EntityPlayer player, EntityEquipmentSlot slot) {
+		
+		//特別処理
+		/*
+		if (slot == EntityEquipmentSlot.HEAD) {
+			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.PartySet1_ACUL");
+			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+		}
+		if (slot == EntityEquipmentSlot.CHEST) {
+			TextureBox textureBox = ModelManager.instance.getTextureBox("littlePorters.Blue_LP");
+			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+		}
+		if (slot == EntityEquipmentSlot.LEGS) {
+			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.ExpeditionSet1_ACUL");
+			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+		}
+		*/
+		
+		String textureName = "";
+		switch (slot) {
+		case HEAD:
+			textureName = FirisConfig.cfg_armor_model_head;
+			break;
+		case CHEST:
+			textureName = FirisConfig.cfg_armor_model_body;
+			break;
+		case LEGS:
+			textureName = FirisConfig.cfg_armor_model_leg;
+			break;
+		case FEET:
+			textureName = FirisConfig.cfg_armor_model_boots;
+			break;
+		default:
+		}
+		
+		TextureBox textureBox = getPlayerTexureBox(player, textureName);
+		
+		List<ResourceLocation> texturelList = new ArrayList<>();
+		
+		texturelList.add(textureBox.getArmorTextureName(ModelManager.tx_armor1light, "leather", 0));
+		texturelList.add(textureBox.getArmorTextureName(ModelManager.tx_armor2light, "leather", 0));
+		
+		//メイドさんのアーマーテクスチャを返却する
+		return texturelList;
 	}
 }
