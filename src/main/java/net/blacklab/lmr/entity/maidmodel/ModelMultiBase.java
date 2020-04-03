@@ -256,10 +256,18 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 			isChild = (Boolean)pArg[0];
 			return true;
 		case caps_heldItemLeft:
-			heldItem[1] = (Float)pArg[0];
+			if (pArg[0] instanceof Float) {
+				heldItem[1] = (Float)pArg[0];
+			} else {
+				heldItem[1] = 0.0F;
+			}
 			return true;
 		case caps_heldItemRight:
-			heldItem[0] = (Float)pArg[0];
+			if (pArg[0] instanceof Float) {
+				heldItem[0] = (Float)pArg[0];
+			} else {
+				heldItem[0] = 0.0F;
+			}
 			return true;
 		case caps_aimedBow:
 			aimedBow = (Boolean)pArg[0];

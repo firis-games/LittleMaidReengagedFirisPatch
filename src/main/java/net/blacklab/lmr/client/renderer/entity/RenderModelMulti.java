@@ -104,8 +104,8 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		modelFATT.renderCount = 0;
 		modelMain.lighting = modelFATT.lighting = par1EntityLiving.getBrightnessForRender();
 
-		modelMain.setCapsValue(IModelCaps.caps_heldItemLeft, 0.0F);
-		modelMain.setCapsValue(IModelCaps.caps_heldItemRight, 0.0F);
+		modelMain.setCapsValue(IModelCaps.caps_heldItemLeft, 0);
+		modelMain.setCapsValue(IModelCaps.caps_heldItemRight, 0);
 //		modelMain.setCapsValue(IModelCaps.caps_onGround, getSwingProgress(par1EntityLiving, par9));
 		modelMain.setCapsValue(IModelCaps.caps_isRiding, par1EntityLiving.isRiding());
 		modelMain.setCapsValue(IModelCaps.caps_isSneak, par1EntityLiving.isSneaking());
