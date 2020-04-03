@@ -186,9 +186,9 @@ public class EntityCaps extends EntityCapsLiving {
 			return owner.textureData.selectValue;
 		case caps_textureData:
 			return owner.textureData;
-		case caps_heldItemRight:
+		case caps_currentRightHandItem:
 			return getItemStackNull(getHandSideItemStack(EnumHandSide.RIGHT));
-		case caps_heldItemLeft:
+		case caps_currentLeftHandItem:
 			return getItemStackNull(getHandSideItemStack(EnumHandSide.LEFT));
 		}
 

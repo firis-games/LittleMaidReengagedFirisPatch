@@ -27,6 +27,7 @@ public interface IModelCaps {
 	public static final int caps_heldItems			= 0x0012;
 	public static final int caps_isSneak			= 0x0013;
 	public static final int caps_aimedBow			= 0x0014;
+	
 	// EntityCaps
 	public static final int caps_Entity					= 0x0020;
 	public static final int caps_health					= 0x0021;
@@ -35,7 +36,11 @@ public interface IModelCaps {
 	public static final int caps_currentArmor			= 0x0024;
 	public static final int caps_healthFloat			= 0x0025;
 	public static final int caps_TextureEntity			= 0x0026;
+	
+	public static final int caps_currentLeftHandItem	= 0x0027;
+	public static final int caps_currentRightHandItem	= 0x0028;
 
+	//　EntityLiving
 	public static final int caps_isWet					= 0x0030;
 	public static final int caps_isDead					= 0x0031;
 	public static final int caps_isJumping				= 0x0032;
@@ -117,6 +122,7 @@ public interface IModelCaps {
 	public static final int caps_dominantArm		= 0x0125;
 	public static final int caps_render				= 0x0130;
 	public static final int caps_Arms				= 0x0131;
+	
 	@Deprecated
 	public static final int caps_HeadMount			= 0x0132;
 	/** モデルに設定されているハードポイントを配列で返します **/
