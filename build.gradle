@@ -95,7 +95,6 @@ processResources {
 jar {
     manifest {
         attributes('FMLCorePlugin': 'net.blacklab.lmr.util.coremod.LMRECoremod', 'FMLCorePluginContainsFMLMod': 'true')
-        attributes('FMLAT': 'lmrfp_at.cfg')
     }
 }
 

@@ -13,12 +13,14 @@ import net.firis.lmt.config.ConfigChangedEventHandler;
 import net.firis.lmt.config.FirisConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -96,15 +98,23 @@ public class LMTCore {
 		//entityMap.put(EntityChicken.class, new RendererMaidChicken((RenderChicken) renderer));
 		
 		
-		//Playerのスキンも差し替え
-		Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().skinMap;
+		//Playerのスキン差し替え
+		//Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().skinMap;
+		Map<String, RenderPlayer> skinMap = ObfuscationReflectionHelper.getPrivateValue(RenderManager.class, 
+				Minecraft.getMinecraft().getRenderManager(), 
+				new String[] { "skinMap", "field_178636_l" });
 		
 		RenderPlayer renderPlayer = skinMap.get("default");
 		//RendererMaidPlayer renderMaidPlayer = new RendererMaidPlayer(renderPlayer);
 		RendererMaidPlayerMultiModel renderMaidPlayer = new RendererMaidPlayerMultiModel(renderPlayer);
 		
 		
-		Minecraft.getMinecraft().getRenderManager().playerRenderer = renderMaidPlayer;
+		//Minecraft.getMinecraft().getRenderManager().playerRenderer = renderMaidPlayer;
+		ObfuscationReflectionHelper.setPrivateValue(RenderManager.class, 
+				Minecraft.getMinecraft().getRenderManager(),
+				renderMaidPlayer, 
+				new String[] { "playerRenderer", "field_178637_m" });
+		
 		skinMap.put("default", renderMaidPlayer);
 		skinMap.put("slim", renderMaidPlayer);
 		
