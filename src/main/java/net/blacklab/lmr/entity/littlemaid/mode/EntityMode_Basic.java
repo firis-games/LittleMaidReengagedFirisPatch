@@ -56,6 +56,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 	public static Map<String, String> initMmodeListModePorter() {
 		Map<String, String> porterMap = new HashMap<>();
 		
+		//自由行動中
+		porterMap.put(mmode_Escort, mmode_Escort);
 		//農家メイドさん
 		porterMap.put(mmode_FarmPorter, EntityMode_Farmer.mmode_Farmer);
 		//サトウキビ農家メイドさん
