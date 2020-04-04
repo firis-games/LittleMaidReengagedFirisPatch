@@ -2,6 +2,7 @@ package net.firis.lmt.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 
+import net.firis.lmt.client.event.ClientEventLMAvatar;
 import net.firis.lmt.client.model.ModelLittleMaidMultiModel;
 import net.firis.lmt.client.renderer.layer.LayerArmorLittleMaidMultiModel;
 import net.firis.lmt.client.renderer.layer.LayerArrowLittleMaid;
@@ -14,7 +15,10 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * マルチモデルでプレイヤーモデル描画
@@ -39,6 +43,9 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		this.layerRenderers.clear();
 		this.mainModel = new ModelLittleMaidMultiModel();
 		this.shadowSize = 0.5F;
+
+		//Layerロード開始
+		this.isLayerLoading = true;
 		
 		//layer追加
 		this.addLayer(new LayerHeldItemLittleMaidMultiModel(this));
@@ -50,9 +57,31 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
         this.addLayer(new LayerEntityOnShoulderLittleMaid(renderManager, this));
         this.addLayer(new LayerArrowLittleMaid(this));
         
+        //Layer登録用イベント
+   		MinecraftForge.EVENT_BUS.post(new ClientEventLMAvatar.RendererAvatarAddLayerEvent(this));
         
+		//Layerロード完了
+		this.isLayerLoading = false;
 	}
-
+	
+	/**
+	 * addLayer制御用
+	 * 初期化中だけロード中に設定しAddLayerを有効化する
+	 */
+	private boolean isLayerLoading = false;
+	
+	/**
+	 * レイヤー登録処理
+	 * isInitLayerLoaded=trueの場合はロード済みとしてLayerの登録処理を行わない
+	 */
+	@Override
+	public <V extends EntityLivingBase, U extends LayerRenderer<V>> boolean addLayer(U layer)
+    {
+		if (!this.isLayerLoading) return true;
+		
+        return super.addLayer(layer);
+    }
+	
 	/**
 	 * バインド用のテクスチャ
 	 */
