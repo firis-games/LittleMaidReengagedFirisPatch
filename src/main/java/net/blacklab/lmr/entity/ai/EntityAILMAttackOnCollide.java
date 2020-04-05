@@ -89,7 +89,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 		}
 		*/
 		if(!lentity.isDead){
-			theMaid.playLittleMaidSound(theMaid.isBloodsuck() ? EnumSound.findTarget_B : EnumSound.findTarget_N, false);
+			theMaid.playLittleMaidVoiceSound(theMaid.isBloodsuck() ? EnumSound.findTarget_B : EnumSound.findTarget_N, true);
 		}
 		theMaid.getNavigator().setPath(pathToTarget, moveSpeed);
 		rerouteTimer = 0;

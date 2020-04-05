@@ -266,7 +266,7 @@ public class EntityMode_Angler extends EntityModeBase {
 				//ツールにダメージ
 				curStack.damageItem(1, owner.maidAvatar);
 				
-				owner.playLittleMaidSound(EnumSound.farmer_harvest, false);
+				owner.playLittleMaidVoiceSound(EnumSound.farmer_harvest, true);
 				owner.addMaidExperience(1.0F);
 				
 				//関連パラメータをリセット

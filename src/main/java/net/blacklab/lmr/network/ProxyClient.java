@@ -207,7 +207,8 @@ public class ProxyClient extends ProxyCommon
 		case CLIENT_PLAY_SOUND :
 			// 音声再生
 			EnumSound sound = EnumSound.getEnumSound(tagCompound.getInteger("Sound"));
-			lemaid.playSound(sound, tagCompound.getBoolean("Force"));
+			//lemaid.playSound(sound, tagCompound.getBoolean("Force"));
+			lemaid.playLittleMaidVoiceSound(sound, false);
 			LittleMaidReengaged.Debug(String.format("playSound:%s", sound.name()));
 			break;
 

@@ -270,7 +270,7 @@ public class EntityMode_SugarCane extends EntityModeBase {
 			if (useResult == EnumActionResult.SUCCESS) {
 				//アニメーション
 				owner.setSwing(10, EnumSound.Null, false);
-				owner.playLittleMaidSound(EnumSound.farmer_farm, false);
+				owner.playLittleMaidVoiceSound(EnumSound.farmer_farm, true);
 				
 				//手持ちを切り替える
 				if (curStack.isEmpty()) {
@@ -290,7 +290,7 @@ public class EntityMode_SugarCane extends EntityModeBase {
 			BlockPos pos = new BlockPos(px,py,pz).up();
 			owner.getEntityWorld().destroyBlock(pos, true);
 			owner.setSwing(10, EnumSound.Null, false);
-			owner.playLittleMaidSound(EnumSound.farmer_harvest, false);
+			owner.playLittleMaidVoiceSound(EnumSound.farmer_harvest, true);
 			owner.addMaidExperience(4f);
 			executeBlock(pMode, px, py-1, pz);
 			

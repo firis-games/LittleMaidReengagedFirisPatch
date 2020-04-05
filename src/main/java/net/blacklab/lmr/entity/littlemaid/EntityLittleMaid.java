@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,8 +35,6 @@ import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid.MaidMotion;
-import net.blacklab.lmr.client.sound.SoundLoader;
-import net.blacklab.lmr.client.sound.SoundRegistry;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.ai.EntityAILMAttackArrow;
 import net.blacklab.lmr.entity.ai.EntityAILMAttackOnCollide;
@@ -220,6 +217,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return this.dataManager.get(dataWatch_CurrentItem);
 	}
 	
+	public void setDataWatchCurrentItem(int currentItem) {
+		dataManager.set(EntityLittleMaid.dataWatch_CurrentItem, currentItem);
+	}
 
 //	protected long maidContractLimit;		// 契約失効日
 	protected int maidContractLimit;		// 契約期間
@@ -302,14 +302,15 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public boolean weaponReload;	// 装備がリロードを欲しているかどうか
 	public boolean maidCamouflage;
 
+	// 音声関連はLittleMaidSoundManagerへまとめる
 	// 音声
 //	protected LMM_EnumSound maidAttackSound;
-	private EnumSound maidDamegeSound;
-	protected int maidSoundInterval;
-	protected float maidSoundRate;
+//	private EnumSound maidDamegeSound;
+	//protected int maidSoundInterval;
+//	protected float maidSoundRate;
 
 	// クライアント専用音声再生フラグ
-	private CopyOnWriteArrayList<EnumSound> playingSound = new CopyOnWriteArrayList<EnumSound>();
+	//private CopyOnWriteArrayList<EnumSound> playingSound = new CopyOnWriteArrayList<EnumSound>();
 
 	// 実験用
 	private int firstload = 100;
@@ -368,6 +369,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	
 	private ModeTrigger modeTrigger;
 	
+	// 音声関連をまとめるもの
+	public LittleMaidSoundManager soundManager = null;
+	
+	
+	/**
+	 * コンストラクタ
+	 * @param par1World
+	 */
 	public EntityLittleMaid(World par1World) {
 		super(par1World);
 		// 初期設定
@@ -428,8 +437,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		// 再生音声
 //		maidAttackSound = LMM_EnumSound.attack;
-		setMaidDamegeSound(EnumSound.hurt);
-		maidSoundInterval = 0;
+//		setMaidDamegeSound(EnumSound.hurt);
+//		maidSoundInterval = 0;
 
 		//dataManager.addObject(16, new Byte((byte)0));
 
@@ -468,6 +477,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			t = null;
 		}
 		*/
+		
+		//メイドさんの音声管理用
+		this.soundManager = new LittleMaidSoundManager(this);
+		
 	}
 
 	public IEntityLittleMaidAvatar getAvatarIF()
@@ -864,16 +877,21 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return workingCount;
 	}
 
-	// 効果音の設定
+	/**
+	 * ダメージ音声の割込み
+	 */
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		if(getHealth()>0f) playLittleMaidSound(getMaidDamegeSound(), true);
+		if(getHealth() > 0.0F) playLittleMaidDamageVoiceSound(false);
 		return null;
 	}
 
+	/**
+	 * 死亡ダメージ音声の割込み
+	 */
 	@Override
 	protected SoundEvent getDeathSound() {
-		playLittleMaidSound(EnumSound.death, true);
+		playLittleMaidVoiceSound(EnumSound.death, false);
 		return null;
 	}
 
@@ -887,47 +905,79 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 */
 
+//	public EnumSound getMaidDamegeSound() {
+//		return maidDamegeSound;
+//	}
+
+//	public void setMaidDamegeSound(EnumSound maidDamegeSound) {
+//		this.maidDamegeSound = maidDamegeSound;
+//	}
+	
+	/**
+	 * ダメージ音声を取得する
+	 * @return
+	 */
 	public EnumSound getMaidDamegeSound() {
-		return maidDamegeSound;
+		return this.soundManager.getDamageSound();
 	}
-
+	
+	/**
+	 * ダメージ音声を設定する
+	 * @param maidDamegeSound
+	 */
 	public void setMaidDamegeSound(EnumSound maidDamegeSound) {
-		this.maidDamegeSound = maidDamegeSound;
+		this.soundManager.setDamageSound(maidDamegeSound);
+	}
+	
+	/**
+	 * 文字列指定による音声再生
+	 * 標準のplaySoundを呼び出すための形式を整える
+	 */
+	public void playSound(String soundName) {
+		this.playSound(soundName, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+	}
+	
+	/**
+	 * 文字列指定による音声再生
+	 * 標準のplaySoundを呼び出すための形式を整える
+	 */
+	public void playSound(String soundName, float pitch) {
+		LittleMaidReengaged.Debug("REQUESTED PLAYING SOUND: %s", soundName);
+		
+		SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(soundName));
+		if (soundEvent != null) {
+			LittleMaidReengaged.Debug("PLAYING SOUND EVENT-%s", soundEvent.getSoundName().toString());
+			this.playSound(soundEvent, this.getSoundVolume(), pitch);
+		}
+		
 	}
 
 	/**
 	 * 文字列指定による音声再生
 	 */
-	public void playSound(String pname) {
-		// TODO SoundEventに関しては，FMLで登録方法を提供してけれみたいなissueがあった気がするのでしばらく保留．
-		playSound(pname, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-	}
-
-	/**
-	 * 文字列指定による音声再生
-	 */
-	public void playSound(String pName, float pitch) {
-		LittleMaidReengaged.Debug("REQUESTED PLAYING SOUND: %s", pName);
-//		if(!getEntityWorld().isRemote) {
-			SoundEvent sEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(pName));
-			if (sEvent != null) {
-				if (getEntityWorld().isRemote)
-					LittleMaidReengaged.Debug("PLAYING SOUND EVENT-%s", sEvent.getSoundName().toString());
-				playSound(sEvent, 1, pitch);
-			} else if (getEntityWorld().isRemote) {
-				// ClientOnlyなダメ元
-				sEvent = new SoundEvent(new ResourceLocation(pName));
-				LittleMaidReengaged.Debug("PLAYING SOUND EVENT-%s", sEvent.getSoundName().toString());
-				try {
-					playSound(sEvent, 1, pitch);
-				} catch (Exception exception) {}
-			}
-//		}
-	}
+//	public void playSound(String pName, float pitch) {
+//		LittleMaidReengaged.Debug("REQUESTED PLAYING SOUND: %s", pName);
+////		if(!getEntityWorld().isRemote) {
+//			SoundEvent sEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(pName));
+//			if (sEvent != null) {
+//				if (getEntityWorld().isRemote)
+//					LittleMaidReengaged.Debug("PLAYING SOUND EVENT-%s", sEvent.getSoundName().toString());
+//				playSound(sEvent, 1, pitch);
+//			} else if (getEntityWorld().isRemote) {
+//				// ClientOnlyなダメ元
+//				sEvent = new SoundEvent(new ResourceLocation(pName));
+//				LittleMaidReengaged.Debug("PLAYING SOUND EVENT-%s", sEvent.getSoundName().toString());
+//				try {
+//					playSound(sEvent, 1, pitch);
+//				} catch (Exception exception) {}
+//			}
+////		}
+//	}
 
 	/**
 	 * ネットワーク対応音声再生
 	 */
+	/*
 	public void playSound(EnumSound enumsound, boolean force) {
 		if (getEntityWorld().isRemote && enumsound!=EnumSound.Null && maidSoundInterval <= 0) {
 			if (!force) {
@@ -941,11 +991,30 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //			LMM_LittleMaidMobNX.proxy.playLittleMaidSound(getEntityWorld(), posX, posY, posZ, s, getSoundVolume(), lpitch, false);
 		}
 	}
-
+	*/
+	
+	/**
+	 * メイドさんの音声再生処理
+	 * @param enumsound
+	 * @param isRandom
+	 */
+	public void playLittleMaidVoiceSound(EnumSound sound, boolean isRandom) {
+		this.soundManager.playVoiceSound(sound, isRandom);
+	}
+	
+	/**
+	 * メイドさんのダメージ音声音声処理
+	 * @param isRandom
+	 */
+	public void playLittleMaidDamageVoiceSound(boolean isRandom) {
+		this.soundManager.playDamageVoiceSound(isRandom);
+	}
+	
 	/**
 	 * 音声再生用。
 	 * 通常の再生ではネットワーク越しになるのでその対策。
 	 */
+	/*
 	public void playLittleMaidSound(EnumSound enumsound, boolean force) {
 		// 音声の再生
 		if (enumsound == EnumSound.Null) return;
@@ -962,6 +1031,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			syncNet(LMRMessage.EnumPacketMode.CLIENT_PLAY_SOUND, tagCompound);
 		}
 	}
+	*/
 
 	@Override
 	public void playLivingSound() {
@@ -1008,7 +1078,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //				playLittleMaidSound(so, false);
 //			else
 		// LivingSoundの再生調整はonEntityUpdateで行う
-		playSound(so, true);
+		//playSound(so, true);
+		this.playLittleMaidVoiceSound(so, false);
 		//	livingSoundTick = 1;
 		//}
 	}
@@ -1017,7 +1088,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void onKillEntity(EntityLivingBase par1EntityLiving) {
 		super.onKillEntity(par1EntityLiving);
 		if (isBloodsuck()) {
-			playLittleMaidSound(EnumSound.laughter, false);
+			playLittleMaidVoiceSound(EnumSound.laughter, true);
 		} else {
 			setAttackTarget(null);
 		}
@@ -1794,7 +1865,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			if (getMaidDamegeSound() == EnumSound.hurt) {
 				setMaidDamegeSound(EnumSound.hurt_nodamege);
 			}
-			playLittleMaidSound(getMaidDamegeSound(), force);
+			
+			//playLittleMaidVoiceSound(getMaidDamegeSound(), !force);
+			playLittleMaidDamageVoiceSound(!force);
 
 			return false;
 		}
@@ -1903,13 +1976,19 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public void onEntityUpdate() {
-		//音声再生
+		
+		//クライアント限定で音声再生処理を行う
+		this.soundManager.onEntityUpdate();
+		/*
 		if(getEntityWorld().isRemote&&!playingSound.isEmpty()){
+			//サウンド設定されている分まとめて再生する
 			Iterator<EnumSound> iterator = playingSound.iterator();
 			while(iterator.hasNext()){
+				
 				EnumSound enumsound = iterator.next();
 				LittleMaidReengaged.Debug("REQ %s", enumsound);
 
+				//音声パックがロードされていない場合はこちら
 				if (!SoundLoader.isFoundSoundpack()) {
 					playSound(enumsound.DefaultValue, 1.0f);
 //					getEntityWorld().playSound(posX, posY, posZ, SoundEvent.REGISTRY.getObject(new ResourceLocation(enumsound.DefaultValue)), SoundCategory.VOICE, getSoundVolume(), lpitch, false);
@@ -1917,9 +1996,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 					continue;
 				}
 
+				//音声パックがロードされている場合はこちら
+				//テクスチャと色とsoundtypeで実際に再生する音声を取得する
 				String sname = SoundRegistry.getSoundRegisteredName(enumsound, textureNameMain, (int) getColor());
 				LittleMaidReengaged.Debug("STC %s,%d/FRS %s", textureNameMain, getColor(), sname);
-
+				
+				//対象がない場合は何もしない
 				if (sname == null || sname.isEmpty()) {
 					playingSound.remove(enumsound);
 					continue;
@@ -1944,6 +2026,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			}
 //			LMM_LittleMaidMobNX.proxy.playLittleMaidSound(getEntityWorld(), posX, posY, posZ, playingSound, getSoundVolume(), lpitch, false);
 		}
+		*/
 		super.onEntityUpdate();
 	}
 
@@ -2160,7 +2243,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 						}
 
 						if (lsound != EnumSound.Null) {
-							playLittleMaidSound(lsound, true);
+							playLittleMaidVoiceSound(lsound, false);
 							setLooksWithInterest(true);
 						}
 					} else {
@@ -2300,7 +2383,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			lf = maidOverDriveTime.isEnable();
 			if (getMaidFlags(dataWatch_Flags_OverDrive) != lf) {
 				if (lf) {
-					playLittleMaidSound(EnumSound.TNT_D, true);
+					playLittleMaidVoiceSound(EnumSound.TNT_D, false);
 				}
 				setMaidFlags(lf, dataWatch_Flags_OverDrive);
 			}
@@ -2369,9 +2452,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 				mstatWaitCount--;
 			}
 		}
-		if (maidSoundInterval > 0) {
-			maidSoundInterval--;
-		}
+		//if (maidSoundInterval > 0) {
+		//	maidSoundInterval--;
+		//}
+		this.soundManager.onUpdate();
 		if (ticksSinceLastDamage > 0) {
 			ticksSinceLastDamage--;
 		}
@@ -2908,14 +2992,14 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 						if(!isMaidContractOwner(par1EntityPlayer)){
 							// あんなご主人なんか捨てて、僕のもとへおいで(洗脳)
 							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
-							playLittleMaidSound(EnumSound.getCake, true);
+							playLittleMaidVoiceSound(EnumSound.getCake, false);
 							getEntityWorld().setEntityState(this, (byte)7);
 							maidContractLimit = (24000 * 7);
 							maidAnniversary = getEntityWorld().getTotalWorldTime();
 						}else{
 							// ごめんねメイドちゃん
 							getEntityWorld().setEntityState(this, (byte)11);
-							playLittleMaidSound(EnumSound.Recontract, true);
+							playLittleMaidVoiceSound(EnumSound.Recontract, false);
 
 						}
 						return true;
@@ -3188,7 +3272,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 							//getNavigator().clearPath();
 							//OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
 
-							playLittleMaidSound(EnumSound.getCake, true);
+							playLittleMaidVoiceSound(EnumSound.getCake, true);
 //							playLittleMaidSound(LMM_EnumSound.getCake, true);
 //							playTameEffect(true);
 							getEntityWorld().setEntityState(this, (byte)7);
@@ -3510,7 +3594,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setSwinging(getDominantArm(), pSound, force);
 	}
 	public void setSwinging(int pArm, EnumSound pSound, boolean force) {
-		if(!pSound.equals(EnumSound.Null)) playLittleMaidSound(pSound, force);
+		if(!pSound.equals(EnumSound.Null)) playLittleMaidVoiceSound(pSound, !force);
 		if (mstatSwingStatus[pArm].setSwinging()) {
 			maidAvatar.swingProgressInt = -1;
 //			maidAvatar.swingProgressInt = -1;
@@ -4513,4 +4597,13 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void setMaidMotion(MaidMotion motion) {
 		this.maidMotion = motion;
 	}
+	
+	/**
+	 * SoundManagerで呼び出すためにアクセスレベルを変更
+	 */
+	@Override
+	public float getSoundVolume()
+    {
+        return super.getSoundVolume();
+    }
 }

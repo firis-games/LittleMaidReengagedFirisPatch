@@ -269,7 +269,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 				//葉ブロック分は無視
 				curStack.damageItem(this.fellingBlockPosList.size(), owner.maidAvatar);
 				
-				owner.playLittleMaidSound(EnumSound.farmer_harvest, false);
+				owner.playLittleMaidVoiceSound(EnumSound.farmer_harvest, true);
 				owner.addMaidExperience(0.5f * (float)this.fellingBlockPosList.size());
 				
 				//関連パラメータをリセット
@@ -287,7 +287,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 					EnumActionResult useResult = saplingStack.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F);
 					owner.maidInventory.currentItem = svCurrentIdx;
 					if (useResult == EnumActionResult.SUCCESS) {
-						owner.playLittleMaidSound(EnumSound.farmer_farm, false);
+						owner.playLittleMaidVoiceSound(EnumSound.farmer_farm, true);
 					}
 				}
 				
