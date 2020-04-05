@@ -179,4 +179,10 @@ littleMaidMob.mode.F-SugarCanePort=SugarCane Carry
 littleMaidMob.mode.F-ShearerPort=Shearer Carry
 littleMaidMob.mode.F-AnglerPort=Angler Carry
 
+littleMaidMob.mode.T-FarmPort=Farm Carry(Trace RS)
+littleMaidMob.mode.T-LumberjackPort=Lumberjack Carry(Trace RS)
+littleMaidMob.mode.T-SugarCanePort=SugarCane Carry(Trace RS)
+littleMaidMob.mode.T-ShearerPort=Shearer Carry(Trace RS)
+littleMaidMob.mode.T-AnglerPort=Angler Carry(Trace RS)
+
 

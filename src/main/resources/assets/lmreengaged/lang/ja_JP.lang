@@ -176,3 +176,9 @@ littleMaidMob.mode.F-SugarCanePort=お砂糖運び隊
 littleMaidMob.mode.F-ShearerPort=もふもふ運び隊
 littleMaidMob.mode.F-AnglerPort=おさかな運び隊
 
+littleMaidMob.mode.T-FarmPort=作物の運び屋(赤石)
+littleMaidMob.mode.T-LumberjackPort=木材の運び屋(赤石)
+littleMaidMob.mode.T-SugarCanePort=お砂糖運び隊(赤石)
+littleMaidMob.mode.T-ShearerPort=もふもふ運び隊(赤石)
+littleMaidMob.mode.T-AnglerPort=おさかな運び隊(赤石)
+
