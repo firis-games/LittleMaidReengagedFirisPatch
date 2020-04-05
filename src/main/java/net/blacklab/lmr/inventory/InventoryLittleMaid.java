@@ -47,6 +47,18 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	 * Offset of mainHand slot's index
 	 */
 	public static final int handInventoryOffset = maxInventorySize + 4;
+	
+	/**
+	 * DataWatch経由で手持ちアイテムのindexを取得する
+	 * @return
+	 */
+	public int getCurrentItemIndex() {
+		return this.entityLittleMaid.getDataWatchCurrentItem();
+	}
+	
+	public void setCurrentItemIndex(int itemidx) {
+		this.entityLittleMaid.setDataWatchCurrentItem(itemidx);
+	}
 
 	/**
 	 * Inventory "inside skirt"
@@ -153,10 +165,10 @@ public class InventoryLittleMaid extends InventoryPlayer {
 			if (!getStackInSlot(li).isEmpty()) {
 				try {
 					getStackInSlot(li).updateAnimation(this.player.getEntityWorld(),
-							entityLittleMaid, li, this.currentItem == li);
+							entityLittleMaid, li, this.getCurrentItemIndex() == li);
 				} catch (ClassCastException e) {
 					getStackInSlot(li).updateAnimation(this.player.getEntityWorld(),
-							entityLittleMaid.maidAvatar, li, this.currentItem == li);
+							entityLittleMaid.maidAvatar, li, this.getCurrentItemIndex() == li);
 				}
 			}
 		}
@@ -273,7 +285,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	public ItemStack getCurrentItem() {
 		
-		int currentItem = this.entityLittleMaid.getDataWatchCurrentItem();
+		int currentItem = this.getCurrentItemIndex();
 		
 		if (currentItem >= handInventoryOffset + 1) {
 			return offHandInventory.get(currentItem - (handInventoryOffset + 1));
@@ -344,8 +356,8 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	}
 
 	public void setInventoryCurrentSlotContents(ItemStack itemstack) {
-		if (currentItem > -1) {
-			setInventorySlotContents(currentItem, itemstack);
+		if (getCurrentItemIndex() > -1) {
+			setInventorySlotContents(getCurrentItemIndex(), itemstack);
 		}
 	}
 
@@ -433,7 +445,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	public int getSmeltingItem() {
 		// 調理可能アイテムを返す
 		for (int i = 0; i < entityLittleMaid.maidInventory.getSizeInventory(); i++) {
-			if (isItemSmelting(i) && i != currentItem) {
+			if (isItemSmelting(i) && i != getCurrentItemIndex()) {
 				ItemStack mi = mainInventory.get(i);
 				if (mi.getMaxDamage() > 0 && mi.getItemDamage() == 0) {
 					// 修復レシピ対策

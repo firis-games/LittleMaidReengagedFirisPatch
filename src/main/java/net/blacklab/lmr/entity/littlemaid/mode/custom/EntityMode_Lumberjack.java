@@ -281,11 +281,11 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 				//植えれる場合は苗木を植える
 				int saplingIndex = this.getSaplingItemStackIndex();
 				if (saplingIndex >= 0) {
-					int svCurrentIdx = owner.maidInventory.currentItem;
-					owner.maidInventory.currentItem = saplingIndex;
+					int svCurrentIdx = owner.maidInventory.getCurrentItemIndex();
+					owner.maidInventory.setCurrentItemIndex(saplingIndex);
 					ItemStack saplingStack = owner.maidInventory.getStackInSlot(saplingIndex);
 					EnumActionResult useResult = saplingStack.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F);
-					owner.maidInventory.currentItem = svCurrentIdx;
+					owner.maidInventory.setCurrentItemIndex(svCurrentIdx);
 					if (useResult == EnumActionResult.SUCCESS) {
 						owner.playLittleMaidVoiceSound(EnumSound.farmer_farm, true);
 					}

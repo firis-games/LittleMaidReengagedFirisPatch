@@ -248,14 +248,14 @@ public class EntityMode_Farmer extends EntityModeBase {
 			int index = getHadSeedIndex();
 			if(index != -1){
 				
-				int svCurrentIdx = owner.maidInventory.currentItem;
-				owner.maidInventory.currentItem = index;
+				int svCurrentIdx = owner.getDataWatchCurrentItem();
+				owner.maidInventory.setCurrentItemIndex(index);
 				
 				ItemStack stack = owner.maidInventory.getStackInSlot(index);
 				int li = stack.getCount();
 				stack.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px,py,pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F);
 				
-				owner.maidInventory.currentItem = svCurrentIdx;
+				owner.maidInventory.setCurrentItemIndex(svCurrentIdx);
 				
 				owner.playLittleMaidVoiceSound(EnumSound.farmer_plant, true);
 				if (owner.maidAvatar.capabilities.isCreativeMode) {

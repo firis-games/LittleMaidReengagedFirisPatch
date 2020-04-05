@@ -262,7 +262,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				}
 			}
 			if (!lflag && (!ltile.getStackInSlot(0).isEmpty() || !ltile.getStackInSlot(1).isEmpty() || !ltile.getStackInSlot(2).isEmpty())
-					&& (owner.maidInventory.currentItem == -1 || (!litemstack1.isEmpty() && litemstack1.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack1)))) {
+					&& (owner.maidInventory.getCurrentItemIndex() == -1 || (!litemstack1.isEmpty() && litemstack1.getItem() instanceof ItemPotion && !CommonHelper.hasEffect(litemstack1)))) {
 				// ポーション以外を検索
 				LittleMaidReengaged.Debug("Search stuff.");
 //				for (inventryPos = 0; inventryPos < owner.maidInventory.InventoryLittleMaid.maxInventorySize; inventryPos++) {

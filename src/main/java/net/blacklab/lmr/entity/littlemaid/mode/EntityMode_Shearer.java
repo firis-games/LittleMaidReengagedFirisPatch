@@ -147,11 +147,11 @@ public class EntityMode_Shearer extends EntityModeBase {
 				if (owner.isMovementBlocked() || timeSinceIgnited > 22) {
 					owner.getLookHelper().setLookPositionWithEntity(owner.getMaidMasterEntity(), 40F, 40F);
 				}
-				LittleMaidReengaged.Debug(String.format("ID:%d(%s)-dom:%d(%d)", owner.getEntityId(), owner.getEntityWorld().isRemote ? "C" : "W", owner.getDominantArm(), owner.maidInventory.currentItem));
+				LittleMaidReengaged.Debug(String.format("ID:%d(%s)-dom:%d(%d)", owner.getEntityId(), owner.getEntityWorld().isRemote ? "C" : "W", owner.getDominantArm(), owner.maidInventory.getCurrentItemIndex()));
 
-				if (owner.maidInventory.isItemExplord(owner.maidInventory.currentItem) && timeSinceIgnited++ > 30) {
+				if (owner.maidInventory.isItemExplord(owner.maidInventory.getCurrentItemIndex()) && timeSinceIgnited++ > 30) {
 					// TODO:自爆威力を対応させたいけど無理ぽ？
-					owner.maidInventory.decrStackSize(owner.maidInventory.currentItem, 1);
+					owner.maidInventory.decrStackSize(owner.maidInventory.getCurrentItemIndex(), 1);
 					// インベントリをブチマケロ！
 					owner.maidInventory.dropAllItems(true);
 					timeSinceIgnited = -1;
@@ -311,7 +311,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 
 	@Override
 	public boolean checkEntity(String pMode, Entity pEntity) {
-		if (owner.maidInventory.currentItem < 0) {
+		if (owner.maidInventory.getCurrentItemIndex() < 0) {
 			return false;
 		}
 		switch (pMode) {
