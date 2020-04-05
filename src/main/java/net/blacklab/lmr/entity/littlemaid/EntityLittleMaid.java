@@ -782,6 +782,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		velocityChanged = true;
 		if (!modeAIMap.containsKey(pName)) return false;
 
+		//同一モードの場合は何もしない
+		if (pName.equals(maidMode)) return false;
+		
 		if (!pplaying) {
 			mstatWorking = pName;
 		}
