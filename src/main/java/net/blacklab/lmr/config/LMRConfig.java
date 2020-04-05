@@ -2,7 +2,9 @@ package net.blacklab.lmr.config;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraftforge.common.config.Configuration;
 
@@ -41,7 +43,10 @@ public class LMRConfig {
 	public static boolean cfg_isResurrection = true;
 	
 	/** 砂糖アイテムID */
-	public static List<String> cfg_sugar_item_ids = null;
+	private static List<String> cfg_sugar_item_ids = null;
+	
+	/** 砂糖アイテムID */
+	public static Map<String, Integer> cfg_sugar_item_ids_map = null;
 
 	/** ケーキアイテムID */
 	public static List<String> cfg_cake_item_ids = null;
@@ -145,7 +150,25 @@ public class LMRConfig {
 		//指定IDを砂糖として認識する
 		String[] sugarItemIds = new String[] {"minecraft:sugar"};
 		cfg_sugar_item_ids = Arrays.asList(cfg.getStringList("Sugar", "Custom", sugarItemIds, "Set the item ID to be treated the same as maid sugar."));
-
+		
+		//Map形式へ変換する
+		cfg_sugar_item_ids_map = new HashMap<>();
+		for (String sugarItem : cfg_sugar_item_ids) {
+			String[] works = sugarItem.split("\\*");
+			if (works.length == 1 || works.length == 2) {
+				String item = works[0];
+				Integer heal = 1;
+				if (works.length == 2) {
+					try {
+						heal = Integer.parseInt(works[1]);
+					} catch (Exception e) {
+					}
+				}
+				cfg_sugar_item_ids_map.put(item, heal);
+			}
+		}
+		
+		
 		//指定IDをケーキとして認識する
 		String[] cakeItemIds = new String[] {"minecraft:cake"};
 		cfg_cake_item_ids = Arrays.asList(cfg.getStringList("Cake", "Custom", cakeItemIds, "Set the item ID to be treated the same as maid cake."));

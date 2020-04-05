@@ -31,10 +31,34 @@ public class ItemHelper {
 		
 		//設定から判断
 		if (!sugar.isEmpty()) {
-			if (LMRConfig.cfg_sugar_item_ids.contains(sugar.getItem().getRegistryName().toString())) return true;
+			if (LMRConfig.cfg_sugar_item_ids_map.containsKey(sugar.getItem().getRegistryName().toString())) return true;
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * 対象の砂糖系アイテムの回復量を取得する
+	 * @param sugar
+	 * @return
+	 */
+	public static int isSugarHeal(ItemStack sugar) {
+
+		//砂糖判断
+		if (!sugar.isEmpty() && sugar.getItem() == Items.SUGAR) return 1;
+		
+		//IItemSpecialSugar判断
+		if (!sugar.isEmpty() && sugar.getItem() instanceof IItemSpecialSugar) return 1;
+		
+		//設定から判断
+		if (!sugar.isEmpty()) {
+			if (LMRConfig.cfg_sugar_item_ids_map.containsKey(sugar.getItem().getRegistryName().toString())) {
+				return LMRConfig.cfg_sugar_item_ids_map.get(sugar.getItem().getRegistryName().toString());
+			}
+		}
+		
+		//対象外の場合は0とする
+		return 0;
 	}
 	
 	/**
@@ -67,6 +91,15 @@ public class ItemHelper {
 		if(sugar.getItem() instanceof IItemSpecialSugar){
 			ret = ((IItemSpecialSugar)sugar.getItem()).onSugarEaten(maid, mode, sugar);
 		}
+		
+		//砂糖による回復量
+		int heal = isSugarHeal(sugar);
+		if (heal <= 0) {
+			ret = false;
+		} else if (heal >= 2) {
+			maid.heal(heal - 1);
+		}
+		
 		return ret;
 	}
 
