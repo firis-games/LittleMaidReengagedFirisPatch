@@ -946,7 +946,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		
 		SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(soundName));
 		if (soundEvent != null) {
-			LittleMaidReengaged.Debug("PLAYING SOUND EVENT-%s", soundEvent.getSoundName().toString());
+			if (getEntityWorld().isRemote) {
+				LittleMaidReengaged.Debug("PLAYING SOUND EVENT-%s", soundEvent.getSoundName().toString());
+			}
 			this.playSound(soundEvent, this.getSoundVolume(), pitch);
 		}
 		
