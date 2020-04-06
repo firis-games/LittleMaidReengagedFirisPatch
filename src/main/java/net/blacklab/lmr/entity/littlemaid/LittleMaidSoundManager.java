@@ -4,11 +4,10 @@ import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.client.sound.SoundLoader;
-import net.blacklab.lmr.client.sound.SoundRegistry;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.util.EnumSound;
+import net.blacklab.lmr.util.manager.SoundManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -138,14 +137,14 @@ public class LittleMaidSoundManager {
 			LittleMaidReengaged.Debug("REQ %s", sound);
 
 			//音声パックがロードされていない場合は通常音声として再生する
-			if (!SoundLoader.isFoundSoundpack()) {
+			if (!SoundManager.instance.isFoundSoundpack()) {
 				this.maid.playSound(sound.DefaultValue, 1.0f);
 				playingSound.remove(sound);
 				continue;
 			}
 
 			//ボイスパックから再生する
-			String soundName = SoundRegistry.getSoundRegisteredName(sound, textureName, textureColor);
+			String soundName = SoundManager.instance.getSoundNameWithModel(sound, textureName, textureColor);
 			LittleMaidReengaged.Debug("STC %s,%d/FRS %s", textureName, textureColor, soundName);
 			
 			//対象が存在しない場合は次へ

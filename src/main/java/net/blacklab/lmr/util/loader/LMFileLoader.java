@@ -40,6 +40,9 @@ public class LMFileLoader {
 		//テクスチャHandler
 		loaderHandler.add(LMTextureHandler.instance);
 		
+		//サウンドHandler
+		loaderHandler.add(LMSoundHandler.instance);
+		
 	}
 	
 	/**
@@ -70,12 +73,13 @@ public class LMFileLoader {
 					//zip or jarファイル
 					ZipInputStream zipStream = new ZipInputStream(Files.newInputStream(loaderPath.path));
 					ZipEntry zipEntry;
+					Path zipPath = loaderPath.path;
 					while ((zipEntry = zipStream.getNextEntry()) != null) {
 						String zPath = zipEntry.getName();
 						//handlerに処理を委譲
 						for (ILMFileLoaderHandler handler : loaderHandler) {
-							if (handler.isLoader(zPath)) {
-								handler.loadHandler(zPath);
+							if (handler.isLoader(zPath, zipPath)) {
+								handler.loadHandler(zPath, zipPath, zipStream);
 								break;
 							}
 						}
@@ -85,8 +89,8 @@ public class LMFileLoader {
 					String lPath = loaderPath.getLoaderPath();
 					//handlerに処理を委譲
 					for (ILMFileLoaderHandler handler : loaderHandler) {
-						if (handler.isLoader(lPath)) {
-							handler.loadHandler(lPath);
+						if (handler.isLoader(lPath, null)) {
+							handler.loadHandler(lPath, null, null);
 							break;
 						}
 					}
@@ -97,7 +101,12 @@ public class LMFileLoader {
 				if (LMRConfig.cfg_PrintDebugMessage) e.printStackTrace();
 			}
 		}
-
+		
+		//読込後処理を呼び出し
+		for (ILMFileLoaderHandler handler : loaderHandler) {
+			handler.postLoadHandler();
+		}
+		
 		LittleMaidReengaged.logger.info("LMFileLoader-load : end");
 	}
 	

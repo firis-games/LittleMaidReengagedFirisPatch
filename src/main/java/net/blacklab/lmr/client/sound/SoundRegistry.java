@@ -15,6 +15,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.util.EnumSound;
 
+@Deprecated
 public class SoundRegistry {
 
 	public static final String DEFAULT_TEXTURE_REGISTRATION_KEY = "!#DEFAULT#!";

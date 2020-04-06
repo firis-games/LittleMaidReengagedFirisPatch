@@ -9,6 +9,7 @@ import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
+@Deprecated
 public class FileList {
 
 	public static File dirMinecraft;

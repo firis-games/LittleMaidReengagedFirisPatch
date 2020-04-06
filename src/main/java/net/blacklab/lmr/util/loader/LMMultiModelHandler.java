@@ -1,5 +1,7 @@
 package net.blacklab.lmr.util.loader;
 
+import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +40,7 @@ public class LMMultiModelHandler implements ILMFileLoaderHandler {
 	 *　・クラス名にexistsMultiModelNamesを含む
 	 */
 	@Override
-	public boolean isLoader(String path) {
+	public boolean isLoader(String path, Path filePath) {
 		
 		//.class判定
 		if (path != null && path.endsWith(".class")) {
@@ -60,7 +62,7 @@ public class LMMultiModelHandler implements ILMFileLoaderHandler {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public void loadHandler(String path) {
+	public void loadHandler(String path, Path filePath, InputStream inputstream) {
 		
 		try {
 			//ClassLoader用パスへ変換

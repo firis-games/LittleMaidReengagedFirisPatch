@@ -32,6 +32,7 @@ import net.blacklab.lmr.util.manager.ModelManager;
  * 新サウンドローディング(from 4.3)
  *
  */
+@Deprecated
 public class SoundLoader {
 
 	protected static SoundLoader instance = new SoundLoader();

@@ -1,5 +1,7 @@
 package net.blacklab.lmr.util.loader;
 
+import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +45,7 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 	 *　・pathをテクスチャ名に変換可
 	 */
 	@Override
-	public boolean isLoader(String path) {
+	public boolean isLoader(String path, Path filePath) {
 		//.png判定
 		if (path != null && path.endsWith(".png")) {
 			//テクスチャ名に変換できない場合はメイドさんテクスチャではない
@@ -59,7 +61,7 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 	 *　クラス名から識別子を削除した名称をモデルIDとして登録する
 	 */
 	@Override		
-	public void loadHandler(String path) {
+	public void loadHandler(String path, Path filePath, InputStream inputstream) {
 		
 		//テクスチャ名生成
 		//[パッケージ].[テクスチャ名]_[モデル名]

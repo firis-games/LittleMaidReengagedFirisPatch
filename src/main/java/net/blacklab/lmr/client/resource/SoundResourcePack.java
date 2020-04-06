@@ -8,15 +8,13 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
 import com.google.common.collect.ImmutableSet;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.client.sound.SoundRegistry;
+import net.blacklab.lmr.util.manager.SoundManager;
 import net.minecraft.client.resources.DefaultResourcePack;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
@@ -46,7 +44,7 @@ public class SoundResourcePack implements IResourcePack {
 		InputStream lis = null;
 		if (resource.getResourcePath().endsWith("sounds.json")) {
 			
-			Path sound = Paths.get("mods/LittleMaidReengaged/sounds.json");
+			Path sound = Paths.get("mods/LittleMaidReengaged/lm_sounds.json");
 			try {
 				return new FileInputStream(sound.toFile());
 			} catch (FileNotFoundException e) {
@@ -55,7 +53,8 @@ public class SoundResourcePack implements IResourcePack {
 			//return LittleMaidReengaged.class.getClassLoader().getResourceAsStream("LittleMaidReengaged/sounds.json");
 		}
 		if (resource.getResourcePath().endsWith(".ogg")) {
-			String soundPath = SoundRegistry.convertPathNameListFromMc1_12_2(decodePathGetPath(resource));
+			//String soundPath = SoundRegistry.convertPathNameListFromMc1_12_2(decodePathGetPath(resource));
+			String soundPath = SoundManager.instance.getResourceClassLoaderPath(resource);
 			lis = LittleMaidReengaged.class.getClassLoader().getResourceAsStream(soundPath);
 		}
 		return lis;
@@ -68,12 +67,14 @@ public class SoundResourcePack implements IResourcePack {
 			return true;
 		}
 		if (resource.getResourcePath().endsWith(".ogg")) {
-			String f = decodePathGetName(resource);
-			return SoundRegistry.isSoundNameRegistered(f) ? SoundRegistry.getPathListFromRegisteredName(f)!=null : false;
+			//String f = decodePathGetName(resource);
+			//return SoundRegistry.isSoundNameRegistered(f) ? SoundRegistry.getPathListFromRegisteredName(f)!=null : false;
+			return SoundManager.instance.isResourceExists(resource);
 		}
 		return false;
 	}
 
+	/*
 	private String decodePathSplicePathStr(ResourceLocation rl) {
 		String path = rl.getResourcePath();
 		Pattern pattern = Pattern.compile("^/*?sounds/(.+)\\.ogg");
@@ -95,6 +96,7 @@ public class SoundResourcePack implements IResourcePack {
 		String[] gs = f.split("//");
 		return gs.length>1 ? gs[1] : null;
 	}
+	*/
 
 	public static final Set<String> lmmxResourceDomains = ImmutableSet.of(LittleMaidReengaged.DOMAIN);
 

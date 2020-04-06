@@ -1,6 +1,5 @@
 package net.blacklab.lmr;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,12 +25,12 @@ import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.network.ProxyCommon;
-import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.loader.LMFileLoader;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.manager.PluginManager;
+import net.blacklab.lmr.util.manager.SoundManager;
 import net.firis.lmt.common.LMTCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -195,7 +194,7 @@ public class LittleMaidReengaged {
 		
 		// MMMLibからの引継ぎ
 		// ClassLoaderを初期化
-
+		/*
 		// Find classpath dir
 		String classpath = System.getProperty("java.class.path");
 		String separator = System.getProperty("path.separator");
@@ -207,12 +206,16 @@ public class LittleMaidReengaged {
 				FileList.dirClasspath.add(pathFile);
 			}
 		}
+		*/
 		
 		//リトルメイドファイルローダー
 		LMFileLoader.instance.load();
 		
 		//マルチモデルセットアップ
 		ModelManager.instance.createLittleMaidModels();
+		
+		//サウンドパックセットアップ
+		SoundManager.instance.createSounds();
 
 //		StabilizerManager.init();
 
@@ -318,7 +321,7 @@ public class LittleMaidReengaged {
 		//proxy.rendererRegister();
 		
 		//音声ロード
-		proxy.loadSounds();
+		//proxy.loadSounds();
 		
 		//テスト用preInit
 		LMTCore.preInit(evt);
