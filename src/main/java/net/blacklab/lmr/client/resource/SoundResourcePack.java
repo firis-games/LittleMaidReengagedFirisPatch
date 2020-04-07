@@ -1,12 +1,8 @@
 package net.blacklab.lmr.client.resource;
 
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -44,12 +40,14 @@ public class SoundResourcePack implements IResourcePack {
 		InputStream lis = null;
 		if (resource.getResourcePath().endsWith("sounds.json")) {
 			
-			Path sound = Paths.get("mods/LittleMaidReengaged/lm_sounds.json");
-			try {
-				return new FileInputStream(sound.toFile());
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
+			//sounds.jsonのinputstreamを返却する
+			return SoundManager.instance.getResourcepackSoundsJson();
+			//Path sound = Paths.get("mods/LittleMaidReengaged/lm_sounds.json");
+			//try {
+			//	return new FileInputStream(sound.toFile());
+			//} catch (FileNotFoundException e) {
+			//	e.printStackTrace();
+			//}
 			//return LittleMaidReengaged.class.getClassLoader().getResourceAsStream("LittleMaidReengaged/sounds.json");
 		}
 		if (resource.getResourcePath().endsWith(".ogg")) {

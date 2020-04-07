@@ -1,15 +1,11 @@
 package net.blacklab.lmr.util.manager;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -19,8 +15,9 @@ import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.loader.LMSoundHandler;
 import net.blacklab.lmr.util.loader.config.JsonConfigLittleMaidCustomSound;
-import net.blacklab.lmr.util.loader.config.JsonConfigLittleMaidSound;
 import net.blacklab.lmr.util.loader.config.JsonConfigLittleMaidCustomSound.ModelVoice;
+import net.blacklab.lmr.util.loader.config.JsonConfigLittleMaidSound;
+import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -92,27 +89,11 @@ public class SoundManager {
 	private boolean loadJsonCustomModelVoice() {
 		
 		boolean ret = false;
-		try {
-			//rootフォルダのチェック
-			Path config = Paths.get("mods", "LittleMaidReengaged", "custom_model_sounds.json");
-			
-			if (Files.notExists(config)) {
-				return false;
-			}
-			
-			//テキストとして読込
-			List<String> fileList = Files.readAllLines(config);
-			String json = String.join("", fileList);
-			
-			//Jsonへパース
-			Gson gson = new Gson();
-			customSound = gson.fromJson(json, JsonConfigLittleMaidCustomSound.class);
-			
-			//処理成功
+		
+		//Jsonファイルを読込
+		customSound = ResourceFileHelper.readFromJson("custom_model_sounds.json", JsonConfigLittleMaidCustomSound.class);
+		if (customSound != null) {
 			ret = true;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return ret;
 	}
@@ -149,7 +130,7 @@ public class SoundManager {
 				.disableHtmlEscaping()
 				.create().toJson(jsonObject);
 		
-		this.wirteToFile("custom_model_sounds.json", jsonStr);
+		ResourceFileHelper.wirteToFile("custom_model_sounds.json", jsonStr);
 		
 		//生成したものを保持する
 		customSound = jsonObject;
@@ -199,32 +180,7 @@ public class SoundManager {
 				.disableHtmlEscaping()
 				.create().toJson(jsonObject);
 		
-		this.wirteToFile("lm_sounds.json", jsonStr);
-	}
-	
-	/**
-	 * ファイルを書き出す
-	 * @param name
-	 * @param json
-	 */
-	private void wirteToFile(String fileName, String json) {
-		
-		//書き出す
-		//出力
-		List<String> jsonList = new ArrayList<>();
-		jsonList.add(json);
-		
-		//Path
-		Path dict = Paths.get("mods", "LittleMaidReengaged");
-		Path path = Paths.get("mods", "LittleMaidReengaged", fileName);
-		
-		try {
-			if (!Files.isDirectory(dict)) {
-				Files.createDirectories(dict);
-			}
-			Files.write(path, jsonList, Charset.forName("UTF-8"), StandardOpenOption.CREATE_NEW);
-		} catch (IOException e) {
-		}
+		ResourceFileHelper.wirteToFile("lm_sounds.json", jsonStr);
 	}
 	
 	/**
@@ -310,5 +266,20 @@ public class SoundManager {
 		//サウンドIDを生成
 		String soundType = soundpack + "." + sound.toString();
 		return soundType;
+	}
+	
+	/**
+	 * Resourcepackで利用するsounds.jsonをInputStream形式で返却する
+	 * @return
+	 */
+	public InputStream getResourcepackSoundsJson() {
+		InputStream is = null;
+		try {
+			String sounds = ResourceFileHelper.readFromFile("lm_sounds.json");
+			is = new ByteArrayInputStream(sounds.getBytes("utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		};
+		return is;
 	}
 }
