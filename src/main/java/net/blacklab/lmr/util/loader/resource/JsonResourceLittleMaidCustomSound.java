@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.loader.config;
+package net.blacklab.lmr.util.loader.resource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Map;
  * @author firis-games
  *
  */
-public class JsonConfigLittleMaidCustomSound {
+public class JsonResourceLittleMaidCustomSound {
 	
 	/**
 	 * 標準で使用するサウンドパック名

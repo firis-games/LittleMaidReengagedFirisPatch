@@ -14,10 +14,10 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.loader.LMSoundHandler;
-import net.blacklab.lmr.util.loader.config.JsonConfigLittleMaidCustomSound;
-import net.blacklab.lmr.util.loader.config.JsonConfigLittleMaidCustomSound.ModelVoice;
-import net.blacklab.lmr.util.loader.config.JsonConfigLittleMaidSound;
+import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidCustomSound;
+import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidSound;
 import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
+import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidCustomSound.ModelVoice;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -34,7 +34,7 @@ public class SoundManager {
 	 * 
 	 * モデル＋カラー番号でボイス設定を切り替える
 	 */
-	private JsonConfigLittleMaidCustomSound customSound = null;
+	private JsonResourceLittleMaidCustomSound customSound = null;
 	
 	/**
 	 * デフォルトのサウンドパックを設定する
@@ -69,7 +69,7 @@ public class SoundManager {
 		
 		//セットアップ
 		//Mod内で使用する形式へ変換する
-		for (JsonConfigLittleMaidSound soundinfo : LMSoundHandler.jsonSoundList) {
+		for (JsonResourceLittleMaidSound soundinfo : LMSoundHandler.jsonSoundList) {
 			
 			//変換処理
 			for(String voiceId : soundinfo.voices.keySet()) {
@@ -91,7 +91,7 @@ public class SoundManager {
 		boolean ret = false;
 		
 		//Jsonファイルを読込
-		customSound = ResourceFileHelper.readFromJson("custom_model_sounds.json", JsonConfigLittleMaidCustomSound.class);
+		customSound = ResourceFileHelper.readFromJson("custom_model_sounds.json", JsonResourceLittleMaidCustomSound.class);
 		if (customSound != null) {
 			ret = true;
 		}
@@ -103,7 +103,7 @@ public class SoundManager {
 	 */
 	private void createJsonCustomModelVoice() {
 		
-		JsonConfigLittleMaidCustomSound jsonObject = new JsonConfigLittleMaidCustomSound();
+		JsonResourceLittleMaidCustomSound jsonObject = new JsonResourceLittleMaidCustomSound();
 		jsonObject.default_voice = this.defaultSoundpack;
 		
 		for (TextureBox textureBox : ModelManager.getTextureList()) {
@@ -111,7 +111,7 @@ public class SoundManager {
 			//デフォルトテクスチャが存在する場合のみ対象とする
 			if (textureBox.getTextureNameDefault() != null) {
 				
-				JsonConfigLittleMaidCustomSound.ModelVoice modelVoice = new JsonConfigLittleMaidCustomSound.ModelVoice(jsonObject.default_voice);
+				JsonResourceLittleMaidCustomSound.ModelVoice modelVoice = new JsonResourceLittleMaidCustomSound.ModelVoice(jsonObject.default_voice);
 				
 				//カラー情報を持つ場合のみ個別カラー設定を追加する
 				for (int color = 0; color < 16; color++) {
@@ -146,7 +146,7 @@ public class SoundManager {
 		JsonObject jsonObject = new JsonObject();
 		
 		//サウンドパック一覧をMinecraftのSounds.json形式へ変換する
-		for (JsonConfigLittleMaidSound record : LMSoundHandler.jsonSoundList) {
+		for (JsonResourceLittleMaidSound record : LMSoundHandler.jsonSoundList) {
 			
 			//レコード単位で生成する
 			for (String voiceId : record.voices.keySet()) {
