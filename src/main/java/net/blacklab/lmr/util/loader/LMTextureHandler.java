@@ -81,7 +81,6 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 		return !this.isCache;
 	}
 	
-	
 	/**
 	 * 対象ファイルがテクスチャか判断する
 	 * 

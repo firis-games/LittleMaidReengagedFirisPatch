@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.loader.LMSoundHandler;
@@ -44,6 +45,11 @@ public class SoundManager {
 	 * Sounds.jsonで利用しているoggファイルのClassloaderパスを保持する
 	 */
 	private List<String> classloaderResoucePath = new ArrayList<>();
+	
+	/**
+	 * sounds.jsonファイルの定義
+	 */
+	private String sounds_json = "";
 	
 	/**
 	 * 読み込んだSoundから必要なものを生成する
@@ -165,8 +171,13 @@ public class SoundManager {
 			}
 		}
 		
+		this.sounds_json = ResourceFileHelper.jsonToString(jsonObject);
+		
 		//ファイルを書き出し
-		ResourceFileHelper.writeToJson("lm_sounds.json", jsonObject);
+		if (LMRConfig.cfg_loader_output_sounds_json) {
+			ResourceFileHelper.writeToFile("sounds.json", this.sounds_json);
+		}
+		
 	}
 	
 	/**
@@ -261,7 +272,10 @@ public class SoundManager {
 	public InputStream getResourcepackSoundsJson() {
 		InputStream is = null;
 		try {
-			String sounds = ResourceFileHelper.readFromFile("lm_sounds.json");
+			String sounds = this.sounds_json;
+			if (LMRConfig.cfg_loader_output_sounds_json) {
+				ResourceFileHelper.writeToFile("sounds.json", this.sounds_json);
+			}
 			is = new ByteArrayInputStream(sounds.getBytes("utf-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

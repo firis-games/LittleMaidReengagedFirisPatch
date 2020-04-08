@@ -112,14 +112,21 @@ public class ResourceFileHelper {
 	 */
 	public static <T> boolean writeToJson(String fileName, T jsonObject) {
 		
-		String jsonStr = new GsonBuilder()
+		return ResourceFileHelper.writeToFile(fileName, jsonToString(jsonObject));
+		
+	}
+	
+	/**
+	 * オブジェクトをjson文字列へ変換する
+	 * @param jsonObject
+	 * @return
+	 */
+	public static <T> String jsonToString(T jsonObject) {
+		return new GsonBuilder()
 				.serializeNulls()
 				.setPrettyPrinting()
 				.disableHtmlEscaping()
 				.create().toJson(jsonObject);
-		
-		return ResourceFileHelper.writeToFile(fileName, jsonStr);
-		
 	}
 	
 }
