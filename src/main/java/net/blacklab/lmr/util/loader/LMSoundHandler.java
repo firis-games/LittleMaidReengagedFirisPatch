@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidSound;
+import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 
 /**
  * メイドさんのサウンド関連ファイルをロードする
@@ -35,7 +36,7 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 	/**
 	 * サウンドパック一覧
 	 */
-	public static List<JsonResourceLittleMaidSound> jsonSoundList = new ArrayList<>();
+	public static JsonResourceLittleMaidSound resourceLittleMaidSound = new JsonResourceLittleMaidSound();
 	
 	/**
 	 * 対象ファイルがサウンド関連のファイルか判断する
@@ -99,7 +100,6 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 	/**
 	 * Configファイルを処理する
 	 * 
-	 * Config
 	 */
 	protected void loadHandlerConfig(String path, String fileName, InputStream inputstream) {
 		
@@ -212,14 +212,13 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 			
 			//データが生成できた場合は保存する
 			if (voicePackageList.size() > 0) {
-				JsonResourceLittleMaidSound jsonSound = new JsonResourceLittleMaidSound();
-				jsonSound.voiceName = voicePackageName;
-				jsonSound.voiceRate = voiceRate;
-				jsonSound.voices = voicePackageList;
-
-				jsonSoundList.add(jsonSound);
-				
+				//サウンドパックを追加する
+				resourceLittleMaidSound.addSoundpack(voicePackageName, voiceRate, voicePackageList);
 			}
 		}
+		
+		//キャッシュファイルを出力する
+		ResourceFileHelper.writeToJson("cache_soundpack.json", resourceLittleMaidSound);
+		
 	}
 }

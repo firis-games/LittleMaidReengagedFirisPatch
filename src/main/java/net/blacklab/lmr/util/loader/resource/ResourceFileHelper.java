@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * 独自設定系のファイルの読み書き処理
@@ -21,13 +22,12 @@ public class ResourceFileHelper {
 	//ベースディレクトリパス
 	protected static Path resourceDir = Paths.get("mods", "LittleMaidResource");
 	
-	
 	/**
 	 * ファイルへ書き出す
 	 * @param name
 	 * @param json
 	 */
-	public static boolean wirteToFile(String fileName, String write) {
+	public static boolean writeToFile(String fileName, String write) {
 		
 		boolean ret = false;
 		
@@ -43,7 +43,9 @@ public class ResourceFileHelper {
 			if (!Files.isDirectory(resourceDir)) {
 				Files.createDirectories(resourceDir);
 			}
-			Files.write(filePath, jsonList, Charset.forName("UTF-8"), StandardOpenOption.CREATE_NEW);
+			
+			//ファイルの上書き
+			Files.write(filePath, jsonList, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
 			ret = true;
 			
 		} catch (IOException e) {
@@ -102,6 +104,22 @@ public class ResourceFileHelper {
 		}
 		
 		return jsonObject;
+	}
+	
+	/**
+	 * Jsonファイルを書き込む
+	 * @return
+	 */
+	public static <T> boolean writeToJson(String fileName, T jsonObject) {
+		
+		String jsonStr = new GsonBuilder()
+				.serializeNulls()
+				.setPrettyPrinting()
+				.disableHtmlEscaping()
+				.create().toJson(jsonObject);
+		
+		return ResourceFileHelper.writeToFile(fileName, jsonStr);
+		
 	}
 	
 }

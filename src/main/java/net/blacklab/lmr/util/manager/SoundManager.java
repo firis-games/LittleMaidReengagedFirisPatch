@@ -6,7 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -15,9 +14,9 @@ import net.blacklab.lmr.entity.maidmodel.TextureBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.loader.LMSoundHandler;
 import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidCustomSound;
-import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidSound;
-import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidCustomSound.ModelVoice;
+import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidSound.ResourceLittleMaidSoundpack;
+import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -53,10 +52,10 @@ public class SoundManager {
 	public void createSounds() {
 		
 		//サウンドパックがロードされていない場合は何もしない
-		if (LMSoundHandler.jsonSoundList.size() == 0) return;
+		if (!LMSoundHandler.resourceLittleMaidSound.isLoadSoundpack()) return;
 		
 		//デフォルトボイス設定追加
-		this.defaultSoundpack = LMSoundHandler.jsonSoundList.get(0).voiceName;
+		this.defaultSoundpack = LMSoundHandler.resourceLittleMaidSound.getDefaultSoundpackName();
 		
 		//カスタムのJson生成
 		if (!this.loadJsonCustomModelVoice()) {
@@ -69,16 +68,13 @@ public class SoundManager {
 		
 		//セットアップ
 		//Mod内で使用する形式へ変換する
-		for (JsonResourceLittleMaidSound soundinfo : LMSoundHandler.jsonSoundList) {
-			
+		for (ResourceLittleMaidSoundpack soundinfo : LMSoundHandler.resourceLittleMaidSound.getSoundpackList()) {
 			//変換処理
 			for(String voiceId : soundinfo.voices.keySet()) {
-				
 				//クラスローダーのパスをセットする
 				for (String voicePath : soundinfo.voices.get(voiceId)) {
 					classloaderResoucePath.add(voicePath);
 				}
-				
 			}
 		}
 	}
@@ -91,7 +87,7 @@ public class SoundManager {
 		boolean ret = false;
 		
 		//Jsonファイルを読込
-		customSound = ResourceFileHelper.readFromJson("custom_model_sounds.json", JsonResourceLittleMaidCustomSound.class);
+		customSound = ResourceFileHelper.readFromJson("setting_custom_sounds.json", JsonResourceLittleMaidCustomSound.class);
 		if (customSound != null) {
 			ret = true;
 		}
@@ -124,16 +120,11 @@ public class SoundManager {
 			}			
 		}
 		
-		String jsonStr = new GsonBuilder()
-				.serializeNulls()
-				.setPrettyPrinting()
-				.disableHtmlEscaping()
-				.create().toJson(jsonObject);
-		
-		ResourceFileHelper.wirteToFile("custom_model_sounds.json", jsonStr);
-		
 		//生成したものを保持する
 		customSound = jsonObject;
+		
+		//設定ファイルを出力する
+		ResourceFileHelper.writeToJson("setting_custom_sounds.json", jsonObject);
 		
 	}
 	
@@ -146,22 +137,22 @@ public class SoundManager {
 		JsonObject jsonObject = new JsonObject();
 		
 		//サウンドパック一覧をMinecraftのSounds.json形式へ変換する
-		for (JsonResourceLittleMaidSound record : LMSoundHandler.jsonSoundList) {
+		for (ResourceLittleMaidSoundpack soundinfo : LMSoundHandler.resourceLittleMaidSound.getSoundpackList()) {
 			
 			//レコード単位で生成する
-			for (String voiceId : record.voices.keySet()) {
+			for (String voiceId : soundinfo.voices.keySet()) {
 				
 				JsonObject elementObject = new JsonObject();
 				
 				//音声名
-				String elementName = record.voiceName + "." + voiceId;
+				String elementName = soundinfo.soundpackName + "." + voiceId;
 				
 				//category
 				elementObject.addProperty("category", "master");
 				
 				//Sounds
 				JsonArray soundsElements = new JsonArray();
-				for (String voice : record.voices.get(voiceId)) {
+				for (String voice : soundinfo.voices.get(voiceId)) {
 					//sounds.json形式のパスへ変換する
 					String voicePath = voice;
 					voicePath = LittleMaidReengaged.DOMAIN + ":" + elementName + "//" + voicePath;
@@ -174,13 +165,8 @@ public class SoundManager {
 			}
 		}
 		
-		String jsonStr = new GsonBuilder()
-				.serializeNulls()
-				.setPrettyPrinting()
-				.disableHtmlEscaping()
-				.create().toJson(jsonObject);
-		
-		ResourceFileHelper.wirteToFile("lm_sounds.json", jsonStr);
+		//ファイルを書き出し
+		ResourceFileHelper.writeToJson("lm_sounds.json", jsonObject);
 	}
 	
 	/**
