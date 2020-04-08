@@ -10,6 +10,7 @@ import java.util.Map;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
+import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 
 /**
  * メイドさんのマルチモデルをロードする
@@ -32,6 +33,63 @@ public class LMMultiModelHandler implements ILMFileLoaderHandler {
 	 * マルチモデルのクラス名に含まれる文字列
 	 */
 	private static List<String> existsMultiModelNames = Arrays.asList("ModelMulti_", "ModelLittleMaid_");
+	
+	/**
+	 * キャッシュフラグ
+	 */
+	private boolean isCache = false;
+	
+	/**
+	 * キャッシュファイル名
+	 */
+	private String cacheFileName = "cache_multimodelpack.json";
+	
+	/**
+	 * Handlerの初期化処理
+	 * キャッシュ確認しキャッシュがあれば読込する
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void init() {
+		
+		//キャッシュ機能の利用可否
+		if (!LMRConfig.cfg_loader_is_cache) return;
+		
+		//変換用キャッシュ
+		Map<String, String> cachemultiModelClassMap = new HashMap<>();
+		cachemultiModelClassMap = ResourceFileHelper.readFromJson(this.cacheFileName, Map.class);
+		if (cachemultiModelClassMap == null) return;
+		
+		//内部設定へ変換する
+		multiModelClassMap = new HashMap<>();
+		
+		for (String className : cachemultiModelClassMap.keySet()) {
+			try {
+				//クラスをロード
+				Class<?> modelClass;
+				modelClass = Class.forName(cachemultiModelClassMap.get(className));
+				
+				//クラスを登録
+				multiModelClassMap.put(className, (Class<? extends ModelMultiBase>) modelClass);
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		if (multiModelClassMap.size() > 0) {
+			this.isCache = true;
+		}
+	}
+	
+	/**
+	 * キャッシュがある場合は読み込み処理を行わない
+	 */
+	@Override
+	public boolean isFileLoad() {
+		return !this.isCache;
+	}
 	
 	/**
 	 * 対象ファイルがマルチモデルか判断する
@@ -95,5 +153,27 @@ public class LMMultiModelHandler implements ILMFileLoaderHandler {
 			LittleMaidReengaged.logger.error(String.format("LMMultiModelHandler-Exception : %s", path));
 			if (LMRConfig.cfg_PrintDebugMessage) e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * ファイル読込後の処理
+	 * キャッシュファイルを出力する
+	 */
+	@Override
+	public void postLoadHandler() {
+		
+		//キャッシュファイルを出力する
+		if (LMRConfig.cfg_loader_is_cache) {
+			
+			//キャッシュファイル出力用に変換する
+			Map<String, String> cachemultiModelClassMap = new HashMap<>();
+			for (String key : multiModelClassMap.keySet()) {
+				cachemultiModelClassMap.put(key, multiModelClassMap.get(key).getName());
+			}
+			
+			//キャッシュ出力
+			ResourceFileHelper.writeToJson(this.cacheFileName, cachemultiModelClassMap);
+		}
+		
 	}
 }
