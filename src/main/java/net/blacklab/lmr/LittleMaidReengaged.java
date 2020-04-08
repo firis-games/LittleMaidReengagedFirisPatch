@@ -3,7 +3,6 @@ package net.blacklab.lmr;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
@@ -176,7 +175,7 @@ public class LittleMaidReengaged {
 	//	return "LittleMaidReengaged";
 	//}
 
-	public static Random randomSoundChance;
+	//public static Random randomSoundChance;
 	
 	@SuppressWarnings("unchecked")
 	public LittleMaidReengaged() {
@@ -190,7 +189,11 @@ public class LittleMaidReengaged {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
+		
 		logger = evt.getModLog();
+		
+		// Config初期化
+		LMRConfig.init(evt.getSuggestedConfigurationFile());
 		
 		// MMMLibからの引継ぎ
 		// ClassLoaderを初期化
@@ -242,10 +245,8 @@ public class LittleMaidReengaged {
 		// MMM_Helper.checkRevision("6");
 		// MMM_cfg_checkConfig(this.getClass());
 
-		randomSoundChance = new Random();
+//		randomSoundChance = new Random();
 
-		// Config初期化
-		LMRConfig.init(evt.getSuggestedConfigurationFile());
 		/*
 		Configuration cfg = new Configuration(evt.getSuggestedConfigurationFile());
 		cfg.load();
