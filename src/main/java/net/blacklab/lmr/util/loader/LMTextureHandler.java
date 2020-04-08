@@ -45,7 +45,7 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 	 *　・pathをテクスチャ名に変換可
 	 */
 	@Override
-	public boolean isLoader(String path, Path filePath) {
+	public boolean isLoadHandler(String path, Path filePath) {
 		//.png判定
 		if (path != null && path.endsWith(".png")) {
 			//テクスチャ名に変換できない場合はメイドさんテクスチャではない

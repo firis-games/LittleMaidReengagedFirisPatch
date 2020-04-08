@@ -38,6 +38,36 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 	 */
 	public static JsonResourceLittleMaidSound resourceLittleMaidSound = new JsonResourceLittleMaidSound();
 	
+	private boolean isCache = false;
+	
+	private String cacheFileName = "cache_soundpack.json";
+	
+	/**
+	 * サウンドHandlerの初期化処理
+	 * キャッシュ確認しキャッシュがあれば読込する
+	 */
+	@Override
+	public void init() {
+		
+		//キャッシュファイルの読み込み
+		resourceLittleMaidSound = ResourceFileHelper.readFromJson(this.cacheFileName, JsonResourceLittleMaidSound.class);
+		
+		if (resourceLittleMaidSound != null) {
+			this.isCache = true;
+		} else {
+			//初期化
+			resourceLittleMaidSound = new JsonResourceLittleMaidSound();
+		}
+	}
+	
+	/**
+	 * キャッシュがある場合は読み込み処理を行わない
+	 */
+	@Override
+	public boolean isFileLoad() {
+		return !this.isCache;
+	}
+	
 	/**
 	 * 対象ファイルがサウンド関連のファイルか判断する
 	 * 
@@ -45,7 +75,7 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 	 *　・サウンドファイルはzip or jar形式のもののみ対象とする
 	 */
 	@Override
-	public boolean isLoader(String path, Path filePath) {
+	public boolean isLoadHandler(String path, Path filePath) {
 		
 		//圧縮ファイル以外は除外
 		if (filePath == null) return false;
@@ -218,7 +248,7 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 		}
 		
 		//キャッシュファイルを出力する
-		ResourceFileHelper.writeToJson("cache_soundpack.json", resourceLittleMaidSound);
+		ResourceFileHelper.writeToJson(this.cacheFileName, resourceLittleMaidSound);
 		
 	}
 }

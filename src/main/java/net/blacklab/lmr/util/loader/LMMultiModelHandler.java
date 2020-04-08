@@ -40,7 +40,7 @@ public class LMMultiModelHandler implements ILMFileLoaderHandler {
 	 *　・クラス名にexistsMultiModelNamesを含む
 	 */
 	@Override
-	public boolean isLoader(String path, Path filePath) {
+	public boolean isLoadHandler(String path, Path filePath) {
 		
 		//.class判定
 		if (path != null && path.endsWith(".class")) {

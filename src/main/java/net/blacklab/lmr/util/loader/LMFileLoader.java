@@ -54,6 +54,27 @@ public class LMFileLoader {
 		
 		LittleMaidReengaged.logger.info("LMFileLoader-load : start");
 		
+		//LoaderHandlerの初期化処理
+		for (ILMFileLoaderHandler handler : loaderHandler) {
+			handler.init();
+		}
+		
+		//Loaderの動作チェック
+		List<ILMFileLoaderHandler> procLoaderHandler = new ArrayList<>();
+		for (ILMFileLoaderHandler handler : loaderHandler) {
+			if (handler.isFileLoad()) {
+				//処理対象のHandler登録
+				procLoaderHandler.add(handler);
+			}
+		}
+		
+		//Loaderのファイル読込処理をスキップ
+		if (procLoaderHandler.size() == 0) {
+			LittleMaidReengaged.logger.info("LMFileLoader-load : cache-load end");
+			return;
+		};
+		
+		//ファイルパスリストを生成
 		List<ModPath> filePathList = new ArrayList<>();
 		
 		//ファイルのリスト作成
@@ -77,8 +98,8 @@ public class LMFileLoader {
 					while ((zipEntry = zipStream.getNextEntry()) != null) {
 						String zPath = zipEntry.getName();
 						//handlerに処理を委譲
-						for (ILMFileLoaderHandler handler : loaderHandler) {
-							if (handler.isLoader(zPath, zipPath)) {
+						for (ILMFileLoaderHandler handler : procLoaderHandler) {
+							if (handler.isLoadHandler(zPath, zipPath)) {
 								handler.loadHandler(zPath, zipPath, zipStream);
 								break;
 							}
@@ -88,8 +109,8 @@ public class LMFileLoader {
 					//通常ファイル
 					String lPath = loaderPath.getLoaderPath();
 					//handlerに処理を委譲
-					for (ILMFileLoaderHandler handler : loaderHandler) {
-						if (handler.isLoader(lPath, null)) {
+					for (ILMFileLoaderHandler handler : procLoaderHandler) {
+						if (handler.isLoadHandler(lPath, null)) {
 							handler.loadHandler(lPath, null, null);
 							break;
 						}
@@ -103,7 +124,7 @@ public class LMFileLoader {
 		}
 		
 		//読込後処理を呼び出し
-		for (ILMFileLoaderHandler handler : loaderHandler) {
+		for (ILMFileLoaderHandler handler : procLoaderHandler) {
 			handler.postLoadHandler();
 		}
 		
