@@ -39,10 +39,16 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 	 */
 	public static JsonResourceLittleMaidSound resourceLittleMaidSound = new JsonResourceLittleMaidSound();
 	
+	/**
+	 * キャッシュフラグ
+	 */
 	private boolean isCache = false;
 	
+	/**
+	 * キャッシュファイル名
+	 */
 	private String cacheFileName = "cache_soundpack.json";
-	
+
 	/**
 	 * サウンドHandlerの初期化処理
 	 * キャッシュ確認しキャッシュがあれば読込する
@@ -254,7 +260,6 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 		//キャッシュファイルを出力する
 		if (LMRConfig.cfg_loader_is_cache) {
 			ResourceFileHelper.writeToJson(this.cacheFileName, resourceLittleMaidSound);
-		}
-		
+		}	
 	}
 }

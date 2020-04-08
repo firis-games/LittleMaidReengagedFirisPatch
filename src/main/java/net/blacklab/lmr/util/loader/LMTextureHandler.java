@@ -11,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
+import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 
 /**
  * メイドさんのテクスチャをロードする
@@ -37,6 +39,48 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 			"assets/minecraft/textures/entity/littleMaid/",
 			"mob/ModelMulti/",
 			"mob/littleMaid/");
+	
+	
+	/**
+	 * キャッシュフラグ
+	 */
+	private boolean isCache = false;
+	
+	/**
+	 * キャッシュファイル名
+	 */
+	private String cacheFileName = "cache_texturepack.json";
+	
+	/**
+	 * Handlerの初期化処理
+	 * キャッシュ確認しキャッシュがあれば読込する
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void init() {
+		
+		//キャッシュ機能の利用可否
+		if (!LMRConfig.cfg_loader_is_cache) return;
+		
+		//キャッシュファイルの読み込み
+		textureMap = (Map<String, List<String>>) ResourceFileHelper.readFromJson(this.cacheFileName, Map.class);
+		
+		if (textureMap != null) {
+			this.isCache = true;
+		} else {
+			//初期化
+			textureMap = new TreeMap<>();
+		}
+	}
+	
+	/**
+	 * キャッシュがある場合は読み込み処理を行わない
+	 */
+	@Override
+	public boolean isFileLoad() {
+		return !this.isCache;
+	}
+	
 	
 	/**
 	 * 対象ファイルがテクスチャか判断する
@@ -81,6 +125,20 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 			//カラー番号が不正な場合はエラーとして扱う
 			LittleMaidReengaged.logger.error(String.format("LMTextureHandler-ColorIndexException : %s", path));
 		}
+	}
+	
+	/**
+	 * ファイル読込後の処理
+	 * キャッシュファイルを出力する
+	 */
+	@Override
+	public void postLoadHandler() {
+		
+		//キャッシュファイルを出力する
+		if (LMRConfig.cfg_loader_is_cache) {
+			ResourceFileHelper.writeToJson(this.cacheFileName, textureMap);
+		}
+		
 	}
 	
 	/**
