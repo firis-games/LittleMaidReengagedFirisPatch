@@ -104,6 +104,9 @@ public class LMRConfig {
 	/** 試験中の追加機能 メイドアバター */
 	public static boolean cfg_prottype_maid_avatar = false;
 	
+	/** ファイルローダー機能のキャッシュ機能のON/OFF設定 */
+	public static boolean cfg_loader_is_cache = true;
+	
 	/**
 	 * Config初期化
 	 */
@@ -228,6 +231,11 @@ public class LMRConfig {
 		String[] noCookingItemIds = new String[] {"minecraft:iron_sword", "minecraft:golden_sword"};
 		cfg_cock_no_cooking_item_ids = Arrays.asList(cfg.getStringList("NotCookingItemIds", "Cock", noCookingItemIds,
 				"Set the item ID that does not cook in the furnace."));
+		
+		
+		//ファイルローダー機能のキャッシュ機能設定
+		cfg_loader_is_cache = cfg.getBoolean("EnableFileLoaderCache", "Loader", true,
+				"Enable FileLoader Caching.");
 		
 		cfg.save();
 	}

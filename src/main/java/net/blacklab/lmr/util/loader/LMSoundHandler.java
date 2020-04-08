@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidSound;
 import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 
@@ -48,6 +49,9 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 	 */
 	@Override
 	public void init() {
+		
+		//キャッシュ機能の利用可否
+		if (!LMRConfig.cfg_loader_is_cache) return;
 		
 		//キャッシュファイルの読み込み
 		resourceLittleMaidSound = ResourceFileHelper.readFromJson(this.cacheFileName, JsonResourceLittleMaidSound.class);
@@ -248,7 +252,9 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 		}
 		
 		//キャッシュファイルを出力する
-		ResourceFileHelper.writeToJson(this.cacheFileName, resourceLittleMaidSound);
+		if (LMRConfig.cfg_loader_is_cache) {
+			ResourceFileHelper.writeToJson(this.cacheFileName, resourceLittleMaidSound);
+		}
 		
 	}
 }
