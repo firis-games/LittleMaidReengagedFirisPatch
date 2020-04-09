@@ -1038,17 +1038,18 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 	*/
 
+	/*
 	@Override
 	public void playLivingSound() {
 		if (!getEntityWorld().isRemote) return;
 		// 普段の声
 		//LMM_LittleMaidMobNX.Debug("DEBUG INFO=tick %d", livingSoundTick);
 		//livingSoundTick--;
-		if(getAttackTarget()!=null/* || Math.random() > 0.3*/) return;
+		if(getAttackTarget()!=null/ * || Math.random() > 0.3 * /) return;
 		EnumSound so = EnumSound.Null;
 		if (getHealth() < 10)
 			so = EnumSound.living_whine;
-		else /*if (rand.nextFloat() < maidSoundRate) */{
+		else / * if (rand.nextFloat() < maidSoundRate) * /{
 			if (mstatTime > 23500 || mstatTime < 1500) {
 				so = EnumSound.living_morning;
 			} else if (mstatTime < 12500) {
@@ -1087,6 +1088,66 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		this.playLittleMaidVoiceSound(so, false);
 		//	livingSoundTick = 1;
 		//}
+	}
+	*/
+	
+	/**
+	 * メイドさんの普段の啼声
+	 */
+	@Override
+	public void playLivingSound() {
+		
+		//クライアントのみ
+		if (!getEntityWorld().isRemote) return;
+		
+		//戦闘中はしゃべらない
+		if(getAttackTarget() != null) return;
+		
+		//現在時刻
+		int worldtime = (int)(getEntityWorld().getWorldTime() % 24000);
+		
+		EnumSound sound = EnumSound.Null;
+		
+		//HPが低い時
+		if (getHealth() < 10) {
+			sound = EnumSound.living_whine;
+			
+		//天気による
+		} else if (getEntityWorld().isRaining()) {
+			Biome biome = world.getBiome(getPosition());
+			//雪か雨
+			if (biome.isSnowyBiome()) {
+				//雪の時
+				sound = EnumSound.living_snow;
+			} else {
+				//雨の時
+				sound = EnumSound.living_rain;
+			}
+		//おはようの挨拶
+		} else if (worldtime > 23500 || worldtime < 1500) {
+			sound = EnumSound.living_morning;
+		//こんにちはの挨拶
+		} else if (worldtime < 12500) {
+			sound = EnumSound.living_daytime;
+			
+			//バイオームの気温でセリフ変更
+			Biome biome = getEntityWorld().getBiome(getPosition());
+			TempCategory tempCategory = biome.getTempCategory();
+			if (tempCategory == TempCategory.COLD) {
+				sound = EnumSound.living_cold;
+			} else if (tempCategory == TempCategory.WARM) {
+				sound = EnumSound.living_hot;
+			}
+			
+		//こんばんはの挨拶
+		} else {
+			sound = EnumSound.living_night;
+		}
+		
+		LittleMaidReengaged.Debug("id:%d LivingSound:%s", getEntityId(), getEntityWorld() == null ? "null" : getEntityWorld().isRemote ? "Client" : "Server");
+		
+		//Sound設定
+		this.playLittleMaidVoiceSound(sound, false);
 	}
 
 	@Override
