@@ -106,19 +106,8 @@ public class LittleMaidSoundManager {
 		}
 	}
 	
-	
 	/**
-	 * レート設定をもとにボイス再生をするかの判断を行う
-	 * @return
-	 */
-	protected boolean isRandomPlayVoiceSound() {
-		if(Math.random() > LMRConfig.cfg_voiceRate) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
+	 * EntityLittleMaid.onEntityUpdateで呼び出す
 	 * 音声の再生はonEntityUpdate内で行っている
 	 */
 	public void onEntityUpdate() {
@@ -153,20 +142,17 @@ public class LittleMaidSoundManager {
 				continue;
 			}
 			
-			//音声レートを取得する（作り直し予定）
-			//音声の個別レートを判断する
-			/*
-			if ((sound.index & 0xf00) == EnumSound.living_daytime.index) {
+			//通常啼声のレート設定
+			//0x500番台はレート判定する
+			if ((sound.index & 0xf00) == 0x500) {
 				// LivingSound LivingVoiceRateを確認
-				Float ratio = SoundRegistry.getLivingVoiceRatio(soundName);
-				if (ratio == null) ratio = LMRConfig.cfg_voiceRate;
+				Float ratio = this.getLivingVoiceRatio(soundName);
 				// カットオフ
-				if (maid.rand.nextFloat() > ratio) {
+				if (Math.random() > ratio) {
 					playingSound.remove(sound);
 					continue;
 				}
 			}
-			*/
 			
 			//音声の再生
 			LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", maid.getEntityId(), sound.index, sound.name(), soundName));
@@ -180,10 +166,38 @@ public class LittleMaidSoundManager {
 
 	}
 	
+	/**
+	 * EntityLittleMaid.onUpdateで呼び出す
+	 */
 	public void onUpdate() {
 		if (maidVoiceSoundInterval > 0) {
 			maidVoiceSoundInterval--;
 		}
+	}
+	
+	/**
+	 * レート設定をもとにボイス再生をするかの判断を行う
+	 * @return
+	 */
+	protected boolean isRandomPlayVoiceSound() {
+		if(Math.random() > LMRConfig.cfg_voiceRate) {
+			return false;
+		}
+		return true;
+	}
+	
+	
+	/**
+	 * LivingVoiceRateを取得する
+	 * @param soundName
+	 * @return
+	 */
+	protected Float getLivingVoiceRatio(String sound) {
+
+		//soundからサウンドパック名を取得
+		String soundpack = sound.substring(0 , sound.lastIndexOf("."));
+		
+		return SoundManager.instance.getLivingVoiceRatio(soundpack);
 	}
 	
 }

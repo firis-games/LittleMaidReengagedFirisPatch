@@ -4,7 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -47,6 +49,11 @@ public class SoundManager {
 	private List<String> classloaderResoucePath = new ArrayList<>();
 	
 	/**
+	 * LivingVoiceRateの一覧
+	 */
+	private Map<String, Float> livingVoiceRate = new HashMap<>();
+	
+	/**
 	 * sounds.jsonファイルの定義
 	 */
 	private String sounds_json = "";
@@ -75,6 +82,7 @@ public class SoundManager {
 		//セットアップ
 		//Mod内で使用する形式へ変換する
 		for (ResourceLittleMaidSoundpack soundinfo : LMSoundHandler.resourceLittleMaidSound.getSoundpackList()) {
+			
 			//変換処理
 			for(String voiceId : soundinfo.voices.keySet()) {
 				//クラスローダーのパスをセットする
@@ -82,6 +90,10 @@ public class SoundManager {
 					classloaderResoucePath.add(voicePath);
 				}
 			}
+			
+			//livingVoiceのリストを作成する
+			this.livingVoiceRate.put(soundinfo.soundpackName, soundinfo.livingVoiceRate);
+			
 		}
 	}
 	
@@ -281,5 +293,20 @@ public class SoundManager {
 			e.printStackTrace();
 		};
 		return is;
+	}
+	
+	/**
+	 * LivingVoiceのレートを取得する
+	 * @param textureName
+	 * @return
+	 */
+	public Float getLivingVoiceRatio(String soundpack) {
+		
+		if (this.livingVoiceRate.containsKey(soundpack)) {
+			return this.livingVoiceRate.get(soundpack);
+		}
+		
+		//対象外の場合は標準レートを返却する
+		return LMRConfig.cfg_voiceRate;
 	}
 }
