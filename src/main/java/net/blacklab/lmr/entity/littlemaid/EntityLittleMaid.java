@@ -1149,6 +1149,72 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		//Sound設定
 		this.playLittleMaidVoiceSound(sound, false);
 	}
+	
+	/**
+	 * 時計もちメイドさんのVoiceフラグ
+	 * 0:リセット状態
+	 * 1:朝の挨拶後
+	 * 2:夜の挨拶後
+	 */
+	private int littleMaidClockVoiceFlg = 0;
+	
+	/**
+	 * 時計もちメイドさんの啼声
+	 */
+	public void playLivingSoundLittleMaidWithClock() {
+		
+		//サーバーで判断
+		if (getEntityWorld().isRemote) return;
+		
+		//1秒に1回だけ処理を行う
+		if (this.ticksExisted % 20 != 0) return;
+		
+		//契約メイドさんのみ
+		if (!this.isContractEX()) return;
+		
+		//戦闘中はしゃべらない
+		if(getAttackTarget() != null) return;
+		
+		//時計所持
+		if (maidInventory.getInventorySlotContainItem(Items.CLOCK) == -1) return;
+		
+		//ご主人さまとの距離
+		EntityPlayer player = getMaidMasterEntity();
+		if (player == null) return;
+		double masterDistanceSq = getDistanceSq(player);
+		
+		//5マス以上離れている場合は何もしない
+		double range = 5.0D * 5.0D;
+		if (masterDistanceSq > range) return;
+		
+		//視線が通っているか
+		if (!getEntitySenses().canSee(player)) return;
+		
+		EnumSound sound = EnumSound.Null;
+
+		//現在時刻
+		int worldtime = (int)(getEntityWorld().getWorldTime() % 24000);
+		
+		//時間帯によって変える
+		//6:00 - 7:30まで
+		if (littleMaidClockVoiceFlg != 1 && worldtime <= 1500) {
+			//朝の挨拶
+			sound = EnumSound.goodmorning;
+			littleMaidClockVoiceFlg = 1;
+			
+		//18:00 - 
+		} else if (littleMaidClockVoiceFlg != 2 && 12000 <= worldtime && player.isPlayerSleeping()) {
+			//おやすみなさい
+			sound = EnumSound.goodnight;
+			littleMaidClockVoiceFlg = 2;
+			
+		}
+		
+		//ボイス再生
+		if (sound != EnumSound.Null) {
+			playLittleMaidVoiceSound(sound, false);
+		}
+	}
 
 	@Override
 	public void onKillEntity(EntityLivingBase par1EntityLiving) {
@@ -2286,6 +2352,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 					}
 				}
 			}
+			/*
 			// 時計を持っている
 			// TODO:多分この辺りの処理はおかしい
 			if (isContractEX() && mstatClockMaid) {
@@ -2321,6 +2388,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			} else {
 				mstatTime = 6000;
 			}
+			*/
+			//時計を持ったメイドさん
+			this.playLivingSoundLittleMaidWithClock();
 
 			// TNT-D System
 			maidOverDriveTime.onUpdate();

@@ -144,7 +144,8 @@ public class LittleMaidSoundManager {
 			
 			//通常啼声のレート設定
 			//0x500番台はレート判定する
-			if ((sound.index & 0xf00) == 0x500) {
+			//0x5x0番台は対象外
+			if ((sound.index & 0xff0) == 0x500) {
 				// LivingSound LivingVoiceRateを確認
 				Float ratio = this.getLivingVoiceRatio(soundName);
 				// カットオフ
