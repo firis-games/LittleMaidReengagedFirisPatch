@@ -550,7 +550,7 @@ public class ModelManager {
 								(zipentry.getName().startsWith(lt1) 
 										|| zipentry.getName().startsWith(lt2)
 										|| (!zipentry.getName().equals(zipentry.getName().toLowerCase())))) {
-							OldZipTexturesWrapper.keys.add(zipentry.getName());
+							OldZipTexturesWrapper.addTexturePath(zipentry.getName());
 						}
 					}
 				}
@@ -599,7 +599,7 @@ public class ModelManager {
 									(loc.startsWith(lt1) 
 											|| loc.startsWith(lt2)
 											|| (!loc.equals(loc.toLowerCase())))) {
-								OldZipTexturesWrapper.keys.add(loc);
+								OldZipTexturesWrapper.addTexturePath(loc);
 							}
 //							addTextureName(s.substring(i).replace('\\', '/'));
 						}
@@ -877,7 +877,7 @@ public class ModelManager {
 				//OldZipTexturesWrapperで差し替えて対応する
 				if(FMLCommonHandler.instance().getSide() == Side.CLIENT &&
 						((!texturePath.equals(texturePath.toLowerCase())))) {
-					OldZipTexturesWrapper.keys.add(texturePath);
+					OldZipTexturesWrapper.addTexturePath(texturePath);
 				}	
 			}
 			

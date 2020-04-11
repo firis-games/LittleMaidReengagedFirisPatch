@@ -110,6 +110,9 @@ public class LMRConfig {
 	/** sounds.jsonファイルの出力設定 */
 	public static boolean cfg_loader_output_sounds_json = false;
 	
+	/** テクスチャのリソースパックロードモード設定 */
+	public static boolean cfg_loader_texture_load_from_resoucepack = false;
+	
 	/**
 	 * Config初期化
 	 */
@@ -243,6 +246,10 @@ public class LMRConfig {
 		//sounds.jsonファイルの出力設定
 		cfg_loader_output_sounds_json = cfg.getBoolean("OutputSoundsJson", "Loader", false,
 				"Output sounds.json.");
+		
+		//テクスチャのリソースパックロードの設定
+		cfg_loader_texture_load_from_resoucepack = cfg.getBoolean("EnableTextureLoadResourcepack", "Loader", false,
+				"Developer mode setting. Reads a texture from a resourcepack.");
 		
 		cfg.save();
 	}
