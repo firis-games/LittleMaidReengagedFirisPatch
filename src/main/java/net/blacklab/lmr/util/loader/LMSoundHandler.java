@@ -225,7 +225,9 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 					//パッケージ名がない場合はsearchPathから生成する
 					if (voicePackageName.equals("")) {
 						//一番後ろの各効果音の名前を排除する
-						voicePackageName = searhPath.substring(0, searhPath.lastIndexOf("/"));
+						if (searhPath.lastIndexOf("/") != -1) {
+							voicePackageName = searhPath.substring(0, searhPath.lastIndexOf("/"));
+						}
 					}
 					
 					String voideId = voiceKey.replace("se_", "");
@@ -247,7 +249,8 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 			
 			//パッケージがない場合
 			if (voicePackageName.equals("")) {
-				voicePackageName = filekey;
+				//拡張子除去
+				voicePackageName = filekey.substring(0, filekey.lastIndexOf("."));
 			}
 			
 			//データが生成できた場合は保存する
