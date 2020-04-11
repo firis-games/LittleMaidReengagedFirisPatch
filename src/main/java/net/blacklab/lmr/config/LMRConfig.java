@@ -113,6 +113,9 @@ public class LMRConfig {
 	/** テクスチャのリソースパックロードモード設定 */
 	public static boolean cfg_loader_texture_load_from_resoucepack = false;
 	
+	/** LittleMaidAvatarに登録するLayer設定 */
+	public static List<String> cfg_lmavatar_include_layer = null;
+	
 	/**
 	 * Config初期化
 	 */
@@ -250,6 +253,11 @@ public class LMRConfig {
 		//テクスチャのリソースパックロードの設定
 		cfg_loader_texture_load_from_resoucepack = cfg.getBoolean("EnableTextureLoadResourcepack", "Loader", false,
 				"Developer mode setting. Reads a texture from a resourcepack.");
+		
+		//指定されたIDのLayerは登録する
+		String[] lma_include_layer = new String[] {"LayerSlashBlade"};
+		cfg_lmavatar_include_layer = Arrays.asList(cfg.getStringList("IncludeLayer", "LMAvatar", lma_include_layer, 
+				"Add Layer containing specified characters to LMAvatar."));
 		
 		cfg.save();
 	}

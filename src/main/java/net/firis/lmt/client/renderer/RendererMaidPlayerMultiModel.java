@@ -2,6 +2,8 @@ package net.firis.lmt.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 
+import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.firis.lmt.client.event.ClientEventLMAvatar;
 import net.firis.lmt.client.model.ModelLittleMaidMultiModel;
 import net.firis.lmt.client.renderer.layer.LayerArmorLittleMaidMultiModel;
@@ -77,9 +79,16 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	@Override
 	public <V extends EntityLivingBase, U extends LayerRenderer<V>> boolean addLayer(U layer)
     {
-		if (!this.isLayerLoading) return true;
-		
-        return super.addLayer(layer);
+		if (!this.isLayerLoading) {
+			if (LMRConfig.cfg_lmavatar_include_layer.stream()
+				.anyMatch(p -> layer.getClass().toString().indexOf(p) > -1)) {
+				LittleMaidReengaged.logger.info("LittleMaidAvatar include layer : " + layer.getClass().toString());
+			} else {
+				LittleMaidReengaged.logger.info("LittleMaidAvatar exclude layer : " + layer.getClass().toString());
+				return true;
+			}
+		}
+		return super.addLayer(layer);
     }
 	
 	/**
