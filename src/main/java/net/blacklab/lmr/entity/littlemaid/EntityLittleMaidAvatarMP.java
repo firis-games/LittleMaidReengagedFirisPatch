@@ -3,6 +3,8 @@ package net.blacklab.lmr.entity.littlemaid;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
@@ -979,5 +981,59 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
      */
     private DamageSource getDamageSourceMob() {
     	return DamageSource.causeMobDamage(this.getMaid());
+    }
+    
+    //********************************************************************************
+    // メイドさんインベントリ用Capability
+    //********************************************************************************
+    private net.minecraftforge.items.IItemHandler playerMainHandler = null;
+    private net.minecraftforge.items.IItemHandler playerEquipmentHandler = null;
+    private net.minecraftforge.items.IItemHandler playerJoinedHandler = null;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @Nullable
+    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing)
+    {
+        if (capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+        	//条件なし
+        	//インベントリ全体
+            if (facing == null) {
+            	if (playerJoinedHandler == null) {
+            		playerJoinedHandler = new net.minecraftforge.items.wrapper.PlayerInvWrapper(this.avatar.maidInventory);
+            	}
+            	return (T) playerJoinedHandler;
+            
+           	//up or down
+            //MainHandとOffHandのインベントリ
+            } else if (facing.getAxis().isVertical()) {
+            	if (playerMainHandler == null) {
+            		playerMainHandler = new net.minecraftforge.items.wrapper.PlayerMainInvWrapper(this.avatar.maidInventory);
+            	}
+            	return (T) playerMainHandler;
+            	
+            //north(方角)
+            //メインインベントリ
+            } else if (facing.getAxis().isHorizontal()) {
+            	if (playerEquipmentHandler == null) {
+            		playerEquipmentHandler = new net.minecraftforge.items.wrapper.CombinedInvWrapper(
+                            new net.minecraftforge.items.wrapper.PlayerArmorInvWrapper(this.avatar.maidInventory),
+                            new net.minecraftforge.items.wrapper.PlayerOffhandInvWrapper(this.avatar.maidInventory));
+            	}
+            	return (T) playerEquipmentHandler;
+            }
+        }
+        return super.getCapability(capability, facing);
+    }
+    
+    /**
+     * メイドさんのCapability判定
+     */
+    @Override
+    public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable net.minecraft.util.EnumFacing facing)
+    {
+    	if (this.avatar == null) return false;
+    	return super.hasCapability(capability, facing);
     }
 }
