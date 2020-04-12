@@ -101,8 +101,8 @@ public class LMRConfig {
 	/** 開発用テストモジュールの有効化設定 */
 	public static boolean cfg_developer_test_module = false;
 	
-	/** 試験中の追加機能 メイドアバター */
-	public static boolean cfg_prottype_maid_avatar = false;
+	/** メイドアバター */
+	public static boolean cfg_lmabatar_maid_avatar = false;
 	
 	/** ファイルローダー機能のキャッシュ機能のON/OFF設定 */
 	public static boolean cfg_loader_is_cache = true;
@@ -259,6 +259,10 @@ public class LMRConfig {
 		cfg_lmavatar_include_layer = Arrays.asList(cfg.getStringList("IncludeLayer", "LMAvatar", lma_include_layer, 
 				"Add Layer containing specified characters to LMAvatar."));
 		
+		//メイドアバター機能
+		cfg_lmabatar_maid_avatar = cfg.getBoolean("EnableLittleMaidAvatar", "LMAvatar", false,
+				"Player looks like a LittleMaid.");
+		
 		cfg.save();
 	}
 	
@@ -362,9 +366,6 @@ public class LMRConfig {
 		cfg_secret_maid_milk_producer_label = cfg.getString("MaidMilkLabel_DisplayLabel", "Secret", "%s印のミルク",
 				"Maid milk producer display label.");
 		
-		//プロトタイプ機能
-		cfg_prottype_maid_avatar = cfg.getBoolean("PlayerMaidAvatar", "xProttype", false,
-				"Player looks like a LittleMaid.This is a work in progress.");
 	}
 	
 }

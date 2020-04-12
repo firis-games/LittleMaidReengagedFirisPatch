@@ -42,7 +42,7 @@ public class LMTCore {
 		////開発環境のみ実行
 		//if (!DevMode.DEVELOPMENT_DEBUG_MODE || !LMRConfig.cfg_developer_test_module) return false;
 		
-		if (!LMRConfig.cfg_prottype_maid_avatar) return false;
+		if (!LMRConfig.cfg_lmabatar_maid_avatar) return false;
 		
 		return true;
 	}
