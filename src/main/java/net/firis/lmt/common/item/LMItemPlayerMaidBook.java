@@ -1,14 +1,16 @@
 package net.firis.lmt.common.item;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.firis.lmt.config.FirisConfig;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.common.config.Property;
 
 public class LMItemPlayerMaidBook extends Item {
 	
@@ -44,34 +46,70 @@ public class LMItemPlayerMaidBook extends Item {
 	 */
 	public void setDressUpPlayerFromMaid(EntityPlayer player, Entity entity) {
 		
+		if (!player.world.isRemote) return;
+		
 		if (!(entity instanceof EntityLittleMaid)) return;
 		
 		//対象のメイドさんからモデル情報を取得する
-		EntityLittleMaid enityMaid = (EntityLittleMaid) entity;
+		EntityLittleMaid entityMaid = (EntityLittleMaid) entity;
 		
 		//メイドモデル名取得
-		String maidModelName = enityMaid.getTextureBox()[0].textureName;
-		String armorModelName = enityMaid.getTextureBox()[1].textureName;
+		String maidModelName = entityMaid.getTextureBox()[0].textureName;
+		Integer maidModelColor = (int) entityMaid.getColor();
+		String armorModelName = entityMaid.getTextureBox()[1].textureName;
 		
-		//メイドさんのテクスチャ
-		String maidTexture = enityMaid.getTextures(0)[0].toString();
+		//メイドモデルの設定
+		if (!player.isSneaking()) {
+			
+			//Config操作用
+			Property propModel = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "01.MaidModel", FirisConfig.cfg_maid_model);
+			Property propModelColor = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "02.MaidColorNo", FirisConfig.cfg_maid_color);
+
+			//メイドモデルの指定
+			propModel.set(maidModelName);
+			propModelColor.set(maidModelColor);
+			
+		//アーマーモデルの設定
+		} else {
+			
+			//Config操作用
+			Property propModelArmorHelmet = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "03.ArmorHelmetModel", FirisConfig.cfg_armor_model_head);
+			Property propModelArmorChest = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "04.ArmorChestplateModel", FirisConfig.cfg_armor_model_body);
+			Property propModelArmorLegg = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "05.ArmorLeggingsModel", FirisConfig.cfg_armor_model_leg);
+			Property propModelArmorBoots = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "06.ArmorBootsModel", FirisConfig.cfg_armor_model_boots);
+			
+			//スニーク中はアーマーモデルも設定
+			if (player.getHeldItemOffhand().isEmpty()) {
+				
+				//全部のモデルを反映
+				propModelArmorHelmet.set(armorModelName);
+				propModelArmorChest.set(armorModelName);
+				propModelArmorLegg.set(armorModelName);
+				propModelArmorBoots.set(armorModelName);
+				
+			} else {
+				ItemStack offHandStack = player.getHeldItemOffhand();
+				//頭防具
+				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.HEAD, player)) {
+					propModelArmorHelmet.set(armorModelName);
+				}
+				//胴防具
+				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.CHEST, player)) {
+					propModelArmorChest.set(armorModelName);
+				}
+				//腰防具
+				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.LEGS, player)) {
+					propModelArmorLegg.set(armorModelName);
+				}
+				//足防具
+				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.FEET, player)) {
+					propModelArmorBoots.set(armorModelName);
+				}
+			}
+		}
 		
-		//防具テクスチャ(頭防具から)
-		String armorTexture0 = enityMaid.getTextures(1)[0] == null ? "" : enityMaid.getTextures(1)[0].toString();
-		String armorTexture1 = enityMaid.getTextures(1)[1] == null ? "" : enityMaid.getTextures(1)[1].toString();
-		String armorTexture2 = enityMaid.getTextures(1)[2] == null ? "" : enityMaid.getTextures(1)[2].toString();
-		String armorTexture3 = enityMaid.getTextures(1)[3] == null ? "" : enityMaid.getTextures(1)[3].toString();
-		
-		NBTTagCompound nbt = player.getEntityData();
-		
-		nbt.setString("maidModel", maidModelName);
-		nbt.setString("armorModel", armorModelName);
-		nbt.setString("maidTexture", maidTexture);
-		nbt.setString("armorTexture0", armorTexture0);
-		nbt.setString("armorTexture1", armorTexture1);
-		nbt.setString("armorTexture2", armorTexture2);
-		nbt.setString("armorTexture3", armorTexture3);
+		//設定ファイル同期
+		FirisConfig.syncConfig();
 		
 	}
-
 }
