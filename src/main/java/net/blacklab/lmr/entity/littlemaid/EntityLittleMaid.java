@@ -1147,7 +1147,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		LittleMaidReengaged.Debug("id:%d LivingSound:%s", getEntityId(), getEntityWorld() == null ? "null" : getEntityWorld().isRemote ? "Client" : "Server");
 		
 		//Sound設定
-		this.playLittleMaidVoiceSound(sound, false);
+		this.playLittleMaidVoiceSound(sound, true);
 	}
 	
 	/**
@@ -3408,7 +3408,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 							//getNavigator().clearPath();
 							//OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
 
-							playLittleMaidVoiceSound(EnumSound.getCake, true);
+							playLittleMaidVoiceSound(EnumSound.getCake, false);
 //							playLittleMaidSound(LMM_EnumSound.getCake, true);
 //							playTameEffect(true);
 							getEntityWorld().setEntityState(this, (byte)7);
