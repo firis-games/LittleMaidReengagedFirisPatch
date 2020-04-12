@@ -165,6 +165,7 @@ commands.lmcommand.list.failure=近くにメイドさんはいないようだ...
 littlemaid.inventory.name=InsideSkirt
 
 item.player_maid_book.name=メイドさんになる本
+item.player_maid_book.info=あなたをメイドさん
 
 littleMaidMob.mode.Angler=釣り師の小娘
 littleMaidMob.mode.F-Angler=釣り人メイド

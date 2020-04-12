@@ -1,7 +1,13 @@
 package net.firis.lmt.common.item;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.firis.lmt.config.FirisConfig;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,7 +16,11 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LMItemPlayerMaidBook extends Item {
 	
@@ -112,4 +122,11 @@ public class LMItemPlayerMaidBook extends Item {
 		FirisConfig.syncConfig();
 		
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+		tooltip.add(TextFormatting.LIGHT_PURPLE + I18n.format("item.player_maid_book.info"));
+    }
 }

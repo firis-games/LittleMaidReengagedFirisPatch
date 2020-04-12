@@ -168,6 +168,7 @@ commands.lmcommand.list.failure=Looks like there is no maid nearby.
 littlemaid.inventory.name=InsideSkirt
 
 item.player_maid_book.name=Player Maid Model
+item.player_maid_book.info=Your Maid
 
 littleMaidMob.mode.Angler=Angler girl
 littleMaidMob.mode.F-Angler=Angler Maid

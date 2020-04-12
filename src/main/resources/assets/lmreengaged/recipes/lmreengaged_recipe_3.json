@@ -1,0 +1,18 @@
+{
+	"type": "forge:ore_shapeless",
+	"ingredients": [
+	{
+		"item": "minecraft:sugar"
+	},
+	{
+		"item": "minecraft:dye",
+		"data": 5
+	},
+	{
+		"item": "minecraft:book"
+	}
+	],
+	"result": {
+		"item": "lmreengaged:player_maid_book"
+	}
+}
