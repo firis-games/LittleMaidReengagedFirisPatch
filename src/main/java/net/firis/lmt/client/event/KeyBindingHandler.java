@@ -2,9 +2,11 @@ package net.firis.lmt.client.event;
 
 import org.lwjgl.input.Keyboard;
 
+import net.firis.lmt.config.FirisConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -23,13 +25,16 @@ public class KeyBindingHandler {
 	 * Avatarアクション用
 	 * defalut:＠キー
 	 */
-	public static final KeyBinding keyLittleMaidAvatarAction = new KeyBinding("key.littlemaid.avatar.action", Keyboard.KEY_GRAVE, "advancements.root");
-
+	public static final KeyBinding keyLittleMaidAvatarAction = new KeyBinding("key.lmavatar.action", Keyboard.KEY_GRAVE, "advancements.root");
+	
+	public static final KeyBinding keyLittleMaidAvatarChange = new KeyBinding("key.lmavatar.change", Keyboard.KEY_SEMICOLON, "advancements.root");
+	
 	/**
 	 * キーバインド初期化
 	 */
 	public static void init() {
 		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarAction);
+		ClientRegistry.registerKeyBinding(keyLittleMaidAvatarChange);
 	}
 	
 	/**
@@ -43,6 +48,11 @@ public class KeyBindingHandler {
 			//アクションの制御はすべてClient側で行う
 			EntityPlayer player = Minecraft.getMinecraft().player;
 			LittleMaidAvatarClientTickEventHandler.lmAvatarAction.setStat(player, true);
+		} else if (keyLittleMaidAvatarChange.isKeyDown()) {
+			//GuiConfigの変更
+			Property propEnableLMAvatar = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "07.EnableLMAvatar", FirisConfig.cfg_enable_lmavatar);
+			propEnableLMAvatar.set(!FirisConfig.cfg_enable_lmavatar);
+			FirisConfig.syncConfig();
 		}
 	}
 	

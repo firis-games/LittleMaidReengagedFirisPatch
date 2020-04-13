@@ -183,3 +183,6 @@ littleMaidMob.mode.T-SugarCanePort=お砂糖運び隊(赤石)
 littleMaidMob.mode.T-ShearerPort=もふもふ運び隊(赤石)
 littleMaidMob.mode.T-AnglerPort=おさかな運び隊(赤石)
 
+key.lmavatar.action=LMアバターアクション
+key.lmavatar.change=LMアバター切り替え
+

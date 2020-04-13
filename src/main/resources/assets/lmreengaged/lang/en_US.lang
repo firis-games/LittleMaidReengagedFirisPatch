@@ -186,4 +186,6 @@ littleMaidMob.mode.T-SugarCanePort=SugarCane Carry(Trace RS)
 littleMaidMob.mode.T-ShearerPort=Shearer Carry(Trace RS)
 littleMaidMob.mode.T-AnglerPort=Angler Carry(Trace RS)
 
+key.lmavatar.action=LMAvatar Action
+key.lmavatar.change=LMAvatar Change
 

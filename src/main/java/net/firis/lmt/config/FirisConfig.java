@@ -32,6 +32,11 @@ public class FirisConfig {
 	public static String cfg_armor_model_leg = "";
 	public static String cfg_armor_model_boots = "";
 	
+	/**
+	 * LMアバターの有効化無効化
+	 */
+	public static boolean cfg_enable_lmavatar = true;
+	
 	public static void init(File configDir) {
 		
 		File configFile = new File(configDir, "lmrfp_maidavatar.cfg");
@@ -92,6 +97,11 @@ public class FirisConfig {
 		cfg_armor_model_boots = config.getString("06.ArmorBootsModel", CATEGORY_AVATAR,
 				DEFAULT_MAID_MODEL, 
 				"靴防具モデル名");
+		
+		//LMAvatar有効化無効化
+		cfg_enable_lmavatar = config.getBoolean("07.EnableLMAvatar", CATEGORY_AVATAR,
+				true, 
+				"LMアバターの反映");
 		
 		config.save();
 		

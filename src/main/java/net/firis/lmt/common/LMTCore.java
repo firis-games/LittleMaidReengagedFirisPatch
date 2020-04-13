@@ -104,19 +104,21 @@ public class LMTCore {
 				Minecraft.getMinecraft().getRenderManager(), 
 				new String[] { "skinMap", "field_178636_l" });
 		
-		RenderPlayer renderPlayer = skinMap.get("default");
+		RenderPlayer renderPlayerDefault = skinMap.get("default");
+		RenderPlayer renderPlayerSlim = skinMap.get("slim");
 		//RendererMaidPlayer renderMaidPlayer = new RendererMaidPlayer(renderPlayer);
-		RendererMaidPlayerMultiModel renderMaidPlayer = new RendererMaidPlayerMultiModel(renderPlayer);
+		RendererMaidPlayerMultiModel renderMaidPlayerDefault = new RendererMaidPlayerMultiModel(renderPlayerDefault);
+		RendererMaidPlayerMultiModel renderMaidPlayerSlim = new RendererMaidPlayerMultiModel(renderPlayerSlim);
 		
 		
 		//Minecraft.getMinecraft().getRenderManager().playerRenderer = renderMaidPlayer;
 		ObfuscationReflectionHelper.setPrivateValue(RenderManager.class, 
 				Minecraft.getMinecraft().getRenderManager(),
-				renderMaidPlayer, 
+				renderMaidPlayerDefault, 
 				new String[] { "playerRenderer", "field_178637_m" });
 		
-		skinMap.put("default", renderMaidPlayer);
-		skinMap.put("slim", renderMaidPlayer);
+		skinMap.put("default", renderMaidPlayerDefault);
+		skinMap.put("slim", renderMaidPlayerSlim);
 		
 		
 		//GuiConfig更新イベント登録

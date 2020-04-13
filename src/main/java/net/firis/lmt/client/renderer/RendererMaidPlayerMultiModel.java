@@ -13,6 +13,7 @@ import net.firis.lmt.client.renderer.layer.LayerElytraLittleMaid;
 import net.firis.lmt.client.renderer.layer.LayerEntityOnShoulderLittleMaid;
 import net.firis.lmt.client.renderer.layer.LayerHeldItemLittleMaidMultiModel;
 import net.firis.lmt.common.manager.PlayerModelManager;
+import net.firis.lmt.config.FirisConfig;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelPlayer;
@@ -32,6 +33,17 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	protected static ModelBase dummyMainModel = new ModelPlayer(0.0F, false);
 	
 	/**
+	 * 既存Render
+	 */
+	private final RenderPlayer renderPlayer;
+	
+	/**
+	 * addLayer制御用
+	 * 初期化中だけロード中に設定しAddLayerを有効化する
+	 */
+	private boolean isLayerLoading = false;
+	
+	/**
 	 * コンストラクタ
 	 * @param renderManagerIn
 	 * @param modelBaseIn
@@ -40,6 +52,9 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	public RendererMaidPlayerMultiModel(RenderPlayer renderPlayer) {
 		
 		super(renderPlayer.getRenderManager());
+		
+		//既存のものを保存
+		this.renderPlayer = renderPlayer;
 		
 		//初期化
 		this.layerRenderers.clear();
@@ -67,18 +82,19 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	}
 	
 	/**
-	 * addLayer制御用
-	 * 初期化中だけロード中に設定しAddLayerを有効化する
-	 */
-	private boolean isLayerLoading = false;
-	
-	/**
 	 * レイヤー登録処理
 	 * isInitLayerLoaded=trueの場合はロード済みとしてLayerの登録処理を行わない
 	 */
 	@Override
 	public <V extends EntityLivingBase, U extends LayerRenderer<V>> boolean addLayer(U layer)
     {
+		//通常Layer登録
+		//親クラスの初期化で呼ばれるタイミングはnullのためそこは考慮する
+		if (this.renderPlayer != null && !this.isLayerLoading) {
+			this.renderPlayer.addLayer(layer);
+		}
+		
+		//LMアバター
 		if (!this.isLayerLoading) {
 			if (LMRConfig.cfg_lmavatar_include_layer.stream()
 				.anyMatch(p -> layer.getClass().toString().indexOf(p) > -1)) {
@@ -88,7 +104,9 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 				return true;
 			}
 		}
-		return super.addLayer(layer);
+		super.addLayer(layer);
+		
+		return true; 
     }
 	
 	/**
@@ -96,27 +114,28 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	 */
 	@Override
 	public ResourceLocation getEntityTexture(AbstractClientPlayer entity) {
+		
+		//通常スキン
+		if (!isRenderLMAvatar()) {
+			return this.renderPlayer.getEntityTexture(entity);
+		}
+		
 		//EntityPlayerからテクスチャを取得する
 		//メイドモデルの実装だとこの部分はnullを返却する
 		return PlayerModelManager.getPlayerTexture(entity);
 	}
 	
 	/**
-	 * 試作段階のため通常のPlayerModelをダミーモデルとして返却する
+	 * PlayerModelをダミーモデルとして返却する
 	 */
 	@Override
 	public ModelPlayer getMainModel()
     {
+		if (!isRenderLMAvatar()) {
+			return this.renderPlayer.getMainModel();
+		}
         return (ModelPlayer) dummyMainModel;
     }
-	
-	/**
-	 * model情報を取得する
-	 * @return
-	 */
-	public ModelLittleMaidMultiModel getLittleMaidMultiModel() {
-		return (ModelLittleMaidMultiModel) this.mainModel;
-	}
 	
 	/**
 	 * プレイヤーモデルの初期化をしてから描画処理を行う
@@ -124,8 +143,14 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	@Override
 	public void doRender(AbstractClientPlayer entity, double x, double y, double z, float entityYaw, float partialTicks) {
 	
+		//通常スキン
+		if (!isRenderLMAvatar()) {
+			this.renderPlayer.doRender(entity, x, y, z, entityYaw, partialTicks);
+			return;
+		}
+		
 		//パラメータを初期化
-		((ModelLittleMaidMultiModel) this.mainModel).initPlayerModel(entity, x, y, z, entityYaw, partialTicks);
+		this.getLittleMaidMultiModel().initPlayerModel(entity, x, y, z, entityYaw, partialTicks);
 		
 		//法線の再計算
 		//GlStateManager.enableRescaleNormal();
@@ -139,21 +164,51 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	
 	@Override
 	public void renderRightArm(AbstractClientPlayer clientPlayer) {
+		
+		//通常スキン
+		if (!isRenderLMAvatar()) {
+			this.renderPlayer.renderRightArm(clientPlayer);
+			return;
+		}
+		
 		this.renderFirstPersonArm(clientPlayer);
 	}
 	
 	@Override
 	public void renderLeftArm(AbstractClientPlayer clientPlayer) {
+		
+		//通常スキン
+		if (!isRenderLMAvatar()) {
+			this.renderPlayer.renderLeftArm(clientPlayer);
+			return;
+		}
+		
 		this.renderFirstPersonArm(clientPlayer);		
+	}
+	
+	/**
+	 * model情報を取得する
+	 * @return
+	 */
+	public ModelLittleMaidMultiModel getLittleMaidMultiModel() {
+		return (ModelLittleMaidMultiModel) this.mainModel;
 	}
 	
 	/**
 	 * 一人称視点の手を描画する
 	 */
 	protected void renderFirstPersonArm(AbstractClientPlayer clientPlayer) {
-		
-		((ModelLittleMaidMultiModel) this.mainModel).renderFirstPersonArm(clientPlayer);
-		
+		this.getLittleMaidMultiModel().renderFirstPersonArm(clientPlayer);
+	}
+	
+	/**
+	 * LMアバターが有効化どうか
+	 * @return
+	 */
+	protected boolean isRenderLMAvatar() {
+		//初期化のタイミングはLMアバター扱い
+		if (this.renderPlayer == null) return true;
+		return FirisConfig.cfg_enable_lmavatar;
 	}
 	
 }
