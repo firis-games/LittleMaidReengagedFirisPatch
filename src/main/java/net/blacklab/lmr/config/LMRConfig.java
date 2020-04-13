@@ -37,7 +37,8 @@ public class LMRConfig {
 	// 野生テクスチャ
 	public static boolean cfg_isFixedWildMaid = false;
 
-	public static final float cfg_voiceRate = 0.2f;
+	// VoiceRate
+	public static float cfg_voiceRate = 0.2f;
 	
 	/** メイドの土産 */
 	public static boolean cfg_isResurrection = true;
@@ -154,6 +155,10 @@ public class LMRConfig {
 		
 		cfg_isFixedWildMaid = cfg.getBoolean("isFixedWildMaid", "General", false,
 				"If 'true', only default-texture maid spawns. You can still change their textures after employing.");
+		
+		//メイドさんのランダムVoiceRate
+		cfg_voiceRate = cfg.getFloat("VoiceRate", "General", 0.2F, 0.0F, 1.0F,
+				"Set the maid's daily voice rate.[1.0 = 100%]");
 
 		//メイドの土産設定
 		cfg_isResurrection = cfg.getBoolean("isResurrection", "General", true,
