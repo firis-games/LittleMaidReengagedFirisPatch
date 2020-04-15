@@ -271,7 +271,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	protected int mstatWaitCount;
 	protected int mstatTime;
 	protected Counter maidOverDriveTime;
-	protected boolean mstatFirstLook;
+//	protected boolean mstatFirstLook;
 	protected boolean mstatLookSuger;
 	protected Counter workingCount;
 	protected PlayRole mstatPlayingRole;
@@ -3702,6 +3702,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		//インベントリの同期
 		LMRNetwork.syncLittleMaidInventory(this);
 		this.getNextEquipItem();
+
+		//Inventory Change
+		maidInventory.inventoryChanged = true;
 	}
 
 	// 腕振り

@@ -674,5 +674,19 @@ public class InventoryLittleMaid extends InventoryPlayer {
 			setInventorySlotContents(i, ItemStack.EMPTY);
 		}
 	}
+	
+	/**
+	 * パケットから受け取ったパラメータを反映する
+	 * @param tagList
+	 */
+	public void setPacketInventory(NBTTagList tagList) {
+		
+		//手持ちインベントリのリセット
+		this.clear();
+		
+		//存在するアイテムを反映
+		this.readFromNBT(tagList);
+		
+	}
 
 }

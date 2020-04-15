@@ -596,7 +596,9 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			owner.getNextEquipItem();
 			
 			//インベントリの同期
-			LMRNetwork.syncLittleMaidInventory(owner);
+			if (!beforMode.equals(pMode)) {
+				LMRNetwork.syncLittleMaidInventory(owner);
+			}
 		}
 
 		super.updateAITick(pMode);

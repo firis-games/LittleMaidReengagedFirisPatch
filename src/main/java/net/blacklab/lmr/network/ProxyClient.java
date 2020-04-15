@@ -221,7 +221,7 @@ public class ProxyClient extends ProxyCommon
 			
 		case SERVER_LITTLE_MAID_INVENTORY:
 			//インベントリの同期処理
-			lemaid.maidInventory.readFromNBT(tagCompound.getTagList("Inventory", 10));
+			lemaid.maidInventory.setPacketInventory(tagCompound.getTagList("Inventory", 10));
 
 		default:
 			break;

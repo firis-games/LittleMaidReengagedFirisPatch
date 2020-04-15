@@ -225,6 +225,8 @@ public class LMRNetwork
 	 */
 	public static void syncLittleMaidInventory(EntityLittleMaid maid) {
 		
+		if (maid.world.isRemote) return;
+		
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setTag("Inventory", maid.maidInventory.writeToNBT(new NBTTagList()));
 		sendPacketToAllPlayer(EnumPacketMode.SERVER_LITTLE_MAID_INVENTORY, maid.getEntityId(), nbt);
