@@ -159,12 +159,11 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 			ResourceLocation texOuter = mmodel.textureOuter[renderParts];
 			if(texOuter!=null) try{
 				Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
+	//			mmodel.modelOuter.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
+	//			mmodel.modelOuter.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
+				mmodel.modelOuter.mainFrame.render(renderScale);
+				//mmodel.modelOuter.mainFrame.render(renderScale, true);
 			}catch(Exception e){}
-
-//			mmodel.modelOuter.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
-//			mmodel.modelOuter.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
-			mmodel.modelOuter.mainFrame.render(renderScale);
-			//mmodel.modelOuter.mainFrame.render(renderScale, true);
 		}
 
 		// 発光Outer
