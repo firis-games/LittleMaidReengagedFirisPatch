@@ -677,6 +677,7 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	
 	/**
 	 * パケットから受け取ったパラメータを反映する
+	 * Clientしか呼ばれないはず
 	 * @param tagList
 	 */
 	public void setPacketInventory(NBTTagList tagList) {
@@ -686,6 +687,10 @@ public class InventoryLittleMaid extends InventoryPlayer {
 		
 		//存在するアイテムを反映
 		this.readFromNBT(tagList);
+		
+		//メイドさんのインベントリ更新
+		this.inventoryChanged = true;
+		this.entityLittleMaid.onInventoryChanged();
 		
 	}
 

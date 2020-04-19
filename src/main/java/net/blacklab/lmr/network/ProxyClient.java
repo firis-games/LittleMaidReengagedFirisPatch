@@ -218,6 +218,7 @@ public class ProxyClient extends ProxyCommon
 		case CLIENT_CURRENT_ITEM:
 			lemaid.maidInventory.currentItem = tagCompound.getInteger("Index");
 			lemaid.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(tagCompound.getCompoundTag("Stack")));
+			break;
 			
 		case SERVER_LITTLE_MAID_INVENTORY:
 			//インベントリの同期処理
