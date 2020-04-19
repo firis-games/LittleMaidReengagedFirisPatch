@@ -217,10 +217,11 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 					//littleMaidMob.を削除しパス形式をリソースパスのアクセス形式に変換する
 					String searhPath = voiceValue.replace("littleMaidMob.", "").replace(".", "/");
 					//[任意の文字]searhPath[_]{0,1}[数値].ogg形式のものを検索する
-					String patternPath = ".*" + searhPath + "[_]{0,1}" + "\\d*" + "\\.ogg";
+					//頭に/を付けて後方一致でヒットしてしまうものに対応
+					String patternPath = ".*" + "/" + searhPath + "[_]{0,1}" + "\\d*" + "\\.ogg";
 					//oggListの中でsearchPathを含むものを探す
 					List<String> voiceList = oggList.stream()
-							.filter(v -> v.matches(patternPath))
+							.filter(v -> ("/" + v).matches(patternPath))
 							.collect(Collectors.toList());
 					
 					//パッケージ名がない場合はsearchPathから生成する
