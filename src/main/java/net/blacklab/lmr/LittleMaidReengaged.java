@@ -526,6 +526,8 @@ public class LittleMaidReengaged {
 		//メイドさんコマンドの追加
 		event.registerServerCommand(new LMCommand());
 		
+		//リトルメイドテスト用モジュール
+    	LMTCore.serverStatingEvent(event);
 	}
      
     

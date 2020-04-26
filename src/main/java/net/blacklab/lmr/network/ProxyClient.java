@@ -15,6 +15,7 @@ import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.firis.lmt.common.LMTCore;
+import net.firis.lmt.common.command.LMAvatarCommandClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleItemPickup;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -223,7 +224,13 @@ public class ProxyClient extends ProxyCommon
 		case SERVER_LITTLE_MAID_INVENTORY:
 			//インベントリの同期処理
 			lemaid.maidInventory.setPacketInventory(tagCompound.getTagList("Inventory", 10));
-
+			break;
+			
+		case CLIENT_COMMAND_EXECUTE:
+			//コマンド実行
+			LMAvatarCommandClient.execute(tagCompound.getString("command"), tagCompound.getString("param"));
+			break;
+			
 		default:
 			break;
 		}

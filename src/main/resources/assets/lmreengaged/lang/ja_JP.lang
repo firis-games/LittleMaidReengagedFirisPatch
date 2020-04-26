@@ -186,3 +186,9 @@ littleMaidMob.mode.T-AnglerPort=おさかな運び隊(赤石)
 key.lmavatar.action=LMアバターアクション
 key.lmavatar.change=LMアバター切り替え
 
+commands.lmacommand.save.new=「%s」を新規登録しました
+commands.lmacommand.save.update=「%s」を保存しました
+commands.lmacommand.load=「%s」が読み込まれました
+commands.lmacommand.load.error=「%s」は登録されていません
+commands.lmacommand.list.error=「%s」は登録されていません
+

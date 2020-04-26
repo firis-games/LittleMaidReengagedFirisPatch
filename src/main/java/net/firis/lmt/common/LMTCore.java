@@ -8,9 +8,11 @@ import net.blacklab.lmr.config.LMRConfig;
 import net.firis.lmt.client.event.KeyBindingHandler;
 import net.firis.lmt.client.event.LittleMaidAvatarClientTickEventHandler;
 import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
+import net.firis.lmt.common.command.LMAvatarCommand;
 import net.firis.lmt.common.item.LMItemPlayerMaidBook;
 import net.firis.lmt.config.ConfigChangedEventHandler;
 import net.firis.lmt.config.FirisConfig;
+import net.firis.lmt.config.custom.JConfigLMAvatarManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -22,6 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -169,6 +172,20 @@ public class LMTCore {
 		//設定読込
         FirisConfig.init(event.getModConfigurationDirectory());
         
+        //カスタム設定読込
+        JConfigLMAvatarManager.init();
+        
+	}
+	
+	/**
+	 * テスト用serverStatingEvent
+	 */
+	public static void serverStatingEvent(FMLServerStartingEvent event) {
+		
+		if (!isLMTCore()) return;
+		
+		event.registerServerCommand(new LMAvatarCommand());
+		
 	}
 	
 }
