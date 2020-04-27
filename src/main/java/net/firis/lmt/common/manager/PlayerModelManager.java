@@ -3,8 +3,8 @@ package net.firis.lmt.common.manager;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
-import net.blacklab.lmr.entity.maidmodel.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.firis.lmt.config.FirisConfig;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,9 +1,12 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.texture;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -70,7 +73,7 @@ public class TextureBox extends TextureBoxBase {
 		modelName = pModelName;
 		models = pModels == null ? pDefModels : pModels;
 		textureName = (new StringBuilder()).append(packegeName).append("_").append(modelName).toString();
-		isUpdateSize = (models != null && models[0] != null) ? ModelCapsHelper.getCapsValueBoolean(models[0], IModelCaps.caps_isUpdateSize) : false;
+		setUpdateSize((models != null && models[0] != null) ? ModelCapsHelper.getCapsValueBoolean(models[0], IModelCaps.caps_isUpdateSize) : false);
 	}
 
 	/**
@@ -213,7 +216,7 @@ public class TextureBox extends TextureBoxBase {
 		lbox.textures = textures;
 		lbox.armors = armors;
 		lbox.models = models;
-		lbox.isUpdateSize = lbox.isUpdateSize;
+		lbox.setUpdateSize(lbox.isUpdateSize());
 
 		return lbox;
 	}

@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.maidmodel.TextureBoxBase;
+import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxBase;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;

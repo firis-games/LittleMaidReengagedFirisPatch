@@ -2,6 +2,7 @@ package net.blacklab.lmr.util.helper;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 
+@Deprecated
 public class LoaderHelper {
 	
 	/**

@@ -3,6 +3,11 @@ package net.blacklab.lmr.entity.maidmodel;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxBase;
+import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxServer;
 import net.blacklab.lmr.util.EnumArmorRenderParts;
 import net.blacklab.lmr.util.EnumTextureType;
 import net.blacklab.lmr.util.helper.CommonHelper;
@@ -303,7 +308,7 @@ public class ModelConfigCompound  {
 		if(textureBox!=null && textureBox.length>0 && textureBox[0]!=null)
 		{
 			// モデルサイズのリアルタイム変更有り？
-			if (textureBox[0].isUpdateSize) {
+			if (textureBox[0].isUpdateSize()) {
 				setSize();
 			}
 		}

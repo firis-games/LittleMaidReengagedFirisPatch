@@ -1,5 +1,6 @@
 package net.blacklab.lmr.entity.maidmodel;
 
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;

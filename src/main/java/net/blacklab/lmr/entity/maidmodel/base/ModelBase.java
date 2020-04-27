@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
 import net.minecraft.client.model.TextureOffset;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.math.MathHelper;

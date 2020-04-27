@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.base;
 
 /**
  * マルチモデル用識別クラス<br>

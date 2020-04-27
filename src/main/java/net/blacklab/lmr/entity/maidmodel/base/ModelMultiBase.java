@@ -1,8 +1,10 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.base;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;

@@ -1,10 +1,13 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.base;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.lwjgl.opengl.GL11;
 
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.entity.maidmodel.deprecated.EquippedStabilizer;
+import net.blacklab.lmr.entity.maidmodel.deprecated.ModelStabilizerBase;
 import net.minecraft.client.Minecraft;
 
 /**

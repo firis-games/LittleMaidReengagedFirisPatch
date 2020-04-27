@@ -37,37 +37,51 @@ public class Transformer implements IClassTransformer, Opcodes {
 	@SuppressWarnings("serial")
 	private static final Map<String, String> targets = new HashMap<String, String>() {
 		{
-			addModelClassToTransform("EquippedStabilizer");
-			addModelClassToTransform("IModelBaseMMM");
-			addModelClassToTransform("IModelCaps");
-			addModelClassToTransform("ModelBase");
-			addModelClassToTransform("ModelBaseDuo");
-			addModelClassToTransform("ModelBaseNihil");
-			addModelClassToTransform("ModelBaseSolo");
-			addModelClassToTransform("ModelBox");
-			addModelClassToTransform("ModelBoxBase");
-			addModelClassToTransform("ModelCapsHelper");
-			addModelClassToTransform("ModelLittleMaid_AC");
-			addModelClassToTransform("ModelLittleMaid_Archetype");
-			addModelClassToTransform("ModelLittleMaid_Orign");
-			addModelClassToTransform("ModelLittleMaid_RX2");
-			addModelClassToTransform("ModelLittleMaid_Aug");
-			addModelClassToTransform("ModelLittleMaid_SR2");
-			addModelClassToTransform("ModelLittleMaidBase");
-			addModelClassToTransform("ModelMultiBase");
-			addModelClassToTransform("ModelMultiMMMBase");
-			addModelClassToTransform("ModelPlate");
-			addModelClassToTransform("ModelRenderer");
-			addModelClassToTransform("ModelStabilizerBase");
-			addModelClassToTransform("ModelStabilizer_WitchHat");
+			//リトルメイド側の制御に使ってるだけのはず
+			//モデル側には不要
+			addModelClassToTransform("IModelBaseMMM", "");
+			addModelClassToTransform("ModelBaseDuo", "");
+			addModelClassToTransform("ModelBaseNihil", "");
+			addModelClassToTransform("ModelBaseSolo", "");
+
+			addModelClassToTransform("IModelCaps", "caps");
+			addModelClassToTransform("ModelCapsHelper", "caps");
+
+			addModelClassToTransform("ModelBox", "modelparts");
+			addModelClassToTransform("ModelBoxBase", "modelparts");
+			addModelClassToTransform("ModelPlate", "modelparts");
+			
+			//ベースモデルとして継承している可能性があるので
+			//差し替え対象
+			addModelClassToTransform("ModelLittleMaid_AC", "lmmodel");
+			addModelClassToTransform("ModelLittleMaid_Archetype", "lmmodel");
+			addModelClassToTransform("ModelLittleMaid_Orign", "lmmodel");
+			addModelClassToTransform("ModelLittleMaid_RX2", "lmmodel");
+			addModelClassToTransform("ModelLittleMaid_Aug", "lmmodel");
+			addModelClassToTransform("ModelLittleMaid_SR2", "lmmodel");
+			
+			addModelClassToTransform("ModelBase", "base");
+			addModelClassToTransform("ModelLittleMaidBase", "base");
+			addModelClassToTransform("ModelMultiBase", "base");
+			addModelClassToTransform("ModelMultiMMMBase", "base");
+			
+			addModelClassToTransform("ModelRenderer", "renderer");
+			
+			//addModelClassToTransform("EquippedStabilizer", "");
+			//addModelClassToTransform("ModelStabilizerBase", "");
+			//addModelClassToTransform("ModelStabilizer_WitchHat", "");
 
 			put("mmmlibx/lib/MMM_EntityCaps", "net/blacklab/lmr/util/EntityCapsLiving");
 			put("littleMaidMobX/EntityCaps", "net/blacklab/lmr/util/EntityCaps");
+			
+			//後方互換用
+			//撤去予定
 			put("net/blacklab/lmr/entity/EntityLittleMaid", "net/blacklab/lmr/entity/littlemaid/EntityLittleMaid");
 		}
-		private void addModelClassToTransform(String pName) {
-			put("MMM_" + pName, newPackageString + pName);
-			put(oldPackageString + pName, newPackageString + pName);
+		private void addModelClassToTransform(String pName, String base) {
+			String newName = (base.equals("") ? "" : base + "/") + pName;  
+			put("MMM_" + pName, newPackageString + newName);
+			put(oldPackageString + pName, newPackageString + newName);
 		}
 	};
 

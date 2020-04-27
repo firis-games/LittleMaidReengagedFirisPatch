@@ -2,7 +2,7 @@ package net.blacklab.lib.obj;
 
 
 
-
+@Deprecated
 public class SinglePair<K, V> implements Pair<K, V> {
 	
 	private K key;

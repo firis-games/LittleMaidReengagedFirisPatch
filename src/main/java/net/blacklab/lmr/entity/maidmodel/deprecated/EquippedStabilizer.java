@@ -1,11 +1,15 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.deprecated;
 
 import java.util.Map;
+
+import net.blacklab.lmr.entity.maidmodel.base.ModelBase;
+import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
 
 /**
  * 装備品用のクラス。
  *
  */
+@Deprecated
 public class EquippedStabilizer {
 	
 	public ModelStabilizerBase stabilizer;

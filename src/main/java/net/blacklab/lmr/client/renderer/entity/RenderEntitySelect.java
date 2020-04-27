@@ -2,7 +2,7 @@ package net.blacklab.lmr.client.renderer.entity;
 
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.layer.MMMLayerArmorGui;
-import net.blacklab.lmr.entity.maidmodel.IModelCaps;
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.minecraft.client.renderer.entity.RenderManager;
 
 

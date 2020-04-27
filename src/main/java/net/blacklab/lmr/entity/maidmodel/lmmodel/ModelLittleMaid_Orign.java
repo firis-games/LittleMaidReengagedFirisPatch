@@ -1,5 +1,6 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.lmmodel;
 
+import net.blacklab.lmr.entity.maidmodel.base.ModelLittleMaidBase;
 
 public class ModelLittleMaid_Orign extends ModelLittleMaidBase {
 

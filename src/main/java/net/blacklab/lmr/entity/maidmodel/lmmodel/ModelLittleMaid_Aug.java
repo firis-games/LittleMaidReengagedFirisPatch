@@ -1,6 +1,10 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.lmmodel;
 
-
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
+import net.blacklab.lmr.entity.maidmodel.modelparts.ModelBox;
+import net.blacklab.lmr.entity.maidmodel.modelparts.ModelPlate;
+import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
 
 /**
  * サンプルとしてaddPartsを使用しています。

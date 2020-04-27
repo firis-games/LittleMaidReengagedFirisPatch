@@ -5,6 +5,8 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.config.LMRConfig;
+import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.TextureOffset;

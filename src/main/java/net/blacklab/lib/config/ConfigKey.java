@@ -1,5 +1,6 @@
 package net.blacklab.lib.config;
 
+@Deprecated
 public class ConfigKey {
 	private String key;
 	private String value;

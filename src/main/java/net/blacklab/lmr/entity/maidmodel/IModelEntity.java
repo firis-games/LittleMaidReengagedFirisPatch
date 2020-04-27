@@ -1,5 +1,7 @@
 package net.blacklab.lmr.entity.maidmodel;
 
+import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxBase;
 import net.minecraft.util.ResourceLocation;
 
 /**

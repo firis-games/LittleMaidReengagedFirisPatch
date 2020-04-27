@@ -9,7 +9,7 @@ import java.util.Map;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
+import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 
 /**

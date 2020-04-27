@@ -13,7 +13,7 @@ import com.google.gson.JsonObject;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.maidmodel.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.loader.LMSoundHandler;
 import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidCustomSound;

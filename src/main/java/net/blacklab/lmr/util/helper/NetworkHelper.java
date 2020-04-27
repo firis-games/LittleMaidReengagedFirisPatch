@@ -1,5 +1,6 @@
 package net.blacklab.lmr.util.helper;
 
+@Deprecated
 public class NetworkHelper {
 	
 	/*

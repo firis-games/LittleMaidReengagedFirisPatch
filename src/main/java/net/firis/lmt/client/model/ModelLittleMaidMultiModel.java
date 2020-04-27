@@ -2,8 +2,8 @@ package net.firis.lmt.client.model;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.entity.maidmodel.ModelLittleMaidBase;
-import net.blacklab.lmr.entity.maidmodel.ModelMultiBase;
+import net.blacklab.lmr.entity.maidmodel.base.ModelLittleMaidBase;
+import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;

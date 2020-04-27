@@ -23,7 +23,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.entity.maidmodel.TextureBox;
+import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.FileList;
 import net.blacklab.lmr.util.manager.ModelManager;

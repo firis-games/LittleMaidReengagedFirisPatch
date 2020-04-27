@@ -1,12 +1,14 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.texture;
 
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 
 @Deprecated
 public class TextureBoxServer extends TextureBoxBase {
 
 	// ローカルでモデルを保持している時にリンク
-	protected TextureBox localBox;
+	public TextureBox localBox;
 
 
 	public TextureBoxServer() {
@@ -17,8 +19,8 @@ public class TextureBoxServer extends TextureBoxBase {
 		contractColor	= pBox.getContractColorBits();
 		wildColor		= pBox.getWildColorBits();
 		textureName		= pBox.textureName;
-		isUpdateSize = (pBox.models != null && pBox.models[0] != null) ?
-				ModelCapsHelper.getCapsValueBoolean(pBox.models[0], IModelCaps.caps_isUpdateSize) : false;
+		setUpdateSize((pBox.models != null && pBox.models[0] != null) ?
+				ModelCapsHelper.getCapsValueBoolean(pBox.models[0], IModelCaps.caps_isUpdateSize) : false);
 /*
 		if (pBox.models != null) {
 			modelHeight			= pBox.models[0].getHeight(null);

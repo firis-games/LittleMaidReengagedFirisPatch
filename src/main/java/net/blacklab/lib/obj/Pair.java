@@ -1,5 +1,6 @@
 package net.blacklab.lib.obj;
 
+@Deprecated
 @SuppressWarnings("unused")
 public interface Pair<K, V> {
 	

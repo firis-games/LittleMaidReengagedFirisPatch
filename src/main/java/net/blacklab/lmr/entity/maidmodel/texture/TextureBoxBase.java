@@ -1,8 +1,10 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.texture;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 
 public abstract class TextureBoxBase {
 
@@ -13,7 +15,7 @@ public abstract class TextureBoxBase {
 	protected float modelWidth;
 	protected float modelYOffset;
 	protected float modelMountedYOffset;
-	protected boolean isUpdateSize;
+	private boolean isUpdateSize;
 
 
 	public void setModelSize(float pHeight, float pWidth, float pYOffset, float pMountedYOffset) {
@@ -96,6 +98,14 @@ public abstract class TextureBoxBase {
 	}
 	public float getMountedYOffset() {
 		return getMountedYOffset(null);
+	}
+
+	public boolean isUpdateSize() {
+		return isUpdateSize;
+	}
+
+	public void setUpdateSize(boolean isUpdateSize) {
+		this.isUpdateSize = isUpdateSize;
 	}
 
 }

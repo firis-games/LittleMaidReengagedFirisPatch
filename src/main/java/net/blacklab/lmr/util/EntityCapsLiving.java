@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.blacklab.lmr.entity.maidmodel.IModelCaps;
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;

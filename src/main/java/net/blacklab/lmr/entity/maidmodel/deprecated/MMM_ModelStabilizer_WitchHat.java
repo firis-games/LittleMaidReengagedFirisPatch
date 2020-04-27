@@ -1,9 +1,11 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.deprecated;
 
+import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+@Deprecated
 public class MMM_ModelStabilizer_WitchHat extends ModelStabilizerBase {
 
 	public static ResourceLocation ftex = new ResourceLocation("/mob/littleMaid/ALTERNATIVE/Stabilizer_MagicHat.png");

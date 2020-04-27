@@ -1,15 +1,22 @@
-package net.blacklab.lmr.entity.maidmodel;
+package net.blacklab.lmr.entity.maidmodel.renderer;
 
-import static net.blacklab.lmr.entity.maidmodel.IModelCaps.caps_Actions;
-import static net.blacklab.lmr.entity.maidmodel.IModelCaps.caps_Entity;
-import static net.blacklab.lmr.entity.maidmodel.IModelCaps.caps_HeadMount;
-import static net.blacklab.lmr.entity.maidmodel.IModelCaps.caps_Items;
+import static net.blacklab.lmr.entity.maidmodel.caps.IModelCaps.caps_Actions;
+import static net.blacklab.lmr.entity.maidmodel.caps.IModelCaps.caps_Entity;
+import static net.blacklab.lmr.entity.maidmodel.caps.IModelCaps.caps_HeadMount;
+import static net.blacklab.lmr.entity.maidmodel.caps.IModelCaps.caps_Items;
 
 import java.lang.reflect.Constructor;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blacklab.lmr.entity.maidmodel.base.ModelBase;
+import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
+import net.blacklab.lmr.entity.maidmodel.modelparts.ModelBox;
+import net.blacklab.lmr.entity.maidmodel.modelparts.ModelBoxBase;
+import net.blacklab.lmr.entity.maidmodel.modelparts.ModelPlate;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.model.TextureOffset;
 import net.minecraft.client.renderer.GLAllocation;

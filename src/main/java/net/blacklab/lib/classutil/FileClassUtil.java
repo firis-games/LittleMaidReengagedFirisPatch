@@ -1,5 +1,6 @@
 package net.blacklab.lib.classutil;
 
+@Deprecated
 public class FileClassUtil {
 
 	/**
