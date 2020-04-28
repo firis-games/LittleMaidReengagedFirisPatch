@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
  * @author firis-games
  *
  */
-public class LittleMaidTextureModelPack {
+public class LMTextureBox {
 	
 	/**
 	 * テクスチャモデル名
@@ -91,7 +91,7 @@ public class LittleMaidTextureModelPack {
 	/**
 	 * テクスチャモデルの初期化
 	 */
-	public LittleMaidTextureModelPack(TexturePack texturePack, MultiModelPack multiModelPack) {
+	public LMTextureBox(TexturePack texturePack, MultiModelPack multiModelPack) {
 		
 		//マルチモデル設定
 		this.multiModelPack = multiModelPack;

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.blacklab.lmr.util.manager.pack.LittleMaidTextureModelPack;
+import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.blacklab.lmr.util.manager.pack.MultiModelPack;
 import net.blacklab.lmr.util.manager.pack.TexturePack;
 
@@ -18,14 +18,14 @@ import net.blacklab.lmr.util.manager.pack.TexturePack;
  * 上の二つを結合してMinecraft上で使うための状態にする
  *
  */
-public class LittleMaidTextureModelManager {
+public class LMTextureBoxManager {
 	
-	public static LittleMaidTextureModelManager instance = new LittleMaidTextureModelManager();
+	public static LMTextureBoxManager instance = new LMTextureBoxManager();
 	
 	/**
 	 * テクスチャモデルパック一覧
 	 */
-	protected Map<String, LittleMaidTextureModelPack> littleMaidTextureModelPackMap = new HashMap<>();
+	protected Map<String, LMTextureBox> littleMaidTextureModelPackMap = new HashMap<>();
 	
 	/**
 	 * 野生メイドさんを持つテクスチャモデル
@@ -56,7 +56,7 @@ public class LittleMaidTextureModelManager {
 			if (multiModelPack == null) continue;
 			
 			//テクスチャモデルを生成する
-			LittleMaidTextureModelPack textureModelPack = new LittleMaidTextureModelPack(texturePack, multiModelPack);
+			LMTextureBox textureModelPack = new LMTextureBox(texturePack, multiModelPack);
 			this.littleMaidTextureModelPackMap.put(textureModelPack.getTextureModelName(), textureModelPack);
 			
 			//野生メイドさん設定

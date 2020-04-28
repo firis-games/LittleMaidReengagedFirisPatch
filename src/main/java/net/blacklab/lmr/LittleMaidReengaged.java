@@ -27,7 +27,7 @@ import net.blacklab.lmr.network.ProxyCommon;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.loader.LMFileLoader;
-import net.blacklab.lmr.util.manager.LittleMaidTextureModelManager;
+import net.blacklab.lmr.util.manager.LMTextureBoxManager;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.manager.PluginManager;
 import net.blacklab.lmr.util.manager.SoundManager;
@@ -219,7 +219,7 @@ public class LittleMaidReengaged {
 		ModelManager.instance.createLittleMaidModels();
 		
 		//テクスチャモデル初期化
-		LittleMaidTextureModelManager.instance.init();
+		LMTextureBoxManager.instance.init();
 		
 		//サウンドパックセットアップ
 		SoundManager.instance.createSounds();
