@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 
+@Deprecated
 public abstract class TextureBoxBase {
 
 	public String textureName;

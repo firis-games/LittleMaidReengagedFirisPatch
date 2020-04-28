@@ -38,7 +38,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
-@SuppressWarnings("deprecation")
+@Deprecated
 public class ModelManager {
 
 	/**

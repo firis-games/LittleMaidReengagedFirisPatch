@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
+import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -93,6 +95,9 @@ public class LMTextureBox {
 	 */
 	public LMTextureBox(TexturePack texturePack, MultiModelPack multiModelPack) {
 		
+		//テクスチャ名設定
+		this.textureModelName = texturePack.getTexturePackName() + "_" + multiModelPack.multiModelName;
+		
 		//マルチモデル設定
 		this.multiModelPack = multiModelPack;
 		
@@ -105,9 +110,6 @@ public class LMTextureBox {
 	 * @param texturePack
 	 */
 	private void initTexturePack(TexturePack texturePack) {
-		
-		//テクスチャ名設定
-		this.textureModelName = texturePack.texturePackName;
 		
 		//色毎のメイドさんのテクスチャ
 		this.createTextureMapTypeColor(texturePack.textureLittleMaid, this.textureLittleMaid);
@@ -201,24 +203,21 @@ public class LMTextureBox {
 	 * @return
 	 */
 	public ResourceLocation getTextureLittleMaid(int color) {
+		EnumColor enumColor = EnumColor.getColorFromInt(color);
+		if (this.textureLittleMaid.containsKey(enumColor)) {
+			return this.textureLittleMaid.get(enumColor);
+		}
 		return null;
 	}
 	
 	/**
-	 * メイドさんインナー防具のテクスチャを取得する
-	 * @param color
+	 * メイドさんのデフォルトテクスチャを取得する
 	 * @return
 	 */
-	public ResourceLocation getTextureInnerArmor() {
-		return null;
-	}
-	
-	/**
-	 * メイドさんインナー防具のテクスチャを取得する
-	 * @param color
-	 * @return
-	 */
-	public ResourceLocation getTextureOuterArmor() {
+	public ResourceLocation getTextureLittleMaidDefault() {
+		for (EnumColor color : this.textureLittleMaid.keySet()) {
+			return this.textureLittleMaid.get(color);
+		}
 		return null;
 	}
 	
@@ -227,6 +226,56 @@ public class LMTextureBox {
 	 * @return
 	 */
 	public ResourceLocation getLightTextureLittleMaid(int color) {
+		
+		//個別テクスチャ確認
+		EnumColor enumColor = EnumColor.getColorFromInt(color);
+		if (this.textureLightLittleMaid.containsKey(enumColor)) {
+			return this.textureLightLittleMaid.get(enumColor);
+		}
+		
+		//デフォルト発光テクスチャ確認
+		if (this.textureDefaultLightLittleMaid != null) {
+			return textureDefaultLightLittleMaid;
+		}
+		
+		//対象なし
+		return null;
+	}
+	
+	/**
+	 * 防具系の破損率を計算してテクスチャを返却する
+	 * 
+	 * テクスチャのindexは下記の通り
+	 * 0:耐久度が100%以下の時に表示
+	 * 1:耐久度が90%以下の時に表示
+	 * 2:耐久度が80%以下の時に表示
+	 * 3:耐久度が70%以下の時に表示
+	 * 4:耐久度が60%以下の時に表示
+	 * 5:耐久度が50%以下の時に表示
+	 * 6:耐久度が40%以下の時に表示
+	 * 7:耐久度が30%以下の時に表示
+	 * 8:耐久度が20%以下の時に表示
+	 * 9:耐久度が10%以下の時に表示
+	 * @return
+	 */
+	private ResourceLocation getTextureDamagedArmor(ItemStack stack, Map<Integer, ResourceLocation> armorTextureMap) {
+		int damage = 0;
+		//ダメージありのアイテム
+		if (!stack.isEmpty() && stack.isItemStackDamageable()) {
+			//ダメージレート
+			int damageRate = (int) Math.ceil(((double) stack.getMaxDamage() - (double) stack.getItemDamage()) / (double) stack.getMaxDamage() * 10); 
+			damageRate = 10 - damageRate;
+			//0以下になるまでループ
+			for (int i = damageRate; 0 < i; i--) {
+				if (armorTextureMap.containsKey(i)) {
+					damage = i;
+					break;
+				}
+			}			
+		}
+		if (armorTextureMap.containsKey(damage)) {
+			return armorTextureMap.get(damage);
+		}
 		return null;
 	}
 	
@@ -235,8 +284,8 @@ public class LMTextureBox {
 	 * @param color
 	 * @return
 	 */
-	public ResourceLocation getLightTextureInnerArmor() {
-		return null;
+	public ResourceLocation getTextureInnerArmor(ItemStack stack) {
+		return getTextureDamagedArmor(stack, this.textureInnerArmor);
 	}
 	
 	/**
@@ -244,8 +293,26 @@ public class LMTextureBox {
 	 * @param color
 	 * @return
 	 */
-	public ResourceLocation getLightTextureOuterArmor() {
-		return null;
+	public ResourceLocation getTextureOuterArmor(ItemStack stack) {
+		return getTextureDamagedArmor(stack, this.textureOuterArmor);
+	}
+	
+	/**
+	 * メイドさんインナー防具のテクスチャを取得する
+	 * @param color
+	 * @return
+	 */
+	public ResourceLocation getLightTextureInnerArmor(ItemStack stack) {
+		return getTextureDamagedArmor(stack, this.textureLightInnerArmor);
+	}
+	
+	/**
+	 * メイドさんインナー防具のテクスチャを取得する
+	 * @param color
+	 * @return
+	 */
+	public ResourceLocation getLightTextureOuterArmor(ItemStack stack) {
+		return getTextureDamagedArmor(stack, this.textureLightOuterArmor);
 	}
 	
 	/**
@@ -254,6 +321,30 @@ public class LMTextureBox {
 	 */
 	public boolean isWildLittleMaid() {
 		return this.textureWildLittleMaid.size() > 0;
+	}
+	
+	/**
+	 * メイドさんのモデルを取得する
+	 * @return
+	 */
+	public ModelMultiBase getModelLittleMaid() {
+		return this.multiModelPack.modelLittleMaid;
+	}
+	
+	/**
+	 * メイドさんのインナーアーマーモデルを取得する
+	 * @return
+	 */
+	public ModelMultiBase getModelInnerArmor() {
+		return this.multiModelPack.modelInnerArmor;
+	}
+	
+	/**
+	 * メイドさんのアウターアーマーモデルを取得する
+	 * @return
+	 */
+	public ModelMultiBase getModelOuterArmor() {
+		return this.multiModelPack.modelOuterArmor;
 	}
 	
 }

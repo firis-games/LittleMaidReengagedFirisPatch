@@ -26,7 +26,7 @@ public class MultiModelPackManager {
 	/**
 	 * デフォルトモデルパック名
 	 */
-	protected final String defaultMultiModelName = "Orgin";
+	public static final String defaultMultiModelName = "Orign";
 	
 	/**
 	 * 初期化
@@ -67,7 +67,9 @@ public class MultiModelPackManager {
 	public MultiModelPack getMultiModelPackWithTexturePack(String multiModelPackName) {
 		
 		//設定がない場合はデフォルトマルチモデルを返す
-		if (multiModelPackName.equals("")) return multiModelPackMap.get(defaultMultiModelName);
+		if (multiModelPackName.equals("")) {
+			return multiModelPackMap.get(defaultMultiModelName);
+		}
 		
 		for (String mmpackName : multiModelPackMap.keySet()) {
 			

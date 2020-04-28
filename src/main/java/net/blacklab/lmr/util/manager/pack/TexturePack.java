@@ -331,6 +331,14 @@ public class TexturePack {
 	}
 
 	/**
+	 * テクスチャパック名を取得する
+	 * @return
+	 */
+	public String getTexturePackName() {
+		return this.texturePackName;
+	}
+	
+	/**
 	 * 対応するマルチモデル名を取得する
 	 * @return
 	 */

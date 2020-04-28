@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
-import net.blacklab.lmr.util.manager.ModelManager;
+import net.blacklab.lmr.util.manager.LMTextureBoxManager;
+import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.firis.lmt.config.FirisConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
  * プレイヤーモデル用の操作用クラス
  * 
- * TextureBoxから取得するモデル・テクスチャの取得する
+ * LMTextureBoxから取得するモデル・テクスチャの取得する
  * @author firis-games
  *
  */
@@ -26,37 +27,37 @@ public class PlayerModelManager {
 	private static Integer testTexureColorIndex = 8;
 	*/
 	
-	//内部保持用textureBox
-	private static TextureBox cacheTextureBox = null;
+	//内部保持用LMTextureBox
+	private static LMTextureBox cacheLMTextureBox = null;
 
 	/**
-	 * EntityPlayerからTextureBoxを取得する
+	 * EntityPlayerからLMTextureBoxを取得する
 	 * 
-	 * 暫定対応として固定のTextureBoxを返却する
+	 * 暫定対応として固定のLMTextureBoxを返却する
 	 * 
 	 * @param player
 	 * @return
 	 */
-	private static TextureBox getPlayerTexureBox(EntityPlayer player, String textureName) {
+	private static LMTextureBox getPlayerTexureBox(EntityPlayer player, String textureName) {
 		
 		/*
 		//個別設定がある場合はこっち
 		NBTTagCompound nbt = player.getEntityData();
 		if (nbt.hasKey("maidModel")) {
-			return ModelManager.instance.getTextureBox(nbt.getString("maidModel"));
+			return ModelManager.instance.getLMTextureBox(nbt.getString("maidModel"));
 		}
 		
-		if (cacheTextureBox == null) {
-			cacheTextureBox = ModelManager.instance.getTextureBox(testTexure);
+		if (cacheLMTextureBox == null) {
+			cacheLMTextureBox = ModelManager.instance.getLMTextureBox(testTexure);
 		}
 		*/
 		
 		//設定から取得するように変更
-		cacheTextureBox = ModelManager.instance.getTextureBox(textureName);
-		if (cacheTextureBox == null) {
-			cacheTextureBox = ModelManager.instance.getTextureBox(FirisConfig.DEFAULT_MAID_MODEL);			
+		cacheLMTextureBox = LMTextureBoxManager.instance.getLMTextureBox(textureName);
+		if (cacheLMTextureBox == null) {
+			cacheLMTextureBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.DEFAULT_MAID_MODEL);			
 		}
-		return cacheTextureBox;
+		return cacheLMTextureBox;
 	}
 	
 	
@@ -65,10 +66,10 @@ public class PlayerModelManager {
 	 */
 	public static ModelMultiBase getPlayerModel(EntityPlayer player) {
 		
-		TextureBox textureBox = getPlayerTexureBox(player, FirisConfig.cfg_maid_model);
+		LMTextureBox lmTextureBox = getPlayerTexureBox(player, FirisConfig.cfg_maid_model);
 		
 		//メイドさん本体のモデルを返却する
-		return textureBox.models[0];
+		return lmTextureBox.getModelLittleMaid();
 	}
 	
 	/**
@@ -84,23 +85,28 @@ public class PlayerModelManager {
 		if (nbt.hasKey("maidTexture")) {
 			return new ResourceLocation(nbt.getString("maidTexture"));
 		}
-		TextureBox textureBox = getPlayerTexureBox(player);
-		return textureBox.getTextureName(testTexureColorIndex);
+		LMTextureBox LMTextureBox = getPlayerTexureBox(player);
+		return LMTextureBox.getTextureName(testTexureColorIndex);
 		*/
 		
-		TextureBox textureBox = getPlayerTexureBox(player, FirisConfig.cfg_maid_model);
-		ResourceLocation rlTexture = textureBox.getTextureName(FirisConfig.cfg_maid_color);
+		LMTextureBox lmTextureBox = getPlayerTexureBox(player, FirisConfig.cfg_maid_model);
+		ResourceLocation rlTexture = lmTextureBox.getTextureLittleMaid(FirisConfig.cfg_maid_color);
 		if (rlTexture == null) {
-			rlTexture = textureBox.getTextureNameDefault();
+			rlTexture = lmTextureBox.getTextureLittleMaidDefault();
 		}
 		//メイドさん本体のテクスチャを返却する
 		return rlTexture;
 	}
 	
+	/**
+	 * プレイヤーの発光テクスチャ取得
+	 * @param player
+	 * @return
+	 */
 	public static ResourceLocation getPlayerTextureLight(EntityPlayer player) {
 		
-		TextureBox textureBox = getPlayerTexureBox(player, FirisConfig.cfg_maid_model);
-		ResourceLocation rlTexture = textureBox.getTextureName(19);
+		LMTextureBox lmTextureBox = getPlayerTexureBox(player, FirisConfig.cfg_maid_model);
+		ResourceLocation rlTexture = lmTextureBox.getLightTextureLittleMaid(FirisConfig.cfg_maid_color);
 		
 		return rlTexture;
 	}
@@ -117,16 +123,16 @@ public class PlayerModelManager {
 		//特別処理
 		/*
 		if (slot == EntityEquipmentSlot.HEAD) {
-			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.PartySet1_ACUL");
-			return textureBox.models[1];
+			LMTextureBox LMTextureBox = ModelManager.instance.getLMTextureBox("Accessories.Normal.PartySet1_ACUL");
+			return LMTextureBox.models[1];
 		}
 		if (slot == EntityEquipmentSlot.CHEST) {
-			TextureBox textureBox = ModelManager.instance.getTextureBox("littlePorters.Blue_LP");
-			return textureBox.models[1];
+			LMTextureBox LMTextureBox = ModelManager.instance.getLMTextureBox("littlePorters.Blue_LP");
+			return LMTextureBox.models[1];
 		}
 		if (slot == EntityEquipmentSlot.LEGS) {
-			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.ExpeditionSet1_ACUL");
-			return textureBox.models[1];
+			LMTextureBox LMTextureBox = ModelManager.instance.getLMTextureBox("Accessories.Normal.ExpeditionSet1_ACUL");
+			return LMTextureBox.models[1];
 		}
 		*/
 		
@@ -147,14 +153,14 @@ public class PlayerModelManager {
 		default:
 		}
 		
-		TextureBox textureBox = getPlayerTexureBox(player, textureName);
+		LMTextureBox lmTextureBox = getPlayerTexureBox(player, textureName);
 		
 		List<ModelMultiBase> modelList = new ArrayList<>();
 		
 		//メイドさんのアーマーモデルを返却する
 		//innerモデルとouterモデルを取得する
-		modelList.add(textureBox.models[1]);
-		modelList.add(textureBox.models[2]);
+		modelList.add(lmTextureBox.getModelInnerArmor());
+		modelList.add(lmTextureBox.getModelOuterArmor());
 
 		return modelList;
 	}
@@ -169,16 +175,16 @@ public class PlayerModelManager {
 		//特別処理
 		/*
 		if (slot == EntityEquipmentSlot.HEAD) {
-			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.PartySet1_ACUL");
-			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+			LMTextureBox LMTextureBox = ModelManager.instance.getLMTextureBox("Accessories.Normal.PartySet1_ACUL");
+			return LMTextureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
 		}
 		if (slot == EntityEquipmentSlot.CHEST) {
-			TextureBox textureBox = ModelManager.instance.getTextureBox("littlePorters.Blue_LP");
-			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+			LMTextureBox LMTextureBox = ModelManager.instance.getLMTextureBox("littlePorters.Blue_LP");
+			return LMTextureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
 		}
 		if (slot == EntityEquipmentSlot.LEGS) {
-			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.ExpeditionSet1_ACUL");
-			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+			LMTextureBox LMTextureBox = ModelManager.instance.getLMTextureBox("Accessories.Normal.ExpeditionSet1_ACUL");
+			return LMTextureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
 		}
 		*/
 		
@@ -199,12 +205,15 @@ public class PlayerModelManager {
 		default:
 		}
 		
-		TextureBox textureBox = getPlayerTexureBox(player, textureName);
+		//アーマーアイテムを取得する
+		ItemStack armorStack = player.inventory.armorInventory.get(slot.getIndex());
+		
+		LMTextureBox lmTextureBox = getPlayerTexureBox(player, textureName);
 		
 		List<ResourceLocation> texturelList = new ArrayList<>();
 		
-		texturelList.add(textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0));
-		texturelList.add(textureBox.getArmorTextureName(ModelManager.tx_armor2, "leather", 0));
+		texturelList.add(lmTextureBox.getTextureInnerArmor(armorStack));
+		texturelList.add(lmTextureBox.getTextureOuterArmor(armorStack));
 		
 		//メイドさんのアーマーテクスチャを返却する
 		return texturelList;
@@ -220,16 +229,16 @@ public class PlayerModelManager {
 		//特別処理
 		/*
 		if (slot == EntityEquipmentSlot.HEAD) {
-			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.PartySet1_ACUL");
-			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+			LMTextureBox LMTextureBox = ModelManager.instance.getLMTextureBox("Accessories.Normal.PartySet1_ACUL");
+			return LMTextureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
 		}
 		if (slot == EntityEquipmentSlot.CHEST) {
-			TextureBox textureBox = ModelManager.instance.getTextureBox("littlePorters.Blue_LP");
-			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+			LMTextureBox LMTextureBox = ModelManager.instance.getLMTextureBox("littlePorters.Blue_LP");
+			return LMTextureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
 		}
 		if (slot == EntityEquipmentSlot.LEGS) {
-			TextureBox textureBox = ModelManager.instance.getTextureBox("Accessories.Normal.ExpeditionSet1_ACUL");
-			return textureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
+			LMTextureBox LMTextureBox = ModelManager.instance.getLMTextureBox("Accessories.Normal.ExpeditionSet1_ACUL");
+			return LMTextureBox.getArmorTextureName(ModelManager.tx_armor1, "leather", 0);
 		}
 		*/
 		
@@ -250,12 +259,15 @@ public class PlayerModelManager {
 		default:
 		}
 		
-		TextureBox textureBox = getPlayerTexureBox(player, textureName);
+		//アーマーアイテムを取得する
+		ItemStack armorStack = player.inventory.armorInventory.get(slot.getIndex());
+		
+		LMTextureBox lmTextureBox = getPlayerTexureBox(player, textureName);
 		
 		List<ResourceLocation> texturelList = new ArrayList<>();
 		
-		texturelList.add(textureBox.getArmorTextureName(ModelManager.tx_armor1light, "leather", 0));
-		texturelList.add(textureBox.getArmorTextureName(ModelManager.tx_armor2light, "leather", 0));
+		texturelList.add(lmTextureBox.getLightTextureInnerArmor(armorStack));
+		texturelList.add(lmTextureBox.getLightTextureOuterArmor(armorStack));
 		
 		//メイドさんのアーマーテクスチャを返却する
 		return texturelList;

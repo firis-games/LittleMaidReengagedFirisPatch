@@ -57,14 +57,26 @@ public class LMTextureBoxManager {
 			
 			//テクスチャモデルを生成する
 			LMTextureBox textureModelPack = new LMTextureBox(texturePack, multiModelPack);
-			this.littleMaidTextureModelPackMap.put(textureModelPack.getTextureModelName(), textureModelPack);
+			String textureModelName = textureModelPack.getTextureModelName();
+			this.littleMaidTextureModelPackMap.put(textureModelName, textureModelPack);
 			
 			//野生メイドさん設定
 			if (textureModelPack.isWildLittleMaid()) {
-				this.wildLittleMaidList.add(textureModelPack.getTextureModelName());
+				this.wildLittleMaidList.add(textureModelName);
 			}
 		}
 		
 	}
 
+	/**
+	 * 指定のテクスチャモデルを取得する
+	 * @return
+	 */
+	public LMTextureBox getLMTextureBox(String textureName) {
+		if (this.littleMaidTextureModelPackMap.containsKey(textureName)) {
+			return this.littleMaidTextureModelPackMap.get(textureName);
+		}
+		return null;
+	}
+	
 }

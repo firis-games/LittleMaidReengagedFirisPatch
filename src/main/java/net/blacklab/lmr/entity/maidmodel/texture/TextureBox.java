@@ -12,6 +12,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+@Deprecated
 public class TextureBox extends TextureBoxBase {
 
 	/**
