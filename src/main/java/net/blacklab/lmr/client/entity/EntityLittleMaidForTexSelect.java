@@ -118,30 +118,35 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 
 	public void setTextureNames(String pArmorName) {
 		TextureBox lbox;
-		modelConfigCompound.textureModel[0] = null;
-		modelConfigCompound.textureModel[1] = null;
-		modelConfigCompound.textureModel[2] = null;
+		modelConfigCompound.setModelLittleMaid(null);
+		modelConfigCompound.setModelInnerArmor(null);
+		modelConfigCompound.setModelOuterArmor(null);
 		
-		if (modelConfigCompound.textureBox[0] instanceof TextureBox) {
-			int lc = (modelConfigCompound.color & 0x00ff) + (modelConfigCompound.contract ? 0 : ModelManager.tx_wild);
-			lbox = (TextureBox)modelConfigCompound.textureBox[0];
+		if (modelConfigCompound.getTextureBoxLittleMaid() instanceof TextureBox) {
+			int lc = (modelConfigCompound.getColor() & 0x00ff) + (modelConfigCompound.isContract() ? 0 : ModelManager.tx_wild);
+			lbox = (TextureBox)modelConfigCompound.getTextureBoxLittleMaid();
 			if (lbox.hasColor(lc)) {
-				modelConfigCompound.textures[0][0] = lbox.getTextureName(lc);
-				lc = (modelConfigCompound.color & 0x00ff) + (modelConfigCompound.contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
-				modelConfigCompound.textures[0][1] = lbox.getTextureName(lc);
-				modelConfigCompound.textureModel[0] = lbox.models[0];
+				modelConfigCompound.setTexturesLittleMaid(lbox.getTextureName(lc));
+				lc = (modelConfigCompound.getColor() & 0x00ff) + (modelConfigCompound.isContract() ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
+				modelConfigCompound.setTexturesLightLittleMaid(lbox.getTextureName(lc));
+				modelConfigCompound.setModelLittleMaid(lbox.models[0]);
 			}
 		}
-		if (modelConfigCompound.textureBox[1] instanceof TextureBox) {
-			lbox = (TextureBox)modelConfigCompound.textureBox[1];
-			for (int i = 0; i < 4; i++) {
-				modelConfigCompound.textures[1][i] = lbox.getArmorTextureName(ModelManager.tx_armor1, pArmorName, 0);
-				modelConfigCompound.textures[2][i] = lbox.getArmorTextureName(ModelManager.tx_armor2, pArmorName, 0);
-				modelConfigCompound.textures[3][i] = lbox.getArmorTextureName(ModelManager.tx_armor1light, pArmorName, 0);
-				modelConfigCompound.textures[4][i] = lbox.getArmorTextureName(ModelManager.tx_armor2light, pArmorName, 0);
-			}
-			modelConfigCompound.textureModel[1] = lbox.models[1];
-			modelConfigCompound.textureModel[2] = lbox.models[2];
+		if (modelConfigCompound.getTextureBoxArmor() instanceof TextureBox) {
+			lbox = (TextureBox)modelConfigCompound.getTextureBoxArmor();
+			//for (int i = 0; i < 4; i++) {
+			//	modelConfigCompound.textures[1][i] = lbox.getArmorTextureName(ModelManager.tx_armor1, pArmorName, 0);
+			//	modelConfigCompound.textures[2][i] = lbox.getArmorTextureName(ModelManager.tx_armor2, pArmorName, 0);
+			//	modelConfigCompound.textures[3][i] = lbox.getArmorTextureName(ModelManager.tx_armor1light, pArmorName, 0);
+			//	modelConfigCompound.textures[4][i] = lbox.getArmorTextureName(ModelManager.tx_armor2light, pArmorName, 0);
+			//}
+			modelConfigCompound.setTexturesInnerArmor(lbox.getArmorTextureName(ModelManager.tx_armor1, pArmorName, 0));
+			modelConfigCompound.setTexturesOuterArmor(lbox.getArmorTextureName(ModelManager.tx_armor2, pArmorName, 0));
+			modelConfigCompound.setTexturesLightInnerArmor(lbox.getArmorTextureName(ModelManager.tx_armor1light, pArmorName, 0));
+			modelConfigCompound.setTexturesLightOuterArmor(lbox.getArmorTextureName(ModelManager.tx_armor2light, pArmorName, 0));
+			
+			modelConfigCompound.setModelInnerArmor(lbox.models[1]);
+			modelConfigCompound.setModelOuterArmor(lbox.models[2]);
 		}
 		
 //		textures[0][0] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? 0 : MMM_TextureManager.tx_wild));

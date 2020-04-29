@@ -79,9 +79,9 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		
 		if (par1EntityLiving instanceof IModelEntity) {
 			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
-			modelMain.model = ltentity.getModelConfigCompound().textureModel[0];
-			modelFATT.modelInner = ltentity.getModelConfigCompound().textureModel[1];
-			modelFATT.modelOuter = ltentity.getModelConfigCompound().textureModel[2];
+			modelMain.model = ltentity.getModelConfigCompound().getModelLittleMaid();
+			modelFATT.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
+			modelFATT.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();
 //			modelMain.model = ((TextureBox)ltentity.getTextureBox()[0]).models[0];
 			modelMain.textures = ltentity.getTextures(0);
 //			modelFATT.modelInner = ((TextureBox)ltentity.getTextureBox()[1]).models[1];

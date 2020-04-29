@@ -499,10 +499,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			ls = ModelManager.instance.getRandomTextureString(rand);
 		}
 		modelConfigCompound.setTextureInitServer(ls);
-		LittleMaidReengaged.Debug("init-ID:%d, %s:%d", getEntityId(), modelConfigCompound.textureBox[0].textureName, modelConfigCompound.getColor());
+		LittleMaidReengaged.Debug("init-ID:%d, %s:%d", getEntityId(), modelConfigCompound.getTextureBoxLittleMaid().textureName, modelConfigCompound.getColor());
 //		setTexturePackIndex(textureData.getColor(), textureData.textureIndex);
-		setTextureNameMain(modelConfigCompound.textureBox[0].textureName);
-		setTextureNameArmor(modelConfigCompound.textureBox[1].textureName);
+		setTextureNameMain(modelConfigCompound.getTextureBoxLittleMaid().textureName);
+		setTextureNameArmor(modelConfigCompound.getTextureBoxArmor().textureName);
 //		recallRenderParamTextureName(textureModelNameForClient, textureArmorNameForClient);
 		if(!isContract()) {
 			setMaidMode(EntityMode_Basic.mmode_Wild);
@@ -514,7 +514,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		// 野生メイドの色設定処理
 		int nsize = 0;
 		byte avaliableColor[] = new byte[16];
-		TextureBoxBase box = getModelConfigCompound().textureBox[0];
+		TextureBoxBase box = getModelConfigCompound().getTextureBoxLittleMaid();
 		for (byte i=0; i<16; i++) {
 			if ((box.wildColor & 1<<i) > 0) {
 				avaliableColor[nsize++] = i;
@@ -1607,8 +1607,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		}
 //		textureData.textureIndex[0] = ModelManager.instance.getIndexTextureBoxServer(this, par1nbtTagCompound.getString("texName"));
 //		textureData.textureIndex[1] = ModelManager.instance.getIndexTextureBoxServer(this, par1nbtTagCompound.getString("texArmor"));
-//		textureData.textureBox[0] = ModelManager.instance.getTextureBoxServer("default_"+ModelManager.defaultModelName);
-//		textureData.textureBox[1] = ModelManager.instance.getTextureBoxServer("default_"+ModelManager.defaultModelName);
+//		textureData.getTextureBoxLittleMaid() = ModelManager.instance.getTextureBoxServer("default_"+ModelManager.defaultModelName);
+//		textureData.getTextureBoxArmor() = ModelManager.instance.getTextureBoxServer("default_"+ModelManager.defaultModelName);
 
 		// HomePosition
 		int lhx = par1nbtTagCompound.getInteger("homeX");
@@ -2663,7 +2663,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 			// Auto-fix transparent maid
 			if (!isContract() && firstload > 0) {
-				if(((1 << getColor()) & (modelConfigCompound.textureBox[0].wildColor)) == 0) {
+				if(((1 << getColor()) & (modelConfigCompound.getTextureBoxLittleMaid().wildColor)) == 0) {
 					byte r = modelConfigCompound.getWildColor();
 					if (r < 0) {
 						onSpawnWithEgg();
@@ -4253,7 +4253,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		setTextureNames();
 		LittleMaidReengaged.Debug("ID:%d, TextureModel:%s", getEntityId(), modelConfigCompound.getTextureName(0));
 		// モデルの初期化
-		((TextureBox)modelConfigCompound.textureBox[0]).models[0].setCapsValue(IModelCaps.caps_changeModel, maidCaps);
+		((TextureBox)modelConfigCompound.getTextureBoxLittleMaid()).models[0].setCapsValue(IModelCaps.caps_changeModel, maidCaps);
 		// スタビの付け替え
 //		for (Entry<String, MMM_EquippedStabilizer> le : pEntity.maidStabilizer.entrySet()) {
 //			if (le.getValue() != null) {

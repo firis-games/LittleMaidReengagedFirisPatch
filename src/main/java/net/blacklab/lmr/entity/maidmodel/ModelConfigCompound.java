@@ -7,10 +7,6 @@ import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxBase;
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxServer;
-import net.blacklab.lmr.util.EnumArmorRenderParts;
-import net.blacklab.lmr.util.EnumTextureType;
-import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,9 +19,6 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ModelConfigCompound  {
 //public class MMM_TextureData implements MMM_ITextureEntity {
-
-	public EntityLivingBase owner;
-	public IModelCaps entityCaps;
 
 	/**
 	 * 使用されるテクスチャリソースのコンテナ
@@ -76,18 +69,105 @@ public class ModelConfigCompound  {
 //		}
 //	}
 
-	public ResourceLocation textures[][];
+	protected EntityLivingBase owner;
+	
+	protected IModelCaps entityCaps;
+	
 	/**
 	 * 選択色
 	 */
-	public byte color;
+	protected byte color;
+	
 	/**
 	 * 契約テクスチャを選択するかどうか
 	 */
-	public boolean contract;
-
-	public TextureBoxBase textureBox[];
-	public ModelMultiBase textureModel[];
+	protected boolean contract;
+	
+	/**
+	 * 0:基本、発光
+	 * 1:アーマー内：頭、胴、腰、足
+	 * 2:アーマー外：頭、胴、腰、足
+	 * 3:アーマー内発光：頭、胴、腰、足
+	 * 4:アーマー外発光：頭、胴、腰、足
+	 */
+	protected ResourceLocation textures[][];
+	public void setTexturesLittleMaid(ResourceLocation resource) {
+		textures[0][0] = resource;
+	}
+	public void setTexturesLightLittleMaid(ResourceLocation resource) {
+		textures[0][1] = resource;
+	}
+	public void setTexturesInnerArmor(ResourceLocation resource) {
+		//暫定設定（全部のtexturesを同じに設定する）
+		textures[1][0] = resource;
+		textures[1][1] = resource;
+		textures[1][2] = resource;
+		textures[1][3] = resource;
+	}
+	public void setTexturesOuterArmor(ResourceLocation resource) {
+		//暫定設定（全部のtexturesを同じに設定する）
+		textures[2][0] = resource;
+		textures[2][1] = resource;
+		textures[2][2] = resource;
+		textures[2][3] = resource;
+	}
+	public void setTexturesLightInnerArmor(ResourceLocation resource) {
+		//暫定設定（全部のtexturesを同じに設定する）
+		textures[3][0] = resource;
+		textures[3][1] = resource;
+		textures[3][2] = resource;
+		textures[3][3] = resource;
+	}
+	public void setTexturesLightOuterArmor(ResourceLocation resource) {
+		//暫定設定（全部のtexturesを同じに設定する）
+		textures[4][0] = resource;
+		textures[4][1] = resource;
+		textures[4][2] = resource;
+		textures[4][3] = resource;
+	}
+	
+	/**
+	 * 0:メイドテクスチャ
+	 * 1:アーマーテクスチャ
+	 */
+	protected TextureBoxBase textureBox[];
+	public TextureBoxBase getTextureBoxLittleMaid() {
+		return textureBox[0];
+	}
+	public TextureBoxBase getTextureBoxArmor() {
+		return textureBox[1];
+	}
+	public void setTextureBoxLittleMaid(TextureBoxBase textureBox) {
+		this.textureBox[0] = textureBox;
+	}
+	public void setTextureBoxArmor(TextureBoxBase textureBox) {
+		this.textureBox[1] = textureBox;
+	}
+	
+	/**
+	 * 0:メイドモデル
+	 * 1:インナーアーマーモデル
+	 * 2:アウターアーマーモデル
+	 */
+	protected ModelMultiBase textureModel[];
+	public ModelMultiBase getModelLittleMaid() {
+		return textureModel[0];
+	}
+	public ModelMultiBase getModelInnerArmor() {
+		return textureModel[1];
+	}
+	public ModelMultiBase getModelOuterArmor() {
+		return textureModel[2];
+	}
+	public void setModelLittleMaid(ModelMultiBase textureModel) {
+		this.textureModel[0] = textureModel;
+	}
+	public void setModelInnerArmor(ModelMultiBase textureModel) {
+		this.textureModel[1] = textureModel;
+	}
+	public void setModelOuterArmor(ModelMultiBase textureModel) {
+		this.textureModel[2] = textureModel;
+	}
 
 	/**
 	 * 表示制御に使うフラグ群<br>

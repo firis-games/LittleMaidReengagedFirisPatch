@@ -551,7 +551,7 @@ public class GuiMaidInventory extends GuiContainer {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //			RenderHelper.disableStandardItemLighting();
 
-			if (entitylittlemaid.getModelConfigCompound().textureBox[0] != null) {
+			if (entitylittlemaid.getModelConfigCompound().getTextureBoxLittleMaid() != null) {
 				String ls1 = entitylittlemaid.getModelConfigCompound().getTextureName(0);
 				String ls2 = entitylittlemaid.getModelConfigCompound().getTextureName(1);
 				int ltw1 = this.mc.fontRenderer.getStringWidth(ls1);

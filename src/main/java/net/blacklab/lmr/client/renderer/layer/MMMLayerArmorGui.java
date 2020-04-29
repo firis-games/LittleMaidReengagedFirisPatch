@@ -210,8 +210,8 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 	public void setModelValues(EntityLivingBase par1EntityLiving) {
 		if (par1EntityLiving instanceof IModelEntity) {
 			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
-			mmodel.modelInner = ltentity.getModelConfigCompound().textureModel[1];
-			mmodel.modelOuter = ltentity.getModelConfigCompound().textureModel[2];
+			mmodel.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
+			mmodel.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();
 			mmodel.textureInner = ltentity.getTextures(1);
 			mmodel.textureOuter = ltentity.getTextures(2);
 			mmodel.textureInnerLight = ltentity.getTextures(3);

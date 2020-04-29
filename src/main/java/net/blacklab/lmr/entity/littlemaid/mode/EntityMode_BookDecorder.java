@@ -38,8 +38,8 @@ public class EntityMode_BookDecorder extends EntityModeBase {
 				String lcommands[] = ls.split(";");
 				String lcom[];
 				TextureBoxBase lboxs[] = new TextureBoxBase[] {
-						owner.getModelConfigCompound().textureBox[0],
-						owner.getModelConfigCompound().textureBox[1]
+						owner.getModelConfigCompound().getTextureBoxLittleMaid(),
+						owner.getModelConfigCompound().getTextureBoxArmor()
 				};
 				//int lcolor = owner.getColor();
 				boolean lflag = false;
