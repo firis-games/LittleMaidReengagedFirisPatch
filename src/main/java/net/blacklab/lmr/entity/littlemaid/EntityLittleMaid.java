@@ -225,8 +225,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	protected int maidContractLimit;		// 契約期間
 	public long maidAnniversary;			// 契約日UIDとして使用
 	private int maidDominantArm;			// 利き腕、1Byte
+	
 	/** テクスチャ関連のデータを管理 **/
-	public ModelConfigCompound textureData;
+	protected ModelConfigCompound modelConfigCompound;
+	
 	public Map<String, EquippedStabilizer> maidStabilizer = new HashMap<String, EquippedStabilizer>();
 
 	public float getLastDamage(){
@@ -421,10 +423,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 		textureNameMain = textureNameArmor = "default_"+ModelManager.defaultModelName;
 
-		textureData = new ModelConfigCompound(this, maidCaps);
+		modelConfigCompound = new ModelConfigCompound(this, maidCaps);
 //		if (getEntityWorld().isRemote) {
 			// 形態形成場
-			textureData.setColor((byte)0xc);
+			modelConfigCompound.setColor((byte)0xc);
 			TextureBox ltb[] = new TextureBox[2];
 			ltb[0] = ltb[1] = ModelManager.instance.getDefaultTexture(this);
 			setTexturePackName(ltb);
@@ -496,11 +498,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		} else {
 			ls = ModelManager.instance.getRandomTextureString(rand);
 		}
-		textureData.setTextureInitServer(ls);
-		LittleMaidReengaged.Debug("init-ID:%d, %s:%d", getEntityId(), textureData.textureBox[0].textureName, textureData.getColor());
+		modelConfigCompound.setTextureInitServer(ls);
+		LittleMaidReengaged.Debug("init-ID:%d, %s:%d", getEntityId(), modelConfigCompound.textureBox[0].textureName, modelConfigCompound.getColor());
 //		setTexturePackIndex(textureData.getColor(), textureData.textureIndex);
-		setTextureNameMain(textureData.textureBox[0].textureName);
-		setTextureNameArmor(textureData.textureBox[1].textureName);
+		setTextureNameMain(modelConfigCompound.textureBox[0].textureName);
+		setTextureNameArmor(modelConfigCompound.textureBox[1].textureName);
 //		recallRenderParamTextureName(textureModelNameForClient, textureArmorNameForClient);
 		if(!isContract()) {
 			setMaidMode(EntityMode_Basic.mmode_Wild);
@@ -1511,8 +1513,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //		par1nbtTagCompound.setInteger("EXP", experienceValue);
 		par1nbtTagCompound.setInteger("DominantArm", getDominantArm());
 		par1nbtTagCompound.setByte("ColorB", getColor());
-		par1nbtTagCompound.setString("texName", textureData.getTextureName(0));
-		par1nbtTagCompound.setString("texArmor", textureData.getTextureName(1));
+		par1nbtTagCompound.setString("texName", modelConfigCompound.getTextureName(0));
+		par1nbtTagCompound.setString("texArmor", modelConfigCompound.getTextureName(1));
 		par1nbtTagCompound.setInteger("maidArmorVisible", maidArmorVisible);
 		if(textureNameMain==null) textureNameMain = "default_Orign";
 		par1nbtTagCompound.setString("textureModelNameForClient", textureNameMain);
@@ -2465,7 +2467,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			mstatMasterDistanceSq = getDistanceSq(mstatMasterEntity);
 		}
 		// モデルサイズのリアルタイム変更有り？
-		textureData.onUpdate();
+		modelConfigCompound.onUpdate();
 
 		getExperienceHandler().onUpdate();
 
@@ -2661,8 +2663,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 			// Auto-fix transparent maid
 			if (!isContract() && firstload > 0) {
-				if(((1 << getColor()) & (textureData.textureBox[0].wildColor)) == 0) {
-					byte r = textureData.getWildColor();
+				if(((1 << getColor()) & (modelConfigCompound.textureBox[0].wildColor)) == 0) {
+					byte r = modelConfigCompound.getWildColor();
 					if (r < 0) {
 						onSpawnWithEgg();
 					} else {
@@ -3504,7 +3506,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	@Override
 	public void setContract(boolean flag) {
 		super.setTamed(flag);
-		textureData.setContract(flag);
+		modelConfigCompound.setContract(flag);
 	}
 	/**
 	 * 初回契約用メソッド
@@ -3514,7 +3516,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void setFirstContract(EntityPlayer player) {
 		boolean contractFlag = true;
 		super.setTamed(contractFlag);
-		textureData.setContract(contractFlag);
+		modelConfigCompound.setContract(contractFlag);
 		
 		//初期設定
 		
@@ -3564,8 +3566,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public boolean updateMaidContract() {
 		// 同一性のチェック
 		boolean lf = isContract();
-		if (textureData.isContract() != lf) {
-			textureData.setContract(lf);
+		if (modelConfigCompound.isContract() != lf) {
+			modelConfigCompound.setContract(lf);
 			return true;
 		}
 		return false;
@@ -4135,15 +4137,15 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public void setColor(byte index) {
-		textureData.setColor(index);
+		modelConfigCompound.setColor(index);
 		dataManager.set(EntityLittleMaid.dataWatch_Color, index);
 	}
 
 	public boolean updateMaidColor() {
 		// 同一性のチェック
 		byte lc = getColor();
-		if (textureData.getColor() != lc) {
-			textureData.setColor(lc);
+		if (modelConfigCompound.getColor() != lc) {
+			modelConfigCompound.setColor(lc);
 			return true;
 		}
 		return false;
@@ -4247,11 +4249,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	@Override
 	public void setTexturePackName(TextureBox[] pTextureBox) {
 		// Client
-		textureData.setTexturePackName(pTextureBox);
+		modelConfigCompound.setTexturePackName(pTextureBox);
 		setTextureNames();
-		LittleMaidReengaged.Debug("ID:%d, TextureModel:%s", getEntityId(), textureData.getTextureName(0));
+		LittleMaidReengaged.Debug("ID:%d, TextureModel:%s", getEntityId(), modelConfigCompound.getTextureName(0));
 		// モデルの初期化
-		((TextureBox)textureData.textureBox[0]).models[0].setCapsValue(IModelCaps.caps_changeModel, maidCaps);
+		((TextureBox)modelConfigCompound.textureBox[0]).models[0].setCapsValue(IModelCaps.caps_changeModel, maidCaps);
 		// スタビの付け替え
 //		for (Entry<String, MMM_EquippedStabilizer> le : pEntity.maidStabilizer.entrySet()) {
 //			if (le.getValue() != null) {
@@ -4264,26 +4266,26 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * Client用
 	 */
 	public void setTextureNames() {
-		textureData.setTextureNames();
+		modelConfigCompound.setTextureNames();
 		if (getEntityWorld().isRemote) {
-			textureNameMain = textureData.getTextureName(0);
-			textureNameArmor = textureData.getTextureName(1);
+			textureNameMain = modelConfigCompound.getTextureName(0);
+			textureNameArmor = modelConfigCompound.getTextureName(1);
 		}
 	}
 
 	public void setNextTexturePackege(int pTargetTexture) {
-		textureData.setNextTexturePackege(pTargetTexture);
+		modelConfigCompound.setNextTexturePackege(pTargetTexture);
 	}
 
 	public void setPrevTexturePackege(int pTargetTexture) {
-		textureData.setPrevTexturePackege(pTargetTexture);
+		modelConfigCompound.setPrevTexturePackege(pTargetTexture);
 	}
 
 
 	// textureEntity
 	@Override
 	public void setTextureBox(TextureBoxBase[] pTextureBox) {
-		textureData.setTextureBox(pTextureBox);
+		modelConfigCompound.setTextureBox(pTextureBox);
 	}
 
 	public String getModelNameMain() {
@@ -4329,23 +4331,23 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 	@Override
 	public TextureBoxBase[] getTextureBox() {
-		return textureData.getTextureBox();
+		return modelConfigCompound.getTextureBox();
 	}
 
 	@Override
 	public void setTextures(int pIndex, ResourceLocation[] pNames) {
-		textureData.setTextures(pIndex, pNames);
+		modelConfigCompound.setTextures(pIndex, pNames);
 	}
 
 	@Override
 	public ResourceLocation[] getTextures(int pIndex) {
-		ResourceLocation[] r = textureData.getTextures(pIndex);
+		ResourceLocation[] r = modelConfigCompound.getTextures(pIndex);
 		return r;
 	}
 
 	@Override
 	public ModelConfigCompound getModelConfigCompound() {
-		return textureData;
+		return modelConfigCompound;
 	}
 
 	/**

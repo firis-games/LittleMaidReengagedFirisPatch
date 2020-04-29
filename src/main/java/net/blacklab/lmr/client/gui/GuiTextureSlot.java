@@ -127,12 +127,12 @@ public class GuiTextureSlot extends GuiSlot {
 		TextureBox lbox;
 		if (mode) {
 			lbox = indexArmor.get(slotIndex);
-			entity.textureData.textureBox[0] = blankBox;
-			entity.textureData.textureBox[1] = lbox;
+			entity.getModelConfigCompound().textureBox[0] = blankBox;
+			entity.getModelConfigCompound().textureBox[1] = lbox;
 		} else {
 			lbox = indexTexture.get(slotIndex);
-			entity.textureData.textureBox[0] = lbox;
-			entity.textureData.textureBox[1] = blankBox;
+			entity.getModelConfigCompound().textureBox[0] = lbox;
+			entity.getModelConfigCompound().textureBox[1] = blankBox;
 		}
 
 		if (!mode) {

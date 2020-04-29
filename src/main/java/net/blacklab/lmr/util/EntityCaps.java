@@ -128,13 +128,13 @@ public class EntityCaps extends EntityCapsLiving {
 		case caps_entityIdFactor:
 			return owner.entityIdFactor;
 		case caps_height:
-			return owner.textureData.textureBox[0] == null ? null : owner.textureData.textureBox[0].getHeight(this);
+			return owner.getModelConfigCompound().textureBox[0] == null ? null : owner.getModelConfigCompound().textureBox[0].getHeight(this);
 		case caps_width:
-			return owner.textureData.textureBox[0] == null ? null : owner.textureData.textureBox[0].getWidth(this);
+			return owner.getModelConfigCompound().textureBox[0] == null ? null : owner.getModelConfigCompound().textureBox[0].getWidth(this);
 		case caps_YOffset:
-			return owner.textureData.textureBox[0] == null ? null : owner.textureData.textureBox[0].getYOffset(this);
+			return owner.getModelConfigCompound().textureBox[0] == null ? null : owner.getModelConfigCompound().textureBox[0].getYOffset(this);
 		case caps_mountedYOffset:
-			return owner.textureData.textureBox[0] == null ? null : owner.textureData.textureBox[0].getMountedYOffset(this);
+			return owner.getModelConfigCompound().textureBox[0] == null ? null : owner.getModelConfigCompound().textureBox[0].getMountedYOffset(this);
 		case caps_dominantArm:
 			return owner.getDominantArm();
 //		case caps_mountedYOffset:
@@ -183,9 +183,9 @@ public class EntityCaps extends EntityCapsLiving {
 		case caps_currentEquippedItem:
 			return getItemStackNull(owner.getCurrentEquippedItem());
 		case caps_PartsVisible:
-			return owner.textureData.selectValue;
+			return owner.getModelConfigCompound().selectValue;
 		case caps_textureData:
-			return owner.textureData;
+			return owner.getModelConfigCompound();
 		case caps_currentRightHandItem:
 			return getItemStackNull(getHandSideItemStack(EnumHandSide.RIGHT));
 		case caps_currentLeftHandItem:
@@ -199,7 +199,7 @@ public class EntityCaps extends EntityCapsLiving {
 	public boolean setCapsValue(int pIndex, Object... pArg) {
 		switch (pIndex) {
 		case caps_PartsVisible:
-			owner.textureData.selectValue = (Integer)pArg[0];
+			owner.getModelConfigCompound().selectValue = (Integer)pArg[0];
 		}
 		return super.setCapsValue(pIndex, pArg);
 	}

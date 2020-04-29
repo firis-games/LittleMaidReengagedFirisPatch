@@ -260,7 +260,7 @@ public class GuiMaidInventory extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		// 背景
-		ResourceLocation lrl = entitylittlemaid.textureData.getGUITexture();
+		ResourceLocation lrl = entitylittlemaid.getModelConfigCompound().getGUITexture();
 		if (lrl == null) {
 			lrl = fguiTex;
 		}
@@ -551,9 +551,9 @@ public class GuiMaidInventory extends GuiContainer {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //			RenderHelper.disableStandardItemLighting();
 
-			if (entitylittlemaid.textureData.textureBox[0] != null) {
-				String ls1 = entitylittlemaid.textureData.getTextureName(0);
-				String ls2 = entitylittlemaid.textureData.getTextureName(1);
+			if (entitylittlemaid.getModelConfigCompound().textureBox[0] != null) {
+				String ls1 = entitylittlemaid.getModelConfigCompound().getTextureName(0);
+				String ls2 = entitylittlemaid.getModelConfigCompound().getTextureName(1);
 				int ltw1 = this.mc.fontRenderer.getStringWidth(ls1);
 				int ltw2 = this.mc.fontRenderer.getStringWidth(ls2);
 				int ltwmax = (ltw1 > ltw2) ? ltw1 : ltw2;

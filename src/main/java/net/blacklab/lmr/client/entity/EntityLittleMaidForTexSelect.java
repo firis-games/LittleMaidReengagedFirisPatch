@@ -28,13 +28,13 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 //			{ null, null , null , null }
 //	};
 	protected EntityCapsLiving entityCaps;
-	public ModelConfigCompound textureData;
+	protected ModelConfigCompound modelConfigCompound;
 	public boolean modeArmor = false;
 
 	public EntityLittleMaidForTexSelect(World par1World) {
 		super(par1World);
 		entityCaps = new EntityCapsLiving(this);
-		textureData = new ModelConfigCompound(this, entityCaps);
+		modelConfigCompound = new ModelConfigCompound(this, entityCaps);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	@Override
 	public void setTexturePackName(TextureBox[] pTextureBox) {
 		// Client
-		textureData.setTexturePackName(pTextureBox);
+		modelConfigCompound.setTexturePackName(pTextureBox);
 //		textureBox[0] = pTextureBox[0];
 //		textureBox[1] = pTextureBox[1];
 //		setTextureNames();
@@ -95,7 +95,7 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	 * テクスチャのファイル名を獲得
 	 */
 	public void setTextureNames() {
-		textureData.setTextureNames();
+		modelConfigCompound.setTextureNames();
 //		textures[0][0] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? 0 : MMM_TextureManager.tx_wild));
 //		textures[0][1] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? MMM_TextureManager.tx_eyecontract : MMM_TextureManager.tx_eyewild));
 //		textures[1][0] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor1, getCurrentItemOrArmor(1));
@@ -118,30 +118,30 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 
 	public void setTextureNames(String pArmorName) {
 		TextureBox lbox;
-		textureData.textureModel[0] = null;
-		textureData.textureModel[1] = null;
-		textureData.textureModel[2] = null;
+		modelConfigCompound.textureModel[0] = null;
+		modelConfigCompound.textureModel[1] = null;
+		modelConfigCompound.textureModel[2] = null;
 		
-		if (textureData.textureBox[0] instanceof TextureBox) {
-			int lc = (textureData.color & 0x00ff) + (textureData.contract ? 0 : ModelManager.tx_wild);
-			lbox = (TextureBox)textureData.textureBox[0];
+		if (modelConfigCompound.textureBox[0] instanceof TextureBox) {
+			int lc = (modelConfigCompound.color & 0x00ff) + (modelConfigCompound.contract ? 0 : ModelManager.tx_wild);
+			lbox = (TextureBox)modelConfigCompound.textureBox[0];
 			if (lbox.hasColor(lc)) {
-				textureData.textures[0][0] = lbox.getTextureName(lc);
-				lc = (textureData.color & 0x00ff) + (textureData.contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
-				textureData.textures[0][1] = lbox.getTextureName(lc);
-				textureData.textureModel[0] = lbox.models[0];
+				modelConfigCompound.textures[0][0] = lbox.getTextureName(lc);
+				lc = (modelConfigCompound.color & 0x00ff) + (modelConfigCompound.contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
+				modelConfigCompound.textures[0][1] = lbox.getTextureName(lc);
+				modelConfigCompound.textureModel[0] = lbox.models[0];
 			}
 		}
-		if (textureData.textureBox[1] instanceof TextureBox) {
-			lbox = (TextureBox)textureData.textureBox[1];
+		if (modelConfigCompound.textureBox[1] instanceof TextureBox) {
+			lbox = (TextureBox)modelConfigCompound.textureBox[1];
 			for (int i = 0; i < 4; i++) {
-				textureData.textures[1][i] = lbox.getArmorTextureName(ModelManager.tx_armor1, pArmorName, 0);
-				textureData.textures[2][i] = lbox.getArmorTextureName(ModelManager.tx_armor2, pArmorName, 0);
-				textureData.textures[3][i] = lbox.getArmorTextureName(ModelManager.tx_armor1light, pArmorName, 0);
-				textureData.textures[4][i] = lbox.getArmorTextureName(ModelManager.tx_armor2light, pArmorName, 0);
+				modelConfigCompound.textures[1][i] = lbox.getArmorTextureName(ModelManager.tx_armor1, pArmorName, 0);
+				modelConfigCompound.textures[2][i] = lbox.getArmorTextureName(ModelManager.tx_armor2, pArmorName, 0);
+				modelConfigCompound.textures[3][i] = lbox.getArmorTextureName(ModelManager.tx_armor1light, pArmorName, 0);
+				modelConfigCompound.textures[4][i] = lbox.getArmorTextureName(ModelManager.tx_armor2light, pArmorName, 0);
 			}
-			textureData.textureModel[1] = lbox.models[1];
-			textureData.textureModel[2] = lbox.models[2];
+			modelConfigCompound.textureModel[1] = lbox.models[1];
+			modelConfigCompound.textureModel[2] = lbox.models[2];
 		}
 		
 //		textures[0][0] = ((MMM_TextureBox)textureBox[0]).getTextureName(color + (contract ? 0 : MMM_TextureManager.tx_wild));
@@ -166,55 +166,55 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 
 	@Override
 	public void setColor(byte pColor) {
-		textureData.setColor(pColor);
+		modelConfigCompound.setColor(pColor);
 //		color = pColor;
 	}
 
 	@Override
 	public byte getColor() {
-		return textureData.getColor();
+		return modelConfigCompound.getColor();
 //		return color;
 	}
 
 	@Override
 	public void setContract(boolean pContract) {
-		textureData.setContract(pContract);
+		modelConfigCompound.setContract(pContract);
 //		contract = pContract;
 	}
 
 	@Override
 	public boolean isContract() {
-		return textureData.isContract();
+		return modelConfigCompound.isContract();
 //		return contract;
 	}
 
 	@Override
 	public void setTextureBox(TextureBoxBase[] pTextureBox) {
-		textureData.setTextureBox(pTextureBox);
+		modelConfigCompound.setTextureBox(pTextureBox);
 //		textureBox = pTextureBox;
 	}
 
 	@Override
 	public TextureBoxBase[] getTextureBox() {
-		return textureData.getTextureBox();
+		return modelConfigCompound.getTextureBox();
 //		return textureBox;
 	}
 
 	@Override
 	public void setTextures(int pIndex, ResourceLocation[] pNames) {
-		textureData.setTextures(pIndex, pNames);
+		modelConfigCompound.setTextures(pIndex, pNames);
 //		textures[pIndex] = pNames;
 	}
 
 	@Override
 	public ResourceLocation[] getTextures(int pIndex) {
-		return textureData.getTextures(pIndex);
+		return modelConfigCompound.getTextures(pIndex);
 //		return pIndex < textures.length ? textures[pIndex] : null;
 	}
 
 	@Override
 	public ModelConfigCompound getModelConfigCompound() {
-		return textureData;
+		return modelConfigCompound;
 	}
 
 	@Override

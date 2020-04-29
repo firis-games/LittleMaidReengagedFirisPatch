@@ -150,12 +150,12 @@ public class GuiTextureSelect extends GuiScreen {
 
 		//ResourceLocation ltex[];
 		if (selectPanel.mode) {
-			selectPanel.entity.textureData.textureBox[0] = GuiTextureSlot.getBlankBox();
-			selectPanel.entity.textureData.textureBox[1] = lbox;
+			selectPanel.entity.getModelConfigCompound().textureBox[0] = GuiTextureSlot.getBlankBox();
+			selectPanel.entity.getModelConfigCompound().textureBox[1] = lbox;
 			selectPanel.entity.setTextureNames("default");
 		} else {
-			selectPanel.entity.textureData.textureBox[0] = lbox;
-			selectPanel.entity.textureData.textureBox[1] = GuiTextureSlot.getBlankBox();
+			selectPanel.entity.getModelConfigCompound().textureBox[0] = lbox;
+			selectPanel.entity.getModelConfigCompound().textureBox[1] = GuiTextureSlot.getBlankBox();
 			selectPanel.entity.setColor(selectColor);
 			selectPanel.entity.setTextureNames();
 		}
