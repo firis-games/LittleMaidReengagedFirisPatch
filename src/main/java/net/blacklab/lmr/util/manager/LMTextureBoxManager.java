@@ -22,6 +22,8 @@ public class LMTextureBoxManager {
 	
 	public static LMTextureBoxManager instance = new LMTextureBoxManager();
 	
+	protected static String defaultTextureModelName = "default_Orign";
+	
 	/**
 	 * テクスチャモデルパック一覧
 	 */
@@ -77,6 +79,15 @@ public class LMTextureBoxManager {
 			return this.littleMaidTextureModelPackMap.get(textureName);
 		}
 		return null;
+	}
+	
+	/**
+	 * メイドさんのデフォルトテクスチャモデルを取得する
+	 * @param textureName
+	 * @return
+	 */
+	public LMTextureBox getDefaultLMTextureBox() {
+		return this.littleMaidTextureModelPackMap.get(defaultTextureModelName);
 	}
 	
 }

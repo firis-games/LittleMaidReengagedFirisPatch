@@ -27,6 +27,11 @@ public class LMTextureBox {
 	protected String textureModelName = "";
 	
 	/**
+	 * テクスチャパック名
+	 */
+	protected String texturePackName = "";
+
+	/**
 	 * マルチモデルパック
 	 */
 	protected MultiModelPack multiModelPack;
@@ -98,6 +103,9 @@ public class LMTextureBox {
 		//テクスチャ名設定
 		this.textureModelName = texturePack.getTexturePackName() + "_" + multiModelPack.multiModelName;
 		
+		//テクスチャパック名
+		this.texturePackName = texturePack.getTexturePackName();
+				
 		//マルチモデル設定
 		this.multiModelPack = multiModelPack;
 		
@@ -196,6 +204,14 @@ public class LMTextureBox {
 	 */
 	public String getTextureModelName() {
 		return this.textureModelName;
+	}
+	
+	/**
+	 * テクスチャパック名を返す
+	 * @return
+	 */
+	public String getTexturePackName() {
+		return this.texturePackName;
 	}
 
 	/**
@@ -313,6 +329,15 @@ public class LMTextureBox {
 	 */
 	public ResourceLocation getLightTextureOuterArmor(ItemStack stack) {
 		return getTextureDamagedArmor(stack, this.textureLightOuterArmor);
+	}
+	
+	/**
+	 * メイドさんのGUIテクスチャを取得する
+	 * @param color
+	 * @return
+	 */
+	public ResourceLocation getTextureGuiBackground() {
+		return this.textureGuiBackground;
 	}
 	
 	/**
