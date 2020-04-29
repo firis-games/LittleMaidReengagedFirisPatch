@@ -3503,11 +3503,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void setTamed(boolean par1) {
 		setContract(par1);
 	}
-	@Override
+	
 	public void setContract(boolean flag) {
 		super.setTamed(flag);
 		modelConfigCompound.setContract(flag);
 	}
+	
 	/**
 	 * 初回契約用メソッド
 	 * 
@@ -4129,13 +4130,12 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return false;
 	}
 
-	@Override
+	
 	public byte getColor() {
 //		return textureData.getColor();
 		return dataManager.get(EntityLittleMaid.dataWatch_Color);
 	}
 
-	@Override
 	public void setColor(byte index) {
 		modelConfigCompound.setColor(index);
 		dataManager.set(EntityLittleMaid.dataWatch_Color, index);
@@ -4246,7 +4246,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		super.setHomePosAndDistance(par1, par4);
 	}
 
-	@Override
 	public void setTexturePackName(TextureBox[] pTextureBox) {
 		// Client
 		modelConfigCompound.setTexturePackName(pTextureBox);
@@ -4283,10 +4282,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 
 
 	// textureEntity
-	@Override
-	public void setTextureBox(TextureBoxBase[] pTextureBox) {
-		modelConfigCompound.setTextureBox(pTextureBox);
-	}
+//	@Override
+//	public void setTextureBox(TextureBoxBase[] pTextureBox) {
+//		modelConfigCompound.setTextureBox(pTextureBox);
+//	}
 
 	public String getModelNameMain() {
 		return textureNameMain;
@@ -4318,7 +4317,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			armorModel = modelBoxAutoSelect(defName);
 		}
 
-		setTextureBox(new TextureBoxBase[]{mainModel, armorModel});
+		getModelConfigCompound().setTextureBox(new TextureBoxBase[]{mainModel, armorModel});
 		setTextureNames();
 
 		getModelConfigCompound().setSize();
@@ -4329,21 +4328,21 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		return ModelManager.instance.getTextureBox(pName);
 	}
 
-	@Override
-	public TextureBoxBase[] getTextureBox() {
-		return modelConfigCompound.getTextureBox();
-	}
+//	@Override
+//	public TextureBoxBase[] getTextureBox() {
+//		return modelConfigCompound.getTextureBox();
+//	}
 
-	@Override
-	public void setTextures(int pIndex, ResourceLocation[] pNames) {
-		modelConfigCompound.setTextures(pIndex, pNames);
-	}
+//	@Override
+//	public void setTextures(int pIndex, ResourceLocation[] pNames) {
+//		modelConfigCompound.setTextures(pIndex, pNames);
+//	}
 
-	@Override
-	public ResourceLocation[] getTextures(int pIndex) {
-		ResourceLocation[] r = modelConfigCompound.getTextures(pIndex);
-		return r;
-	}
+//	@Override
+//	public ResourceLocation[] getTextures(int pIndex) {
+//		ResourceLocation[] r = modelConfigCompound.getTextures(pIndex);
+//		return r;
+//	}
 
 	@Override
 	public ModelConfigCompound getModelConfigCompound() {

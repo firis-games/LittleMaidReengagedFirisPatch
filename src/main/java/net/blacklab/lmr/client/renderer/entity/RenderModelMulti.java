@@ -83,13 +83,13 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 			modelFATT.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
 			modelFATT.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();
 //			modelMain.model = ((TextureBox)ltentity.getTextureBox()[0]).models[0];
-			modelMain.textures = ltentity.getTextures(0);
+			modelMain.textures = ltentity.getModelConfigCompound().getTextures(0);
 //			modelFATT.modelInner = ((TextureBox)ltentity.getTextureBox()[1]).models[1];
 //			modelFATT.modelOuter = ((TextureBox)ltentity.getTextureBox()[1]).models[2];
-			modelFATT.textureInner = ltentity.getTextures(1);
-			modelFATT.textureOuter = ltentity.getTextures(2);
-			modelFATT.textureInnerLight = ltentity.getTextures(3);
-			modelFATT.textureOuterLight = ltentity.getTextures(4);
+			modelFATT.textureInner = ltentity.getModelConfigCompound().getTextures(1);
+			modelFATT.textureOuter = ltentity.getModelConfigCompound().getTextures(2);
+			modelFATT.textureInnerLight = ltentity.getModelConfigCompound().getTextures(3);
+			modelFATT.textureOuterLight = ltentity.getModelConfigCompound().getTextures(4);
 			modelFATT.textureLightColor = (float[])modelFATT.getCapsValue(IModelCaps.caps_textureLightColor, pEntityCaps);
 		}
 		modelMain.setEntityCaps(pEntityCaps);

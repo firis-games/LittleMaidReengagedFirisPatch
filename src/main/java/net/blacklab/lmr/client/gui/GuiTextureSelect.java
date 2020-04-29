@@ -72,8 +72,8 @@ public class GuiTextureSelect extends GuiScreen {
 			}
 */
 			System.out.println(String.format("select: %d(%s), %d(%s)",
-					selectPanel.texsel[0], target.getTextureBox()[0].textureName,
-					selectPanel.texsel[1], target.getTextureBox()[1].textureName));
+					selectPanel.texsel[0], target.getModelConfigCompound().getTextureBox()[0].textureName,
+					selectPanel.texsel[1], target.getModelConfigCompound().getTextureBox()[1].textureName));
 			mc.displayGuiScreen(owner);
 			
 			if (toServer) {
@@ -156,8 +156,8 @@ public class GuiTextureSelect extends GuiScreen {
 		} else {
 			selectPanel.entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
 			selectPanel.entity.getModelConfigCompound().setTextureBoxArmor(GuiTextureSlot.getBlankBox());
-			selectPanel.entity.setColor(selectColor);
-			selectPanel.entity.setTextureNames();
+			selectPanel.entity.getModelConfigCompound().setColor(selectColor);
+			selectPanel.entity.getModelConfigCompound().setTextureNames();
 		}
 		mc.getRenderManager().renderEntity(selectPanel.entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		/*

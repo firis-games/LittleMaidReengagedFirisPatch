@@ -77,19 +77,19 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 
 	// TextureEntity
 
-	@Override
-	public void setTexturePackName(TextureBox[] pTextureBox) {
-		// Client
-		modelConfigCompound.setTexturePackName(pTextureBox);
-//		textureBox[0] = pTextureBox[0];
-//		textureBox[1] = pTextureBox[1];
-//		setTextureNames();
-//		// 身長変更用
-//		setSize(textureBox[0].getWidth(null), textureBox[0].getHeight(null));
-//		setPosition(posX, posY, posZ);
-		// モデルの初期化
-//		((MMM_TextureBox)textureBox[0]).models[0].setCapsValue(MMM_IModelCaps.caps_changeModel, this);
-	}
+//	@Override
+//	public void setTexturePackName(TextureBox[] pTextureBox) {
+//		// Client
+//		modelConfigCompound.setTexturePackName(pTextureBox);
+////		textureBox[0] = pTextureBox[0];
+////		textureBox[1] = pTextureBox[1];
+////		setTextureNames();
+////		// 身長変更用
+////		setSize(textureBox[0].getWidth(null), textureBox[0].getHeight(null));
+////		setPosition(posX, posY, posZ);
+//		// モデルの初期化
+////		((MMM_TextureBox)textureBox[0]).models[0].setCapsValue(MMM_IModelCaps.caps_changeModel, this);
+//	}
 
 	/**
 	 * テクスチャのファイル名を獲得
@@ -169,53 +169,53 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 //		textures[4][3] = ((MMM_TextureBox)textureBox[1]).getArmorTextureName(MMM_TextureManager.tx_armor2light, pArmorName, 0);
 	}
 
-	@Override
-	public void setColor(byte pColor) {
-		modelConfigCompound.setColor(pColor);
-//		color = pColor;
-	}
+//	@Override
+//	public void setColor(byte pColor) {
+//		modelConfigCompound.setColor(pColor);
+////		color = pColor;
+//	}
 
-	@Override
-	public byte getColor() {
-		return modelConfigCompound.getColor();
-//		return color;
-	}
+//	@Override
+//	public byte getColor() {
+//		return modelConfigCompound.getColor();
+////		return color;
+//	}
 
-	@Override
-	public void setContract(boolean pContract) {
-		modelConfigCompound.setContract(pContract);
-//		contract = pContract;
-	}
+//	@Override
+//	public void setContract(boolean pContract) {
+//		modelConfigCompound.setContract(pContract);
+////		contract = pContract;
+//	}
 
-	@Override
-	public boolean isContract() {
-		return modelConfigCompound.isContract();
-//		return contract;
-	}
+//	@Override
+//	public boolean isContract() {
+//		return modelConfigCompound.isContract();
+////		return contract;
+//	}
 
-	@Override
-	public void setTextureBox(TextureBoxBase[] pTextureBox) {
-		modelConfigCompound.setTextureBox(pTextureBox);
-//		textureBox = pTextureBox;
-	}
+//	@Override
+//	public void setTextureBox(TextureBoxBase[] pTextureBox) {
+//		modelConfigCompound.setTextureBox(pTextureBox);
+////		textureBox = pTextureBox;
+//	}
 
-	@Override
-	public TextureBoxBase[] getTextureBox() {
-		return modelConfigCompound.getTextureBox();
-//		return textureBox;
-	}
+//	@Override
+//	public TextureBoxBase[] getTextureBox() {
+//		return modelConfigCompound.getTextureBox();
+////		return textureBox;
+//	}
 
-	@Override
-	public void setTextures(int pIndex, ResourceLocation[] pNames) {
-		modelConfigCompound.setTextures(pIndex, pNames);
-//		textures[pIndex] = pNames;
-	}
+//	@Override
+//	public void setTextures(int pIndex, ResourceLocation[] pNames) {
+//		modelConfigCompound.setTextures(pIndex, pNames);
+////		textures[pIndex] = pNames;
+//	}
 
-	@Override
-	public ResourceLocation[] getTextures(int pIndex) {
-		return modelConfigCompound.getTextures(pIndex);
-//		return pIndex < textures.length ? textures[pIndex] : null;
-	}
+//	@Override
+//	public ResourceLocation[] getTextures(int pIndex) {
+//		return modelConfigCompound.getTextures(pIndex);
+////		return pIndex < textures.length ? textures[pIndex] : null;
+//	}
 
 	@Override
 	public ModelConfigCompound getModelConfigCompound() {

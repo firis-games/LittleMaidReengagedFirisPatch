@@ -64,9 +64,9 @@ public class LMItemPlayerMaidBook extends Item {
 		EntityLittleMaid entityMaid = (EntityLittleMaid) entity;
 		
 		//メイドモデル名取得
-		String maidModelName = entityMaid.getTextureBox()[0].textureName;
+		String maidModelName = entityMaid.getModelConfigCompound().getTextureBox()[0].textureName;
 		Integer maidModelColor = (int) entityMaid.getColor();
-		String armorModelName = entityMaid.getTextureBox()[1].textureName;
+		String armorModelName = entityMaid.getModelConfigCompound().getTextureBox()[1].textureName;
 		
 		//メイドモデルの設定
 		if (!player.isSneaking()) {

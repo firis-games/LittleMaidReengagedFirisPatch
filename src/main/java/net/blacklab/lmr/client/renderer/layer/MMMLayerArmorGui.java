@@ -212,10 +212,10 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
 			mmodel.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
 			mmodel.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();
-			mmodel.textureInner = ltentity.getTextures(1);
-			mmodel.textureOuter = ltentity.getTextures(2);
-			mmodel.textureInnerLight = ltentity.getTextures(3);
-			mmodel.textureOuterLight = ltentity.getTextures(4);
+			mmodel.textureInner = ltentity.getModelConfigCompound().getTextures(1);
+			mmodel.textureOuter = ltentity.getModelConfigCompound().getTextures(2);
+			mmodel.textureInnerLight = ltentity.getModelConfigCompound().getTextures(3);
+			mmodel.textureOuterLight = ltentity.getModelConfigCompound().getTextures(4);
 //			mmodel.textureLightColor = (float[])modelFATT.getCapsValue(IModelCaps.caps_textureLightColor, pEntityCaps);
 //			mmodel.entityCaps = lmm.maidCaps;
 		}

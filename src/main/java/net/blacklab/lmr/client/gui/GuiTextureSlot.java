@@ -57,8 +57,8 @@ public class GuiTextureSlot extends GuiSlot {
 		indexTexture = new ArrayList<TextureBox>();
 		indexArmor = new ArrayList<TextureBox>();
 		isContract = owner.target.isContract();
-		entity.setContract(isContract);
-		TextureBoxBase ltbox[] = owner.target.getTextureBox();
+		entity.getModelConfigCompound().setContract(isContract);
+		TextureBoxBase ltbox[] = owner.target.getModelConfigCompound().getTextureBox();
 		for (int li = 0; li < ModelManager.instance.getTextureCount(); li++) {
 			TextureBox lbox = ModelManager.getTextureList().get(li);
 			if (isContract) {
@@ -193,8 +193,8 @@ public class GuiTextureSlot extends GuiSlot {
 			for (byte li = 0; li < 16; li++) {
 				GL11.glTranslatef(1F, 0, 0);
 				if (lbox.hasColor(li, isContract)) {
-					entity.setColor(li);
-					entity.setContract(isContract);
+					entity.getModelConfigCompound().setColor(li);
+					entity.getModelConfigCompound().setContract(isContract);
 					entity.setTextureNames();
 //					entity.getTextures(0)[0] = lbox.getTextureName(li + (isContract ? 0 : MMM_TextureManager.tx_wild));
 					Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);

@@ -1,9 +1,5 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxBase;
-import net.minecraft.util.ResourceLocation;
-
 /**
  * MMM_Texture仕様のテクスチャパック設定に対応しているEntityへ継承させる。
  */
@@ -15,28 +11,28 @@ public interface IModelEntity {
 	 * @param pPackName
 	 * 設定されるテクスチャパックの名称（TextureBoxClient）
 	 */
-	void setTexturePackName(TextureBox[] pTextureBox);
+	//void setTexturePackName(TextureBox[] pTextureBox);
 	
 	/**
 	 * 現在のEntityに色を設定する。
 	 * @param pColor
 	 */
-	void setColor(byte pColor);
+	//void setColor(byte pColor);
 
 	/**
 	 * 現在のEntityに設定されている色を返す。
 	 * @return
 	 */
-	byte getColor();
+	//byte getColor();
 
-	void setContract(boolean pContract);
-	boolean isContract();
+	//void setContract(boolean pContract);
+	//boolean isContract();
 
-	void setTextureBox(TextureBoxBase[] pTextureBox);
-	TextureBoxBase[] getTextureBox();
+	//void setTextureBox(TextureBoxBase[] pTextureBox);
+	//TextureBoxBase[] getTextureBox();
 
-	void setTextures(int pIndex, ResourceLocation[] pNames);
-	ResourceLocation[] getTextures(int pIndex);
+	//void setTextures(int pIndex, ResourceLocation[] pNames);
+	//ResourceLocation[] getTextures(int pIndex);
 	
 	/**
 	 * 仕様変更により、これ以外は必要無くなる予定。
