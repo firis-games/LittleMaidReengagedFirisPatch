@@ -31,50 +31,50 @@ public class ModelConfigCompound  {
 	 * 使用されるテクスチャリソースのコンテナ
 	 *
 	 */
-	public static class TextureCompound {
-		private ResourceLocation[][] textures;
-
-		public TextureCompound() {
-			textures = new ResourceLocation[][] {
-				/**
-				 * 基本、発光
-				 */
-				{ null, null },
-				/**
-				 * アーマー内：頭、胴、腰、足
-				 */
-				{ null, null, null, null },
-				/**
-				 * アーマー外：頭、胴、腰、足
-				 */
-				{ null, null, null, null },
-				/**
-				 * アーマー内発光：頭、胴、腰、足
-				 */
-				{ null, null, null, null },
-				/**
-				 * アーマー外発光：頭、胴、腰、足
-				 */
-				{ null, null, null, null }
-			};
-		}
-
-		public ResourceLocation getMainTexture(EnumTextureType type) {
-			return textures[0][type.index];
-		}
-
-		public void setMainTexture(EnumTextureType type, ResourceLocation resourceLocation) {
-			textures[0][type.index] = resourceLocation;
-		}
-
-		public ResourceLocation getArmorTexture(EnumTextureType type, EnumArmorRenderParts parts) {
-			return textures[type.index*2 + parts.layerIndex][parts.textureIndex];
-		}
-
-		public void setArmorTexture(EnumTextureType type, EnumArmorRenderParts parts, ResourceLocation pLocation) {
-			textures[type.index*2 + parts.layerIndex][parts.textureIndex] = pLocation;
-		}
-	}
+//	public static class TextureCompound {
+//		private ResourceLocation[][] textures;
+//
+//		public TextureCompound() {
+//			textures = new ResourceLocation[][] {
+//				/**
+//				 * 基本、発光
+//				 */
+//				{ null, null },
+//				/**
+//				 * アーマー内：頭、胴、腰、足
+//				 */
+//				{ null, null, null, null },
+//				/**
+//				 * アーマー外：頭、胴、腰、足
+//				 */
+//				{ null, null, null, null },
+//				/**
+//				 * アーマー内発光：頭、胴、腰、足
+//				 */
+//				{ null, null, null, null },
+//				/**
+//				 * アーマー外発光：頭、胴、腰、足
+//				 */
+//				{ null, null, null, null }
+//			};
+//		}
+//
+//		public ResourceLocation getMainTexture(EnumTextureType type) {
+//			return textures[0][type.index];
+//		}
+//
+//		public void setMainTexture(EnumTextureType type, ResourceLocation resourceLocation) {
+//			textures[0][type.index] = resourceLocation;
+//		}
+//
+//		public ResourceLocation getArmorTexture(EnumTextureType type, EnumArmorRenderParts parts) {
+//			return textures[type.index*2 + parts.layerIndex][parts.textureIndex];
+//		}
+//
+//		public void setArmorTexture(EnumTextureType type, EnumArmorRenderParts parts, ResourceLocation pLocation) {
+//			textures[type.index*2 + parts.layerIndex][parts.textureIndex] = pLocation;
+//		}
+//	}
 
 	public ResourceLocation textures[][];
 	/**
@@ -96,9 +96,9 @@ public class ModelConfigCompound  {
 	public int selectValue;
 
 
-	public int data_Color	= 19;
-	public int data_Texture	= 20;
-	public int data_Value	= 21;
+//	public int data_Color	= 19;
+//	public int data_Texture	= 20;
+//	public int data_Value	= 21;
 
 
 	public ModelConfigCompound(EntityLivingBase pEntity, IModelCaps pCaps) {
@@ -212,49 +212,49 @@ public class ModelConfigCompound  {
 		return lf;
 	}
 
-	@Deprecated
-	protected boolean setTextureNamesServer() {
-		// Server
-		boolean lf = false;
-		TextureBoxServer lbox;
-		if (textureBox[0] instanceof TextureBoxServer) {
-			lbox = (TextureBoxServer)textureBox[0];
-			if (lbox.localBox != null) {
-				int lc = (color & 0x00ff) + (contract ? 0 : ModelManager.tx_wild);
-				if (lbox.localBox.hasColor(lc)) {
-					if (CommonHelper.isClient) {
-						textures[0][0] = lbox.localBox.getTextureName(lc);
-						lc = (color & 0x00ff) + (contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
-						textures[0][1] = lbox.localBox.getTextureName(lc);
-					}
-					lf = true;
-					textureModel[0] = lbox.localBox.models[0];
-				}
-			}
-		}
-		if (textureBox[1] instanceof TextureBoxServer && owner != null) {
-			lbox = (TextureBoxServer)textureBox[1];
-			if (lbox.localBox != null) {
-				if (CommonHelper.isClient) {
-					for (int i = 0; i < 4; i++) {
-						for (EntityEquipmentSlot pSlot: EntityEquipmentSlot.values()) {
-							if (pSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && pSlot.getIndex() == i) {
-								ItemStack is = owner.getItemStackFromSlot(pSlot);
-								textures[1][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1, is);
-								textures[2][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2, is);
-								textures[3][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1light, is);
-								textures[4][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2light, is);
-								break;
-							}
-						}
-					}
-				}
-				textureModel[1] = lbox.localBox.models[1];
-				textureModel[2] = lbox.localBox.models[2];
-			}
-		}
-		return lf;
-	}
+//	@Deprecated
+//	protected boolean setTextureNamesServer() {
+//		// Server
+//		boolean lf = false;
+//		TextureBoxServer lbox;
+//		if (textureBox[0] instanceof TextureBoxServer) {
+//			lbox = (TextureBoxServer)textureBox[0];
+//			if (lbox.localBox != null) {
+//				int lc = (color & 0x00ff) + (contract ? 0 : ModelManager.tx_wild);
+//				if (lbox.localBox.hasColor(lc)) {
+//					if (CommonHelper.isClient) {
+//						textures[0][0] = lbox.localBox.getTextureName(lc);
+//						lc = (color & 0x00ff) + (contract ? ModelManager.tx_eyecontract : ModelManager.tx_eyewild);
+//						textures[0][1] = lbox.localBox.getTextureName(lc);
+//					}
+//					lf = true;
+//					textureModel[0] = lbox.localBox.models[0];
+//				}
+//			}
+//		}
+//		if (textureBox[1] instanceof TextureBoxServer && owner != null) {
+//			lbox = (TextureBoxServer)textureBox[1];
+//			if (lbox.localBox != null) {
+//				if (CommonHelper.isClient) {
+//					for (int i = 0; i < 4; i++) {
+//						for (EntityEquipmentSlot pSlot: EntityEquipmentSlot.values()) {
+//							if (pSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && pSlot.getIndex() == i) {
+//								ItemStack is = owner.getItemStackFromSlot(pSlot);
+//								textures[1][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1, is);
+//								textures[2][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2, is);
+//								textures[3][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor1light, is);
+//								textures[4][i] = lbox.localBox.getArmorTextureName(ModelManager.tx_armor2light, is);
+//								break;
+//							}
+//						}
+//					}
+//				}
+//				textureModel[1] = lbox.localBox.models[1];
+//				textureModel[2] = lbox.localBox.models[2];
+//			}
+//		}
+//		return lf;
+//	}
 
 	public void setNextTexturePackege(int pTargetTexture) {
 		if (pTargetTexture == 0) {
@@ -411,13 +411,13 @@ public class ModelConfigCompound  {
 		color = textureBox[0].getRandomWildColor(owner.getRNG());
 	}
 
-	public void setTextureInitClient() {
-		TextureBox lbox = ModelManager.instance.getDefaultTexture(owner.getClass());
-		for (int li = 0; li < textureBox.length; li++) {
-			textureBox[li] = lbox;
-		}
-		color = textureBox[0].getRandomWildColor(owner.getRNG());
-	}
+//	public void setTextureInitClient() {
+//		TextureBox lbox = ModelManager.instance.getDefaultTexture(owner.getClass());
+//		for (int li = 0; li < textureBox.length; li++) {
+//			textureBox[li] = lbox;
+//		}
+//		color = textureBox[0].getRandomWildColor(owner.getRNG());
+//	}
 
 	public String getTextureName(int pIndex) {
 		try{
@@ -436,17 +436,17 @@ public class ModelConfigCompound  {
 	 * @param pIndex 0-31
 	 * @return
 	 */
-	public boolean isValueFlag(int pIndex) {
-		return ((selectValue >>> pIndex) & 0x01) == 1;
-	}
+//	public boolean isValueFlag(int pIndex) {
+//		return ((selectValue >>> pIndex) & 0x01) == 1;
+//	}
 
 	/**
 	 *
 	 * @param pIndex 0-31
 	 * @param pFlag
 	 */
-	public void setValueFlag(int pIndex, boolean pFlag) {
-		selectValue |= ((pFlag ? 1 : 0) << pIndex);
-	}
+//	public void setValueFlag(int pIndex, boolean pFlag) {
+//		selectValue |= ((pFlag ? 1 : 0) << pIndex);
+//	}
 
 }
