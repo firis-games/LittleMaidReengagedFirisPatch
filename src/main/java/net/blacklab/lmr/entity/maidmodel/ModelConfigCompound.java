@@ -72,6 +72,9 @@ public class ModelConfigCompound  {
 	protected EntityLivingBase owner;
 	
 	protected IModelCaps entityCaps;
+	public IModelCaps getModelCaps() {
+		return this.entityCaps;
+	}
 	
 	/**
 	 * 選択色
@@ -211,6 +214,9 @@ public class ModelConfigCompound  {
 		textureBox = new TextureBoxBase[2];
 		textureBox[0] = textureBox[1] = ModelManager.instance.getDefaultTexture(owner.getClass());
 		textureModel = new ModelMultiBase[3];
+		
+		//テクスチャ系更新
+		this.setTextureNames();
 	}
 
 	/**
@@ -528,5 +534,82 @@ public class ModelConfigCompound  {
 //	public void setValueFlag(int pIndex, boolean pFlag) {
 //		selectValue |= ((pFlag ? 1 : 0) << pIndex);
 //	}
+	
+	/**
+	 * モデル情報をリフレッシュする
+	 * 
+	 * 設定値を元に
+	 * 
+	 * @return
+	 */
+	public boolean refreshModels(String modelMaid, byte color, String modelArmor, boolean isContract) {
+		
+		TextureBoxBase maidBox = getTextureBoxLittleMaid();
+		TextureBoxBase armorBox = getTextureBoxArmor();
+		
+		/*
+		//現在の状態が一致するか確認
+		if (maidBox != null && armorBox != null) {
+			if (maidBox.textureName.equals(modelMaid) 
+					&& armorBox.textureName.equals(modelArmor)
+					&& color == this.getColor()
+					&& isContract == this.isContract()) {
+				return false;
+			}
+		}
+		*/
+		
+		//再設定
+		this.setTextureBoxLittleMaid(ModelManager.instance.getTextureBox(modelMaid));
+		this.setTextureBoxArmor(ModelManager.instance.getTextureBox(modelArmor));
+		this.setColor(color);
+		this.setContract(isContract);
+		
+		//テクスチャ系を更新
+		this.setTextureNames();
+		
+		//メイドモデルのサイズを更新
+		this.setSize();
+		
+		
+		return true;
+	}
+	
+	/**
+	 * メイドテクスチャを設定する
+	 * @param modelMaid
+	 * @param color
+	 * @param modelArmor
+	 * @param isContract
+	 * @return
+	 */
+	public boolean refreshModelsLittleMaid(String modelMaid, byte color) {
+		//再設定
+		this.setTextureBoxLittleMaid(ModelManager.instance.getTextureBox(modelMaid));
+		this.setColor(color);
+		//テクスチャ系を更新
+		this.setTextureNames();
+		//メイドモデルのサイズを更新
+		this.setSize();
+		return true;
+	}
+	
+	/**
+	 * メイドテクスチャを設定する
+	 * @param modelMaid
+	 * @param color
+	 * @param modelArmor
+	 * @param isContract
+	 * @return
+	 */
+	public boolean refreshModelsArmor(String modelArmor) {
+		//再設定
+		this.setTextureBoxArmor(ModelManager.instance.getTextureBox(modelArmor));
+		//テクスチャ系を更新
+		this.setTextureNames();
+		//メイドモデルのサイズを更新
+		this.setSize();
+		return true;
+	}
 
 }

@@ -6,6 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -73,7 +74,10 @@ public class ItemMaidSpawnEgg extends Item
 
 			entityliving.setLocationAndAngles(par2, par4, par6, (par0World.rand.nextFloat() * 360.0F) - 180.0F, 0.0F);
 //			((LMM_EntityLittleMaid)entityliving).setTextureNames();
-			((EntityLittleMaid) entityliving).onSpawnWithEgg();
+			
+			//((EntityLittleMaid) entityliving).onSpawnWithEgg();
+			entityliving.onInitialSpawn(par0World.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
+			
 			par0World.spawnEntity(entityliving);
 		} catch (Exception e) {
 			e.printStackTrace();

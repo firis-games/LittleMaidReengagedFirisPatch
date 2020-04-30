@@ -200,7 +200,7 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 	public void doRender(EntityLittleMaid entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		
 		//モデルパラメータセット
-		fcaps = entity.maidCaps;
+		fcaps = entity.getModelConfigCompound().getModelCaps();
 		
 		//マルチモデルの描画
 		renderModelMulti(entity, x, y, z, entityYaw, partialTicks, fcaps);

@@ -46,22 +46,22 @@ public class EventHookLMRE
 			event.setCanceled(deleteDoppelganger(true, event.getWorld(), event.getEntity()));
 		}
 
-		if(event.getEntity() instanceof EntityLittleMaid){
-			EntityLittleMaid maid = (EntityLittleMaid) event.getEntity();
-			if(maid.isContract()||maid.isWildSaved) return;
-			maid.onSpawnWithEgg();
-//			int c = maid.getTextureBox()[0].getWildColorBits();
-//			if(c<=0) maid.setColor(12); else for(int i=15;i>=0;i--){
-//				int x = (int) Math.pow(2, i);
-//				if((c&x)==x) maid.setColor(i);
-//			}
-			maid.isWildSaved = true;
-//			event.setResult(Result.ALLOW);
-//			NBTTagCompound t = new NBTTagCompound();
-//			maid.writeEntityToNBT(t);
-//			maid.readEntityFromNBT(t);
-			if(event.getWorld().isRemote) maid.setTextureNames();
-		}
+//		if(event.getEntity() instanceof EntityLittleMaid){
+//			EntityLittleMaid maid = (EntityLittleMaid) event.getEntity();
+//			if(maid.isContract()||maid.isWildSaved) return;
+//			maid.onSpawnWithEgg();
+////			int c = maid.getTextureBox()[0].getWildColorBits();
+////			if(c<=0) maid.setColor(12); else for(int i=15;i>=0;i--){
+////				int x = (int) Math.pow(2, i);
+////				if((c&x)==x) maid.setColor(i);
+////			}
+//			maid.isWildSaved = true;
+////			event.setResult(Result.ALLOW);
+////			NBTTagCompound t = new NBTTagCompound();
+////			maid.writeEntityToNBT(t);
+////			maid.readEntityFromNBT(t);
+//			if(event.getWorld().isRemote) maid.setTextureNames();
+//		}
 
 		// TODO issue #9 merge from LittleMaidMobAX(https://github.com/asiekierka/littleMaidMobX/commit/92b2850b1bc4a70b69629cfc84c92748174c8bc6)
 		if (event.getEntity() instanceof EntityArrow) {

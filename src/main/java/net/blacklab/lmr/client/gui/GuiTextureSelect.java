@@ -52,14 +52,19 @@ public class GuiTextureSelect extends GuiScreen {
 		case 200:
 			target.setColor(selectColor);
 			if (selectPanel.texsel[0] > -1) {
-				target.setTextureNameMain(selectPanel.getSelectedBox(false).textureName);
+//				target.setTextureNameMain(selectPanel.getSelectedBox(false).textureName);
+				target.getModelConfigCompound().refreshModelsLittleMaid(selectPanel.getSelectedBox(false).textureName, selectColor);
 //				target.getTextureBox()[0] = selectPanel.getSelectedBox(false);
 			}
 			if (selectPanel.texsel[1] > -1) {
-				target.setTextureNameArmor(selectPanel.getSelectedBox(true).textureName);
+//				target.setTextureNameArmor(selectPanel.getSelectedBox(true).textureName);
+				target.getModelConfigCompound().refreshModelsArmor(selectPanel.getSelectedBox(true).textureName);
 //				target.getTextureBox()[1] = selectPanel.getSelectedBox(true);
 			}
-			target.syncModelNames();
+			
+			//サーバーへ情報送信
+			target.syncModelNamesToServer();
+			
 //			target.getModelConfigCompound().setTextureNames();
 /*
 			if (toServer) {

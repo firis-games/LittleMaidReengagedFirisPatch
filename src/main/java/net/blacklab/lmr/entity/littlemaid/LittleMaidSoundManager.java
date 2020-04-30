@@ -115,7 +115,7 @@ public class LittleMaidSoundManager {
 		//クライアントサイドかつサウンドリストが存在する場合のみ処理を行う
 		if (!maid.world.isRemote || playingSound.isEmpty()) return;
 		
-		String textureName = maid.textureNameMain;
+		String textureName = maid.getTextureNameMain();
 		int textureColor = maid.getColor();
 		
 		//サウンド設定されている分まとめて再生する

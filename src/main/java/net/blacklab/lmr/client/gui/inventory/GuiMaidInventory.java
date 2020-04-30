@@ -33,7 +33,10 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GuiMaidInventory extends GuiContainer {
 	// Field
 	private Random rand;
@@ -49,7 +52,7 @@ public class GuiMaidInventory extends GuiContainer {
 	public GuiButtonFreedomToggle frdmbutton;
 	public GuiButtonBoostChange boostMinus;
 	public GuiButtonBoostChange boostPlus;
-	public boolean isChangeTexture;
+//	public boolean isChangeTexture;
 
 	private int topTicks = 0;
 
@@ -130,7 +133,7 @@ public class GuiMaidInventory extends GuiContainer {
 		updateCounter = 0;
 		ySizebk = ySize;
 		ySize = 207;
-		isChangeTexture = true;
+//		isChangeTexture = true;
 
 		entitylittlemaid = elmaid;
 		// entitylittlemaid.setOpenInventory(true);
@@ -643,23 +646,23 @@ public class GuiMaidInventory extends GuiContainer {
 		switch (par1GuiButton.id) {
 		case 100 :
 			entitylittlemaid.setNextTexturePackege(0);
-			entitylittlemaid.setTextureNames();
-			entitylittlemaid.syncModelNames();
+//			entitylittlemaid.setTextureNames();
+//			entitylittlemaid.syncModelNames();
 			break;
 		case 101 :
 			entitylittlemaid.setPrevTexturePackege(0);
-			entitylittlemaid.setTextureNames();
-			entitylittlemaid.syncModelNames();
+//			entitylittlemaid.setTextureNames();
+//			entitylittlemaid.syncModelNames();
 			break;
 		case 110 :
 			entitylittlemaid.setNextTexturePackege(1);
-			entitylittlemaid.setTextureNames();
-			entitylittlemaid.syncModelNames();
+//			entitylittlemaid.setTextureNames();
+//			entitylittlemaid.syncModelNames();
 			break;
 		case 111 :
 			entitylittlemaid.setPrevTexturePackege(1);
-			entitylittlemaid.setTextureNames();
-			entitylittlemaid.syncModelNames();
+//			entitylittlemaid.setTextureNames();
+//			entitylittlemaid.syncModelNames();
 			break;
 		case 200 :
 			mc.displayGuiScreen(new GuiTextureSelect(this, entitylittlemaid, true));
@@ -709,9 +712,9 @@ public class GuiMaidInventory extends GuiContainer {
 	public void onGuiClosed() {
 		super.onGuiClosed();
 		 entitylittlemaid.onGuiClosed();
-		if (isChangeTexture) {
-			entitylittlemaid.sendTextureToServer();
-		}
+//		if (isChangeTexture) {
+//			entitylittlemaid.sendTextureToServer();
+//		}
 	}
 
 	private void displayDebuffEffects() {

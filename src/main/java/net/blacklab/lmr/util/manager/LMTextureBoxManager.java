@@ -22,7 +22,7 @@ public class LMTextureBoxManager {
 	
 	public static LMTextureBoxManager instance = new LMTextureBoxManager();
 	
-	protected static String defaultTextureModelName = "default_Orign";
+	public static String defaultTextureModelName = "default_Orign";
 	
 	/**
 	 * テクスチャモデルパック一覧

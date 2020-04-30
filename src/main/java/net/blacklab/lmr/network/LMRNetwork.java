@@ -153,11 +153,11 @@ public class LMRNetwork
 			lemaid.setFreedom(tagCompound.getBoolean("Freedom"));
 			break;
 
-		case SERVER_REQUEST_MODEL :
-			lemaid.syncModelNames();
-			lemaid.syncMaidArmorVisible();
-			break;
-
+//		case SERVER_REQUEST_MODEL :
+//			lemaid.syncModelNames();
+//			lemaid.syncMaidArmorVisible();
+//			break;
+			
 		case REQUEST_CURRENT_ITEM:
 			ItemStack stack = lemaid.getHeldItemMainhand();
 			if (!stack.isEmpty()) {
@@ -190,9 +190,10 @@ public class LMRNetwork
 
 		case SYNC_MODEL :
 //			LittleMaidReengaged.Debug("CLIENT=%5s, INDEX:%d, name=%s", pMaid.worldObj.isRemote, contents[0], NetworkHelper.getStrFromPacket(contents, 1));
+//			pMaid.setTextureNameMain(tagCompound.getString("Main"));
+//			pMaid.setTextureNameArmor(tagCompound.getString("Armor"));
+			pMaid.reciveModelNamesFromClient(tagCompound);
 
-			pMaid.setTextureNameMain(tagCompound.getString("Main"));
-			pMaid.setTextureNameArmor(tagCompound.getString("Armor"));
 			break;
 		default:
 			break;

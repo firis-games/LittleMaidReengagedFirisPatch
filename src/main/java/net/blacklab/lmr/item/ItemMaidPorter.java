@@ -6,10 +6,8 @@ import javax.annotation.Nullable;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.experience.ExperienceUtil;
-import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,6 +46,7 @@ public class ItemMaidPorter extends Item {
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) 
 	{
+		/*
 		ItemStack stack = player.getHeldItem(hand);
 		if (worldIn.isRemote) {
 			return EnumActionResult.PASS;
@@ -83,6 +82,7 @@ public class ItemMaidPorter extends Item {
 			}
 		}
 		player.setItemStackToSlot(hand==EnumHand.OFF_HAND ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
+		*/
 		return EnumActionResult.SUCCESS;
 	}
 }
