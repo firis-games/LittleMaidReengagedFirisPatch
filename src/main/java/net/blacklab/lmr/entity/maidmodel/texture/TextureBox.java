@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
-import net.blacklab.lmr.util.manager.ModelManager;
+import net.blacklab.lmr.util.manager.deprecated.ModelManager;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

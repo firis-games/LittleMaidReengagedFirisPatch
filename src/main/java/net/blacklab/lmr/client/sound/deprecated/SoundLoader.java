@@ -1,4 +1,4 @@
-package net.blacklab.lmr.client.sound;
+package net.blacklab.lmr.client.sound.deprecated;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,7 +26,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.FileList;
-import net.blacklab.lmr.util.manager.ModelManager;
+import net.blacklab.lmr.util.manager.deprecated.ModelManager;
 
 /**
  * 新サウンドローディング(from 4.3)

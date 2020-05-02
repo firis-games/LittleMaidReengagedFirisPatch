@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.manager;
+package net.blacklab.lmr.util.manager.deprecated;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;

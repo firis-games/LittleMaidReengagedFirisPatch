@@ -1,4 +1,4 @@
-package net.blacklab.lmr.client.sound;
+package net.blacklab.lmr.client.sound.deprecated;
 
 import java.io.InputStream;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.manager;
+package net.blacklab.lmr.util.manager.deprecated;
 
 import java.util.Map;
 import java.util.Map.Entry;

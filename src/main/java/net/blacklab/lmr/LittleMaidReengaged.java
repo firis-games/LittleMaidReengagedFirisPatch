@@ -28,7 +28,6 @@ import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.loader.LMFileLoader;
 import net.blacklab.lmr.util.manager.LMTextureBoxManager;
-import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.manager.PluginManager;
 import net.blacklab.lmr.util.manager.SoundManager;
 import net.firis.lmt.common.LMTCore;
