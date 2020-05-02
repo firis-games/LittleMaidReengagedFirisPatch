@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -22,35 +23,118 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 
-	public ModelMultiBase modelOuter;
-	public ModelMultiBase modelInner;
+	private ModelMultiBase modelOuter;
+	private ModelMultiBase modelInner;
+	
+	public ModelMultiBase getModelOuter() {
+		return this.modelOuter;
+	}
+	public ModelMultiBase getModelInner() {
+		return this.modelInner;
+	}
+	
+	protected ModelConfigCompound modelConfigCompound;
+	
+	/**
+	 * 描画用パラメータを設定する
+	 * @param modelConfigCompound
+	 */
+	public void setModelConfigCompound(ModelConfigCompound modelConfigCompound, IModelCaps pEntityCaps) {
+		this.modelConfigCompound = modelConfigCompound;
+		//モデル初期化
+		if (this.modelConfigCompound != null) {
+			this.modelOuter = this.modelConfigCompound.getModelOuterArmor();
+			this.modelInner = this.modelConfigCompound.getModelInnerArmor();
+		} else {
+			this.modelOuter = null;
+			this.modelInner = null;
+		}
+		//色設定
+		if (pEntityCaps != null) {
+			this.textureLightColor = (float[])this.getCapsValue(IModelCaps.caps_textureLightColor, pEntityCaps);
+		}
+	}
+	
+	/**
+	 * インナー防具テクスチャ取得
+	 * @param Slot
+	 * @return
+	 */
+	public ResourceLocation getTextureInner(int Slot) {
+		if (this.modelConfigCompound != null) {
+			return this.modelConfigCompound.getTextureBoxArmor().getTextureInnerArmor(ItemStack.EMPTY);
+		}
+		return null;
+	}
+	
+	/**
+	 * 発光インナー防具テクスチャ取得
+	 * @param Slot
+	 * @return
+	 */
+	public ResourceLocation getLightTextureInner(int Slot) {
+		if (this.modelConfigCompound != null && this.modelConfigCompound.getTextureBoxArmor() != null) {
+			return this.modelConfigCompound.getTextureBoxArmor().getLightTextureInnerArmor(ItemStack.EMPTY);
+		}
+		return null;
+	}
+	
+	/**
+	 * アウター防具テクスチャ取得
+	 * @param Slot
+	 * @return
+	 */
+	public ResourceLocation getTextureOuter(int Slot) {
+		if (this.modelConfigCompound != null) {
+			return this.modelConfigCompound.getTextureBoxArmor().getTextureOuterArmor(ItemStack.EMPTY);
+		}
+		return null;
+	}
+	
+	/**
+	 * 発光アウター防具テクスチャ取得
+	 * @param Slot
+	 * @return
+	 */
+	public ResourceLocation getLightTextureOuter(int Slot) {
+		if (this.modelConfigCompound != null && this.modelConfigCompound.getTextureBoxArmor() != null) {
+			return this.modelConfigCompound.getTextureBoxArmor().getLightTextureOuterArmor(ItemStack.EMPTY);
+		}
+		return null;
+	}
+	
+	
+	
 	/**
 	 * 部位毎のアーマーテクスチャの指定。
 	 * 外側。
 	 */
-	public ResourceLocation[] textureOuter;
+//	public ResourceLocation[] textureOuter;
 	/**
 	 * 部位毎のアーマーテクスチャの指定。
 	 * 内側。
 	 */
-	public ResourceLocation[] textureInner;
+//	public ResourceLocation[] textureInner;
 	/**
 	 * 部位毎のアーマーテクスチャの指定。
 	 * 外側・発光。
 	 */
-	public ResourceLocation[] textureOuterLight;
+//	public ResourceLocation[] textureOuterLight;
 	/**
 	 * 部位毎のアーマーテクスチャの指定。
 	 * 内側・発光。
 	 */
-	public ResourceLocation[] textureInnerLight;
+//	public ResourceLocation[] textureInnerLight;
 	/**
 	 * 描画されるアーマーの部位。
 	 * shouldRenderPassとかで指定する。
 	 */
 	public int renderParts;
 
-	public float[] textureLightColor;
+	private float[] textureLightColor;
+	public float[] getTextureLightColor() {
+		return textureLightColor;
+	}
 
 	public ModelBaseDuo(RenderLivingBase pRender) {
 		rendererLivingEntity = pRender;
@@ -78,11 +162,11 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 		GL11.glEnable(GL11.GL_NORMALIZE);
 		
 		if (modelInner != null) {
-			if (textureInner != null && lri) {
-				if (textureInner[renderParts] != null) {
+			if (lri) {
+				if (this.getTextureInner(renderParts) != null) {
 					// 通常パーツ
 					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(textureInner[renderParts]);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getTextureInner(renderParts));
 						modelInner.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
 					}catch(Exception e){
 					}
@@ -91,11 +175,11 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 				// ほぼエンチャントエフェクト用
 				modelInner.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
 			}
-			if (textureInnerLight != null && renderCount == 0) {
+			if (renderCount == 0) {
 				// 発光テクスチャ表示処理
-				if (textureInnerLight[renderParts] != null) {
+				if (this.getLightTextureInner(renderParts) != null) {
 					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(textureInnerLight[renderParts]);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getLightTextureInner(renderParts));
 					}catch(Exception e){
 					}
 					GL11.glEnable(GL11.GL_BLEND);
@@ -124,12 +208,12 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 		}
 		GL11.glEnable(GL11.GL_BLEND);
 		if (modelOuter != null) {
-			if (textureOuter != null && lri) {
+			if (lri) {
 				// 通常パーツ
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				if (textureOuter[renderParts] != null) {
+				if (this.getTextureOuter(renderParts) != null) {
 					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(textureOuter[renderParts]);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getTextureOuter(renderParts));
 						modelOuter.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
 					}catch(Exception e){
 					}
@@ -138,11 +222,11 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 				// ほぼエンチャントエフェクト用
 				modelOuter.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
 			}
-			if (textureOuterLight != null && renderCount == 0) {
+			if (renderCount == 0) {
 				// 発光テクスチャ表示処理
-				if (textureOuterLight[renderParts] != null) {
+				if (this.getLightTextureOuter(renderParts) != null) {
 					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(textureOuterLight[renderParts]);
+						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getLightTextureOuter(renderParts));
 					}catch(Exception e){
 					}
 					GL11.glEnable(GL11.GL_BLEND);

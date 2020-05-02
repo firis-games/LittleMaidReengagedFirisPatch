@@ -7,11 +7,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxBase;
 import net.blacklab.lmr.util.helper.RendererHelper;
-import net.blacklab.lmr.util.manager.ModelManager;
+import net.blacklab.lmr.util.manager.LMTextureBoxManager;
+import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiSlot;
@@ -27,8 +25,8 @@ public class GuiTextureSlot extends GuiSlot {
 	public GuiTextureSelect owner;
 	public int selected;
 	public EntityLittleMaidForTexSelect entity;
-	public List<TextureBox> indexTexture;
-	public List<TextureBox> indexArmor;
+	public List<LMTextureBox> indexTexture;
+	public List<LMTextureBox> indexArmor;
 	public boolean mode;
 	public int texsel[] = new int[2];
 	public byte color;
@@ -40,7 +38,7 @@ public class GuiTextureSlot extends GuiSlot {
 			new ItemStack(Items.LEATHER_HELMET)
 	};
 	protected boolean isContract;
-	protected static TextureBox blankBox;
+//	protected static LMTextureBox blankBox;
 
 
 	public GuiTextureSlot(GuiTextureSelect pOwner) {
@@ -49,38 +47,62 @@ public class GuiTextureSlot extends GuiSlot {
 		entity = new EntityLittleMaidForTexSelect(owner.mc.world);
 		color = owner.target.getColor();
 		selectColor = -1;
-		blankBox = new TextureBox();
-		blankBox.models = new ModelMultiBase[] {null, null, null};
+//		blankBox = new LMTextureBox();
+//		blankBox.models = new ModelMultiBase[] {null, null, null};
 
 		texsel[0] = 0;//-1;
 		texsel[1] = 0;//-1;
-		indexTexture = new ArrayList<TextureBox>();
-		indexArmor = new ArrayList<TextureBox>();
+		indexTexture = new ArrayList<LMTextureBox>();
+		indexArmor = new ArrayList<LMTextureBox>();
 		isContract = owner.target.isContract();
 		entity.getModelConfigCompound().setContract(isContract);
-		TextureBoxBase ltbox[] = owner.target.getModelConfigCompound().getTextureBox();
-		for (int li = 0; li < ModelManager.instance.getTextureCount(); li++) {
-			TextureBox lbox = ModelManager.getTextureList().get(li);
+//		LMTextureBox ltbox[] = owner.target.getModelConfigCompound().getLMTextureBox();
+		LMTextureBox ltboxLittleMaid = owner.target.getModelConfigCompound().getTextureBoxLittleMaid();
+		LMTextureBox ltboxArmor = owner.target.getModelConfigCompound().getTextureBoxArmor();
+		for (LMTextureBox lbox : LMTextureBoxManager.instance.getLMTextureBoxList()) {
 			if (isContract) {
-				if (lbox.getContractColorBits() > 0) {
+				if (lbox.hasLittleMaid()) {
 					indexTexture.add(lbox);
 				}
 			} else {
-				if (lbox.getWildColorBits() > 0) {
+				if (lbox.hasWildLittleMaid()) {
 					indexTexture.add(lbox);
 				}
 			}
 			if (lbox.hasArmor()) {
 				indexArmor.add(lbox);
 			}
-			if (lbox == ltbox[0]) {
+			if (lbox == ltboxLittleMaid) {
 				texsel[0] = indexTexture.size() - 1;
 			}
-			if (lbox == ltbox[1]) {
+			if (lbox == ltboxArmor) {
 				texsel[1] = indexArmor.size() - 1;
 			}
 		}
+		
 		setMode(false);
+		
+//		for (int li = 0; li < ModelManager.instance.getTextureCount(); li++) {
+//			LMTextureBox lbox = ModelManager.getTextureList().get(li);
+//			if (isContract) {
+//				if (lbox.getContractColorBits() > 0) {
+//					indexTexture.add(lbox);
+//				}
+//			} else {
+//				if (lbox.getWildColorBits() > 0) {
+//					indexTexture.add(lbox);
+//				}
+//			}
+//			if (lbox.hasArmor()) {
+//				indexArmor.add(lbox);
+//			}
+//			if (lbox == ltboxLittleMaid) {
+//				texsel[0] = indexTexture.size() - 1;
+//			}
+//			if (lbox == ltboxArmor) {
+//				texsel[1] = indexArmor.size() - 1;
+//			}
+//		}
 	}
 
 	@Override
@@ -88,9 +110,9 @@ public class GuiTextureSlot extends GuiSlot {
 		return mode ? indexArmor.size() : indexTexture.size();
 	}
 
-	public static TextureBox getBlankBox() {
-		return blankBox;
-	}
+//	public static LMTextureBox getBlankBox() {
+//		return blankBox;
+//	}
 
 	@Override
 	protected void elementClicked(int var1, boolean var2, int var3, int var4) {
@@ -98,16 +120,31 @@ public class GuiTextureSlot extends GuiSlot {
 			selected = var1;
 			texsel[1] = var1;
 		} else {
-			TextureBox lbox = getSelectedBox(var1);
-			if (lbox.hasColor(selectColor, isContract)) {
+			LMTextureBox lbox = getSelectedBox(var1);
+			if (hasColorContract(lbox, selectColor, isContract)) {
 				selected = var1;
 				texsel[0] = var1;
 				owner.selectColor = selectColor;
-			} else if (lbox.hasColor(color, isContract)) {
+			} else if (hasColorContract(lbox, color, isContract)) {
 				selected = var1;
 				texsel[0] = var1;
 				owner.selectColor = color;
 			}
+		}
+	}
+	
+	/**
+	 * メイドさんの色判定
+	 * @param lbox
+	 * @param color
+	 * @param contract
+	 * @return
+	 */
+	private boolean hasColorContract(LMTextureBox lbox, int color, boolean contract) {
+		if (contract) {
+			return lbox.hasColor(color);
+		} else {
+			return lbox.hasWildColor(color);
 		}
 	}
 
@@ -124,15 +161,15 @@ public class GuiTextureSlot extends GuiSlot {
 	protected void drawSlot(int slotIndex, int xPos, int yPos, int heightIn, int mouseXIn, int mouseYIn, float partialTicks) {
 		GL11.glPushMatrix();
 
-		TextureBox lbox;
+		LMTextureBox lbox;
 		if (mode) {
 			lbox = indexArmor.get(slotIndex);
-			entity.getModelConfigCompound().setTextureBoxLittleMaid(blankBox);
+			entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
 			entity.getModelConfigCompound().setTextureBoxArmor(lbox);
 		} else {
 			lbox = indexTexture.get(slotIndex);
 			entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
-			entity.getModelConfigCompound().setTextureBoxArmor(blankBox);
+			entity.getModelConfigCompound().setTextureBoxArmor(null);
 		}
 
 		if (!mode) {
@@ -155,11 +192,11 @@ public class GuiTextureSlot extends GuiSlot {
 		//アーマー選択画面の文字が2行目以降おかしくなる
 		//enableAlpha担っている場合文字が正常に表示されないみたい
 		GlStateManager.disableAlpha();
-		//		MMM_TextureManager.instance.checkTextureBoxServer(lbox);
+		//		MMM_TextureManager.instance.checkLMTextureBoxServer(lbox);
 		GL11.glDisable(GL11.GL_BLEND);
 
-		owner.drawString(this.owner.mc.fontRenderer, lbox.textureName,
-				xPos + 207 - mc.fontRenderer.getStringWidth(lbox.textureName), yPos + 25, -1);
+		owner.drawString(this.owner.mc.fontRenderer, lbox.getTextureModelName(),
+				xPos + 207 - mc.fontRenderer.getStringWidth(lbox.getTextureModelName()), yPos + 25, -1);
 		GL11.glTranslatef(xPos + 8F, yPos + 25F, 50F);
 		GL11.glScalef(12F, -12F, 12F);
 		entity.renderYawOffset = 30F;
@@ -169,33 +206,33 @@ public class GuiTextureSlot extends GuiSlot {
 		if (mode) {
 			//デフォルトアーマー
 			GL11.glTranslatef(1f, 0.25F, 0f);
-			entity.setTextureNames("default");
+//			entity.setTextureNames("default");
 			Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 			RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 
-			// 素材別アーマー
-			for (int li = 0; li < ModelManager.armorFilenamePrefix.length; li++) {
-				GL11.glTranslatef(1F, 0, 0);
-				if (lbox.armors.containsKey(ModelManager.armorFilenamePrefix[li])) {
-//					ltxname = entity.getTextures(1);
-//					ltxname[0] = ltxname[1] = ltxname[2] = ltxname[3] =
-//							lbox.getArmorTextureName(MMM_TextureManager.tx_armor1, "default", 0);
-//					ltxname = entity.getTextures(2);
-//					ltxname[0] = ltxname[1] = ltxname[2] = ltxname[3] =
-//							lbox.getArmorTextureName(MMM_TextureManager.tx_armor2, "default", 0);
-					entity.setTextureNames(ModelManager.armorFilenamePrefix[li]);
-					Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
-					RendererHelper.setLightmapTextureCoords(0x00f0);//61680
-				}
-			}
+//			// 素材別アーマー
+//			for (int li = 0; li < ModelManager.armorFilenamePrefix.length; li++) {
+//				GL11.glTranslatef(1F, 0, 0);
+//				if (lbox.armors.containsKey(ModelManager.armorFilenamePrefix[li])) {
+////					ltxname = entity.getTextures(1);
+////					ltxname[0] = ltxname[1] = ltxname[2] = ltxname[3] =
+////							lbox.getArmorTextureName(MMM_TextureManager.tx_armor1, "default", 0);
+////					ltxname = entity.getTextures(2);
+////					ltxname[0] = ltxname[1] = ltxname[2] = ltxname[3] =
+////							lbox.getArmorTextureName(MMM_TextureManager.tx_armor2, "default", 0);
+//					entity.setTextureNames(ModelManager.armorFilenamePrefix[li]);
+//					Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+//					RendererHelper.setLightmapTextureCoords(0x00f0);//61680
+//				}
+//			}
 		} else {
 			// テクスチャ表示
 			for (byte li = 0; li < 16; li++) {
 				GL11.glTranslatef(1F, 0, 0);
-				if (lbox.hasColor(li, isContract)) {
+				if (hasColorContract(lbox, li, isContract)) {
 					entity.getModelConfigCompound().setColor(li);
 					entity.getModelConfigCompound().setContract(isContract);
-					entity.setTextureNames();
+//					entity.setTextureNames();
 //					entity.getTextures(0)[0] = lbox.getTextureName(li + (isContract ? 0 : MMM_TextureManager.tx_wild));
 					Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 					RendererHelper.setLightmapTextureCoords(0x00f0);//61680
@@ -211,15 +248,15 @@ public class GuiTextureSlot extends GuiSlot {
 		GL11.glPopMatrix();
 	}
 
-	public TextureBox getSelectedBox() {
+	public LMTextureBox getSelectedBox() {
 		return getSelectedBox(selected);
 	}
 
-	public TextureBox getSelectedBox(int pIndex) {
+	public LMTextureBox getSelectedBox(int pIndex) {
 		return mode ? indexArmor.get(pIndex) : indexTexture.get(pIndex);
 	}
 
-	public TextureBox getSelectedBox(boolean pMode) {
+	public LMTextureBox getSelectedBox(boolean pMode) {
 		return pMode ? indexArmor.get(texsel[1]) : indexTexture.get(texsel[0]);
 	}
 

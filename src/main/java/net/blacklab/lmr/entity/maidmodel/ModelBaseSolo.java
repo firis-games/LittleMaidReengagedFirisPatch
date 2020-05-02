@@ -18,10 +18,29 @@ import net.minecraft.util.ResourceLocation;
 
 public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 
-	public ModelMultiBase model;
-	public ResourceLocation[] textures;
+	private ModelMultiBase model;
+//	public ResourceLocation textures[];
+	private ModelConfigCompound modelConfigCompound;
+	
+	public ModelMultiBase getModel() {
+		return this.model;
+	}
+	
+	/**
+	 * 描画用パラメータを設定する
+	 * @param modelConfigCompound
+	 */
+	public void setModelConfigCompound(ModelConfigCompound modelConfigCompound) {
+		this.modelConfigCompound = modelConfigCompound;
+		//モデル初期化
+		if (this.modelConfigCompound != null) {
+			this.model = this.modelConfigCompound.getModelLittleMaid();
+		} else {
+			this.model = null;
+		}
+	}
+	
 	public static final ResourceLocation[] blanks = new ResourceLocation[0];
-
 
 	public ModelBaseSolo(RenderLivingBase pRender) {
 		rendererLivingEntity = pRender;
@@ -62,27 +81,30 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 				GL11.glDisable(GL11.GL_BLEND);
 			}
 		}
-		if (textures.length > 2 && textures[2] != null) {
-			// Actors用
-			model.setRotationAngles(par2, par3, par4, par5, par6, par7, entityCaps);
-			// Face
-			// TODO テクスチャのロードはなんか考える。
-			Minecraft.getMinecraft().getTextureManager().bindTexture(textures[2]);
-			model.setCapsValue(caps_renderFace, entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-			// Body
-			Minecraft.getMinecraft().getTextureManager().bindTexture(textures[0]);
-			model.setCapsValue(caps_renderBody, entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-		} else {
+//		if (textures.length > 2 && textures[2] != null) {
+//			// Actors用
+//			model.setRotationAngles(par2, par3, par4, par5, par6, par7, entityCaps);
+//			// Face
+//			// TODO テクスチャのロードはなんか考える。
+//			Minecraft.getMinecraft().getTextureManager().bindTexture(textures[2]);
+//			model.setCapsValue(caps_renderFace, entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
+//			// Body
+//			Minecraft.getMinecraft().getTextureManager().bindTexture(textures[0]);
+//			model.setCapsValue(caps_renderBody, entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
+//		} else {
 			// 通常
-			if (textures.length > 0 && textures[0] != null) {
-				Minecraft.getMinecraft().getTextureManager().bindTexture(textures[0]);
+			if (this.modelConfigCompound != null 
+					&& this.modelConfigCompound.getTextureLittleMaid() != null) {
+				Minecraft.getMinecraft().getTextureManager().bindTexture(this.modelConfigCompound.getTextureLittleMaid());
+				model.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
 			}
-			model.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-		}
+//		}
 		isAlphablend = false;
-		if (textures.length > 1 && textures[1] != null && renderCount == 0) {
+		if (this.modelConfigCompound != null 
+				&& this.modelConfigCompound.getLightTextureLittleMaid() != null
+				&& renderCount == 0) {
 			// 発光パーツ
-			Minecraft.getMinecraft().getTextureManager().bindTexture(textures[1]);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.modelConfigCompound.getLightTextureLittleMaid());
 			float var4 = 1.0F;
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -190,5 +212,12 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 		}
 	}
 
+	
+	/**
+	 * 腕の位置へずらす
+	 */
+	public void armPostRender(int arm, float scale) {
+		this.model.Arms[arm].postRender(scale);
+	}
 
 }

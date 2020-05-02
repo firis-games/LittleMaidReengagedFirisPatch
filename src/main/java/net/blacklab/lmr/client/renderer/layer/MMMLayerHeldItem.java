@@ -51,7 +51,7 @@ public class MMMLayerHeldItem extends LayerHeldItem {
 					GlStateManager.pushMatrix();
 
 					// Use dominant arm as mainhand.
-					this.renderer.modelMain.model.Arms[handindexes[i]].postRender(0.0625F);
+					this.renderer.modelMain.armPostRender(handindexes[i], 0.0625F);
 
 					if (lmm.isSneaking()) {
 						GlStateManager.translate(0.0F, 0.2F, 0.0F);

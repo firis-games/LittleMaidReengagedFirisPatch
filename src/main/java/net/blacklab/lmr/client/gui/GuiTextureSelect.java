@@ -7,8 +7,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
 import net.blacklab.lmr.network.LMRMessage;
+import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -53,12 +53,12 @@ public class GuiTextureSelect extends GuiScreen {
 			target.setColor(selectColor);
 			if (selectPanel.texsel[0] > -1) {
 //				target.setTextureNameMain(selectPanel.getSelectedBox(false).textureName);
-				target.getModelConfigCompound().refreshModelsLittleMaid(selectPanel.getSelectedBox(false).textureName, selectColor);
+				target.getModelConfigCompound().refreshModelsLittleMaid(selectPanel.getSelectedBox(false).getTextureModelName(), selectColor);
 //				target.getTextureBox()[0] = selectPanel.getSelectedBox(false);
 			}
 			if (selectPanel.texsel[1] > -1) {
 //				target.setTextureNameArmor(selectPanel.getSelectedBox(true).textureName);
-				target.getModelConfigCompound().refreshModelsArmor(selectPanel.getSelectedBox(true).textureName);
+				target.getModelConfigCompound().refreshModelsArmor(selectPanel.getSelectedBox(true).getTextureModelName());
 //				target.getTextureBox()[1] = selectPanel.getSelectedBox(true);
 			}
 			
@@ -77,8 +77,8 @@ public class GuiTextureSelect extends GuiScreen {
 			}
 */
 			System.out.println(String.format("select: %d(%s), %d(%s)",
-					selectPanel.texsel[0], target.getModelConfigCompound().getTextureBox()[0].textureName,
-					selectPanel.texsel[1], target.getModelConfigCompound().getTextureBox()[1].textureName));
+					selectPanel.texsel[0], target.getModelConfigCompound().getTextureBoxLittleMaid().getTextureModelName(),
+					selectPanel.texsel[1], target.getModelConfigCompound().getTextureBoxArmor().getTextureModelName()));
 			mc.displayGuiScreen(owner);
 			
 			if (toServer) {
@@ -147,7 +147,7 @@ public class GuiTextureSelect extends GuiScreen {
 		RenderHelper.enableGUIStandardItemLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 
-		TextureBox lbox = selectPanel.getSelectedBox();
+		LMTextureBox lbox = selectPanel.getSelectedBox();
 		GL11.glTranslatef(width / 2 - 115F, height - 5F, 100F);
 		GL11.glScalef(60F, -60F, 60F);
 		selectPanel.entity.renderYawOffset = -25F;
@@ -155,14 +155,14 @@ public class GuiTextureSelect extends GuiScreen {
 
 		//ResourceLocation ltex[];
 		if (selectPanel.mode) {
-			selectPanel.entity.getModelConfigCompound().setTextureBoxLittleMaid(GuiTextureSlot.getBlankBox());
+			selectPanel.entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
 			selectPanel.entity.getModelConfigCompound().setTextureBoxArmor(lbox);
-			selectPanel.entity.setTextureNames("default");
+//			selectPanel.entity.setTextureNames("default");
 		} else {
 			selectPanel.entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
-			selectPanel.entity.getModelConfigCompound().setTextureBoxArmor(GuiTextureSlot.getBlankBox());
+			selectPanel.entity.getModelConfigCompound().setTextureBoxArmor(null);
 			selectPanel.entity.getModelConfigCompound().setColor(selectColor);
-			selectPanel.entity.getModelConfigCompound().setTextureNames();
+//			selectPanel.entity.getModelConfigCompound().setTextureNames();
 		}
 		mc.getRenderManager().renderEntity(selectPanel.entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		/*

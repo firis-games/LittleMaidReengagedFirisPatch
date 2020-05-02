@@ -128,9 +128,11 @@ public class EntityCaps extends EntityCapsLiving {
 		case caps_entityIdFactor:
 			return owner.entityIdFactor;
 		case caps_height:
-			return owner.getModelConfigCompound().getTextureBoxLittleMaid() == null ? null : owner.getModelConfigCompound().getTextureBoxLittleMaid().getYOffset(this);
+			return owner.getModelConfigCompound().getTextureBoxLittleMaid() == null ? 
+					null : owner.getModelConfigCompound().getTextureBoxLittleMaid().getModelLittleMaid().getyOffset(this);
 		case caps_mountedYOffset:
-			return owner.getModelConfigCompound().getTextureBoxLittleMaid() == null ? null : owner.getModelConfigCompound().getTextureBoxLittleMaid().getMountedYOffset(this);
+			return owner.getModelConfigCompound().getTextureBoxLittleMaid() == null ? 
+					null : owner.getModelConfigCompound().getTextureBoxLittleMaid().getModelLittleMaid().getMountedYOffset(this);
 		case caps_dominantArm:
 			return owner.getDominantArm();
 //		case caps_mountedYOffset:

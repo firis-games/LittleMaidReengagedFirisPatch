@@ -64,10 +64,7 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing.PlayRole;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.deprecated.EquippedStabilizer;
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxBase;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
@@ -84,10 +81,9 @@ import net.blacklab.lmr.util.helper.ItemHelper;
 import net.blacklab.lmr.util.helper.OwnableEntityHelper;
 import net.blacklab.lmr.util.manager.LMTextureBoxManager;
 import net.blacklab.lmr.util.manager.MaidModeManager;
-import net.blacklab.lmr.util.manager.ModelManager;
 import net.blacklab.lmr.util.manager.pack.EnumColor;
+import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityCreature;
@@ -533,18 +529,18 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 	*/
 
-	protected void onSpawnWild() {
-		// 野生メイドの色設定処理
-		int nsize = 0;
-		byte avaliableColor[] = new byte[16];
-		TextureBoxBase box = getModelConfigCompound().getTextureBoxLittleMaid();
-		for (byte i=0; i<16; i++) {
-			if ((box.wildColor & 1<<i) > 0) {
-				avaliableColor[nsize++] = i;
-			}
-		}
-		setColor(avaliableColor[rand.nextInt(nsize)]);
-	}
+//	protected void onSpawnWild() {
+//		// 野生メイドの色設定処理
+//		int nsize = 0;
+//		byte avaliableColor[] = new byte[16];
+//		TextureBoxBase box = getModelConfigCompound().getTextureBoxLittleMaid();
+//		for (byte i=0; i<16; i++) {
+//			if ((box.wildColor & 1<<i) > 0) {
+//				avaliableColor[nsize++] = i;
+//			}
+//		}
+//		setColor(avaliableColor[rand.nextInt(nsize)]);
+//	}
 
 	protected void applyEntityAttributes() {
 		// 初期パラメーター
@@ -628,7 +624,6 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		//メイドテクスチャ情報
 		//メイドテクスチャの初期設定
 		String littleMaidTexture = LMTextureBoxManager.defaultTextureModelName;
-		int maidColor = EnumColor.BROWN.getColor();
 		dataManager.register(EntityLittleMaid.dataWatch_texture_LittleMaid, littleMaidTexture);
 		dataManager.register(EntityLittleMaid.dataWatch_texture_Armor, littleMaidTexture);
 	}
@@ -799,9 +794,9 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void syncModelNamesToServer() {
 		
 		NBTTagCompound tagCompound = new NBTTagCompound();
-		tagCompound.setString("Main", this.modelConfigCompound.getTextureBoxLittleMaid().textureName);
-		tagCompound.setString("Armor", this.modelConfigCompound.getTextureBoxArmor().textureName);
-		tagCompound.setByte("Color", this.modelConfigCompound.getColor());
+		tagCompound.setString("Main", this.modelConfigCompound.getTextureBoxLittleMaid().getTextureModelName());
+		tagCompound.setString("Armor", this.modelConfigCompound.getTextureBoxArmor().getTextureModelName());
+		tagCompound.setByte("Color", (byte)this.modelConfigCompound.getColor());
 
 		syncNet(LMRMessage.EnumPacketMode.SYNC_MODEL, tagCompound);
 	}
@@ -1568,8 +1563,8 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 //		par1nbtTagCompound.setInteger("EXP", experienceValue);
 		par1nbtTagCompound.setInteger("DominantArm", getDominantArm());
 		par1nbtTagCompound.setByte("ColorB", getColor());
-		par1nbtTagCompound.setString("texName", modelConfigCompound.getTextureName(0));
-		par1nbtTagCompound.setString("texArmor", modelConfigCompound.getTextureName(1));
+//		par1nbtTagCompound.setString("texName", modelConfigCompound.getTextureNameLittleMaid());
+//		par1nbtTagCompound.setString("texArmor", modelConfigCompound.getTextureNameArmor());
 		par1nbtTagCompound.setInteger("maidArmorVisible", maidArmorVisible);
 		//if(textureNameMain==null) textureNameMain = "default_Orign";
 		par1nbtTagCompound.setString("textureModelNameForClient", dataManager.get(EntityLittleMaid.dataWatch_texture_LittleMaid));
@@ -4344,9 +4339,21 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * @param pTargetTexture
 	 */
 	@SideOnly(Side.CLIENT)
-	public void setNextTexturePackege(int pTargetTexture) {
+	public void setNextTexturePackege() {
 		
-		modelConfigCompound.setNextTexturePackege(pTargetTexture);
+		modelConfigCompound.setNextTexturePackege();
+		
+		this.syncModelNamesToServer();
+	}
+	
+	/**
+	 * 次のテクスチャを設定
+	 * @param pTargetTexture
+	 */
+	@SideOnly(Side.CLIENT)
+	public void setNextTextureArmorPackege() {
+		
+		modelConfigCompound.setNextTextureArmorPackege();
 		
 		this.syncModelNamesToServer();
 	}
@@ -4356,9 +4363,21 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * @param pTargetTexture
 	 */
 	@SideOnly(Side.CLIENT)
-	public void setPrevTexturePackege(int pTargetTexture) {
+	public void setPrevTexturePackege() {
 		
-		modelConfigCompound.setPrevTexturePackege(pTargetTexture);
+		modelConfigCompound.setPrevTexturePackege();
+		
+		this.syncModelNamesToServer();
+	}
+	
+	/**
+	 * 前のテクスチャを設定
+	 * @param pTargetTexture
+	 */
+	@SideOnly(Side.CLIENT)
+	public void setPrevTextureArmorPackege() {
+		
+		modelConfigCompound.setPrevTextureArmorPackege();
 		
 		this.syncModelNamesToServer();
 	}
@@ -4840,15 +4859,16 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		
 		IEntityLivingData ret = super.onInitialSpawn(difficulty, livingdata);
 		
-		
 		//デフォルト野良モデルを設定する
 		if (!LMRConfig.cfg_isFixedWildMaid) {
-			String littleMaidTexture = ModelManager.instance.getRandomTextureString(rand);
-			byte maidColor = ModelManager.instance.getTextureBox(littleMaidTexture).getRandomWildColor(rand);
+			//String littleMaidTexture = ModelManager.instance.getRandomTextureString(rand);
+			LMTextureBox littleMaidTextureBox = LMTextureBoxManager.instance.getRandomTexture(rand);
+			EnumColor maidColor = littleMaidTextureBox.getRandomWildColor(rand);
+			String littleMaidTexture = littleMaidTextureBox.getTextureModelName();
 			
 			dataManager.set(EntityLittleMaid.dataWatch_texture_LittleMaid, littleMaidTexture);
 			dataManager.set(EntityLittleMaid.dataWatch_texture_Armor, littleMaidTexture);
-			dataManager.set(EntityLittleMaid.dataWatch_Color, maidColor);
+			dataManager.set(EntityLittleMaid.dataWatch_Color, (byte) maidColor.getColor());
 		} else {
 			String littleMaidTexture = "default_Orign";
 			byte maidColor = (byte) EnumColor.BROWN.getColor();

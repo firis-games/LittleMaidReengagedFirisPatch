@@ -555,8 +555,10 @@ public class GuiMaidInventory extends GuiContainer {
 //			RenderHelper.disableStandardItemLighting();
 
 			if (entitylittlemaid.getModelConfigCompound().getTextureBoxLittleMaid() != null) {
-				String ls1 = entitylittlemaid.getModelConfigCompound().getTextureName(0);
-				String ls2 = entitylittlemaid.getModelConfigCompound().getTextureName(1);
+//				String ls1 = entitylittlemaid.getModelConfigCompound().getTextureName(0);
+//				String ls2 = entitylittlemaid.getModelConfigCompound().getTextureName(1);
+				String ls1 = entitylittlemaid.getModelConfigCompound().getTextureNameLittleMaid();
+				String ls2 = entitylittlemaid.getModelConfigCompound().getTextureNameArmor();
 				int ltw1 = this.mc.fontRenderer.getStringWidth(ls1);
 				int ltw2 = this.mc.fontRenderer.getStringWidth(ls2);
 				int ltwmax = (ltw1 > ltw2) ? ltw1 : ltw2;
@@ -645,22 +647,22 @@ public class GuiMaidInventory extends GuiContainer {
 		int booster = entitylittlemaid.getExpBooster();
 		switch (par1GuiButton.id) {
 		case 100 :
-			entitylittlemaid.setNextTexturePackege(0);
+			entitylittlemaid.setNextTexturePackege();
 //			entitylittlemaid.setTextureNames();
 //			entitylittlemaid.syncModelNames();
 			break;
 		case 101 :
-			entitylittlemaid.setPrevTexturePackege(0);
+			entitylittlemaid.setPrevTexturePackege();
 //			entitylittlemaid.setTextureNames();
 //			entitylittlemaid.syncModelNames();
 			break;
 		case 110 :
-			entitylittlemaid.setNextTexturePackege(1);
+			entitylittlemaid.setNextTextureArmorPackege();
 //			entitylittlemaid.setTextureNames();
 //			entitylittlemaid.syncModelNames();
 			break;
 		case 111 :
-			entitylittlemaid.setPrevTexturePackege(1);
+			entitylittlemaid.setPrevTextureArmorPackege();
 //			entitylittlemaid.setTextureNames();
 //			entitylittlemaid.syncModelNames();
 			break;

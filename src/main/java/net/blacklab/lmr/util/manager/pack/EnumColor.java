@@ -47,5 +47,16 @@ public enum EnumColor {
 		}
 		return EnumColor.WHITE;
 	}
+	
+	/**
+	 * カラー番号が含まれるかの確認
+	 * @return
+	 */
+	public static boolean hasColor(int color) {
+		for (EnumColor enumColor : EnumColor.values()) {
+			if (enumColor.getColor() == color) return true;
+		}
+		return false;
+	}
 
 }

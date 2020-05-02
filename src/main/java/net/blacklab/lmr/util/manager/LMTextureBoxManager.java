@@ -1,9 +1,11 @@
 package net.blacklab.lmr.util.manager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.blacklab.lmr.util.manager.pack.MultiModelPack;
@@ -27,7 +29,7 @@ public class LMTextureBoxManager {
 	/**
 	 * テクスチャモデルパック一覧
 	 */
-	protected Map<String, LMTextureBox> littleMaidTextureModelPackMap = new HashMap<>();
+	protected Map<String, LMTextureBox> littleMaidTextureModelPackMap = new LinkedHashMap<>();
 	
 	/**
 	 * 野生メイドさんを持つテクスチャモデル
@@ -69,6 +71,14 @@ public class LMTextureBoxManager {
 		}
 		
 	}
+	
+	/**
+	 * テクスチャモデルの一覧を取得
+	 * @return
+	 */
+	public Collection<LMTextureBox> getLMTextureBoxList() {
+		return this.littleMaidTextureModelPackMap.values();
+	}
 
 	/**
 	 * 指定のテクスチャモデルを取得する
@@ -82,12 +92,125 @@ public class LMTextureBoxManager {
 	}
 	
 	/**
-	 * メイドさんのデフォルトテクスチャモデルを取得する
-	 * @param textureName
+	 * デフォルトのテクスチャモデルを取得する
 	 * @return
 	 */
 	public LMTextureBox getDefaultLMTextureBox() {
 		return this.littleMaidTextureModelPackMap.get(defaultTextureModelName);
 	}
 	
+	/**
+	 * 同一カラーの次のモデルを取得する
+	 * @param nowBox
+	 * @param color
+	 * @return
+	 */
+	public LMTextureBox getNextPackege(LMTextureBox nowBow, int color) {
+		
+		// 次のテクスチャパッケージの名前を返す
+		boolean f = false;
+		LMTextureBox lreturn = null;
+		
+		//テクスチャモデルを探す
+		for (LMTextureBox ltb : this.littleMaidTextureModelPackMap.values()) {
+			if (ltb.hasColor(color) && ltb.hasLittleMaid()) {
+				if (f) {
+					return ltb;
+				}
+				if (lreturn == null) {
+					lreturn = ltb;
+				}
+			}
+			if (ltb == nowBow) {
+				f = true;
+			}
+		}
+		return lreturn == null ? null : lreturn;
+	}
+
+	/**
+	 * 同一カラーの前のモデルを探す
+	 * @param nowBox
+	 * @param color
+	 * @return
+	 */
+	public LMTextureBox getPrevPackege(LMTextureBox nowBox, int color) {
+		
+		// 前のテクスチャパッケージの名前を返す
+		LMTextureBox lreturn = null;
+		
+		//テクスチャモデルを探す
+		for (LMTextureBox ltb : this.littleMaidTextureModelPackMap.values()) {
+			if (ltb == nowBox) {
+				if (lreturn != null) {
+					break;
+				}
+			}
+			if (ltb.hasColor(color) && ltb.hasLittleMaid()) {
+				lreturn = ltb;
+			}
+		}
+		return lreturn == null ? null : lreturn;
+	}
+	
+	/**
+	 * 防具モデルの次のモデルを取得する
+	 * @param nowBox
+	 * @param color
+	 * @return
+	 */
+	public LMTextureBox getNextArmorPackege(LMTextureBox nowBow) {
+		
+		// 次のテクスチャパッケージの名前を返す
+		boolean f = false;
+		LMTextureBox lreturn = null;
+		
+		//テクスチャモデルを探す
+		for (LMTextureBox ltb : this.littleMaidTextureModelPackMap.values()) {
+			if (ltb.hasArmor()) {
+				if (f) {
+					return ltb;
+				}
+				if (lreturn == null) {
+					lreturn = ltb;
+				}
+				if (ltb == nowBow) {
+					f = true;
+				}
+			}
+		}
+		return lreturn == null ? null : lreturn;
+	}
+	
+	/**
+	 * 防具モデルの前のモデルを取得する
+	 * @param nowBox
+	 * @return
+	 */
+	public LMTextureBox getPrevArmorPackege(LMTextureBox nowBox) {
+		// 前のテクスチャパッケージの名前を返す
+		LMTextureBox lreturn = null;
+		
+		//テクスチャモデルを探す
+		for (LMTextureBox ltb : this.littleMaidTextureModelPackMap.values()) {
+			if (ltb == nowBox) {
+				if (lreturn != null) {
+					break;
+				}
+			}
+			if (ltb.hasArmor()) {
+				lreturn = ltb;
+			}
+		}
+		return lreturn == null ? null : lreturn;
+	}
+	
+	/**
+	 * スポーン用モデル名をランダムに取得する
+	 */
+	public LMTextureBox getRandomTexture(Random rand) {
+		//野生メイドさんのテクスチャを取得
+		String wild = wildLittleMaidList.get(rand.nextInt(wildLittleMaidList.size()));
+		return this.getLMTextureBox(wild);
+	}
 }

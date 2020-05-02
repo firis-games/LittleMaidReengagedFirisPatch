@@ -13,13 +13,13 @@ import com.google.gson.JsonObject;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.loader.LMSoundHandler;
 import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidCustomSound;
 import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidCustomSound.ModelVoice;
 import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidSound.ResourceLittleMaidSoundpack;
 import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
+import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -120,10 +120,10 @@ public class SoundManager {
 		JsonResourceLittleMaidCustomSound jsonObject = new JsonResourceLittleMaidCustomSound();
 		jsonObject.default_voice = this.defaultSoundpack;
 		
-		for (TextureBox textureBox : ModelManager.getTextureList()) {
+		for (LMTextureBox textureBox : LMTextureBoxManager.instance.getLMTextureBoxList()) {
 			
-			//デフォルトテクスチャが存在する場合のみ対象とする
-			if (textureBox.getTextureNameDefault() != null) {
+			//メイドさんのテクスチャが存在する場合のみ対象とする
+			if (textureBox.hasLittleMaid()) {
 				
 				JsonResourceLittleMaidCustomSound.ModelVoice modelVoice = new JsonResourceLittleMaidCustomSound.ModelVoice(jsonObject.default_voice);
 				
@@ -134,7 +134,7 @@ public class SoundManager {
 					}
 				}
 				//カスタマイズ情報を書き出し
-				jsonObject.custom_voice.put(textureBox.textureName, modelVoice);
+				jsonObject.custom_voice.put(textureBox.getTextureModelName(), modelVoice);
 			}			
 		}
 		

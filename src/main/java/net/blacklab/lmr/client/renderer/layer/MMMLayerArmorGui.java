@@ -101,9 +101,9 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 
 		//Inner
 		INNER:{
-			if(mmodel.modelInner==null) break INNER;
+			if(mmodel.getModelInner() == null) break INNER;
 			
-			ResourceLocation texInner = mmodel.textureInner[renderParts];
+			ResourceLocation texInner = mmodel.getTextureInner(renderParts);
 			if(texInner!=null) try{
 				Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
 			}catch(Exception e){}
@@ -114,13 +114,13 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 			
 //			mmodel.modelInner.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
 //			mmodel.modelInner.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
-			mmodel.modelInner.mainFrame.render(renderScale);
+			mmodel.getModelInner().mainFrame.render(renderScale);
 			//mmodel.modelOuter.mainFrame.render(renderScale, true);
 		}
 
 		// 発光Inner
-		INNERLIGHT: if (renderCount == 0 && mmodel.modelInner!=null) {
-			ResourceLocation texInnerLight = mmodel.textureInnerLight[renderParts];
+		INNERLIGHT: if (renderCount == 0 && mmodel.getModelInner()!=null) {
+			ResourceLocation texInnerLight = mmodel.getLightTextureInner(renderParts);
 			if (texInnerLight != null) {
 				try{
 					Minecraft.getMinecraft().getTextureManager().bindTexture(texInnerLight);
@@ -131,17 +131,17 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 				GL11.glDepthFunc(GL11.GL_LEQUAL);
 
 				RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-				if (mmodel.textureLightColor == null) {
+				if (mmodel.getTextureLightColor() == null) {
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				} else {
 					//発光色を調整
 					GL11.glColor4f(
-							mmodel.textureLightColor[0],
-							mmodel.textureLightColor[1],
-							mmodel.textureLightColor[2],
-							mmodel.textureLightColor[3]);
+							mmodel.getTextureLightColor()[0],
+							mmodel.getTextureLightColor()[1],
+							mmodel.getTextureLightColor()[2],
+							mmodel.getTextureLightColor()[3]);
 				}
-				mmodel.modelInner.mainFrame.render(renderScale);
+				mmodel.getModelInner().mainFrame.render(renderScale);
 				RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				GL11.glDisable(GL11.GL_BLEND);
@@ -153,22 +153,22 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 		//Outer
 		if(LMRConfig.cfg_isModelAlphaBlend) GL11.glEnable(GL11.GL_BLEND);
 		OUTER:{
-			if(mmodel.modelOuter==null) break OUTER;
+			if(mmodel.getModelOuter() == null) break OUTER;
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			//GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			ResourceLocation texOuter = mmodel.textureOuter[renderParts];
+			ResourceLocation texOuter = mmodel.getTextureOuter(renderParts);
 			if(texOuter!=null) try{
 				Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
 	//			mmodel.modelOuter.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
 	//			mmodel.modelOuter.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
-				mmodel.modelOuter.mainFrame.render(renderScale);
+				mmodel.getModelOuter().mainFrame.render(renderScale);
 				//mmodel.modelOuter.mainFrame.render(renderScale, true);
 			}catch(Exception e){}
 		}
 
 		// 発光Outer
-		OUTERLIGHT: if (renderCount == 0 && mmodel.modelOuter!=null) {
-			ResourceLocation texOuterLight = mmodel.textureOuterLight[renderParts];
+		OUTERLIGHT: if (renderCount == 0 && mmodel.getModelOuter() != null) {
+			ResourceLocation texOuterLight = mmodel.getLightTextureOuter(renderParts);
 			if (texOuterLight != null) {
 				try{
 					Minecraft.getMinecraft().getTextureManager().bindTexture(texOuterLight);
@@ -179,17 +179,17 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 				GL11.glDepthFunc(GL11.GL_LEQUAL);
 
 				RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-				if (mmodel.textureLightColor == null) {
+				if (mmodel.getTextureLightColor() == null) {
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				} else {
 					//発光色を調整
 					GL11.glColor4f(
-							mmodel.textureLightColor[0],
-							mmodel.textureLightColor[1],
-							mmodel.textureLightColor[2],
-							mmodel.textureLightColor[3]);
+							mmodel.getTextureLightColor()[0],
+							mmodel.getTextureLightColor()[1],
+							mmodel.getTextureLightColor()[2],
+							mmodel.getTextureLightColor()[3]);
 				}
-				mmodel.modelOuter.mainFrame.render(renderScale);
+				mmodel.getModelOuter().mainFrame.render(renderScale);
 				RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				GL11.glDisable(GL11.GL_BLEND);
@@ -210,14 +210,16 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 	public void setModelValues(EntityLivingBase par1EntityLiving) {
 		if (par1EntityLiving instanceof IModelEntity) {
 			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
-			mmodel.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
-			mmodel.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();
-			mmodel.textureInner = ltentity.getModelConfigCompound().getTextures(1);
-			mmodel.textureOuter = ltentity.getModelConfigCompound().getTextures(2);
-			mmodel.textureInnerLight = ltentity.getModelConfigCompound().getTextures(3);
-			mmodel.textureOuterLight = ltentity.getModelConfigCompound().getTextures(4);
+//			mmodel.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
+//			mmodel.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();
+//			mmodel.textureInner = ltentity.getModelConfigCompound().getTextures(1);
+//			mmodel.textureOuter = ltentity.getModelConfigCompound().getTextures(2);
+//			mmodel.textureInnerLight = ltentity.getModelConfigCompound().getTextures(3);
+//			mmodel.textureOuterLight = ltentity.getModelConfigCompound().getTextures(4);
 //			mmodel.textureLightColor = (float[])modelFATT.getCapsValue(IModelCaps.caps_textureLightColor, pEntityCaps);
 //			mmodel.entityCaps = lmm.maidCaps;
+			
+			mmodel.setModelConfigCompound(ltentity.getModelConfigCompound(), null);
 		}
 //		mmodel.setEntityCaps(pEntityCaps);
 		mmodel.setRender(this.renderer);

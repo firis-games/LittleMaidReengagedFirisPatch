@@ -82,25 +82,32 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 
 		//Inner
 		INNER:{
-			if(mmodel.textureInner!=null){
-				ResourceLocation texInner = mmodel.textureInner[renderParts];
-				if(texInner!=null&&lmm.isArmorVisible(0)) try{
-					Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
-					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-					mmodel.modelInner.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, renderer.fcaps);
-					mmodel.modelInner.setLivingAnimations(renderer.fcaps, limbSwing, limbSwingAmount, partialTicks);
-					mmodel.modelInner.render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-				}catch(Exception e){ break INNER; }
+			if(mmodel.getTextureInner(renderParts) != null){
+				ResourceLocation texInner = mmodel.getTextureInner(renderParts);
+				if(texInner!=null && lmm.isArmorVisible(0)) {
+					try{
+						Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
+						
+						GL11.glEnable(GL11.GL_BLEND);
+						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+						
+						mmodel.getModelInner().setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, renderer.fcaps);
+						mmodel.getModelInner().setLivingAnimations(renderer.fcaps, limbSwing, limbSwingAmount, partialTicks);
+						mmodel.getModelInner().render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+						
+					} catch(Exception e) {
+						break INNER;
+					}
+				}
 			} else {
 //				mmodel.modelInner.render(lmm.maidCaps, par2, par3, lmm.ticksExisted, par5, par6, renderScale, true);
 			}
 		}
 
 		// 発光Inner
-		INNERLIGHT: if (mmodel.modelInner!=null) {
-			ResourceLocation texInnerLight = mmodel.textureInnerLight[renderParts];
-			if (texInnerLight != null&&lmm.isArmorVisible(1)) {
+		INNERLIGHT: if (mmodel.getModelInner() != null) {
+			ResourceLocation texInnerLight = mmodel.getLightTextureInner(renderParts);
+			if (texInnerLight != null && lmm.isArmorVisible(1)) {
 				try{
 					Minecraft.getMinecraft().getTextureManager().bindTexture(texInnerLight);
 					GL11.glEnable(GL11.GL_BLEND);
@@ -109,17 +116,17 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 					GL11.glDepthFunc(GL11.GL_LEQUAL);
 
 					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-					if (mmodel.textureLightColor == null) {
+					if (mmodel.getTextureLightColor() == null) {
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					} else {
 						//発光色を調整
 						GL11.glColor4f(
-								mmodel.textureLightColor[0],
-								mmodel.textureLightColor[1],
-								mmodel.textureLightColor[2],
-								mmodel.textureLightColor[3]);
+								mmodel.getTextureLightColor()[0],
+								mmodel.getTextureLightColor()[1],
+								mmodel.getTextureLightColor()[2],
+								mmodel.getTextureLightColor()[3]);
 					}
-					mmodel.modelInner.render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					mmodel.getModelInner().render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
 					RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_BLEND);
@@ -132,15 +139,15 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 		//Outer
 //		if(LittleMaidReengaged.cfg_isModelAlphaBlend) GL11.glEnable(GL11.GL_BLEND);
 		OUTER:{
-			if(mmodel.textureOuter!=null){
-				ResourceLocation texOuter = mmodel.textureOuter[renderParts];
-				if(texOuter!=null&&lmm.isArmorVisible(2)) try{
+			if(mmodel.getTextureOuter(renderParts) != null){
+				ResourceLocation texOuter = mmodel.getTextureOuter(renderParts);
+				if(texOuter!=null && lmm.isArmorVisible(2)) try{
 					Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
 					GL11.glEnable(GL11.GL_BLEND);
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-					mmodel.modelOuter.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, renderer.fcaps);
-					mmodel.modelOuter.setLivingAnimations(renderer.fcaps, limbSwing, limbSwingAmount, partialTicks);
-					mmodel.modelOuter.render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					mmodel.getModelOuter().setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, renderer.fcaps);
+					mmodel.getModelOuter().setLivingAnimations(renderer.fcaps, limbSwing, limbSwingAmount, partialTicks);
+					mmodel.getModelOuter().render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
 				}catch(Exception e){break OUTER;}
 			}else{
 //				mmodel.modelOuter.render(lmm.maidCaps, limbSwing, par3, lmm.ticksExisted, par5, par6, renderScale, true);
@@ -148,8 +155,8 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 		}
 
 		// 発光Outer
-		OUTERLIGHT: if (mmodel.modelOuter!=null) {
-			ResourceLocation texOuterLight = mmodel.textureOuterLight[renderParts];
+		OUTERLIGHT: if (mmodel.getModelOuter() != null) {
+			ResourceLocation texOuterLight = mmodel.getLightTextureOuter(renderParts);
 			if (texOuterLight != null&&lmm.isArmorVisible(3)) {
 				try{
 					Minecraft.getMinecraft().getTextureManager().bindTexture(texOuterLight);
@@ -159,17 +166,17 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 					GL11.glDepthFunc(GL11.GL_LEQUAL);
 
 					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-					if (mmodel.textureLightColor == null) {
+					if (mmodel.getTextureLightColor() == null) {
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					} else {
 						//発光色を調整
 						GL11.glColor4f(
-								mmodel.textureLightColor[0],
-								mmodel.textureLightColor[1],
-								mmodel.textureLightColor[2],
-								mmodel.textureLightColor[3]);
+								mmodel.getTextureLightColor()[0],
+								mmodel.getTextureLightColor()[1],
+								mmodel.getTextureLightColor()[2],
+								mmodel.getTextureLightColor()[3]);
 					}
-					if(lmm.isArmorVisible(1)) mmodel.modelOuter.render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					if(lmm.isArmorVisible(1)) mmodel.getModelOuter().render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
 					RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_BLEND);

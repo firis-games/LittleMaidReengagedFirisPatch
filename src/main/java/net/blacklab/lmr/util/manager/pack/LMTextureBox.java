@@ -1,8 +1,11 @@
 package net.blacklab.lmr.util.manager.pack;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
@@ -370,6 +373,73 @@ public class LMTextureBox {
 	 */
 	public ModelMultiBase getModelOuterArmor() {
 		return this.multiModelPack.modelOuterArmor;
+	}
+	
+	/**
+	 * 色が存在するかのチェック
+	 * @param color
+	 * @return
+	 */
+	public boolean hasColor(int color) {
+		
+		if (!EnumColor.hasColor(color)) return false;
+		
+		if (!this.textureLittleMaid.containsKey(EnumColor.getColorFromInt(color))) return false;
+		
+		return true;
+	}
+	
+	/**
+	 * 野生メイドさんの色が存在するかのチェック
+	 * @param color
+	 * @return
+	 */
+	public boolean hasWildColor(int color) {
+		
+		if (!EnumColor.hasColor(color)) return false;
+		
+		if (!this.textureWildLittleMaid.containsKey(EnumColor.getColorFromInt(color))) return false;
+		
+		return true;
+	}
+	
+	/**
+	 * 野生メイドさんの色をランダムで取得する
+	 * @param rand
+	 * @return
+	 */
+	public EnumColor getRandomWildColor(Random rand) {
+		
+		if (this.textureWildLittleMaid.size() == 0) return null;
+		
+		List<EnumColor> wildList = new ArrayList<>(textureWildLittleMaid.keySet());
+		//野生メイドさん色
+		EnumColor wildColor = wildList.get(rand.nextInt(wildList.size()));
+		return wildColor;
+	}
+	
+	/**
+	 * アーマーが存在するかのチェック
+	 * @return
+	 */
+	public boolean hasArmor() {
+		return !(this.textureInnerArmor.size() == 0 && this.textureOuterArmor.size() == 0);
+	}
+	
+	/**
+	 * メイドさんのテクスチャが存在するかのチェック
+	 * @return
+	 */
+	public boolean hasLittleMaid() {
+		return this.textureLittleMaid.size() != 0;
+	}
+	
+	/**
+	 * 野生メイドさんのテクスチャが存在するかのチェック
+	 * @return
+	 */
+	public boolean hasWildLittleMaid() {
+		return this.textureWildLittleMaid.size() != 0;
 	}
 	
 }

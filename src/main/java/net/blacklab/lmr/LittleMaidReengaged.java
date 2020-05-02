@@ -215,8 +215,8 @@ public class LittleMaidReengaged {
 		//リトルメイドファイルローダー
 		LMFileLoader.instance.load();
 		
-		//マルチモデルセットアップ
-		ModelManager.instance.createLittleMaidModels();
+//		//マルチモデルセットアップ
+//		ModelManager.instance.createLittleMaidModels();
 		
 		//テクスチャモデル初期化
 		LMTextureBoxManager.instance.init();

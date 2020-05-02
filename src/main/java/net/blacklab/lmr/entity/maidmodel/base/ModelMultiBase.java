@@ -316,4 +316,14 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 	public static final long mh_floor_double_long(double d) {
 		return MathHelper.floor(d);
 	}
+	
+	/**
+	 * メイドモデルのリアルタイムの大きさ変更の制御
+	 * 元はTextureBox側に持っていたがマルチモデル側に持っている方が
+	 * いいと思うのでこちらで制御するように変更する
+	 * @return
+	 */
+	public boolean isUpdateSize() {
+		return false;
+	}
 }

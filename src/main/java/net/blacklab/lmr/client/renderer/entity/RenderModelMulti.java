@@ -79,18 +79,24 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		
 		if (par1EntityLiving instanceof IModelEntity) {
 			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
-			modelMain.model = ltentity.getModelConfigCompound().getModelLittleMaid();
-			modelFATT.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
-			modelFATT.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();
-//			modelMain.model = ((TextureBox)ltentity.getTextureBox()[0]).models[0];
-			modelMain.textures = ltentity.getModelConfigCompound().getTextures(0);
-//			modelFATT.modelInner = ((TextureBox)ltentity.getTextureBox()[1]).models[1];
-//			modelFATT.modelOuter = ((TextureBox)ltentity.getTextureBox()[1]).models[2];
-			modelFATT.textureInner = ltentity.getModelConfigCompound().getTextures(1);
-			modelFATT.textureOuter = ltentity.getModelConfigCompound().getTextures(2);
-			modelFATT.textureInnerLight = ltentity.getModelConfigCompound().getTextures(3);
-			modelFATT.textureOuterLight = ltentity.getModelConfigCompound().getTextures(4);
-			modelFATT.textureLightColor = (float[])modelFATT.getCapsValue(IModelCaps.caps_textureLightColor, pEntityCaps);
+//			modelMain.model = ltentity.getModelConfigCompound().getModelLittleMaid();
+//			modelFATT.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
+//			modelFATT.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();
+////			modelMain.model = ((TextureBox)ltentity.getTextureBox()[0]).models[0];
+//			modelMain.textures = ltentity.getModelConfigCompound().getTextures(0);
+////			modelFATT.modelInner = ((TextureBox)ltentity.getTextureBox()[1]).models[1];
+////			modelFATT.modelOuter = ((TextureBox)ltentity.getTextureBox()[1]).models[2];
+//			modelFATT.textureInner = ltentity.getModelConfigCompound().getTextures(1);
+//			modelFATT.textureOuter = ltentity.getModelConfigCompound().getTextures(2);
+//			modelFATT.textureInnerLight = ltentity.getModelConfigCompound().getTextures(3);
+//			modelFATT.textureOuterLight = ltentity.getModelConfigCompound().getTextures(4);
+//			
+//			modelFATT.textureLightColor = (float[])modelFATT.getCapsValue(IModelCaps.caps_textureLightColor, pEntityCaps);
+			
+			//パラメータを設定する
+			modelMain.setModelConfigCompound(ltentity.getModelConfigCompound());
+			modelFATT.setModelConfigCompound(ltentity.getModelConfigCompound(), pEntityCaps);
+			
 		}
 		modelMain.setEntityCaps(pEntityCaps);
 		modelFATT.setEntityCaps(pEntityCaps);
@@ -146,8 +152,8 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 			double par4, double par6, float par8, float par9) {
 		// 縄の位置のオフセット
 		float lf = 0F;
-		if (modelMain.model != null && fcaps != null) {
-			lf = modelMain.model.getLeashOffset(fcaps);
+		if (modelMain.getModel() != null && fcaps != null) {
+			lf = modelMain.getModel().getLeashOffset(fcaps);
 		}
 		super.renderLeash(par1EntityLiving, par2, par4 - lf, par6, par8, par9);
 	}
