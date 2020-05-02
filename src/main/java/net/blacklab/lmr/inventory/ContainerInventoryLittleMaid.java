@@ -110,7 +110,6 @@ public class ContainerInventoryLittleMaid extends Container {
 	}
 
 	protected void checkAchievements() {
-		@SuppressWarnings("unused")
 		boolean flag = true;
 		Slot slot;
 		Item item;

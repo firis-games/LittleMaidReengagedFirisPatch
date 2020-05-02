@@ -438,7 +438,7 @@ public class ModelManager {
 	 * @param fname
 	 */
 	@Deprecated
-	@SuppressWarnings({ "unused", "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void addModelClass(String fname, String[] pSearch) {
 		// モデルを追加
 		int lfindprefix = fname.indexOf(pSearch[2]);
