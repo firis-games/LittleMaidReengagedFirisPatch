@@ -26,10 +26,10 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	private ModelMultiBase modelOuter;
 	private ModelMultiBase modelInner;
 	
-	public ModelMultiBase getModelOuter() {
+	public ModelMultiBase getModelOuter(int Slot) {
 		return this.modelOuter;
 	}
-	public ModelMultiBase getModelInner() {
+	public ModelMultiBase getModelInner(int Slot) {
 		return this.modelInner;
 	}
 	

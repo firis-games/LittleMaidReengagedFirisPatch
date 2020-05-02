@@ -91,9 +91,9 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 						GL11.glEnable(GL11.GL_BLEND);
 						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 						
-						mmodel.getModelInner().setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, renderer.fcaps);
-						mmodel.getModelInner().setLivingAnimations(renderer.fcaps, limbSwing, limbSwingAmount, partialTicks);
-						mmodel.getModelInner().render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+						mmodel.getModelInner(renderParts).setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, renderer.fcaps);
+						mmodel.getModelInner(renderParts).setLivingAnimations(renderer.fcaps, limbSwing, limbSwingAmount, partialTicks);
+						mmodel.getModelInner(renderParts).render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
 						
 					} catch(Exception e) {
 						break INNER;
@@ -105,7 +105,7 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 		}
 
 		// 発光Inner
-		INNERLIGHT: if (mmodel.getModelInner() != null) {
+		INNERLIGHT: if (mmodel.getModelInner(renderParts) != null) {
 			ResourceLocation texInnerLight = mmodel.getLightTextureInner(renderParts);
 			if (texInnerLight != null && lmm.isArmorVisible(1)) {
 				try{
@@ -126,7 +126,7 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 								mmodel.getTextureLightColor()[2],
 								mmodel.getTextureLightColor()[3]);
 					}
-					mmodel.getModelInner().render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					mmodel.getModelInner(renderParts).render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
 					RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_BLEND);
@@ -145,9 +145,9 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 					Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
 					GL11.glEnable(GL11.GL_BLEND);
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-					mmodel.getModelOuter().setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, renderer.fcaps);
-					mmodel.getModelOuter().setLivingAnimations(renderer.fcaps, limbSwing, limbSwingAmount, partialTicks);
-					mmodel.getModelOuter().render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					mmodel.getModelOuter(renderParts).setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, renderer.fcaps);
+					mmodel.getModelOuter(renderParts).setLivingAnimations(renderer.fcaps, limbSwing, limbSwingAmount, partialTicks);
+					mmodel.getModelOuter(renderParts).render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
 				}catch(Exception e){break OUTER;}
 			}else{
 //				mmodel.modelOuter.render(lmm.maidCaps, limbSwing, par3, lmm.ticksExisted, par5, par6, renderScale, true);
@@ -155,7 +155,7 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 		}
 
 		// 発光Outer
-		OUTERLIGHT: if (mmodel.getModelOuter() != null) {
+		OUTERLIGHT: if (mmodel.getModelOuter(renderParts) != null) {
 			ResourceLocation texOuterLight = mmodel.getLightTextureOuter(renderParts);
 			if (texOuterLight != null&&lmm.isArmorVisible(3)) {
 				try{
@@ -176,7 +176,7 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 								mmodel.getTextureLightColor()[2],
 								mmodel.getTextureLightColor()[3]);
 					}
-					if(lmm.isArmorVisible(1)) mmodel.getModelOuter().render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					if(lmm.isArmorVisible(1)) mmodel.getModelOuter(renderParts).render(renderer.fcaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
 					RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_BLEND);

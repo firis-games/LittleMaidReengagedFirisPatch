@@ -101,7 +101,7 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 
 		//Inner
 		INNER:{
-			if(mmodel.getModelInner() == null) break INNER;
+			if(mmodel.getModelInner(renderParts) == null) break INNER;
 			
 			ResourceLocation texInner = mmodel.getTextureInner(renderParts);
 			if(texInner!=null) try{
@@ -114,12 +114,12 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 			
 //			mmodel.modelInner.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
 //			mmodel.modelInner.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
-			mmodel.getModelInner().mainFrame.render(renderScale);
+			mmodel.getModelInner(renderParts).mainFrame.render(renderScale);
 			//mmodel.modelOuter.mainFrame.render(renderScale, true);
 		}
 
 		// 発光Inner
-		INNERLIGHT: if (renderCount == 0 && mmodel.getModelInner()!=null) {
+		INNERLIGHT: if (renderCount == 0 && mmodel.getModelInner(renderParts)!=null) {
 			ResourceLocation texInnerLight = mmodel.getLightTextureInner(renderParts);
 			if (texInnerLight != null) {
 				try{
@@ -141,7 +141,7 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 							mmodel.getTextureLightColor()[2],
 							mmodel.getTextureLightColor()[3]);
 				}
-				mmodel.getModelInner().mainFrame.render(renderScale);
+				mmodel.getModelInner(renderParts).mainFrame.render(renderScale);
 				RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				GL11.glDisable(GL11.GL_BLEND);
@@ -153,7 +153,7 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 		//Outer
 		if(LMRConfig.cfg_isModelAlphaBlend) GL11.glEnable(GL11.GL_BLEND);
 		OUTER:{
-			if(mmodel.getModelOuter() == null) break OUTER;
+			if(mmodel.getModelOuter(renderParts) == null) break OUTER;
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			//GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			ResourceLocation texOuter = mmodel.getTextureOuter(renderParts);
@@ -161,13 +161,13 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 				Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
 	//			mmodel.modelOuter.setLivingAnimations(lmm.maidCaps, par2, par3, lmm.ticksExisted);
 	//			mmodel.modelOuter.setRotationAngles(par2, par3, lmm.ticksExisted, par5, par6, renderScale, lmm.maidCaps);
-				mmodel.getModelOuter().mainFrame.render(renderScale);
+				mmodel.getModelOuter(renderParts).mainFrame.render(renderScale);
 				//mmodel.modelOuter.mainFrame.render(renderScale, true);
 			}catch(Exception e){}
 		}
 
 		// 発光Outer
-		OUTERLIGHT: if (renderCount == 0 && mmodel.getModelOuter() != null) {
+		OUTERLIGHT: if (renderCount == 0 && mmodel.getModelOuter(renderParts) != null) {
 			ResourceLocation texOuterLight = mmodel.getLightTextureOuter(renderParts);
 			if (texOuterLight != null) {
 				try{
@@ -189,7 +189,7 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 							mmodel.getTextureLightColor()[2],
 							mmodel.getTextureLightColor()[3]);
 				}
-				mmodel.getModelOuter().mainFrame.render(renderScale);
+				mmodel.getModelOuter(renderParts).mainFrame.render(renderScale);
 				RendererHelper.setLightmapTextureCoords(mmodel.lighting);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				GL11.glDisable(GL11.GL_BLEND);
