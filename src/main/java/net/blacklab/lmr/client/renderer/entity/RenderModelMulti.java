@@ -100,8 +100,8 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		}
 		modelMain.setEntityCaps(pEntityCaps);
 		modelFATT.setEntityCaps(pEntityCaps);
-		modelMain.setRender(this);
-		modelFATT.setRender(this);
+//		modelMain.setRender(this);
+//		modelFATT.setRender(this);
 		modelMain.showAllParts();
 		modelFATT.showAllParts();
 		modelMain.isAlphablend = true;

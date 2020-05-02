@@ -1,13 +1,14 @@
 package net.blacklab.lmr.entity.maidmodel;
 
+import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 
 public class ModelBaseNihil extends ModelBase {
 
-	public RenderLivingBase rendererLivingEntity;
+	public RenderModelMulti<? extends EntityLiving> rendererLivingEntity;
 
 	public boolean isAlphablend;
 	public boolean isModelAlphablend;

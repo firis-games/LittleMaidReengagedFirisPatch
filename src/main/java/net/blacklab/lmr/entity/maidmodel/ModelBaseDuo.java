@@ -4,14 +4,14 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
+import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.TextureOffset;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -26,10 +26,10 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	private ModelMultiBase modelOuter;
 	private ModelMultiBase modelInner;
 	
-	public ModelMultiBase getModelOuter(int Slot) {
+	public ModelMultiBase getModelOuter(int slot) {
 		return this.modelOuter;
 	}
-	public ModelMultiBase getModelInner(int Slot) {
+	public ModelMultiBase getModelInner(int slot) {
 		return this.modelInner;
 	}
 	
@@ -60,7 +60,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	 * @param Slot
 	 * @return
 	 */
-	public ResourceLocation getTextureInner(int Slot) {
+	public ResourceLocation getTextureInner(int slot) {
 		if (this.modelConfigCompound != null) {
 			return this.modelConfigCompound.getTextureBoxArmor().getTextureInnerArmor(ItemStack.EMPTY);
 		}
@@ -72,7 +72,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	 * @param Slot
 	 * @return
 	 */
-	public ResourceLocation getLightTextureInner(int Slot) {
+	public ResourceLocation getLightTextureInner(int slot) {
 		if (this.modelConfigCompound != null && this.modelConfigCompound.getTextureBoxArmor() != null) {
 			return this.modelConfigCompound.getTextureBoxArmor().getLightTextureInnerArmor(ItemStack.EMPTY);
 		}
@@ -84,7 +84,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	 * @param Slot
 	 * @return
 	 */
-	public ResourceLocation getTextureOuter(int Slot) {
+	public ResourceLocation getTextureOuter(int slot) {
 		if (this.modelConfigCompound != null) {
 			return this.modelConfigCompound.getTextureBoxArmor().getTextureOuterArmor(ItemStack.EMPTY);
 		}
@@ -96,7 +96,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	 * @param Slot
 	 * @return
 	 */
-	public ResourceLocation getLightTextureOuter(int Slot) {
+	public ResourceLocation getLightTextureOuter(int slot) {
 		if (this.modelConfigCompound != null && this.modelConfigCompound.getTextureBoxArmor() != null) {
 			return this.modelConfigCompound.getTextureBoxArmor().getLightTextureOuterArmor(ItemStack.EMPTY);
 		}
@@ -136,7 +136,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 		return textureLightColor;
 	}
 
-	public ModelBaseDuo(RenderLivingBase pRender) {
+	public ModelBaseDuo(RenderModelMulti<? extends EntityLiving> pRender) {
 		rendererLivingEntity = pRender;
 		renderParts = 0;
 	}
@@ -276,12 +276,12 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 
 	// IModelMMM追加分
 
-	@Override
-	public void renderItems(EntityLivingBase pEntity, Render pRender) {
-		if (modelInner != null) {
-			modelInner.renderItems(entityCaps);
-		}
-	}
+//	@Override
+//	public void renderItems(EntityLivingBase pEntity, Render pRender) {
+//		if (modelInner != null) {
+//			modelInner.renderItems(entityCaps);
+//		}
+//	}
 
 	@Override
 	public void showArmorParts(int pParts) {
@@ -305,15 +305,15 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 		}
 	}
 
-	@Override
-	public void setRender(Render pRender) {
-		if (modelInner != null) {
-			modelInner.render = pRender;
-		}
-		if (modelOuter != null) {
-			modelOuter.render = pRender;
-		}
-	}
+//	@Override
+//	public void setRender(RenderModelMulti<? extends EntityLiving> pRender) {
+//		if (modelInner != null) {
+//			modelInner.render = pRender;
+//		}
+//		if (modelOuter != null) {
+//			modelOuter.render = pRender;
+//		}
+//	}
 
 	@Override
 	public void setArmorRendering(boolean pFlag) {

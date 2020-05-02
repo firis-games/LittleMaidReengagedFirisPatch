@@ -4,15 +4,15 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
+import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.TextureOffset;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
@@ -42,7 +42,7 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 	
 	public static final ResourceLocation[] blanks = new ResourceLocation[0];
 
-	public ModelBaseSolo(RenderLivingBase pRender) {
+	public ModelBaseSolo(RenderModelMulti<? extends EntityLiving> pRender) {
 		rendererLivingEntity = pRender;
 	}
 
@@ -143,12 +143,12 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 
 	// IModelMMM追加分
 
-	@Override
-	public void renderItems(EntityLivingBase pEntity, Render pRender) {
-		if (model != null) {
-			model.renderItems(entityCaps);
-		}
-	}
+//	@Override
+//	public void renderItems(EntityLivingBase pEntity, Render pRender) {
+//		if (model != null) {
+//			model.renderItems(entityCaps);
+//		}
+//	}
 
 	@Override
 	public void showArmorParts(int pParts) {
@@ -169,12 +169,12 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 		}
 	}
 
-	@Override
-	public void setRender(Render pRender) {
-		if (model != null) {
-			model.render = pRender;
-		}
-	}
+//	@Override
+//	public void setRender(Render pRender) {
+//		if (model != null) {
+//			model.render = pRender;
+//		}
+//	}
 
 	@Override
 	public void setArmorRendering(boolean pFlag) {
