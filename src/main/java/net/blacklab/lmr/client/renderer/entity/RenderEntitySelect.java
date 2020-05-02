@@ -2,7 +2,6 @@ package net.blacklab.lmr.client.renderer.entity;
 
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.layer.MMMLayerArmorGui;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.minecraft.client.renderer.entity.RenderManager;
 
 
@@ -30,7 +29,7 @@ public class RenderEntitySelect extends RenderModelMulti<EntityLittleMaidForTexS
 	public void doRender(EntityLittleMaidForTexSelect entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		
 		//モデルパラメータセット
-		fcaps = (IModelCaps)entity;
+		fcaps = entity.getModelConfigCompound().getModelCaps();
 		
 		//マルチモデルの描画
 		renderModelMulti(entity, x, y, z, entityYaw, partialTicks, fcaps);

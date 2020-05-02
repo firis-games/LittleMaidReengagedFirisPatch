@@ -1,19 +1,14 @@
 package net.blacklab.lmr.client.entity;
 
-import java.util.Map;
-
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
-import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxBase;
 import net.blacklab.lmr.util.EntityCapsLiving;
 import net.blacklab.lmr.util.manager.ModelManager;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class EntityLittleMaidForTexSelect extends EntityLiving implements IModelCaps, IModelEntity {
+public class EntityLittleMaidForTexSelect extends EntityLiving implements IModelEntity {
 
 //	public int color;
 //	public int textureIndex[] = new int[] { 0, 0 };
@@ -27,14 +22,14 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 //			{ null, null , null , null },
 //			{ null, null , null , null }
 //	};
-	protected EntityCapsLiving entityCaps;
+//	protected EntityCapsLiving entityCaps;
 	protected ModelConfigCompound modelConfigCompound;
 	public boolean modeArmor = false;
 
 	public EntityLittleMaidForTexSelect(World par1World) {
 		super(par1World);
-		entityCaps = new EntityCapsLiving(this);
-		modelConfigCompound = new ModelConfigCompound(this, entityCaps);
+//		entityCaps = new EntityCapsLiving(this);
+		modelConfigCompound = new ModelConfigCompound(this, new EntityCapsLiving(this));
 	}
 
 	@Override
@@ -60,20 +55,20 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 
 	// EntityCaps
 
-	@Override
-	public Map<String, Integer> getModelCaps() {
-		return entityCaps.getModelCaps();
-	}
+//	@Override
+//	public Map<String, Integer> getModelCaps() {
+//		return entityCaps.getModelCaps();
+//	}
 
-	@Override
-	public Object getCapsValue(int pIndex, Object... pArg) {
-		return entityCaps.getCapsValue(pIndex, pArg);
-	}
+//	@Override
+//	public Object getCapsValue(int pIndex, Object... pArg) {
+//		return entityCaps.getCapsValue(pIndex, pArg);
+//	}
 
-	@Override
-	public boolean setCapsValue(int pIndex, Object... pArg) {
-		return entityCaps.setCapsValue(pIndex, pArg);
-	}
+//	@Override
+//	public boolean setCapsValue(int pIndex, Object... pArg) {
+//		return entityCaps.setCapsValue(pIndex, pArg);
+//	}
 
 	// TextureEntity
 
