@@ -63,7 +63,6 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing.PlayRole;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
-import net.blacklab.lmr.entity.maidmodel.deprecated.EquippedStabilizer;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
@@ -233,7 +232,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	/** テクスチャ関連のデータを管理 **/
 	protected ModelConfigCompound modelConfigCompound;
 	
-	public Map<String, EquippedStabilizer> maidStabilizer = new HashMap<String, EquippedStabilizer>();
+//	public Map<String, EquippedStabilizer> maidStabilizer = new HashMap<String, EquippedStabilizer>();
 
 	public float getLastDamage(){
 		return lastDamage;

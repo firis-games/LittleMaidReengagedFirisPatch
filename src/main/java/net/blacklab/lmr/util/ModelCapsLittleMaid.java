@@ -146,8 +146,8 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 ////			// TODO 従来HeadMountとか使ってた部分は全部削除した方がすっきりすると思う．
 ////			return owner.maidInventory.armorInventory.get(3);
 //		case caps_HardPoint:
-		case caps_stabiliser:
-			return owner.maidStabilizer;
+//		case caps_stabiliser:
+//			return owner.maidStabilizer;
 		case caps_Items:
 			ItemStack[] lstacks = new ItemStack[owner.mstatSwingStatus.length];
 			for (SwingStatus ls : owner.mstatSwingStatus) {

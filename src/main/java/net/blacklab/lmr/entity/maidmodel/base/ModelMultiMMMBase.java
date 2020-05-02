@@ -1,14 +1,8 @@
 package net.blacklab.lmr.entity.maidmodel.base;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
-import net.blacklab.lmr.entity.maidmodel.deprecated.EquippedStabilizer;
-import net.blacklab.lmr.entity.maidmodel.deprecated.ModelStabilizerBase;
-import net.minecraft.client.Minecraft;
 
 /**
  * MMMの実験コードを含む部分。
@@ -17,7 +11,7 @@ import net.minecraft.client.Minecraft;
  */
 public abstract class ModelMultiMMMBase extends ModelMultiBase {
 
-	public Map<String, EquippedStabilizer> stabiliser;
+//	public Map<String, EquippedStabilizer> stabiliser;
 
 	/**
 	 * 削除予定変数使わないで下さい。
@@ -54,7 +48,7 @@ public abstract class ModelMultiMMMBase extends ModelMultiBase {
 			float pheadYaw, float pheadPitch, float par7, boolean pIsRender) {
 		setRotationAngles(par2, par3, ticksExisted, pheadYaw, pheadPitch, par7, pEntityCaps);
 		mainFrame.render(par7, pIsRender);
-		renderStabilizer(pEntityCaps, par2, par3, ticksExisted, pheadYaw, pheadPitch, par7);
+//		renderStabilizer(pEntityCaps, par2, par3, ticksExisted, pheadYaw, pheadPitch, par7);
 	}
 
 	/**
@@ -73,29 +67,29 @@ public abstract class ModelMultiMMMBase extends ModelMultiBase {
 			float par4, float par5, float par6, float par7) {
 	}
 
-	/**
-	 * スタビライザーの描画。 自動では呼ばれないのでrender内で呼ぶ必要があります。
-	 */
-	protected void renderStabilizer(IModelCaps pEntityCaps, float par2, float par3,
-			float ticksExisted, float pheadYaw, float pheadPitch, float par7) {
-		// スタビライザーの描画、doRenderの方がいいか？
-		if (stabiliser == null || stabiliser.isEmpty() || render == null)
-			return;
-
-		GL11.glPushMatrix();
-		for (Entry<String, EquippedStabilizer> le : stabiliser.entrySet()) {
-			EquippedStabilizer les = le.getValue();
-			if (les != null && les.equipPoint != null) {
-				ModelStabilizerBase lsb = les.stabilizer;
-				if (lsb.isLoadAnotherTexture()) {
-					Minecraft.getMinecraft().getTextureManager().bindTexture(lsb.getTexture());
-				}
-				les.equipPoint.loadMatrix();
-				lsb.render(this, null, par2, par3, ticksExisted, pheadYaw, pheadPitch, par7);
-			}
-		}
-		GL11.glPopMatrix();
-	}
+//	/**
+//	 * スタビライザーの描画。 自動では呼ばれないのでrender内で呼ぶ必要があります。
+//	 */
+//	protected void renderStabilizer(IModelCaps pEntityCaps, float par2, float par3,
+//			float ticksExisted, float pheadYaw, float pheadPitch, float par7) {
+//		// スタビライザーの描画、doRenderの方がいいか？
+//		if (stabiliser == null || stabiliser.isEmpty() || render == null)
+//			return;
+//
+//		GL11.glPushMatrix();
+//		for (Entry<String, EquippedStabilizer> le : stabiliser.entrySet()) {
+//			EquippedStabilizer les = le.getValue();
+//			if (les != null && les.equipPoint != null) {
+//				ModelStabilizerBase lsb = les.stabilizer;
+//				if (lsb.isLoadAnotherTexture()) {
+//					Minecraft.getMinecraft().getTextureManager().bindTexture(lsb.getTexture());
+//				}
+//				les.equipPoint.loadMatrix();
+//				lsb.render(this, null, par2, par3, ticksExisted, pheadYaw, pheadPitch, par7);
+//			}
+//		}
+//		GL11.glPopMatrix();
+//	}
 
 	/**
 	 * モデル切替時に実行されるコード
