@@ -187,10 +187,10 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 		return -1;
 	}
 
-	/**
-	 * ハードポイントに接続されたアイテムを表示する
-	 */
-	public abstract void renderItems(IModelCaps pEntityCaps);
+//	/**
+//	 * ハードポイントに接続されたアイテムを表示する
+//	 */
+//	public abstract void renderItems(IModelCaps pEntityCaps);
 
 	public abstract void renderFirstPersonHand(IModelCaps pEntityCaps);
 

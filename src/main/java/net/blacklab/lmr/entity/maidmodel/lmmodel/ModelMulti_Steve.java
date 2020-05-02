@@ -250,30 +250,30 @@ public class ModelMulti_Steve extends ModelMultiBase {
 		
 	}
 
-	@Override
-	public void renderItems(IModelCaps pEntityCaps) {
-		// 手持ちの表示
-		GL11.glPushMatrix();
-		
-		// R
-		Arms[0].loadMatrix();
-//		GL11.glTranslatef(0F, 0.05F, -0.05F);
-		Arms[0].renderItems(this, pEntityCaps, false, 0);
-		// L
-		Arms[1].loadMatrix();
-//		GL11.glTranslatef(0F, 0.05F, -0.05F);
-		Arms[1].renderItems(this, pEntityCaps, false, 1);
-		// 頭部装飾品
-		boolean lplanter = ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isPlanter);
-		if (ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isCamouflage) || lplanter) {
-			if (lplanter) {
-				HeadTop.loadMatrix().renderItemsHead(this, pEntityCaps);
-			} else {
-				HeadMount.loadMatrix().renderItemsHead(this, pEntityCaps);
-			}
-		}
-		GL11.glPopMatrix();
-	}
+//	@Override
+//	public void renderItems(IModelCaps pEntityCaps) {
+//		// 手持ちの表示
+//		GL11.glPushMatrix();
+//		
+//		// R
+//		Arms[0].loadMatrix();
+////		GL11.glTranslatef(0F, 0.05F, -0.05F);
+//		Arms[0].renderItems(this, pEntityCaps, false, 0);
+//		// L
+//		Arms[1].loadMatrix();
+////		GL11.glTranslatef(0F, 0.05F, -0.05F);
+//		Arms[1].renderItems(this, pEntityCaps, false, 1);
+//		// 頭部装飾品
+//		boolean lplanter = ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isPlanter);
+//		if (ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isCamouflage) || lplanter) {
+//			if (lplanter) {
+//				HeadTop.loadMatrix().renderItemsHead(this, pEntityCaps);
+//			} else {
+//				HeadMount.loadMatrix().renderItemsHead(this, pEntityCaps);
+//			}
+//		}
+//		GL11.glPopMatrix();
+//	}
 
 	@Override
 	public void renderFirstPersonHand(IModelCaps pEntityCaps) {

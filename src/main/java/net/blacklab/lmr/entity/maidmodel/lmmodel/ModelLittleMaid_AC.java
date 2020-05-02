@@ -87,9 +87,9 @@ public class ModelLittleMaid_AC extends ModelMultiMMMBase {
 		return 0.35F;
 	}
 	
-	@Override
-	public void renderItems(IModelCaps pEntityCaps) {
-	}
+//	@Override
+//	public void renderItems(IModelCaps pEntityCaps) {
+//	}
 
 	@Override
 	public void renderFirstPersonHand(IModelCaps pEntityCaps) {

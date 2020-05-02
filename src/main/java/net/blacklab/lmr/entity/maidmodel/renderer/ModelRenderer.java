@@ -1,39 +1,21 @@
 package net.blacklab.lmr.entity.maidmodel.renderer;
 
-import static net.blacklab.lmr.entity.maidmodel.caps.IModelCaps.caps_Actions;
-import static net.blacklab.lmr.entity.maidmodel.caps.IModelCaps.caps_Entity;
-import static net.blacklab.lmr.entity.maidmodel.caps.IModelCaps.caps_HeadMount;
-import static net.blacklab.lmr.entity.maidmodel.caps.IModelCaps.caps_Items;
-
 import java.lang.reflect.Constructor;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+
 import net.blacklab.lmr.entity.maidmodel.base.ModelBase;
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
-import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
 import net.blacklab.lmr.entity.maidmodel.modelparts.ModelBox;
 import net.blacklab.lmr.entity.maidmodel.modelparts.ModelBoxBase;
 import net.blacklab.lmr.entity.maidmodel.modelparts.ModelPlate;
-import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.model.TextureOffset;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 
 public class ModelRenderer {
 
@@ -369,183 +351,183 @@ public class ModelRenderer {
 		}
 	}
 
-	// TODO レイヤー化しちゃったのでこの辺はそのうち削除
-	public boolean renderItems(ModelMultiBase pModelMulti, IModelCaps pEntityCaps, boolean pRealBlock, int pIndex) {
-		ItemStack[] litemstacks = (ItemStack[])ModelCapsHelper.getCapsValue(pEntityCaps, caps_Items);
-		if (litemstacks == null) return false;
-		EnumAction[] lactions = (EnumAction[])ModelCapsHelper.getCapsValue(pEntityCaps, caps_Actions);
-		EntityLivingBase lentity = (EntityLivingBase)pEntityCaps.getCapsValue(caps_Entity);
-		
-		renderItems(lentity, pModelMulti.render, pRealBlock, lactions[pIndex], litemstacks[pIndex]);
-		return true;
-	}
+//	// レイヤー化しちゃったのでこの辺はそのうち削除
+//	public boolean renderItems(ModelMultiBase pModelMulti, IModelCaps pEntityCaps, boolean pRealBlock, int pIndex) {
+//		ItemStack[] litemstacks = (ItemStack[])ModelCapsHelper.getCapsValue(pEntityCaps, caps_Items);
+//		if (litemstacks == null) return false;
+//		EnumAction[] lactions = (EnumAction[])ModelCapsHelper.getCapsValue(pEntityCaps, caps_Actions);
+//		EntityLivingBase lentity = (EntityLivingBase)pEntityCaps.getCapsValue(caps_Entity);
+//		
+//		renderItems(lentity, pModelMulti.render, pRealBlock, lactions[pIndex], litemstacks[pIndex]);
+//		return true;
+//	}
 
-	public void renderItemsHead(ModelMultiBase pModelMulti, IModelCaps pEntityCaps) {
-		ItemStack lis = (ItemStack)pEntityCaps.getCapsValue(caps_HeadMount);
-		EntityLivingBase lentity = (EntityLivingBase)pEntityCaps.getCapsValue(caps_Entity);
-		
-		renderItems(lentity, pModelMulti.render, true, null, lis);
-	}
+//	public void renderItemsHead(ModelMultiBase pModelMulti, IModelCaps pEntityCaps) {
+//		ItemStack lis = (ItemStack)pEntityCaps.getCapsValue(caps_HeadMount);
+//		EntityLivingBase lentity = (EntityLivingBase)pEntityCaps.getCapsValue(caps_Entity);
+//		
+//		renderItems(lentity, pModelMulti.render, true, null, lis);
+//	}
 
-	protected void renderItems(EntityLivingBase pEntityLiving, Render pRender,
-			boolean pRealBlock, EnumAction pAction, ItemStack pItemStack) {
-		itemstack = pItemStack;
-		renderItems(pEntityLiving, pRender, pRealBlock, pAction);
-	}
+//	protected void renderItems(EntityLivingBase pEntityLiving, Render pRender,
+//			boolean pRealBlock, EnumAction pAction, ItemStack pItemStack) {
+//		itemstack = pItemStack;
+//		renderItems(pEntityLiving, pRender, pRealBlock, pAction);
+//	}
 
-	// TODO レイヤー化したので本質的に要らない？
-	protected void renderItems(EntityLivingBase pEntityLiving, Render pRender, boolean pRealBlock, EnumAction pAction) {
-		if (itemstack.isEmpty()) return;
-		
-		// アイテムのレンダリング
-		GL11.glPushMatrix();
-		Item litem = itemstack.getItem();
-		
-		// アイテムの種類による表示位置の補正
-		if (adjust) {
-			// GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
-			
-			if (pRealBlock && (litem instanceof ItemBlock)) {
-				float f2 = 0.625F;
-				GL11.glScalef(f2, -f2, -f2);
-				GL11.glRotatef(270F, 0F, 1F, 0);
-			} else if (pRealBlock && (litem instanceof ItemSkull)) {
-				float f2 = 1.0625F;
-				GL11.glScalef(f2, -f2, -f2);
-			} else {
-				float var6;
-				/*
-				if ((litem instanceof ItemBlock)
-						&& RenderBlocks.renderItemIn3d(Block.getBlockFromItem(litem).getRenderType())) {
-					var6 = 0.5F;
-					// GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
-					GL11.glTranslatef(0.0F, 0.1875F, -0.2125F);
-					var6 *= 0.75F;
-					GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
-					GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-					GL11.glScalef(var6, -var6, var6);
-				} else*/ if (litem instanceof ItemBow) {
-					var6 = 0.625F;
-					GL11.glTranslatef(-0.05F, 0.125F, 0.3125F);
-					GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
-					GL11.glScalef(var6, -var6, var6);
-					GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
-					GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-				} else if (litem.isFull3D()) {
-					var6 = 0.625F;
-					
-					if (litem.shouldRotateAroundWhenRendering()) {
-						GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-						GL11.glTranslatef(0.0F, -0.125F, 0.0F);
-					}
-					
-					if (pAction == EnumAction.BLOCK) {
-						GL11.glTranslatef(0.05F, 0.0F, -0.1F);
-						GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
-						GL11.glRotatef(-10.0F, 1.0F, 0.0F, 0.0F);
-						GL11.glRotatef(-60.0F, 0.0F, 0.0F, 1.0F);
-					}
-					
-					GL11.glTranslatef(0.0F, 0.1875F, 0.1F);
-					GL11.glScalef(var6, -var6, var6);
-					GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
-					GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-				} else {
-					var6 = 0.375F;
-					GL11.glTranslatef(0.15F, 0.15F, -0.05F);
-					// GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
-					GL11.glScalef(var6, var6, var6);
-					GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
-					GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-					GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
-				}
-			}
-		}
-		
-		// 描画
-		if (pRealBlock && litem instanceof ItemSkull) {
-			String lsowner = "";
-			if (itemstack.hasTagCompound() && itemstack.getTagCompound().hasKey("SkullOwner")) {
-				lsowner = itemstack.getTagCompound().getString("SkullOwner");
-			}
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//			TileEntitySkullRenderer.skullRenderer.func_82393_a(-0.5F, -0.25F, -0.5F, 1, 180.0F,
-//					itemstack.getItemDamage(), lsowner);
-			RendererHelper.renderSkeletonHead(TileEntitySkullRenderer.instance, -0.5F, 0.0F, -0.5F, 1, 180.0F, itemstack.getItemDamage(), lsowner);
-		} else if (pRealBlock && litem instanceof ItemBlock) {
-//			Client.setTexture(TextureMap.field_110575_b);
-//			pRender.loadTexture("/terrain.png");
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-			int var4 = pEntityLiving.getBrightnessForRender();
-			int var5 = var4 % 65536;
-			int var6 = var4 / 65536;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, var5 / 1.0F, var6 / 1.0F);
-
-			
-			GL11.glEnable(GL11.GL_CULL_FACE);
-//			pRender.renderBlocks.renderBlockAsItem(
-//					Block.blocksList[itemstack.itemID],
-//					itemstack.getItemDamage(), 1.0F);
-
-// 2Dのアイテムとして描画されてしまうため	RenderManager.instance.itemRenderer.renderItem(pEntityLiving, itemstack, 0);
-			renderBlock(itemstack);
-
-			GL11.glDisable(GL11.GL_CULL_FACE);
-		} else {
-			// アイテムに色付け
-//			pRender.loadTexture("/gui/items.png");
-			/*
-			for (int j = 0; j <= (litem.requiresMultipleRenderPasses() ? 1 : 0); j++) {
-				int k = itemstack.getItem().getColorFromItemStack(itemstack, j);
-				float f15 = (float) (k >> 16 & 0xff) / 255F;
-				float f17 = (float) (k >> 8 & 0xff) / 255F;
-				float f19 = (float) (k & 0xff) / 255F;
-				GL11.glColor4f(f15, f17, f19, 1.0F);
-				RenderManager.instance.itemRenderer.renderItem(pEntityLiving, itemstack, j);
-			}
-			*/
-		}
-		
-		GL11.glPopMatrix();
-	}
+//	// レイヤー化したので本質的に要らない？
+//	protected void renderItems(EntityLivingBase pEntityLiving, Render pRender, boolean pRealBlock, EnumAction pAction) {
+//		if (itemstack.isEmpty()) return;
+//		
+//		// アイテムのレンダリング
+//		GL11.glPushMatrix();
+//		Item litem = itemstack.getItem();
+//		
+//		// アイテムの種類による表示位置の補正
+//		if (adjust) {
+//			// GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
+//			
+//			if (pRealBlock && (litem instanceof ItemBlock)) {
+//				float f2 = 0.625F;
+//				GL11.glScalef(f2, -f2, -f2);
+//				GL11.glRotatef(270F, 0F, 1F, 0);
+//			} else if (pRealBlock && (litem instanceof ItemSkull)) {
+//				float f2 = 1.0625F;
+//				GL11.glScalef(f2, -f2, -f2);
+//			} else {
+//				float var6;
+//				/*
+//				if ((litem instanceof ItemBlock)
+//						&& RenderBlocks.renderItemIn3d(Block.getBlockFromItem(litem).getRenderType())) {
+//					var6 = 0.5F;
+//					// GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
+//					GL11.glTranslatef(0.0F, 0.1875F, -0.2125F);
+//					var6 *= 0.75F;
+//					GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
+//					GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+//					GL11.glScalef(var6, -var6, var6);
+//				} else*/ if (litem instanceof ItemBow) {
+//					var6 = 0.625F;
+//					GL11.glTranslatef(-0.05F, 0.125F, 0.3125F);
+//					GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
+//					GL11.glScalef(var6, -var6, var6);
+//					GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+//					GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+//				} else if (litem.isFull3D()) {
+//					var6 = 0.625F;
+//					
+//					if (litem.shouldRotateAroundWhenRendering()) {
+//						GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+//						GL11.glTranslatef(0.0F, -0.125F, 0.0F);
+//					}
+//					
+//					if (pAction == EnumAction.BLOCK) {
+//						GL11.glTranslatef(0.05F, 0.0F, -0.1F);
+//						GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
+//						GL11.glRotatef(-10.0F, 1.0F, 0.0F, 0.0F);
+//						GL11.glRotatef(-60.0F, 0.0F, 0.0F, 1.0F);
+//					}
+//					
+//					GL11.glTranslatef(0.0F, 0.1875F, 0.1F);
+//					GL11.glScalef(var6, -var6, var6);
+//					GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+//					GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+//				} else {
+//					var6 = 0.375F;
+//					GL11.glTranslatef(0.15F, 0.15F, -0.05F);
+//					// GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
+//					GL11.glScalef(var6, var6, var6);
+//					GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
+//					GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+//					GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
+//				}
+//			}
+//		}
+//		
+//		// 描画
+//		if (pRealBlock && litem instanceof ItemSkull) {
+//			String lsowner = "";
+//			if (itemstack.hasTagCompound() && itemstack.getTagCompound().hasKey("SkullOwner")) {
+//				lsowner = itemstack.getTagCompound().getString("SkullOwner");
+//			}
+//			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+////			TileEntitySkullRenderer.skullRenderer.func_82393_a(-0.5F, -0.25F, -0.5F, 1, 180.0F,
+////					itemstack.getItemDamage(), lsowner);
+//			RendererHelper.renderSkeletonHead(TileEntitySkullRenderer.instance, -0.5F, 0.0F, -0.5F, 1, 180.0F, itemstack.getItemDamage(), lsowner);
+//		} else if (pRealBlock && litem instanceof ItemBlock) {
+////			Client.setTexture(TextureMap.field_110575_b);
+////			pRender.loadTexture("/terrain.png");
+//			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//
+//			int var4 = pEntityLiving.getBrightnessForRender();
+//			int var5 = var4 % 65536;
+//			int var6 = var4 / 65536;
+//			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, var5 / 1.0F, var6 / 1.0F);
+//
+//			
+//			GL11.glEnable(GL11.GL_CULL_FACE);
+////			pRender.renderBlocks.renderBlockAsItem(
+////					Block.blocksList[itemstack.itemID],
+////					itemstack.getItemDamage(), 1.0F);
+//
+//// 2Dのアイテムとして描画されてしまうため	RenderManager.instance.itemRenderer.renderItem(pEntityLiving, itemstack, 0);
+//			renderBlock(itemstack);
+//
+//			GL11.glDisable(GL11.GL_CULL_FACE);
+//		} else {
+//			// アイテムに色付け
+////			pRender.loadTexture("/gui/items.png");
+//			/*
+//			for (int j = 0; j <= (litem.requiresMultipleRenderPasses() ? 1 : 0); j++) {
+//				int k = itemstack.getItem().getColorFromItemStack(itemstack, j);
+//				float f15 = (float) (k >> 16 & 0xff) / 255F;
+//				float f17 = (float) (k >> 8 & 0xff) / 255F;
+//				float f19 = (float) (k & 0xff) / 255F;
+//				GL11.glColor4f(f15, f17, f19, 1.0F);
+//				RenderManager.instance.itemRenderer.renderItem(pEntityLiving, itemstack, j);
+//			}
+//			*/
+//		}
+//		
+//		GL11.glPopMatrix();
+//	}
 	
-	// TODO これもいらん？
-	private void renderBlock(ItemStack par2ItemStack)
-	{
-		/*
-		GL11.glPushMatrix();
-		TextureManager texturemanager = Minecraft.getMinecraft().renderEngine;
-		Item item = par2ItemStack.getItem();
-		Block block = Block.getBlockFromItem(item);
-
-		if (par2ItemStack.getItemSpriteNumber() == 0 && item instanceof ItemBlock)// && RenderBlocks.renderItemIn3d(block.getRenderType()))
-		{
-			texturemanager.bindTexture(texturemanager.getResourceLocation(0));
-
-			GL11.glDisable(GL11.GL_LIGHTING);
-			if (item instanceof ItemCloth)
-			{
-				GL11.glEnable(GL11.GL_BLEND);
-				GL11.glDepthMask(false);
-				OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-				
-				GL11.glAlphaFunc(GL11.GL_GREATER, 0.001F);
-				
-				this.renderBlocksIr.renderBlockAsItem(block, par2ItemStack.getItemDamage(), 1.0F);
-				GL11.glDepthMask(true);
-				GL11.glDisable(GL11.GL_BLEND);
-			}
-			else
-			{
-				this.renderBlocksIr.renderBlockAsItem(block, par2ItemStack.getItemDamage(), 1.0F);
-			}
-			GL11.glEnable(GL11.GL_LIGHTING);
-		}
-
-		GL11.glPopMatrix();
-		*/
-	}
+//	//  これもいらん？
+//	private void renderBlock(ItemStack par2ItemStack)
+//	{
+//		/*
+//		GL11.glPushMatrix();
+//		TextureManager texturemanager = Minecraft.getMinecraft().renderEngine;
+//		Item item = par2ItemStack.getItem();
+//		Block block = Block.getBlockFromItem(item);
+//
+//		if (par2ItemStack.getItemSpriteNumber() == 0 && item instanceof ItemBlock)// && RenderBlocks.renderItemIn3d(block.getRenderType()))
+//		{
+//			texturemanager.bindTexture(texturemanager.getResourceLocation(0));
+//
+//			GL11.glDisable(GL11.GL_LIGHTING);
+//			if (item instanceof ItemCloth)
+//			{
+//				GL11.glEnable(GL11.GL_BLEND);
+//				GL11.glDepthMask(false);
+//				OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+//				
+//				GL11.glAlphaFunc(GL11.GL_GREATER, 0.001F);
+//				
+//				this.renderBlocksIr.renderBlockAsItem(block, par2ItemStack.getItemDamage(), 1.0F);
+//				GL11.glDepthMask(true);
+//				GL11.glDisable(GL11.GL_BLEND);
+//			}
+//			else
+//			{
+//				this.renderBlocksIr.renderBlockAsItem(block, par2ItemStack.getItemDamage(), 1.0F);
+//			}
+//			GL11.glEnable(GL11.GL_LIGHTING);
+//		}
+//
+//		GL11.glPopMatrix();
+//		*/
+//	}
 
 	/**
 	 *  回転変換を行う順序を指定。

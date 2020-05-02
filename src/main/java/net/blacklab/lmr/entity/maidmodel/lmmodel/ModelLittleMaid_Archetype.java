@@ -320,25 +320,25 @@ public class ModelLittleMaid_Archetype extends ModelLittleMaidBase {
 
 	}
 
-	@Override
-	public void renderItems(IModelCaps pEntityCaps) {
-		// 手持ちの表示
-		GL11.glPushMatrix();
-		if (pEntityCaps != null) {
-			int ldominant = ModelCapsHelper.getCapsValueInt(pEntityCaps, caps_dominantArm);
-			Arms[0].loadMatrix().renderItems(this, pEntityCaps, false, ldominant);
-			// 頭部装飾品
-			boolean lplanter = ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isPlanter);
-			if (ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isCamouflage) || lplanter) {
-				HeadMount.loadMatrix();
-				if (lplanter) {
-					HeadTop.loadMatrix().renderItemsHead(this, pEntityCaps);
-				} else {
-					HeadMount.loadMatrix().renderItemsHead(this, pEntityCaps);
-				}
-			}
-		}
-		GL11.glPopMatrix();
-	}
+//	@Override
+//	public void renderItems(IModelCaps pEntityCaps) {
+//		// 手持ちの表示
+//		GL11.glPushMatrix();
+//		if (pEntityCaps != null) {
+//			int ldominant = ModelCapsHelper.getCapsValueInt(pEntityCaps, caps_dominantArm);
+//			Arms[0].loadMatrix().renderItems(this, pEntityCaps, false, ldominant);
+//			// 頭部装飾品
+//			boolean lplanter = ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isPlanter);
+//			if (ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isCamouflage) || lplanter) {
+//				HeadMount.loadMatrix();
+//				if (lplanter) {
+//					HeadTop.loadMatrix().renderItemsHead(this, pEntityCaps);
+//				} else {
+//					HeadMount.loadMatrix().renderItemsHead(this, pEntityCaps);
+//				}
+//			}
+//		}
+//		GL11.glPopMatrix();
+//	}
 
 }
