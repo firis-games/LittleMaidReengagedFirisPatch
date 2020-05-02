@@ -4,7 +4,7 @@ import net.blacklab.lmr.api.client.event.ClientEventLMRE;
 import net.blacklab.lmr.client.renderer.layer.MMMLayerArmor;
 import net.blacklab.lmr.client.renderer.layer.MMMLayerHeldItem;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.util.IModelCapsData;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,11 +36,14 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 	
 	@Override
 	public void setModelValues(EntityLittleMaid par1EntityLiving, double par2,
-			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
-		EntityLittleMaid lmaid = par1EntityLiving;
+			double par4, double par6, float par8, float par9, IModelCapsData pEntityCaps) {
 		
+		//EntityLittleMaid lmaid = par1EntityLiving;
+		
+		//パラメータ設定
 		super.setModelValues(par1EntityLiving, par2, par4, par6, par8, par9, pEntityCaps);
-
+		
+	/*
 		//カスタムモーション
 		if (this.setCustomMotion(par1EntityLiving, par2, par4, par6, par8, par9, pEntityCaps)) {
 			return;
@@ -69,7 +72,8 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 
 		//カスタム設定
 		modelMain.setCapsValue(IModelCaps.caps_motionSitting, lmaid.isMotionSitting());
-
+*/
+		
 		modelFATT.setModelAttributes(mainModel);
 		// だが無意味だ
 //		plittleMaid.textureModel0.isChild = plittleMaid.textureModel1.isChild = plittleMaid.textureModel2.isChild = plittleMaid.isChild();
@@ -221,116 +225,6 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 	@Override
 	protected int getColorMultiplier(EntityLittleMaid par1EntityLiving, float par2, float par3) {
 		return par1EntityLiving.colorMultiplier(par2, par3);
-	}
-	
-	
-	/**
-	 * LMRFP独自処理
-	 * 
-	 * モーション固定Rendererを制御する
-	 * 歩行や首の傾きは別部分で制御しているようなのでここでは制御できない
-	 * 
-	 */
-	protected boolean setCustomMotion(EntityLittleMaid par1EntityLiving, double par2,
-			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
-		
-		MaidMotion motion = par1EntityLiving.getMaidMotion();
-		
-		switch (motion) {
-			case NONE:
-				return false;
-			
-			//標準状態
-			case DEFAULT:
-				break;
-
-			//待機
-			case WAIT:
-				modelMain.setCapsValue(IModelCaps.caps_isLookSuger, true);
-				modelMain.setCapsValue(IModelCaps.caps_isWait, true);
-				break;
-			
-			//砂糖らぶ
-			case LOOKSUGAR:
-				break;
-
-			//スニーク
-			case SNEAK:
-				modelMain.setCapsValue(IModelCaps.caps_isSneak, true);
-				break;
-				
-			//おすわり（LMRFPのお座りは待機と複合）
-			case SIT:
-				modelMain.setCapsValue(IModelCaps.caps_isWait, true);
-				modelMain.setCapsValue(IModelCaps.caps_isRiding, true);
-				modelMain.setCapsValue(IModelCaps.caps_motionSitting, true);
-				break;
-			
-			//弓構え
-			case BOW:
-				modelMain.setCapsValue(IModelCaps.caps_aimedBow, true);
-				break;
-		}
-		
-		//共通設定
-		//腕降り制御に使われている
-		modelMain.setCapsValue(IModelCaps.caps_onGround,
-				par1EntityLiving.mstatSwingStatus[0].getSwingProgress(par9),
-				par1EntityLiving.mstatSwingStatus[1].getSwingProgress(par9));
-		
-		return true;
-	}
-	
-	
-	/**
-	 * メイドさんの固定モーション設定
-	 */
-	public enum MaidMotion {
-		NONE(0),
-		DEFAULT(1),
-		WAIT(2),
-		LOOKSUGAR(3),
-		SNEAK(4),
-		SIT(5),
-		BOW(6);
-		
-		private MaidMotion(int id) {
-			this.id = id;
-		}
-		
-		private int id;
-		public int getId() {
-			return this.id;
-		}
-		
-		//次のモーションを取得する
-		public MaidMotion next() {
-			MaidMotion rtn = MaidMotion.NONE;
-			boolean isNext = false;
-			for (MaidMotion value : MaidMotion.values()) {
-				if (isNext) {
-					rtn = value;
-					break;
-				}
-				if(value.getId() == this.getId()) {
-					isNext = true;
-					continue;
-				}
-			}
-			return rtn;
-		}
-		
-		//IdからMaidMotion取得
-		public static MaidMotion getMaidMotionFromId(int id) {
-			MaidMotion ret = MaidMotion.NONE;
-			for (MaidMotion value : MaidMotion.values()) {
-				if(value.getId() == id) {
-					ret = value;
-					break;
-				}
-			}
-			return ret;
-		}
 	}
 	
 }

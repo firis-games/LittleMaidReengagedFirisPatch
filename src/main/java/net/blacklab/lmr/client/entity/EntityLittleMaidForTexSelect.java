@@ -2,7 +2,7 @@ package net.blacklab.lmr.client.entity;
 
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
-import net.blacklab.lmr.util.EntityCapsLiving;
+import net.blacklab.lmr.util.ModelCapsLittleMaidGui;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 
@@ -27,7 +27,7 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	public EntityLittleMaidForTexSelect(World par1World) {
 		super(par1World);
 //		entityCaps = new EntityCapsLiving(this);
-		modelConfigCompound = new ModelConfigCompound(this, new EntityCapsLiving(this));
+		modelConfigCompound = new ModelConfigCompound(this, new ModelCapsLittleMaidGui(this));
 	}
 
 	@Override

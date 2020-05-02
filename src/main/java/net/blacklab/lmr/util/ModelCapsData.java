@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
@@ -15,7 +16,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public class EntityCapsLiving implements IModelCaps {
+/**
+ * 描画パラメータ管理用クラス
+ * @author firis-games
+ *
+ */
+public abstract class ModelCapsData implements IModelCapsData {
 
 	protected EntityLivingBase owner;
 	private static Map<String, Integer> caps;
@@ -75,7 +81,7 @@ public class EntityCapsLiving implements IModelCaps {
 		return caps;
 	}
 
-	public EntityCapsLiving(EntityLivingBase pOwner) {
+	public ModelCapsData(EntityLivingBase pOwner) {
 		owner = pOwner;
 	}
 
@@ -307,6 +313,33 @@ public class EntityCapsLiving implements IModelCaps {
 		}
 
 		return false;
+	}
+	
+	/**
+	 * ModelMultiBaseへ初期値を設定する
+	 * @param model
+	 * @param modelCaps
+	 */
+	@Override
+	public void setModelValues(ModelMultiBase model, EntityLiving entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		
+		if (model == null) return;
+		
+		//メイド状態の初期化
+		model.setCapsValue(IModelCaps.caps_heldItemLeft, 0);
+		model.setCapsValue(IModelCaps.caps_heldItemRight, 0);
+//		modelMain.setCapsValue(IModelCaps.caps_onGround, getSwingProgress(par1EntityLiving, par9));
+		model.setCapsValue(IModelCaps.caps_isRiding, false);
+		model.setCapsValue(IModelCaps.caps_isSneak, false);
+		model.setCapsValue(IModelCaps.caps_aimedBow, false);
+		model.setCapsValue(IModelCaps.caps_isWait, false);
+		model.setCapsValue(IModelCaps.caps_isChild, false);
+		model.setCapsValue(IModelCaps.caps_entityIdFactor, 0F);
+		model.setCapsValue(IModelCaps.caps_ticksExisted, 0);
+		
+		//カスタム設定
+		model.setCapsValue(IModelCaps.caps_motionSitting, false);
+		
 	}
 
 }

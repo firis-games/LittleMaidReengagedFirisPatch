@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
@@ -13,7 +16,7 @@ import net.minecraft.util.EnumHandSide;
  * Entityのデータ読み取り用のクラス
  * 別にEntityにインターフェース付けてもOK
  */
-public class EntityCaps extends EntityCapsLiving {
+public class ModelCapsLittleMaid extends ModelCapsData {
 
 	private EntityLittleMaid owner;
 	private static Map<String, Integer> caps;
@@ -64,7 +67,7 @@ public class EntityCaps extends EntityCapsLiving {
 		caps.put("currentEquippedItem", caps_currentEquippedItem);
 	}
 
-	public EntityCaps(EntityLittleMaid pOwner) {
+	public ModelCapsLittleMaid(EntityLittleMaid pOwner) {
 		super(pOwner);
 		owner = pOwner;
 	}
@@ -223,6 +226,153 @@ public class EntityCaps extends EntityCapsLiving {
 		} else {
 			//オフハンド
 			return this.owner.getHeldItemOffhand();
+		}
+	}
+	
+	/**
+	 * ModelMultiBaseへ初期値を設定する
+	 * @param model
+	 * @param modelCaps
+	 */
+	@Override
+	public void setModelValues(ModelMultiBase model, EntityLiving entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		
+		super.setModelValues(model, entity, x, y, z, entityYaw, partialTicks);
+		
+		if (model == null) return;
+		
+		EntityLittleMaid maid = (EntityLittleMaid) entity;
+		
+		//カスタムモーション
+		if (this.setCustomMotion(model, maid, x, y, z, entityYaw, partialTicks)) {
+			return;
+		}
+		
+		model.setCapsValue(IModelCaps.caps_heldItemLeft, 0);
+		model.setCapsValue(IModelCaps.caps_heldItemRight, 0);
+//				modelMain.setCapsValue(IModelCaps.caps_onGround, renderSwingProgress(lmaid, par9));
+		model.setCapsValue(IModelCaps.caps_onGround,
+				maid.mstatSwingStatus[0].getSwingProgress(partialTicks),
+				maid.mstatSwingStatus[1].getSwingProgress(partialTicks));
+		model.setCapsValue(IModelCaps.caps_isRiding, maid.isRidingRender());
+		model.setCapsValue(IModelCaps.caps_isSneak, maid.isSneaking());
+		model.setCapsValue(IModelCaps.caps_aimedBow, maid.isAimebow());
+		model.setCapsValue(IModelCaps.caps_isWait, maid.isMaidWait());
+		model.setCapsValue(IModelCaps.caps_isChild, maid.isChild());
+		model.setCapsValue(IModelCaps.caps_entityIdFactor, maid.entityIdFactor);
+		model.setCapsValue(IModelCaps.caps_ticksExisted, maid.ticksExisted);
+		model.setCapsValue(IModelCaps.caps_dominantArm, maid.getDominantArm());
+
+		//カスタム設定
+		model.setCapsValue(IModelCaps.caps_motionSitting, maid.isMotionSitting());
+		
+	}
+	
+	/**
+	 * LMRFP独自処理
+	 * 
+	 * モーション固定Rendererを制御する
+	 * 歩行や首の傾きは別部分で制御しているようなのでここでは制御できない
+	 * 
+	 */
+	protected boolean setCustomMotion(ModelMultiBase model, EntityLittleMaid entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		
+		MaidMotion motion = entity.getMaidMotion();
+		
+		switch (motion) {
+			case NONE:
+				return false;
+			
+			//標準状態
+			case DEFAULT:
+				break;
+
+			//待機
+			case WAIT:
+				model.setCapsValue(IModelCaps.caps_isLookSuger, true);
+				model.setCapsValue(IModelCaps.caps_isWait, true);
+				break;
+			
+			//砂糖らぶ
+			case LOOKSUGAR:
+				break;
+
+			//スニーク
+			case SNEAK:
+				model.setCapsValue(IModelCaps.caps_isSneak, true);
+				break;
+				
+			//おすわり（LMRFPのお座りは待機と複合）
+			case SIT:
+				model.setCapsValue(IModelCaps.caps_isWait, true);
+				model.setCapsValue(IModelCaps.caps_isRiding, true);
+				model.setCapsValue(IModelCaps.caps_motionSitting, true);
+				break;
+			
+			//弓構え
+			case BOW:
+				model.setCapsValue(IModelCaps.caps_aimedBow, true);
+				break;
+		}
+		
+		//共通設定
+		//腕降り制御に使われている
+		model.setCapsValue(IModelCaps.caps_onGround,
+				entity.mstatSwingStatus[0].getSwingProgress(partialTicks),
+				entity.mstatSwingStatus[1].getSwingProgress(partialTicks));
+		
+		return true;
+	}
+	
+	
+	/**
+	 * メイドさんの固定モーション設定
+	 */
+	public enum MaidMotion {
+		NONE(0),
+		DEFAULT(1),
+		WAIT(2),
+		LOOKSUGAR(3),
+		SNEAK(4),
+		SIT(5),
+		BOW(6);
+		
+		private MaidMotion(int id) {
+			this.id = id;
+		}
+		
+		private int id;
+		public int getId() {
+			return this.id;
+		}
+		
+		//次のモーションを取得する
+		public MaidMotion next() {
+			MaidMotion rtn = MaidMotion.NONE;
+			boolean isNext = false;
+			for (MaidMotion value : MaidMotion.values()) {
+				if (isNext) {
+					rtn = value;
+					break;
+				}
+				if(value.getId() == this.getId()) {
+					isNext = true;
+					continue;
+				}
+			}
+			return rtn;
+		}
+		
+		//IdからMaidMotion取得
+		public static MaidMotion getMaidMotionFromId(int id) {
+			MaidMotion ret = MaidMotion.NONE;
+			for (MaidMotion value : MaidMotion.values()) {
+				if(value.getId() == id) {
+					ret = value;
+					break;
+				}
+			}
+			return ret;
 		}
 	}
 

@@ -9,6 +9,7 @@ import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.util.IModelCapsData;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLiving;
@@ -25,7 +26,7 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	//メイド防具用モデル
 	public ModelBaseDuo modelFATT;
 	//メイドモデル用パラメータ管理クラス
-	public IModelCaps fcaps;
+	public IModelCapsData fcaps;
 
 	/**
 	 * コンストラクタ
@@ -75,7 +76,7 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	}
 
 	public void setModelValues(T par1EntityLiving, double par2,
-			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
+			double par4, double par6, float par8, float par9, IModelCapsData pEntityCaps) {
 		
 		if (par1EntityLiving instanceof IModelEntity) {
 			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
@@ -110,6 +111,7 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		modelFATT.renderCount = 0;
 		modelMain.lighting = modelFATT.lighting = par1EntityLiving.getBrightnessForRender();
 
+		/*
 		modelMain.setCapsValue(IModelCaps.caps_heldItemLeft, 0);
 		modelMain.setCapsValue(IModelCaps.caps_heldItemRight, 0);
 //		modelMain.setCapsValue(IModelCaps.caps_onGround, getSwingProgress(par1EntityLiving, par9));
@@ -122,11 +124,21 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		modelMain.setCapsValue(IModelCaps.caps_ticksExisted, par1EntityLiving.ticksExisted);
 		//カスタム設定
 		modelMain.setCapsValue(IModelCaps.caps_motionSitting, false);
+		*/
+		
+		//マルチモデルへ設定を埋め込み
+		pEntityCaps.setModelValues(modelMain.getModel(), par1EntityLiving, par2, par4, par6, par8, par9);
+
+		for (int i = 0; i < 4; i++) {
+			pEntityCaps.setModelValues(modelFATT.getModelInner(i), par1EntityLiving, par2, par4, par6, par8, par9);
+			pEntityCaps.setModelValues(modelFATT.getModelOuter(i), par1EntityLiving, par2, par4, par6, par8, par9);
+		}
+
 	}
 
 //	public void renderModelMulti(EntityLivingBase par1EntityLiving, double par2,
 	public void renderModelMulti(T par1EntityLiving, double par2,
-			double par4, double par6, float par8, float par9, IModelCaps pEntityCaps) {
+			double par4, double par6, float par8, float par9, IModelCapsData pEntityCaps) {
 		setModelValues(par1EntityLiving, par2, par4, par6, par8, par9, pEntityCaps);
 		super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
 	}

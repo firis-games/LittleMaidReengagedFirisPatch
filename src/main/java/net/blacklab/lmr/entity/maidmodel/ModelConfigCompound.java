@@ -3,7 +3,7 @@ package net.blacklab.lmr.entity.maidmodel;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.util.IModelCapsData;
 import net.blacklab.lmr.util.manager.LMTextureBoxManager;
 import net.blacklab.lmr.util.manager.pack.EnumColor;
 import net.blacklab.lmr.util.manager.pack.LMTextureBox;
@@ -68,8 +68,8 @@ public class ModelConfigCompound  {
 
 	protected EntityLivingBase owner;
 	
-	protected IModelCaps entityCaps;
-	public IModelCaps getModelCaps() {
+	protected IModelCapsData entityCaps;
+	public IModelCapsData getModelCaps() {
 		return this.entityCaps;
 	}
 	
@@ -204,7 +204,7 @@ public class ModelConfigCompound  {
 //	public int data_Value	= 21;
 
 
-	public ModelConfigCompound(EntityLivingBase pEntity, IModelCaps pCaps) {
+	public ModelConfigCompound(EntityLivingBase pEntity, IModelCapsData pCaps) {
 		owner = pEntity;
 		entityCaps = pCaps;
 //		textures = new ResourceLocation[][] {
