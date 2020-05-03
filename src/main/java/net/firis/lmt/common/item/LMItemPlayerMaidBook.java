@@ -66,7 +66,10 @@ public class LMItemPlayerMaidBook extends Item {
 		//メイドモデル名取得
 		String maidModelName = entityMaid.getModelConfigCompound().getTextureNameLittleMaid();
 		Integer maidModelColor = (int) entityMaid.getColor();
-		String armorModelName = entityMaid.getModelConfigCompound().getTextureNameArmor();
+		String armorModelNameHead = entityMaid.getModelConfigCompound().getTextureBoxArmor(EntityEquipmentSlot.HEAD).getTextureModelName();
+		String armorModelNameChest = entityMaid.getModelConfigCompound().getTextureBoxArmor(EntityEquipmentSlot.CHEST).getTextureModelName();
+		String armorModelNameLegs = entityMaid.getModelConfigCompound().getTextureBoxArmor(EntityEquipmentSlot.LEGS).getTextureModelName();
+		String armorModelNameFeet = entityMaid.getModelConfigCompound().getTextureBoxArmor(EntityEquipmentSlot.FEET).getTextureModelName();
 		
 		//メイドモデルの設定
 		if (!player.isSneaking()) {
@@ -92,28 +95,28 @@ public class LMItemPlayerMaidBook extends Item {
 			if (player.getHeldItemOffhand().isEmpty()) {
 				
 				//全部のモデルを反映
-				propModelArmorHelmet.set(armorModelName);
-				propModelArmorChest.set(armorModelName);
-				propModelArmorLegg.set(armorModelName);
-				propModelArmorBoots.set(armorModelName);
+				propModelArmorHelmet.set(armorModelNameHead);
+				propModelArmorChest.set(armorModelNameChest);
+				propModelArmorLegg.set(armorModelNameLegs);
+				propModelArmorBoots.set(armorModelNameFeet);
 				
 			} else {
 				ItemStack offHandStack = player.getHeldItemOffhand();
 				//頭防具
 				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.HEAD, player)) {
-					propModelArmorHelmet.set(armorModelName);
+					propModelArmorHelmet.set(armorModelNameHead);
 				}
 				//胴防具
 				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.CHEST, player)) {
-					propModelArmorChest.set(armorModelName);
+					propModelArmorChest.set(armorModelNameChest);
 				}
 				//腰防具
 				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.LEGS, player)) {
-					propModelArmorLegg.set(armorModelName);
+					propModelArmorLegg.set(armorModelNameLegs);
 				}
 				//足防具
 				if (offHandStack.getItem().isValidArmor(offHandStack, EntityEquipmentSlot.FEET, player)) {
-					propModelArmorBoots.set(armorModelName);
+					propModelArmorBoots.set(armorModelNameFeet);
 				}
 			}
 		}
