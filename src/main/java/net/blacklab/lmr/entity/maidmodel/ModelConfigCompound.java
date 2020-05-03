@@ -698,5 +698,21 @@ public class ModelConfigCompound  {
 		this.setSizeMultiModel();
 		return true;
 	}
+	
+	/**
+	 * 防具モデルの表示非表示制御用
+	 * @return
+	 */
+	public boolean isArmorVisible(int no) {
+		
+		if (owner instanceof EntityLittleMaid) {
+			EntityLittleMaid maid = (EntityLittleMaid) owner;
+			return maid.isArmorVisible(no);
+		}
+		
+		return true;
+		
+		
+	}
 
 }

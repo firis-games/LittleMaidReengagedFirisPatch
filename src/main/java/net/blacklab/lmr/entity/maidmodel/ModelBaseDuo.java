@@ -7,12 +7,13 @@ import org.lwjgl.opengl.GL11;
 import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.util.IModelCapsData;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.TextureOffset;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -25,6 +26,11 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 
 	private ModelMultiBase modelOuter;
 	private ModelMultiBase modelInner;
+	
+	//内部定数
+	private static final int ARMOR_INNER_ID = 0;
+	private static final int ARMOR_OUTER_ID = 1;
+	private static final float renderScale = 0.0625F;
 	
 	public ModelMultiBase getModelOuter(int slot) {
 		return this.modelOuter;
@@ -39,19 +45,42 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	 * 描画用パラメータを設定する
 	 * @param modelConfigCompound
 	 */
-	public void setModelConfigCompound(ModelConfigCompound modelConfigCompound, IModelCaps pEntityCaps) {
-		this.modelConfigCompound = modelConfigCompound;
+	public void setModelConfigCompound(EntityLiving entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slot) {
+		
+		IModelEntity modelEntity = (IModelEntity) entity;
+		
+		this.modelConfigCompound = modelEntity.getModelConfigCompound();
+		
+		this.modelOuter = null;
+		this.modelInner = null;
+		this.textureLightColor = null;
+		
 		//モデル初期化
 		if (this.modelConfigCompound != null) {
+			
+			//モデル初期化
 			this.modelOuter = this.modelConfigCompound.getModelOuterArmor();
 			this.modelInner = this.modelConfigCompound.getModelInnerArmor();
-		} else {
-			this.modelOuter = null;
-			this.modelInner = null;
-		}
-		//色設定
-		if (pEntityCaps != null) {
-			this.textureLightColor = (float[])this.getCapsValue(IModelCaps.caps_textureLightColor, pEntityCaps);
+			
+			IModelCapsData caps = modelConfigCompound.getModelCaps();
+			
+			//色設定
+			this.textureLightColor = (float[])this.getCapsValue(IModelCaps.caps_textureLightColor, caps);
+			
+			//モデル情報の初期化
+			caps.setModelValues(this.modelInner, entity, 0, 0, 0, netHeadYaw, partialTicks);
+			caps.setModelValues(this.modelOuter, entity, 0, 0, 0, netHeadYaw, partialTicks);
+			
+			//モデルの表示設定
+			if (this.modelInner != null) {
+				this.modelInner.showArmorParts(slot.getIndex(), ARMOR_INNER_ID);
+			}
+			if (this.modelInner != null) {
+				this.modelOuter.showArmorParts(slot.getIndex(), ARMOR_OUTER_ID);
+			}
+			
+			this.entityCaps = modelConfigCompound.getModelCaps();
+			
 		}
 	}
 	
@@ -140,138 +169,161 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 		rendererLivingEntity = pRender;
 		renderParts = 0;
 	}
-
+	
+	/**
+	 * 防具モデルでは呼び出されていない
+	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float par4) {
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+		
+	}
+
+	/**
+	 * 防具モデルのsetLivingAnimations
+	 */
+	@Override
+	public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
+		
 		if (modelInner != null) {
-			modelInner.setLivingAnimations(entityCaps, par2, par3, par4);
+			modelInner.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
 		}
 		if (modelOuter != null) {
-			modelOuter.setLivingAnimations(entityCaps, par2, par3, par4);
+			modelOuter.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
 		}
+		
 		isAlphablend = true;
 	}
 
-	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		boolean lri = (renderCount & 0x0f) == 0;
-		
-		//法線の再計算
-		//GlStateManager.enableRescaleNormal();
-		//GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glEnable(GL11.GL_NORMALIZE);
-		
-		if (modelInner != null) {
-			if (lri) {
-				if (this.getTextureInner(renderParts) != null) {
-					// 通常パーツ
+	/**
+	 * アーマー描画処理
+	 */
+	public void render(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, int renderParts) {
+//		boolean lri = (renderCount & 0x0f) == 0;
+		//総合
+		this.showArmorParts(renderParts);
+
+		//Inner
+		INNER:{
+			if(this.getModelInner(renderParts) != null && this.getTextureInner(renderParts) != null){
+				ResourceLocation texInner = this.getTextureInner(renderParts);
+				if(texInner!=null && this.modelConfigCompound.isArmorVisible(0)) {
 					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getTextureInner(renderParts));
-						modelInner.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-					}catch(Exception e){
+						Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
+						
+						GL11.glEnable(GL11.GL_BLEND);
+						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+						
+						this.getModelInner(renderParts).setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, this.modelConfigCompound.getModelCaps());
+						this.getModelInner(renderParts).setLivingAnimations(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, partialTicks);
+						this.getModelInner(renderParts).render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+						
+					} catch(Exception e) {
+						break INNER;
 					}
 				}
 			} else {
-				// ほぼエンチャントエフェクト用
-				modelInner.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
+//				this.modelInner.render(lmm.maidCaps, par2, par3, lmm.ticksExisted, par5, par6, renderScale, true);
 			}
-			if (renderCount == 0) {
-				// 発光テクスチャ表示処理
-				if (this.getLightTextureInner(renderParts) != null) {
-					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getLightTextureInner(renderParts));
-					}catch(Exception e){
-					}
+		}
+
+		// 発光Inner
+		INNERLIGHT: if (this.getModelInner(renderParts) != null) {
+			ResourceLocation texInnerLight = this.getLightTextureInner(renderParts);
+			if (texInnerLight != null && this.modelConfigCompound.isArmorVisible(1)) {
+				try{
+					Minecraft.getMinecraft().getTextureManager().bindTexture(texInnerLight);
 					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glEnable(GL11.GL_ALPHA_TEST);
+					GL11.glDisable(GL11.GL_ALPHA_TEST);
 					GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 					GL11.glDepthFunc(GL11.GL_LEQUAL);
-					
+
 					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-					if (textureLightColor == null) {
+					if (this.getTextureLightColor() == null) {
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					} else {
 						//発光色を調整
 						GL11.glColor4f(
-								textureLightColor[0],
-								textureLightColor[1],
-								textureLightColor[2],
-								textureLightColor[3]);
+								this.getTextureLightColor()[0],
+								this.getTextureLightColor()[1],
+								this.getTextureLightColor()[2],
+								this.getTextureLightColor()[3]);
 					}
-					modelInner.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-					RendererHelper.setLightmapTextureCoords(lighting);
+					this.getModelInner(renderParts).render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					RendererHelper.setLightmapTextureCoords(this.lighting);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_BLEND);
-					GL11.glDisable(GL11.GL_ALPHA_TEST);
-				}
+					GL11.glEnable(GL11.GL_ALPHA_TEST);
+				}catch(Exception e){ break INNERLIGHT; }
 			}
 		}
-		GL11.glEnable(GL11.GL_BLEND);
-		if (modelOuter != null) {
-			if (lri) {
-				// 通常パーツ
+
+//		Minecraft.getMinecraft().getTextureManager().deleteTexture(lmm.getTextures(0)[renderParts]);
+		//Outer
+//		if(LittleMaidReengaged.cfg_isModelAlphaBlend) GL11.glEnable(GL11.GL_BLEND);
+		OUTER:{
+			if(this.getModelOuter(renderParts) != null && this.getTextureOuter(renderParts) != null){
+				ResourceLocation texOuter = this.getTextureOuter(renderParts);
+				if(texOuter!=null && this.modelConfigCompound.isArmorVisible(2)) try{
+					Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
+					GL11.glEnable(GL11.GL_BLEND);
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					this.getModelOuter(renderParts).setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, this.modelConfigCompound.getModelCaps());
+					this.getModelOuter(renderParts).setLivingAnimations(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, partialTicks);
+					this.getModelOuter(renderParts).render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+				}catch(Exception e){break OUTER;}
+			}else{
+//				this.modelOuter.render(lmm.maidCaps, limbSwing, par3, lmm.ticksExisted, par5, par6, renderScale, true);
+			}
+		}
+
+		// 発光Outer
+		OUTERLIGHT: if (this.getModelOuter(renderParts) != null) {
+			ResourceLocation texOuterLight = this.getLightTextureOuter(renderParts);
+			if (texOuterLight != null && this.modelConfigCompound.isArmorVisible(3)) {
+				try{
+					Minecraft.getMinecraft().getTextureManager().bindTexture(texOuterLight);
+					GL11.glEnable(GL11.GL_BLEND);
+					GL11.glEnable(GL11.GL_ALPHA_TEST);
+					GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+					GL11.glDepthFunc(GL11.GL_LEQUAL);
+
+					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
+					if (this.getTextureLightColor() == null) {
+						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+					} else {
+						//発光色を調整
+						GL11.glColor4f(
+								this.getTextureLightColor()[0],
+								this.getTextureLightColor()[1],
+								this.getTextureLightColor()[2],
+								this.getTextureLightColor()[3]);
+					}
+					if(this.modelConfigCompound.isArmorVisible(1)) this.getModelOuter(renderParts).render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					RendererHelper.setLightmapTextureCoords(this.lighting);
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+					GL11.glDisable(GL11.GL_BLEND);
+					GL11.glEnable(GL11.GL_ALPHA_TEST);
+				}catch(Exception e){ break OUTERLIGHT; }
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				if (this.getTextureOuter(renderParts) != null) {
-					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getTextureOuter(renderParts));
-						modelOuter.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-					}catch(Exception e){
-					}
-				}
-			} else {
-				// ほぼエンチャントエフェクト用
-				modelOuter.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-			}
-			if (renderCount == 0) {
-				// 発光テクスチャ表示処理
-				if (this.getLightTextureOuter(renderParts) != null) {
-					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getLightTextureOuter(renderParts));
-					}catch(Exception e){
-					}
-					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glEnable(GL11.GL_ALPHA_TEST);
-					GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-					GL11.glDepthFunc(GL11.GL_LEQUAL);
-					
-					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-					if (textureLightColor == null) {
-						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-					} else {
-						//発光色を調整
-						GL11.glColor4f(
-								textureLightColor[0],
-								textureLightColor[1],
-								textureLightColor[2],
-								textureLightColor[3]);
-					}
-					modelOuter.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-					RendererHelper.setLightmapTextureCoords(lighting);
-					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-					GL11.glDisable(GL11.GL_BLEND);
-					GL11.glDisable(GL11.GL_ALPHA_TEST);
-				}
 			}
 		}
-//		isAlphablend = false;
-		renderCount++;
 	}
+	
+//	@Override
+//	public TextureOffset getTextureOffset(String par1Str) {
+//		return modelInner == null ? null : modelInner.getTextureOffset(par1Str);
+//	}
 
-	@Override
-	public TextureOffset getTextureOffset(String par1Str) {
-		return modelInner == null ? null : modelInner.getTextureOffset(par1Str);
-	}
-
-	@Override
-	public void setRotationAngles(float par1, float par2, float par3,
-			float par4, float par5, float par6, Entity par7Entity) {
-		if (modelInner != null) {
-			modelInner.setRotationAngles(par1, par2, par3, par4, par5, par6, entityCaps);
-		}
-		if (modelOuter != null) {
-			modelOuter.setRotationAngles(par1, par2, par3, par4, par5, par6, entityCaps);
-		}
-	}
+//	@Override
+//	public void setRotationAngles(float par1, float par2, float par3,
+//			float par4, float par5, float par6, Entity par7Entity) {
+//		if (modelInner != null) {
+//			modelInner.setRotationAngles(par1, par2, par3, par4, par5, par6, entityCaps);
+//		}
+//		if (modelOuter != null) {
+//			modelOuter.setRotationAngles(par1, par2, par3, par4, par5, par6, entityCaps);
+//		}
+//	}
 
 
 	// IModelMMM追加分
@@ -283,15 +335,15 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 //		}
 //	}
 
-	@Override
-	public void showArmorParts(int pParts) {
-		if (modelInner != null) {
-			modelInner.showArmorParts(pParts, 0);
-		}
-		if (modelOuter != null) {
-			modelOuter.showArmorParts(pParts, 1);
-		}
-	}
+//	@Override
+//	public void showArmorParts(int pParts) {
+//		if (modelInner != null) {
+//			modelInner.showArmorParts(pParts, 0);
+//		}
+//		if (modelOuter != null) {
+//			modelOuter.showArmorParts(pParts, 1);
+//		}
+//	}
 
 	/**
 	 * Renderer辺でこの変数を設定する。
@@ -321,7 +373,7 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	}
 
 
-	// IModelCaps追加分
+	// IModelBaseMMM追加分
 
 	@Override
 	public Map<String, Integer> getModelCaps() {
@@ -355,6 +407,9 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 		if (modelOuter != null) {
 			modelOuter.showAllParts();
 		}
+	}
+	@Override
+	public void showArmorParts(int pParts) {
 	}
 
 }

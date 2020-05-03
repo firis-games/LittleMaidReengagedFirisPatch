@@ -21,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
  * RenderEntitySelectから分離
  * 
  */
+@Deprecated
 public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 
 	/*
@@ -209,7 +210,7 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 	 */
 	public void setModelValues(EntityLivingBase par1EntityLiving) {
 		if (par1EntityLiving instanceof IModelEntity) {
-			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
+//			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
 //			mmodel.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
 //			mmodel.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();
 //			mmodel.textureInner = ltentity.getModelConfigCompound().getTextures(1);
@@ -219,7 +220,7 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 //			mmodel.textureLightColor = (float[])modelFATT.getCapsValue(IModelCaps.caps_textureLightColor, pEntityCaps);
 //			mmodel.entityCaps = lmm.maidCaps;
 			
-			mmodel.setModelConfigCompound(ltentity.getModelConfigCompound(), null);
+//			mmodel.setModelConfigCompound(ltentity.getModelConfigCompound(), null);
 		}
 //		mmodel.setEntityCaps(pEntityCaps);
 //		mmodel.setRender(this.renderer);

@@ -23,7 +23,7 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 
 	//メイド用モデル
 	public ModelBaseSolo modelMain;
-	//メイド防具用モデル
+//	//メイド防具用モデル
 	public ModelBaseDuo modelFATT;
 	//メイドモデル用パラメータ管理クラス
 	public IModelCapsData fcaps;
@@ -96,7 +96,7 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 			
 			//パラメータを設定する
 			modelMain.setModelConfigCompound(ltentity.getModelConfigCompound());
-			modelFATT.setModelConfigCompound(ltentity.getModelConfigCompound(), pEntityCaps);
+//			modelFATT.setModelConfigCompound(ltentity.getModelConfigCompound(), pEntityCaps);
 			
 		}
 		modelMain.setEntityCaps(pEntityCaps);
@@ -129,10 +129,10 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		//マルチモデルへ設定を埋め込み
 		pEntityCaps.setModelValues(modelMain.getModel(), par1EntityLiving, par2, par4, par6, par8, par9);
 
-		for (int i = 0; i < 4; i++) {
-			pEntityCaps.setModelValues(modelFATT.getModelInner(i), par1EntityLiving, par2, par4, par6, par8, par9);
-			pEntityCaps.setModelValues(modelFATT.getModelOuter(i), par1EntityLiving, par2, par4, par6, par8, par9);
-		}
+//		for (int i = 0; i < 4; i++) {
+//			pEntityCaps.setModelValues(modelFATT.getModelInner(i), par1EntityLiving, par2, par4, par6, par8, par9);
+//			pEntityCaps.setModelValues(modelFATT.getModelOuter(i), par1EntityLiving, par2, par4, par6, par8, par9);
+//		}
 
 	}
 

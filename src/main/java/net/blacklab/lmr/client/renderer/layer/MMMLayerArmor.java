@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
  * RenderLittleMaidから分離
  * 
  */
+@Deprecated
 public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 
 	protected static final float renderScale = 0.0625F;
