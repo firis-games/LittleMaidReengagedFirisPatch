@@ -1,5 +1,7 @@
 package net.blacklab.lmr.client.renderer.entity;
 
+import org.lwjgl.opengl.GL11;
+
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
@@ -67,6 +69,18 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 //			GL11.glScalef(lscale, lscale, lscale);
 //		}
 //	}
+	
+	/**
+	 * メイドさんのサイズ変更を行う
+	 * caps_ScaleFactorをもとに描画前に全体サイズを変更する
+	 */
+	@Override
+	protected void preRenderCallback(T entitylivingbaseIn, float partialTickTime) {
+		Float lscale = this.modelMain.getMultiModelScaleFactor();
+		if (lscale != null) {
+			GL11.glScalef(lscale, lscale, lscale);
+		}
+    }
 
 	public void setModelValues(T par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9, IModelCapsData pEntityCaps) {

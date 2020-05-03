@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.TextureOffset;
@@ -254,6 +255,19 @@ public class ModelBaseSolo extends ModelBaseNihil {
 	 */
 	public void armPostRender(int arm, float scale) {
 		this.maidModel.Arms[arm].postRender(scale);
+	}
+	
+	/**
+	 * メイドモデルのスケールを取得する
+	 * @return
+	 */
+	public Float getMultiModelScaleFactor() {
+		
+		if (maidModel == null) return null;
+		
+		Float scale = (Float) maidModel.getCapsValue(IModelCaps.caps_ScaleFactor);
+		
+		return scale;
 	}
 
 }
