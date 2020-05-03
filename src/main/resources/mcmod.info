@@ -1,7 +1,7 @@
 [
 {
 	"modid": "lmreengaged",
-	"name": "LittleMaidReengaged",
+	"name": "LittleMaidReengagedFP",
 	"description": "Improved minecraft life with cute & little maids",
 	"version": "${version}",
 	"mcversion": "${mcversion}",
