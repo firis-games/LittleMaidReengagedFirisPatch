@@ -14,6 +14,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -25,9 +26,57 @@ public class GuiTextureSelect extends GuiScreen {
 	protected GuiScreen owner;
 	protected GuiTextureSlot selectPanel;
 	protected GuiButton modeButton[] = new GuiButton[2];
+	protected GuiButton armorButton;
 	public EntityLittleMaid target;
 	public byte selectColor;
 	protected boolean toServer;
+	
+	/**
+	 * 防具ボタン情報
+	 * @author firis-games
+	 */
+	private enum EnumArmorButton {
+		ALL(0, "ALL", null),
+		HEAD(1, "HEAD", EntityEquipmentSlot.HEAD),
+		CHEST(2, "CHEST", EntityEquipmentSlot.CHEST),
+		LEGS(3, "LEGS", EntityEquipmentSlot.LEGS),
+		FEET(4, "FEET", EntityEquipmentSlot.FEET);
+		private EnumArmorButton(int id, String name, EntityEquipmentSlot slot) {
+			this.name = name;
+			this.slot = slot;
+		}
+		private String name;
+		private EntityEquipmentSlot slot;
+		public String getName() {
+			return this.name;
+		}
+		public EntityEquipmentSlot getSlot() {
+			return this.slot;
+		}
+		public static EnumArmorButton next(String name) {
+			EnumArmorButton ret = ALL;
+			boolean isCheck = false;
+			for (EnumArmorButton button : EnumArmorButton.values()) {
+				if (isCheck) {
+					ret = button;
+					break;
+				}
+				if (button.getName().equals(name)) {
+					isCheck = true;
+				}
+			}
+			return ret;
+		}
+		public static EnumArmorButton get(String name) {
+			EnumArmorButton ret = ALL;
+			for (EnumArmorButton button : EnumArmorButton.values()) {
+				if (button.getName().equals(name)) {
+					return button;
+				}
+			}
+			return ret;
+		}
+	}
 
 	public GuiTextureSelect(GuiScreen pOwner, EntityLittleMaid pTarget, boolean pToServer) {
 		owner = pOwner;
@@ -43,23 +92,51 @@ public class GuiTextureSelect extends GuiScreen {
 			modeButton[0].enabled = false;
 			modeButton[1].enabled = true;
 			selectPanel.setMode(false);
+			armorButton.enabled = false;
 			break;
 		case 101:
 			modeButton[0].enabled = true;
 			modeButton[1].enabled = false;
 			selectPanel.setMode(true);
+			armorButton.enabled = true;
 			break;
 		case 200:
-			target.setColor(selectColor);
-			if (selectPanel.texsel[0] > -1) {
-//				target.setTextureNameMain(selectPanel.getSelectedBox(false).textureName);
-				target.getModelConfigCompound().refreshModelsLittleMaid(selectPanel.getSelectedBox(false).getTextureModelName(), selectColor);
-//				target.getTextureBox()[0] = selectPanel.getSelectedBox(false);
+			//メイドモデル選択モードのみ更新する
+			if (this.armorButton.enabled == false) {
+				if (selectPanel.texsel[0] > -1) {
+	//				target.setTextureNameMain(selectPanel.getSelectedBox(false).textureName);
+					target.setColor(selectColor);
+					target.getModelConfigCompound().refreshModelsLittleMaid(selectPanel.getSelectedBox(false).getTextureModelName(), selectColor);
+	//				target.getTextureBox()[0] = selectPanel.getSelectedBox(false);
+				}
 			}
-			if (selectPanel.texsel[1] > -1) {
-//				target.setTextureNameArmor(selectPanel.getSelectedBox(true).textureName);
-				target.getModelConfigCompound().refreshModelsArmor(selectPanel.getSelectedBox(true).getTextureModelName());
-//				target.getTextureBox()[1] = selectPanel.getSelectedBox(true);
+			
+			//防具モデルの更新
+			//防具選択モードでのみ更新する
+			if (this.armorButton.enabled == true) {
+				if (selectPanel.texsel[1] > -1) {
+	//				target.setTextureNameArmor(selectPanel.getSelectedBox(true).textureName);
+	//				target.getModelConfigCompound().refreshModelsArmor(selectPanel.getSelectedBox(true).getTextureModelName());
+	//				target.getTextureBox()[1] = selectPanel.getSelectedBox(true);
+					
+					//すべて
+					if (this.armorButton.displayString.equals(EnumArmorButton.ALL.getName())) {
+						
+						String textureName = selectPanel.getSelectedBox(true).getTextureModelName();
+						
+						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.HEAD, textureName);
+						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.CHEST, textureName);
+						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.LEGS, textureName);
+						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.FEET, textureName);
+						
+					//個別
+					} else {
+						target.getModelConfigCompound().refreshModelsArmor(
+								EnumArmorButton.get(this.armorButton.displayString).getSlot(), 
+								selectPanel.getSelectedBox(true).getTextureModelName());
+					}
+					
+				}
 			}
 			
 			//サーバーへ情報送信
@@ -76,9 +153,9 @@ public class GuiTextureSelect extends GuiScreen {
 				target.setTexturePackName(lboxs);
 			}
 */
-			System.out.println(String.format("select: %d(%s), %d(%s)",
-					selectPanel.texsel[0], target.getModelConfigCompound().getTextureBoxLittleMaid().getTextureModelName(),
-					selectPanel.texsel[1], target.getModelConfigCompound().getTextureBoxArmor().getTextureModelName()));
+//			System.out.println(String.format("select: %d(%s), %d(%s)",
+//					selectPanel.texsel[0], target.getModelConfigCompound().getTextureBoxLittleMaid().getTextureModelName(),
+//					selectPanel.texsel[1], target.getModelConfigCompound().getTextureBoxArmor().getTextureModelName()));
 			mc.displayGuiScreen(owner);
 			
 			if (toServer) {
@@ -93,6 +170,19 @@ public class GuiTextureSelect extends GuiScreen {
 				}
 			}
 			break;
+		case 300:
+			this.armorButton.displayString = EnumArmorButton.next(this.armorButton.displayString).getName();
+			EnumArmorButton enumArmorButton = EnumArmorButton.get(this.armorButton.displayString);
+			
+			LMTextureBox texturebox;
+			if (EnumArmorButton.ALL == enumArmorButton) {
+				texturebox = target.getModelConfigCompound().getTextureBoxArmorAll();
+			} else {
+				texturebox = target.getModelConfigCompound().getTextureBoxArmor(enumArmorButton.getSlot());
+			}
+			selectPanel.setSelectedBoxArmor(texturebox.getTextureModelName());
+			
+			break;
 		}
 	}
 
@@ -102,8 +192,13 @@ public class GuiTextureSelect extends GuiScreen {
 		selectPanel.registerScrollButtons(4, 5);
 		buttonList.add(modeButton[0] = new GuiButton(100, width / 2 - 55, height - 55, 80, 20, "Texture"));
 		buttonList.add(modeButton[1] = new GuiButton(101, width / 2 + 30, height - 55, 80, 20, "Armor"));
-		buttonList.add(new GuiButton(200, width / 2 - 10, height - 30, 120, 20, "Select"));
+		buttonList.add(new GuiButton(200, width / 2 - 10 + 20, height - 30, 100, 20, "Select"));
 		modeButton[0].enabled = false;
+
+		//防具別ボタン
+		armorButton = new GuiButton(300, width / 2 - 55, height - 30, 60, 20, EnumArmorButton.ALL.getName());
+		armorButton.enabled = false;
+		buttonList.add(armorButton);
 	}
 
 	@Override
@@ -156,11 +251,11 @@ public class GuiTextureSelect extends GuiScreen {
 		//ResourceLocation ltex[];
 		if (selectPanel.mode) {
 			selectPanel.entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
-			selectPanel.entity.getModelConfigCompound().setTextureBoxArmor(lbox);
-//			selectPanel.entity.setTextureNames("default");
+			selectPanel.entity.getModelConfigCompound().setTextureBoxArmorAll(lbox);
+//			selectPanel.entity.setTextureNames("default");			
 		} else {
 			selectPanel.entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
-			selectPanel.entity.getModelConfigCompound().setTextureBoxArmor(null);
+			selectPanel.entity.getModelConfigCompound().setTextureBoxArmorAll(null);
 			selectPanel.entity.getModelConfigCompound().setColor(selectColor);
 //			selectPanel.entity.getModelConfigCompound().setTextureNames();
 		}

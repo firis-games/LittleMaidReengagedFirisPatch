@@ -1,5 +1,8 @@
 package net.blacklab.lmr.entity.maidmodel;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
@@ -93,7 +96,41 @@ public class ModelConfigCompound  {
 	/**
 	 * 防具のテクスチャモデル
 	 */
-	protected LMTextureBox textureBoxArmor = null;
+	protected Map<EntityEquipmentSlot, LMTextureBox> textureBoxArmor = new EnumMap<>(EntityEquipmentSlot.class);
+	
+	/**
+	 * 防具モデルに一括で設定する
+	 * @param textureBox
+	 */
+	public void setTextureBoxArmorAll(LMTextureBox textureBox) {
+		this.textureBoxArmor.put(EntityEquipmentSlot.HEAD, textureBox);
+		this.textureBoxArmor.put(EntityEquipmentSlot.CHEST, textureBox);
+		this.textureBoxArmor.put(EntityEquipmentSlot.LEGS, textureBox);
+		this.textureBoxArmor.put(EntityEquipmentSlot.FEET, textureBox);
+	}
+	
+	/**
+	 * 防具モデル一括扱いで取得する
+	 */
+	public LMTextureBox getTextureBoxArmorAll() {
+		
+		LMTextureBox textureBox;
+				
+		textureBox = this.getTextureBoxArmor(EntityEquipmentSlot.HEAD);
+		if (textureBox != null) return textureBox;
+		
+		textureBox = this.getTextureBoxArmor(EntityEquipmentSlot.CHEST);
+		if (textureBox != null) return textureBox;
+		
+		textureBox = this.getTextureBoxArmor(EntityEquipmentSlot.LEGS);
+		if (textureBox != null) return textureBox;
+		
+		textureBox = this.getTextureBoxArmor(EntityEquipmentSlot.FEET);
+		if (textureBox != null) return textureBox;
+		
+		return LMTextureBoxManager.instance.getDefaultLMTextureBox();
+		
+	}
 	
 	/**
 	 * 0:基本、発光
@@ -160,32 +197,48 @@ public class ModelConfigCompound  {
 	 * インナー防具テクスチャ
 	 */
 	public ResourceLocation getTextureInnerArmor(EntityEquipmentSlot slot) {
-		if (this.textureBoxArmor == null) return null;
-		return this.textureBoxArmor.getTextureInnerArmor(ItemStack.EMPTY);
+		
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		
+		if (armorBox == null) return null;
+		
+		return armorBox.getTextureInnerArmor(ItemStack.EMPTY);
 	}
 	
 	/**
 	 * インナー発光防具テクスチャ
 	 */
 	public ResourceLocation getLightTextureInnerArmor(EntityEquipmentSlot slot) {
-		if (this.textureBoxArmor == null) return null;
-		return this.textureBoxArmor.getLightTextureInnerArmor(ItemStack.EMPTY);
+		
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		
+		if (armorBox == null) return null;
+		
+		return armorBox.getLightTextureInnerArmor(ItemStack.EMPTY);
 	}
 	
 	/**
 	 * アウター防具テクスチャ
 	 */
 	public ResourceLocation getTextureOuterArmor(EntityEquipmentSlot slot) {
-		if (this.textureBoxArmor == null) return null;
-		return this.textureBoxArmor.getTextureOuterArmor(ItemStack.EMPTY);
+		
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		
+		if (armorBox == null) return null;
+		
+		return armorBox.getTextureOuterArmor(ItemStack.EMPTY);
 	}
 	
 	/**
 	 * アウター発光防具テクスチャ
 	 */
 	public ResourceLocation getLightTextureOuterArmor(EntityEquipmentSlot slot) {
-		if (this.textureBoxArmor == null) return null;
-		return this.textureBoxArmor.getLightTextureOuterArmor(ItemStack.EMPTY);
+		
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		
+		if (armorBox == null) return null;
+		
+		return armorBox.getLightTextureOuterArmor(ItemStack.EMPTY);
 	}
 	
 	
@@ -194,17 +247,40 @@ public class ModelConfigCompound  {
 	 * 1:アーマーテクスチャ
 	 */
 //	protected TextureBoxBase textureBox[];
+	
+	/**
+	 * メイドさんモデルを取得する
+	 * @return
+	 */
 	public LMTextureBox getTextureBoxLittleMaid() {
 		return this.textureBoxLittleMaid;
 	}
-	public LMTextureBox getTextureBoxArmor() {
-		return this.textureBoxArmor;
+	
+	/**
+	 * 防具モデルを取得する
+	 * @param slot
+	 * @return
+	 */
+	public LMTextureBox getTextureBoxArmor(EntityEquipmentSlot slot) {
+		if (!textureBoxArmor.containsKey(slot)) return null;
+		return textureBoxArmor.get(slot);
 	}
+	
+	/**
+	 * メイドさんモデルを設定する
+	 * @param textureBox
+	 */
 	public void setTextureBoxLittleMaid(LMTextureBox textureBox) {
 		this.textureBoxLittleMaid = textureBox;
 	}
-	public void setTextureBoxArmor(LMTextureBox textureBox) {
-		this.textureBoxArmor = textureBox;
+	
+	/**
+	 * 防具モデルを設定する
+	 * @param textureBox
+	 * @param slot
+	 */
+	public void setTextureBoxArmor(EntityEquipmentSlot slot, LMTextureBox textureBox) {
+		this.textureBoxArmor.put(slot, textureBox);
 	}
 	
 	/**
@@ -217,13 +293,27 @@ public class ModelConfigCompound  {
 		if (textureBoxLittleMaid == null) return null;
 		return textureBoxLittleMaid.getModelLittleMaid();
 	}
+	
+	/**
+	 * インナー防具モデルを取得する
+	 * @param slot
+	 * @return
+	 */
 	public ModelMultiBase getModelInnerArmor(EntityEquipmentSlot slot) {
-		if (textureBoxArmor == null) return null;
-		return textureBoxArmor.getModelInnerArmor();
+		
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		
+		if (armorBox == null) return null;
+		
+		return armorBox.getModelInnerArmor();
 	}
 	public ModelMultiBase getModelOuterArmor(EntityEquipmentSlot slot) {
-		if (textureBoxArmor == null) return null;
-		return textureBoxArmor.getModelOuterArmor();
+		
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		
+		if (armorBox == null) return null;
+		
+		return armorBox.getModelOuterArmor();
 	}
 //	public void setModelLittleMaid(ModelMultiBase textureModel) {
 //		this.textureModel[0] = textureModel;
@@ -280,7 +370,10 @@ public class ModelConfigCompound  {
 		
 		//パラメータ初期化
 		this.textureBoxLittleMaid = LMTextureBoxManager.instance.getDefaultLMTextureBox();
-		this.textureBoxArmor = this.textureBoxLittleMaid;
+		
+		//防具モデル初期化
+		this.setTextureBoxArmorAll(this.textureBoxLittleMaid);
+		
 		this.color = EnumColor.BROWN.getColor();
 		this.contract = false;
 		
@@ -429,11 +522,11 @@ public class ModelConfigCompound  {
 	 * @param pTargetTexture
 	 */
 	public void setNextTextureArmorPackege() {
-		LMTextureBox nextTextureBox = LMTextureBoxManager.instance.getNextArmorPackege(this.textureBoxArmor);
+		LMTextureBox nextTextureBox = LMTextureBoxManager.instance.getNextArmorPackege(this.getTextureBoxArmorAll());
 		if (nextTextureBox == null) {
 			nextTextureBox = LMTextureBoxManager.instance.getDefaultLMTextureBox();
 		}
-		this.textureBoxArmor = nextTextureBox;
+		this.setTextureBoxArmorAll(nextTextureBox);
 	}
 	
 	/**
@@ -454,11 +547,11 @@ public class ModelConfigCompound  {
 	 * @param pTargetTexture
 	 */
 	public void setPrevTextureArmorPackege() {
-		LMTextureBox prevTextureBox = LMTextureBoxManager.instance.getPrevArmorPackege(this.textureBoxArmor);
+		LMTextureBox prevTextureBox = LMTextureBoxManager.instance.getPrevArmorPackege(this.getTextureBoxArmorAll());
 		if (prevTextureBox == null) {
 			prevTextureBox = LMTextureBoxManager.instance.getDefaultLMTextureBox();
 		}
-		this.textureBoxArmor = prevTextureBox;
+		this.setTextureBoxArmorAll(prevTextureBox);
 	}
 	
 	/**
@@ -634,8 +727,8 @@ public class ModelConfigCompound  {
 	 * @return
 	 */
 	public String getTextureNameArmor() {
-		if (this.textureBoxArmor == null) return "default_Orign";
-		return this.textureBoxArmor.getTextureModelName();
+		if (this.getTextureBoxArmorAll() == null) return "default_Orign";
+		return this.getTextureBoxArmorAll().getTextureModelName();
 	}
 
 	/**
@@ -672,15 +765,27 @@ public class ModelConfigCompound  {
 	 * 
 	 * @return
 	 */
-	public boolean refreshModels(String modelMaid, byte color, String modelArmor, boolean isContract) {
+	public boolean refreshModels(String modelMaid, 
+			byte color,
+			String modelArmorHead,
+			String modelArmorChest,
+			String modelArmorLegs,
+			String modelArmorFeet,
+			boolean isContract) {
 		
 		LMTextureBox maidBox = this.getTextureBoxLittleMaid();
-		LMTextureBox armorBox = this.getTextureBoxArmor();
+		LMTextureBox armorBoxHead = this.getTextureBoxArmor(EntityEquipmentSlot.HEAD);
+		LMTextureBox armorBoxChest = this.getTextureBoxArmor(EntityEquipmentSlot.CHEST);
+		LMTextureBox armorBoxLegs = this.getTextureBoxArmor(EntityEquipmentSlot.LEGS);
+		LMTextureBox armorBoxFeet = this.getTextureBoxArmor(EntityEquipmentSlot.FEET);
 		
 		//現在の状態が一致するか確認
-		if (maidBox != null && armorBox != null) {
+		if (maidBox != null && armorBoxHead != null && armorBoxChest != null && armorBoxLegs != null && armorBoxFeet != null) {
 			if (maidBox.getTextureModelName().equals(modelMaid) 
-					&& armorBox.getTextureModelName().equals(modelArmor)
+					&& armorBoxHead.getTextureModelName().equals(modelArmorHead)
+					&& armorBoxChest.getTextureModelName().equals(modelArmorChest)
+					&& armorBoxLegs.getTextureModelName().equals(modelArmorLegs)
+					&& armorBoxFeet.getTextureModelName().equals(modelArmorFeet)
 					&& color == this.getColor()
 					&& isContract == this.isContract()) {
 				return false;
@@ -691,7 +796,10 @@ public class ModelConfigCompound  {
 //		this.setTextureBoxLittleMaid(ModelManager.instance.getTextureBox(modelMaid));
 //		this.setTextureBoxArmor(ModelManager.instance.getTextureBox(modelArmor));
 		this.setTextureBoxLittleMaid(LMTextureBoxManager.instance.getLMTextureBox(modelMaid));
-		this.setTextureBoxArmor(LMTextureBoxManager.instance.getLMTextureBox(modelArmor));
+		this.setTextureBoxArmor(EntityEquipmentSlot.HEAD, LMTextureBoxManager.instance.getLMTextureBox(modelArmorHead));
+		this.setTextureBoxArmor(EntityEquipmentSlot.CHEST, LMTextureBoxManager.instance.getLMTextureBox(modelArmorChest));
+		this.setTextureBoxArmor(EntityEquipmentSlot.LEGS, LMTextureBoxManager.instance.getLMTextureBox(modelArmorLegs));
+		this.setTextureBoxArmor(EntityEquipmentSlot.FEET, LMTextureBoxManager.instance.getLMTextureBox(modelArmorFeet));
 		this.setColor(color);
 		this.setContract(isContract);
 		
@@ -732,13 +840,13 @@ public class ModelConfigCompound  {
 	 * @param isContract
 	 * @return
 	 */
-	public boolean refreshModelsArmor(String modelArmor) {
+	public boolean refreshModelsArmor(EntityEquipmentSlot slot, String modelArmor) {
 		//再設定
-		this.setTextureBoxArmor(LMTextureBoxManager.instance.getLMTextureBox(modelArmor));
+		this.setTextureBoxArmor(slot, LMTextureBoxManager.instance.getLMTextureBox(modelArmor));
 //		//テクスチャ系を更新
 //		this.setTextureNames();
 		//メイドモデルのサイズを更新
-		this.setSizeMultiModel();
+//		this.setSizeMultiModel();
 		return true;
 	}
 	

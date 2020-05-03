@@ -214,7 +214,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	
 	/** メイドさんのテクスチャ情報 */
 	protected static final DataParameter<String> dataWatch_texture_LittleMaid = EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.STRING);
-	protected static final DataParameter<String> dataWatch_texture_Armor = EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.STRING);
+	protected static final DataParameter<String> dataWatch_texture_Armor_head = EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.STRING);
+	protected static final DataParameter<String> dataWatch_texture_Armor_chest = EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.STRING);
+	protected static final DataParameter<String> dataWatch_texture_Armor_legs = EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.STRING);
+	protected static final DataParameter<String> dataWatch_texture_Armor_feet = EntityDataManager.createKey(EntityLittleMaid.class, DataSerializers.STRING);
 	
 	public int getDataWatchCurrentItem() {
 		return this.dataManager.get(dataWatch_CurrentItem);
@@ -624,7 +627,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		//メイドテクスチャの初期設定
 		String littleMaidTexture = LMTextureBoxManager.defaultTextureModelName;
 		dataManager.register(EntityLittleMaid.dataWatch_texture_LittleMaid, littleMaidTexture);
-		dataManager.register(EntityLittleMaid.dataWatch_texture_Armor, littleMaidTexture);
+		dataManager.register(EntityLittleMaid.dataWatch_texture_Armor_head, littleMaidTexture);
+		dataManager.register(EntityLittleMaid.dataWatch_texture_Armor_chest, littleMaidTexture);
+		dataManager.register(EntityLittleMaid.dataWatch_texture_Armor_legs, littleMaidTexture);
+		dataManager.register(EntityLittleMaid.dataWatch_texture_Armor_feet, littleMaidTexture);
 	}
 
 	public void initModeList() {
@@ -794,10 +800,24 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		
 		NBTTagCompound tagCompound = new NBTTagCompound();
 		tagCompound.setString("Main", this.modelConfigCompound.getTextureBoxLittleMaid().getTextureModelName());
-		tagCompound.setString("Armor", this.modelConfigCompound.getTextureBoxArmor().getTextureModelName());
+		tagCompound.setString("ArmorHead", getTextureBoxArmorNameWithDefault(this.modelConfigCompound.getTextureBoxArmor(EntityEquipmentSlot.HEAD)));
+		tagCompound.setString("ArmorChest", getTextureBoxArmorNameWithDefault(this.modelConfigCompound.getTextureBoxArmor(EntityEquipmentSlot.CHEST)));
+		tagCompound.setString("ArmorLegs", getTextureBoxArmorNameWithDefault(this.modelConfigCompound.getTextureBoxArmor(EntityEquipmentSlot.LEGS)));
+		tagCompound.setString("ArmorFeet", getTextureBoxArmorNameWithDefault(this.modelConfigCompound.getTextureBoxArmor(EntityEquipmentSlot.FEET)));
 		tagCompound.setByte("Color", (byte)this.modelConfigCompound.getColor());
 
 		syncNet(LMRMessage.EnumPacketMode.SYNC_MODEL, tagCompound);
+	}
+	
+	/**
+	 * 互換対策Nullの場合はデフォルトへ差し替え
+	 * @return
+	 */
+	private String getTextureBoxArmorNameWithDefault(LMTextureBox textureBox) {
+		
+		if (textureBox != null) return textureBox.getTextureModelName();
+		
+		return LMTextureBoxManager.defaultTextureModelName;
 	}
 	
 	/**
@@ -810,11 +830,17 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	public void reciveModelNamesFromClient(NBTTagCompound tagCompound) {
 		
 		String modelNameMain = tagCompound.getString("Main");
-		String modelNameArmor = tagCompound.getString("Armor");
+		String modelNameArmorHead = tagCompound.getString("ArmorHead");
+		String modelNameArmorChest = tagCompound.getString("ArmorChest");
+		String modelNameArmorLegs = tagCompound.getString("ArmorLegs");
+		String modelNameArmorFeet = tagCompound.getString("ArmorFeet");
 		byte modelColor =  tagCompound.getByte("Color");
 		
 		dataManager.set(EntityLittleMaid.dataWatch_texture_LittleMaid, modelNameMain);
-		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor, modelNameArmor);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_head, modelNameArmorHead);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_chest, modelNameArmorChest);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_legs, modelNameArmorLegs);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_feet, modelNameArmorFeet);
 		this.setColor(modelColor);
 	}
 	
@@ -1568,7 +1594,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		//if(textureNameMain==null) textureNameMain = "default_Orign";
 		par1nbtTagCompound.setString("textureModelNameForClient", dataManager.get(EntityLittleMaid.dataWatch_texture_LittleMaid));
 		//if(textureNameArmor==null) textureNameArmor = "default_Orign";
-		par1nbtTagCompound.setString("textureArmorNameForClient", dataManager.get(EntityLittleMaid.dataWatch_texture_Armor));
+//		par1nbtTagCompound.setString("textureArmorNameForClient", dataManager.get(EntityLittleMaid.dataWatch_texture_Armor));
+		par1nbtTagCompound.setString("textureArmorNameForClientHead", dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_head));
+		par1nbtTagCompound.setString("textureArmorNameForClientChest", dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_chest));
+		par1nbtTagCompound.setString("textureArmorNameForClientLegs", dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_legs));
+		par1nbtTagCompound.setString("textureArmorNameForClientFeet", dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_feet));
 		par1nbtTagCompound.setBoolean("isMadeTextureNameFlag", isMadeTextureNameFlag);
 
 		//カスタム分
@@ -1678,8 +1708,16 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			maidEntityModeList.get(li).readEntityFromNBT(par1nbtTagCompound);
 		}
 
+		String armorHead = par1nbtTagCompound.getString("textureArmorNameForClientHead");
+		String armorChest = par1nbtTagCompound.getString("textureArmorNameForClientChest");
+		String armorLegs = par1nbtTagCompound.getString("textureArmorNameForClientLegs");
+		String armorFeet = par1nbtTagCompound.getString("textureArmorNameForClientFeet");
+		
 		dataManager.set(EntityLittleMaid.dataWatch_texture_LittleMaid, par1nbtTagCompound.getString("textureModelNameForClient"));
-		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor, par1nbtTagCompound.getString("textureArmorNameForClient"));
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_head, armorHead);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_chest, armorChest);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_legs, armorLegs);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_feet, armorFeet);
 		
 		if (par1nbtTagCompound.hasKey("Color")) {
 			setColor((byte)par1nbtTagCompound.getInteger("Color"));
@@ -4413,7 +4451,10 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		this.modelConfigCompound.refreshModels(
 				dataManager.get(EntityLittleMaid.dataWatch_texture_LittleMaid), 
 				dataManager.get(EntityLittleMaid.dataWatch_Color), 
-				dataManager.get(EntityLittleMaid.dataWatch_texture_Armor), 
+				dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_head), 
+				dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_chest), 
+				dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_legs), 
+				dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_feet), 
 				this.isContract());
 	}
 
@@ -4858,25 +4899,23 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		
 		IEntityLivingData ret = super.onInitialSpawn(difficulty, livingdata);
 		
+		String littleMaidTexture = "default_Orign";
+		byte maidColor = (byte) EnumColor.BROWN.getColor();
+		
 		//デフォルト野良モデルを設定する
 		if (!LMRConfig.cfg_isFixedWildMaid) {
 			//String littleMaidTexture = ModelManager.instance.getRandomTextureString(rand);
 			LMTextureBox littleMaidTextureBox = LMTextureBoxManager.instance.getRandomTexture(rand);
-			EnumColor maidColor = littleMaidTextureBox.getRandomWildColor(rand);
-			String littleMaidTexture = littleMaidTextureBox.getTextureModelName();
-			
-			dataManager.set(EntityLittleMaid.dataWatch_texture_LittleMaid, littleMaidTexture);
-			dataManager.set(EntityLittleMaid.dataWatch_texture_Armor, littleMaidTexture);
-			dataManager.set(EntityLittleMaid.dataWatch_Color, (byte) maidColor.getColor());
-		} else {
-			String littleMaidTexture = "default_Orign";
-			byte maidColor = (byte) EnumColor.BROWN.getColor();
-			
-			dataManager.set(EntityLittleMaid.dataWatch_texture_LittleMaid, littleMaidTexture);
-			dataManager.set(EntityLittleMaid.dataWatch_texture_Armor, littleMaidTexture);
-			dataManager.set(EntityLittleMaid.dataWatch_Color, maidColor);
+			maidColor = (byte) littleMaidTextureBox.getRandomWildColor(rand).getColor();
+			littleMaidTexture = littleMaidTextureBox.getTextureModelName();
 		}
-		
+
+		dataManager.set(EntityLittleMaid.dataWatch_texture_LittleMaid, littleMaidTexture);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_head, littleMaidTexture);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_chest, littleMaidTexture);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_legs, littleMaidTexture);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_feet, littleMaidTexture);
+		dataManager.set(EntityLittleMaid.dataWatch_Color, maidColor);
 		
 		if(!isContract()) {
 			setMaidMode(EntityMode_Basic.mmode_Wild);

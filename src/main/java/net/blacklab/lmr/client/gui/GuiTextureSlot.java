@@ -58,7 +58,7 @@ public class GuiTextureSlot extends GuiSlot {
 		entity.getModelConfigCompound().setContract(isContract);
 //		LMTextureBox ltbox[] = owner.target.getModelConfigCompound().getLMTextureBox();
 		LMTextureBox ltboxLittleMaid = owner.target.getModelConfigCompound().getTextureBoxLittleMaid();
-		LMTextureBox ltboxArmor = owner.target.getModelConfigCompound().getTextureBoxArmor();
+		LMTextureBox ltboxArmor = owner.target.getModelConfigCompound().getTextureBoxArmorAll();
 		for (LMTextureBox lbox : LMTextureBoxManager.instance.getLMTextureBoxList()) {
 			if (isContract) {
 				if (lbox.hasLittleMaid()) {
@@ -165,11 +165,11 @@ public class GuiTextureSlot extends GuiSlot {
 		if (mode) {
 			lbox = indexArmor.get(slotIndex);
 			entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
-			entity.getModelConfigCompound().setTextureBoxArmor(lbox);
+			entity.getModelConfigCompound().setTextureBoxArmorAll(lbox);
 		} else {
 			lbox = indexTexture.get(slotIndex);
 			entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
-			entity.getModelConfigCompound().setTextureBoxArmor(null);
+			entity.getModelConfigCompound().setTextureBoxArmorAll(null);
 		}
 
 		if (!mode) {
@@ -278,6 +278,25 @@ public class GuiTextureSlot extends GuiSlot {
 			entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStack.EMPTY);
 			entity.setItemStackToSlot(EntityEquipmentSlot.HEAD,  ItemStack.EMPTY);
 		}
+		scrollBy(slotHeight * selected);
+	}
+	
+	/**
+	 * 選択位置を設定する
+	 * @param pIndex
+	 */
+	public void setSelectedBoxArmor(String modelName) {
+		
+		int idx = 0;
+		for (LMTextureBox box : indexArmor) {
+			if (box.getTextureModelName().equals(modelName)) {
+				break;
+			}
+			idx++;
+		}
+		
+		scrollBy(slotHeight * -getSize());
+		selected = idx;
 		scrollBy(slotHeight * selected);
 	}
 
