@@ -48,7 +48,8 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 		
 		this.renderer = (RenderLittleMaid) rendererIn;
 		
-		this.mmodel = this.renderer.modelFATT;
+//		this.mmodel = this.renderer.modelFATT;
+		this.mmodel = null;
 		
 	}
 

@@ -58,7 +58,8 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 		
 		this.renderer = (RenderEntitySelect) rendererIn;
 		
-		this.mmodel = this.renderer.modelFATT;
+//		this.mmodel = this.renderer.modelFATT;
+		this.mmodel = null;
 		
 	}
 

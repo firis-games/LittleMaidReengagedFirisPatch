@@ -75,7 +75,7 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 		modelMain.setCapsValue(IModelCaps.caps_motionSitting, lmaid.isMotionSitting());
 */
 		
-		modelFATT.setModelAttributes(mainModel);
+//		modelFATT.setModelAttributes(mainModel);
 		// だが無意味だ
 //		plittleMaid.textureModel0.isChild = plittleMaid.textureModel1.isChild = plittleMaid.textureModel2.isChild = plittleMaid.isChild();
 	}

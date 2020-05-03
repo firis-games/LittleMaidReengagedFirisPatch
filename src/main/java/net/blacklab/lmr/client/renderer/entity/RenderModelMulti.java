@@ -1,19 +1,15 @@
 package net.blacklab.lmr.client.renderer.entity;
 
-import java.util.List;
-
 import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
-import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.util.IModelCapsData;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,7 +20,7 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	//メイド用モデル
 	public ModelBaseSolo modelMain;
 //	//メイド防具用モデル
-	public ModelBaseDuo modelFATT;
+//	public ModelBaseDuo modelFATT;
 	//メイドモデル用パラメータ管理クラス
 	public IModelCapsData fcaps;
 
@@ -35,31 +31,31 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		
 		super(manager, null, pShadowSize);
 		
-		//アーマー描画用モデル初期化
-		modelFATT = new ModelBaseDuo(this);
-		modelFATT.isModelAlphablend = LMRConfig.cfg_isModelAlphaBlend;
-		modelFATT.isRendering = true;
+//		//アーマー描画用モデル初期化
+//		modelFATT = new ModelBaseDuo(this);
+//		modelFATT.isModelAlphablend = LMRConfig.cfg_isModelAlphaBlend;
+//		modelFATT.isRendering = true;
 		
 		//メイド本体描画用モデル初期化
 		modelMain = new ModelBaseSolo(this);
 		modelMain.isModelAlphablend = LMRConfig.cfg_isModelAlphaBlend;
-		modelMain.capsLink = modelFATT;
+//		modelMain.capsLink = modelFATT;
 		mainModel = modelMain;
 		//setRenderPassModel(modelFATT);
 	}
 	
-	protected int showArmorParts(T par1EntityLiving, int par2, float par3) {
-		// アーマーの表示設定
-		modelFATT.renderParts = par2;
-		modelFATT.renderCount = 0;
-		ItemStack is = ((List<ItemStack>)par1EntityLiving.getArmorInventoryList()).get(par2);
-		if (!is.isEmpty() && is.getCount() > 0) {
-			modelFATT.showArmorParts(par2);
-			return is.isItemEnchanted() ? 15 : 1;
-		}
-
-		return -1;
-	}
+//	protected int showArmorParts(T par1EntityLiving, int par2, float par3) {
+//		// アーマーの表示設定
+//		modelFATT.renderParts = par2;
+//		modelFATT.renderCount = 0;
+//		ItemStack is = ((List<ItemStack>)par1EntityLiving.getArmorInventoryList()).get(par2);
+//		if (!is.isEmpty() && is.getCount() > 0) {
+//			modelFATT.showArmorParts(par2);
+//			return is.isItemEnchanted() ? 15 : 1;
+//		}
+//
+//		return -1;
+//	}
 
 	/**
 	 * caps_ScaleFactorをもとに描画前に全体サイズを変更する
@@ -100,16 +96,17 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 			
 		}
 		modelMain.setEntityCaps(pEntityCaps);
-		modelFATT.setEntityCaps(pEntityCaps);
+//		modelFATT.setEntityCaps(pEntityCaps);
 //		modelMain.setRender(this);
 //		modelFATT.setRender(this);
 		modelMain.showAllParts();
-		modelFATT.showAllParts();
+//		modelFATT.showAllParts();
 		modelMain.isAlphablend = true;
-		modelFATT.isAlphablend = true;
+//		modelFATT.isAlphablend = true;
 		modelMain.renderCount = 0;
-		modelFATT.renderCount = 0;
-		modelMain.lighting = modelFATT.lighting = par1EntityLiving.getBrightnessForRender();
+//		modelFATT.renderCount = 0;
+//		modelMain.lighting = modelFATT.lighting = par1EntityLiving.getBrightnessForRender();
+		modelMain.lighting = par1EntityLiving.getBrightnessForRender();
 
 		/*
 		modelMain.setCapsValue(IModelCaps.caps_heldItemLeft, 0);
