@@ -1,20 +1,15 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import java.util.Map;
-
 import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
-import net.blacklab.lmr.util.IModelCapsData;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -22,28 +17,59 @@ import net.minecraft.util.ResourceLocation;
  * 必ずInner側にはモデルを設定すること。
  * 通常のRendererで描画するためのクラスなので、Renderをちゃんと記述するならいらないクラスです。
  */
-public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
+public class ModelBaseDuo extends ModelBaseNihil {
 
-	private ModelMultiBase modelOuter;
+	/**
+	 * インナー防具モデル
+	 */
 	private ModelMultiBase modelInner;
+	
+	/**
+	 * アウター防具モデル
+	 */
+	private ModelMultiBase modelOuter;
+	
+	/**
+	 * インナー防具テクスチャ
+	 */
+	private ResourceLocation textureInner;
+	
+	/**
+	 * 発光インナー防具テクスチャ
+	 */
+	private ResourceLocation textureInnerLight;
+	
+	/**
+	 * インナー防具テクスチャ
+	 */
+	private ResourceLocation textureOuter;
+	
+	/**
+	 * 発光インナー防具テクスチャ
+	 */
+	private ResourceLocation textureOuterLight;
+	
 	
 	//内部定数
 	private static final int ARMOR_INNER_ID = 0;
 	private static final int ARMOR_OUTER_ID = 1;
 	private static final float renderScale = 0.0625F;
 	
-	public ModelMultiBase getModelOuter(int slot) {
-		return this.modelOuter;
-	}
-	public ModelMultiBase getModelInner(int slot) {
-		return this.modelInner;
-	}
+//	public ModelMultiBase getModelOuter(int slot) {
+//		return this.modelOuter;
+//	}
+//	public ModelMultiBase getModelInner(int slot) {
+//		return this.modelInner;
+//	}
 	
 	protected ModelConfigCompound modelConfigCompound;
 	
 	/**
 	 * 描画用パラメータを設定する
 	 * @param modelConfigCompound
+	 * 
+	 * 描画用のモデル、テクスチャパスを内部変数へ展開する
+	 * 
 	 */
 	public void setModelConfigCompound(EntityLiving entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slot) {
 		
@@ -51,37 +77,50 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 		
 		this.modelConfigCompound = modelEntity.getModelConfigCompound();
 		
-		this.modelOuter = null;
+		//内部変数リセット
 		this.modelInner = null;
+		this.modelOuter = null;
+		this.textureInner = null;
+		this.textureInnerLight = null;
+		this.textureOuter = null;
+		this.textureOuterLight = null;
 		this.textureLightColor = null;
 		
-		//モデル初期化
-		if (this.modelConfigCompound != null) {
-			
-			//モデル初期化
-			this.modelOuter = this.modelConfigCompound.getModelOuterArmor();
-			this.modelInner = this.modelConfigCompound.getModelInnerArmor();
-			
-			IModelCapsData caps = modelConfigCompound.getModelCaps();
-			
-			//色設定
-			this.textureLightColor = (float[])this.getCapsValue(IModelCaps.caps_textureLightColor, caps);
-			
-			//モデル情報の初期化
-			caps.setModelValues(this.modelInner, entity, 0, 0, 0, netHeadYaw, partialTicks);
-			caps.setModelValues(this.modelOuter, entity, 0, 0, 0, netHeadYaw, partialTicks);
-			
-			//モデルの表示設定
-			if (this.modelInner != null) {
-				this.modelInner.showArmorParts(slot.getIndex(), ARMOR_INNER_ID);
-			}
-			if (this.modelInner != null) {
-				this.modelOuter.showArmorParts(slot.getIndex(), ARMOR_OUTER_ID);
-			}
-			
-			this.entityCaps = modelConfigCompound.getModelCaps();
-			
+		//設定対象がない場合は処理を中断
+		if (this.modelConfigCompound == null) return;
+		
+		//各内部変数に設定する
+		//防具モデル
+		this.modelInner = this.modelConfigCompound.getModelInnerArmor();
+		this.modelOuter = this.modelConfigCompound.getModelOuterArmor();
+		
+		//テクスチャ
+		this.textureInner = this.modelConfigCompound.getTextureInnerArmor();
+		this.textureInnerLight = this.modelConfigCompound.getLightTextureInnerArmor();
+		this.textureOuter = this.modelConfigCompound.getTextureOuterArmor();
+		this.textureOuterLight = this.modelConfigCompound.getLightTextureOuterArmor();
+		
+		//ModelCapsData設定
+		this.entityCaps = modelConfigCompound.getModelCaps();
+		
+		//マルチモデル情報の初期化
+		this.entityCaps.setModelValues(this.modelInner, entity, 0, 0, 0, netHeadYaw, partialTicks);
+		this.entityCaps.setModelValues(this.modelOuter, entity, 0, 0, 0, netHeadYaw, partialTicks);
+		
+		//モデルの表示設定
+		if (this.modelInner != null) {
+			this.modelInner.showArmorParts(slot.getIndex(), ARMOR_INNER_ID);
 		}
+		if (this.modelOuter != null) {
+			this.modelOuter.showArmorParts(slot.getIndex(), ARMOR_OUTER_ID);
+		}
+		
+		//色設定
+		//this.textureLightColor = (float[])this.getCapsValue(IModelCaps.caps_textureLightColor, this.entityCaps);
+		this.textureLightColor = null;
+		
+		this.lighting = entity.getBrightnessForRender();
+		
 	}
 	
 	/**
@@ -89,48 +128,48 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	 * @param Slot
 	 * @return
 	 */
-	public ResourceLocation getTextureInner(int slot) {
-		if (this.modelConfigCompound != null) {
-			return this.modelConfigCompound.getTextureBoxArmor().getTextureInnerArmor(ItemStack.EMPTY);
-		}
-		return null;
-	}
+//	public ResourceLocation getTextureInner(int slot) {
+//		if (this.modelConfigCompound != null) {
+//			return this.modelConfigCompound.getTextureBoxArmor().getTextureInnerArmor(ItemStack.EMPTY);
+//		}
+//		return null;
+//	}
 	
 	/**
 	 * 発光インナー防具テクスチャ取得
 	 * @param Slot
 	 * @return
 	 */
-	public ResourceLocation getLightTextureInner(int slot) {
-		if (this.modelConfigCompound != null && this.modelConfigCompound.getTextureBoxArmor() != null) {
-			return this.modelConfigCompound.getTextureBoxArmor().getLightTextureInnerArmor(ItemStack.EMPTY);
-		}
-		return null;
-	}
+//	public ResourceLocation getLightTextureInner(int slot) {
+//		if (this.modelConfigCompound != null && this.modelConfigCompound.getTextureBoxArmor() != null) {
+//			return this.modelConfigCompound.getTextureBoxArmor().getLightTextureInnerArmor(ItemStack.EMPTY);
+//		}
+//		return null;
+//	}
 	
 	/**
 	 * アウター防具テクスチャ取得
 	 * @param Slot
 	 * @return
 	 */
-	public ResourceLocation getTextureOuter(int slot) {
-		if (this.modelConfigCompound != null) {
-			return this.modelConfigCompound.getTextureBoxArmor().getTextureOuterArmor(ItemStack.EMPTY);
-		}
-		return null;
-	}
+//	public ResourceLocation getTextureOuter(int slot) {
+//		if (this.modelConfigCompound != null) {
+//			return this.modelConfigCompound.getTextureBoxArmor().getTextureOuterArmor(ItemStack.EMPTY);
+//		}
+//		return null;
+//	}
 	
 	/**
 	 * 発光アウター防具テクスチャ取得
 	 * @param Slot
 	 * @return
 	 */
-	public ResourceLocation getLightTextureOuter(int slot) {
-		if (this.modelConfigCompound != null && this.modelConfigCompound.getTextureBoxArmor() != null) {
-			return this.modelConfigCompound.getTextureBoxArmor().getLightTextureOuterArmor(ItemStack.EMPTY);
-		}
-		return null;
-	}
+//	public ResourceLocation getLightTextureOuter(int slot) {
+//		if (this.modelConfigCompound != null && this.modelConfigCompound.getTextureBoxArmor() != null) {
+//			return this.modelConfigCompound.getTextureBoxArmor().getLightTextureOuterArmor(ItemStack.EMPTY);
+//		}
+//		return null;
+//	}
 	
 	
 	
@@ -199,112 +238,109 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	 */
 	public void render(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, int renderParts) {
 //		boolean lri = (renderCount & 0x0f) == 0;
-		//総合
-		this.showArmorParts(renderParts);
+//		//総合
+//		this.showArmorParts(renderParts);
 
-		//Inner
+		//法線再計算
+		GL11.glEnable(GL11.GL_NORMALIZE);
+		
+		//インナー
 		INNER:{
-			if(this.getModelInner(renderParts) != null && this.getTextureInner(renderParts) != null){
-				ResourceLocation texInner = this.getTextureInner(renderParts);
-				if(texInner!=null && this.modelConfigCompound.isArmorVisible(0)) {
-					try{
-						Minecraft.getMinecraft().getTextureManager().bindTexture(texInner);
-						
-						GL11.glEnable(GL11.GL_BLEND);
-						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-						
-						this.getModelInner(renderParts).setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, this.modelConfigCompound.getModelCaps());
-						this.getModelInner(renderParts).setLivingAnimations(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, partialTicks);
-						this.getModelInner(renderParts).render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-						
-					} catch(Exception e) {
-						break INNER;
-					}
-				}
-			} else {
-//				this.modelInner.render(lmm.maidCaps, par2, par3, lmm.ticksExisted, par5, par6, renderScale, true);
-			}
-		}
-
-		// 発光Inner
-		INNERLIGHT: if (this.getModelInner(renderParts) != null) {
-			ResourceLocation texInnerLight = this.getLightTextureInner(renderParts);
-			if (texInnerLight != null && this.modelConfigCompound.isArmorVisible(1)) {
-				try{
-					Minecraft.getMinecraft().getTextureManager().bindTexture(texInnerLight);
-					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glDisable(GL11.GL_ALPHA_TEST);
-					GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-					GL11.glDepthFunc(GL11.GL_LEQUAL);
-
-					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-					if (this.getTextureLightColor() == null) {
-						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-					} else {
-						//発光色を調整
-						GL11.glColor4f(
-								this.getTextureLightColor()[0],
-								this.getTextureLightColor()[1],
-								this.getTextureLightColor()[2],
-								this.getTextureLightColor()[3]);
-					}
-					this.getModelInner(renderParts).render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-					RendererHelper.setLightmapTextureCoords(this.lighting);
-					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-					GL11.glDisable(GL11.GL_BLEND);
-					GL11.glEnable(GL11.GL_ALPHA_TEST);
-				}catch(Exception e){ break INNERLIGHT; }
-			}
-		}
-
-//		Minecraft.getMinecraft().getTextureManager().deleteTexture(lmm.getTextures(0)[renderParts]);
-		//Outer
-//		if(LittleMaidReengaged.cfg_isModelAlphaBlend) GL11.glEnable(GL11.GL_BLEND);
-		OUTER:{
-			if(this.getModelOuter(renderParts) != null && this.getTextureOuter(renderParts) != null){
-				ResourceLocation texOuter = this.getTextureOuter(renderParts);
-				if(texOuter!=null && this.modelConfigCompound.isArmorVisible(2)) try{
-					Minecraft.getMinecraft().getTextureManager().bindTexture(texOuter);
+			if(this.modelInner != null 
+					&& this.textureInner != null 
+					&& this.modelConfigCompound.isArmorVisible(0)){
+				try {
+					
+					//テクスチャバインド
+					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureInner);
+					
+					//OpenGL設定
 					GL11.glEnable(GL11.GL_BLEND);
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-					this.getModelOuter(renderParts).setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, this.modelConfigCompound.getModelCaps());
-					this.getModelOuter(renderParts).setLivingAnimations(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, partialTicks);
-					this.getModelOuter(renderParts).render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-				}catch(Exception e){break OUTER;}
-			}else{
-//				this.modelOuter.render(lmm.maidCaps, limbSwing, par3, lmm.ticksExisted, par5, par6, renderScale, true);
+					
+					//モデル描画
+					this.modelInner.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					
+				} catch(Exception e) {
+					break INNER;
+				}
+			}
+		}
+		
+		//発光インナー
+		INNER_LIGHT:{
+			if(this.modelInner != null 
+					&& this.textureInnerLight != null 
+					&& this.modelConfigCompound.isArmorVisible(1)){
+				try {
+					
+					//テクスチャバインド
+					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureInnerLight);
+					
+					//発光テクスチャ用事前設定
+					this.glLightTexturePre();
+					
+					//モデル描画
+					this.modelInner.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					
+					//発光テクスチャの事後設定
+					this.glLightTexturePost();
+					
+					//透過リセット
+					GL11.glDisable(GL11.GL_BLEND);
+					GL11.glEnable(GL11.GL_ALPHA_TEST);
+					
+				} catch(Exception e) {
+					break INNER_LIGHT;
+				}
 			}
 		}
 
-		// 発光Outer
-		OUTERLIGHT: if (this.getModelOuter(renderParts) != null) {
-			ResourceLocation texOuterLight = this.getLightTextureOuter(renderParts);
-			if (texOuterLight != null && this.modelConfigCompound.isArmorVisible(3)) {
-				try{
-					Minecraft.getMinecraft().getTextureManager().bindTexture(texOuterLight);
+		//インナー
+		OUTER:{
+			if(this.modelOuter != null 
+					&& this.textureOuter != null 
+					&& this.modelConfigCompound.isArmorVisible(2)){
+				try {
+					
+					//テクスチャバインド
+					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureOuter);
+					
+					//OpenGL設定
 					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glEnable(GL11.GL_ALPHA_TEST);
-					GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-					GL11.glDepthFunc(GL11.GL_LEQUAL);
-
-					RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-					if (this.getTextureLightColor() == null) {
-						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-					} else {
-						//発光色を調整
-						GL11.glColor4f(
-								this.getTextureLightColor()[0],
-								this.getTextureLightColor()[1],
-								this.getTextureLightColor()[2],
-								this.getTextureLightColor()[3]);
-					}
-					if(this.modelConfigCompound.isArmorVisible(1)) this.getModelOuter(renderParts).render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-					RendererHelper.setLightmapTextureCoords(this.lighting);
-					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-					GL11.glDisable(GL11.GL_BLEND);
-					GL11.glEnable(GL11.GL_ALPHA_TEST);
-				}catch(Exception e){ break OUTERLIGHT; }
-				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					
+					//モデル描画
+					this.modelOuter.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					
+				} catch(Exception e) {
+					break OUTER;
+				}
+			}
+		}
+		
+		//発光アウター
+		OUTER_LIGHT:{
+			if(this.modelOuter != null 
+					&& this.textureOuterLight != null 
+					&& this.modelConfigCompound.isArmorVisible(3)){
+				try {
+					
+					//テクスチャバインド
+					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureOuterLight);
+					
+					//発光テクスチャ用事前設定
+					this.glLightTexturePre();
+					
+					//モデル描画
+					this.modelOuter.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
+					
+					//発光テクスチャの事後設定
+					this.glLightTexturePost();
+					
+				} catch (Exception e) {
+					break OUTER_LIGHT;
+				}
 			}
 		}
 	}
@@ -349,13 +385,13 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 	 * Renderer辺でこの変数を設定する。
 	 * 設定値はIModelCapsを継承したEntitiyとかを想定。
 	 */
-	@Override
-	public void setEntityCaps(IModelCaps pEntityCaps) {
-		entityCaps = pEntityCaps;
-		if (capsLink != null) {
-			capsLink.setEntityCaps(pEntityCaps);
-		}
-	}
+//	@Override
+//	public void setEntityCaps(IModelCaps pEntityCaps) {
+//		entityCaps = pEntityCaps;
+//		if (capsLink != null) {
+//			capsLink.setEntityCaps(pEntityCaps);
+//		}
+//	}
 
 //	@Override
 //	public void setRender(RenderModelMulti<? extends EntityLiving> pRender) {
@@ -367,37 +403,37 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 //		}
 //	}
 
-	@Override
-	public void setArmorRendering(boolean pFlag) {
-		isRendering = pFlag;
-	}
+//	@Override
+//	public void setArmorRendering(boolean pFlag) {
+//		isRendering = pFlag;
+//	}
 
 
 	// IModelBaseMMM追加分
 
-	@Override
-	public Map<String, Integer> getModelCaps() {
-		return modelInner == null ? null : modelInner.getModelCaps();
-	}
+//	@Override
+//	public Map<String, Integer> getModelCaps() {
+//		return modelInner == null ? null : modelInner.getModelCaps();
+//	}
 
-	@Override
-	public Object getCapsValue(int pIndex, Object ... pArg) {
-		return modelInner == null ? null : modelInner.getCapsValue(pIndex, pArg);
-	}
+//	@Override
+//	public Object getCapsValue(int pIndex, Object ... pArg) {
+//		return modelInner == null ? null : modelInner.getCapsValue(pIndex, pArg);
+//	}
 
-	@Override
-	public boolean setCapsValue(int pIndex, Object... pArg) {
-		if (capsLink != null) {
-			capsLink.setCapsValue(pIndex, pArg);
-		}
-		if (modelOuter != null) {
-			modelOuter.setCapsValue(pIndex, pArg);
-		}
-		if (modelInner != null) {
-			return modelInner.setCapsValue(pIndex, pArg);
-		}
-		return false;
-	}
+//	@Override
+//	public boolean setCapsValue(int pIndex, Object... pArg) {
+//		if (capsLink != null) {
+//			capsLink.setCapsValue(pIndex, pArg);
+//		}
+//		if (modelOuter != null) {
+//			modelOuter.setCapsValue(pIndex, pArg);
+//		}
+//		if (modelInner != null) {
+//			return modelInner.setCapsValue(pIndex, pArg);
+//		}
+//		return false;
+//	}
 
 	@Override
 	public void showAllParts() {
@@ -408,8 +444,50 @@ public class ModelBaseDuo extends ModelBaseNihil implements IModelBaseMMM {
 			modelOuter.showAllParts();
 		}
 	}
-	@Override
-	public void showArmorParts(int pParts) {
+	
+//	@Override
+//	public void showArmorParts(int pParts) {
+//	}
+	
+	
+	/**
+	 * 発光テクスチャの事前設定
+	 */
+	private void glLightTexturePre() {
+		
+		//発光テクスチャ用設定
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+		GL11.glDepthFunc(GL11.GL_LEQUAL);
+
+		//発光色調整
+		RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
+		if (this.getTextureLightColor() == null) {
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		} else {
+			//発光色を調整
+			GL11.glColor4f(
+					this.getTextureLightColor()[0],
+					this.getTextureLightColor()[1],
+					this.getTextureLightColor()[2],
+					this.getTextureLightColor()[3]);
+		}		
+	}
+	
+	/**
+	 * 発光テクスチャの事後設定
+	 */
+	private void glLightTexturePost() {
+		
+		//発光色リセット
+		RendererHelper.setLightmapTextureCoords(this.lighting);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		//発光テクスチャリセット
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glDepthMask(true);
 	}
 
 }

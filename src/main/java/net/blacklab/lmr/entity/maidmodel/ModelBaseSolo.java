@@ -1,13 +1,10 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import java.util.Map;
-
 import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.TextureOffset;
@@ -16,31 +13,68 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
-public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
+public class ModelBaseSolo extends ModelBaseNihil {
 
-	private ModelMultiBase model;
+	/**
+	 * メイドさんモデル
+	 */
+	private ModelMultiBase maidModel;
+	
+	/**
+	 * メイドさんテクスチャ
+	 */
+	private ResourceLocation maidTexture;
+
+	/**
+	 * メイドさんテクスチャ
+	 */
+	private ResourceLocation maidTextureLight;
+	
 //	public ResourceLocation textures[];
 	private ModelConfigCompound modelConfigCompound;
 	
 	public ModelMultiBase getModel() {
-		return this.model;
+		return this.maidModel;
 	}
 	
 	/**
 	 * 描画用パラメータを設定する
 	 * @param modelConfigCompound
 	 */
-	public void setModelConfigCompound(ModelConfigCompound modelConfigCompound) {
-		this.modelConfigCompound = modelConfigCompound;
-		//モデル初期化
-		if (this.modelConfigCompound != null) {
-			this.model = this.modelConfigCompound.getModelLittleMaid();
-		} else {
-			this.model = null;
+	public void setModelConfigCompound(EntityLiving entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		
+		IModelEntity modelEntity = (IModelEntity) entity;
+		
+		this.modelConfigCompound = modelEntity.getModelConfigCompound();
+		
+		//内部変数リセット
+		this.entityCaps = null;
+		this.maidModel = null;
+		this.maidTexture = null;
+		this.maidTextureLight = null;
+		
+		//設定対象がない場合は処理を中断
+		if (this.modelConfigCompound == null) return;
+		
+		//各内部変数に設定する
+		this.maidModel = this.modelConfigCompound.getModelLittleMaid();
+		
+		this.maidTexture = this.modelConfigCompound.getTextureLittleMaid();
+		this.maidTextureLight = this.modelConfigCompound.getLightTextureLittleMaid();
+		
+		this.entityCaps = this.modelConfigCompound.getModelCaps();
+		
+		//マルチモデル初期化
+		this.entityCaps.setModelValues(this.maidModel, entity, x, y, z, entityYaw, partialTicks);
+		
+		//本体描画設定
+		this.isRendering = true;
+		if (entity.isInvisible()) {
+			this.isRendering = false;
 		}
 	}
 	
-	public static final ResourceLocation[] blanks = new ResourceLocation[0];
+//	public static final ResourceLocation[] blanks = new ResourceLocation[0];
 
 	public ModelBaseSolo(RenderModelMulti<? extends EntityLiving> pRender) {
 		rendererLivingEntity = pRender;
@@ -48,10 +82,10 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 
 	@Override
 	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float par4) {
-		if (model != null) {
+		if (maidModel != null) {
 			try
 			{
-				model.setLivingAnimations(entityCaps, par2, par3, par4);
+				maidModel.setLivingAnimations(entityCaps, par2, par3, par4);
 			}
 			catch(Exception e)
 			{
@@ -63,7 +97,7 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 
 	@Override
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		if (model == null) {
+		if (maidModel == null) {
 			isAlphablend = false;
 			return;
 		}
@@ -73,6 +107,7 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 		//GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_NORMALIZE);
 		
+		//透過設定
 		if (isAlphablend) {
 			if (LMRConfig.cfg_isModelAlphaBlend) {
 				GL11.glEnable(GL11.GL_BLEND);
@@ -92,19 +127,20 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 //			Minecraft.getMinecraft().getTextureManager().bindTexture(textures[0]);
 //			model.setCapsValue(caps_renderBody, entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
 //		} else {
-			// 通常
-			if (this.modelConfigCompound != null 
-					&& this.modelConfigCompound.getTextureLittleMaid() != null) {
-				Minecraft.getMinecraft().getTextureManager().bindTexture(this.modelConfigCompound.getTextureLittleMaid());
-				model.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
-			}
+		// 通常
+		if (this.maidModel != null && this.maidTexture != null) {
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.maidTexture);
+			this.maidModel.render(entityCaps, par2, par3, par4, par5, par6, par7, isRendering);
+		}
+		
 //		}
 		isAlphablend = false;
-		if (this.modelConfigCompound != null 
-				&& this.modelConfigCompound.getLightTextureLittleMaid() != null
+		if (this.maidModel != null && this.maidTextureLight != null
 				&& renderCount == 0) {
-			// 発光パーツ
-			Minecraft.getMinecraft().getTextureManager().bindTexture(this.modelConfigCompound.getLightTextureLittleMaid());
+			
+			//発光パーツ
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.maidTextureLight);
+			
 			float var4 = 1.0F;
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -113,7 +149,7 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 			
 			RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, var4);
-			model.render(entityCaps, par2, par3, par4, par5, par6, par7, true);
+			maidModel.render(entityCaps, par2, par3, par4, par5, par6, par7, true);
 			
 			RendererHelper.setLightmapTextureCoords(lighting);
 			
@@ -129,14 +165,14 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 
 	@Override
 	public TextureOffset getTextureOffset(String par1Str) {
-		return model == null ? null : model.getTextureOffset(par1Str);
+		return maidModel == null ? null : maidModel.getTextureOffset(par1Str);
 	}
 
 	@Override
 	public void setRotationAngles(float par1, float par2, float par3,
 			float par4, float par5, float par6, Entity par7Entity) {
-		if (model != null) {
-			model.setRotationAngles(par1, par2, par3, par4, par5, par6, entityCaps);
+		if (maidModel != null) {
+			maidModel.setRotationAngles(par1, par2, par3, par4, par5, par6, entityCaps);
 		}
 	}
 
@@ -150,24 +186,24 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 //		}
 //	}
 
-	@Override
-	public void showArmorParts(int pParts) {
-		if (model != null) {
-			model.showArmorParts(pParts, 0);
-		}
-	}
+//	@Override
+//	public void showArmorParts(int pParts) {
+//		if (model != null) {
+//			model.showArmorParts(pParts, 0);
+//		}
+//	}
 
-	/**
-	 * Renderer辺でこの変数を設定する。
-	 * 設定値はIModelCapsを継承したEntitiyとかを想定。
-	 */
-	@Override
-	public void setEntityCaps(IModelCaps pEntityCaps) {
-		entityCaps = pEntityCaps;
-		if (capsLink != null) {
-			capsLink.setEntityCaps(pEntityCaps);
-		}
-	}
+//	/**
+//	 * Renderer辺でこの変数を設定する。
+//	 * 設定値はIModelCapsを継承したEntitiyとかを想定。
+//	 */
+//	@Override
+//	public void setEntityCaps(IModelCaps pEntityCaps) {
+//		entityCaps = pEntityCaps;
+//		if (capsLink != null) {
+//			capsLink.setEntityCaps(pEntityCaps);
+//		}
+//	}
 
 //	@Override
 //	public void setRender(Render pRender) {
@@ -176,39 +212,39 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 //		}
 //	}
 
-	@Override
-	public void setArmorRendering(boolean pFlag) {
-		isRendering = pFlag;
-	}
+//	@Override
+//	public void setArmorRendering(boolean pFlag) {
+//		isRendering = pFlag;
+//	}
 
 
 	// IModelCaps追加分
 
-	@Override
-	public Map<String, Integer> getModelCaps() {
-		return model == null ? null : model.getModelCaps();
-	}
+//	@Override
+//	public Map<String, Integer> getModelCaps() {
+//		return model == null ? null : model.getModelCaps();
+//	}
 
-	@Override
-	public Object getCapsValue(int pIndex, Object ... pArg) {
-		return model == null ? null : model.getCapsValue(pIndex, pArg);
-	}
+//	@Override
+//	public Object getCapsValue(int pIndex, Object ... pArg) {
+//		return model == null ? null : model.getCapsValue(pIndex, pArg);
+//	}
 
-	@Override
-	public boolean setCapsValue(int pIndex, Object... pArg) {
-		if (capsLink != null) {
-			capsLink.setCapsValue(pIndex, pArg);
-		}
-		if (model != null) {
-			model.setCapsValue(pIndex, pArg);
-		}
-		return false;
-	}
+//	@Override
+//	public boolean setCapsValue(int pIndex, Object... pArg) {
+//		if (capsLink != null) {
+//			capsLink.setCapsValue(pIndex, pArg);
+//		}
+//		if (model != null) {
+//			model.setCapsValue(pIndex, pArg);
+//		}
+//		return false;
+//	}
 
 	@Override
 	public void showAllParts() {
-		if (model != null) {
-			model.showAllParts();
+		if (maidModel != null) {
+			maidModel.showAllParts();
 		}
 	}
 
@@ -217,7 +253,7 @@ public class ModelBaseSolo extends ModelBaseNihil implements IModelBaseMMM {
 	 * 腕の位置へずらす
 	 */
 	public void armPostRender(int arm, float scale) {
-		this.model.Arms[arm].postRender(scale);
+		this.maidModel.Arms[arm].postRender(scale);
 	}
 
 }

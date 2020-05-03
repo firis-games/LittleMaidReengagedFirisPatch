@@ -1,11 +1,8 @@
 package net.blacklab.lmr.client.renderer.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.util.IModelCapsData;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -60,22 +57,22 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	/**
 	 * caps_ScaleFactorをもとに描画前に全体サイズを変更する
 	 */
-	@Override
-	protected void preRenderCallback(EntityLiving entitylivingbaseIn, float partialTickTime) {
-		
-		//スケール設定を取得
-		Float lscale = (Float)modelMain.getCapsValue(IModelCaps.caps_ScaleFactor);
-		
-		if (lscale != null) {
-			GL11.glScalef(lscale, lscale, lscale);
-		}
-	}
+//	@Override
+//	protected void preRenderCallback(EntityLiving entitylivingbaseIn, float partialTickTime) {
+//		
+//		//スケール設定を取得
+//		Float lscale = (Float)modelMain.getCapsValue(IModelCaps.caps_ScaleFactor);
+//		
+//		if (lscale != null) {
+//			GL11.glScalef(lscale, lscale, lscale);
+//		}
+//	}
 
 	public void setModelValues(T par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9, IModelCapsData pEntityCaps) {
 		
 		if (par1EntityLiving instanceof IModelEntity) {
-			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
+//			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
 //			modelMain.model = ltentity.getModelConfigCompound().getModelLittleMaid();
 //			modelFATT.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
 //			modelFATT.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();
@@ -91,11 +88,11 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 //			modelFATT.textureLightColor = (float[])modelFATT.getCapsValue(IModelCaps.caps_textureLightColor, pEntityCaps);
 			
 			//パラメータを設定する
-			modelMain.setModelConfigCompound(ltentity.getModelConfigCompound());
+			modelMain.setModelConfigCompound(par1EntityLiving, par2, par4, par6, par8, par9);
 //			modelFATT.setModelConfigCompound(ltentity.getModelConfigCompound(), pEntityCaps);
 			
 		}
-		modelMain.setEntityCaps(pEntityCaps);
+//		modelMain.setEntityCaps(pEntityCaps);
 //		modelFATT.setEntityCaps(pEntityCaps);
 //		modelMain.setRender(this);
 //		modelFATT.setRender(this);
@@ -123,8 +120,8 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		modelMain.setCapsValue(IModelCaps.caps_motionSitting, false);
 		*/
 		
-		//マルチモデルへ設定を埋め込み
-		pEntityCaps.setModelValues(modelMain.getModel(), par1EntityLiving, par2, par4, par6, par8, par9);
+//		//マルチモデルへ設定を埋め込み
+//		pEntityCaps.setModelValues(modelMain.getModel(), par1EntityLiving, par2, par4, par6, par8, par9);
 
 //		for (int i = 0; i < 4; i++) {
 //			pEntityCaps.setModelValues(modelFATT.getModelInner(i), par1EntityLiving, par2, par4, par6, par8, par9);
@@ -170,11 +167,12 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	@Override
 	protected void renderModel(T par1EntityLiving, float par2,
 			float par3, float par4, float par5, float par6, float par7) {
-		if (!par1EntityLiving.isInvisible()) {
-			modelMain.setArmorRendering(true);
-		} else {
-			modelMain.setArmorRendering(false);
-		}
+		
+//		if (!par1EntityLiving.isInvisible()) {
+//			modelMain.setArmorRendering(true);
+//		} else {
+//			modelMain.setArmorRendering(false);
+//		}
 		// アイテムのレンダリング位置を獲得するためrenderを呼ぶ必要がある
 		mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
 	}

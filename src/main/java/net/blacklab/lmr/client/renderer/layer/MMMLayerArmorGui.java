@@ -1,20 +1,13 @@
 package net.blacklab.lmr.client.renderer.layer;
 
-import org.lwjgl.opengl.GL11;
-
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.entity.RenderEntitySelect;
-import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.IModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
-import net.blacklab.lmr.util.helper.RendererHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * 防具描画レイヤー
@@ -47,7 +40,7 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 	
 	protected EntityLittleMaidForTexSelect lmm;
 	
-	private int renderCount;
+//	private int renderCount;
 
 	/**
 	 * コンストラクタ
@@ -71,8 +64,8 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 
 	@Override
 	protected void setModelSlotVisible(ModelBaseDuo paramModelBase, EntityEquipmentSlot paramInt) {
-		ModelBaseDuo model = (ModelBaseDuo) paramModelBase;
-		model.showArmorParts(paramInt.getIndex());
+//		ModelBaseDuo model = (ModelBaseDuo) paramModelBase;
+//		model.showArmorParts(paramInt.getIndex());
 	}
 	
 	@Override
@@ -93,10 +86,11 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 	 * アーマー描画処理
 	 */
 	public void render(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, int renderParts) {
-		
+/*
 		//描画用パラメータを初期化
 		//初回のみ指定値設定
-		/*if(renderCount==0) */this.setModelValues(lmm);
+		//if(renderCount==0) 
+		this.setModelValues(lmm);
 
 		//総合
 		mmodel.showArmorParts(renderParts);
@@ -203,6 +197,7 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 		//カウントインクリメント
 //		renderCount++;
 //		if(renderCount>=500) renderCount=0;
+*/
 	}
 	
 	

@@ -1,17 +1,12 @@
 package net.blacklab.lmr.client.renderer.layer;
 
-import org.lwjgl.opengl.GL11;
-
 import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
-import net.blacklab.lmr.util.helper.RendererHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * 防具描画レイヤー
@@ -59,8 +54,8 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 
 	@Override
 	protected void setModelSlotVisible(ModelBaseDuo paramModelBase, EntityEquipmentSlot paramInt) {
-		ModelBaseDuo model = (ModelBaseDuo) paramModelBase;
-		model.showArmorParts(paramInt.getIndex());
+//		ModelBaseDuo model = (ModelBaseDuo) paramModelBase;
+//		model.showArmorParts(paramInt.getIndex());
 	}
 
 	@Override
@@ -79,6 +74,7 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 	 */
 	public void render(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, int renderParts) {
 //		boolean lri = (renderCount & 0x0f) == 0;
+	/*
 		//総合
 		mmodel.showArmorParts(renderParts);
 
@@ -187,5 +183,6 @@ public class MMMLayerArmor extends LayerArmorBase<ModelBaseDuo> {
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			}
 		}
+*/
 	}
 }

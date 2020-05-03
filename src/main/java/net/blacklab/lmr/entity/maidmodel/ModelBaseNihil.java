@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.maidmodel;
 
 import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.util.IModelCapsData;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -12,9 +12,9 @@ public class ModelBaseNihil extends ModelBase {
 
 	public boolean isAlphablend;
 	public boolean isModelAlphablend;
-	public IModelBaseMMM capsLink;
+//	public IModelBaseMMM capsLink;
 	public int lighting;
-	public IModelCaps entityCaps;
+	public IModelCapsData entityCaps;
 	public boolean isRendering;
 	/**
 	 * レンダリングが実行された回数。

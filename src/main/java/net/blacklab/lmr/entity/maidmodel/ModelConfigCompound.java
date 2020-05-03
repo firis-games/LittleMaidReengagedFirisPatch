@@ -9,6 +9,7 @@ import net.blacklab.lmr.util.manager.pack.EnumColor;
 import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -136,13 +137,54 @@ public class ModelConfigCompound  {
 //		textures[4][3] = resource;
 //	}
 	
+	/**
+	 * メイドさんのテクスチャ
+	 * @return
+	 */
 	public ResourceLocation getTextureLittleMaid() {
 		if (this.textureBoxLittleMaid == null) return null;
 		return this.textureBoxLittleMaid.getTextureLittleMaid(this.color);
 	}
+	
+	/**
+	 * メイドさんの発光テクスチャ
+	 * @return
+	 */
 	public ResourceLocation getLightTextureLittleMaid() {
 		if (this.textureBoxLittleMaid == null) return null;
 		return this.textureBoxLittleMaid.getLightTextureLittleMaid(this.color);
+	}
+	
+	/**
+	 * インナー防具テクスチャ
+	 */
+	public ResourceLocation getTextureInnerArmor() {
+		if (this.textureBoxArmor == null) return null;
+		return this.textureBoxArmor.getTextureInnerArmor(ItemStack.EMPTY);
+	}
+	
+	/**
+	 * インナー発光防具テクスチャ
+	 */
+	public ResourceLocation getLightTextureInnerArmor() {
+		if (this.textureBoxArmor == null) return null;
+		return this.textureBoxArmor.getLightTextureInnerArmor(ItemStack.EMPTY);
+	}
+	
+	/**
+	 * アウター防具テクスチャ
+	 */
+	public ResourceLocation getTextureOuterArmor() {
+		if (this.textureBoxArmor == null) return null;
+		return this.textureBoxArmor.getTextureOuterArmor(ItemStack.EMPTY);
+	}
+	
+	/**
+	 * アウター発光防具テクスチャ
+	 */
+	public ResourceLocation getLightTextureOuterArmor() {
+		if (this.textureBoxArmor == null) return null;
+		return this.textureBoxArmor.getLightTextureOuterArmor(ItemStack.EMPTY);
 	}
 	
 	
@@ -704,15 +746,11 @@ public class ModelConfigCompound  {
 	 * @return
 	 */
 	public boolean isArmorVisible(int no) {
-		
 		if (owner instanceof EntityLittleMaid) {
 			EntityLittleMaid maid = (EntityLittleMaid) owner;
 			return maid.isArmorVisible(no);
 		}
-		
 		return true;
-		
-		
 	}
 
 }

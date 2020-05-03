@@ -2,6 +2,7 @@ package net.blacklab.lmr.entity.maidmodel;
 
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 
+@Deprecated
 public interface IModelBaseMMM extends IModelCaps {
 
 //	public void renderItems(EntityLivingBase pEntity, Render pRender);
