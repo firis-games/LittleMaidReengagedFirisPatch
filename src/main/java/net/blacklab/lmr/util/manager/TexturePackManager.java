@@ -1,6 +1,6 @@
 package net.blacklab.lmr.util.manager;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.blacklab.lmr.util.loader.LMTextureHandler;
@@ -18,7 +18,7 @@ public class TexturePackManager {
 	/**
 	 * モデルパックの一覧
 	 */
-	public Map<String, TexturePack> texturePackMap = new HashMap<>();
+	public Map<String, TexturePack> texturePackMap = new LinkedHashMap<>();
 	
 	/**
 	 * 初期化

@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -28,8 +29,14 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 	
 	/**
 	 * テクスチャ保管用
+	 * 大文字小文字を区別せずにソートする
 	 */
-	public static Map<String, List<String>> textureMap = new TreeMap<>();
+	public static Map<String, List<String>> textureMap = new TreeMap<>(new Comparator<String>() {
+		@Override
+	    public int compare(String o1, String o2) {
+	        return o1.toLowerCase().compareTo(o2.toLowerCase());
+	    }
+	});
 	
 	/**
 	 * テクスチャが存在する階層設定

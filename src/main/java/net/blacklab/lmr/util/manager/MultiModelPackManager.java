@@ -1,6 +1,6 @@
 package net.blacklab.lmr.util.manager;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -21,7 +21,7 @@ public class MultiModelPackManager {
 	/**
 	 * モデルパックの一覧
 	 */
-	protected Map<String, MultiModelPack> multiModelPackMap = new HashMap<>();
+	protected Map<String, MultiModelPack> multiModelPackMap = new LinkedHashMap<>();
 	
 	/**
 	 * デフォルトモデルパック名
