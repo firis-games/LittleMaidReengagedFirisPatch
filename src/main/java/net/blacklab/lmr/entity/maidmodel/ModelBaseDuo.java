@@ -91,14 +91,14 @@ public class ModelBaseDuo extends ModelBaseNihil {
 		
 		//各内部変数に設定する
 		//防具モデル
-		this.modelInner = this.modelConfigCompound.getModelInnerArmor();
-		this.modelOuter = this.modelConfigCompound.getModelOuterArmor();
+		this.modelInner = this.modelConfigCompound.getModelInnerArmor(slot);
+		this.modelOuter = this.modelConfigCompound.getModelOuterArmor(slot);
 		
 		//テクスチャ
-		this.textureInner = this.modelConfigCompound.getTextureInnerArmor();
-		this.textureInnerLight = this.modelConfigCompound.getLightTextureInnerArmor();
-		this.textureOuter = this.modelConfigCompound.getTextureOuterArmor();
-		this.textureOuterLight = this.modelConfigCompound.getLightTextureOuterArmor();
+		this.textureInner = this.modelConfigCompound.getTextureInnerArmor(slot);
+		this.textureInnerLight = this.modelConfigCompound.getLightTextureInnerArmor(slot);
+		this.textureOuter = this.modelConfigCompound.getTextureOuterArmor(slot);
+		this.textureOuterLight = this.modelConfigCompound.getLightTextureOuterArmor(slot);
 		
 		//ModelCapsData設定
 		this.entityCaps = modelConfigCompound.getModelCaps();

@@ -9,6 +9,7 @@ import net.blacklab.lmr.util.manager.pack.EnumColor;
 import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -158,7 +159,7 @@ public class ModelConfigCompound  {
 	/**
 	 * インナー防具テクスチャ
 	 */
-	public ResourceLocation getTextureInnerArmor() {
+	public ResourceLocation getTextureInnerArmor(EntityEquipmentSlot slot) {
 		if (this.textureBoxArmor == null) return null;
 		return this.textureBoxArmor.getTextureInnerArmor(ItemStack.EMPTY);
 	}
@@ -166,7 +167,7 @@ public class ModelConfigCompound  {
 	/**
 	 * インナー発光防具テクスチャ
 	 */
-	public ResourceLocation getLightTextureInnerArmor() {
+	public ResourceLocation getLightTextureInnerArmor(EntityEquipmentSlot slot) {
 		if (this.textureBoxArmor == null) return null;
 		return this.textureBoxArmor.getLightTextureInnerArmor(ItemStack.EMPTY);
 	}
@@ -174,7 +175,7 @@ public class ModelConfigCompound  {
 	/**
 	 * アウター防具テクスチャ
 	 */
-	public ResourceLocation getTextureOuterArmor() {
+	public ResourceLocation getTextureOuterArmor(EntityEquipmentSlot slot) {
 		if (this.textureBoxArmor == null) return null;
 		return this.textureBoxArmor.getTextureOuterArmor(ItemStack.EMPTY);
 	}
@@ -182,7 +183,7 @@ public class ModelConfigCompound  {
 	/**
 	 * アウター発光防具テクスチャ
 	 */
-	public ResourceLocation getLightTextureOuterArmor() {
+	public ResourceLocation getLightTextureOuterArmor(EntityEquipmentSlot slot) {
 		if (this.textureBoxArmor == null) return null;
 		return this.textureBoxArmor.getLightTextureOuterArmor(ItemStack.EMPTY);
 	}
@@ -216,11 +217,11 @@ public class ModelConfigCompound  {
 		if (textureBoxLittleMaid == null) return null;
 		return textureBoxLittleMaid.getModelLittleMaid();
 	}
-	public ModelMultiBase getModelInnerArmor() {
+	public ModelMultiBase getModelInnerArmor(EntityEquipmentSlot slot) {
 		if (textureBoxArmor == null) return null;
 		return textureBoxArmor.getModelInnerArmor();
 	}
-	public ModelMultiBase getModelOuterArmor() {
+	public ModelMultiBase getModelOuterArmor(EntityEquipmentSlot slot) {
 		if (textureBoxArmor == null) return null;
 		return textureBoxArmor.getModelOuterArmor();
 	}
