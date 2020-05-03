@@ -70,10 +70,10 @@ import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.Counter;
+import net.blacklab.lmr.util.EnumMaidMotion;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.ModelCapsLittleMaid;
-import net.blacklab.lmr.util.ModelCapsLittleMaid.MaidMotion;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.helper.ItemHelper;
@@ -1934,7 +1934,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 			return 0f;
 		}
 		//固定モーション分岐
-		if (this.maidMotion == MaidMotion.LOOKSUGAR) {
+		if (this.maidMotion == EnumMaidMotion.LOOKSUGAR) {
 			return 0.99999994F * ((looksWithInterestAXIS ? 0.08F : -0.08F) * (float)Math.PI);
 		}
 		return (prevRotateAngleHead + (rotateAngleHead - prevRotateAngleHead) * f) * ((looksWithInterestAXIS ? 0.08F : -0.08F) * (float)Math.PI);
@@ -3895,7 +3895,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	 * @return
 	 */
 	public boolean isLookSuger() {
-		if (this.maidMotion == MaidMotion.LOOKSUGAR) {
+		if (this.maidMotion == EnumMaidMotion.LOOKSUGAR) {
 			return true;
 		}
 		return mstatLookSuger;
@@ -4871,11 +4871,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	/**
 	 * メイドさん固定描画用
 	 */
-	private MaidMotion maidMotion = MaidMotion.NONE;
-	public MaidMotion getMaidMotion() {
+	private EnumMaidMotion maidMotion = EnumMaidMotion.NONE;
+	public EnumMaidMotion getMaidMotion() {
 		return this.maidMotion;
 	}
-	public void setMaidMotion(MaidMotion motion) {
+	public void setMaidMotion(EnumMaidMotion motion) {
 		this.maidMotion = motion;
 	}
 	

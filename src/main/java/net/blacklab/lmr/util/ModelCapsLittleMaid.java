@@ -277,7 +277,7 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 	 */
 	protected boolean setCustomMotion(ModelMultiBase model, EntityLittleMaid entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		
-		MaidMotion motion = entity.getMaidMotion();
+		EnumMaidMotion motion = entity.getMaidMotion();
 		
 		switch (motion) {
 			case NONE:
@@ -324,56 +324,4 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 		return true;
 	}
 	
-	
-	/**
-	 * メイドさんの固定モーション設定
-	 */
-	public enum MaidMotion {
-		NONE(0),
-		DEFAULT(1),
-		WAIT(2),
-		LOOKSUGAR(3),
-		SNEAK(4),
-		SIT(5),
-		BOW(6);
-		
-		private MaidMotion(int id) {
-			this.id = id;
-		}
-		
-		private int id;
-		public int getId() {
-			return this.id;
-		}
-		
-		//次のモーションを取得する
-		public MaidMotion next() {
-			MaidMotion rtn = MaidMotion.NONE;
-			boolean isNext = false;
-			for (MaidMotion value : MaidMotion.values()) {
-				if (isNext) {
-					rtn = value;
-					break;
-				}
-				if(value.getId() == this.getId()) {
-					isNext = true;
-					continue;
-				}
-			}
-			return rtn;
-		}
-		
-		//IdからMaidMotion取得
-		public static MaidMotion getMaidMotionFromId(int id) {
-			MaidMotion ret = MaidMotion.NONE;
-			for (MaidMotion value : MaidMotion.values()) {
-				if(value.getId() == id) {
-					ret = value;
-					break;
-				}
-			}
-			return ret;
-		}
-	}
-
 }
