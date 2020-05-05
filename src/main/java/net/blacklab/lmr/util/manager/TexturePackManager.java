@@ -1,9 +1,13 @@
 package net.blacklab.lmr.util.manager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.blacklab.lmr.util.loader.LMTextureHandler;
+import net.blacklab.lmr.util.manager.pack.EnumColor;
 import net.blacklab.lmr.util.manager.pack.TexturePack;
 
 /**
@@ -39,8 +43,38 @@ public class TexturePackManager {
 			
 		}
 		
+		this.initBuiltInTexture();
+		
 	}
 	
-	
+	/**
+	 * 内蔵テクスチャのセットアップ
+	 */
+	public void initBuiltInTexture() {
+		
+		//Steavモデル
+		TexturePack steve = new TexturePack("crafter_Steve", new ArrayList<>());
+		steve.textureLittleMaid.put(EnumColor.BROWN, "assets/minecraft/textures/entity/lmsteve/steve.png");
+		texturePackMap.put("crafter_Steve", steve);
+		
+		//Stefモデル
+		TexturePack stef = new TexturePack("crafter_Stef", new ArrayList<>());
+		stef.textureLittleMaid.put(EnumColor.BROWN, "assets/minecraft/textures/entity/lmsteve/steve.png");
+		
+		texturePackMap.put("crafter_Stef", stef);
+		
+		//防具モデル
+		List<String> armorList = new ArrayList<>(Arrays.asList("leather", "chainmail", "iron", "diamond", "gold"));
+		for (String armorId : armorList) {
+			
+			String armorKey = armorId + "Armor_Steve";
+			TexturePack armorPack = new TexturePack(armorKey, new ArrayList<>());
+			
+			armorPack.textureInnerArmor.put(0, "assets/minecraft/textures/models/armor/" + armorId + "_layer_2.png");
+			armorPack.textureOuterArmor.put(0, "assets/minecraft/textures/models/armor/" + armorId + "_layer_1.png");
+			
+			texturePackMap.put(armorKey, armorPack);
+		}
+	}
 	
 }
