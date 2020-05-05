@@ -75,7 +75,7 @@ public class LittleMaidReengaged {
 
 	public static final String DOMAIN = "lmreengaged";
 	public static final String NAME = "LittleMaidReengaged";
-	public static final String VERSION = "9.0.0.fp.034";
+	public static final String VERSION = "9.0.1.fp.035";
 	public static final String ACCEPTED_MCVERSION = "[1.12.2]";
 	public static final String DEPENDENCIES = "required-after:forge@[1.12.2-14.23.5.2768,);";
 
