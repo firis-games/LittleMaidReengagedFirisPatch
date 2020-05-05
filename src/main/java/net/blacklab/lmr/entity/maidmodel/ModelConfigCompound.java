@@ -706,7 +706,7 @@ public class ModelConfigCompound  {
 	 * @return
 	 */
 	public String getTextureNameLittleMaid() {
-		if (this.textureBoxLittleMaid == null) return "default_Orign";
+		if (this.textureBoxLittleMaid == null) return LMTextureBoxManager.defaultTextureModelName;
 		return this.textureBoxLittleMaid.getTextureModelName();
 	}
 	
@@ -715,7 +715,7 @@ public class ModelConfigCompound  {
 	 * @return
 	 */
 	public String getTextureNameArmor() {
-		if (this.getTextureBoxArmorAll() == null) return "default_Orign";
+		if (this.getTextureBoxArmorAll() == null) return LMTextureBoxManager.defaultTextureModelName;
 		return this.getTextureBoxArmorAll().getTextureModelName();
 	}
 

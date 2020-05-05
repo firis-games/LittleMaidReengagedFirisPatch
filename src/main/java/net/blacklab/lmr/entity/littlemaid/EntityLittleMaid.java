@@ -4899,7 +4899,7 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 		
 		IEntityLivingData ret = super.onInitialSpawn(difficulty, livingdata);
 		
-		String littleMaidTexture = "default_Orign";
+		String littleMaidTexture = LMTextureBoxManager.defaultTextureModelName;
 		byte maidColor = (byte) EnumColor.BROWN.getColor();
 		
 		//デフォルト野良モデルを設定する
