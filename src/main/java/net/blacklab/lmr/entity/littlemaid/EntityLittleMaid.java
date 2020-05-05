@@ -2548,8 +2548,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		if (mstatMasterEntity != null) {
 			mstatMasterDistanceSq = getDistanceSq(mstatMasterEntity);
 		}
-		// モデルサイズのリアルタイム変更有り？
-		modelConfigCompound.onUpdate();
+//		// モデルサイズのリアルタイム変更有り？
+//		modelConfigCompound.onUpdate();
 
 		getExperienceHandler().onUpdate();
 
@@ -2814,21 +2814,16 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			}
 		}
 		
-		//@here
-		//マルチモデルの同期
+		//マルチモデル関連のonUpdate処理
 		if (this.world.isRemote) {
+			
 			//モデルリフレッシュ
 			this.refreshModels();
-			/*
-			this.modelConfigCompound.refreshModels(
-					dataManager.get(EntityLittleMaid.dataWatch_texture_LittleMaid), 
-					dataManager.get(EntityLittleMaid.dataWatch_Color), 
-					dataManager.get(EntityLittleMaid.dataWatch_texture_Armor), 
-					this.isContract());
-			*/
 			
-			//this.refreshModels();
+			//モデルのリアルタイムサイズ変更処理
+			this.modelConfigCompound.onUpdate();
 		}
+		
 		//this.modelConfigCompound.setTextureInitServer(pName);
 
 	}

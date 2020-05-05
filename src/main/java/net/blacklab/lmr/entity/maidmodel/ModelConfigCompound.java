@@ -91,6 +91,11 @@ public class ModelConfigCompound  {
 	 * メイドさんのテクスチャモデル
 	 */
 	protected LMTextureBox textureBoxLittleMaid = null;
+	
+	/**
+	 * 初回ロード用フラグ
+	 */
+	private boolean isFirstRefresh = false;
 
 	/**
 	 * 防具のテクスチャモデル
@@ -378,6 +383,9 @@ public class ModelConfigCompound  {
 		
 //		//テクスチャ系更新
 //		this.setTextureNames();
+		
+		//テクスチャ初回更新用フラグ
+		this.isFirstRefresh = false;
 	}
 
 	/**
@@ -756,23 +764,29 @@ public class ModelConfigCompound  {
 			String modelArmorFeet,
 			boolean isContract) {
 		
-		LMTextureBox maidBox = this.getTextureBoxLittleMaid();
-		LMTextureBox armorBoxHead = this.getTextureBoxArmor(EntityEquipmentSlot.HEAD);
-		LMTextureBox armorBoxChest = this.getTextureBoxArmor(EntityEquipmentSlot.CHEST);
-		LMTextureBox armorBoxLegs = this.getTextureBoxArmor(EntityEquipmentSlot.LEGS);
-		LMTextureBox armorBoxFeet = this.getTextureBoxArmor(EntityEquipmentSlot.FEET);
-		
-		//現在の状態が一致するか確認
-		if (maidBox != null && armorBoxHead != null && armorBoxChest != null && armorBoxLegs != null && armorBoxFeet != null) {
-			if (maidBox.getTextureModelName().equals(modelMaid) 
-					&& armorBoxHead.getTextureModelName().equals(modelArmorHead)
-					&& armorBoxChest.getTextureModelName().equals(modelArmorChest)
-					&& armorBoxLegs.getTextureModelName().equals(modelArmorLegs)
-					&& armorBoxFeet.getTextureModelName().equals(modelArmorFeet)
-					&& color == this.getColor()
-					&& isContract == this.isContract()) {
-				return false;
+		//初回リフレッシュ判定
+		if (this.isFirstRefresh) {
+			LMTextureBox maidBox = this.getTextureBoxLittleMaid();
+			LMTextureBox armorBoxHead = this.getTextureBoxArmor(EntityEquipmentSlot.HEAD);
+			LMTextureBox armorBoxChest = this.getTextureBoxArmor(EntityEquipmentSlot.CHEST);
+			LMTextureBox armorBoxLegs = this.getTextureBoxArmor(EntityEquipmentSlot.LEGS);
+			LMTextureBox armorBoxFeet = this.getTextureBoxArmor(EntityEquipmentSlot.FEET);
+			
+			//現在の状態が一致するか確認
+			if (maidBox != null && armorBoxHead != null && armorBoxChest != null && armorBoxLegs != null && armorBoxFeet != null) {
+				if (maidBox.getTextureModelName().equals(modelMaid) 
+						&& armorBoxHead.getTextureModelName().equals(modelArmorHead)
+						&& armorBoxChest.getTextureModelName().equals(modelArmorChest)
+						&& armorBoxLegs.getTextureModelName().equals(modelArmorLegs)
+						&& armorBoxFeet.getTextureModelName().equals(modelArmorFeet)
+						&& color == this.getColor()
+						&& isContract == this.isContract()) {
+					return false;
+				}
 			}
+		} else {
+			//初回はチェックなしで更新する
+			this.isFirstRefresh = true;
 		}
 		
 		//再設定
