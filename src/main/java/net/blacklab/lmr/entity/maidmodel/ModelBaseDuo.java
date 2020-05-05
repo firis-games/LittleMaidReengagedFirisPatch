@@ -73,7 +73,7 @@ public class ModelBaseDuo extends ModelBaseNihil {
 	 */
 	public void setModelConfigCompound(EntityLiving entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slot) {
 		
-		IModelEntity modelEntity = (IModelEntity) entity;
+		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
 		
 		this.modelConfigCompound = modelEntity.getModelConfigCompound();
 		

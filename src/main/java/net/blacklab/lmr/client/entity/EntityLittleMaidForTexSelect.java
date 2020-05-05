@@ -1,12 +1,12 @@
 package net.blacklab.lmr.client.entity;
 
-import net.blacklab.lmr.entity.maidmodel.IModelEntity;
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.util.ModelCapsLittleMaidGui;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 
-public class EntityLittleMaidForTexSelect extends EntityLiving implements IModelEntity {
+public class EntityLittleMaidForTexSelect extends EntityLiving implements IMultiModelEntity {
 
 //	public int color;
 //	public int textureIndex[] = new int[] { 0, 0 };
@@ -222,7 +222,7 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IModel
 	}
 
 	@Override
-	public void setSize(float par1, float par2)
+	public void setSizeMultiModel(float par1, float par2)
 	{
 		super.setSize(par1, par2);
 	}

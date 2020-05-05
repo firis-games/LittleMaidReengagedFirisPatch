@@ -2,7 +2,7 @@ package net.blacklab.lmr.client.renderer.layer;
 
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.entity.RenderEntitySelect;
-import net.blacklab.lmr.entity.maidmodel.IModelEntity;
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
@@ -205,7 +205,7 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 	 * 描画用のパラメータを初期化する
 	 */
 	public void setModelValues(EntityLivingBase par1EntityLiving) {
-		if (par1EntityLiving instanceof IModelEntity) {
+		if (par1EntityLiving instanceof IMultiModelEntity) {
 //			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
 //			mmodel.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
 //			mmodel.modelOuter = ltentity.getModelConfigCompound().getModelOuterArmor();

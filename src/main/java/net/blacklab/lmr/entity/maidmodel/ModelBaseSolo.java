@@ -44,7 +44,7 @@ public class ModelBaseSolo extends ModelBaseNihil {
 	 */
 	public void setModelConfigCompound(EntityLiving entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		
-		IModelEntity modelEntity = (IModelEntity) entity;
+		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
 		
 		this.modelConfigCompound = modelEntity.getModelConfigCompound();
 		

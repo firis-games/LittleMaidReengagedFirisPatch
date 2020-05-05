@@ -3,7 +3,6 @@ package net.blacklab.lmr.entity.maidmodel;
 import java.util.EnumMap;
 import java.util.Map;
 
-import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.util.IModelCapsData;
@@ -592,15 +591,11 @@ public class ModelConfigCompound  {
 		
 		if (this.textureBoxLittleMaid != null && this.textureBoxLittleMaid.getModelLittleMaid() != null) {
 			
-			if (owner instanceof EntityLittleMaid) {
-				((EntityLittleMaid)owner).setSize2(
+			if (owner instanceof IMultiModelEntity) {
+				((IMultiModelEntity)owner).setSizeMultiModel(
 						this.textureBoxLittleMaid.getModelLittleMaid().getWidth(entityCaps), 
 						this.textureBoxLittleMaid.getModelLittleMaid().getHeight(entityCaps));
 				
-			} else if(owner instanceof EntityLittleMaidForTexSelect) {
-				((EntityLittleMaidForTexSelect)owner).setSize(
-						this.textureBoxLittleMaid.getModelLittleMaid().getWidth(entityCaps), 
-						this.textureBoxLittleMaid.getModelLittleMaid().getHeight(entityCaps));
 			}
 			
 			if (owner instanceof EntityAgeable) {

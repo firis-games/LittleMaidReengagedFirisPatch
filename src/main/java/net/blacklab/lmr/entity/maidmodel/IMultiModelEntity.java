@@ -2,8 +2,11 @@ package net.blacklab.lmr.entity.maidmodel;
 
 /**
  * MMM_Texture仕様のテクスチャパック設定に対応しているEntityへ継承させる。
+ * 
+ * マルチモデルテクスチャ対応のEntityへ継承させる
+ * 
  */
-public interface IModelEntity {
+public interface IMultiModelEntity {
 
 	/**
 	 * Client用。
@@ -38,7 +41,11 @@ public interface IModelEntity {
 	 * 仕様変更により、これ以外は必要無くなる予定。
 	 * @return
 	 */
-	ModelConfigCompound getModelConfigCompound();
+	public ModelConfigCompound getModelConfigCompound();
 
+	/**
+	 * Entityのサイズを再設定する
+	 */
+	public void setSizeMultiModel(float width, float height);
 
 }

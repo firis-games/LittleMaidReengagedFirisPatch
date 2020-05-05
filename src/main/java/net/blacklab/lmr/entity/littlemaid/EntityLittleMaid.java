@@ -61,7 +61,7 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing.PlayRole;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
-import net.blacklab.lmr.entity.maidmodel.IModelEntity;
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
@@ -156,7 +156,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityLittleMaid extends EntityTameable implements IModelEntity {
+public class EntityLittleMaid extends EntityTameable implements IMultiModelEntity {
 
 	// 定数はStaticsへ移動
 //	protected static final UUID maidUUID = UUID.nameUUIDFromBytes("lmm.littleMaidMob".getBytes());
@@ -4694,7 +4694,11 @@ public class EntityLittleMaid extends EntityTameable implements IModelEntity {
 	}
 	*/
 
-	public void setSize2(float par1, float par2)
+	/**
+	 * @intarface IModelEntity
+	 */
+	@Override
+	public void setSizeMultiModel(float par1, float par2)
 	{
 		super.setSize(par1, par2);
 	}

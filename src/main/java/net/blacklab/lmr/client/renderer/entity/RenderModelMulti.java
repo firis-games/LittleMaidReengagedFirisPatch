@@ -3,7 +3,7 @@ package net.blacklab.lmr.client.renderer.entity;
 import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.maidmodel.IModelEntity;
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
 import net.blacklab.lmr.util.IModelCapsData;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -85,7 +85,7 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	public void setModelValues(T par1EntityLiving, double par2,
 			double par4, double par6, float par8, float par9, IModelCapsData pEntityCaps) {
 		
-		if (par1EntityLiving instanceof IModelEntity) {
+		if (par1EntityLiving instanceof IMultiModelEntity) {
 //			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
 //			modelMain.model = ltentity.getModelConfigCompound().getModelLittleMaid();
 //			modelFATT.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();

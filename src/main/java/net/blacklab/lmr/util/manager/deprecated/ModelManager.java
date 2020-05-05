@@ -23,7 +23,7 @@ import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.maidmodel.IModelEntity;
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxBase;
@@ -113,9 +113,9 @@ public class ModelManager {
 	protected Map<Class<?>, TextureBox> defaultTextures = new HashMap<>();
 
 	@Deprecated
-	protected Map<IModelEntity, int[]> stackGetTexturePack = new HashMap<IModelEntity, int[]>();
+	protected Map<IMultiModelEntity, int[]> stackGetTexturePack = new HashMap<IMultiModelEntity, int[]>();
 	@Deprecated
-	protected Map<IModelEntity, Object[]> stackSetTexturePack = new HashMap<IModelEntity, Object[]>();
+	protected Map<IMultiModelEntity, Object[]> stackSetTexturePack = new HashMap<IMultiModelEntity, Object[]>();
 
 	@Deprecated
 	protected List<String[]> searchPrefix = new ArrayList<String[]>();
@@ -754,7 +754,7 @@ public class ModelManager {
 	 * @return
 	 */
 	@Deprecated
-	public int getIndexTextureBoxServer(IModelEntity pEntity, String pPackName) {
+	public int getIndexTextureBoxServer(IMultiModelEntity pEntity, String pPackName) {
 		for (int li = 0; li < textureServer.size(); li++) {
 			if (textureServer.get(li).textureName.equals(pPackName)) {
 				return li;
@@ -788,7 +788,7 @@ public class ModelManager {
 	 * Entityに対応するデフォルトのテクスチャを設定する。
 	 */
 	@Deprecated
-	public void setDefaultTexture(IModelEntity pEntity, TextureBox pBox) {
+	public void setDefaultTexture(IMultiModelEntity pEntity, TextureBox pBox) {
 		setDefaultTexture(pEntity.getClass(), pBox);
 	}
 	
@@ -801,7 +801,7 @@ public class ModelManager {
 	/**
 	 * Entityに対応するデフォルトモデルを返す。
 	 */
-	public TextureBox getDefaultTexture(IModelEntity pEntity) {
+	public TextureBox getDefaultTexture(IMultiModelEntity pEntity) {
 		return getDefaultTexture(pEntity.getClass());
 	}
 	
