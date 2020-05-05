@@ -63,6 +63,7 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing.PlayRole;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
+import net.blacklab.lmr.entity.maidmodel.ModelConfigCompoundLittleMaid;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.item.ItemTriggerRegisterKey;
@@ -436,7 +437,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		textureNameMain = textureNameArmor = "default_"+ModelManager.defaultModelName;
 
 		//メイドモデル設定準備
-		modelConfigCompound = new ModelConfigCompound(this, new ModelCapsLittleMaid(this));
+		modelConfigCompound = new ModelConfigCompoundLittleMaid(this, new ModelCapsLittleMaid(this));
 		
 //		if (getEntityWorld().isRemote) {
 //			// 形態形成場
