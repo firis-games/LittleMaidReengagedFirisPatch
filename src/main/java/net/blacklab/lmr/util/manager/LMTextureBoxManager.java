@@ -18,6 +18,7 @@ import net.blacklab.lmr.util.manager.pack.TexturePack;
  * TexturePackManager
  * MultiModelPackManager
  * 上の二つを結合してMinecraft上で使うための状態にする
+ * このクラスからメイドモデルを取得する場合対象が無いときはデフォルトモデルを返す
  *
  */
 public class LMTextureBoxManager {
@@ -79,16 +80,30 @@ public class LMTextureBoxManager {
 	public Collection<LMTextureBox> getLMTextureBoxList() {
 		return this.littleMaidTextureModelPackMap.values();
 	}
+	
+	/**
+	 * 指定のテクスチャモデルが存在するかチェックする
+	 * @param textureName
+	 * @return
+	 */
+	public boolean isLMTextureBox(String textureName) {
+		if (this.littleMaidTextureModelPackMap.containsKey(textureName)) {
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * 指定のテクスチャモデルを取得する
+	 * 
+	 * 存在しないテクスチャの場合はデフォルトモデルを返す
 	 * @return
 	 */
 	public LMTextureBox getLMTextureBox(String textureName) {
 		if (this.littleMaidTextureModelPackMap.containsKey(textureName)) {
 			return this.littleMaidTextureModelPackMap.get(textureName);
 		}
-		return null;
+		return this.getDefaultLMTextureBox();
 	}
 	
 	/**
@@ -101,6 +116,8 @@ public class LMTextureBoxManager {
 	
 	/**
 	 * 同一カラーの次のモデルを取得する
+	 * 
+	 * 存在しないテクスチャの場合はデフォルトモデルを返す
 	 * @param nowBox
 	 * @param color
 	 * @return
@@ -125,11 +142,13 @@ public class LMTextureBoxManager {
 				f = true;
 			}
 		}
-		return lreturn == null ? null : lreturn;
+		return lreturn == null ? this.getDefaultLMTextureBox() : lreturn;
 	}
 
 	/**
 	 * 同一カラーの前のモデルを探す
+	 * 
+	 * 存在しないテクスチャの場合はデフォルトモデルを返す
 	 * @param nowBox
 	 * @param color
 	 * @return
@@ -150,11 +169,13 @@ public class LMTextureBoxManager {
 				lreturn = ltb;
 			}
 		}
-		return lreturn == null ? null : lreturn;
+		return lreturn == null ? this.getDefaultLMTextureBox() : lreturn;
 	}
 	
 	/**
 	 * 防具モデルの次のモデルを取得する
+	 * 
+	 * 存在しないテクスチャの場合はデフォルトモデルを返す
 	 * @param nowBox
 	 * @param color
 	 * @return
@@ -179,11 +200,13 @@ public class LMTextureBoxManager {
 				}
 			}
 		}
-		return lreturn == null ? null : lreturn;
+		return lreturn == null ? this.getDefaultLMTextureBox() : lreturn;
 	}
 	
 	/**
 	 * 防具モデルの前のモデルを取得する
+	 * 
+	 * 存在しないテクスチャの場合はデフォルトモデルを返す
 	 * @param nowBox
 	 * @return
 	 */
@@ -202,7 +225,7 @@ public class LMTextureBoxManager {
 				lreturn = ltb;
 			}
 		}
-		return lreturn == null ? null : lreturn;
+		return lreturn == null ? this.getDefaultLMTextureBox() : lreturn;
 	}
 	
 	/**

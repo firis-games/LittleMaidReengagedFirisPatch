@@ -54,9 +54,7 @@ public class PlayerModelManager {
 		
 		//設定から取得するように変更
 		cacheLMTextureBox = LMTextureBoxManager.instance.getLMTextureBox(textureName);
-		if (cacheLMTextureBox == null) {
-			cacheLMTextureBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.DEFAULT_MAID_MODEL);			
-		}
+
 		return cacheLMTextureBox;
 	}
 	

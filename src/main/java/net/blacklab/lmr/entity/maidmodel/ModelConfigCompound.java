@@ -511,9 +511,6 @@ public class ModelConfigCompound  {
 	public void setNextTexturePackege() {
 		//次のテクスチャを探す
 		LMTextureBox nextTextureBox = LMTextureBoxManager.instance.getNextPackege(this.textureBoxLittleMaid, this.color);
-		if (nextTextureBox == null) {
-			nextTextureBox = LMTextureBoxManager.instance.getDefaultLMTextureBox();
-		}
 		this.textureBoxLittleMaid = nextTextureBox;
 	}
 	
@@ -523,9 +520,6 @@ public class ModelConfigCompound  {
 	 */
 	public void setNextTextureArmorPackege() {
 		LMTextureBox nextTextureBox = LMTextureBoxManager.instance.getNextArmorPackege(this.getTextureBoxArmorAll());
-		if (nextTextureBox == null) {
-			nextTextureBox = LMTextureBoxManager.instance.getDefaultLMTextureBox();
-		}
 		this.setTextureBoxArmorAll(nextTextureBox);
 	}
 	
@@ -536,9 +530,6 @@ public class ModelConfigCompound  {
 	public void setPrevTexturePackege() {
 		//次のテクスチャを探す
 		LMTextureBox prevTextureBox = LMTextureBoxManager.instance.getPrevPackege(this.textureBoxLittleMaid, this.color);
-		if (prevTextureBox == null) {
-			prevTextureBox = LMTextureBoxManager.instance.getDefaultLMTextureBox();
-		}
 		this.textureBoxLittleMaid = prevTextureBox;
 	}
 	
@@ -548,9 +539,6 @@ public class ModelConfigCompound  {
 	 */
 	public void setPrevTextureArmorPackege() {
 		LMTextureBox prevTextureBox = LMTextureBoxManager.instance.getPrevArmorPackege(this.getTextureBoxArmorAll());
-		if (prevTextureBox == null) {
-			prevTextureBox = LMTextureBoxManager.instance.getDefaultLMTextureBox();
-		}
 		this.setTextureBoxArmorAll(prevTextureBox);
 	}
 	
