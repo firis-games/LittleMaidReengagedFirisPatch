@@ -39,10 +39,10 @@ public class Transformer implements IClassTransformer, Opcodes {
 		{
 			//リトルメイド側の制御に使ってるだけのはず
 			//モデル側には不要
-			addModelClassToTransform("IModelBaseMMM", "");
-			addModelClassToTransform("ModelBaseDuo", "");
-			addModelClassToTransform("ModelBaseNihil", "");
-			addModelClassToTransform("ModelBaseSolo", "");
+//			addModelClassToTransform("IModelBaseMMM", "");
+//			addModelClassToTransform("ModelBaseDuo", "");
+//			addModelClassToTransform("ModelBaseNihil", "");
+//			addModelClassToTransform("ModelBaseSolo", "");
 
 			addModelClassToTransform("IModelCaps", "caps");
 			addModelClassToTransform("ModelCapsHelper", "caps");
@@ -82,6 +82,11 @@ public class Transformer implements IClassTransformer, Opcodes {
 			String newName = (base.equals("") ? "" : base + "/") + pName;  
 			put("MMM_" + pName, newPackageString + newName);
 			put(oldPackageString + pName, newPackageString + newName);
+			
+			//互換用
+			if (!base.equals("")) {
+				put(newPackageString + pName, newPackageString + newName);
+			}
 		}
 	};
 
@@ -198,7 +203,11 @@ public class Transformer implements IClassTransformer, Opcodes {
 
 	private String checkMMM(String pText) {
 		for (Entry<String, String> le : targets.entrySet()) {
-			if (pText.indexOf(le.getKey()) > -1) {
+			//pTextに入ってくる名称が L[クラス名]; と [クラス名] のみの2パターンがある
+			//そのためindexOfで照合をやっているがその場合例えば
+			//ModelBaseSoloがModelBaseで条件一致しておかしくなる
+			//対応として末尾に ; を追加して上のような条件を除外できるように対応
+			if ((pText+";").indexOf(le.getKey() + ";") > -1) {
 				String result = pText.replace(le.getKey(), le.getValue());
 //				Debug("%d Hit and Replace: %s -> %s", debugOut, pText, result);
 				isChange = true;
