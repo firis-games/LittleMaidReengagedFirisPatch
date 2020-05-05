@@ -439,6 +439,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		//メイドモデル設定準備
 		modelConfigCompound = new ModelConfigCompoundLittleMaid(this, new ModelCapsLittleMaid(this));
 		
+		//サイズ初期化処理(通常メイドさんのサイズを設定)
+		this.setSize(0.5F, 1.35F);
+		
 //		if (getEntityWorld().isRemote) {
 //			// 形態形成場
 //			modelConfigCompound.setColor((byte)0xc);
@@ -4694,9 +4697,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * @intarface IModelEntity
 	 */
 	@Override
-	public void setSizeMultiModel(float par1, float par2)
+	public void setSizeMultiModel(float width, float height)
 	{
-		super.setSize(par1, par2);
+		this.setSize(width, height);
 	}
 
 	public ModeTrigger getModeTrigger() {
