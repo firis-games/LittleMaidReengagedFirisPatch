@@ -56,6 +56,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
@@ -285,7 +287,8 @@ public class LittleMaidReengaged {
 				EntityLittleMaid.class,
     			"littlemaid", 0, instance, 80, 1, true);
     	*/
-		registerEntities();
+		
+//		registerEntities();
 		
 		/*
 		spawnEgg = new ItemMaidSpawnEgg();
@@ -494,26 +497,33 @@ public class LittleMaidReengaged {
     
     /**
      * Entity登録イベント
-     * 互換のためイベントでの挙動はさせない
+     * 
      * @SubscribeEvent
-     * public void registerEntities(RegistryEvent.Register<EntityEntry> event)
+     * public static void registerEntities(RegistryEvent.Register<EntityEntry> event)
      */
-    public void registerEntities() {
+    @SubscribeEvent
+    public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+    	
     	int entityId = 0;
     	
     	//Little Maid
-    	EntityRegistry.registerModEntity(new ResourceLocation(LittleMaidReengaged.DOMAIN, "littlemaid"),
-				EntityLittleMaid.class,
-    			"littlemaid", entityId, instance, 80, 1, true);
-    	entityId++;
+    	EntityEntry littlemaidEntry = EntityEntryBuilder.create()
+    			.entity(EntityLittleMaid.class)
+    			.id(new ResourceLocation(LittleMaidReengaged.DOMAIN, "littlemaid"), entityId++)
+    			.name("littlemaid")
+    			.egg(0xf8f8f8, 0xcc6600)
+    			.tracker(80, 1, true)
+    			.build();
+    	event.getRegistry().register(littlemaidEntry);
     	
     	//AntiDamage EntityItem
-    	EntityRegistry.registerModEntity(new ResourceLocation(LittleMaidReengaged.DOMAIN, "entityitem_antidamage"), 
-    			LMEntityItemAntiDamage.class, 
-    			"Anti Dmage EntityItem", 
-    			entityId, 
-    			instance, 32, 5, true);
-    	entityId++;
+    	EntityEntry antiDamageEntityItem = EntityEntryBuilder.create()
+    			.entity(LMEntityItemAntiDamage.class)
+    			.id(new ResourceLocation(LittleMaidReengaged.DOMAIN, "entityitem_antidamage"), entityId++)
+    			.name("Anti Dmage EntityItem")
+    			.tracker(32, 5, true)
+    			.build();
+    	event.getRegistry().register(antiDamageEntityItem);
     	
     	//リトルメイドテスト用モジュール
     	LMTCore.registerEntities(entityId);
