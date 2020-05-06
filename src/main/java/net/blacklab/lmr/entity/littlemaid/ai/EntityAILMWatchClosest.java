@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.ai;
+package net.blacklab.lmr.entity.littlemaid.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

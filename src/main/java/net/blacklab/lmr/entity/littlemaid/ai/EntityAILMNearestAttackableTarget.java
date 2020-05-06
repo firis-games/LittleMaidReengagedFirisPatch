@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.ai;
+package net.blacklab.lmr.entity.littlemaid.ai;
 
 import java.util.Collections;
 import java.util.Iterator;

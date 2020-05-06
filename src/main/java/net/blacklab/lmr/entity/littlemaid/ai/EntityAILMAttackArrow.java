@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.ai;
+package net.blacklab.lmr.entity.littlemaid.ai;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
