@@ -22,7 +22,7 @@ public class LayerArmor extends LayerArmorBase<ModelBaseDuo> {
 		super(rendererIn);
 		
 		//モデルの初期化
-		this.armorModel = new ModelBaseDuo(rendererIn);
+		this.armorModel = new ModelBaseDuo();
 	}
 
 	@Override

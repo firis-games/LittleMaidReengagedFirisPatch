@@ -2,10 +2,7 @@ package net.blacklab.lmr.client.renderer.entity;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
-import net.blacklab.lmr.util.IModelCapsData;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLiving;
@@ -18,10 +15,11 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 
 	//メイド用モデル
 	public ModelBaseSolo modelMain;
+	
 //	//メイド防具用モデル
 //	public ModelBaseDuo modelFATT;
-	//メイドモデル用パラメータ管理クラス
-	public IModelCapsData fcaps;
+//	//メイドモデル用パラメータ管理クラス
+//	public IModelCapsData fcaps;
 
 	/**
 	 * コンストラクタ
@@ -36,10 +34,12 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 //		modelFATT.isRendering = true;
 		
 		//メイド本体描画用モデル初期化
-		modelMain = new ModelBaseSolo(this);
-		modelMain.isModelAlphablend = LMRConfig.cfg_isModelAlphaBlend;
+		this.modelMain = new ModelBaseSolo();
+		this.mainModel = this.modelMain;
+		
+//		modelMain.isModelAlphablend = LMRConfig.cfg_isModelAlphaBlend;
 //		modelMain.capsLink = modelFATT;
-		mainModel = modelMain;
+		
 		//setRenderPassModel(modelFATT);
 	}
 	
@@ -82,10 +82,24 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		}
     }
 
-	public void setModelValues(T par1EntityLiving, double par2,
-			double par4, double par6, float par8, float par9, IModelCapsData pEntityCaps) {
+	/**
+	 * マルチモデルの描画パラメータの初期化処理
+	 * @param entity
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param entityYaw
+	 * @param partialTicks
+	 */
+	public void setModelValues(T entity, 
+			double x, double y, double z, float entityYaw, float partialTicks) {
 		
-		if (par1EntityLiving instanceof IMultiModelEntity) {
+		//パラメータの初期化
+		modelMain.setModelConfigCompound(entity, x, y, z, entityYaw, partialTicks);
+		
+	}
+		
+//		if (par1EntityLiving instanceof IMultiModelEntity) {
 //			IModelEntity ltentity = (IModelEntity)par1EntityLiving;
 //			modelMain.model = ltentity.getModelConfigCompound().getModelLittleMaid();
 //			modelFATT.modelInner = ltentity.getModelConfigCompound().getModelInnerArmor();
@@ -101,23 +115,23 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 //			
 //			modelFATT.textureLightColor = (float[])modelFATT.getCapsValue(IModelCaps.caps_textureLightColor, pEntityCaps);
 			
-			//パラメータを設定する
-			modelMain.setModelConfigCompound(par1EntityLiving, par2, par4, par6, par8, par9);
+//			//パラメータを設定する
+//			modelMain.setModelConfigCompound(par1EntityLiving, par2, par4, par6, par8, par9);
 //			modelFATT.setModelConfigCompound(ltentity.getModelConfigCompound(), pEntityCaps);
-			
-		}
+//			
+//		}
 //		modelMain.setEntityCaps(pEntityCaps);
 //		modelFATT.setEntityCaps(pEntityCaps);
 //		modelMain.setRender(this);
 //		modelFATT.setRender(this);
-		modelMain.showAllParts();
+//		modelMain.showAllParts();
 //		modelFATT.showAllParts();
-		modelMain.isAlphablend = true;
+//		modelMain.isAlphablend = true;
 //		modelFATT.isAlphablend = true;
-		modelMain.renderCount = 0;
+//		modelMain.renderCount = 0;
 //		modelFATT.renderCount = 0;
 //		modelMain.lighting = modelFATT.lighting = par1EntityLiving.getBrightnessForRender();
-		modelMain.lighting = par1EntityLiving.getBrightnessForRender();
+//		modelMain.lighting = par1EntityLiving.getBrightnessForRender();
 
 		/*
 		modelMain.setCapsValue(IModelCaps.caps_heldItemLeft, 0);
@@ -142,14 +156,18 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 //			pEntityCaps.setModelValues(modelFATT.getModelOuter(i), par1EntityLiving, par2, par4, par6, par8, par9);
 //		}
 
-	}
+//	}
 
 //	public void renderModelMulti(EntityLivingBase par1EntityLiving, double par2,
-	public void renderModelMulti(T par1EntityLiving, double par2,
-			double par4, double par6, float par8, float par9, IModelCapsData pEntityCaps) {
-		setModelValues(par1EntityLiving, par2, par4, par6, par8, par9, pEntityCaps);
-		super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
-	}
+//	public void doRenderMultiModel(T entity, 
+//			double x, double y, double z, float entityYaw, float partialTicks) {
+//		
+//		//パラメータの初期化
+//		this.setModelValues(entity, x, y, z, entityYaw, partialTicks);
+//		
+//		//描画処理
+//		super.doRender(entity, x, y, z, entityYaw, partialTicks);
+//	}
 
 	/*
 	@Override
@@ -164,23 +182,34 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	 * Rendererのメイン処理
 	 */
 	@Override
-	abstract public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks);
+	public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		
+		//パラメータの初期化
+		this.setModelValues(entity, x, y, z, entityYaw, partialTicks);
+		
+		//描画処理
+		super.doRender(entity, x, y, z, entityYaw, partialTicks);
+		
+	}
 	
 
+	/**
+	 * リードの描画処理
+	 */
 	@Override
-	protected void renderLeash(T par1EntityLiving, double par2,
-			double par4, double par6, float par8, float par9) {
-		// 縄の位置のオフセット
-		float lf = 0F;
-		if (modelMain.getModel() != null && fcaps != null) {
-			lf = modelMain.getModel().getLeashOffset(fcaps);
-		}
-		super.renderLeash(par1EntityLiving, par2, par4 - lf, par6, par8, par9);
+	protected void renderLeash(T entityLivingIn, double x, double y, double z, float entityYaw, float partialTicks) {
+		
+		//縄の位置のオフセット
+		float offset = this.modelMain.getLeashOffset();
+		
+		//リードの描画
+		super.renderLeash(entityLivingIn, x, y - offset, z, entityYaw, partialTicks);
+		
 	}
 
-	@Override
-	protected void renderModel(T par1EntityLiving, float par2,
-			float par3, float par4, float par5, float par6, float par7) {
+//	@Override
+//	protected void renderModel(T par1EntityLiving, float par2,
+//			float par3, float par4, float par5, float par6, float par7) {
 		
 //		if (!par1EntityLiving.isInvisible()) {
 //			modelMain.setArmorRendering(true);
@@ -188,8 +217,8 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 //			modelMain.setArmorRendering(false);
 //		}
 		// アイテムのレンダリング位置を獲得するためrenderを呼ぶ必要がある
-		mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
-	}
+//		mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+//	}
 
 	// TODO いらん？
 	/*
@@ -217,11 +246,22 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 
 	*/
 
+	/**
+	 * テクスチャのバインドはモデル側で行うため
+	 * 使用しない
+	 */
 	@Override
 	protected ResourceLocation getEntityTexture(T var1) {
-		// テクスチャリソースを返すところだけれど、基本的に使用しない。
 		return null;
 	}
+	
+	/**
+	 * テクスチャのバインドはモデル側で行うため
+	 * このタイミングでは何もしない
+	 */
+	protected boolean bindEntityTexture(T entity) {
+		return true;
+    }
 
 
 }

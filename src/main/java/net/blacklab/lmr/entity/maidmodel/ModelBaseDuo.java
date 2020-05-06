@@ -2,8 +2,8 @@ package net.blacklab.lmr.entity.maidmodel;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -116,9 +116,13 @@ public class ModelBaseDuo extends ModelBaseNihil {
 		}
 		
 		//色設定
-		//this.textureLightColor = (float[])this.getCapsValue(IModelCaps.caps_textureLightColor, this.entityCaps);
+		//インナー防具モデルより取得
 		this.textureLightColor = null;
+		if (this.modelInner != null) {
+			this.textureLightColor = (float[])this.modelInner.getCapsValue(IModelCaps.caps_textureLightColor, this.entityCaps);
+		}
 		
+		//ライティング設定
 		this.lighting = entity.getBrightnessForRender();
 		
 	}
@@ -197,16 +201,17 @@ public class ModelBaseDuo extends ModelBaseNihil {
 	 * 描画されるアーマーの部位。
 	 * shouldRenderPassとかで指定する。
 	 */
-	public int renderParts;
+//	public int renderParts;
 
 	private float[] textureLightColor;
 	public float[] getTextureLightColor() {
 		return textureLightColor;
 	}
 
-	public ModelBaseDuo(RenderModelMulti<? extends EntityLiving> pRender) {
-		rendererLivingEntity = pRender;
-		renderParts = 0;
+//	public ModelBaseDuo(RenderModelMulti<? extends EntityLiving> pRender) {
+	public ModelBaseDuo() {
+//		rendererLivingEntity = pRender;
+//		renderParts = 0;
 	}
 	
 	/**
@@ -222,15 +227,13 @@ public class ModelBaseDuo extends ModelBaseNihil {
 	 */
 	@Override
 	public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
-		
 		if (modelInner != null) {
 			modelInner.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
 		}
 		if (modelOuter != null) {
 			modelOuter.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
-		}
-		
-		isAlphablend = true;
+		}	
+//		isAlphablend = true;
 	}
 
 	/**

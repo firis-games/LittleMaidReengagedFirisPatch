@@ -18,23 +18,22 @@ public class RenderEntitySelect extends RenderModelMulti<EntityLittleMaidForTexS
 	 */
 	public RenderEntitySelect(RenderManager manager, float pShadowSize) {
 		super(manager, pShadowSize);
-//		addLayer(new MMMLayerArmorGui(this));
 		addLayer(new LayerArmorGui(this));
 	}
 
 
-	/**
-	 * Rendererのメイン処理
-	 */
-	@Override
-	public void doRender(EntityLittleMaidForTexSelect entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		
-		//モデルパラメータセット
-		fcaps = entity.getModelConfigCompound().getModelCaps();
-		
-		//マルチモデルの描画
-		renderModelMulti(entity, x, y, z, entityYaw, partialTicks, fcaps);
-		
-	}
+//	/**
+//	 * Rendererのメイン処理
+//	 */
+//	@Override
+//	public void doRender(EntityLittleMaidForTexSelect entity, double x, double y, double z, float entityYaw, float partialTicks) {
+//		
+//		//モデルパラメータセット
+//		fcaps = entity.getModelConfigCompound().getModelCaps();
+//		
+//		//マルチモデルの描画
+//		doRenderMultiModel(entity, x, y, z, entityYaw, partialTicks, fcaps);
+//		
+//	}
 	
 }

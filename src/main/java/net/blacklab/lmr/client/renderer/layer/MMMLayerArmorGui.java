@@ -220,7 +220,7 @@ public class MMMLayerArmorGui extends LayerArmorBase<ModelBaseDuo> {
 		}
 //		mmodel.setEntityCaps(pEntityCaps);
 //		mmodel.setRender(this.renderer);
-		mmodel.showAllParts();
-		mmodel.isAlphablend = true;
+//		mmodel.showAllParts();
+//		mmodel.isAlphablend = true;
 	}
 }

@@ -4,7 +4,6 @@ import net.blacklab.lmr.api.client.event.ClientEventLMRE;
 import net.blacklab.lmr.client.renderer.layer.LayerArmor;
 import net.blacklab.lmr.client.renderer.layer.MMMLayerHeldItem;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.util.IModelCapsData;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,21 +27,20 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 		
 		//描画用Layer登録
 		this.addLayer(new MMMLayerHeldItem(this));
-		//this.addLayer(new MMMLayerArmor(this));
 		this.addLayer(new LayerArmor(this));
 		
 		//Layer登録用イベント
 		MinecraftForge.EVENT_BUS.post(new ClientEventLMRE.RendererLittleMaidAddLayerEvent(this));
 	}
 	
-	@Override
-	public void setModelValues(EntityLittleMaid par1EntityLiving, double par2,
-			double par4, double par6, float par8, float par9, IModelCapsData pEntityCaps) {
+//	@Override
+//	public void setModelValues(EntityLittleMaid par1EntityLiving, double par2,
+//			double par4, double par6, float par8, float par9, IModelCapsData pEntityCaps) {
 		
 		//EntityLittleMaid lmaid = par1EntityLiving;
 		
-		//パラメータ設定
-		super.setModelValues(par1EntityLiving, par2, par4, par6, par8, par9, pEntityCaps);
+//		//パラメータ設定
+//		super.setModelValues(par1EntityLiving, par2, par4, par6, par8, par9, pEntityCaps);
 		
 	/*
 		//カスタムモーション
@@ -78,7 +76,7 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 //		modelFATT.setModelAttributes(mainModel);
 		// だが無意味だ
 //		plittleMaid.textureModel0.isChild = plittleMaid.textureModel1.isChild = plittleMaid.textureModel2.isChild = plittleMaid.isChild();
-	}
+//	}
 
 /*
 	@SuppressWarnings("unused")
@@ -198,34 +196,44 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 	}
 	*/
 	
+//	/**
+//	 * Rendererのメイン処理
+//	 */
+//	@Override
+//	public void doRender(EntityLittleMaid entity, double x, double y, double z, float entityYaw, float partialTicks) {
+//		
+//		//モデルパラメータセット
+//		fcaps = entity.getModelConfigCompound().getModelCaps();
+//		
+//		//マルチモデルの描画
+//		this.doRenderMultiModel(entity, x, y, z, entityYaw, partialTicks, fcaps);
+//		
+//	}
+
 	/**
-	 * Rendererのメイン処理
+	 * メイドモードごとの特殊描画を行う
+	 * 
+	 * ※現在は使用していないので扱いをどうするかは考慮する
 	 */
 	@Override
-	public void doRender(EntityLittleMaid entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	protected void renderLivingAt(EntityLittleMaid entityLivingBaseIn, double x, double y, double z) {
 		
-		//モデルパラメータセット
-		fcaps = entity.getModelConfigCompound().getModelCaps();
+		super.renderLivingAt(entityLivingBaseIn, x, y, z);
 		
-		//マルチモデルの描画
-		renderModelMulti(entity, x, y, z, entityYaw, partialTicks, fcaps);
-		
-	}
-
-	@Override
-	public void renderLivingAt(EntityLittleMaid par1EntityLiving, double par2, double par4, double par6) {
-		super.renderLivingAt(par1EntityLiving, par2, par4, par6);
-
-		EntityLittleMaid llmm = par1EntityLiving;
 		// 追加分
-		for (int li = 0; li < llmm.maidEntityModeList.size(); li++) {
-			llmm.maidEntityModeList.get(li).showSpecial(this, par2, par4, par6);
+		for (int li = 0; li < entityLivingBaseIn.maidEntityModeList.size(); li++) {
+			entityLivingBaseIn.maidEntityModeList.get(li).showSpecial(this, x, y, z);
 		}
 	}
 
+	/**
+	 * カラー設定を行う
+	 */
 	@Override
-	protected int getColorMultiplier(EntityLittleMaid par1EntityLiving, float par2, float par3) {
-		return par1EntityLiving.colorMultiplier(par2, par3);
+	protected int getColorMultiplier(EntityLittleMaid entityLivingBaseIn, float lightBrightness, float partialTickTime) {
+		
+		return entityLivingBaseIn.colorMultiplier(lightBrightness, partialTickTime);
+		
 	}
 	
 }
