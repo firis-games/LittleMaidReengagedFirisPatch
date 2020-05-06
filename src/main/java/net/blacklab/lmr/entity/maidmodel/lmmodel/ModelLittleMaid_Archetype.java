@@ -11,6 +11,7 @@ import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
  * 旧型モデル互換のベースモデル。
  * 関節リンクしていない
  */
+@Deprecated
 public class ModelLittleMaid_Archetype extends ModelLittleMaidBase {
 
 	// fields

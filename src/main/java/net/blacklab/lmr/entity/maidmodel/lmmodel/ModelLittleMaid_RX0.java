@@ -5,6 +5,7 @@ import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
 import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
 
+@Deprecated
 public class ModelLittleMaid_RX0 extends ModelLittleMaidBase {
 
 	public ModelRenderer bipedForelock;
