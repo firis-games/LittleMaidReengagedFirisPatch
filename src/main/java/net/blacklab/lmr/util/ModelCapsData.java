@@ -321,7 +321,7 @@ public abstract class ModelCapsData implements IModelCapsData {
 	 * @param modelCaps
 	 */
 	@Override
-	public void setModelValues(ModelMultiBase model, EntityLiving entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void setModelMultiFromModelCaps(ModelMultiBase model, float entityYaw, float partialTicks) {
 		
 		if (model == null) return;
 		

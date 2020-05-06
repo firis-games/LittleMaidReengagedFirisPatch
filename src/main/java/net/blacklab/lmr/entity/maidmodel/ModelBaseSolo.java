@@ -40,11 +40,10 @@ public class ModelBaseSolo extends ModelBaseNihil {
 	 * 描画用パラメータを設定する
 	 * @param modelConfigCompound
 	 */
-	public void setModelConfigCompound(EntityLiving entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void initModelParameter(ModelConfigCompound modelConfigCompound, float entityYaw, float partialTicks) {
 		
-		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
-		
-		this.modelConfigCompound = modelEntity.getModelConfigCompound();
+		this.modelConfigCompound = modelConfigCompound;
+		EntityLiving entity = (EntityLiving) this.modelConfigCompound.getOwner();
 		
 		//内部変数リセット
 		this.entityCaps = null;
@@ -64,7 +63,7 @@ public class ModelBaseSolo extends ModelBaseNihil {
 		this.entityCaps = this.modelConfigCompound.getModelCaps();
 		
 		//マルチモデル初期化
-		this.entityCaps.setModelValues(this.maidModel, entity, x, y, z, entityYaw, partialTicks);
+		this.entityCaps.setModelMultiFromModelCaps(this.maidModel, entityYaw, partialTicks);
 		
 		//本体描画設定
 		this.isRendering = true;

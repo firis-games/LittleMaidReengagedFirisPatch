@@ -2,7 +2,9 @@ package net.blacklab.lmr.client.renderer.entity;
 
 import org.lwjgl.opengl.GL11;
 
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
+import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLiving;
@@ -94,8 +96,12 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	public void setModelValues(T entity, 
 			double x, double y, double z, float entityYaw, float partialTicks) {
 		
+		//モデルパラメータ取得
+		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
+		ModelConfigCompound modelConfigCompound = modelEntity.getModelConfigCompound();
+		
 		//パラメータの初期化
-		modelMain.setModelConfigCompound(entity, x, y, z, entityYaw, partialTicks);
+		modelMain.initModelParameter(modelConfigCompound, entityYaw, partialTicks);
 		
 	}
 		

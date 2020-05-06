@@ -72,6 +72,10 @@ public class ModelConfigCompound  {
 
 	protected EntityLivingBase owner;
 	
+	public EntityLivingBase getOwner() {
+		return this.owner;
+	}
+	
 	protected IModelCapsData entityCaps;
 	public IModelCapsData getModelCaps() {
 		return this.entityCaps;

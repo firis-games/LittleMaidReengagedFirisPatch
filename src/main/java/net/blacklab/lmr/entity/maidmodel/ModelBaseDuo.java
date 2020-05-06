@@ -71,11 +71,11 @@ public class ModelBaseDuo extends ModelBaseNihil {
 	 * 描画用のモデル、テクスチャパスを内部変数へ展開する
 	 * 
 	 */
-	public void setModelConfigCompound(EntityLiving entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slot) {
+	public void initModelParameter(ModelConfigCompound modelConfigCompound, float entityYaw, float partialTicks, EntityEquipmentSlot slot) {
 		
-		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
+		this.modelConfigCompound = modelConfigCompound;
 		
-		this.modelConfigCompound = modelEntity.getModelConfigCompound();
+		EntityLiving entity = (EntityLiving) this.modelConfigCompound.getOwner();
 		
 		//内部変数リセット
 		this.modelInner = null;
@@ -104,8 +104,8 @@ public class ModelBaseDuo extends ModelBaseNihil {
 		this.entityCaps = modelConfigCompound.getModelCaps();
 		
 		//マルチモデル情報の初期化
-		this.entityCaps.setModelValues(this.modelInner, entity, 0, 0, 0, netHeadYaw, partialTicks);
-		this.entityCaps.setModelValues(this.modelOuter, entity, 0, 0, 0, netHeadYaw, partialTicks);
+		this.entityCaps.setModelMultiFromModelCaps(this.modelInner, entityYaw, partialTicks);
+		this.entityCaps.setModelMultiFromModelCaps(this.modelOuter, entityYaw, partialTicks);
 		
 		//モデルの表示設定
 		if (this.modelInner != null) {

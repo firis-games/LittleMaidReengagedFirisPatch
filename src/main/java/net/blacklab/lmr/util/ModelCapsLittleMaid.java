@@ -6,7 +6,6 @@ import java.util.Map;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
@@ -235,16 +234,16 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 	 * @param modelCaps
 	 */
 	@Override
-	public void setModelValues(ModelMultiBase model, EntityLiving entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void setModelMultiFromModelCaps(ModelMultiBase model, float entityYaw, float partialTicks) {
 		
-		super.setModelValues(model, entity, x, y, z, entityYaw, partialTicks);
+		super.setModelMultiFromModelCaps(model, entityYaw, partialTicks);
 		
 		if (model == null) return;
 		
-		EntityLittleMaid maid = (EntityLittleMaid) entity;
+		EntityLittleMaid maid = this.owner;
 		
 		//カスタムモーション
-		if (this.setCustomMotion(model, maid, x, y, z, entityYaw, partialTicks)) {
+		if (this.setCustomMotion(model, maid, entityYaw, partialTicks)) {
 			return;
 		}
 		
@@ -275,7 +274,7 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 	 * 歩行や首の傾きは別部分で制御しているようなのでここでは制御できない
 	 * 
 	 */
-	protected boolean setCustomMotion(ModelMultiBase model, EntityLittleMaid entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	protected boolean setCustomMotion(ModelMultiBase model, EntityLittleMaid entity, float entityYaw, float partialTicks) {
 		
 		EnumMaidMotion motion = entity.getMaidMotion();
 		

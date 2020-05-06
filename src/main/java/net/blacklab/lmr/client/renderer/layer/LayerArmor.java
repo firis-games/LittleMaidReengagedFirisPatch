@@ -4,7 +4,9 @@ import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
+import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -63,7 +65,9 @@ public class LayerArmor extends LayerArmorBase<ModelBaseDuo> {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		//防具モデルの準備
-		this.armorModel.setModelConfigCompound((EntityLiving) entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, slot);
+		IMultiModelEntity modelEntity = (IMultiModelEntity) entityLivingBaseIn;
+		ModelConfigCompound modelConfigCompound = modelEntity.getModelConfigCompound();
+		this.armorModel.initModelParameter(modelConfigCompound, netHeadYaw, partialTicks, slot);
 
 		//防具モデル描画調整
 		//setRotationAnglesはLayerArmorBaseで呼ばれていないようなのでコメントアウト
