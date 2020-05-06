@@ -135,6 +135,7 @@ import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -3869,6 +3870,14 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	public int getDominantArm() {
 		return maidDominantArm;
+	}
+	
+	/**
+	 * 利き手
+	 */
+	@Override
+	public EnumHandSide getPrimaryHand() {
+		return this.getDominantArm() == 0 ? EnumHandSide.RIGHT : EnumHandSide.LEFT;
 	}
 
 	// 今宵のメイドは血に飢えておる

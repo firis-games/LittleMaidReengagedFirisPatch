@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
  * 手持ちアイテムレイヤー
  * RenderLittleMaidから分離
  */
+@Deprecated
 public class MMMLayerHeldItem extends LayerHeldItem {
 
 	//レイヤーと化したアイテム描画
