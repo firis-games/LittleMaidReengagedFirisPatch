@@ -1,7 +1,7 @@
 package net.blacklab.lmr.client.renderer.entity;
 
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
-import net.blacklab.lmr.client.renderer.layer.LayerArmorGui;
+import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaidGui;
 import net.minecraft.client.renderer.entity.RenderManager;
 
 
@@ -18,7 +18,7 @@ public class RenderEntitySelect extends RenderModelMulti<EntityLittleMaidForTexS
 	 */
 	public RenderEntitySelect(RenderManager manager, float pShadowSize) {
 		super(manager, pShadowSize);
-		addLayer(new LayerArmorGui(this));
+		addLayer(new LayerArmorLittleMaidGui(this));
 	}
 
 

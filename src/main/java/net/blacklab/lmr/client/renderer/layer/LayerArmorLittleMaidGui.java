@@ -11,9 +11,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 @SideOnly(Side.CLIENT)
-public class LayerArmorGui extends LayerArmorLittleMaidBase {
+public class LayerArmorLittleMaidGui extends LayerArmorLittleMaidBase {
 
-	public LayerArmorGui(RenderModelMulti<? extends EntityLiving> rendererIn) {
+	public LayerArmorLittleMaidGui(RenderModelMulti<? extends EntityLiving> rendererIn) {
 		
 		super(rendererIn);
 		
