@@ -29,7 +29,7 @@ public class GuiButtonArmorToggle extends GuiButton {
 
 	public boolean toggle = true;
 
-	public static final ResourceLocation GUI_TOPBUTTON_RESOURCE = new ResourceLocation(LittleMaidReengaged.DOMAIN+":textures/gui/container/buttons/topbuttons.png");
+	public static final ResourceLocation GUI_TOPBUTTON_RESOURCE = new ResourceLocation(LittleMaidReengaged.MODID+":textures/gui/container/buttons/topbuttons.png");
 
 	public GuiButtonArmorToggle(int buttonId, int x, int y, String buttonText, boolean ison) {
 		super(buttonId, x, y, 16, 16, "");

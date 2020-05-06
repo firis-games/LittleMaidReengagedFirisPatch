@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 public class ItemMaidPorter extends Item {
 	public ItemMaidPorter() {
 		setMaxStackSize(1);
-		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":maidporter");
+		setUnlocalizedName(LittleMaidReengaged.MODID + ":maidporter");
 	}
 
 	@Override
@@ -33,8 +33,8 @@ public class ItemMaidPorter extends Item {
 	{
 		NBTTagCompound stackTag = stack.getTagCompound();
 		if (stackTag != null) {
-			String customName = stackTag.getString(LittleMaidReengaged.DOMAIN + ":MAID_NAME");
-			float experience = stackTag.getFloat(LittleMaidReengaged.DOMAIN + ":EXPERIENCE");
+			String customName = stackTag.getString(LittleMaidReengaged.MODID + ":MAID_NAME");
+			float experience = stackTag.getFloat(LittleMaidReengaged.MODID + ":EXPERIENCE");
 
 			if (!customName.isEmpty()) {
 				tooltip.add("Name: ".concat(customName));

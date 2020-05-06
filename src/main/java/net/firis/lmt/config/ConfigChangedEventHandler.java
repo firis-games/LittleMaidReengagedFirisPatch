@@ -11,7 +11,7 @@ public class ConfigChangedEventHandler {
 	 */
 	@SubscribeEvent
 	public static void onPostConfigChangedEvent(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if (LittleMaidReengaged.DOMAIN.equals(event.getModID())) {
+		if (LittleMaidReengaged.MODID.equals(event.getModID())) {
 			//設定値の更新
 			FirisConfig.syncConfig();
 		}

@@ -173,7 +173,7 @@ public class SoundManager {
 				for (String voice : soundinfo.voices.get(voiceId)) {
 					//sounds.json形式のパスへ変換する
 					String voicePath = voice;
-					voicePath = LittleMaidReengaged.DOMAIN + ":" + elementName + "//" + voicePath;
+					voicePath = LittleMaidReengaged.MODID + ":" + elementName + "//" + voicePath;
 					soundsElements.add(voicePath);
 				}
 				elementObject.add("sounds", soundsElements);

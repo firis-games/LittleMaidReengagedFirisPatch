@@ -96,7 +96,7 @@ public class SoundResourcePack implements IResourcePack {
 	}
 	*/
 
-	public static final Set<String> lmmxResourceDomains = ImmutableSet.of(LittleMaidReengaged.DOMAIN);
+	public static final Set<String> lmmxResourceDomains = ImmutableSet.of(LittleMaidReengaged.MODID);
 
 	@Override
 	public Set<String> getResourceDomains() {

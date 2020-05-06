@@ -153,7 +153,7 @@ public class LMItemMaidSugar extends Item {
 			
 			//メイドさんを生成する
 			EntityLittleMaid littleMaid = (EntityLittleMaid) EntityList.createEntityByIDFromName(
-					new ResourceLocation(LittleMaidReengaged.DOMAIN, "littlemaid"), world);
+					new ResourceLocation(LittleMaidReengaged.MODID, "littlemaid"), world);
 
 			//メイドさん初期契約
 			littleMaid.setFirstContract(player);

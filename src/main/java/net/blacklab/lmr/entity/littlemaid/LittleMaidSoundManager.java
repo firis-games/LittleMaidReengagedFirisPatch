@@ -158,7 +158,7 @@ public class LittleMaidSoundManager {
 			//音声の再生
 			LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", maid.getEntityId(), sound.index, sound.name(), soundName));
 
-			SoundEvent soundEvent = new SoundEvent(new ResourceLocation(LittleMaidReengaged.DOMAIN, soundName));
+			SoundEvent soundEvent = new SoundEvent(new ResourceLocation(LittleMaidReengaged.MODID, soundName));
 			this.maid.world.playSound(maid.posX, maid.posY, maid.posZ, 
 					soundEvent, maid.getSoundCategory(), maid.getSoundVolume(), 1.0F, false);
 			playingSound.remove(sound);

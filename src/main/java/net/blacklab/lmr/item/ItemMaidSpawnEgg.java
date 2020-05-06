@@ -23,7 +23,7 @@ public class ItemMaidSpawnEgg extends Item
 	{
 		setHasSubtypes(true);
 		setCreativeTab(CreativeTabs.MISC);
-		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":spawn_littlemaid_egg");
+		setUnlocalizedName(LittleMaidReengaged.MODID + ":spawn_littlemaid_egg");
 	}
 
 	@Override

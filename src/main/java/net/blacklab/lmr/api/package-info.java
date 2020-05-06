@@ -1,2 +1,2 @@
-@net.minecraftforge.fml.common.API(owner=net.blacklab.lmr.LittleMaidReengaged.DOMAIN, provides="LittleMaidReengaged API", apiVersion=net.blacklab.lmr.LittleMaidReengaged.VERSION)
+@net.minecraftforge.fml.common.API(owner=net.blacklab.lmr.LittleMaidReengaged.MODID, provides="LittleMaidReengaged API", apiVersion=net.blacklab.lmr.LittleMaidReengaged.VERSION)
 package net.blacklab.lmr.api;

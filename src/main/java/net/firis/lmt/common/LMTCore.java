@@ -143,7 +143,7 @@ public class LMTCore {
 
 		//メイドさんになる本
     	event.getRegistry().register(new LMItemPlayerMaidBook()
-    			.setRegistryName(LittleMaidReengaged.DOMAIN, "player_maid_book")
+    			.setRegistryName(LittleMaidReengaged.MODID, "player_maid_book")
     			.setUnlocalizedName("player_maid_book"));
     	
 	}

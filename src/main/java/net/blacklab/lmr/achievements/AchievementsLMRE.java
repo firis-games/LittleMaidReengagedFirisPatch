@@ -63,7 +63,7 @@ public class AchievementsLMRE {
 		if (player == null || !(player instanceof EntityPlayerMP)) return;
 		
 		AdvancementManager manager = player.world.getMinecraftServer().getAdvancementManager();
-		Advancement advancement = manager.getAdvancement(new ResourceLocation(LittleMaidReengaged.DOMAIN, achievment.getValue()));
+		Advancement advancement = manager.getAdvancement(new ResourceLocation(LittleMaidReengaged.MODID, achievment.getValue()));
 		
 		//有効な進捗の場合はトリガーキック
 		if (advancement != null) {

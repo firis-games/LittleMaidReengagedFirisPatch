@@ -10,7 +10,7 @@ import net.blacklab.plugin.hwyla.provider.DataProviderLMR;
 import net.blacklab.plugin.hwyla.provider.DataProviderLMRAnimal;
 import net.minecraft.entity.EntityLiving;
 
-@WailaPlugin(value=LittleMaidReengaged.DOMAIN)
+@WailaPlugin(value=LittleMaidReengaged.MODID)
 public class WailaPluginLMR implements IWailaPlugin  {
 
 	public void register(IWailaRegistrar registrar) {

@@ -285,7 +285,7 @@ public class SoundLoader {
 						Iterator<String> n = m.iterator();
 						while (n.hasNext()) {
 							String path = (String) n.next();
-							output.add("      \""+LittleMaidReengaged.DOMAIN+":" + soundName + "//" + path + "\"" + (n.hasNext() ? "," : ""));
+							output.add("      \""+LittleMaidReengaged.MODID+":" + soundName + "//" + path + "\"" + (n.hasNext() ? "," : ""));
 						}
 					}
 

@@ -64,7 +64,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(
-		modid = LittleMaidReengaged.DOMAIN,
+		modid = LittleMaidReengaged.MODID,
 		name = LittleMaidReengaged.NAME,
 		version = LittleMaidReengaged.VERSION,
 		acceptedMinecraftVersions=LittleMaidReengaged.ACCEPTED_MCVERSION,
@@ -75,7 +75,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @EventBusSubscriber
 public class LittleMaidReengaged {
 
-	public static final String DOMAIN = "lmreengaged";
+	public static final String MODID = "lmreengaged";
 	public static final String NAME = "LittleMaidReengaged";
 	public static final String VERSION = "9.0.1.fp.035";
 	public static final String ACCEPTED_MCVERSION = "[1.12.2]";
@@ -132,7 +132,7 @@ public class LittleMaidReengaged {
 	@SidedProxy(clientSide = "net.blacklab.lmr.network.ProxyClient", serverSide = "net.blacklab.lmr.network.ProxyCommon")
 	public static ProxyCommon proxy;
 
-	@Instance(DOMAIN)
+	@Instance(MODID)
 	public static LittleMaidReengaged instance;
 
 	// Item
@@ -145,7 +145,7 @@ public class LittleMaidReengaged {
 	/**
      * アイテムインスタンス保持用
      */
-    @ObjectHolder(LittleMaidReengaged.DOMAIN)
+    @ObjectHolder(LittleMaidReengaged.MODID)
     public static class LMItems{
     	public final static ItemMaidSpawnEgg SPAWN_LITTLEMAID_EGG = null;
     	public final static ItemTriggerRegisterKey REGISTERKEY = null;
@@ -322,7 +322,7 @@ public class LittleMaidReengaged {
 		PluginManager.preInitPluginLoad(evt);
 		
 		// アイテムスロット更新用のパケット
-		LMRNetwork.init(DOMAIN);
+		LMRNetwork.init(MODID);
 
 		//// Register model and renderer
 		//proxy.rendererRegister();
@@ -444,27 +444,27 @@ public class LittleMaidReengaged {
 		
 		//メイドさんスポーンエッグ
 		event.getRegistry().register(new ItemMaidSpawnEgg()
-    			.setRegistryName(DOMAIN, "spawn_littlemaid_egg"));
+    			.setRegistryName(MODID, "spawn_littlemaid_egg"));
 		
 		event.getRegistry().register(new ItemTriggerRegisterKey()
-    			.setRegistryName(DOMAIN, "registerkey"));
+    			.setRegistryName(MODID, "registerkey"));
 		
 		event.getRegistry().register(new ItemMaidPorter()
-    			.setRegistryName(DOMAIN, "maidporter"));
+    			.setRegistryName(MODID, "maidporter"));
 		
 		//メイドの土産
     	event.getRegistry().register(new LMItemMaidSouvenir()
-    			.setRegistryName(DOMAIN, "maid_souvenir")
+    			.setRegistryName(MODID, "maid_souvenir")
     			.setUnlocalizedName("maid_souvenir"));
     	
     	//メイドキャリー
     	event.getRegistry().register(new LMItemMaidCarry()
-    			.setRegistryName(DOMAIN, "maid_carry")
+    			.setRegistryName(MODID, "maid_carry")
     			.setUnlocalizedName("maid_carry"));
     	
     	//メイドシュガー
     	event.getRegistry().register(new LMItemMaidSugar()
-    			.setRegistryName(DOMAIN, "maid_sugar")
+    			.setRegistryName(MODID, "maid_sugar")
     			.setUnlocalizedName("maid_sugar"));
     	
 		//テスト用モジュール登録
@@ -509,7 +509,7 @@ public class LittleMaidReengaged {
     	//Little Maid
     	EntityEntry littlemaidEntry = EntityEntryBuilder.create()
     			.entity(EntityLittleMaid.class)
-    			.id(new ResourceLocation(LittleMaidReengaged.DOMAIN, "littlemaid"), entityId++)
+    			.id(new ResourceLocation(LittleMaidReengaged.MODID, "littlemaid"), entityId++)
     			.name("littlemaid")
     			.egg(0xf8f8f8, 0xcc6600)
     			.tracker(80, 1, true)
@@ -519,7 +519,7 @@ public class LittleMaidReengaged {
     	//AntiDamage EntityItem
     	EntityEntry antiDamageEntityItem = EntityEntryBuilder.create()
     			.entity(LMEntityItemAntiDamage.class)
-    			.id(new ResourceLocation(LittleMaidReengaged.DOMAIN, "entityitem_antidamage"), entityId++)
+    			.id(new ResourceLocation(LittleMaidReengaged.MODID, "entityitem_antidamage"), entityId++)
     			.name("Anti Dmage EntityItem")
     			.tracker(32, 5, true)
     			.build();

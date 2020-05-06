@@ -45,7 +45,7 @@ public class FirisConfigGuiFactory implements IModGuiFactory {
 		public FirisGuiConfig(GuiScreen parentScreen) {
 			super(parentScreen,
 					getConfigElements(),
-					LittleMaidReengaged.DOMAIN,
+					LittleMaidReengaged.MODID,
 					false,
 					false,
 					LittleMaidReengaged.NAME);

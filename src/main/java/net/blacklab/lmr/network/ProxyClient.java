@@ -44,15 +44,15 @@ public class ProxyClient extends ProxyCommon
 		
 		ModelLoader.setCustomModelResourceLocation(
 				LMItems.SPAWN_LITTLEMAID_EGG, 0, new ModelResourceLocation(
-						LittleMaidReengaged.DOMAIN+":spawn_littlemaid_egg", "inventory"));
+						LittleMaidReengaged.MODID+":spawn_littlemaid_egg", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(LMItems.REGISTERKEY, 0,
-				new ModelResourceLocation(LittleMaidReengaged.DOMAIN+":registerkey",
+				new ModelResourceLocation(LittleMaidReengaged.MODID+":registerkey",
 						"inventory"));
 		ModelLoader.setCustomModelResourceLocation(LMItems.REGISTERKEY, 1,
-				new ModelResourceLocation(LittleMaidReengaged.DOMAIN+":registerkey",
+				new ModelResourceLocation(LittleMaidReengaged.MODID+":registerkey",
 						"inventory"));
-		String porter_modelName_A = LittleMaidReengaged.DOMAIN + ":maidporter_0";
-		String porter_modelName_B = LittleMaidReengaged.DOMAIN + ":maidporter_1";
+		String porter_modelName_A = LittleMaidReengaged.MODID + ":maidporter_0";
+		String porter_modelName_B = LittleMaidReengaged.MODID + ":maidporter_1";
 //		ModelLoader.addVariantName(LittleMaidReengaged.maidPorter, LittleMaidReengaged.DOMAIN + ":maidporter_0", LittleMaidReengaged.DOMAIN + ":maidporter_1");
 		ModelBakery.registerItemVariants(LMItems.MAIDPORTER, new ResourceLocation(porter_modelName_A), new ResourceLocation(porter_modelName_B));
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAIDPORTER, 0, new ModelResourceLocation(porter_modelName_A, "inventory"));

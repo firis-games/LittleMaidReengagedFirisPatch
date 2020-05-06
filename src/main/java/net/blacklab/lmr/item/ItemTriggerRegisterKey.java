@@ -22,13 +22,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTriggerRegisterKey extends Item {
 
-	public static final String RK_MODE_TAG = LittleMaidReengaged.DOMAIN + ":RK_MODE";
-	public static final String RK_COUNT = LittleMaidReengaged.DOMAIN + ":RK_COUNT";
+	public static final String RK_MODE_TAG = LittleMaidReengaged.MODID + ":RK_MODE";
+	public static final String RK_COUNT = LittleMaidReengaged.MODID + ":RK_COUNT";
 
 	public static final int RK_MAX_COUNT = 32;
 
 	public ItemTriggerRegisterKey() {
-		setUnlocalizedName(LittleMaidReengaged.DOMAIN + ":registerkey");
+		setUnlocalizedName(LittleMaidReengaged.MODID + ":registerkey");
 		//setCreativeTab(CreativeTabs.MISC);
 	}
 

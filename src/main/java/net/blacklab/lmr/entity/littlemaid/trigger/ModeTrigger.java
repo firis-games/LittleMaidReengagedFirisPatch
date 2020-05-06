@@ -159,11 +159,11 @@ public class ModeTrigger implements Serializable {
 			tagCompound.setTag(tSelector, appendedList);
 		}
 		
-		pCompound.setTag(LittleMaidReengaged.DOMAIN + ":MODETRIGGER", tagCompound);
+		pCompound.setTag(LittleMaidReengaged.MODID + ":MODETRIGGER", tagCompound);
 	}
 	
 	public void readFromNBT(NBTTagCompound pCompound) {
-		NBTTagCompound targetCompound = pCompound.getCompoundTag(LittleMaidReengaged.DOMAIN + ":MODETRIGGER");
+		NBTTagCompound targetCompound = pCompound.getCompoundTag(LittleMaidReengaged.MODID + ":MODETRIGGER");
 		
 		if (targetCompound.hasNoTags()) {
 			return;

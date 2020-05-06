@@ -1617,17 +1617,17 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		par1nbtTagCompound.setInteger("homeZ", getPosition().getZ());
 		par1nbtTagCompound.setInteger("homeWorld", homeWorld);
 
-		par1nbtTagCompound.setFloat(LittleMaidReengaged.DOMAIN + ":MAID_EXP", maidExperience);
-		par1nbtTagCompound.setInteger(LittleMaidReengaged.DOMAIN + ":EXP_BOOST", gainExpBoost);
+		par1nbtTagCompound.setFloat(LittleMaidReengaged.MODID + ":MAID_EXP", maidExperience);
+		par1nbtTagCompound.setInteger(LittleMaidReengaged.MODID + ":EXP_BOOST", gainExpBoost);
 
 		// 肩車
 		boolean isRide = isRiding();
-		par1nbtTagCompound.setBoolean(LittleMaidReengaged.DOMAIN + ":riding", isRide);
+		par1nbtTagCompound.setBoolean(LittleMaidReengaged.MODID + ":riding", isRide);
 		if (isRide) {
 			if (getRidingEntity() instanceof EntityPlayer) {
-				par1nbtTagCompound.setString(LittleMaidReengaged.DOMAIN + ":ridingPlayer", getRidingEntity().getUniqueID().toString());
+				par1nbtTagCompound.setString(LittleMaidReengaged.MODID + ":ridingPlayer", getRidingEntity().getUniqueID().toString());
 			}
-			par1nbtTagCompound.setIntArray(LittleMaidReengaged.DOMAIN + ":lastPosition", new int[]{(int) posX, (int) posY, (int) posZ});
+			par1nbtTagCompound.setIntArray(LittleMaidReengaged.MODID + ":lastPosition", new int[]{(int) posX, (int) posY, (int) posZ});
 		}
 
 		// Tiles
@@ -1737,17 +1737,17 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 		isMadeTextureNameFlag = par1nbtTagCompound.getBoolean("isMadeTextureNameFlag");
 
-		maidExperience = par1nbtTagCompound.getFloat(LittleMaidReengaged.DOMAIN + ":MAID_EXP");
-		setExpBooster(par1nbtTagCompound.getInteger(LittleMaidReengaged.DOMAIN + ":EXP_BOOST"));
+		maidExperience = par1nbtTagCompound.getFloat(LittleMaidReengaged.MODID + ":MAID_EXP");
+		setExpBooster(par1nbtTagCompound.getInteger(LittleMaidReengaged.MODID + ":EXP_BOOST"));
 		dataManager.set(EntityLittleMaid.dataWatch_MaidExpValue, maidExperience);
 
 		// 肩車
-		boolean isRide = par1nbtTagCompound.getBoolean(LittleMaidReengaged.DOMAIN + ":riding");
+		boolean isRide = par1nbtTagCompound.getBoolean(LittleMaidReengaged.MODID + ":riding");
 		if (isRide) {
-			int[] lastPosition = par1nbtTagCompound.getIntArray(LittleMaidReengaged.DOMAIN + ":lastPosition");
+			int[] lastPosition = par1nbtTagCompound.getIntArray(LittleMaidReengaged.MODID + ":lastPosition");
 			setLocationAndAngles(lastPosition[0], lastPosition[1], lastPosition[2], 0, 0);
 
-			String playerUid = par1nbtTagCompound.getString(LittleMaidReengaged.DOMAIN + ":ridingPlayer");
+			String playerUid = par1nbtTagCompound.getString(LittleMaidReengaged.MODID + ":ridingPlayer");
 			if (!playerUid.isEmpty()) {
 				try {
 					EntityPlayer ridingPlayer = getEntityWorld().getPlayerEntityByUUID(UUID.fromString(playerUid));
