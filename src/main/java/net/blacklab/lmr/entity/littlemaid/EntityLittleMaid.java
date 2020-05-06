@@ -324,7 +324,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	// 実験用
 //	private int firstload = 100;
-	public String statusMessage = "";
+//	public String statusMessage = "";
 
 	// AI
 	public EntityAITempt aiTempt;
@@ -356,9 +356,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	//モデル
 	//protected String textureNameMain;
 	//protected String textureNameArmor;
-	public String getTextureNameMain() {
-		return dataManager.get(EntityLittleMaid.dataWatch_texture_LittleMaid);
-	}
+//	public String getTextureNameMain() {
+//		return dataManager.get(EntityLittleMaid.dataWatch_texture_LittleMaid);
+//	}
 
 	public int playingTick = 0;
 
@@ -378,7 +378,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	protected ExperienceHandler experienceHandler;	// 経験値アクション制御
 	private int gainExpBoost = 1;					// 取得経験値倍率
 
-	protected boolean modelChangeable = true;
+//	protected boolean modelChangeable = true;
 	
 	private ModeTrigger modeTrigger;
 	
@@ -4498,7 +4498,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * To change this dynamically, you need to use packets.
 	 */
 	public boolean canChangeModel() {
-		return modelChangeable;
+		return true;
 	}
 
 	// Tile関係
