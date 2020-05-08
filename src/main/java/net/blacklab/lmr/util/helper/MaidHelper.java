@@ -26,12 +26,12 @@ public class MaidHelper {
 			return false;
 		}
 
-		return pMaid.getDistanceSqToMaster() >= pMaid.getActiveModeClass().getDistanceSqToStartFollow();
+		return pMaid.getDistanceSqToMaster() >= pMaid.jobController.getActiveModeClass().getDistanceSqToStartFollow();
 	}
 
 	public static boolean isOutSideHome(EntityLittleMaid pMaid) {
 		if (pMaid.isFreedom()) {
-			return pMaid.getDistanceSqToCenter(pMaid.getHomePosition()) > pMaid.getActiveModeClass().getFreedomTrackingRangeSq();
+			return pMaid.getDistanceSqToCenter(pMaid.getHomePosition()) > pMaid.jobController.getActiveModeClass().getFreedomTrackingRangeSq();
 		}
 		return false;
 	}
@@ -44,13 +44,13 @@ public class MaidHelper {
 	public static boolean isTargetReachable(EntityLittleMaid pMaid, Vec3d pTarget, double expandRangeSq) {
 		if (pMaid.isFreedom()) {
 			return pMaid.getHomePosition().distanceSq(pTarget.x, pTarget.y, pTarget.z)
-					<= pMaid.getActiveModeClass().getFreedomTrackingRangeSq() + expandRangeSq;
+					<= pMaid.jobController.getActiveModeClass().getFreedomTrackingRangeSq() + expandRangeSq;
 		}
 		if (pMaid.getMaidMasterEntity() == null) {
 			return true;
 		}
 		return pMaid.getMaidMasterEntity().getDistanceSq(pTarget.x, pTarget.y, pTarget.z)
-				<= pMaid.getActiveModeClass().getLimitRangeSqOnFollow() + expandRangeSq;
+				<= pMaid.jobController.getActiveModeClass().getLimitRangeSqOnFollow() + expandRangeSq;
 	}
 
 }

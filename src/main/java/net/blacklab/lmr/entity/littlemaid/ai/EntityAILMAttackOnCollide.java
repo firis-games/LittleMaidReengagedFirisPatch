@@ -198,7 +198,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 		// 攻撃
 		theMaid.attackEntityAsMob(entityTarget);
 		//theMaid.moveback();
-		if (theMaid.getActiveModeClass().isChangeTartget(entityTarget)) {
+		if (theMaid.jobController.getActiveModeClass().isChangeTartget(entityTarget)) {
 			// 対象を再設定させる
 			theMaid.setAttackTarget(null);
 			theMaid.setRevengeTarget(null);

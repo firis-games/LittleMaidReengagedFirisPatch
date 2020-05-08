@@ -40,13 +40,13 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 		//20tickに1回判断を行う
 		if (theMaid.ticksExisted % 20 != 0) return false; 
 		
-		if (theMaid.getActiveModeClass() == null || theMaid.getMaidMasterEntity() == null ||
+		if (theMaid.jobController.getActiveModeClass() == null || theMaid.getMaidMasterEntity() == null ||
 				theMaid.isFreedom() || theMaid.isMaidWait() || theMaid.isSitting() || theMaid.isWorkingDelay()) {
 			return false;
 		}
 		
 		// If this maid gets too far from her master:
-		if (theMaid.getDistanceSq(theMaid.getMaidMasterEntity()) >= theMaid.getActiveModeClass().getLimitRangeSqOnFollow()) {
+		if (theMaid.getDistanceSq(theMaid.getMaidMasterEntity()) >= theMaid.jobController.getActiveModeClass().getLimitRangeSqOnFollow()) {
 			return true;
 		}
 		return false;

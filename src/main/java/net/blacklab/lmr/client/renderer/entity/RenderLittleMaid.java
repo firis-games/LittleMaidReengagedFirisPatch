@@ -220,10 +220,12 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 		
 		super.renderLivingAt(entityLivingBaseIn, x, y, z);
 		
-		// 追加分
-		for (int li = 0; li < entityLivingBaseIn.maidEntityModeList.size(); li++) {
-			entityLivingBaseIn.maidEntityModeList.get(li).showSpecial(this, x, y, z);
-		}
+//		// 追加分
+//		for (int li = 0; li < entityLivingBaseIn.maidEntityModeList.size(); li++) {
+//			entityLivingBaseIn.maidEntityModeList.get(li).showSpecial(this, x, y, z);
+//		}
+		//職業アイテム描画
+		entityLivingBaseIn.jobController.showSpecial(this, x, y, z);
 	}
 
 	/**

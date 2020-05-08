@@ -73,7 +73,7 @@ public class EntityAILMHurtByTarget extends EntityAIHurtByTarget {
 			return false;
 		}
 
-		EntityModeBase lailm = theMaid.getActiveModeClass();
+		EntityModeBase lailm = theMaid.jobController.getActiveModeClass();
 		if (lailm != null && lailm.isSearchEntity()) {
 			if (!lailm.checkEntity(theMaid.getMaidModeString(), par1EntityLiving)) {
 				return false;

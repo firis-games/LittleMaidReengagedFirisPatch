@@ -54,10 +54,10 @@ public class EntityAILMCollectItem extends EntityAIBase {
 				{
 					ItemStack lstack = ei.getItem();
 					if (!ItemHelper.isSugar(lstack)) {
-						if (!theMaid.isActiveModeClass()) {
+						if (!theMaid.jobController.isActiveModeClass()) {
 							return false;
 						}
-						if ((!theMaid.getActiveModeClass().checkItemStack(lstack))) {
+						if ((!theMaid.jobController.getActiveModeClass().checkItemStack(lstack))) {
 							return false;
 						}
 					}

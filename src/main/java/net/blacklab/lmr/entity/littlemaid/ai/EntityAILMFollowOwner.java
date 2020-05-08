@@ -75,7 +75,7 @@ public class EntityAILMFollowOwner extends EntityAIBase implements IEntityAILM {
 	public void updateTask() {
 		double toDistance = theMaid.getDistanceSq(theOwner);
 		
-		if (toDistance - theMaid.getActiveModeClass().getDistanceSqToStartFollow() > 1.0) {
+		if (toDistance - theMaid.jobController.getActiveModeClass().getDistanceSqToStartFollow() > 1.0) {
 			theMaid.getLookHelper().setLookPositionWithEntity(theOwner, 10F, theMaid.getVerticalFaceSpeed());
 		}
 

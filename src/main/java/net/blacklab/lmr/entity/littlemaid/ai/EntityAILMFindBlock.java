@@ -2,6 +2,7 @@ package net.blacklab.lmr.entity.littlemaid.ai;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
@@ -28,13 +29,13 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 
 	@Override
 	public boolean shouldExecute() {
-//		LMM_EntityModeBase llmode = theMaid.getActiveModeClass();
-//		if (!isEnable || theMaid.isWait() || theMaid.getActiveModeClass() == null || !theMaid.getActiveModeClass().isSearchBlock() || theMaid.getCurrentEquippedItem() == null) {
-		if (!isEnable || theMaid.isMaidWait() || !theMaid.isActiveModeClass()) {
+//		LMM_EntityModeBase llmode = getActiveModeClass();
+//		if (!isEnable || theMaid.isWait() || getActiveModeClass() == null || !getActiveModeClass().isSearchBlock() || theMaid.getCurrentEquippedItem() == null) {
+		if (!isEnable || theMaid.isMaidWait() || !isActiveModeClass()) {
 			return false;
 		}
-		if (!theMaid.getActiveModeClass().isSearchBlock()) {
-			return theMaid.getActiveModeClass().shouldBlock(theMaid.maidMode);
+		if (!getActiveModeClass().isSearchBlock()) {
+			return getActiveModeClass().shouldBlock(getMaidMode());
 		}
 
 		// ターゲットをサーチ
@@ -79,8 +80,8 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 				do {
 					for (int c = 0; c < 3; c++) {
 						yy = ly + (c == 2 ? -1 : c);
-						if (theMaid.getActiveModeClass().checkBlock(theMaid.maidMode, xx, yy, zz)) {
-							if (theMaid.getActiveModeClass().outrangeBlock(theMaid.maidMode, xx, yy, zz)) {
+						if (getActiveModeClass().checkBlock(getMaidMode(), xx, yy, zz)) {
+							if (getActiveModeClass().outrangeBlock(getMaidMode(), xx, yy, zz)) {
 								theMaid.setTilePos(xx, yy, zz);
 								// TODO:Dummay
 								EntityMarkerDummy.setDummyEntity(theMaid, 0x004fff4f, xx, yy, zz);
@@ -114,7 +115,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 			}
 			vt = (vt + 1) & 3;
 		}
-		if (theMaid.getActiveModeClass().overlooksBlock(theMaid.maidMode)) {
+		if (getActiveModeClass().overlooksBlock(getMaidMode())) {
 			TileEntity ltile = theMaid.maidTileEntity;
 			if (ltile != null) {
 				lx = ltile.getPos().getX();
@@ -131,8 +132,8 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		if (theMaid.isActiveModeClass()) {
-			theMaid.getActiveModeClass().updateBlock();
+		if (isActiveModeClass()) {
+			getActiveModeClass().updateBlock();
 		}
 
 		// 移動中は継続
@@ -143,25 +144,25 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 		// Too far or over tracking range
 		if (ld > 100.0D || !MaidHelper.isTargetReachable(theMaid, new Vec3d(theMaid.getCurrentTilePos()), 0)) {
 			// 索敵範囲外
-			theMaid.getActiveModeClass().farrangeBlock();
+			getActiveModeClass().farrangeBlock();
 			return false;
 		} else if (ld > 5.0D) {
 			// 射程距離外
-			return theMaid.getActiveModeClass().outrangeBlock(theMaid.maidMode);
+			return getActiveModeClass().outrangeBlock(getMaidMode());
 		} else {
 			// 射程距離
-			return theMaid.getActiveModeClass().executeBlock(theMaid.maidMode);
+			return getActiveModeClass().executeBlock(getMaidMode());
 		}
 	}
 
 	@Override
 	public void startExecuting() {
-		theMaid.getActiveModeClass().startBlock(theMaid.maidMode);
+		getActiveModeClass().startBlock(getMaidMode());
 	}
 
 	@Override
 	public void resetTask() {
-		theMaid.getActiveModeClass().resetBlock(theMaid.maidMode);
+		getActiveModeClass().resetBlock(getMaidMode());
 	}
 
 	@Override
@@ -179,6 +180,17 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 	@Override
 	public boolean getEnable() {
 		return isEnable;
+	}
+	
+	private boolean isActiveModeClass() {
+		return this.theMaid.jobController.isActiveModeClass();
+	}
+	private EntityModeBase getActiveModeClass() {
+		return this.theMaid.jobController.getActiveModeClass();
+	}
+	
+	private String getMaidMode() {
+		return this.theMaid.jobController.getMaidModeString();
 	}
 
 }

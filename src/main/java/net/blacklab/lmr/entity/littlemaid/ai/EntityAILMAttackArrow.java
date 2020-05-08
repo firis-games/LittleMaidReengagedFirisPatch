@@ -300,12 +300,12 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 									fMaid.setSwing(10, (litemstack.getCount() == itemcount) ? EnumSound.shoot_burst : EnumSound.Null, !fMaid.isPlaying());
 									LittleMaidReengaged.Debug(String.format("id:%d throw weapon.(%d:%f:%f)", fMaid.getEntityId(), swingState.attackTime, fMaid.rotationYaw, fMaid.rotationYawHead));
 									swingState.attackTime = 5;
-									if (!fMaid.maidMode.equals("Playing")) {
+									if (!fMaid.jobController.getMaidModeString().equals("Playing")) {
 										fMaid.setMaidWaitCount(10);
 //										return;
 									}
 								} else {
-									if(!fMaid.maidMode.equals("Playing"))
+									if(!fMaid.jobController.getMaidModeString().equals("Playing"))
 										LittleMaidReengaged.Debug(String.format("ID:%d-friendly fire throw weapon.", fMaid.getEntityId()));
 								}
 							}

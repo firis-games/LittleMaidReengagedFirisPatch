@@ -54,8 +54,8 @@ public class EntityAILMNearestAttackableTarget<T extends EntityLivingBase> exten
 
 		double lfollowRange;
 		if (!(
-				taskOwner instanceof EntityLittleMaid && ((EntityLittleMaid) taskOwner).getActiveModeClass() != null &&
-				(lfollowRange = ((EntityLittleMaid) taskOwner).getActiveModeClass().getDistanceToSearchTargets()) > 0
+				taskOwner instanceof EntityLittleMaid && ((EntityLittleMaid) taskOwner).jobController.getActiveModeClass() != null &&
+				(lfollowRange = ((EntityLittleMaid) taskOwner).jobController.getActiveModeClass().getDistanceToSearchTargets()) > 0
 				)) {
 			lfollowRange = getTargetDistance();
 		}
@@ -115,7 +115,7 @@ public class EntityAILMNearestAttackableTarget<T extends EntityLivingBase> exten
 			return false;
 		}
 
-		EntityModeBase lailm = theMaid.getActiveModeClass();
+		EntityModeBase lailm = theMaid.jobController.getActiveModeClass();
 		if (lailm != null && lailm.isSearchEntity()) {
 			if (!lailm.checkEntity(theMaid.getMaidModeString(), pTarget)) {
 				return false;
@@ -175,7 +175,7 @@ public class EntityAILMNearestAttackableTarget<T extends EntityLivingBase> exten
 	@Override
 	protected double getTargetDistance() {
 		double targetd = 0;
-		if (theMaid.getActiveModeClass() != null && (targetd = theMaid.getActiveModeClass().getDistanceToSearchTargets()) > 0) {
+		if (theMaid.jobController.getActiveModeClass() != null && (targetd = theMaid.jobController.getActiveModeClass().getDistanceToSearchTargets()) > 0) {
 			return targetd;
 		}
 		return super.getTargetDistance();
