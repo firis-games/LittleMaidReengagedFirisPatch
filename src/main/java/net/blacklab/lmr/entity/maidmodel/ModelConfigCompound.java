@@ -523,6 +523,13 @@ public class ModelConfigCompound  {
 		//次のテクスチャを探す
 		LMTextureBox nextTextureBox = LMTextureBoxManager.instance.getNextPackege(this.textureBoxLittleMaid, this.color);
 		this.textureBoxLittleMaid = nextTextureBox;
+		
+		//防具テクスチャも設定
+		if (this.textureBoxLittleMaid.hasArmor()) {
+			this.setTextureBoxArmorAll(this.textureBoxLittleMaid);
+		} else {
+			this.setTextureBoxArmorAll(LMTextureBoxManager.instance.getDefaultLMTextureBox());
+		}
 	}
 	
 	/**
@@ -542,6 +549,13 @@ public class ModelConfigCompound  {
 		//次のテクスチャを探す
 		LMTextureBox prevTextureBox = LMTextureBoxManager.instance.getPrevPackege(this.textureBoxLittleMaid, this.color);
 		this.textureBoxLittleMaid = prevTextureBox;
+		
+		//防具テクスチャも設定
+		if (this.textureBoxLittleMaid.hasArmor()) {
+			this.setTextureBoxArmorAll(this.textureBoxLittleMaid);
+		} else {
+			this.setTextureBoxArmorAll(LMTextureBoxManager.instance.getDefaultLMTextureBox());
+		}
 	}
 	
 	/**
