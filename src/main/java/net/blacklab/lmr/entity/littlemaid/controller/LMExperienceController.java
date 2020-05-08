@@ -21,7 +21,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class ExperienceController {
+public class LMExperienceController {
 
 	protected EntityLittleMaid theMaid;
 
@@ -36,7 +36,7 @@ public class ExperienceController {
 	private int requiredSugarToRevive = 0;
 	private DamageSource deadCause = DamageSource.GENERIC;
 
-	public ExperienceController(EntityLittleMaid maid) {
+	public LMExperienceController(EntityLittleMaid maid) {
 		theMaid = maid;
 	}
 

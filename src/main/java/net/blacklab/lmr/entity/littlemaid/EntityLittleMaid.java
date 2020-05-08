@@ -51,7 +51,7 @@ import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMTracerMove;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWait;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWander;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWatchClosest;
-import net.blacklab.lmr.entity.littlemaid.controller.ExperienceController;
+import net.blacklab.lmr.entity.littlemaid.controller.LMExperienceController;
 import net.blacklab.lmr.entity.littlemaid.controller.ExperienceUtil;
 import net.blacklab.lmr.entity.littlemaid.controller.LMJobController;
 import net.blacklab.lmr.entity.littlemaid.controller.LMSoundController;
@@ -373,7 +373,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	// NX5 レベル関連
 	protected float maidExperience = 0;				// 経験値
-	protected ExperienceController experienceHandler;	// 経験値アクション制御
+	protected LMExperienceController experienceHandler;	// 経験値アクション制御
 	private int gainExpBoost = 1;					// 取得経験値倍率
 
 //	protected boolean modelChangeable = true;
@@ -490,7 +490,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		modeTrigger = ModeTrigger.getDefaultInstance();
 		setMaidMode(EntityMode_Basic.mmode_Wild);
 		
-		setExperienceHandler(new ExperienceController(this));
+		setExperienceHandler(new LMExperienceController(this));
 
 		/*
 		if(par1World.isRemote){
@@ -4213,11 +4213,11 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * 取得経験値による操作を定義するExperienceHandlerを取得
 	 * @return
 	 */
-	public ExperienceController getExperienceHandler() {
+	public LMExperienceController getExperienceHandler() {
 		return experienceHandler;
 	}
 
-	public void setExperienceHandler(ExperienceController handler) {
+	public void setExperienceHandler(LMExperienceController handler) {
 		if (handler == null) {
 			throw new NullPointerException("ExperienceHandler cannot be null!");
 		}
