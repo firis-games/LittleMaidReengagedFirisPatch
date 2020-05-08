@@ -32,8 +32,6 @@ import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.experience.ExperienceHandler;
-import net.blacklab.lmr.entity.experience.ExperienceUtil;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMAttackArrow;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMAttackOnCollide;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMAvoidPlayer;
@@ -53,6 +51,8 @@ import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMTracerMove;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWait;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWander;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWatchClosest;
+import net.blacklab.lmr.entity.littlemaid.controller.ExperienceController;
+import net.blacklab.lmr.entity.littlemaid.controller.ExperienceUtil;
 import net.blacklab.lmr.entity.littlemaid.controller.LMJobController;
 import net.blacklab.lmr.entity.littlemaid.controller.LMSoundController;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
@@ -373,7 +373,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	// NX5 レベル関連
 	protected float maidExperience = 0;				// 経験値
-	protected ExperienceHandler experienceHandler;	// 経験値アクション制御
+	protected ExperienceController experienceHandler;	// 経験値アクション制御
 	private int gainExpBoost = 1;					// 取得経験値倍率
 
 //	protected boolean modelChangeable = true;
@@ -490,7 +490,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		modeTrigger = ModeTrigger.getDefaultInstance();
 		setMaidMode(EntityMode_Basic.mmode_Wild);
 		
-		setExperienceHandler(new ExperienceHandler(this));
+		setExperienceHandler(new ExperienceController(this));
 
 		/*
 		if(par1World.isRemote){
@@ -4213,11 +4213,11 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * 取得経験値による操作を定義するExperienceHandlerを取得
 	 * @return
 	 */
-	public ExperienceHandler getExperienceHandler() {
+	public ExperienceController getExperienceHandler() {
 		return experienceHandler;
 	}
 
-	public void setExperienceHandler(ExperienceHandler handler) {
+	public void setExperienceHandler(ExperienceController handler) {
 		if (handler == null) {
 			throw new NullPointerException("ExperienceHandler cannot be null!");
 		}
@@ -4623,16 +4623,16 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			maidTiles[pIndex][2] = maidTile[2];
 		}
 	}
-	public void setTilePos(int pIndex, int pX, int pY, int pZ) {
-		if (pIndex < maidTiles.length) {
-			if (maidTiles[pIndex] == null) {
-				maidTiles[pIndex] = new int[3];
-			}
-			maidTiles[pIndex][0] = pX;
-			maidTiles[pIndex][1] = pY;
-			maidTiles[pIndex][2] = pZ;
-		}
-	}
+//	public void setTilePos(int pIndex, int pX, int pY, int pZ) {
+//		if (pIndex < maidTiles.length) {
+//			if (maidTiles[pIndex] == null) {
+//				maidTiles[pIndex] = new int[3];
+//			}
+//			maidTiles[pIndex][0] = pX;
+//			maidTiles[pIndex][1] = pY;
+//			maidTiles[pIndex][2] = pZ;
+//		}
+//	}
 
 	public TileEntity getTileEntity() {
 		return maidTileEntity = getEntityWorld().getTileEntity(new BlockPos(maidTile[0], maidTile[1], maidTile[2]));

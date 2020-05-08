@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.experience;
+package net.blacklab.lmr.entity.littlemaid.controller;
 
 import net.minecraft.util.math.MathHelper;
 

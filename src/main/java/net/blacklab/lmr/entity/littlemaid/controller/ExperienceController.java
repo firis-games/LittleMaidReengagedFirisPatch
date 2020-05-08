@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.experience;
+package net.blacklab.lmr.entity.littlemaid.controller;
 
 import java.util.UUID;
 
@@ -21,7 +21,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class ExperienceHandler {
+public class ExperienceController {
 
 	protected EntityLittleMaid theMaid;
 
@@ -36,7 +36,7 @@ public class ExperienceHandler {
 	private int requiredSugarToRevive = 0;
 	private DamageSource deadCause = DamageSource.GENERIC;
 
-	public ExperienceHandler(EntityLittleMaid maid) {
+	public ExperienceController(EntityLittleMaid maid) {
 		theMaid = maid;
 	}
 
