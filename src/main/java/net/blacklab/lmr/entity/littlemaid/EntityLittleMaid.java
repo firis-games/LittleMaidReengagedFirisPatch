@@ -1190,6 +1190,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		
 		EnumSound sound = EnumSound.Null;
 		
+		boolean isClock = maidInventory.getInventorySlotContainItem(Items.CLOCK) != -1;
+		
 		//HPが低い時
 		if (getHealth() < 10) {
 			sound = EnumSound.living_whine;
@@ -1205,13 +1207,15 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 				//雨の時
 				sound = EnumSound.living_rain;
 			}
-		//おはようの挨拶
-		} else if (worldtime > 23500 || worldtime < 1500) {
+		//時計所持の朝の啼き声
+		} else if ((worldtime > 23500 || worldtime < 1500) && isClock) {
 			sound = EnumSound.living_morning;
+		//時計所持の夜の啼き声
+		} else if (12500 < worldtime && isClock) {
+			sound = EnumSound.living_night;
 		//こんにちはの挨拶
-		} else if (worldtime < 12500) {
+		} else {
 			sound = EnumSound.living_daytime;
-			
 			//バイオームの気温でセリフ変更
 			Biome biome = getEntityWorld().getBiome(getPosition());
 			TempCategory tempCategory = biome.getTempCategory();
@@ -1220,10 +1224,6 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			} else if (tempCategory == TempCategory.WARM) {
 				sound = EnumSound.living_hot;
 			}
-			
-		//こんばんはの挨拶
-		} else {
-			sound = EnumSound.living_night;
 		}
 		
 		LittleMaidReengaged.Debug("id:%d LivingSound:%s", getEntityId(), getEntityWorld() == null ? "null" : getEntityWorld().isRemote ? "Client" : "Server");
