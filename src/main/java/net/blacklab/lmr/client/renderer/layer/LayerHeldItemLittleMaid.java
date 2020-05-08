@@ -1,6 +1,7 @@
 package net.blacklab.lmr.client.renderer.layer;
 
 import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -63,7 +64,9 @@ public class LayerHeldItemLittleMaid extends LayerHeldItem {
 	 */
     private void renderHeldItem(EntityLivingBase entitylivingbaseIn, ItemStack stackIn, ItemCameraTransforms.TransformType transformType, EnumHandSide handSide)
     {
-        if (!stackIn.isEmpty())
+    	EntityLittleMaid maid = (EntityLittleMaid) entitylivingbaseIn;
+    	
+        if (!stackIn.isEmpty() && !maid.isMaidWait())
         {
             GlStateManager.pushMatrix();
             
