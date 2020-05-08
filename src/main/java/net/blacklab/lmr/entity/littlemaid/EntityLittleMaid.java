@@ -24,12 +24,10 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import net.blacklab.lib.minecraft.item.ItemUtil;
-import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
-import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMAttackArrow;
@@ -52,7 +50,6 @@ import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWait;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWander;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWatchClosest;
 import net.blacklab.lmr.entity.littlemaid.controller.LMExperienceController;
-import net.blacklab.lmr.entity.littlemaid.controller.ExperienceUtil;
 import net.blacklab.lmr.entity.littlemaid.controller.LMJobController;
 import net.blacklab.lmr.entity.littlemaid.controller.LMSoundController;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
@@ -372,9 +369,14 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	protected String registerMode;
 
 	// NX5 レベル関連
-	protected float maidExperience = 0;				// 経験値
+//	protected float maidExperience = 0;				// 経験値
+//	protected LMExperienceController experienceHandler;	// 経験値アクション制御
+//	private int gainExpBoost = 1;					// 取得経験値倍率
+
+	/**
+	 * 経験値管理クラス
+	 */
 	protected LMExperienceController experienceHandler;	// 経験値アクション制御
-	private int gainExpBoost = 1;					// 取得経験値倍率
 
 //	protected boolean modelChangeable = true;
 	
@@ -804,7 +806,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 */
 	public void syncExpBoost() {
 		NBTTagCompound tagCompound = new NBTTagCompound();
-		tagCompound.setInteger("Booster", getExpBooster());
+		tagCompound.setInteger("Booster", this.experienceHandler.getExpBooster());
 
 		syncNet(LMRMessage.EnumPacketMode.SYNC_EXPBOOST, tagCompound);
 	}
@@ -1642,8 +1644,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		par1nbtTagCompound.setInteger("homeZ", getPosition().getZ());
 		par1nbtTagCompound.setInteger("homeWorld", homeWorld);
 
-		par1nbtTagCompound.setFloat(LittleMaidReengaged.MODID + ":MAID_EXP", maidExperience);
-		par1nbtTagCompound.setInteger(LittleMaidReengaged.MODID + ":EXP_BOOST", gainExpBoost);
+//		par1nbtTagCompound.setFloat(LittleMaidReengaged.MODID + ":MAID_EXP", maidExperience);
+//		par1nbtTagCompound.setInteger(LittleMaidReengaged.MODID + ":EXP_BOOST", gainExpBoost);
 
 		// 肩車
 		boolean isRide = isRiding();
@@ -1670,7 +1672,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		//メイド職業の情報をNBTへ書き出し
 		this.jobController.writeEntityToNBT(par1nbtTagCompound);
 
-		getExperienceHandler().writeEntityToNBT(par1nbtTagCompound);
+		//経験値情報をNBTへ書き出し
+		this.getExperienceHandler().writeEntityToNBT(par1nbtTagCompound);
 		
 		modeTrigger.writeToNBT(par1nbtTagCompound);
 	}
@@ -1766,9 +1769,10 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 //		isMadeTextureNameFlag = par1nbtTagCompound.getBoolean("isMadeTextureNameFlag");
 
-		maidExperience = par1nbtTagCompound.getFloat(LittleMaidReengaged.MODID + ":MAID_EXP");
-		setExpBooster(par1nbtTagCompound.getInteger(LittleMaidReengaged.MODID + ":EXP_BOOST"));
-		dataManager.set(EntityLittleMaid.dataWatch_MaidExpValue, maidExperience);
+//		maidExperience = par1nbtTagCompound.getFloat(LittleMaidReengaged.MODID + ":MAID_EXP");
+//		setExpBooster(par1nbtTagCompound.getInteger(LittleMaidReengaged.MODID + ":EXP_BOOST"));
+		
+//		dataManager.set(EntityLittleMaid.dataWatch_MaidExpValue, maidExperience);
 
 		// 肩車
 		boolean isRide = par1nbtTagCompound.getBoolean(LittleMaidReengaged.MODID + ":riding");
@@ -1794,7 +1798,10 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		setMaidArmorVisible(par1nbtTagCompound.hasKey("maidArmorVisible")?par1nbtTagCompound.getInteger("maidArmorVisible"):15);
 //		syncMaidArmorVisible();
 
+		//経験値
 		getExperienceHandler().readEntityFromNBT(par1nbtTagCompound);
+		dataManager.set(EntityLittleMaid.dataWatch_MaidExpValue, getExperienceHandler().getMaidExperience());
+
 		
 		modeTrigger.readFromNBT(par1nbtTagCompound);
 		
@@ -2378,8 +2385,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 					// つまみ食い
 					float jobFactor = this.jobController.getActiveModeClass() != null ? this.jobController.getActiveModeClass().getSugarSpeed() : 1;
+					int expBoost = this.getExperienceHandler().getExpBooster();
 					if (rand.nextInt(MathHelper.floor(
-							50000 / jobFactor / (getExpBooster() * (1.05f+0.005f*getExpBooster())))) == 0) {
+							50000 / jobFactor / (expBoost * (1.05f+0.005f * expBoost)))) == 0) {
 						consumeSugar(EnumConsumeSugar.OTHER);
 					}
 					// 契約更新
@@ -2610,9 +2618,10 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			updateMaidFlagsClient();
 			updateGotcha();
 
-			// メイド経験値
-			if (ticksExisted%10 == 0) {
-				maidExperience = dataManager.get(EntityLittleMaid.dataWatch_MaidExpValue);
+			// メイド経験値の同期
+			if (ticksExisted % 10 == 0) {
+				//maidExperience = dataManager.get(EntityLittleMaid.dataWatch_MaidExpValue);
+				this.getExperienceHandler().setMaidExperience(dataManager.get(EntityLittleMaid.dataWatch_MaidExpValue));
 			}
 
 			// 腕の挙動関連
@@ -3997,7 +4006,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		if (mode == EnumConsumeSugar.RECONTRACT) {
 			addMaidExperience(3.5f);
 		}
-		maidInventory.decrStackSize(index, Math.max(1, mode == EnumConsumeSugar.OTHER ? 1 : getExpBooster()));
+		maidInventory.decrStackSize(index, Math.max(1, mode == EnumConsumeSugar.OTHER ? 1 : this.experienceHandler.getExpBooster()));
 	}
 
 	/** 主に砂糖を食べる仕草やその後のこと。consumeSugar()から呼ばれる．
@@ -4152,61 +4161,76 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return ItemUtil.isHelm(maidInventory.armorInventory.get(3));
 	}
 
-	/**
-	 *  レベルを取得
-	 * @return
-	 */
-	public int getMaidLevel() {
-		return ExperienceUtil.getLevelFromExp(maidExperience);
-	}
+//	/**
+//	 *  レベルを取得
+//	 * @return
+//	 */
+//	public int getMaidLevel() {
+//		return ExperienceUtil.getLevelFromExp(maidExperience);
+//	}
 
-	/**
-	 *  現在経験値を取得
-	 * @return
-	 */
-	public float getMaidExperience() {
-		if (maidExperience<=0) {
-			return 0;
-		}
-		return maidExperience;
-	}
+//	/**
+//	 *  現在経験値を取得
+//	 * @return
+//	 */
+//	public float getMaidExperience() {
+//		if (maidExperience<=0) {
+//			return 0;
+//		}
+//		return maidExperience;
+//	}
 
+//	/**
+//	 * 経験値を追加
+//	 * @param value
+//	 */
+//	public void addMaidExperience(float value) {
+//		if (!isContractEX() || getEntityWorld().isRemote) {
+//			return;
+//		}
+//
+//		int currentLevel = getMaidLevel();
+//		if (maidExperience > 0) {
+//			value *= getExpBooster();
+//		}
+//		maidExperience += value;
+//
+//		// レベルが下がってしまう場合はそれ以上引かない
+//		if (maidExperience < ExperienceUtil.getRequiredExpToLevel(currentLevel)) {
+//			maidExperience = ExperienceUtil.getRequiredExpToLevel(currentLevel);
+//		}
+//
+//		// 最大レベル
+//		if (maidExperience > ExperienceUtil.getRequiredExpToLevel(ExperienceUtil.EXP_FUNCTION_MAX)) {
+//			maidExperience = ExperienceUtil.getRequiredExpToLevel(ExperienceUtil.EXP_FUNCTION_MAX);
+//		}
+//
+//		dataManager.set(EntityLittleMaid.dataWatch_MaidExpValue, maidExperience);
+//		boolean flag = false;
+//		for (;maidExperience >= ExperienceUtil.getRequiredExpToLevel(currentLevel+1); currentLevel++) {
+//			// 一度に複数レベルアップした場合にその分だけ呼ぶ
+//			if (!flag) {
+//				playSound("random.levelup");
+//				flag = true;
+//			}
+//			getExperienceHandler().onLevelUp(currentLevel+1);
+//			VEventBus.instance.post(new EventLMRE.MaidLevelUpEvent(this, getMaidLevel()));
+//		}
+//	}
+	
 	/**
 	 * 経験値を追加
 	 * @param value
 	 */
 	public void addMaidExperience(float value) {
-		if (!isContractEX() || getEntityWorld().isRemote) {
-			return;
+		
+		this.getExperienceHandler().addMaidExperience(value);
+		
+		//同期処理
+		if (!this.world.isRemote) {
+			dataManager.set(EntityLittleMaid.dataWatch_MaidExpValue, this.getExperienceHandler().getMaidExperience());
 		}
-
-		int currentLevel = getMaidLevel();
-		if (maidExperience > 0) {
-			value *= getExpBooster();
-		}
-		maidExperience += value;
-
-		// レベルが下がってしまう場合はそれ以上引かない
-		if (maidExperience < ExperienceUtil.getRequiredExpToLevel(currentLevel)) {
-			maidExperience = ExperienceUtil.getRequiredExpToLevel(currentLevel);
-		}
-
-		// 最大レベル
-		if (maidExperience > ExperienceUtil.getRequiredExpToLevel(ExperienceUtil.EXP_FUNCTION_MAX)) {
-			maidExperience = ExperienceUtil.getRequiredExpToLevel(ExperienceUtil.EXP_FUNCTION_MAX);
-		}
-
-		dataManager.set(EntityLittleMaid.dataWatch_MaidExpValue, maidExperience);
-		boolean flag = false;
-		for (;maidExperience >= ExperienceUtil.getRequiredExpToLevel(currentLevel+1); currentLevel++) {
-			// 一度に複数レベルアップした場合にその分だけ呼ぶ
-			if (!flag) {
-				playSound("random.levelup");
-				flag = true;
-			}
-			getExperienceHandler().onLevelUp(currentLevel+1);
-			VEventBus.instance.post(new EventLMRE.MaidLevelUpEvent(this, getMaidLevel()));
-		}
+		
 	}
 
 	/**
@@ -4224,26 +4248,26 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		experienceHandler = handler;
 	}
 
-	/**
-	 * 経験値ブーストを取得
-	 */
-	public int getExpBooster() {
-		return gainExpBoost;
-	}
+//	/**
+//	 * 経験値ブーストを取得
+//	 */
+//	public int getExpBooster() {
+//		return gainExpBoost;
+//	}
 
-	/**
-	 * 経験値ブーストを設定
-	 * @param v ブースト値(0以上)
-	 */
-	public void setExpBooster(int v) {
-		if (v < 1) {
-			v = 1;
-		}
-		if (v > ExperienceUtil.getBoosterLimit(getMaidLevel())) {
-			v = ExperienceUtil.getBoosterLimit(getMaidLevel());
-		}
-		gainExpBoost = v;
-	}
+//	/**
+//	 * 経験値ブーストを設定
+//	 * @param v ブースト値(0以上)
+//	 */
+//	public void setExpBooster(int v) {
+//		if (v < 1) {
+//			v = 1;
+//		}
+//		if (v > ExperienceUtil.getBoosterLimit(getMaidLevel())) {
+//			v = ExperienceUtil.getBoosterLimit(getMaidLevel());
+//		}
+//		gainExpBoost = v;
+//	}
 
 	/**
 	 * サーバーへテクスチャパックのインデックスを送る。

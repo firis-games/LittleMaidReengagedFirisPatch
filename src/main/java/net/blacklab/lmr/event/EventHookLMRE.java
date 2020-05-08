@@ -102,7 +102,7 @@ public class EventHookLMRE
 		EntityPlayer player = event.getEntityPlayer();
 		if (player instanceof EntityLittleMaidAvatarMP) {
 			EntityLittleMaid maid = ((EntityLittleMaidAvatarMP) player).avatar;
-			maid.addMaidExperience(event.getOrb().getXpValue() / (maid.getExpBooster() * 10f));
+			maid.addMaidExperience(event.getOrb().getXpValue() / (maid.getExperienceHandler().getExpBooster() * 10f));
 			maid.playSound("random.orb");
 			event.getOrb().setDead();
 			event.setCanceled(true);

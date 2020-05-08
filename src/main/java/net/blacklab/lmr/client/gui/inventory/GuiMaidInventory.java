@@ -340,8 +340,8 @@ public class GuiMaidInventory extends GuiContainer {
 			}
 		}
 */
-		int booster = entitylittlemaid.getExpBooster();
-		if (booster >= ExperienceUtil.getBoosterLimit(entitylittlemaid.getMaidLevel()))
+		int booster = entitylittlemaid.getExperienceHandler().getExpBooster();
+		if (booster >= ExperienceUtil.getBoosterLimit(entitylittlemaid.getExperienceHandler().getMaidLevel()))
 			boostPlus.setEnabled(false);
 		else boostPlus.setEnabled(true);
 		if (booster <= 1)
@@ -352,11 +352,11 @@ public class GuiMaidInventory extends GuiContainer {
 		GlStateManager.colorMask(true, true, true, false);
 		GlStateManager.disableLighting();
 		GlStateManager.disableDepth();
-		int level = entitylittlemaid.getMaidLevel();
+		int level = entitylittlemaid.getExperienceHandler().getMaidLevel();
 		if (level >= ExperienceUtil.EXP_FUNCTION_MAX) {
 			level--;
 		}
-		float currentxp = entitylittlemaid.getMaidExperience() - ExperienceUtil.getRequiredExpToLevel(level);
+		float currentxp = entitylittlemaid.getExperienceHandler().getMaidExperience() - ExperienceUtil.getRequiredExpToLevel(level);
 		float nextxp = ExperienceUtil.getRequiredExpToLevel(level+1) - ExperienceUtil.getRequiredExpToLevel(level);
 		drawGradientRect(guiLeft+97, guiTop+7, guiLeft+168, guiTop+18, 0x80202020, 0x80202020);
 		drawGradientRect(guiLeft+98, guiTop+8, guiLeft+98+(int)(69*currentxp/nextxp), guiTop+17, 0xf0008000, 0xf000f000);
@@ -367,7 +367,7 @@ public class GuiMaidInventory extends GuiContainer {
 
 		// LV数値
 //		GlStateManager.pushMatrix();
-		String lvString = String.format("Lv. %d", entitylittlemaid.getMaidLevel());
+		String lvString = String.format("Lv. %d", entitylittlemaid.getExperienceHandler().getMaidLevel());
 		mc.fontRenderer.drawString(lvString, guiLeft + 108, guiTop + 13 - mc.fontRenderer.FONT_HEIGHT/2, 0xff303030);
 //		mc.fontRendererObj.drawString(lvString, guiLeft + 109, guiTop + 13 - mc.fontRendererObj.FONT_HEIGHT/2, 0xfff0f0f0);
 //		GlStateManager.popMatrix();
@@ -644,7 +644,7 @@ public class GuiMaidInventory extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
-		int booster = entitylittlemaid.getExpBooster();
+		int booster = entitylittlemaid.getExperienceHandler().getExpBooster();
 		switch (par1GuiButton.id) {
 		case 100 :
 			entitylittlemaid.setNextTexturePackege();
@@ -699,7 +699,7 @@ public class GuiMaidInventory extends GuiContainer {
 		case 320:
 			booster-=2;
 		case 321:
-			entitylittlemaid.setExpBooster(++booster);
+			entitylittlemaid.getExperienceHandler().setExpBooster(++booster);
 			entitylittlemaid.syncExpBoost();
 			break;
 		}

@@ -2,7 +2,9 @@ package net.blacklab.lmr.entity.littlemaid.controller;
 
 import java.util.UUID;
 
+import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_DeathWait;
@@ -21,6 +23,11 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 
+/**
+ * メイドさんの経験値管理クラス
+ * @author firis-games
+ *
+ */
 public class LMExperienceController {
 
 	protected EntityLittleMaid theMaid;
@@ -35,7 +42,21 @@ public class LMExperienceController {
 	private int pauseCount = 0;
 	private int requiredSugarToRevive = 0;
 	private DamageSource deadCause = DamageSource.GENERIC;
-
+	
+	/**
+	 * 取得経験値倍率
+	 */
+	private int gainExpBoost = 1;
+	
+	/**
+	 * メイド経験値
+	 */
+	private float maidExperience = 0;
+	
+	/**
+	 * コンストラクタ
+	 * @param maid
+	 */
 	public LMExperienceController(EntityLittleMaid maid) {
 		theMaid = maid;
 	}
@@ -78,13 +99,13 @@ public class LMExperienceController {
 
 	public boolean onDeath(DamageSource cause) {
 		LittleMaidReengaged.Debug("HOOK CATCH");
-		if (theMaid.getMaidLevel() >= 20 && !cause.getDamageType().equals("outOfWorld") && !cause.getDamageType().equals("lmmnx_timeover") && !isWaitRevive) {
+		if (this.getMaidLevel() >= 20 && !cause.getDamageType().equals("outOfWorld") && !cause.getDamageType().equals("lmmnx_timeover") && !isWaitRevive) {
 			// 復帰に必要な砂糖はレベルが低いほど大きく，猶予は少なく
 			LittleMaidReengaged.Debug("DISABLING Remote=%s", theMaid.getEntityWorld().isRemote);
 			theMaid.playSound("dig.glass");
-			deathCount = (int) Math.min(1200, 200 + Math.pow(theMaid.getMaidLevel()-20, 1.8));
-			pauseCount = (int) Math.max(100, 600 - (theMaid.getMaidLevel()-20)*6.5);
-			requiredSugarToRevive = Math.max(32, 64 - (int)((theMaid.getMaidLevel()-20)/100f*32f));
+			deathCount = (int) Math.min(1200, 200 + Math.pow(this.getMaidLevel()-20, 1.8));
+			pauseCount = (int) Math.max(100, 600 - (this.getMaidLevel()-20)*6.5);
+			requiredSugarToRevive = Math.max(32, 64 - (int)((this.getMaidLevel()-20)/100f*32f));
 			deadCause = cause;
 			isWaitRevive = true;
 			LittleMaidReengaged.Debug("TURN ON COUNT=%d/%d", deathCount, pauseCount);
@@ -132,7 +153,7 @@ public class LMExperienceController {
 				deathCount++;
 				// 復帰
 				if (deathCount > 0 && pauseCount <= 0) {
-					theMaid.setHealth(Math.min(8f + Math.min(24f, MathHelper.floor((theMaid.getMaidLevel()-20)/100f*24f)), theMaid.getMaxHealth()));
+					theMaid.setHealth(Math.min(8f + Math.min(24f, MathHelper.floor((this.getMaidLevel()-20)/100f*24f)), theMaid.getMaxHealth()));
 					theMaid.eatSugar(false,false,false);
 					for(int i=0; i<18 && requiredSugarToRevive > 0; i++) {
 						ItemStack stack = theMaid.maidInventory.mainInventory.get(i);
@@ -163,6 +184,11 @@ public class LMExperienceController {
 	}
 
 	public void readEntityFromNBT(NBTTagCompound tagCompound) {
+		
+		//経験値
+		maidExperience = tagCompound.getFloat(LittleMaidReengaged.MODID + ":MAID_EXP");
+		this.setExpBooster(tagCompound.getInteger(LittleMaidReengaged.MODID + ":EXP_BOOST"));
+
 		isWaitRevive = tagCompound.getBoolean(LittleMaidReengaged.MODID + ":EXP_HANDLER_DEATH_WAIT");
 		deathCount = tagCompound.getInteger(LittleMaidReengaged.MODID + ":EXP_HANDLER_DEATH_DCNT");
 		pauseCount = tagCompound.getInteger(LittleMaidReengaged.MODID + ":EXP_HANDLER_DEATH_PCNT");
@@ -184,6 +210,11 @@ public class LMExperienceController {
 	}
 
 	public void writeEntityToNBT(NBTTagCompound tagCompound) {
+		
+		//経験値
+		tagCompound.setFloat(LittleMaidReengaged.MODID + ":MAID_EXP", maidExperience);
+		tagCompound.setInteger(LittleMaidReengaged.MODID + ":EXP_BOOST", gainExpBoost);
+		
 		tagCompound.setBoolean(LittleMaidReengaged.MODID + ":EXP_HANDLER_DEATH_WAIT", isWaitRevive);
 		tagCompound.setInteger(LittleMaidReengaged.MODID + ":EXP_HANDLER_DEATH_DCNT", deathCount);
 		tagCompound.setInteger(LittleMaidReengaged.MODID + ":EXP_HANDLER_DEATH_PCNT", pauseCount);
@@ -195,5 +226,96 @@ public class LMExperienceController {
 			tagCompound.setTag(LittleMaidReengaged.MODID + ":EXP_HANDLER_DEATH_CAUSE_E", causeEntityTag);
 		}
 	}
+	
+	
+	/**
+	 *  レベルを取得
+	 * @return
+	 */
+	public int getMaidLevel() {
+		return ExperienceUtil.getLevelFromExp(maidExperience);
+	}
+	
+	/**
+	 *  現在経験値を取得
+	 * @return
+	 */
+	public float getMaidExperience() {
+		if (maidExperience <= 0) {
+			return 0;
+		}
+		return maidExperience;
+	}
+	
+	/**
+	 * 現在経験値設定
+	 * @param level
+	 */
+	public void setMaidExperience(float exp) {
+		if (exp <= 0) {
+			this.maidExperience = 0;
+		}
+		this.maidExperience = exp;
+	}
+	
+	/**
+	 * 経験値ブーストを取得
+	 */
+	public int getExpBooster() {
+		return gainExpBoost;
+	}
 
+	/**
+	 * 経験値ブーストを設定
+	 * @param v ブースト値(0以上)
+	 */
+	public void setExpBooster(int v) {
+		if (v < 1) {
+			v = 1;
+		}
+		if (v > ExperienceUtil.getBoosterLimit(getMaidLevel())) {
+			v = ExperienceUtil.getBoosterLimit(getMaidLevel());
+		}
+		gainExpBoost = v;
+	}
+	
+	/**
+	 * 経験値を追加
+	 * @param value
+	 */
+	public void addMaidExperience(float value) {
+		
+		//サーバー側のみ
+		if (!this.theMaid.isContractEX() || this.theMaid.getEntityWorld().isRemote) {
+			return;
+		}
+
+		int currentLevel = getMaidLevel();
+		if (maidExperience > 0) {
+			value *= getExpBooster();
+		}
+		maidExperience += value;
+
+		// レベルが下がってしまう場合はそれ以上引かない
+		if (maidExperience < ExperienceUtil.getRequiredExpToLevel(currentLevel)) {
+			maidExperience = ExperienceUtil.getRequiredExpToLevel(currentLevel);
+		}
+
+		// 最大レベル
+		if (maidExperience > ExperienceUtil.getRequiredExpToLevel(ExperienceUtil.EXP_FUNCTION_MAX)) {
+			maidExperience = ExperienceUtil.getRequiredExpToLevel(ExperienceUtil.EXP_FUNCTION_MAX);
+		}
+
+		boolean flag = false;
+		for (;maidExperience >= ExperienceUtil.getRequiredExpToLevel(currentLevel+1); currentLevel++) {
+			// 一度に複数レベルアップした場合にその分だけ呼ぶ
+			if (!flag) {
+				this.theMaid.playSound("random.levelup");
+				flag = true;
+			}
+			this.onLevelUp(currentLevel + 1);
+			VEventBus.instance.post(new EventLMRE.MaidLevelUpEvent(this.theMaid, getMaidLevel()));
+		}
+	}
+	
 }

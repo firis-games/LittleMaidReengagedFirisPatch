@@ -185,7 +185,7 @@ public class LMRNetwork
 			break;
 
 		case SYNC_EXPBOOST:
-			pMaid.setExpBooster(tagCompound.getInteger("Booster"));
+			pMaid.getExperienceHandler().setExpBooster(tagCompound.getInteger("Booster"));
 			break;
 
 		case SYNC_MODEL :
