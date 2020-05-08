@@ -56,6 +56,7 @@ import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMTracerMove;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWait;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWander;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWatchClosest;
+import net.blacklab.lmr.entity.littlemaid.controller.LMSoundController;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
@@ -383,7 +384,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	private ModeTrigger modeTrigger;
 	
 	// 音声関連をまとめるもの
-	public LittleMaidSoundManager soundManager = null;
+	public LMSoundController soundManager = null;
 	
 	
 	/**
@@ -500,7 +501,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		*/
 		
 		//メイドさんの音声管理用
-		this.soundManager = new LittleMaidSoundManager(this);
+		this.soundManager = new LMSoundController(this);
 		
 	}
 

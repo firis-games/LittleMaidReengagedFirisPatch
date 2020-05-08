@@ -1,10 +1,11 @@
-package net.blacklab.lmr.entity.littlemaid;
+package net.blacklab.lmr.entity.littlemaid.controller;
 
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.manager.SoundManager;
@@ -19,7 +20,7 @@ import net.minecraft.util.SoundEvent;
  * 1.playVoiceSoundで音声リストへ登録する
  * 2.onEntityUpdateで音声リストに音声が存在する場合に音声再生する
  */
-public class LittleMaidSoundManager {
+public class LMSoundController {
 	
 	private final EntityLittleMaid maid;
 	
@@ -51,7 +52,7 @@ public class LittleMaidSoundManager {
 	 * コンストラクタ
 	 * @param maid
 	 */
-	public LittleMaidSoundManager(EntityLittleMaid maid) {
+	public LMSoundController(EntityLittleMaid maid) {
 		this.maid = maid;
 		this.maidVoiceSoundInterval = 0;
 		this.lmDamageSound = EnumSound.hurt;
