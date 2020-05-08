@@ -120,9 +120,17 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 		case caps_isMasked:
 			return owner.isMaskedMaid();
 		case caps_isCamouflage:
-			return owner.isCamouflage();
+			//return owner.isCamouflage();
+			//カモフラージュ！
+			//ItemSkullを頭の位置に装備している場合にのみtrueを返す
+			//現状は実装なしのため常にfalseを返すように変更
+			return false;
 		case caps_isPlanter:
-			return owner.isPlanter();
+			//return owner.isPlanter();
+			//鉢植え状態！
+			//カボチャや苗木などが頭の位置に装備している場合にのみtrueを返す
+			//現状は実装なしのため常にfalseを返すように変更
+			return false;
 		case caps_isOverdrive:
 			return owner.getMaidOverDriveTime().isEnable();
 		case caps_isOverdriveDelay:

@@ -269,11 +269,11 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	protected Entity mstatgotcha;				// ワイヤード用
 	protected boolean mstatBloodsuck;
 	protected boolean mstatClockMaid;
-	// マスク判定
-	protected int mstatMaskSelect;
+//	// マスク判定
+//	protected int mstatMaskSelect;
 	// 追加の頭部装備
-	protected boolean mstatCamouflage;
-	protected boolean mstatPlanter;
+//	protected boolean mstatCamouflage;
+//	protected boolean mstatPlanter;
 //	protected boolean isMaidChaseWait;
 	protected int mstatWaitCount;
 	protected int mstatTime;
@@ -297,8 +297,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	private float rotateAngleHead;			// Angle
 	private float prevRotateAngleHead;		// prevAngle
 
-	public float defaultWidth;
-	public float defaultHeight;
+//	public float defaultWidth;
+//	public float defaultHeight;
 
 	/**
 	 * 個体ごとに値をバラつかせるのに使う。
@@ -307,7 +307,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	public boolean weaponFullAuto;	// 装備がフルオート武器かどうか
 	public boolean weaponReload;	// 装備がリロードを欲しているかどうか
-	public boolean maidCamouflage;
+	
+//	public boolean maidCamouflage;
 
 	// 音声関連はLittleMaidSoundManagerへまとめる
 	// 音声
@@ -361,8 +362,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 //	public boolean isWildSaved = false;
 
-	// サーバ用テクスチャ処理移行フラグ
-	private boolean isMadeTextureNameFlag = false;
+//	// サーバ用テクスチャ処理移行フラグ
+//	private boolean isMadeTextureNameFlag = false;
 
 	protected int maidArmorVisible = 15;
 
@@ -619,8 +620,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		// 31:自由変数、EntityMode等で使用可能な変数。
 		dataManager.register(EntityLittleMaid.dataWatch_Free, new Integer(0));
 
-		defaultWidth = width;
-		defaultHeight = height;
+//		defaultWidth = width;
+//		defaultHeight = height;
 		
 		//お座り状態
 		dataManager.register(EntityLittleMaid.dataWatch_WaitMotion, Integer.valueOf(0));
@@ -1628,7 +1629,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		par1nbtTagCompound.setString("textureArmorNameForClientChest", dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_chest));
 		par1nbtTagCompound.setString("textureArmorNameForClientLegs", dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_legs));
 		par1nbtTagCompound.setString("textureArmorNameForClientFeet", dataManager.get(EntityLittleMaid.dataWatch_texture_Armor_feet));
-		par1nbtTagCompound.setBoolean("isMadeTextureNameFlag", isMadeTextureNameFlag);
+//		par1nbtTagCompound.setBoolean("isMadeTextureNameFlag", isMadeTextureNameFlag);
 
 		//カスタム分
 		par1nbtTagCompound.setInteger("WaitMotion", dataManager.get(EntityLittleMaid.dataWatch_WaitMotion));
@@ -1763,7 +1764,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //			syncModelNames();
 //		}
 
-		isMadeTextureNameFlag = par1nbtTagCompound.getBoolean("isMadeTextureNameFlag");
+//		isMadeTextureNameFlag = par1nbtTagCompound.getBoolean("isMadeTextureNameFlag");
 
 		maidExperience = par1nbtTagCompound.getFloat(LittleMaidReengaged.MODID + ":MAID_EXP");
 		setExpBooster(par1nbtTagCompound.getInteger(LittleMaidReengaged.MODID + ":EXP_BOOST"));
@@ -2953,7 +2954,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 		
 		checkClockMaid();
-		checkHeadMount();
+//		checkHeadMount();
 		if (this.jobController.getActiveModeClass() != null && !getHandSlotForModeChange().isEmpty())
 			if (maidInventory.isChanged(InventoryLittleMaid.handInventoryOffset) ||
 					maidInventory.isChanged(InventoryLittleMaid.handInventoryOffset + 1)) {
@@ -3152,7 +3153,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return !getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty();//mstatMaskSelect > -1;
 	}
 
-	protected void checkHeadMount() {
+//	protected void checkHeadMount() {
 		// 追加の頭部装備の判定
 		// TODO Render Head.
 /*
@@ -3171,19 +3172,21 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			}
 		}
 */
-	}
+//	}
+	
 	/**
 	 * カモフラージュ！
 	 */
-	public boolean isCamouflage() {
-		return mstatCamouflage;
-	}
-	/**
-	 * 鉢植え状態
-	 */
-	public boolean isPlanter() {
-		return mstatPlanter;
-	}
+//	public boolean isCamouflage() {
+//		return mstatCamouflage;
+//	}
+	
+//	/**
+//	 * 鉢植え状態
+//	 */
+//	public boolean isPlanter() {
+//		return mstatPlanter;
+//	}
 
 	/**
 	 * ポーション等による腕振りモーションの速度補正
