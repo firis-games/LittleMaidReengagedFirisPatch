@@ -5,7 +5,6 @@ import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Bloodsuck;
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Freedom;
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_LooksSugar;
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_OverDrive;
-import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Register;
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Tracer;
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Wait;
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_Working;
@@ -24,7 +23,6 @@ import javax.annotation.Nullable;
 
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
@@ -59,7 +57,6 @@ import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompoundLittleMaid;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
-import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.network.LMRNetwork;
@@ -135,9 +132,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.GameRules;
@@ -386,7 +380,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	protected int maidArmorVisible = 15;
 
 	private boolean isInsideOpaque = false;
-	protected Counter registerTick;
+//	protected Counter registerTick;
 //	protected String registerMode;
 
 	// NX5 レベル関連
@@ -453,7 +447,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 		maidOverDriveTime = new Counter(5, 300, -32);
 		workingCount = new Counter(11, 10, -10);
-		registerTick = new Counter(200, 200, -20);
+//		registerTick = new Counter(200, 200, -20);
 		mstatPlayingRole = PlayRole.NOTPLAYING;
 
 		// モデルレンダリング用のフラグ獲得用ヘルパー関数
@@ -1502,6 +1496,12 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	}
 
 
+	/**
+	 * メイドさんの発光処理
+	 * @param pLight
+	 * @param pPartialTicks
+	 * @return
+	 */
 	public int colorMultiplier(float pLight, float pPartialTicks) {
 		// 発光処理用
 		int lbase = 0, i = 0, j = 0, k = 0, x = 0, y = 0;
@@ -1513,14 +1513,14 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 				x = (int) (128 - maidOverDriveTime.getValue() * (128f / 32));
 			}
 		}
-		if (registerTick.isDelay()) {
-			k = 0x0000df00;
-			if (registerTick.isEnable()) {
-				y = 128;
-			}else{
-				y = (int) (128 - registerTick.getValue() * (128f / 20));
-			}
-		}
+//		if (registerTick.isDelay()) {
+//			k = 0x0000df00;
+//			if (registerTick.isEnable()) {
+//				y = 128;
+//			}else{
+//				y = (int) (128 - registerTick.getValue() * (128f / 20));
+//			}
+//		}
 		i = x==0 ? (y>=128 ? y : 0) : (y==0 ? x : Math.min(x, y));
 		lbase = i << 24 | j | k;
 
@@ -2605,13 +2605,14 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 
 		this.getHeldEquipment();
-		if (registerTick.isDelay()){
-			registerTick.onUpdate();
-
-			if (!registerTick.isEnable() && registerTick.getValue() == 0 && !getEntityWorld().isRemote) {
-				getMaidMasterEntity().sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.cancelregistration").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
-			}
-		}
+		
+//		if (registerTick.isDelay()){
+//			registerTick.onUpdate();
+//
+//			if (!registerTick.isEnable() && registerTick.getValue() == 0 && !getEntityWorld().isRemote) {
+//				getMaidMasterEntity().sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.cancelregistration").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+//			}
+//		}
 
 		// 飛び道具用
 //		weaponFullAuto = false;
@@ -2688,11 +2689,11 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			if (getMaidFlags(dataWatch_Flags_Working) != lf) {
 				setMaidFlags(lf, dataWatch_Flags_Working);
 			}
-			// トリガー登録
-			lf = registerTick.isEnable();
-			if (getMaidFlags(dataWatch_Flags_Register) != lf) {
-				setMaidFlags(lf, dataWatch_Flags_Register);
-			}
+//			// トリガー登録
+//			lf = registerTick.isEnable();
+//			if (getMaidFlags(dataWatch_Flags_Register) != lf) {
+//				setMaidFlags(lf, dataWatch_Flags_Register);
+//			}
 			// 拗ねる
 			if (!isRemainsContract() && !isFreedom()) {
 				setFreedom(true);
@@ -3440,47 +3441,48 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 								return true;
 							}
-							else if (par3ItemStack.getItem()==LMItems.REGISTERKEY &&
-									!par1EntityPlayer.getEntityWorld().isRemote) {
-								// トリガーセット
-								if (registerTick.isEnable()) {
-									registerTick.setEnable(false);
-									par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.cancelregistration").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
-									return true;
-								}
-
-								NBTTagCompound tagCompound = par3ItemStack.getTagCompound();
-								if (tagCompound == null) return false;
-
-								String modeString = tagCompound.getString(ItemTriggerRegisterKey.RK_MODE_TAG);
-								if (modeString.isEmpty()) return false;
-
-//								registerMode = modeString;
-								registerTick.setValue(200);
-
-								int count = tagCompound.getInteger(ItemTriggerRegisterKey.RK_COUNT);
-								if(++count >= ItemTriggerRegisterKey.RK_MAX_COUNT) {
-									par1EntityPlayer.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
-								}
-								tagCompound.setInteger(ItemTriggerRegisterKey.RK_COUNT, count);
-
-								par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.readyregistration", modeString));
-								if(count >= ItemTriggerRegisterKey.RK_MAX_COUNT-10){
-									if(count<ItemTriggerRegisterKey.RK_MAX_COUNT){
-										par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.warningcount",
-												(ItemTriggerRegisterKey.RK_MAX_COUNT-count)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
-									} else {
-										par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.endcount")
-												.setStyle(new Style().setColor(TextFormatting.DARK_RED)));
-									}
-								}
-
-								return true;
-							} else if (registerTick.isEnable() && !par1EntityPlayer.getEntityWorld().isRemote) {
-								// TODO Trigger Save each maid
-								registerTick.setEnable(false);
-								return true;
-							} else if (par3ItemStack.getItem() == Items.DYE) {
+//							else if (par3ItemStack.getItem()==LMItems.REGISTERKEY &&
+//									!par1EntityPlayer.getEntityWorld().isRemote) {
+//								// トリガーセット
+//								if (registerTick.isEnable()) {
+//									registerTick.setEnable(false);
+//									par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.cancelregistration").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+//									return true;
+//								}
+//
+//								NBTTagCompound tagCompound = par3ItemStack.getTagCompound();
+//								if (tagCompound == null) return false;
+//
+//								String modeString = tagCompound.getString(ItemTriggerRegisterKey.RK_MODE_TAG);
+//								if (modeString.isEmpty()) return false;
+//
+////								registerMode = modeString;
+//								registerTick.setValue(200);
+//
+//								int count = tagCompound.getInteger(ItemTriggerRegisterKey.RK_COUNT);
+//								if(++count >= ItemTriggerRegisterKey.RK_MAX_COUNT) {
+//									par1EntityPlayer.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
+//								}
+//								tagCompound.setInteger(ItemTriggerRegisterKey.RK_COUNT, count);
+//
+//								par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.readyregistration", modeString));
+//								if(count >= ItemTriggerRegisterKey.RK_MAX_COUNT-10){
+//									if(count<ItemTriggerRegisterKey.RK_MAX_COUNT){
+//										par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.warningcount",
+//												(ItemTriggerRegisterKey.RK_MAX_COUNT-count)).setStyle(new Style().setColor(TextFormatting.YELLOW)));
+//									} else {
+//										par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.endcount")
+//												.setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+//									}
+//								}
+//
+//								return true;
+//							} else if (registerTick.isEnable() && !par1EntityPlayer.getEntityWorld().isRemote) {
+//								// TODO Trigger Save each maid
+//								registerTick.setEnable(false);
+//								return true;
+//							}
+							else if (par3ItemStack.getItem() == Items.DYE) {
 								// カラーメイド
 								if (canChangeModel()) {
 									if (!getEntityWorld().isRemote) {
@@ -4416,7 +4418,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		looksWithInterestAXIS = (li & dataWatch_Flags_looksWithInterestAXIS) > 0;
 		maidOverDriveTime.updateClient((li & dataWatch_Flags_OverDrive) > 0);
 		workingCount.updateClient((li & dataWatch_Flags_Working) > 0);
-		registerTick.updateClient((li & dataWatch_Flags_Register) > 0);
+//		registerTick.updateClient((li & dataWatch_Flags_Register) > 0);
 	}
 
 	/**
