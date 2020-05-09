@@ -268,7 +268,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	protected Counter maidOverDriveTime;
 //	protected boolean mstatFirstLook;
 	protected boolean mstatLookSuger;
-	protected Counter workingCount;
+//	protected Counter workingCount;
 	protected PlayRole mstatPlayingRole;
 	protected String mstatWorking;
 //	protected String mstatModeName;
@@ -446,7 +446,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		mstatTime = 6000;
 
 		maidOverDriveTime = new Counter(5, 300, -32);
-		workingCount = new Counter(11, 10, -10);
+//		workingCount = new Counter(11, 10, -10);
 //		registerTick = new Counter(200, 200, -20);
 		mstatPlayingRole = PlayRole.NOTPLAYING;
 
@@ -1004,9 +1004,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		return getActiveModeClass() != null;
 //	}
 
-	public Counter getWorkingCount() {
-		return workingCount;
-	}
+//	public Counter getWorkingCount() {
+//		return workingCount;
+//	}
 
 	/**
 	 * ダメージ音声の割込み
@@ -2685,7 +2685,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 				setMaidFlags(lf, dataWatch_Flags_OverDrive);
 			}
 			// Working!
-			lf = workingCount.isEnable();
+//			lf = workingCount.isEnable();
+			lf = this.jobController.isWorking();
 			if (getMaidFlags(dataWatch_Flags_Working) != lf) {
 				setMaidFlags(lf, dataWatch_Flags_Working);
 			}
@@ -2768,10 +2769,11 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 
 		if (getAttackTarget() != null || getRevengeTarget() != null) {
-			setWorking(true);
+//			setWorking(true);
+			this.jobController.setStartWorking();
 		}
 		// お仕事カウンター
-		workingCount.onUpdate();
+//		workingCount.onUpdate();
 
 		// 腕の挙動に関する処理
 		litemuse = 0;
@@ -3852,7 +3854,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		setPlayingRole(PlayRole.NOTPLAYING);
 		if(pflag){
 			//setMaidModeAITasks(null,null);
-			setWorking(false);
+//			setWorking(false);
+			this.jobController.setEndWorking();
 			getNavigator().clearPath();
 			this.jobController.clearTilePosAll();
 			/*
@@ -4081,23 +4084,23 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	/**
 	 * 仕事中かどうかの設定
 	 */
-	public void setWorking(boolean pFlag) {
-		workingCount.setEnable(pFlag);
-	}
+//	public void setWorking(boolean pFlag) {
+//		workingCount.setEnable(pFlag);
+//	}
 
 	/**
 	 * 仕事中かどうかを返す
 	 */
-	public boolean isWorking() {
-		return workingCount.isEnable();
-	}
+//	public boolean isWorking() {
+//		return workingCount.isEnable();
+//	}
 
 	/**
 	 * 仕事が終了しても余韻を含めて返す
 	 */
-	public boolean isWorkingDelay() {
-		return workingCount.isDelay();
-	}
+//	public boolean isWorkingDelay() {
+//		return workingCount.isDelay();
+//	}
 
 	/**
 	 * トレーサーモードの設定
@@ -4417,7 +4420,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		looksWithInterest = (li & dataWatch_Flags_looksWithInterest) > 0;
 		looksWithInterestAXIS = (li & dataWatch_Flags_looksWithInterestAXIS) > 0;
 		maidOverDriveTime.updateClient((li & dataWatch_Flags_OverDrive) > 0);
-		workingCount.updateClient((li & dataWatch_Flags_Working) > 0);
+//		workingCount.updateClient((li & dataWatch_Flags_Working) > 0);
+		this.jobController.syncWorkingCount((li & dataWatch_Flags_Working) > 0);
 //		registerTick.updateClient((li & dataWatch_Flags_Register) > 0);
 	}
 

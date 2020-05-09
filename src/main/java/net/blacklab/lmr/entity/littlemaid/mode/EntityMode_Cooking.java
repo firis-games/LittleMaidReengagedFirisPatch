@@ -267,7 +267,8 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 			lflag = true;
 		}
 		if (ltile.isBurning()) {
-			owner.setWorking(true);
+//			owner.setWorking(true);
+			owner.jobController.setStartWorking();
 			owner.setSneaking(py - (int)owner.posY <= 0);
 			lflag = true;
 		}

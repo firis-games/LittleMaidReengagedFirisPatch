@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
+import net.blacklab.lmr.util.Counter;
 import net.blacklab.lmr.util.manager.MaidModeManager;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,6 +57,11 @@ public class LMJobController {
 	 * 血まみれモードのフラグ
 	 */
 	protected boolean statBloodsuck = false;
+	
+	/**
+	 * 仕事中か判断するカウンタ処理
+	 */
+	protected Counter workingCount = new Counter(11, 10, -10);
 	
 	/**
 	 * コンストラクタ
@@ -180,6 +186,9 @@ public class LMJobController {
 		for (EntityModeBase leb : maidEntityModeList) {
 			leb.onUpdate(maidMode);
 		}
+		
+		//お仕事カウンタ
+		this.workingCount.onUpdate();
 	}
 	
 	/**
@@ -439,12 +448,56 @@ public class LMJobController {
 		return maidTile;
 	}
 	
+	/**
+	 * 血まみれモードのフラグ
+	 * @param flg
+	 */
 	public void setBloodsuck(boolean flg) {
 		this.statBloodsuck = flg;
 	}
 	
+	/**
+	 * 血まみれモードのフラグ
+	 */
 	public boolean isBloodsuck() {
 		return this.statBloodsuck;
 	}
 	
+	/**
+	 * お仕事中かどうか
+	 * @return
+	 */
+	public boolean isWorking() {
+		return this.workingCount.isEnable();
+	}
+	
+	/**
+	 * お仕事後の余韻中
+	 * @return
+	 */
+	public boolean isWorkingDelay() {
+		return this.workingCount.isDelay();
+	}
+	
+	/**
+	 * お仕事の開始
+	 */
+	public void setStartWorking() {
+		workingCount.setEnable(true);
+	}
+	
+	/**
+	 * お仕事の終了
+	 */
+	public void setEndWorking() {
+		workingCount.setEnable(false);
+	}
+	
+	/**
+	 * お仕事カウンタのクライアント側の同期用
+	 * @param flg
+	 */
+	public void syncWorkingCount(boolean flg) {
+		this.workingCount.updateClient(flg);
+	}
 }

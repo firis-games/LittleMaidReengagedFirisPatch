@@ -310,7 +310,8 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 	public void onUpdate(String pMode) {
 		if(pMode.equals(mode_Lumberjack) && ++clearCount >= 300 && owner.getNavigator().noPath()){
 			try{
-				if(!owner.isWorking()){
+//				if(!owner.isWorking()){
+				if(!owner.jobController.isWorking()){
 					if(owner.aiCollectItem.shouldExecute()) owner.aiCollectItem.updateTask();
 				}
 			}catch(NullPointerException e){}

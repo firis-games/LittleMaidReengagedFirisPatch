@@ -47,7 +47,8 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 		if (theMaid.ticksExisted % 20 != 0) return false; 
 		
 		if (theMaid.jobController.getActiveModeClass() == null || theMaid.getMaidMasterEntity() == null ||
-				theMaid.isFreedom() || theMaid.isMaidWait() || theMaid.isSitting() || theMaid.isWorkingDelay()) {
+//				theMaid.isFreedom() || theMaid.isMaidWait() || theMaid.isSitting() || theMaid.isWorkingDelay()) {
+				theMaid.isFreedom() || theMaid.isMaidWait() || theMaid.isSitting() || theMaid.jobController.isWorkingDelay()) {
 			return false;
 		}
 		
@@ -108,7 +109,8 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 	public void resetTask() {
 		theMaid.getNavigator().clearPath();
 		theMaid.setAttackTarget(null);
-		theMaid.getWorkingCount().setValue(0);
+//		theMaid.getWorkingCount().setValue(0);
+		theMaid.jobController.setEndWorking();
 	}
 	
 	

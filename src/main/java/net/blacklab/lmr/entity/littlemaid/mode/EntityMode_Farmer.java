@@ -295,7 +295,8 @@ public class EntityMode_Farmer extends EntityModeBase {
 		// TODO 自動生成されたメソッド・スタブ
 		if(pMode.equals(mmode_Farmer) && ++clearCount >= 300 && owner.getNavigator().noPath()){
 			try{
-				if(!owner.isWorking()){
+//				if(!owner.isWorking()){
+				if(!owner.jobController.isWorking()){
 					if(owner.aiCollectItem.shouldExecute()) owner.aiCollectItem.updateTask();
 				}
 			}catch(NullPointerException e){}

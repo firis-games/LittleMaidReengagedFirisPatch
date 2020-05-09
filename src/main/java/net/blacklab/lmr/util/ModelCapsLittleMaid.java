@@ -106,9 +106,11 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 		case caps_isOpenInv:
 			return owner.isOpenInventory();
 		case caps_isWorking:
-			return owner.isWorking();
+//			return owner.isWorking();
+			return owner.jobController.isWorking();
 		case caps_isWorkingDelay:
-			return owner.isWorkingDelay();
+//			return owner.isWorkingDelay();
+			return owner.jobController.isWorkingDelay();
 		case caps_isContract:
 			return owner.isContract();
 		case caps_isContractEX:

@@ -305,7 +305,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 						}
 					}
 					// チェストに収納
-					owner.setWorking(true);
+//					owner.setWorking(true);
+					owner.jobController.setStartWorking();
 					putChest(pMode);
 					return true;
 				//} else {
@@ -588,7 +589,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		//運び屋モードの場合は元のモードへ戻す
 		if (isPorterMode &&
 				owner.maidInventory.getFirstEmptyStack() > -1 &&
-				!owner.getWorkingCount().isEnable()) {
+//				!owner.getWorkingCount().isEnable()) {
+				!owner.jobController.isWorking()) {
 			
 			//元の職業へ戻す
 			String beforMode = mmode_list_ModePorter.get(pMode);

@@ -186,7 +186,8 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 //    	isMaidChaseWait = true;
 		if (!ltile.getStackInSlot(0).isEmpty() || !ltile.getStackInSlot(1).isEmpty() || !ltile.getStackInSlot(2).isEmpty() || !ltile.getStackInSlot(3).isEmpty() || !lswing.canAttack()) {
 			// お仕事中
-			owner.setWorking(true);
+//			owner.setWorking(true);
+			owner.jobController.setStartWorking();
 		}
 
 		int blaze_position = owner.maidInventory.getInventorySlotContainItem(Items.BLAZE_POWDER);
@@ -308,7 +309,8 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 			lflag = true;
 		}
 		if (ltile.getField(0) > 0 || inventryPos > 0) {
-			owner.setWorking(true);
+//			owner.setWorking(true);
+			owner.jobController.setStartWorking();
 			lflag = true;
 		}
 		return lflag;
