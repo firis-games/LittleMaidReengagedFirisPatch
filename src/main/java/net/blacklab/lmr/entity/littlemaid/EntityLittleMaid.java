@@ -88,7 +88,6 @@ import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityChicken;
@@ -254,9 +253,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	// 動的な状態
 	protected EntityPlayer mstatMasterEntity;	// 主
 	protected double mstatMasterDistanceSq;		// 主との距離、計算軽量化用
-	protected Entity mstatgotcha;				// ワイヤード用
+//	protected Entity mstatgotcha;				// ワイヤード用
 //	protected boolean mstatBloodsuck;
-	protected boolean mstatClockMaid;
+//	protected boolean mstatClockMaid;
 //	// マスク判定
 //	protected int mstatMaskSelect;
 	// 追加の頭部装備
@@ -264,7 +263,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //	protected boolean mstatPlanter;
 //	protected boolean isMaidChaseWait;
 	protected int mstatWaitCount;
-	protected int mstatTime;
+//	protected int mstatTime;
 	protected Counter maidOverDriveTime;
 //	protected boolean mstatFirstLook;
 	protected boolean mstatLookSuger;
@@ -443,7 +442,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 		mstatOpenInventory = false;
 //		isMaidChaseWait = false;
-		mstatTime = 6000;
+//		mstatTime = 6000;
 
 		maidOverDriveTime = new Counter(5, 300, -32);
 //		workingCount = new Counter(11, 10, -10);
@@ -1236,7 +1235,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		
 		EnumSound sound = EnumSound.Null;
 		
-		boolean isClock = maidInventory.getInventorySlotContainItem(Items.CLOCK) != -1;
+		boolean isClock = this.isClockMaid();
 		
 		//HPが低い時
 		if (getHealth() < 10) {
@@ -1304,7 +1303,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		if(getAttackTarget() != null) return;
 		
 		//時計所持
-		if (maidInventory.getInventorySlotContainItem(Items.CLOCK) == -1) return;
+		if (!this.isClockMaid()) return;
 		
 		//ご主人さまとの距離
 		EntityPlayer player = getMaidMasterEntity();
@@ -1393,12 +1392,13 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	@Override
 	public void setDead() {
-		if (mstatgotcha != null&&maidAvatar != null) {
-			// 首紐をドロップ
-			EntityItem entityitem = new EntityItem(getEntityWorld(), mstatgotcha.posX, mstatgotcha.posY, mstatgotcha.posZ, new ItemStack(Items.STRING));
-			getEntityWorld().spawnEntity(entityitem);
-			mstatgotcha = null;
-		}
+		
+//		if (mstatgotcha != null&&maidAvatar != null) {
+//			// 首紐をドロップ
+//			EntityItem entityitem = new EntityItem(getEntityWorld(), mstatgotcha.posX, mstatgotcha.posY, mstatgotcha.posZ, new ItemStack(Items.STRING));
+//			getEntityWorld().spawnEntity(entityitem);
+//			mstatgotcha = null;
+//		}
 		
 		//PlayerAvatarも消去
 		this.maidAvatar.setDead();
@@ -2643,7 +2643,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			setMaidMode(dataManager.get(EntityLittleMaid.dataWatch_Mode));
 			setDominantArm(dataManager.get(EntityLittleMaid.dataWatch_DominamtArm));
 			updateMaidFlagsClient();
-			updateGotcha();
+
+			//updateGotcha();
 
 			// メイド経験値の同期
 			if (ticksExisted % 10 == 0) {
@@ -2838,61 +2839,61 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //			}
 		}
 
-		// 紐で拉致
-		if(mstatgotcha != null) {
-			double d = mstatgotcha.getDistanceSq(this);
-			if (getAttackTarget() == null) {
-				// インコムごっこ用
-				if (d > 4D) {
-//					setPathToEntity(null);
-					getNavigator().clearPath();
-					getLookHelper().setLookPositionWithEntity(mstatgotcha, 15F, 15F);
-				}
-				if (d > 12.25D) {
-//					setPathToEntity(getEntityWorld().getPathEntityToEntity(mstatgotcha, this, 16F, true, false, false, true));
-					getNavigator().tryMoveToXYZ(mstatgotcha.posX, mstatgotcha.posY, mstatgotcha.posZ, 1.0F);
-					getLookHelper().setLookPositionWithEntity(mstatgotcha, 15F, 15F);
-				}
-			}
-			if (d > 25D) {
-				double d1 = mstatgotcha.posX - posX;
-				double d3 = mstatgotcha.posZ - posZ;
-				double d5 = 0.125D / (Math.sqrt(d1 * d1 + d3 * d3) + 0.0625D);
-				d1 *= d5;
-				d3 *= d5;
-				motionX += d1;
-				motionZ += d3;
-			}
-			if (d > 42.25D) {
-				double d2 = mstatgotcha.posX - posX;
-				double d4 = mstatgotcha.posZ - posZ;
-				double d6 = 0.0625D / (Math.sqrt(d2 * d2 + d4 * d4) + 0.0625D);
-				d2 *= d6;
-				d4 *= d6;
-				mstatgotcha.motionX -= d2;
-				mstatgotcha.motionZ -= d4;
-			}
-			if (d > 64D) {
-				setGotcha(0);
-				mstatgotcha = null;
-				playSound("random.drr");
-			}
-			if(rand.nextInt(16) == 0) {
-				List<Entity> list = getEntityWorld().getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().grow(8D, 8D, 8D));
-				for (int k = 0; k < list.size(); k++) {
-					Entity entity = (Entity)list.get(k);
-					if (!(entity instanceof EntityMob)) {
-						continue;
-					}
-					EntityMob entitymob = (EntityMob)entity;
-					if (entitymob.getAttackTarget() == mstatgotcha) {
-						//1.8検討
-						entitymob.setAttackTarget(this);
-						entitymob.getNavigator().setPath(getNavigator().getPath(), entitymob.moveForward);
-					}
-				}
-			}
-		}
+//		// 紐で拉致
+//		if(mstatgotcha != null) {
+//			double d = mstatgotcha.getDistanceSq(this);
+//			if (getAttackTarget() == null) {
+//				// インコムごっこ用
+//				if (d > 4D) {
+////					setPathToEntity(null);
+//					getNavigator().clearPath();
+//					getLookHelper().setLookPositionWithEntity(mstatgotcha, 15F, 15F);
+//				}
+//				if (d > 12.25D) {
+////					setPathToEntity(getEntityWorld().getPathEntityToEntity(mstatgotcha, this, 16F, true, false, false, true));
+//					getNavigator().tryMoveToXYZ(mstatgotcha.posX, mstatgotcha.posY, mstatgotcha.posZ, 1.0F);
+//					getLookHelper().setLookPositionWithEntity(mstatgotcha, 15F, 15F);
+//				}
+//			}
+//			if (d > 25D) {
+//				double d1 = mstatgotcha.posX - posX;
+//				double d3 = mstatgotcha.posZ - posZ;
+//				double d5 = 0.125D / (Math.sqrt(d1 * d1 + d3 * d3) + 0.0625D);
+//				d1 *= d5;
+//				d3 *= d5;
+//				motionX += d1;
+//				motionZ += d3;
+//			}
+//			if (d > 42.25D) {
+//				double d2 = mstatgotcha.posX - posX;
+//				double d4 = mstatgotcha.posZ - posZ;
+//				double d6 = 0.0625D / (Math.sqrt(d2 * d2 + d4 * d4) + 0.0625D);
+//				d2 *= d6;
+//				d4 *= d6;
+//				mstatgotcha.motionX -= d2;
+//				mstatgotcha.motionZ -= d4;
+//			}
+//			if (d > 64D) {
+////				setGotcha(0);
+//				mstatgotcha = null;
+//				playSound("random.drr");
+//			}
+//			if(rand.nextInt(16) == 0) {
+//				List<Entity> list = getEntityWorld().getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().grow(8D, 8D, 8D));
+//				for (int k = 0; k < list.size(); k++) {
+//					Entity entity = (Entity)list.get(k);
+//					if (!(entity instanceof EntityMob)) {
+//						continue;
+//					}
+//					EntityMob entitymob = (EntityMob)entity;
+//					if (entitymob.getAttackTarget() == mstatgotcha) {
+//						//1.8検討
+//						entitymob.setAttackTarget(this);
+//						entitymob.getNavigator().setPath(getNavigator().getPath(), entitymob.moveForward);
+//					}
+//				}
+//			}
+//		}
 		
 		//マルチモデル関連のonUpdate処理
 		if (this.world.isRemote) {
@@ -2991,7 +2992,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			return;
 		}
 		
-		checkClockMaid();
+//		checkClockMaid();
 //		checkHeadMount();
 		if (this.jobController.getActiveModeClass() != null && !getHandSlotForModeChange().isEmpty())
 			if (maidInventory.isChanged(InventoryLittleMaid.handInventoryOffset) ||
@@ -3173,15 +3174,16 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return mstatMasterDistanceSq;
 	}
 
-	protected void checkClockMaid() {
-		// 時計を持っているか？
-		mstatClockMaid = maidInventory.getInventorySlotContainItem(Items.CLOCK) > -1;
-	}
+//	protected void checkClockMaid() {
+//		// 時計を持っているか？
+//		mstatClockMaid = maidInventory.getInventorySlotContainItem(Items.CLOCK) > -1;
+//	}
+	
 	/**
 	 * 時計を持っているか?
 	 */
 	public boolean isClockMaid() {
-		return mstatClockMaid;
+		return maidInventory.getInventorySlotContainItem(Items.CLOCK) > -1;
 	}
 
 	/**
@@ -3291,158 +3293,158 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			return true;
 		}
 
-		if (mstatgotcha == null && par1EntityPlayer.fishEntity == null) {
-			if(!par3ItemStack.isEmpty() && par3ItemStack.getItem() == Items.LEAD) {
-				// 紐で繋ぐ
-				setGotcha(par1EntityPlayer.getEntityId());
-				mstatgotcha = par1EntityPlayer;
-				par3ItemStack.splitStack(1);
-				playSound("entity.item.pickup");
-				return true;
-			}
+//		if (mstatgotcha == null && par1EntityPlayer.fishEntity == null) {
+//			if(!par3ItemStack.isEmpty() && par3ItemStack.getItem() == Items.LEAD) {
+//				// 紐で繋ぐ
+//				setGotcha(par1EntityPlayer.getEntityId());
+//				mstatgotcha = par1EntityPlayer;
+//				par3ItemStack.splitStack(1);
+//				playSound("entity.item.pickup");
+//				return true;
+//			}
 
-			if (isContract()) {
-				// Issue #35: 契約失効時の処理を優先化
-				if(!isRemainsContract() && !par3ItemStack.isEmpty()){
-					// ストライキ
-					if (ItemHelper.isSugar(par3ItemStack)) {
-						// 受取拒否
-						getEntityWorld().setEntityState(this, (byte)10);
-						return true;
-					} else if (ItemHelper.isCake(par3ItemStack)) {
-						// 再契約
-						par3ItemStack.splitStack(1);
+		if (isContract()) {
+			// Issue #35: 契約失効時の処理を優先化
+			if(!isRemainsContract() && !par3ItemStack.isEmpty()){
+				// ストライキ
+				if (ItemHelper.isSugar(par3ItemStack)) {
+					// 受取拒否
+					getEntityWorld().setEntityState(this, (byte)10);
+					return true;
+				} else if (ItemHelper.isCake(par3ItemStack)) {
+					// 再契約
+					par3ItemStack.splitStack(1);
+					maidContractLimit = (24000 * 7);
+					setFreedom(false);
+					setTracer(false);
+					setMaidWait(false);
+					setMaidMode(EntityMode_Basic.mmode_Escort);
+					if(!isMaidContractOwner(par1EntityPlayer)){
+						// あんなご主人なんか捨てて、僕のもとへおいで(洗脳)
+						OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
+						playLittleMaidVoiceSound(EnumSound.getCake, false);
+						getEntityWorld().setEntityState(this, (byte)7);
 						maidContractLimit = (24000 * 7);
-						setFreedom(false);
-						setTracer(false);
-						setMaidWait(false);
-						setMaidMode(EntityMode_Basic.mmode_Escort);
-						if(!isMaidContractOwner(par1EntityPlayer)){
-							// あんなご主人なんか捨てて、僕のもとへおいで(洗脳)
-							OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
-							playLittleMaidVoiceSound(EnumSound.getCake, false);
-							getEntityWorld().setEntityState(this, (byte)7);
-							maidContractLimit = (24000 * 7);
-							maidAnniversary = getEntityWorld().getTotalWorldTime();
-						}else{
-							// ごめんねメイドちゃん
-							getEntityWorld().setEntityState(this, (byte)11);
-							playLittleMaidVoiceSound(EnumSound.Recontract, false);
+						maidAnniversary = getEntityWorld().getTotalWorldTime();
+					}else{
+						// ごめんねメイドちゃん
+						getEntityWorld().setEntityState(this, (byte)11);
+						playLittleMaidVoiceSound(EnumSound.Recontract, false);
 
-						}
-						return true;
 					}
-
+					return true;
 				}
-				// 契約状態
-				if (/*lhealth > 0F && */isMaidContractOwner(par1EntityPlayer)) {
-					if (!par3ItemStack.isEmpty()) {
-						// 追加分の処理
-						// プラグインでの処理を先に行う
-						//for (int li = 0; li < maidEntityModeList.size(); li++) {
-						//	if (maidEntityModeList.get(li).interact(par1EntityPlayer, par3ItemStack)) {
-						//		return true;
-						//	}
-						//}
-						//メイドさん職業の処理
-						if (this.jobController.processInteract(par1EntityPlayer, par3ItemStack)) return true;
-						
-						if (isRemainsContract()) {
-							// 通常
-							if (ItemHelper.isSugar(par3ItemStack)) {
-								// モード切替
-								boolean cmode = ItemHelper.onSugarInteract(this, par1EntityPlayer, par3ItemStack);
-								//boolean cmode = true;
-								//if(par3ItemStack.getItem() instanceof IItemSpecialSugar){
-								//	cmode = ((IItemSpecialSugar)par3ItemStack.getItem()).onSugarInteract(getEntityWorld(), par1EntityPlayer, par3ItemStack, this);
-								//}
-								par3ItemStack.splitStack(1);
-								eatSugar(false, true, false);
-								if(!cmode) return true;
-								getEntityWorld().setEntityState(this, (byte)11);
 
-								// TODO 口開くよ…
-								LittleMaidReengaged.Debug("give suger." + getEntityWorld().isRemote);
-								if (!getEntityWorld().isRemote) {
-									setFreedom(isFreedom());
-									if (isMaidWait()) {
-										// 動作モードの切替
-										setMaidModeAuto(par1EntityPlayer);
-										setMaidWait(false);
-									} else {
-										// 待機
-										setMaidWait(true);
-									}
+			}
+			// 契約状態
+			if (/*lhealth > 0F && */isMaidContractOwner(par1EntityPlayer)) {
+				if (!par3ItemStack.isEmpty()) {
+					// 追加分の処理
+					// プラグインでの処理を先に行う
+					//for (int li = 0; li < maidEntityModeList.size(); li++) {
+					//	if (maidEntityModeList.get(li).interact(par1EntityPlayer, par3ItemStack)) {
+					//		return true;
+					//	}
+					//}
+					//メイドさん職業の処理
+					if (this.jobController.processInteract(par1EntityPlayer, par3ItemStack)) return true;
+					
+					if (isRemainsContract()) {
+						// 通常
+						if (ItemHelper.isSugar(par3ItemStack)) {
+							// モード切替
+							boolean cmode = ItemHelper.onSugarInteract(this, par1EntityPlayer, par3ItemStack);
+							//boolean cmode = true;
+							//if(par3ItemStack.getItem() instanceof IItemSpecialSugar){
+							//	cmode = ((IItemSpecialSugar)par3ItemStack.getItem()).onSugarInteract(getEntityWorld(), par1EntityPlayer, par3ItemStack, this);
+							//}
+							par3ItemStack.splitStack(1);
+							eatSugar(false, true, false);
+							if(!cmode) return true;
+							getEntityWorld().setEntityState(this, (byte)11);
+
+							// TODO 口開くよ…
+							LittleMaidReengaged.Debug("give suger." + getEntityWorld().isRemote);
+							if (!getEntityWorld().isRemote) {
+								setFreedom(isFreedom());
+								if (isMaidWait()) {
+									// 動作モードの切替
+									setMaidModeAuto(par1EntityPlayer);
+									setMaidWait(false);
+								} else {
+									// 待機
+									setMaidWait(true);
 								}
-								return true;
 							}
-							//お座りモーション判定
-							else if (par3ItemStack.getItem() == Item.getItemFromBlock(Blocks.CARPET)) {
-								
-								//カーペットは消費しない
+							return true;
+						}
+						//お座りモーション判定
+						else if (par3ItemStack.getItem() == Item.getItemFromBlock(Blocks.CARPET)) {
+							
+							//カーペットは消費しない
 
-								//♪の表示
-								getEntityWorld().setEntityState(this, (byte)11);
-								//効果音
-								playSound("entity.item.pickup");
-								
-								int maidWaitMotion = dataManager.get(EntityLittleMaid.dataWatch_WaitMotion);
-								maidWaitMotion = maidWaitMotion == 1 ? 0 : 1;
-								dataManager.set(EntityLittleMaid.dataWatch_WaitMotion, maidWaitMotion);
-								return true;
-							}
-							//ミルク
-							else if (par3ItemStack.getItem() == Items.MILK_BUCKET) {
-								
-								//バフデバフを全てクリア
-								//♪の表示
-								getEntityWorld().setEntityState(this, (byte)11);
-								
-								//効果音
-								playSound("entity.item.pickup");
-								
-								//ポーション効果をリセット
-								this.clearActivePotions();
-								par1EntityPlayer.setHeldItem(hand, new ItemStack(Items.BUCKET));
-								
-								return true;
-							}
-							//バケツのみ
-							else if (LMRConfig.cfg_custom_maid_milk
-									&& par3ItemStack.getItem() == Items.BUCKET) {
-								
-								//ハートの表示
-								getEntityWorld().setEntityState(this, (byte)7);
-								
-								//効果音
-								playSound("entity.cow.milk");
-								
-								//牛乳の取得
-								ItemStack milkStack = new ItemStack(Items.MILK_BUCKET);
-								
-								//○○印のミルク名を設定
-								if (LMRConfig.cfg_secret_maid_milk) {
-									String milkLabel = LMRConfig.cfg_secret_maid_milk_producer_default;
-									if (this.hasCustomName()) {
-										milkLabel = this.getCustomNameTag();
-									}
-									
-									//整形
-									milkLabel = String.format(LMRConfig.cfg_secret_maid_milk_producer_label, milkLabel);
-									
-									//名前をセット
-									NBTTagCompound milkTag = new NBTTagCompound();
-									NBTTagCompound displayTag = new NBTTagCompound();
-									displayTag.setString("Name", milkLabel);
-									milkTag.setTag("display", displayTag);
-									milkStack.setTagCompound(milkTag);
+							//♪の表示
+							getEntityWorld().setEntityState(this, (byte)11);
+							//効果音
+							playSound("entity.item.pickup");
+							
+							int maidWaitMotion = dataManager.get(EntityLittleMaid.dataWatch_WaitMotion);
+							maidWaitMotion = maidWaitMotion == 1 ? 0 : 1;
+							dataManager.set(EntityLittleMaid.dataWatch_WaitMotion, maidWaitMotion);
+							return true;
+						}
+						//ミルク
+						else if (par3ItemStack.getItem() == Items.MILK_BUCKET) {
+							
+							//バフデバフを全てクリア
+							//♪の表示
+							getEntityWorld().setEntityState(this, (byte)11);
+							
+							//効果音
+							playSound("entity.item.pickup");
+							
+							//ポーション効果をリセット
+							this.clearActivePotions();
+							par1EntityPlayer.setHeldItem(hand, new ItemStack(Items.BUCKET));
+							
+							return true;
+						}
+						//バケツのみ
+						else if (LMRConfig.cfg_custom_maid_milk
+								&& par3ItemStack.getItem() == Items.BUCKET) {
+							
+							//ハートの表示
+							getEntityWorld().setEntityState(this, (byte)7);
+							
+							//効果音
+							playSound("entity.cow.milk");
+							
+							//牛乳の取得
+							ItemStack milkStack = new ItemStack(Items.MILK_BUCKET);
+							
+							//○○印のミルク名を設定
+							if (LMRConfig.cfg_secret_maid_milk) {
+								String milkLabel = LMRConfig.cfg_secret_maid_milk_producer_default;
+								if (this.hasCustomName()) {
+									milkLabel = this.getCustomNameTag();
 								}
 								
-								//手持ちのアイテムを減らしてミルクバケツをセットする
-								setItemStackPlayerHand(milkStack, hand, par1EntityPlayer);
-
-								return true;
+								//整形
+								milkLabel = String.format(LMRConfig.cfg_secret_maid_milk_producer_label, milkLabel);
+								
+								//名前をセット
+								NBTTagCompound milkTag = new NBTTagCompound();
+								NBTTagCompound displayTag = new NBTTagCompound();
+								displayTag.setString("Name", milkLabel);
+								milkTag.setTag("display", displayTag);
+								milkStack.setTagCompound(milkTag);
 							}
+							
+							//手持ちのアイテムを減らしてミルクバケツをセットする
+							setItemStackPlayerHand(milkStack, hand, par1EntityPlayer);
+
+							return true;
+						}
 //							else if (par3ItemStack.getItem()==LMItems.REGISTERKEY &&
 //									!par1EntityPlayer.getEntityWorld().isRemote) {
 //								// トリガーセット
@@ -3484,157 +3486,158 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //								registerTick.setEnable(false);
 //								return true;
 //							}
-							else if (par3ItemStack.getItem() == Items.DYE) {
-								// カラーメイド
-								if (canChangeModel()) {
-									if (!getEntityWorld().isRemote) {
-										setColor((byte)(15 - par3ItemStack.getItemDamage()));
-									}
-									return true;
-								} else {
-									// TODO print block-message
+						else if (par3ItemStack.getItem() == Items.DYE) {
+							// カラーメイド
+							if (canChangeModel()) {
+								if (!getEntityWorld().isRemote) {
+									setColor((byte)(15 - par3ItemStack.getItemDamage()));
 								}
+								return true;
+							} else {
+								// TODO print block-message
 							}
-							else if (par3ItemStack.getItem() == Items.FEATHER) {
-								// 自由行動
+						}
+						else if (par3ItemStack.getItem() == Items.FEATHER) {
+							// 自由行動
 //								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
-								if(!getEntityWorld().isRemote){
-									setFreedom(!isFreedom());
-									getEntityWorld().setEntityState(this, isFreedom() ? (byte)12 : (byte)13);
-								}
-								return true;
-							} else if (par3ItemStack.getItem() == Items.GUNPOWDER) {
-								// test TNT-D
-								maidOverDriveTime.setValue(par3ItemStack.getCount() * 10);
-								playSound("mob.zombie.infect");
-								if (par3ItemStack.getCount() == 64) {
-									//進捗
-									AchievementsLMRE.grantAC(getMaidMasterEntity(), AC.Boost);
-								}
-								par3ItemStack.splitStack(par3ItemStack.getCount());
-								return true;
+							if(!getEntityWorld().isRemote){
+								setFreedom(!isFreedom());
+								getEntityWorld().setEntityState(this, isFreedom() ? (byte)12 : (byte)13);
 							}
-							else if (par3ItemStack.getItem() == Items.BOOK) {
-								// IFFのオープン
+							return true;
+						} else if (par3ItemStack.getItem() == Items.GUNPOWDER) {
+							// test TNT-D
+							maidOverDriveTime.setValue(par3ItemStack.getCount() * 10);
+							playSound("mob.zombie.infect");
+							if (par3ItemStack.getCount() == 64) {
+								//進捗
+								AchievementsLMRE.grantAC(getMaidMasterEntity(), AC.Boost);
+							}
+							par3ItemStack.splitStack(par3ItemStack.getCount());
+							return true;
+						}
+						else if (par3ItemStack.getItem() == Items.BOOK) {
+							// IFFのオープン
 //								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
 //								if (getEntityWorld().isRemote) {
-									par1EntityPlayer.openGui(LittleMaidReengaged.instance,
-											GuiHandler.GUI_ID_IFF,
-											getEntityWorld(),
-											(int)posX,
-											(int)posY,
-											(int)posZ);
+								par1EntityPlayer.openGui(LittleMaidReengaged.instance,
+										GuiHandler.GUI_ID_IFF,
+										getEntityWorld(),
+										(int)posX,
+										(int)posY,
+										(int)posZ);
 //								}
-								return true;
-							}/*
-							else if ((itemstack1.getItem() == Items.glass_bottle) && (experienceValue >= 5)) {
-								// Expボトル
-								MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
-								if (!getEntityWorld().isRemote) {
-									entityDropItem(new ItemStack(Items.experience_bottle), 0.5F);
-									experienceValue -= 5;
-									if (maidAvatar != null) {
-										maidAvatar.experienceTotal -= 5;
+							return true;
+						}/*
+						else if ((itemstack1.getItem() == Items.glass_bottle) && (experienceValue >= 5)) {
+							// Expボトル
+							MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
+							if (!getEntityWorld().isRemote) {
+								entityDropItem(new ItemStack(Items.experience_bottle), 0.5F);
+								experienceValue -= 5;
+								if (maidAvatar != null) {
+									maidAvatar.experienceTotal -= 5;
+								}
+							}
+							return true;
+						}*/
+						else if (par3ItemStack.getItem() instanceof ItemPotion) {
+							// ポーション
+							if(!getEntityWorld().isRemote) {
+								List<PotionEffect> list = PotionUtils.getEffectsFromStack(par3ItemStack);
+								if (list != null) {
+									PotionEffect potioneffect;
+									for (Iterator<PotionEffect> iterator = list.iterator(); iterator.hasNext(); addPotionEffect(new PotionEffect(potioneffect))) {
+										potioneffect = iterator.next();
 									}
 								}
-								return true;
-							}*/
-							else if (par3ItemStack.getItem() instanceof ItemPotion) {
-								// ポーション
-								if(!getEntityWorld().isRemote) {
-									List<PotionEffect> list = PotionUtils.getEffectsFromStack(par3ItemStack);
-									if (list != null) {
-										PotionEffect potioneffect;
-										for (Iterator<PotionEffect> iterator = list.iterator(); iterator.hasNext(); addPotionEffect(new PotionEffect(potioneffect))) {
-											potioneffect = iterator.next();
-										}
-									}
-								}
-								par3ItemStack.splitStack(1);
-								return true;
 							}
-							else if (isFreedom() && par3ItemStack.getItem() == Items.REDSTONE) {
-								// Tracer
-								par3ItemStack.splitStack(1);
-								setMaidWait(false);
-								setTracer(!isTracer());
-								if (isTracer()) {
-									getEntityWorld().setEntityState(this, (byte)14);
-								} else {
-									getEntityWorld().setEntityState(this, (byte)12);
-								}
-								return true;
-							}else if(par3ItemStack.getItem() == Items.STICK){
-								if(getDominantArm()==0){
-									setDominantArm(1);
-								}else{
-									setDominantArm(0);
-								}
-								return true;
+							par3ItemStack.splitStack(1);
+							return true;
+						}
+						else if (isFreedom() && par3ItemStack.getItem() == Items.REDSTONE) {
+							// Tracer
+							par3ItemStack.splitStack(1);
+							setMaidWait(false);
+							setTracer(!isTracer());
+							if (isTracer()) {
+								getEntityWorld().setEntityState(this, (byte)14);
+							} else {
+								getEntityWorld().setEntityState(this, (byte)12);
 							}
+							return true;
+						}else if(par3ItemStack.getItem() == Items.STICK){
+							if(getDominantArm()==0){
+								setDominantArm(1);
+							}else{
+								setDominantArm(0);
+							}
+							return true;
 						}
 					}
-					// メイドインベントリ
-					OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
-					getNavigator().clearPath();
-					isJumping = false;
-					if(!getEntityWorld().isRemote){
-						syncMaidArmorVisible();
-						syncExpBoost();
-					}
-					displayGUIMaidInventory(par1EntityPlayer);
-					return true;
 				}
-			} else {
-				// 未契約
-				if (!par3ItemStack.isEmpty()) {
-					if (ItemHelper.isCake(par3ItemStack)) {
-						// 契約
-						par3ItemStack.splitStack(1);
+				// メイドインベントリ
+				OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
+				getNavigator().clearPath();
+				isJumping = false;
+				if(!getEntityWorld().isRemote){
+					syncMaidArmorVisible();
+					syncExpBoost();
+				}
+				displayGUIMaidInventory(par1EntityPlayer);
+				return true;
+			}
+		} else {
+			// 未契約
+			if (!par3ItemStack.isEmpty()) {
+				if (ItemHelper.isCake(par3ItemStack)) {
+					// 契約
+					par3ItemStack.splitStack(1);
 
-						deathTime = 0;
-						if (!getEntityWorld().isRemote) {
-							
-							//初回契約メソッドをまとめる
-							this.setFirstContract(par1EntityPlayer);
-							
-							//進捗
-							//AchievementsLMRE.grantAC(par1EntityPlayer, AC.Contract);
-							//setContract(true);
-							//getNavigator().clearPath();
-							//OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
+					deathTime = 0;
+					if (!getEntityWorld().isRemote) {
+						
+						//初回契約メソッドをまとめる
+						this.setFirstContract(par1EntityPlayer);
+						
+						//進捗
+						//AchievementsLMRE.grantAC(par1EntityPlayer, AC.Contract);
+						//setContract(true);
+						//getNavigator().clearPath();
+						//OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
 
-							playLittleMaidVoiceSound(EnumSound.getCake, false);
+						playLittleMaidVoiceSound(EnumSound.getCake, false);
 //							playLittleMaidSound(LMM_EnumSound.getCake, true);
 //							playTameEffect(true);
-							getEntityWorld().setEntityState(this, (byte)7);
-							//// 契約記念日と、初期契約期間
-							//maidContractLimit = (24000 * 7);
-							//maidAnniversary = getEntityWorld().getTotalWorldTime();
+						getEntityWorld().setEntityState(this, (byte)7);
+						//// 契約記念日と、初期契約期間
+						//maidContractLimit = (24000 * 7);
+						//maidAnniversary = getEntityWorld().getTotalWorldTime();
 
-							//setHealth(20);
-							//setPlayingRole(PlayRole.NOTPLAYING);
-							//setMaidWait(false);
-							//setFreedom(false);
-							//setMaidMode(EntityMode_Basic.mmode_Escort);
-							// テクスチャのアップデート:いらん？
+						//setHealth(20);
+						//setPlayingRole(PlayRole.NOTPLAYING);
+						//setMaidWait(false);
+						//setFreedom(false);
+						//setMaidMode(EntityMode_Basic.mmode_Escort);
+						// テクスチャのアップデート:いらん？
 //							LMM_Net.sendToAllEClient(this, new byte[] {LMM_Net.LMN_Client_UpdateTexture, 0, 0, 0, 0});
 
-						}
-						return true;
 					}
-//					getEntityWorld().setEntityState(this, (byte)6);
+					return true;
 				}
+//					getEntityWorld().setEntityState(this, (byte)6);
 			}
-		} else if (/*lhealth > 0F && */mstatgotcha != null) {
-			if (!getEntityWorld().isRemote) {
-				EntityItem entityitem = new EntityItem(getEntityWorld(), mstatgotcha.posX, mstatgotcha.posY, mstatgotcha.posZ, new ItemStack(Items.STRING));
-				getEntityWorld().spawnEntity(entityitem);
-				setGotcha(0);
-				mstatgotcha = null;
-			}
-			return true;
 		}
+//		}
+//		else if (/*lhealth > 0F && */mstatgotcha != null) {
+//			if (!getEntityWorld().isRemote) {
+//				EntityItem entityitem = new EntityItem(getEntityWorld(), mstatgotcha.posX, mstatgotcha.posY, mstatgotcha.posZ, new ItemStack(Items.STRING));
+//				getEntityWorld().spawnEntity(entityitem);
+//				setGotcha(0);
+//				mstatgotcha = null;
+//			}
+//			return true;
+//		}
 
 		return false;
 	}
@@ -4364,32 +4367,32 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		return false;
 //	}
 
-	/**
-	 * 紐の持ち主
-	 */
-	public void updateGotcha() {
-		int lid = dataManager.get(EntityLittleMaid.dataWatch_Gotcha);
-		if (lid == 0) {
-			mstatgotcha = null;
-			return;
-		}
-		if (mstatgotcha != null && mstatgotcha.getEntityId() == lid) {
-			return;
-		}
-		for (int li = 0; li < getEntityWorld().loadedEntityList.size(); li++) {
-			if (((Entity)getEntityWorld().loadedEntityList.get(li)).getEntityId() == lid) {
-				mstatgotcha = (Entity)getEntityWorld().loadedEntityList.get(li);
-				break;
-			}
-		}
-	}
+//	/**
+//	 * 紐の持ち主
+//	 */
+//	public void updateGotcha() {
+//		int lid = dataManager.get(EntityLittleMaid.dataWatch_Gotcha);
+//		if (lid == 0) {
+//			mstatgotcha = null;
+//			return;
+//		}
+//		if (mstatgotcha != null && mstatgotcha.getEntityId() == lid) {
+//			return;
+//		}
+//		for (int li = 0; li < getEntityWorld().loadedEntityList.size(); li++) {
+//			if (((Entity)getEntityWorld().loadedEntityList.get(li)).getEntityId() == lid) {
+//				mstatgotcha = (Entity)getEntityWorld().loadedEntityList.get(li);
+//				break;
+//			}
+//		}
+//	}
 
-	public void setGotcha(int pEntityID) {
-		dataManager.set(EntityLittleMaid.dataWatch_Gotcha, Integer.valueOf(pEntityID));
-	}
-	public void setGotcha(Entity pEntity) {
-		setGotcha(pEntity == null ? 0 : pEntity.getEntityId());
-	}
+//	public void setGotcha(int pEntityID) {
+//		dataManager.set(EntityLittleMaid.dataWatch_Gotcha, Integer.valueOf(pEntityID));
+//	}
+//	public void setGotcha(Entity pEntity) {
+//		setGotcha(pEntity == null ? 0 : pEntity.getEntityId());
+//	}
 
 
 	/**
