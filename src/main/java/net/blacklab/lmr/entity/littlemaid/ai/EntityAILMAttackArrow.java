@@ -22,6 +22,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+/**
+ * メイドさんの弓での攻撃処理
+ * @author firis-games
+ *
+ */
 public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 
 	protected boolean fEnable;
@@ -92,6 +97,15 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 						fTarget.posX, fTarget.posY+fTarget.getEyeHeight(), fTarget.posZ, false, true, false)*/) {
 				return false;
 			}
+			
+			//近距離だと撃たない
+			//2マス以内
+			double crossRange = 2 * 2;
+			double targetRange = fMaid.getDistanceSq(entityliving);
+			if (targetRange < crossRange) {
+				return false;
+			}
+			
 			fTarget = entityliving;
 			return true;
 //				}
@@ -163,6 +177,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 			return;
 		}
 
+		//敵が射程範囲内の場合は処理続行
 		if (ldist < lrange) {
 			if(fTarget==null){
 				resetTask();

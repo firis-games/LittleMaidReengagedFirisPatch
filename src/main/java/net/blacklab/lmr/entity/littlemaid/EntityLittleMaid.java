@@ -682,8 +682,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		ltasks[0].addTask(2, aiSit);
 		ltasks[0].addTask(3, aiJumpTo);
 		ltasks[0].addTask(4, aiFindBlock);
-		ltasks[0].addTask(5, aiAttack);
-		ltasks[0].addTask(6, aiShooting);
+		ltasks[0].addTask(5, aiShooting);
+		ltasks[0].addTask(6, aiAttack);
 		//ltasks[0].addTask(8, aiPanic);
 		ltasks[0].addTask(10, aiBeg);
 		ltasks[0].addTask(11, aiBegMove);

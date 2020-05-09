@@ -30,6 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 /**
@@ -124,7 +125,7 @@ public class EntityMode_Archer extends EntityModeBase {
 	public boolean setMode(String pMode) {
 		switch (pMode) {
 		case mmode_Archer :
-			owner.aiAttack.setEnable(false);
+			owner.aiAttack.setEnable(true);
 			owner.aiShooting.setEnable(true);
 			owner.setBloodsuck(false);
 			return true;
@@ -309,6 +310,40 @@ public class EntityMode_Archer extends EntityModeBase {
 			}			
 		}
 		return false;
+	}
+	
+	/**
+	 * ターゲットをノックバックする
+	 */
+	@Override
+	public boolean attackEntityAsMob(String pMode, Entity targetEntity) {
+		
+		if (!mmode_Archer.equals(pMode)) return false;
+		
+		float knockBackLevel = 2.5F;
+		
+		// 弓の特殊攻撃
+		if (targetEntity instanceof EntityLivingBase)
+        {
+            ((EntityLivingBase)targetEntity).knockBack(
+            		this.owner, 
+            		(float)knockBackLevel * 0.5F, 
+            		(double)MathHelper.sin(this.owner.rotationYaw * 0.017453292F), 
+            		(double)(-MathHelper.cos(this.owner.rotationYaw * 0.017453292F)));
+        }
+        else
+        {
+            targetEntity.addVelocity(
+            		(double)(-MathHelper.sin(this.owner.rotationYaw * 0.017453292F) * (float)knockBackLevel * 0.5F), 
+            		0.1D, 
+            		(double)(MathHelper.cos(this.owner.rotationYaw * 0.017453292F) * (float)knockBackLevel * 0.5F));
+        }
+		
+		this.owner.playSound("entity.player.attack.knockback");
+		
+		this.owner.setAttackTarget(null);
+		
+		return true;
 	}
 
 }
