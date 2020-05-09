@@ -90,7 +90,6 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -1693,15 +1692,15 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		par1nbtTagCompound.setFloat(LittleMaidReengaged.MODID + ":MAID_EXP", maidExperience);
 //		par1nbtTagCompound.setInteger(LittleMaidReengaged.MODID + ":EXP_BOOST", gainExpBoost);
 
-		// 肩車
-		boolean isRide = isRiding();
-		par1nbtTagCompound.setBoolean(LittleMaidReengaged.MODID + ":riding", isRide);
-		if (isRide) {
-			if (getRidingEntity() instanceof EntityPlayer) {
-				par1nbtTagCompound.setString(LittleMaidReengaged.MODID + ":ridingPlayer", getRidingEntity().getUniqueID().toString());
-			}
-			par1nbtTagCompound.setIntArray(LittleMaidReengaged.MODID + ":lastPosition", new int[]{(int) posX, (int) posY, (int) posZ});
-		}
+//		// 肩車
+//		boolean isRide = isRiding();
+//		par1nbtTagCompound.setBoolean(LittleMaidReengaged.MODID + ":riding", isRide);
+//		if (isRide) {
+//			if (getRidingEntity() instanceof EntityPlayer) {
+//				par1nbtTagCompound.setString(LittleMaidReengaged.MODID + ":ridingPlayer", getRidingEntity().getUniqueID().toString());
+//			}
+//			par1nbtTagCompound.setIntArray(LittleMaidReengaged.MODID + ":lastPosition", new int[]{(int) posX, (int) posY, (int) posZ});
+//		}
 
 //		// Tiles
 //		NBTTagCompound lnbt = new NBTTagCompound();
@@ -1820,22 +1819,22 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		
 //		dataManager.set(EntityLittleMaid.dataWatch_MaidExpValue, maidExperience);
 
-		// 肩車
-		boolean isRide = par1nbtTagCompound.getBoolean(LittleMaidReengaged.MODID + ":riding");
-		if (isRide) {
-			int[] lastPosition = par1nbtTagCompound.getIntArray(LittleMaidReengaged.MODID + ":lastPosition");
-			setLocationAndAngles(lastPosition[0], lastPosition[1], lastPosition[2], 0, 0);
-
-			String playerUid = par1nbtTagCompound.getString(LittleMaidReengaged.MODID + ":ridingPlayer");
-			if (!playerUid.isEmpty()) {
-				try {
-					EntityPlayer ridingPlayer = getEntityWorld().getPlayerEntityByUUID(UUID.fromString(playerUid));
-					if (ridingPlayer != null) {
-						startRiding(ridingPlayer);
-					}
-				} catch(IllegalArgumentException exception) {}
-			}
-		}
+//		// 肩車
+//		boolean isRide = par1nbtTagCompound.getBoolean(LittleMaidReengaged.MODID + ":riding");
+//		if (isRide) {
+//			int[] lastPosition = par1nbtTagCompound.getIntArray(LittleMaidReengaged.MODID + ":lastPosition");
+//			setLocationAndAngles(lastPosition[0], lastPosition[1], lastPosition[2], 0, 0);
+//
+//			String playerUid = par1nbtTagCompound.getString(LittleMaidReengaged.MODID + ":ridingPlayer");
+//			if (!playerUid.isEmpty()) {
+//				try {
+//					EntityPlayer ridingPlayer = getEntityWorld().getPlayerEntityByUUID(UUID.fromString(playerUid));
+//					if (ridingPlayer != null) {
+//						startRiding(ridingPlayer);
+//					}
+//				} catch(IllegalArgumentException exception) {}
+//			}
+//		}
 
 //		LittleMaidReengaged.Debug("READ %s %s", textureNameMain, textureNameArmor);
 
@@ -1856,39 +1855,39 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	}
 
-	public boolean canBePushed()
-	{
-		// --------------------------------------------
-		// 肩車状態でプレイヤーが馬に乗っているときは、当たり判定をなくす。
-		if(isMaidWait()) return false;
-		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
-			if(getRidingEntity().getRidingEntity() instanceof EntityHorse)
-			{
-				return false;
-			}
-		}
-		// --------------------------------------------
+//	public boolean canBePushed()
+//	{
+//		// --------------------------------------------
+//		// 肩車状態でプレイヤーが馬に乗っているときは、当たり判定をなくす。
+//		if(isMaidWait()) return false;
+//		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
+//			if(getRidingEntity().getRidingEntity() instanceof EntityHorse)
+//			{
+//				return false;
+//			}
+//		}
+//		// --------------------------------------------
+//
+//		return !isDead;
+//	}
 
-		return !isDead;
-	}
+//	// おんぶおばけは無敵
+//	@Override
+//	public boolean canBeCollidedWith() {
+//		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
+//			ItemStack litemstack = mstatMasterEntity.getHeldItemMainhand();
+//			return litemstack.isEmpty() || (litemstack.getItem() == Items.SADDLE);
+//		}
+//		return super.canBeCollidedWith();
+//	}
 
-	// おんぶおばけは無敵
-	@Override
-	public boolean canBeCollidedWith() {
-		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
-			ItemStack litemstack = mstatMasterEntity.getHeldItemMainhand();
-			return litemstack.isEmpty() || (litemstack.getItem() == Items.SADDLE);
-		}
-		return super.canBeCollidedWith();
-	}
-
-	@Override
-	public boolean canBeAttackedWithItem() {
-		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
-			return false;
-		}
-		return super.canBeAttackedWithItem();
-	}
+//	@Override
+//	public boolean canBeAttackedWithItem() {
+//		if (getRidingEntity() != null && getRidingEntity() == mstatMasterEntity) {
+//			return false;
+//		}
+//		return super.canBeAttackedWithItem();
+//	}
 
 	@Override
 	public double getMountedYOffset() {
@@ -1906,20 +1905,19 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	public double getYOffset() {
 		double yOffset = -0.30D;
 
-		if(getRidingEntity() instanceof EntityPlayer) {
-			// 姿勢制御
-
-			// --------------------------------------------
-			// プレイヤーが馬に乗っているときは、肩車ではなく馬の後ろに乗る
-			if(getRidingEntity().getRidingEntity() instanceof EntityHorse)
-			{
-				if(getEntityWorld().isRemote) {
-					return yOffset - 2.8F;
-				} else {
-					return yOffset - 1.0F;
-				}
-			}
-		}
+//		if(getRidingEntity() instanceof EntityPlayer) {
+//			// 姿勢制御
+//			// --------------------------------------------
+//			// プレイヤーが馬に乗っているときは、肩車ではなく馬の後ろに乗る
+//			if(getRidingEntity().getRidingEntity() instanceof EntityHorse)
+//			{
+//				if(getEntityWorld().isRemote) {
+//					return yOffset - 2.8F;
+//				} else {
+//					return yOffset - 1.0F;
+//				}
+//			}
+//		}
 		return yOffset;
 	}
 
@@ -2824,16 +2822,16 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			// 構えの更新
 			updateAimebow();
 
-			// 自分より大きなものは乗っけない（イカ除く）
-			if (getControllingPassenger() != null && !(getControllingPassenger() instanceof EntitySquid)) {
-				if (height * width < getControllingPassenger().height * getControllingPassenger().width) {
-					if (getControllingPassenger() instanceof EntityLivingBase) {
-						attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase)getControllingPassenger()), 0);
-					}
-					getControllingPassenger().dismountRidingEntity();
-					return;
-				}
-			}
+//			// 自分より大きなものは乗っけない（イカ除く）
+//			if (getControllingPassenger() != null && !(getControllingPassenger() instanceof EntitySquid)) {
+//				if (height * width < getControllingPassenger().height * getControllingPassenger().width) {
+//					if (getControllingPassenger() instanceof EntityLivingBase) {
+//						attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase)getControllingPassenger()), 0);
+//					}
+//					getControllingPassenger().dismountRidingEntity();
+//					return;
+//				}
+//			}
 
 			// 斧装備時は攻撃力が上がる
 			IAttributeInstance latt = getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
@@ -3200,10 +3198,14 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 	}
 
-//	@Override
-//	public boolean isMovementBlocked() {
-//		return super.isMovementBlocked();
-//	}
+	/**
+	 * Dead時の動きを制限する処理
+	 * アクセス修飾子を変更
+	 */
+	@Override
+	public boolean isMovementBlocked() {
+		return super.isMovementBlocked();
+	}
 
 	/**
 	 * ご主人様との距離
@@ -3311,7 +3313,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	public boolean processInteract(EntityPlayer par1EntityPlayer, EnumHand hand)
 	{
 		LittleMaidReengaged.Debug(getEntityWorld().isRemote, "LMM_EntityLittleMaid.interact:"+par1EntityPlayer.getGameProfile().getName());
-		float lhealth = getHealth();
+//		float lhealth = getHealth();
 		
 		ItemStack par3ItemStack = par1EntityPlayer.getHeldItem(hand);
 
@@ -3328,12 +3330,13 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		if (par1EntityPlayer.isSneaking()) {
 			return false;
 		}
-		// ナデリ判定
-		if (lhealth > 0F && par1EntityPlayer.getControllingPassenger() != null && !(par1EntityPlayer.getControllingPassenger() instanceof EntityLittleMaid)) {
-			// 載せ替え
-			par1EntityPlayer.getControllingPassenger().startRiding(this);
-			return true;
-		}
+
+//		// ナデリ判定
+//		if (lhealth > 0F && par1EntityPlayer.getControllingPassenger() != null && !(par1EntityPlayer.getControllingPassenger() instanceof EntityLittleMaid)) {
+//			// 載せ替え
+//			par1EntityPlayer.getControllingPassenger().startRiding(this);
+//			return true;
+//		}
 
 //		if (mstatgotcha == null && par1EntityPlayer.fishEntity == null) {
 //			if(!par3ItemStack.isEmpty() && par3ItemStack.getItem() == Items.LEAD) {
