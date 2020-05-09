@@ -140,12 +140,15 @@ public interface IModelCaps {
 	public static final int caps_Ground				= 0x0139;
 	public static final int caps_interestedAngle	= 0x0150;
 
-	// PlayerFormLittleMaid
+	/** マルチモデルから描画サイズを取得します */
 	public static final int caps_ScaleFactor	= 0x0200;
-	public static final int caps_PartsVisible	= 0x0201;
-	public static final int caps_Posing			= 0x0202;
-	public static final int caps_Actors			= 0x0203;
-	public static final int caps_PartsStrings	= 0x0204;
+
+//	// PlayerFormLittleMaid
+//	public static final int caps_ScaleFactor	= 0x0200;
+//	public static final int caps_PartsVisible	= 0x0201;
+//	public static final int caps_Posing			= 0x0202;
+//	public static final int caps_Actors			= 0x0203;
+//	public static final int caps_PartsStrings	= 0x0204;
 
 	// test
 	/** モデルが変更された時に実行される関数へリンクします **/

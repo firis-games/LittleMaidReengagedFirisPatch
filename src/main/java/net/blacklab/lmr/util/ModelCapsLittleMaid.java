@@ -192,8 +192,8 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 		case caps_heldItems:
 		case caps_currentEquippedItem:
 			return getItemStackNull(owner.getCurrentEquippedItem());
-		case caps_PartsVisible:
-			return owner.getModelConfigCompound().selectValue;
+//		case caps_PartsVisible:
+//			return owner.getModelConfigCompound().selectValue;
 		case caps_textureData:
 			return owner.getModelConfigCompound();
 		case caps_currentRightHandItem:
@@ -207,10 +207,10 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 
 	@Override
 	public boolean setCapsValue(int pIndex, Object... pArg) {
-		switch (pIndex) {
-		case caps_PartsVisible:
-			owner.getModelConfigCompound().selectValue = (Integer)pArg[0];
-		}
+//		switch (pIndex) {
+//		case caps_PartsVisible:
+//			owner.getModelConfigCompound().selectValue = (Integer)pArg[0];
+//		}
 		return super.setCapsValue(pIndex, pArg);
 	}
 	

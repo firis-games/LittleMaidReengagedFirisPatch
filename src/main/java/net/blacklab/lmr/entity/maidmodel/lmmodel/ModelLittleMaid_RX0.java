@@ -225,8 +225,8 @@ public class ModelLittleMaid_RX0 extends ModelLittleMaidBase {
 	public void setDefaultPause(float par1, float par2, float pTicksExisted,
 			float pHeadYaw, float pHeadPitch, float par6, IModelCaps pEntityCaps) {
 		super.setDefaultPause(par1, par2, pTicksExisted, pHeadYaw, pHeadPitch, par6, pEntityCaps);
-		int lvisible = ModelCapsHelper.getCapsValueInt(pEntityCaps, caps_PartsVisible);
-		
+//		int lvisible = ModelCapsHelper.getCapsValueInt(pEntityCaps, caps_PartsVisible);
+		int lvisible = 0;
 		
 		bipedRibbon.setVisible(true);
 //		Skirt.setVisible((lvisible & 0x0004) == 0);
@@ -398,26 +398,26 @@ public class ModelLittleMaid_RX0 extends ModelLittleMaidBase {
 		}
 	}
 
-	@Override
-	public Object getCapsValue(int pIndex, Object... pArg) {
-		switch (pIndex) {
-		case caps_PartsStrings:
-			return "DestroyMode,mimiSkirt,noSkirt";
-		case caps_isUpdateSize:
-			return true;
-		}
-		
-		return super.getCapsValue(pIndex, pArg);
-	}
+//	@Override
+//	public Object getCapsValue(int pIndex, Object... pArg) {
+//		switch (pIndex) {
+//		case caps_PartsStrings:
+//			return "DestroyMode,mimiSkirt,noSkirt";
+//		case caps_isUpdateSize:
+//			return true;
+//		}
+//		
+//		return super.getCapsValue(pIndex, pArg);
+//	}
 
-	@Override
-	public float getHeight(IModelCaps pEntityCaps) {
-		int lvisible = ModelCapsHelper.getCapsValueInt(pEntityCaps, caps_PartsVisible);
-		boolean lf = (!ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isOverdriveDelay) &&
-				!ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isBloodsuck) &&
-				((lvisible & 0x0001) == 0)) && true;
-		return lf ? 1.152F : 1.58F;
-	}
+//	@Override
+//	public float getHeight(IModelCaps pEntityCaps) {
+//		int lvisible = ModelCapsHelper.getCapsValueInt(pEntityCaps, caps_PartsVisible);
+//		boolean lf = (!ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isOverdriveDelay) &&
+//				!ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isBloodsuck) &&
+//				((lvisible & 0x0001) == 0)) && true;
+//		return lf ? 1.152F : 1.58F;
+//	}
 
 	@Override
 	public float getWidth(IModelCaps pEntityCaps) {

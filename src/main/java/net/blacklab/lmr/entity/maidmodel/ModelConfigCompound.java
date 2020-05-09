@@ -337,7 +337,7 @@ public class ModelConfigCompound  {
 	 * 表示制御に使うフラグ群<br>
 	 * int型32bitで保存。
 	 */
-	public int selectValue;
+//	public int selectValue;
 
 
 //	public int data_Color	= 19;
@@ -345,6 +345,11 @@ public class ModelConfigCompound  {
 //	public int data_Value	= 21;
 
 
+	/**
+	 * コンストラクタ
+	 * @param pEntity
+	 * @param pCaps
+	 */
 	public ModelConfigCompound(EntityLivingBase pEntity, IModelCapsData pCaps) {
 		owner = pEntity;
 		entityCaps = pCaps;
@@ -746,6 +751,7 @@ public class ModelConfigCompound  {
 	 */
 	public ResourceLocation getGUITexture() {
 		//return ((TextureBox)textureBox[0]).getTextureName(ModelManager.tx_gui);
+		if (this.textureBoxLittleMaid == null) return null;
 		return this.textureBoxLittleMaid.getTextureGuiBackground();
 	}
 
