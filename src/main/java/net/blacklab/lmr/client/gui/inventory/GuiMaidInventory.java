@@ -398,7 +398,9 @@ public class GuiMaidInventory extends GuiContainer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		int orgnHealth = MathHelper.ceil(entitylittlemaid.getHealth());
-		int orgnLasthealth = orgnHealth + MathHelper.ceil(entitylittlemaid.getLastDamage());
+//		int orgnLasthealth = orgnHealth + MathHelper.ceil(entitylittlemaid.getLastDamage());
+		int orgnLasthealth = orgnHealth;
+		
 		this.rand.setSeed(updateCounter * 312871);
 		//		FoodStats var7 = entitylittlemaid.getFoodStats();
 //		int var8 = var7.getFoodLevel();

@@ -224,9 +224,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	
 //	public Map<String, EquippedStabilizer> maidStabilizer = new HashMap<String, EquippedStabilizer>();
 
-	public float getLastDamage(){
-		return lastDamage;
-	}
+//	public float getLastDamage(){
+//		return lastDamage;
+//	}
 
 //	public int fencerDefDetonateTick = 0;
 
