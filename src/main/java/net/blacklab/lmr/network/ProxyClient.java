@@ -212,9 +212,9 @@ public class ProxyClient extends ProxyCommon
 			LittleMaidReengaged.Debug(String.format("playSound:%s", sound.name()));
 			break;
 
-		case CLIENT_ONDEATH :
-			lemaid.manualOnDeath();
-			break;
+//		case CLIENT_ONDEATH :
+//			lemaid.manualOnDeath();
+//			break;
 
 		case CLIENT_CURRENT_ITEM:
 			lemaid.maidInventory.currentItem = tagCompound.getInteger("Index");

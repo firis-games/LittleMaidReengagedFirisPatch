@@ -96,8 +96,8 @@ public class LMRMessage implements IMessage
 		SERVER_UPDATE_SLOTS		(0x10,  true),
 		/** Request ExpBoost value **/
 		SERVER_REQUEST_BOOST	(0x11,  true),
-		/** Notify onDeath to Client **/
-		CLIENT_ONDEATH			(0x12,  true),
+//		/** Notify onDeath to Client **/
+//		CLIENT_ONDEATH			(0x12,  true),
 
 		/** Ask server to tell model name **/
 		SERVER_REQUEST_MODEL	(0x20,  true),

@@ -503,7 +503,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		modeAIMap = new HashMap<>();
 
 		//メイドさんの職業管理用
-		initMaidMode();
+		this.initJobControllerWithAi();
+		
 //		mstatModeName = "";
 //		// 初期化時実行コード
 //		for (EntityModeBase lem : maidEntityModeList) {
@@ -511,9 +512,12 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		}
 		
 		modeTrigger = ModeTrigger.getDefaultInstance();
+		
+		//初期モードの設定
 		setMaidMode(EntityMode_Basic.mmode_Wild);
 		
-		setExperienceHandler(new LMExperienceController(this));
+		//メイドさんの経験値管理用
+		this.experienceHandler = new LMExperienceController(this);
 
 		/*
 		if(par1World.isRemote){
@@ -665,7 +669,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	/**
 	 * メイドさんの職業関連を初期化
 	 */
-	public void initMaidMode() {
+	public void initJobControllerWithAi() {
 		
 		// AI
 		aiBeg = new EntityAILMBeg(this, 8F);
@@ -4263,12 +4267,12 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return experienceHandler;
 	}
 
-	public void setExperienceHandler(LMExperienceController handler) {
-		if (handler == null) {
-			throw new NullPointerException("ExperienceHandler cannot be null!");
-		}
-		experienceHandler = handler;
-	}
+//	public void setExperienceHandler(LMExperienceController handler) {
+//		if (handler == null) {
+//			throw new NullPointerException("ExperienceHandler cannot be null!");
+//		}
+//		experienceHandler = handler;
+//	}
 
 //	/**
 //	 * 経験値ブーストを取得
@@ -4344,15 +4348,15 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		dataManager.set(EntityLittleMaid.dataWatch_Color, index);
 	}
 
-	public boolean updateMaidColor() {
-		// 同一性のチェック
-		byte lc = getColor();
-		if (modelConfigCompound.getColor() != lc) {
-			modelConfigCompound.setColor(lc);
-			return true;
-		}
-		return false;
-	}
+//	public boolean updateMaidColor() {
+//		// 同一性のチェック
+//		byte lc = getColor();
+//		if (modelConfigCompound.getColor() != lc) {
+//			modelConfigCompound.setColor(lc);
+//			return true;
+//		}
+//		return false;
+//	}
 
 	/**
 	 * 紐の持ち主
