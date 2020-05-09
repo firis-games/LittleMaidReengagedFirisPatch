@@ -752,6 +752,10 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return this.jobController.getMaidModeString();
 	}
 
+	/**
+	 * Gui表示用職業名
+	 * @return
+	 */
 	public String getMaidModeStringForDisplay() {
 		if (!isContract()) {
 			return getMaidModeString();
@@ -2317,82 +2321,82 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		super.onEntityUpdate();
 	}
 
-	/**
-	 * 埋葬対策コピー
-	 */
-	@SuppressWarnings("deprecation")
-	private boolean isBlockTranslucent(int par1, int par2, int par3) {
-		IBlockState iState = getEntityWorld().getBlockState(new BlockPos(par1, par2, par3));
-		return iState.getBlock().isNormalCube(iState);
-	}
+//	/**
+//	 * 埋葬対策コピー
+//	 */
+//	@SuppressWarnings("deprecation")
+//	private boolean isBlockTranslucent(int par1, int par2, int par3) {
+//		IBlockState iState = getEntityWorld().getBlockState(new BlockPos(par1, par2, par3));
+//		return iState.getBlock().isNormalCube(iState);
+//	}
 
-	/**
-	 * 埋葬対策コピー
-	 */
-	@Override
-	protected boolean pushOutOfBlocks(double par1, double par3, double par5) {
-		// EntityPlayerSPのを引っ張ってきた
-		int var7 = MathHelper.floor(par1);
-		int var8 = MathHelper.floor(par3);
-		int var9 = MathHelper.floor(par5);
-		double var10 = par1 - var7;
-		double var12 = par5 - var9;
-
-		boolean lflag = false;
-		for (int li = 0; li < height; li++) {
-			lflag |= isBlockTranslucent(var7, var8 + li, var9);
-		}
-		if (lflag) {
-			boolean var14 = !isBlockTranslucent(var7 - 1, var8, var9) && !isBlockTranslucent(var7 - 1, var8 + 1, var9);
-			boolean var15 = !isBlockTranslucent(var7 + 1, var8, var9) && !isBlockTranslucent(var7 + 1, var8 + 1, var9);
-			boolean var16 = !isBlockTranslucent(var7, var8, var9 - 1) && !isBlockTranslucent(var7, var8 + 1, var9 - 1);
-			boolean var17 = !isBlockTranslucent(var7, var8, var9 + 1) && !isBlockTranslucent(var7, var8 + 1, var9 + 1);
-			byte var18 = -1;
-			double var19 = 9999.0D;
-
-			if (var14 && var10 < var19) {
-				var19 = var10;
-				var18 = 0;
-			}
-
-			if (var15 && 1.0D - var10 < var19) {
-				var19 = 1.0D - var10;
-				var18 = 1;
-			}
-
-			if (var16 && var12 < var19) {
-				var19 = var12;
-				var18 = 4;
-			}
-
-			if (var17 && 1.0D - var12 < var19) {
-				var19 = 1.0D - var12;
-				var18 = 5;
-			}
-
-			float var21 = 0.1F;
-
-			if (var18 == 0) {
-				motionX = (-var21);
-			}
-
-			if (var18 == 1) {
-				motionX = var21;
-			}
-
-			if (var18 == 4) {
-				motionZ = (-var21);
-			}
-
-			if (var18 == 5) {
-				motionZ = var21;
-			}
-
-			return !(var14 | var15 | var16 | var17);
-		}
-
-		return false;
-	}
+//	/**
+//	 * 埋葬対策コピー
+//	 */
+//	@Override
+//	protected boolean pushOutOfBlocks(double par1, double par3, double par5) {
+//		// EntityPlayerSPのを引っ張ってきた
+//		int var7 = MathHelper.floor(par1);
+//		int var8 = MathHelper.floor(par3);
+//		int var9 = MathHelper.floor(par5);
+//		double var10 = par1 - var7;
+//		double var12 = par5 - var9;
+//
+//		boolean lflag = false;
+//		for (int li = 0; li < height; li++) {
+//			lflag |= isBlockTranslucent(var7, var8 + li, var9);
+//		}
+//		if (lflag) {
+//			boolean var14 = !isBlockTranslucent(var7 - 1, var8, var9) && !isBlockTranslucent(var7 - 1, var8 + 1, var9);
+//			boolean var15 = !isBlockTranslucent(var7 + 1, var8, var9) && !isBlockTranslucent(var7 + 1, var8 + 1, var9);
+//			boolean var16 = !isBlockTranslucent(var7, var8, var9 - 1) && !isBlockTranslucent(var7, var8 + 1, var9 - 1);
+//			boolean var17 = !isBlockTranslucent(var7, var8, var9 + 1) && !isBlockTranslucent(var7, var8 + 1, var9 + 1);
+//			byte var18 = -1;
+//			double var19 = 9999.0D;
+//
+//			if (var14 && var10 < var19) {
+//				var19 = var10;
+//				var18 = 0;
+//			}
+//
+//			if (var15 && 1.0D - var10 < var19) {
+//				var19 = 1.0D - var10;
+//				var18 = 1;
+//			}
+//
+//			if (var16 && var12 < var19) {
+//				var19 = var12;
+//				var18 = 4;
+//			}
+//
+//			if (var17 && 1.0D - var12 < var19) {
+//				var19 = 1.0D - var12;
+//				var18 = 5;
+//			}
+//
+//			float var21 = 0.1F;
+//
+//			if (var18 == 0) {
+//				motionX = (-var21);
+//			}
+//
+//			if (var18 == 1) {
+//				motionX = var21;
+//			}
+//
+//			if (var18 == 4) {
+//				motionZ = (-var21);
+//			}
+//
+//			if (var18 == 5) {
+//				motionZ = var21;
+//			}
+//
+//			return !(var14 | var15 | var16 | var17);
+//		}
+//
+//		return false;
+//	}
 
 	@SuppressWarnings("deprecation")
 	@Override
