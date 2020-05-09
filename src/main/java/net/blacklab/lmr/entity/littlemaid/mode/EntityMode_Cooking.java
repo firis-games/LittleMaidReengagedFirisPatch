@@ -128,7 +128,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		// 燃焼アイテムを持っている？
 		if (!owner.getCurrentEquippedItem().isEmpty() && owner.maidInventory.getSmeltingItem() > -1) {
 			fDistance = Double.MAX_VALUE;
-			owner.clearTilePos();
+			owner.jobController.clearTilePos();
 			owner.setSneaking(false);
 			return true;
 		}
@@ -137,8 +137,8 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 
 	@Override
 	public boolean shouldBlock(String pMode) {
-		return owner.maidTileEntity instanceof TileEntityFurnace &&
-				(((TileEntityFurnace)owner.maidTileEntity).isBurning() ||
+		return owner.jobController.getTileEntity() instanceof TileEntityFurnace &&
+				(((TileEntityFurnace)owner.jobController.getTileEntity()).isBurning() ||
 						isTriggerItem(mmode_Cooking, owner.getCurrentEquippedItem()));
 	}
 
@@ -152,11 +152,11 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 		// 世界のメイドから
 		if (checkWorldMaid(ltile)) return false;
 		// 使用していた竈ならそこで終了
-		if (owner.isUsingTile(ltile)) return true;
+		if (owner.jobController.isUsingTile(ltile)) return true;
 
-		double ldis = owner.getDistanceTilePosSq(ltile);
+		double ldis = this.getDistanceTilePosSq(ltile);
 		if (fDistance > ldis) {
-			owner.setTilePos(ltile);
+			owner.jobController.setTilePos(ltile);
 			fDistance = ldis;
 		}
 
@@ -165,11 +165,11 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 
 	@Override
 	public boolean executeBlock(String pMode, int px, int py, int pz) {
-		if (!owner.isEqualTile()) {
+		if (!owner.jobController.isEqualTile()) {
 			return false;
 		}
 
-		TileEntityFurnace ltile = (TileEntityFurnace)owner.maidTileEntity;
+		TileEntityFurnace ltile = (TileEntityFurnace)owner.jobController.getTileEntity();
 		ItemStack litemstack;
 		boolean lflag = false;
 		int li;

@@ -132,7 +132,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
 		if (!owner.getCurrentEquippedItem().isEmpty()) {
 			fDistance = Double.MAX_VALUE;
-			owner.clearTilePos();
+			owner.jobController.clearTilePos();
 			owner.setSneaking(false);
 			return true;
 		}
@@ -142,8 +142,8 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 	@Override
 	public boolean shouldBlock(String pMode) {
 		// 実行中判定
-		return owner.maidTileEntity instanceof TileEntityBrewingStand &&
-				(((TileEntityBrewingStand)owner.maidTileEntity).getField(0) > 0 ||
+		return owner.jobController.getTileEntity() instanceof TileEntityBrewingStand &&
+				(((TileEntityBrewingStand)owner.jobController.getTileEntity()).getField(0) > 0 ||
 						(!owner.getCurrentEquippedItem().isEmpty()) || inventryPos > 0);
 	}
 
@@ -160,11 +160,11 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 		// 世界のメイドから
 		checkWorldMaid(ltile);
 		// 使用していた蒸留器ならそこで終了
-		if (owner.isUsingTile(ltile)) return true;
+		if (owner.jobController.isUsingTile(ltile)) return true;
 
-		double ldis = owner.getDistanceTilePosSq(ltile);
+		double ldis = this.getDistanceTilePosSq(ltile);
 		if (fDistance > ldis) {
-			owner.setTilePos(ltile);
+			owner.jobController.setTilePos(ltile);
 			fDistance = ldis;
 		}
 
@@ -173,7 +173,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 
 	@Override
 	public boolean executeBlock(String pMode, int px, int py, int pz) {
-		TileEntityBrewingStand ltile = (TileEntityBrewingStand)owner.maidTileEntity;
+		TileEntityBrewingStand ltile = (TileEntityBrewingStand)owner.jobController.getTileEntity();
 		if (owner.getEntityWorld().getTileEntity(new BlockPos(px, py, pz)) != ltile) {
 			return false;
 		}

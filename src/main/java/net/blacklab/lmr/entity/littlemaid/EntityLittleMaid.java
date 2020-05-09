@@ -124,7 +124,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.profiler.Profiler;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
@@ -254,9 +253,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	public boolean maidFreedom;
 	public boolean maidWait;
 //	public int homeWorld;
-	protected int maidTiles[][] = new int[9][3];
-	public int maidTile[] = new int[3];
-	public TileEntity maidTileEntity;
+//	protected int maidTiles[][] = new int[9][3];
+//	public int maidTile[] = new int[3];
+//	public TileEntity maidTileEntity;
 
 	// 動的な状態
 	protected EntityPlayer mstatMasterEntity;	// 主
@@ -791,9 +790,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	}
 */
 
-	public int[][] getMaidTiles() {
-		return maidTiles;
-	}
+//	public int[][] getMaidTiles() {
+//		return maidTiles;
+//	}
 
 	public void setMaidArmorVisible(int i){
 		if(i<0) i=0;
@@ -943,7 +942,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		aiAvoidPlayer.setEnable(true);
 //		aiWander.setEnable(maidFreedom);
 		setBloodsuck(false);
-		clearTilePosAll();
+		this.jobController.clearTilePosAll();
 		
 //		for (int li = 0; li < maidEntityModeList.size(); li++) {
 //			EntityModeBase iem = maidEntityModeList.get(li);
@@ -1680,14 +1679,14 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			par1nbtTagCompound.setIntArray(LittleMaidReengaged.MODID + ":lastPosition", new int[]{(int) posX, (int) posY, (int) posZ});
 		}
 
-		// Tiles
-		NBTTagCompound lnbt = new NBTTagCompound();
-		par1nbtTagCompound.setTag("Tiles", lnbt);
-		for (int li = 0; li < maidTiles.length; li++) {
-			if (maidTiles[li] != null) {
-				lnbt.setIntArray(String.valueOf(li), maidTiles[li]);
-			}
-		}
+//		// Tiles
+//		NBTTagCompound lnbt = new NBTTagCompound();
+//		par1nbtTagCompound.setTag("Tiles", lnbt);
+//		for (int li = 0; li < maidTiles.length; li++) {
+//			if (maidTiles[li] != null) {
+//				lnbt.setIntArray(String.valueOf(li), maidTiles[li]);
+//			}
+//		}
 //		// 追加分
 //		for (int li = 0; li < maidEntityModeList.size(); li++) {
 //			maidEntityModeList.get(li).writeEntityToNBT(par1nbtTagCompound);
@@ -1755,12 +1754,12 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		setHomePosAndDistance(new BlockPos(lhx, lhy, lhz), (int)getMaximumHomeDistance());
 //		homeWorld = par1nbtTagCompound.getInteger("homeWorld");
 
-		// Tiles
-		NBTTagCompound lnbt = par1nbtTagCompound.getCompoundTag("Tiles");
-		for (int li = 0; li < maidTiles.length; li++) {
-			int ltile[] = lnbt.getIntArray(String.valueOf(li));
-			maidTiles[li] = ltile.length > 0 ? ltile : null;
-		}
+//		// Tiles
+//		NBTTagCompound lnbt = par1nbtTagCompound.getCompoundTag("Tiles");
+//		for (int li = 0; li < maidTiles.length; li++) {
+//			int ltile[] = lnbt.getIntArray(String.valueOf(li));
+//			maidTiles[li] = ltile.length > 0 ? ltile : null;
+//		}
 
 //		for (int li = 0; li < maidEntityModeList.size(); li++) {
 //			maidEntityModeList.get(li).readEntityFromNBT(par1nbtTagCompound);
@@ -3659,7 +3658,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		getNextEquipItem();
 
 		if (!orgnMode.equals(getMaidModeString())) {
-			clearTilePosAll();
+			this.jobController.clearTilePosAll();
 			getNavigator().clearPath();
 			setAttackTarget(null);
 			return true;
@@ -3849,7 +3848,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			//setMaidModeAITasks(null,null);
 			setWorking(false);
 			getNavigator().clearPath();
-			clearTilePosAll();
+			this.jobController.clearTilePosAll();
 			/*
 			setHomePosAndDistance(
 					new BlockPos(MathHelper.floor(lastTickPosX),
@@ -4600,76 +4599,76 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	// Tile関係
 
-	/**
-	 * 使っているTileかどうか判定して返す。
-	 */
-	public boolean isUsingTile(TileEntity pTile) {
-		if (this.jobController.isActiveModeClass()) {
-			return this.jobController.getActiveModeClass().isUsingTile(pTile);
-		}
-		for (int li = 0; li < maidTiles.length; li++) {
-			if (maidTiles[li] != null &&
-					pTile.getPos().getX() == maidTiles[li][0] &&
-					pTile.getPos().getY() == maidTiles[li][1] &&
-					pTile.getPos().getZ() == maidTiles[li][2]) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	/**
+//	 * 使っているTileかどうか判定して返す。
+//	 */
+//	public boolean isUsingTile(TileEntity pTile) {
+//		if (this.jobController.isActiveModeClass()) {
+//			return this.jobController.getActiveModeClass().isUsingTile(pTile);
+//		}
+//		for (int li = 0; li < maidTiles.length; li++) {
+//			if (maidTiles[li] != null &&
+//					pTile.getPos().getX() == maidTiles[li][0] &&
+//					pTile.getPos().getY() == maidTiles[li][1] &&
+//					pTile.getPos().getZ() == maidTiles[li][2]) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
-	public boolean isEqualTile() {
-		return getEntityWorld().getTileEntity(new BlockPos(maidTile[0], maidTile[1], maidTile[2])) == maidTileEntity;
-	}
+//	public boolean isEqualTile() {
+//		return getEntityWorld().getTileEntity(new BlockPos(maidTile[0], maidTile[1], maidTile[2])) == maidTileEntity;
+//	}
 
-	public boolean isTilePos() {
-		return maidTileEntity != null;
-	}
-	public boolean isTilePos(int pIndex) {
-		if (pIndex < maidTiles.length) {
-			return maidTiles[pIndex] != null;
-		}
-		return false;
-	}
+//	public boolean isTilePos() {
+//		return maidTileEntity != null;
+//	}
+//	public boolean isTilePos(int pIndex) {
+//		if (pIndex < maidTiles.length) {
+//			return maidTiles[pIndex] != null;
+//		}
+//		return false;
+//	}
 
 	/**
 	 * ローカル変数にTileの位置を入れる。
 	 */
-	public boolean getTilePos(int pIndex) {
-		if (pIndex < maidTiles.length && maidTiles[pIndex] != null) {
-			maidTile[0] = maidTiles[pIndex][0];
-			maidTile[1] = maidTiles[pIndex][1];
-			maidTile[2] = maidTiles[pIndex][2];
-			return true;
-		}
-		return false;
-	}
+//	public boolean getTilePos(int pIndex) {
+//		if (pIndex < maidTiles.length && maidTiles[pIndex] != null) {
+//			maidTile[0] = maidTiles[pIndex][0];
+//			maidTile[1] = maidTiles[pIndex][1];
+//			maidTile[2] = maidTiles[pIndex][2];
+//			return true;
+//		}
+//		return false;
+//	}
 
-	public BlockPos getCurrentTilePos() {
-		return new BlockPos(maidTile[0], maidTile[1], maidTile[2]);
-	}
+//	public BlockPos getCurrentTilePos() {
+//		return new BlockPos(maidTile[0], maidTile[1], maidTile[2]);
+//	}
 
-	public void setTilePos(int pX, int pY, int pZ) {
-		maidTile[0] = pX;
-		maidTile[1] = pY;
-		maidTile[2] = pZ;
-	}
-	public void setTilePos(TileEntity pEntity) {
-		maidTile[0] = pEntity.getPos().getX();
-		maidTile[1] = pEntity.getPos().getY();
-		maidTile[2] = pEntity.getPos().getZ();
-		maidTileEntity = pEntity;
-	}
-	public void setTilePos(int pIndex) {
-		if (pIndex < maidTiles.length) {
-			if (maidTiles[pIndex] == null) {
-				maidTiles[pIndex] = new int[3];
-			}
-			maidTiles[pIndex][0] = maidTile[0];
-			maidTiles[pIndex][1] = maidTile[1];
-			maidTiles[pIndex][2] = maidTile[2];
-		}
-	}
+//	public void setTilePos(int pX, int pY, int pZ) {
+//		maidTile[0] = pX;
+//		maidTile[1] = pY;
+//		maidTile[2] = pZ;
+//	}
+//	public void setTilePos(TileEntity pEntity) {
+//		maidTile[0] = pEntity.getPos().getX();
+//		maidTile[1] = pEntity.getPos().getY();
+//		maidTile[2] = pEntity.getPos().getZ();
+//		maidTileEntity = pEntity;
+//	}
+//	public void setTilePos(int pIndex) {
+//		if (pIndex < maidTiles.length) {
+//			if (maidTiles[pIndex] == null) {
+//				maidTiles[pIndex] = new int[3];
+//			}
+//			maidTiles[pIndex][0] = maidTile[0];
+//			maidTiles[pIndex][1] = maidTile[1];
+//			maidTiles[pIndex][2] = maidTile[2];
+//		}
+//	}
 //	public void setTilePos(int pIndex, int pX, int pY, int pZ) {
 //		if (pIndex < maidTiles.length) {
 //			if (maidTiles[pIndex] == null) {
@@ -4681,99 +4680,99 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		}
 //	}
 
-	public TileEntity getTileEntity() {
-		return maidTileEntity = getEntityWorld().getTileEntity(new BlockPos(maidTile[0], maidTile[1], maidTile[2]));
-	}
-	public TileEntity getTileEntity(int pIndex) {
-		if (pIndex < maidTiles.length && maidTiles[pIndex] != null) {
-			TileEntity ltile = getEntityWorld().getTileEntity(new BlockPos(
-					maidTiles[pIndex][0], maidTiles[pIndex][1], maidTiles[pIndex][2]));
-			if (ltile == null) {
-				clearTilePos(pIndex);
-			}
-			return ltile;
-		}
-		return null;
-	}
+//	public TileEntity getTileEntity() {
+//		return maidTileEntity = getEntityWorld().getTileEntity(new BlockPos(maidTile[0], maidTile[1], maidTile[2]));
+//	}
+//	public TileEntity getTileEntity(int pIndex) {
+//		if (pIndex < maidTiles.length && maidTiles[pIndex] != null) {
+//			TileEntity ltile = getEntityWorld().getTileEntity(new BlockPos(
+//					maidTiles[pIndex][0], maidTiles[pIndex][1], maidTiles[pIndex][2]));
+//			if (ltile == null) {
+//				clearTilePos(pIndex);
+//			}
+//			return ltile;
+//		}
+//		return null;
+//	}
 
-	public void clearTilePos() {
-		maidTileEntity = null;
-	}
-	public void clearTilePos(int pIndex) {
-		if (pIndex < maidTiles.length) {
-			maidTiles[pIndex] = null;
-		}
-	}
-	public void clearTilePosAll() {
-		for (int li = 0; li < maidTiles.length; li++) {
-			maidTiles[li] = null;
-		}
-	}
+//	public void clearTilePos() {
+//		maidTileEntity = null;
+//	}
+//	public void clearTilePos(int pIndex) {
+//		if (pIndex < maidTiles.length) {
+//			maidTiles[pIndex] = null;
+//		}
+//	}
+//	public void clearTilePosAll() {
+//		for (int li = 0; li < maidTiles.length; li++) {
+//			maidTiles[li] = null;
+//		}
+//	}
+//
+//	public double getDistanceTilePos() {
+//		return getDistance(
+//				maidTile[0] + 0.5D,
+//				maidTile[1] + 0.5D,
+//				maidTile[2] + 0.5D);
+//	}
+//	public double getDistanceTilePosSq() {
+//		return getDistanceSq(
+//				maidTile[0] + 0.5D,
+//				maidTile[1] + 0.5D,
+//				maidTile[2] + 0.5D);
+//	}
 
-	public double getDistanceTilePos() {
-		return getDistance(
-				maidTile[0] + 0.5D,
-				maidTile[1] + 0.5D,
-				maidTile[2] + 0.5D);
-	}
-	public double getDistanceTilePosSq() {
-		return getDistanceSq(
-				maidTile[0] + 0.5D,
-				maidTile[1] + 0.5D,
-				maidTile[2] + 0.5D);
-	}
+//	public double getDistanceTilePos(int pIndex) {
+//		if (maidTiles.length > pIndex && maidTiles[pIndex] != null) {
+//			return getDistance(
+//					maidTiles[pIndex][0] + 0.5D,
+//					maidTiles[pIndex][1] + 0.5D,
+//					maidTiles[pIndex][2] + 0.5D);
+//		}
+//		return -1D;
+//	}
+//	public double getDistanceTilePosSq(int pIndex) {
+//		if (maidTiles.length > pIndex && maidTiles[pIndex] != null) {
+//			return getDistanceSq(
+//					maidTiles[pIndex][0] + 0.5D,
+//					maidTiles[pIndex][1] + 0.5D,
+//					maidTiles[pIndex][2] + 0.5D);
+//		}
+//		return -1D;
+//	}
+//	public double getDistanceTilePos(TileEntity pTile) {
+//		if (pTile != null) {
+//			return getDistance(
+//					pTile.getPos().getX() + 0.5D,
+//					pTile.getPos().getY() + 0.5D,
+//					pTile.getPos().getZ() + 0.5D);
+//		}
+//		return -1D;
+//	}
+//	public double getDistanceTilePosSq(TileEntity pTile) {
+//		if (pTile != null) {
+//			return getDistanceSq(
+//					pTile.getPos().getX() + 0.5D,
+//					pTile.getPos().getY() + 0.5D,
+//					pTile.getPos().getZ() + 0.5D);
+//		}
+//		return -1D;
+//	}
 
-	public double getDistanceTilePos(int pIndex) {
-		if (maidTiles.length > pIndex && maidTiles[pIndex] != null) {
-			return getDistance(
-					maidTiles[pIndex][0] + 0.5D,
-					maidTiles[pIndex][1] + 0.5D,
-					maidTiles[pIndex][2] + 0.5D);
-		}
-		return -1D;
-	}
-	public double getDistanceTilePosSq(int pIndex) {
-		if (maidTiles.length > pIndex && maidTiles[pIndex] != null) {
-			return getDistanceSq(
-					maidTiles[pIndex][0] + 0.5D,
-					maidTiles[pIndex][1] + 0.5D,
-					maidTiles[pIndex][2] + 0.5D);
-		}
-		return -1D;
-	}
-	public double getDistanceTilePos(TileEntity pTile) {
-		if (pTile != null) {
-			return getDistance(
-					pTile.getPos().getX() + 0.5D,
-					pTile.getPos().getY() + 0.5D,
-					pTile.getPos().getZ() + 0.5D);
-		}
-		return -1D;
-	}
-	public double getDistanceTilePosSq(TileEntity pTile) {
-		if (pTile != null) {
-			return getDistanceSq(
-					pTile.getPos().getX() + 0.5D,
-					pTile.getPos().getY() + 0.5D,
-					pTile.getPos().getZ() + 0.5D);
-		}
-		return -1D;
-	}
-
-	public void looksTilePos() {
-		getLookHelper().setLookPosition(
-				maidTile[0] + 0.5D, maidTile[1] + 0.5D, maidTile[2] + 0.5D,
-				10F, getVerticalFaceSpeed());
-	}
-	public void looksTilePos(int pIndex) {
-		if (maidTiles.length > pIndex && maidTiles[pIndex] != null) {
-			getLookHelper().setLookPosition(
-					maidTiles[pIndex][0] + 0.5D,
-					maidTiles[pIndex][1] + 0.5D,
-					maidTiles[pIndex][2] + 0.5D,
-					10F, getVerticalFaceSpeed());
-		}
-	}
+//	public void looksTilePos() {
+//		getLookHelper().setLookPosition(
+//				maidTile[0] + 0.5D, maidTile[1] + 0.5D, maidTile[2] + 0.5D,
+//				10F, getVerticalFaceSpeed());
+//	}
+//	public void looksTilePos(int pIndex) {
+//		if (maidTiles.length > pIndex && maidTiles[pIndex] != null) {
+//			getLookHelper().setLookPosition(
+//					maidTiles[pIndex][0] + 0.5D,
+//					maidTiles[pIndex][1] + 0.5D,
+//					maidTiles[pIndex][2] + 0.5D,
+//					10F, getVerticalFaceSpeed());
+//		}
+//	}
 
 	public boolean isUsingItem() {
 		return dataManager.get(EntityLittleMaid.dataWatch_ItemUse) > 0;

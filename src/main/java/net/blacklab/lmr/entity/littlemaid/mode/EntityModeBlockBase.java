@@ -20,7 +20,7 @@ public abstract class EntityModeBlockBase extends EntityModeBase {
 	@Override
 	public void updateBlock() {
 		// 基準となるTileをセット
-		owner.setTilePos(0);
+		owner.jobController.setTilePos(0);
 	}
 
 	/**
@@ -29,12 +29,12 @@ public abstract class EntityModeBlockBase extends EntityModeBase {
 	@Override
 	public boolean isSearchBlock() {
 		boolean lflag = false;
-		for (int li = 0; li < owner.getMaidTiles().length; li++) {
-			if (owner.getMaidTiles()[li] != null) {
-				TileEntity ltile = owner.getTileEntity(li);
+		for (int li = 0; li < owner.jobController.getMaidTiles().length; li++) {
+			if (owner.jobController.getMaidTiles()[li] != null) {
+				TileEntity ltile = owner.jobController.getTileEntity(li);
 				if (ltile != null && !checkWorldMaid(ltile)) {
 					if (!lflag) {
-						owner.setTilePos(ltile);
+						owner.jobController.setTilePos(ltile);
 					}
 					lflag = true;
 				}
@@ -45,8 +45,8 @@ public abstract class EntityModeBlockBase extends EntityModeBase {
 
 	@Override
 	public boolean overlooksBlock(String pMode) {
-		if (owner.isTilePos()) {
-			owner.setTilePos(0);
+		if (owner.jobController.isTilePos()) {
+			owner.jobController.setTilePos(0);
 		}
 		return true;
 	}
@@ -62,13 +62,28 @@ public abstract class EntityModeBlockBase extends EntityModeBase {
 			if (lo == owner) continue;
 			if (lo instanceof EntityLittleMaid) {
 				EntityLittleMaid lem = (EntityLittleMaid)lo;
-				if (lem.isUsingTile(pTile)) {
+				if (lem.jobController.isUsingTile(pTile)) {
 					// 誰かが使用中
 					return true;
 				}
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * TileEntityとメイドの距離をチェック
+	 * @param pTile
+	 * @return
+	 */
+	protected double getDistanceTilePosSq(TileEntity pTile) {
+		if (pTile != null) {
+			return this.owner.getDistanceSq(
+					pTile.getPos().getX() + 0.5D,
+					pTile.getPos().getY() + 0.5D,
+					pTile.getPos().getZ() + 0.5D);
+		}
+		return -1D;
 	}
 
 }

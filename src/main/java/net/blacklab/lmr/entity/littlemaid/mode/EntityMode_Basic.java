@@ -230,7 +230,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			return false;
 		}
 
-		double ldis = owner.getDistanceTilePosSq(ltile);
+		double ldis = this.getDistanceTilePosSq(ltile);
 		if (fDistance > ldis) {
 			myInventory = (IInventory)ltile;
 			fDistance = ldis;
@@ -262,7 +262,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		myChest = null;
 		maidSearchCount = 0;
 		if (myInventory instanceof TileEntity) {
-			owner.setTilePos((TileEntity)myInventory);
+			owner.jobController.setTilePos((TileEntity)myInventory);
 			return myInventory != null;
 		}
 		//1.8検討
@@ -282,7 +282,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			myChest.closeInventory(owner.maidAvatar);
 			myChest = null;
 		}
-		owner.clearTilePos();
+		owner.jobController.clearTilePos();
 		owner.setAttackTarget(null);
 	}
 
@@ -332,7 +332,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		if (!owner.isMaidWaitEx()) {
 			double distance;
 			if (myInventory instanceof TileEntity) {
-				distance = owner.getDistanceTilePos();
+				distance = owner.jobController.getDistanceTilePos();
 				if (distance == lastdistance) {
 					// TODO:現状無意味
 					// 移動が固まらないように乱数加速

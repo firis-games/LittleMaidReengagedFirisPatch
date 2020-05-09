@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 /**
@@ -223,7 +224,8 @@ public abstract class EntityModeBase {
 		return owner.getNavigator().tryMoveToXYZ(pX, pY, pZ, 1.0F);
 	}
 	public boolean outrangeBlock(String pMode) {
-		return outrangeBlock(pMode, owner.maidTile[0], owner.maidTile[1], owner.maidTile[2]);
+		BlockPos tilePos = owner.jobController.getMaidTile();
+		return outrangeBlock(pMode, tilePos.getX(), tilePos.getY(), tilePos.getZ());
 	}
 
 	/**
@@ -234,7 +236,8 @@ public abstract class EntityModeBase {
 		return false;
 	}
 	public boolean executeBlock(String pMode) {
-		return executeBlock(pMode, owner.maidTile[0], owner.maidTile[1], owner.maidTile[2]);
+		BlockPos tilePos = owner.jobController.getMaidTile();
+		return executeBlock(pMode, tilePos.getX(), tilePos.getY(), tilePos.getZ());
 	}
 
 	/**

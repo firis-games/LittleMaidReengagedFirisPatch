@@ -88,7 +88,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 						yy = ly + (c == 2 ? -1 : c);
 						if (getActiveModeClass().checkBlock(getMaidMode(), xx, yy, zz)) {
 							if (getActiveModeClass().outrangeBlock(getMaidMode(), xx, yy, zz)) {
-								theMaid.setTilePos(xx, yy, zz);
+								theMaid.jobController.setTilePos(xx, yy, zz);
 								// TODO:Dummay
 								EntityMarkerDummy.setDummyEntity(theMaid, 0x004fff4f, xx, yy, zz);
 								flagdammy = true;
@@ -122,7 +122,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 			vt = (vt + 1) & 3;
 		}
 		if (getActiveModeClass().overlooksBlock(getMaidMode())) {
-			TileEntity ltile = theMaid.maidTileEntity;
+			TileEntity ltile = theMaid.jobController.getTileEntity();
 			if (ltile != null) {
 				lx = ltile.getPos().getX();
 				ly = ltile.getPos().getY();
@@ -145,10 +145,10 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 		// 移動中は継続
 		if (!theMaid.getNavigator().noPath()) return true;
 
-		double ld = theMaid.getDistanceTilePos();
+		double ld = theMaid.jobController.getDistanceTilePos();
 
 		// Too far or over tracking range
-		if (ld > 100.0D || !MaidHelper.isTargetReachable(theMaid, new Vec3d(theMaid.getCurrentTilePos()), 0)) {
+		if (ld > 100.0D || !MaidHelper.isTargetReachable(theMaid, new Vec3d(theMaid.jobController.getCurrentTilePos()), 0)) {
 			// 索敵範囲外
 			getActiveModeClass().farrangeBlock();
 			return false;
@@ -174,7 +174,7 @@ public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 	@Override
 	public void updateTask() {
 		// ターゲットを見つけている
-		theMaid.looksTilePos();
+		theMaid.jobController.looksTilePos();
 	}
 
 
