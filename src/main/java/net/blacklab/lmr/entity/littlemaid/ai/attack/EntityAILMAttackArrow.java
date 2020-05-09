@@ -6,6 +6,7 @@ import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.IEntityLittleMaidAvatar;
 import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Archer;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.SwingStatus;
@@ -316,12 +317,14 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 									fMaid.setSwing(10, (litemstack.getCount() == itemcount) ? EnumSound.shoot_burst : EnumSound.Null, !fMaid.isPlaying());
 									LittleMaidReengaged.Debug(String.format("id:%d throw weapon.(%d:%f:%f)", fMaid.getEntityId(), swingState.attackTime, fMaid.rotationYaw, fMaid.rotationYawHead));
 									swingState.attackTime = 5;
-									if (!fMaid.jobController.getMaidModeString().equals("Playing")) {
+									if (!fMaid.jobController.getMaidModeString().equals(EntityMode_Playing.mmode_Playing)) {
 										fMaid.setMaidWaitCount(10);
 //										return;
+									} else {
+										fMaid.setAttackTarget(null);
 									}
 								} else {
-									if(!fMaid.jobController.getMaidModeString().equals("Playing"))
+									if(!fMaid.jobController.getMaidModeString().equals(EntityMode_Playing.mmode_Playing))
 										LittleMaidReengaged.Debug(String.format("ID:%d-friendly fire throw weapon.", fMaid.getEntityId()));
 								}
 							}

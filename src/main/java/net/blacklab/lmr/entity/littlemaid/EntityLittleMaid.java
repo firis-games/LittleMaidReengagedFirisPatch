@@ -50,7 +50,6 @@ import net.blacklab.lmr.entity.littlemaid.controller.LMSoundController;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Archer;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
-import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing.PlayRole;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
@@ -268,8 +267,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //	protected boolean mstatFirstLook;
 	protected boolean mstatLookSuger;
 //	protected Counter workingCount;
-	protected PlayRole mstatPlayingRole;
-	protected String mstatWorking;
+//	protected PlayRole mstatPlayingRole;
+//	protected String mstatWorking;
 //	protected String mstatModeName;
 	protected boolean mstatOpenInventory;
 
@@ -447,7 +446,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		maidOverDriveTime = new Counter(5, 300, -32);
 //		workingCount = new Counter(11, 10, -10);
 //		registerTick = new Counter(200, 200, -20);
-		mstatPlayingRole = PlayRole.NOTPLAYING;
+//		mstatPlayingRole = PlayRole.NOTPLAYING;
 
 		// モデルレンダリング用のフラグ獲得用ヘルパー関数
 //		maidCaps = new EntityCaps(this);
@@ -780,10 +779,6 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 	}
 
-	public boolean setMaidMode(String pname) {
-		return setMaidMode(pname, false);
-	}
-
 /*
 	public boolean isInWater() {
 		IBlockState state = getEntityWorld().getBlockState(getPosition());
@@ -897,7 +892,23 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 	}
 
-	public boolean setMaidMode(String pName, boolean pplaying) {
+//	/**
+//	 * メイドさんの職業を設定する
+//	 * @param pname
+//	 * @return
+//	 */
+//	public boolean setMaidMode(String pname) {
+//		return setMaidMode(pname, false);
+//	}
+	
+	/**
+	 * メイドさんの職業を設定する
+	 * @param pName
+	 * @param pplaying
+	 * @return
+	 */
+	public boolean setMaidMode(String pName) {
+		
 		// モードに応じてAIを切り替える
 		velocityChanged = true;
 		if (this.jobController.isJobAI(pName)) return false;
@@ -905,9 +916,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		//同一モードの場合は何もしない
 		if (pName.equals(this.jobController.getMaidModeString())) return false;
 		
-		if (!pplaying) {
-			mstatWorking = pName;
-		}
+//		if (!pplaying) {
+//			mstatWorking = pName;
+//		}
 //		mstatModeName = pName;
 //		maidMode = pName;
 		
@@ -961,6 +972,11 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return true;
 	}
 
+	/**
+	 * メイドさんの職業ごとにAIの再設定を行う
+	 * @param pTasksSRC
+	 * @param pTasksDEST
+	 */
 	protected void setMaidModeAITasks(EntityAITasks pTasksSRC, EntityAITasks pTasksDEST) {
 		// 既存のAIを削除して置き換える。
 		// 動作をクリア
@@ -978,19 +994,19 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			pTasksDEST.taskEntries.add(iterator.next());
 		}
 	}
-	public static ArrayList<EntityAITaskEntry> getEntityAITasks_taskEntries(EntityAITasks task)
-	{
-		return new ArrayList<>(task.taskEntries);
-	}
-	public static ArrayList<EntityAITaskEntry> getEntityAITasks_executingTaskEntries(EntityAITasks task)
-	{
-		return new ArrayList<>(task.taskEntries);
-	}
+//	public static ArrayList<EntityAITaskEntry> getEntityAITasks_taskEntries(EntityAITasks task)
+//	{
+//		return new ArrayList<>(task.taskEntries);
+//	}
+//	public static ArrayList<EntityAITaskEntry> getEntityAITasks_executingTaskEntries(EntityAITasks task)
+//	{
+//		return new ArrayList<>(task.taskEntries);
+//	}
 
-	/**
-	 * 適用されているモードクラス
-	 * This method is nullable, so check if isActiveModeClass() is true
-	 */
+//	/**
+//	 * 適用されているモードクラス
+//	 * This method is nullable, so check if isActiveModeClass() is true
+//	 */
 //	@Nonnull
 //	public final EntityModeBase getActiveModeClass() {
 //		return maidActiveModeClass;
@@ -1051,9 +1067,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * ダメージ音声を取得する
 	 * @return
 	 */
-	public EnumSound getMaidDamegeSound() {
-		return this.soundManager.getDamageSound();
-	}
+//	public EnumSound getMaidDamegeSound() {
+//		return this.soundManager.getDamageSound();
+//	}
 	
 	/**
 	 * ダメージ音声を設定する
@@ -2119,8 +2135,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		setMaidWait(false);
 		setMaidWaitCount(0);
 		if (par2 > 0) {
-			// 遊びは終わりだ！
-			setPlayingRole(PlayRole.NOTPLAYING);
+//			// 遊びは終わりだ！
+//			setPlayingRole(PlayRole.NOTPLAYING);
 //			coolingTick  = 200;
 			getNextEquipItem();
 		}
@@ -2153,7 +2169,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		if (par2 == 0 && maidMode != mmode_Detonator) {
 		if (par2 == 0) {
 			// ノーダメージ
-			if (getMaidDamegeSound() == EnumSound.hurt) {
+			if (this.soundManager.getDamageSound() == EnumSound.hurt) {
 				setMaidDamegeSound(EnumSound.hurt_nodamege);
 			}
 			
@@ -2432,19 +2448,19 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			}
 		}
 
-		//雪合戦試験
-		if ((isFreedom() || !isContractEX()) && getEntityWorld().isDaytime() && !isPlaying() 
-				&& (this.jobController.getMaidModeString().equals("Wild")
-						|| this.jobController.getMaidModeString().equals("Escort"))){
-			if(EntityMode_Playing.checkSnows(
-						MathHelper.floor(posX),
-						MathHelper.floor(posY),
-						MathHelper.floor(posZ), getEntityWorld())){
-				setPlayingRole(PlayRole.QUICKSHOOTER);
-			}else{
-				setPlayingRole(PlayRole.NOTPLAYING);
-			}
-		}
+//		//雪合戦試験
+//		if ((isFreedom() || !isContractEX()) && getEntityWorld().isDaytime() && !isPlaying() 
+//				&& (this.jobController.getMaidModeString().equals("Wild")
+//						|| this.jobController.getMaidModeString().equals("Escort"))){
+//			if(EntityMode_Playing.checkSnows(
+//						MathHelper.floor(posX),
+//						MathHelper.floor(posY),
+//						MathHelper.floor(posZ), getEntityWorld())){
+//				setPlayingRole(PlayRole.QUICKSHOOTER);
+//			}else{
+//				setPlayingRole(PlayRole.NOTPLAYING);
+//			}
+//		}
 
 		/*
 		if(getMaidModeInt()==LMM_EntityMode_Healer.mmode_Healer){
@@ -3001,7 +3017,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		if (this.jobController.getActiveModeClass() != null && !getHandSlotForModeChange().isEmpty())
 			if (maidInventory.isChanged(InventoryLittleMaid.handInventoryOffset) ||
 					maidInventory.isChanged(InventoryLittleMaid.handInventoryOffset + 1)) {
-				setMaidModeAuto(getMaidMasterEntity());
+				refreshMaidMode(getMaidMasterEntity());
 			}
 
 		//同期処理
@@ -3093,6 +3109,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return maidInventory.getCurrentItem();
 	}
 
+	/**
+	 * 有効スロットorオフハンド
+	 */
 	@Override
 	public ItemStack getHeldItem(EnumHand hand) {
 		if (hand == EnumHand.MAIN_HAND) {
@@ -3101,16 +3120,25 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return maidInventory.getStackInSlot(InventoryLittleMaid.handInventoryOffset + 1);
 	}
 
+	/**
+	 * アーマーアイテムのリストを取得する
+	 */
 	@Override
 	public Iterable<ItemStack> getArmorInventoryList() {
 		return maidInventory.armorInventory;
 	}
 
+	/**
+	 * 手持ちのアイテム
+	 */
 	@Override
 	public Iterable<ItemStack> getHeldEquipment() {
 		return Arrays.asList(new ItemStack[]{getCurrentEquippedItem(), getHeldItemOffhand()});
 	}
 
+	/**
+	 * 指定スロットのアイテムを取得する
+	 */
 	@Override
 	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
 		if (slotIn == EntityEquipmentSlot.OFFHAND) {
@@ -3125,6 +3153,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 	}
 
+	/**
+	 * 指定スロットにアイテムを設定する
+	 */
 	@Override
 	public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
 		if (slotIn == EntityEquipmentSlot.MAINHAND) {
@@ -3169,11 +3200,15 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 	}
 
-	@Override
-	public boolean isMovementBlocked() {
-		return super.isMovementBlocked();
-	}
+//	@Override
+//	public boolean isMovementBlocked() {
+//		return super.isMovementBlocked();
+//	}
 
+	/**
+	 * ご主人様との距離
+	 * @return
+	 */
 	public double getDistanceSqToMaster() {
 		return mstatMasterDistanceSq;
 	}
@@ -3269,6 +3304,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 	}
 
+	/**
+	 * メイドさんにアイテムを使用した時の動き
+	 */
 	@Override
 	public boolean processInteract(EntityPlayer par1EntityPlayer, EnumHand hand)
 	{
@@ -3373,7 +3411,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 								setFreedom(isFreedom());
 								if (isMaidWait()) {
 									// 動作モードの切替
-									setMaidModeAuto(par1EntityPlayer);
+									refreshMaidMode(par1EntityPlayer);
 									setMaidWait(false);
 								} else {
 									// 待機
@@ -3647,37 +3685,35 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	}
 
 	/**
-	 * Set maid's mode automatically.
-	 * @return whether the mode was changed
+	 * 現在の状態でメイドさんの職業を設定しなおす
+	 * @param entityPlayer
+	 * @return
 	 */
-	private boolean setMaidModeAuto(EntityPlayer par1EntityPlayer) {
+	private boolean refreshMaidMode(EntityPlayer entityPlayer) {
+		
 		boolean lflag = false;
+		
+		//現在モード
 		String orgnMode = getMaidModeString();
 
-//		setActiveModeClass(null);
-		//for (int li = 0; li < maidEntityModeList.size() && !lflag; li++) {
-		//	lflag = maidEntityModeList.get(li).changeMode(par1EntityPlayer);
-		//	if (lflag) {
-		//		this.jobController.setActiveModeClass(maidEntityModeList.get(li));
-		//	}
-		//}
-		
 		//職業変更
-		lflag = this.jobController.changeMode(par1EntityPlayer);
+		lflag = this.jobController.changeMode(entityPlayer);
 		
+		//対象が無い場合はエスコートモードへ変更
 		if (!lflag) {
 			setMaidMode(EntityMode_Basic.mmode_Escort);
 			setEquipItem(-1);
-//			maidInventory.currentItem = -1;
 		}
-		getNextEquipItem();
+		this.getNextEquipItem();
 
+		//職業が変更された場合はリセット
 		if (!orgnMode.equals(getMaidModeString())) {
 			this.jobController.clearTilePosAll();
 			getNavigator().clearPath();
 			setAttackTarget(null);
 			return true;
 		}
+		
 		return false;
 	}
 
@@ -3728,7 +3764,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		maidAnniversary = getEntityWorld().getTotalWorldTime();
 
 		setHealth(20);
-		setPlayingRole(PlayRole.NOTPLAYING);
+//		setPlayingRole(PlayRole.NOTPLAYING);
 		setMaidWait(false);
 		setFreedom(false);
 		setMaidMode(EntityMode_Basic.mmode_Escort);		
@@ -3779,6 +3815,10 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return OwnableEntityHelper.getOwner(this);
 	}
 
+	/**
+	 * ご主人様を取得する
+	 * @return
+	 */
 	@Nullable
 	public EntityPlayer getMaidMasterEntity() {
 		// 主を獲得
@@ -3847,6 +3887,10 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return isMaidWait() | (mstatWaitCount > 0) | isOpenInventory();
 	}
 
+	/**
+	 * メイドさんの待機状態設定
+	 * @param pflag
+	 */
 	public void setMaidWait(boolean pflag) {
 		// 待機常態の設定、 isMaidWait系でtrueを返すならAIが勝手に移動を停止させる。
 		maidWait = pflag;
@@ -3858,7 +3902,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		setRevengeTarget(null);
 		//setPathToEntity(null);
 		getNavigator().clearPath();
-		setPlayingRole(PlayRole.NOTPLAYING);
+//		setPlayingRole(PlayRole.NOTPLAYING);
 		if(pflag){
 			//setMaidModeAITasks(null,null);
 //			setWorking(false);
@@ -3872,7 +3916,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 					MathHelper.floor(lastTickPosZ)), 0);
 					*/
 		}else{
-			setMaidMode(this.jobController.getMaidModeString(), false);
+			setMaidMode(this.jobController.getMaidModeString());
 		}
 		velocityChanged = true;
 	}
@@ -3937,6 +3981,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	public void setSwinging(EnumSound pSound, boolean force) {
 		setSwinging(getDominantArm(), pSound, force);
 	}
+	
 	public void setSwinging(int pArm, EnumSound pSound, boolean force) {
 		if(!pSound.equals(EnumSound.Null)) playLittleMaidVoiceSound(pSound, !force);
 		if (mstatSwingStatus[pArm].setSwinging()) {
@@ -3949,6 +3994,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	public boolean getSwinging() {
 		return getSwinging(getDominantArm());
 	}
+	
 	public boolean getSwinging(int pArm) {
 		return mstatSwingStatus[pArm].isSwingInProgress;
 	}
@@ -3965,6 +4011,10 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	}
 
 
+	/**
+	 * リトルメイド独自の利き手
+	 * @return
+	 */
 	public int getDominantArm() {
 		return maidDominantArm;
 	}
@@ -3984,6 +4034,10 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		setMaidFlags(pFlag, dataWatch_Flags_Bloodsuck);
 	}
 
+	/**
+	 * 血まみれモード判定
+	 * @return
+	 */
 	public boolean isBloodsuck() {
 		return this.jobController.isBloodsuck();
 	}
@@ -4110,7 +4164,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //	}
 
 	/**
-	 * トレーサーモードの設定
+	 * 赤石モードの設定
 	 */
 	public void setTracer(boolean pFlag) {
 		maidTracer = pFlag;
@@ -4123,37 +4177,52 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	}
 
 	/**
-	 * トレーサーモードであるか？
+	 * 赤石モード
 	 */
 	public boolean isTracer() {
 		return getMaidFlags(dataWatch_Flags_Tracer);
 	}
 
 
-	// お遊びモード
-	public void setPlayingRole(PlayRole pValue) {
+//	// お遊びモード
+//	public void setPlayingRole(PlayRole pValue) {
+//
+//		if (!mstatPlayingRole.equals(pValue)) {
+//			mstatPlayingRole = pValue;
+//			if (pValue.equals(PlayRole.NOTPLAYING)) {
+//				setAttackTarget(null);
+//				setMaidMode(mstatWorking , true);
+//			} else {
+//				setMaidMode(EntityMode_Playing.mmode_Playing, true);
+//			}
+//		}
+//	}
 
-		if (!mstatPlayingRole.equals(pValue)) {
-			mstatPlayingRole = pValue;
-			if (pValue.equals(PlayRole.NOTPLAYING)) {
-				setAttackTarget(null);
-				setMaidMode(mstatWorking , true);
-			} else {
-				setMaidMode(EntityMode_Playing.mmode_Playing, true);
-			}
-		}
-	}
+//	public PlayRole getPlayingRole() {
+//		return mstatPlayingRole;
+//	}
 
-	public PlayRole getPlayingRole() {
-		return mstatPlayingRole;
-	}
+//	public boolean isPlaying() {
+//		return !mstatPlayingRole.equals(PlayRole.NOTPLAYING);
+//	}
 
+	/**
+	 * 遊びモードの判定
+	 * @return
+	 */
 	public boolean isPlaying() {
-		return !mstatPlayingRole.equals(PlayRole.NOTPLAYING);
+		//お遊びモードのとき
+		if (EntityMode_Playing.mmode_Playing.equals(
+				this.jobController.getMaidModeString())) {
+			return true;
+		}
+		return false;
 	}
 
-
-	// 自由行動
+	/**
+	 * 自由行動設定
+	 * @param pFlag
+	 */
 	public void setFreedom(boolean pFlag) {
 		// AI関連のリセットもここで。
 		maidFreedom = pFlag;
@@ -4168,7 +4237,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			aiTracer.setEnable(isTracer()&&pFlag);
 //			setAIMoveSpeed(pFlag ? moveSpeed_Nomal : moveSpeed_Max);
 //			setMoveForward(0.0F);
-			setPlayingRole(PlayRole.NOTPLAYING);
+//			setPlayingRole(PlayRole.NOTPLAYING);
 			if (maidFreedom && isContract()) {
 				setTracer(isTracer());
 				setHomePosAndDistance(getPosition(), (int) getMaximumHomeDistance());
@@ -4180,6 +4249,10 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 	}
 
+	/**
+	 * メイドさんのホームポイントからの有効距離
+	 * 距離外になるとホームポイントへ移動する処理が利用している
+	 */
 	@Override
 	public float getMaximumHomeDistance() {
 		if (this.jobController.getActiveModeClass() != null) {
@@ -4188,6 +4261,10 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return 20f;
 	}
 
+	/**
+	 * 自由モード判定
+	 * @return
+	 */
 	public boolean isFreedom() {
 		return maidFreedom;
 	}
@@ -4462,6 +4539,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		LittleMaidReengaged.Debug("Change Dominant.");
 	}
 
+	/**
+	 * メイドさんのHomePositionを設定する
+	 */
 	@Override
 	public void setHomePosAndDistance(BlockPos pos, int distance) {
 //		homeWorld = dimension;
@@ -4797,13 +4877,13 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return dataManager.get(EntityLittleMaid.dataWatch_ItemUse) > 0;
 	}
 
-	public boolean isUsingItem(int pIndex) {
-		return (dataManager.get(EntityLittleMaid.dataWatch_ItemUse) & (1 << pIndex)) > 0;
-	}
+//	public boolean isUsingItem(int pIndex) {
+//		return (dataManager.get(EntityLittleMaid.dataWatch_ItemUse) & (1 << pIndex)) > 0;
+//	}
 
-	public void setExperienceValue(int val) {
-//		experienceValue = val;
-	}
+//	public void setExperienceValue(int val) {
+////		experienceValue = val;
+//	}
 
 	public void setFlag(int par1, boolean par2) {
 		super.setFlag(par1, par2);

@@ -179,7 +179,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 		if (xpCooldown > 0) {
 			xpCooldown--;
 		}
-		avatar.setExperienceValue(experienceTotal);
+//		avatar.setExperienceValue(experienceTotal);
 
 		// TODO EntityPlayerをOverrideしていないばっかりにこの値が変わっていなかった？
 		ticksSinceLastSwing++;

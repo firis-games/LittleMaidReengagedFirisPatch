@@ -114,7 +114,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		if (xpCooldown > 0) {
 			xpCooldown--;
 		}
-		avatar.setExperienceValue(experienceTotal);
+//		avatar.setExperienceValue(experienceTotal);
 	}
 
 	@Override

@@ -22,7 +22,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 /**
- * 雪遊び
+ * 雪遊び：プロトタイプ
  *
  */
 public class EntityMode_Playing extends EntityModeBase {
@@ -38,6 +38,8 @@ public class EntityMode_Playing extends EntityModeBase {
 	protected int playingTick = 0;
 
 	public int fcounter;
+	
+	protected PlayRole playRole = PlayRole.NOTPLAYING;
 
 	public EntityMode_Playing(EntityLittleMaid pEntity) {
 		super(pEntity);
@@ -68,6 +70,14 @@ public class EntityMode_Playing extends EntityModeBase {
 		owner.addMaidMode(mmode_Playing, ltasks);
 	}
 
+	/**
+	 * 周辺の雪をチェック
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param world
+	 * @return
+	 */
 	public static boolean checkSnows(int x, int y, int z, World world) {
 		// 周りが雪か？
 		int snowCnt = 0;
@@ -80,6 +90,10 @@ public class EntityMode_Playing extends EntityModeBase {
 		return snowCnt >= 5;
 	}
 
+	/**
+	 * 雪原に移動する
+	 * @return
+	 */
 	protected boolean movePlaying() {
 		//
 		int x = MathHelper.floor(owner.posX);
@@ -118,7 +132,73 @@ public class EntityMode_Playing extends EntityModeBase {
 
 	}
 
+	/**
+	 * 雪合戦の処理
+	 */
 	protected void playingSnowWar() {
+		
+		//補充モード
+		if (PlayRole.STOCKSHOOTER.equals(playRole)) {
+			//雪玉の補充（6回）
+			if (this.fcounter <= 6) {
+				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.SNOWBALL))) {
+					owner.playSound("entity.item.pickup");
+					owner.setSwing(30, EnumSound.collect_snow, false);
+				} else {
+					this.fcounter = 6;
+				}
+			} else {
+				//補充が終わったら（射撃モード）
+				this.playRole = PlayRole.QUICKSHOOTER;
+				this.fcounter = 0;
+				return;
+			}
+			this.fcounter++;
+			return;
+		}
+		
+		//射撃モード
+		if (PlayRole.QUICKSHOOTER.equals(playRole)) {
+			
+			//雪玉の在庫チェック
+			if (!(this.owner.maidInventory.getInventorySlotContainItem(Items.SNOWBALL) > -1)) {
+				//在庫なし
+				//補充モードに変更
+				this.playRole = PlayRole.STOCKSHOOTER;
+				this.fcounter = 0;
+				return;
+			}
+			
+			//相手を探す
+			// メイドとプレーヤー（無差別）をターゲットに
+			if (owner.getAttackTarget() == null) {
+				List<Entity> list = owner.getEntityWorld().getEntitiesWithinAABBExcludingEntity(owner, owner.getEntityBoundingBox().grow(16D, 4D, 16D));
+				for (Entity e : list) {
+					if (e != null && (e instanceof EntityPlayer || e instanceof EntityLittleMaid)) {
+						if (owner.getRNG().nextBoolean()) {
+							owner.setAttackTarget((EntityLivingBase)e);
+							this.fcounter = 0;
+							break;
+						}
+					}
+				}
+			}
+			
+			this.fcounter++;
+			return;
+		}
+		
+		//何もしていないモード
+		if (PlayRole.NOTPLAYING.equals(playRole)) {
+			this.playRole = PlayRole.STOCKSHOOTER;
+			this.fcounter = 0;
+			return;
+		}
+		
+		/*
+		if (true) {
+			return;
+		}
 		switch (fcounter) {
 		case 0:
 			// 有り玉全部投げる
@@ -156,7 +236,7 @@ public class EntityMode_Playing extends EntityModeBase {
 				if (movePlaying()) {
 					fcounter = 3;
 				} else {
-					owner.setPlayingRole(PlayRole.NOTPLAYING);
+					this.playRole = PlayRole.NOTPLAYING;
 					fcounter = 0;
 				}
 			} else {
@@ -175,7 +255,7 @@ public class EntityMode_Playing extends EntityModeBase {
 //					owner.isMaidChaseWait = true;
 					//1.8検討
 					//owner.attackTime = 30;
-					if (owner.getPlayingRole().equals(PlayRole.QUICKSHOOTER)) {
+					if (this.playRole.equals(PlayRole.QUICKSHOOTER)) {
 						fcounter = 8;
 					} else {
 						fcounter = 4;
@@ -195,7 +275,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			if (owner.arrowHitTimer <= 0) {
 				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.SNOWBALL))) {
 					owner.playSound("entity.item.pickup");
-					if (owner.getPlayingRole().equals(PlayRole.STOCKSHOOTER)) {
+					if (this.playRole.equals(PlayRole.STOCKSHOOTER)) {
 						owner.setSwing(5, EnumSound.collect_snow, false);
 						fcounter = 0;
 					} else {
@@ -203,7 +283,7 @@ public class EntityMode_Playing extends EntityModeBase {
 						fcounter++;
 					}
 				} else {
-					owner.setPlayingRole(PlayRole.NOTPLAYING);
+					this.playRole = PlayRole.NOTPLAYING;
 					fcounter = 0;
 				}
 			}
@@ -226,7 +306,7 @@ public class EntityMode_Playing extends EntityModeBase {
 					owner.playSound("entity.item.pickup");
 					fcounter = 0;
 				} else {
-					owner.setPlayingRole(PlayRole.NOTPLAYING);
+					this.playRole = PlayRole.NOTPLAYING;
 					fcounter = 0;
 				}
 			}
@@ -239,73 +319,86 @@ public class EntityMode_Playing extends EntityModeBase {
 					30F, 40F);
 			break;
 		}
+		*/
 
 	}
 
 
+	/**
+	 * 雪合戦での行動制御
+	 * 
+	 * モード維持判定はonUpdateで定期的に行う
+	 */
 	@Override
 	public void updateAITick(String pMode) {
 		if(this.playingTick++ < 5 || !pMode.equals(mmode_Playing)){
 			return;
 		}
+		
+		//playingTickリセット
 		this.playingTick = 0;
-		if (owner.isFreedom() || !owner.isContractEX()) {
-			// 自由行動中の固体は虎視眈々と隙をうかがう。
-			if (owner.getEntityWorld().isDaytime()) {
-				// 昼間のお遊び
-
-				// 雪原判定
-				if (!owner.isPlaying()) {
-					// TODO:お遊び判定
-					int xx = MathHelper.floor(owner.posX);
-					int yy = MathHelper.floor(owner.posY);
-					int zz = MathHelper.floor(owner.posZ);
-
-					// 3x3が雪の平原ならお遊び判定が発生
-					boolean f = true;
-					for (int z = -1; z < 2; z++) {
-						for (int x = -1; x < 2; x++) {
-							f &= Block.isEqualTo(owner.getEntityWorld().getBlockState(new BlockPos(xx + x, yy, zz + z)).getBlock(), Blocks.SNOW_LAYER);
-						}
-					}
-					int lpr = owner.getRNG().nextInt(100) - 97;
-					PlayRole tSwitchTo = (f && lpr > 0) ? (lpr == 1 ? PlayRole.QUICKSHOOTER : PlayRole.STOCKSHOOTER) : PlayRole.NOTPLAYING;
-					owner.setPlayingRole(tSwitchTo);
-					fcounter = 0;
-					if (f) {
-						// mod_littleMaidMob.Debug(String.format("playRole-%d:%d", entityId, playingRole));
-					}
-
-				//} else if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
-				//	// 夜の部終了
-				//	owner.setPlayingRole(PlayRole.NOTPLAYING);
-				//	fcounter = 0;
-				} else if (owner.getEntityWorld().rand.nextInt(100) <= 50) {
-					//確率でいったん解除する
-					owner.setPlayingRole(PlayRole.NOTPLAYING);
-				} else {
-					// お遊びの実行をここに書く？
-					if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
-						playingSnowWar();
-					}
-
-				}
-
-			} else {
-				//夜になったら終了する
-				if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
-					// 昼の部終了
-					owner.setPlayingRole(PlayRole.NOTPLAYING);
-					fcounter = 0;
-				}
-			}
-
-			// チェスト判定
-			if (owner.getAttackTarget() == null
-					&& owner.maidInventory.getFirstEmptyStack() == -1) {
-
-			}
-		}
+		
+		//モード維持判定はonUpdateで行う
+		this.playingSnowWar();
+		
+		
+//		if (owner.isFreedom() || !owner.isContractEX()) {
+//			// 自由行動中の固体は虎視眈々と隙をうかがう。
+//			if (owner.getEntityWorld().isDaytime()) {
+//				// 昼間のお遊び
+//
+//				// 雪原判定
+//				if (!owner.isPlaying()) {
+//					// TODO:お遊び判定
+//					int xx = MathHelper.floor(owner.posX);
+//					int yy = MathHelper.floor(owner.posY);
+//					int zz = MathHelper.floor(owner.posZ);
+//
+//					// 3x3が雪の平原ならお遊び判定が発生
+//					boolean f = true;
+//					for (int z = -1; z < 2; z++) {
+//						for (int x = -1; x < 2; x++) {
+//							f &= Block.isEqualTo(owner.getEntityWorld().getBlockState(new BlockPos(xx + x, yy, zz + z)).getBlock(), Blocks.SNOW_LAYER);
+//						}
+//					}
+//					int lpr = owner.getRNG().nextInt(100) - 97;
+//					PlayRole tSwitchTo = (f && lpr > 0) ? (lpr == 1 ? PlayRole.QUICKSHOOTER : PlayRole.STOCKSHOOTER) : PlayRole.NOTPLAYING;
+//					owner.setPlayingRole(tSwitchTo);
+//					fcounter = 0;
+//					if (f) {
+//						// mod_littleMaidMob.Debug(String.format("playRole-%d:%d", entityId, playingRole));
+//					}
+//
+//				//} else if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
+//				//	// 夜の部終了
+//				//	owner.setPlayingRole(PlayRole.NOTPLAYING);
+//				//	fcounter = 0;
+//				} else if (owner.getEntityWorld().rand.nextInt(100) <= 50) {
+//					//確率でいったん解除する
+//					owner.setPlayingRole(PlayRole.NOTPLAYING);
+//				} else {
+//					// お遊びの実行をここに書く？
+//					if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
+//						playingSnowWar();
+//					}
+//
+//				}
+//
+//			} else {
+//				//夜になったら終了する
+//				if (!owner.getPlayingRole().equals(PlayRole.NOTPLAYING)) {
+//					// 昼の部終了
+//					owner.setPlayingRole(PlayRole.NOTPLAYING);
+//					fcounter = 0;
+//				}
+//			}
+//
+//			// チェスト判定
+//			if (owner.getAttackTarget() == null
+//					&& owner.maidInventory.getFirstEmptyStack() == -1) {
+//
+//			}
+//		}
 	}
 
 	@Override
@@ -315,7 +408,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			// お遊び判定用、雪玉かどうか判定
 			owner.setMaidDamegeSound(EnumSound.hurt_snow);
 			if (!owner.isContractEX() || (owner.isFreedom() && owner.jobController.getMaidModeString().equals(EntityMode_Basic.mmode_Escort))) {
-				owner.setPlayingRole(PlayRole.QUICKSHOOTER);
+//				owner.setPlayingRole(PlayRole.QUICKSHOOTER);
 				owner.setMaidWait(false);
 				owner.setMaidWaitCount(0);
 				LittleMaidReengaged.Debug("playingMode Enable.");
@@ -332,6 +425,8 @@ public class EntityMode_Playing extends EntityModeBase {
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(true);
 			owner.setBloodsuck(false);
+			this.playRole = PlayRole.NOTPLAYING;
+			this.fcounter = 0;
 			return true;
 		}
 
@@ -353,6 +448,56 @@ public class EntityMode_Playing extends EntityModeBase {
 			}
 		}
 		return -1;
+	}
+	
+	/**
+	 * 雪合戦の判定自体はこっちで行うように変更
+	 */
+	@Override
+	public void onUpdate(String pMode) {
+		
+		//雪合戦以外はスキップ
+		if (!mmode_Playing.equals(pMode)) {
+			return;
+		}
+		
+		//チェック処理はディレイを挟む
+		if (this.owner.ticksExisted % 60 != 0) return;
+		
+		boolean isPlaying = isSnowPlaying(this.owner);
+		if (!isPlaying) {
+			//モードを戻す
+			if (this.owner.isContractEX()) {
+				//通常メイドさん
+				this.owner.setMaidMode(EntityMode_Basic.mmode_Escort);
+			} else {
+				//野生メイドさん
+				this.owner.setMaidMode(EntityMode_Basic.mmode_Wild);
+			}
+		}
+	}
+	
+	/**
+	 * メイドさんが雪合戦できる状態か判断する
+	 * @param maid
+	 * @return
+	 */
+	public static boolean isSnowPlaying(EntityLittleMaid maid) {
+		//自由行動 or 未契約
+		if (maid.isFreedom() || !maid.isContractEX()) {
+			//昼間 かつ 雪の状態を確認
+			if(maid.getEntityWorld().isDaytime() 
+					&& EntityMode_Playing.checkSnows(
+						MathHelper.floor(maid.posX),
+						MathHelper.floor(maid.posY),
+						MathHelper.floor(maid.posZ), 
+						maid.getEntityWorld())){
+				
+				//雪合戦
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

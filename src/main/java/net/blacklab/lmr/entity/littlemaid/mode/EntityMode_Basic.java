@@ -609,5 +609,27 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		if (owner.ticksExisted % 100 == 0) fusedTiles.clear();
 		
 	}
-
+	
+	/**
+	 * 雪合戦の判定を行う
+	 */
+	@Override
+	public void onUpdate(String pMode) {
+		
+		//野生とエスコートモード以外はスキップ
+		if (!mmode_Wild.equals(pMode)
+				&& !mmode_Escort.equals(pMode)) {
+			return;
+		}
+		
+		//チェック処理はディレイを挟む
+		if (this.owner.ticksExisted % 60 != 0) return;
+		
+		//雪合戦チェック
+		if (EntityMode_Playing.isSnowPlaying(this.owner)) {
+			//メイドモードを雪合戦に変更
+			this.owner.setMaidMode(EntityMode_Playing.mmode_Playing);
+		}
+		
+	}
 }
