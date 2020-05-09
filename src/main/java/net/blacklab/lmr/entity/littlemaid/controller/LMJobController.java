@@ -53,6 +53,11 @@ public class LMJobController {
 	private Map<String, EntityAITasks[]> modeAIMap = new HashMap<>();
 	
 	/**
+	 * 血まみれモードのフラグ
+	 */
+	protected boolean statBloodsuck = false;
+	
+	/**
 	 * コンストラクタ
 	 * @param maid
 	 */
@@ -432,6 +437,14 @@ public class LMJobController {
 	
 	public BlockPos getMaidTile() {
 		return maidTile;
+	}
+	
+	public void setBloodsuck(boolean flg) {
+		this.statBloodsuck = flg;
+	}
+	
+	public boolean isBloodsuck() {
+		return this.statBloodsuck;
 	}
 	
 }

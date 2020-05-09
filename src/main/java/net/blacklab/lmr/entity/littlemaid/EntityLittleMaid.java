@@ -261,7 +261,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	protected EntityPlayer mstatMasterEntity;	// 主
 	protected double mstatMasterDistanceSq;		// 主との距離、計算軽量化用
 	protected Entity mstatgotcha;				// ワイヤード用
-	protected boolean mstatBloodsuck;
+//	protected boolean mstatBloodsuck;
 	protected boolean mstatClockMaid;
 //	// マスク判定
 //	protected int mstatMaskSelect;
@@ -3967,12 +3967,13 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	// 今宵のメイドは血に飢えておる
 	public void setBloodsuck(boolean pFlag) {
-		mstatBloodsuck = pFlag;
+//		mstatBloodsuck = pFlag;
+		this.jobController.setBloodsuck(pFlag);
 		setMaidFlags(pFlag, dataWatch_Flags_Bloodsuck);
 	}
 
 	public boolean isBloodsuck() {
-		return mstatBloodsuck;
+		return this.jobController.isBloodsuck();
 	}
 
 
@@ -4409,7 +4410,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		maidWait = (li & dataWatch_Flags_Wait) > 0;
 		mstatAimeBow = (li & dataWatch_Flags_Aimebow) > 0;
 		mstatLookSuger = (li & dataWatch_Flags_LooksSugar) > 0;
-		mstatBloodsuck = (li & dataWatch_Flags_Bloodsuck) > 0;
+//		mstatBloodsuck = (li & dataWatch_Flags_Bloodsuck) > 0;
+		this.setBloodsuck((li & dataWatch_Flags_Bloodsuck) > 0);
 		looksWithInterest = (li & dataWatch_Flags_looksWithInterest) > 0;
 		looksWithInterestAXIS = (li & dataWatch_Flags_looksWithInterestAXIS) > 0;
 		maidOverDriveTime.updateClient((li & dataWatch_Flags_OverDrive) > 0);
