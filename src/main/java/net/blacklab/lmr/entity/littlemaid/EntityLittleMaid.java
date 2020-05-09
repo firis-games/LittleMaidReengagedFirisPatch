@@ -2924,28 +2924,28 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	/**
 	 * Client専用．
 	 */
-	private boolean manualDeath = false;
+//	private boolean manualDeath = false;
 
-	@Override
-	protected void onDeathUpdate() {
-		if (!getEntityWorld().isRemote) {
-			if (getExperienceHandler().onDeathUpdate()) {
-				return;
-			}
-		} else {
-			if (!manualDeath) {
-				showParticleFX(EnumParticleTypes.SUSPENDED_DEPTH);
-				return;
-			}
-		}
-		super.onDeathUpdate();
-	}
+//	@Override
+//	protected void onDeathUpdate() {
+//		if (!getEntityWorld().isRemote) {
+//			if (getExperienceHandler().onDeathUpdate()) {
+//				return;
+//			}
+//		} else {
+//			if (!manualDeath) {
+//				showParticleFX(EnumParticleTypes.SUSPENDED_DEPTH);
+//				return;
+//			}
+//		}
+//		super.onDeathUpdate();
+//	}
 
-	@SideOnly(Side.CLIENT)
-	public void manualOnDeath() {
-		onDeath(new DamageSource("lmmnx_timeover"));
-		manualDeath = true;
-	}
+//	@SideOnly(Side.CLIENT)
+//	public void manualOnDeath() {
+//		onDeath(new DamageSource("lmmnx_timeover"));
+//		manualDeath = true;
+//	}
 
 	// ポーションエフェクト
 	@Override

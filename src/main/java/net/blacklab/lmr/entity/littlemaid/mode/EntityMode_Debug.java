@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+@Deprecated
 public class EntityMode_Debug extends EntityMode_Basic {
 
 	public static final String mmode_Debug = "D:DEBUG";

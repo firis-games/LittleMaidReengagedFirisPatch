@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
  * 死亡から復活用モード（未使用に変更）
  *
  */
+@Deprecated
 public class EntityMode_DeathWait extends EntityModeBase {
 	
 	public static final String mmode_DeathWait = "Fatal"; 
