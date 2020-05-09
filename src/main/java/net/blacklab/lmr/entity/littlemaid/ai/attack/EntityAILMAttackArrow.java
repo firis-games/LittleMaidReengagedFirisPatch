@@ -215,7 +215,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 //					mod_LMM_littleMaidMob.Debug("il:%f, milsq:%f", il, milsq);
 				}
 
-				if (!litemstack.isEmpty() && !(litemstack.getItem() instanceof ItemFood) && !fMaid.weaponReload) {
+				if (!litemstack.isEmpty() && !(litemstack.getItem() instanceof ItemFood) && !fMaid.isWeaponReload()) {
 //					int lastentityid = worldObj.loadedEntityList.size();
 					int itemcount = litemstack.getCount();
 					fMaid.mstatAimeBow = true;
@@ -270,7 +270,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 
 					lcanattack &= lsee;
 //            		mod_littleMaidMob.Debug(String.format("id:%d at:%d", entityId, attackTime));
-					if (((fMaid.weaponFullAuto && !lcanattack) || (lcanattack && fMaid.getSwingStatusDominant().canAttack())) && getAvatarIF().getIsItemTrigger()) {
+					if (((fMaid.isWeaponFullAuto() && !lcanattack) || (lcanattack && fMaid.getSwingStatusDominant().canAttack())) && getAvatarIF().getIsItemTrigger()) {
 						// シュート
 						// フルオート武器は射撃停止
 						LittleMaidReengaged.Debug("id:%d shoot.", fMaid.getEntityId());
@@ -286,7 +286,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 							// リロード無しの通常兵装
 							if (!getAvatarIF().isUsingItemLittleMaid()) {
 								// 構え
-								if (!fMaid.weaponFullAuto || lcanattack) {
+								if (!fMaid.isWeaponFullAuto() || lcanattack) {
 									int at = ((helmid == Items.IRON_HELMET) || (helmid == Items.DIAMOND_HELMET)) ? 26 : 16;
 									if (swingState.attackTime < at) {
 										ActionResult<ItemStack> result = litemstack.useItemRightClick(worldObj, fAvatar, EnumHand.MAIN_HAND);

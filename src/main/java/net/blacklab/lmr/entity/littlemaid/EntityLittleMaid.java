@@ -13,7 +13,6 @@ import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterest;
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_looksWithInterestAXIS;
 import static net.blacklab.lmr.util.Statics.dataWatch_Flags_remainsContract;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
@@ -50,6 +49,7 @@ import net.blacklab.lmr.entity.littlemaid.ai.move.EntityAILMWander;
 import net.blacklab.lmr.entity.littlemaid.controller.LMExperienceController;
 import net.blacklab.lmr.entity.littlemaid.controller.LMJobController;
 import net.blacklab.lmr.entity.littlemaid.controller.LMSoundController;
+import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Archer;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing.PlayRole;
@@ -300,8 +300,32 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 */
 	public float entityIdFactor;
 
-	public boolean weaponFullAuto;	// 装備がフルオート武器かどうか
-	public boolean weaponReload;	// 装備がリロードを欲しているかどうか
+//	public boolean weaponFullAuto;	// 装備がフルオート武器かどうか
+//	public boolean weaponReload;	// 装備がリロードを欲しているかどうか
+	
+	/**
+	 * 装備がフルオート武器化どうか
+	 * @return
+	 */
+	public boolean isWeaponFullAuto() {
+		if (this.jobController.getActiveModeClass() instanceof EntityMode_Archer) {
+			EntityMode_Archer archer = (EntityMode_Archer) this.jobController.getActiveModeClass();
+			return archer.weaponFullAuto;
+		}
+		return false;
+	}
+	
+	/**
+	 * 装備がリロードを欲しているかどうか
+	 * @return
+	 */
+	public boolean isWeaponReload() {
+		if (this.jobController.getActiveModeClass() instanceof EntityMode_Archer) {
+			EntityMode_Archer archer = (EntityMode_Archer) this.jobController.getActiveModeClass();
+			return archer.weaponReload;
+		}
+		return false;
+	}
 	
 //	public boolean maidCamouflage;
 
@@ -2587,8 +2611,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 
 		// 飛び道具用
-		weaponFullAuto = false;
-		weaponReload = false;
+//		weaponFullAuto = false;
+//		weaponReload = false;
 
 		// 主の確認など
 		mstatMasterEntity = getMaidMasterEntity();
@@ -3024,30 +3048,30 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	}
 
 
-	/**
-	 * 対応型射撃武器のリロード判定
-	 */
-	public void getWeaponStatus() {
-		// 飛び道具用の特殊処理
-		ItemStack is = maidInventory.getCurrentItem();
-		if (is.isEmpty()) return;
-
-		try {
-			Method me = is.getItem().getClass().getMethod("isWeaponReload", ItemStack.class, EntityPlayer.class);
-			weaponReload = (Boolean)me.invoke(is.getItem(), is, maidAvatar);
-		}catch (NoClassDefFoundError e) {
-		} catch (NoSuchMethodException e) {
-		} catch (Exception e) {
-		}
-
-		try {
-			Method me = is.getItem().getClass().getMethod("isWeaponFullAuto", ItemStack.class);
-			weaponFullAuto = (Boolean)me.invoke(is.getItem(), is);
-		}catch (NoClassDefFoundError e) {
-		} catch (NoSuchMethodException e) {
-		} catch (Exception e) {
-		}
-	}
+//	/**
+//	 * 対応型射撃武器のリロード判定
+//	 */
+//	public void getWeaponStatus() {
+//		// 飛び道具用の特殊処理
+//		ItemStack is = maidInventory.getCurrentItem();
+//		if (is.isEmpty()) return;
+//
+//		try {
+//			Method me = is.getItem().getClass().getMethod("isWeaponReload", ItemStack.class, EntityPlayer.class);
+//			weaponReload = (Boolean)me.invoke(is.getItem(), is, maidAvatar);
+//		}catch (NoClassDefFoundError e) {
+//		} catch (NoSuchMethodException e) {
+//		} catch (Exception e) {
+//		}
+//
+//		try {
+//			Method me = is.getItem().getClass().getMethod("isWeaponFullAuto", ItemStack.class);
+//			weaponFullAuto = (Boolean)me.invoke(is.getItem(), is);
+//		}catch (NoClassDefFoundError e) {
+//		} catch (NoSuchMethodException e) {
+//		} catch (Exception e) {
+//		}
+//	}
 
 	// 保持アイテム関連
 
@@ -3882,7 +3906,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		mstatSwingStatus[pArm].attackTime = pattacktime;
 //		maidAttackSound = enumsound;
 //		soundInterval = 0;// いるか？
-		if (!weaponFullAuto) {
+		if (!this.isWeaponFullAuto()) {
 			setSwinging(pArm, enumsound, force);
 		}
 		if (!getEntityWorld().isRemote) {

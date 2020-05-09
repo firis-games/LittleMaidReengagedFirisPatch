@@ -1,10 +1,10 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.config.LMRConfig;
@@ -25,7 +25,6 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -207,7 +206,7 @@ public class EntityMode_Archer extends EntityModeBase {
 		switch (pMode) {
 		case mmode_Archer:
 		case mmode_Blazingstar:
-			owner.getWeaponStatus();
+			this.getWeaponStatus();
 //			updateGuns();
 		}
 
@@ -249,32 +248,32 @@ public class EntityMode_Archer extends EntityModeBase {
 		}
 	}
 
-	protected void updateGuns() {
-		if (owner.getAttackTarget() == null || !owner.getAttackTarget().isEntityAlive()) {
-			// 対象が死んだ
-			if (!owner.weaponReload) {
-				if (owner.maidAvatar.isHandActive()) {
-					// ターゲットが死んでいる時はアイテムの使用をクリア
-//					if (owner.getAvatarIF().getIsItemReload()) {
-						owner.maidAvatar.stopActiveHand();
-//						LittleMaidReengaged.Debug(String.format("id:%d cancel reload.", owner.getEntityId()));
-//					} else {
-//						owner.maidAvatar.clearItemInUse();
-						LittleMaidReengaged.Debug(String.format("id:%d clear.", owner.getEntityId()));
-//					}
-				}
-			} else {
-				owner.mstatAimeBow = true;
-			}
-		}
-		if (owner.weaponReload && !owner.maidAvatar.isHandActive()) {
-			// 特殊リロード
-			owner.maidInventory.getCurrentItem().useItemRightClick(owner.getEntityWorld(), owner.maidAvatar, EnumHand.MAIN_HAND);
-			LittleMaidReengaged.Debug("id:%d force reload.", owner.getEntityId());
-			owner.mstatAimeBow = true;
-		}
-
-	}
+//	protected void updateGuns() {
+//		if (owner.getAttackTarget() == null || !owner.getAttackTarget().isEntityAlive()) {
+//			// 対象が死んだ
+//			if (!owner.weaponReload) {
+//				if (owner.maidAvatar.isHandActive()) {
+//					// ターゲットが死んでいる時はアイテムの使用をクリア
+////					if (owner.getAvatarIF().getIsItemReload()) {
+//						owner.maidAvatar.stopActiveHand();
+////						LittleMaidReengaged.Debug(String.format("id:%d cancel reload.", owner.getEntityId()));
+////					} else {
+////						owner.maidAvatar.clearItemInUse();
+//						LittleMaidReengaged.Debug(String.format("id:%d clear.", owner.getEntityId()));
+////					}
+//				}
+//			} else {
+//				owner.mstatAimeBow = true;
+//			}
+//		}
+//		if (owner.weaponReload && !owner.maidAvatar.isHandActive()) {
+//			// 特殊リロード
+//			owner.maidInventory.getCurrentItem().useItemRightClick(owner.getEntityWorld(), owner.maidAvatar, EnumHand.MAIN_HAND);
+//			LittleMaidReengaged.Debug("id:%d force reload.", owner.getEntityId());
+//			owner.mstatAimeBow = true;
+//		}
+//
+//	}
 
 	@Override
 	public double getDistanceToSearchTargets() {
@@ -344,6 +343,39 @@ public class EntityMode_Archer extends EntityModeBase {
 		this.owner.setAttackTarget(null);
 		
 		return true;
+	}
+	
+	
+	public boolean weaponFullAuto;	// 装備がフルオート武器かどうか
+	public boolean weaponReload;	// 装備がリロードを欲しているかどうか
+
+	/**
+	 * 対応型射撃武器のリロード判定
+	 */
+	public void getWeaponStatus() {
+		
+		weaponFullAuto = false;
+		weaponReload = false;
+		
+		// 飛び道具用の特殊処理
+		ItemStack is = this.owner.maidInventory.getCurrentItem();
+		if (is.isEmpty()) return;
+
+		try {
+			Method me = is.getItem().getClass().getMethod("isWeaponReload", ItemStack.class, EntityPlayer.class);
+			weaponReload = (Boolean)me.invoke(is.getItem(), is, this.owner.maidAvatar);
+		}catch (NoClassDefFoundError e) {
+		} catch (NoSuchMethodException e) {
+		} catch (Exception e) {
+		}
+
+		try {
+			Method me = is.getItem().getClass().getMethod("isWeaponFullAuto", ItemStack.class);
+			weaponFullAuto = (Boolean)me.invoke(is.getItem(), is);
+		}catch (NoClassDefFoundError e) {
+		} catch (NoSuchMethodException e) {
+		} catch (Exception e) {
+		}
 	}
 
 }
