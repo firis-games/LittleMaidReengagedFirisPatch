@@ -253,7 +253,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	public boolean maidTracer;
 	public boolean maidFreedom;
 	public boolean maidWait;
-	public int homeWorld;
+//	public int homeWorld;
 	protected int maidTiles[][] = new int[9][3];
 	public int maidTile[] = new int[3];
 	public TileEntity maidTileEntity;
@@ -353,7 +353,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		return dataManager.get(EntityLittleMaid.dataWatch_texture_LittleMaid);
 //	}
 
-	public int playingTick = 0;
+//	public int playingTick = 0;
 
 //	public boolean isWildSaved = false;
 
@@ -364,7 +364,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	private boolean isInsideOpaque = false;
 	protected Counter registerTick;
-	protected String registerMode;
+//	protected String registerMode;
 
 	// NX5 レベル関連
 //	protected float maidExperience = 0;				// 経験値
@@ -1641,7 +1641,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		par1nbtTagCompound.setInteger("homeX", getPosition().getX());
 		par1nbtTagCompound.setInteger("homeY", getPosition().getY());
 		par1nbtTagCompound.setInteger("homeZ", getPosition().getZ());
-		par1nbtTagCompound.setInteger("homeWorld", homeWorld);
+//		par1nbtTagCompound.setInteger("homeWorld", homeWorld);
 
 //		par1nbtTagCompound.setFloat(LittleMaidReengaged.MODID + ":MAID_EXP", maidExperience);
 //		par1nbtTagCompound.setInteger(LittleMaidReengaged.MODID + ":EXP_BOOST", gainExpBoost);
@@ -1728,8 +1728,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		int lhy = par1nbtTagCompound.getInteger("homeY");
 		int lhz = par1nbtTagCompound.getInteger("homeZ");
 //			func_110172_bL().set(lhx, lhy, lhz);
-		setHomePosAndDistance(new BlockPos(lhx, lhy, lhz),(int)getMaximumHomeDistance());
-		homeWorld = par1nbtTagCompound.getInteger("homeWorld");
+		setHomePosAndDistance(new BlockPos(lhx, lhy, lhz), (int)getMaximumHomeDistance());
+//		homeWorld = par1nbtTagCompound.getInteger("homeWorld");
 
 		// Tiles
 		NBTTagCompound lnbt = par1nbtTagCompound.getCompoundTag("Tiles");
@@ -3428,7 +3428,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 								String modeString = tagCompound.getString(ItemTriggerRegisterKey.RK_MODE_TAG);
 								if (modeString.isEmpty()) return false;
 
-								registerMode = modeString;
+//								registerMode = modeString;
 								registerTick.setValue(200);
 
 								int count = tagCompound.getInteger(ItemTriggerRegisterKey.RK_COUNT);
@@ -3437,7 +3437,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 								}
 								tagCompound.setInteger(ItemTriggerRegisterKey.RK_COUNT, count);
 
-								par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.readyregistration", registerMode));
+								par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.readyregistration", modeString));
 								if(count >= ItemTriggerRegisterKey.RK_MAX_COUNT-10){
 									if(count<ItemTriggerRegisterKey.RK_MAX_COUNT){
 										par1EntityPlayer.sendMessage(new TextComponentTranslation("littleMaidMob.chat.text.warningcount",
@@ -4421,9 +4421,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	}
 
 	@Override
-	public void setHomePosAndDistance(BlockPos par1, int par4) {
-		homeWorld = dimension;
-		super.setHomePosAndDistance(par1, par4);
+	public void setHomePosAndDistance(BlockPos pos, int distance) {
+//		homeWorld = dimension;
+		super.setHomePosAndDistance(pos, distance);
 	}
 
 //	public void setTexturePackName(TextureBox[] pTextureBox) {
@@ -5010,7 +5010,4 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return ret;
 		
 	}
-	
-	
-	
 }

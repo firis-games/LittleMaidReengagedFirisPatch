@@ -5,7 +5,8 @@ import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 
 /**
- * ホームポジションをベースに移動する
+ * ホームポジションから一定距離離れた場合に
+ * ホームポジションに戻るメイドさん
  * @author firis-games
  *
  */

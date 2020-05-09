@@ -35,7 +35,7 @@ public class EntityMode_Playing extends EntityModeBase {
 
 	public static final String mmode_Playing	= "Playing";
 
-	public int playingTick = 0;
+	protected int playingTick = 0;
 
 	public int fcounter;
 
@@ -245,10 +245,10 @@ public class EntityMode_Playing extends EntityModeBase {
 
 	@Override
 	public void updateAITick(String pMode) {
-		if(owner.playingTick++<5 || !pMode.equals(mmode_Playing)){
+		if(this.playingTick++ < 5 || !pMode.equals(mmode_Playing)){
 			return;
 		}
-		owner.playingTick = 0;
+		this.playingTick = 0;
 		if (owner.isFreedom() || !owner.isContractEX()) {
 			// 自由行動中の固体は虎視眈々と隙をうかがう。
 			if (owner.getEntityWorld().isDaytime()) {
