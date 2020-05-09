@@ -1,6 +1,7 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.deprecated;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +10,7 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.Vec3d;
 
+@Deprecated
 public class EntityAILMAvoidPlayer extends EntityAIBase implements
 		IEntityAILM {
 

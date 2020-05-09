@@ -1,9 +1,14 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.motion;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 
+/**
+ * メイドさんが近くのモブを見つめる
+ * @author firis-games
+ *
+ */
 public class EntityAILMWatchClosest extends EntityAIWatchClosest {
 
 	public EntityAILMWatchClosest(EntityLiving entitylivingIn,

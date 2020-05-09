@@ -1,8 +1,10 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.deprecated;
 
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 
+@Deprecated
 public class EntityAILMRestrictRain extends EntityAIBase implements
 		IEntityAILM {
 

@@ -1,7 +1,8 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.move;
 
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;

@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.target;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;

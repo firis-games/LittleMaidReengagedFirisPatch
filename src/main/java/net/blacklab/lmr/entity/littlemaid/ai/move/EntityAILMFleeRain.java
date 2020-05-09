@@ -1,9 +1,10 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.move;
 
 import java.util.Random;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;

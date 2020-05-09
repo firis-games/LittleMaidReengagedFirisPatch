@@ -1,8 +1,14 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.move;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 
+/**
+ * ホームポジションをベースに移動する
+ * @author firis-games
+ *
+ */
 public class EntityAILMMoveTowardsRestriction extends EntityAIMoveTowardsRestriction implements IEntityAILM {
 
 	private EntityLittleMaid theMaid;

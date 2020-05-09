@@ -1,7 +1,8 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.move;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -9,6 +10,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+/**
+ * EntityModeBaseのブロック移動系をまとめたAI
+ * @author firis-games
+ *
+ */
 public class EntityAILMFindBlock extends EntityAIBase implements IEntityAILM {
 
 	protected boolean isEnable;

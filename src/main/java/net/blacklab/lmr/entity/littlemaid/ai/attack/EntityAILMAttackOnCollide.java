@@ -1,6 +1,7 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.attack;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
@@ -13,6 +14,11 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
+/**
+ * メイドさんの直接攻撃系処理
+ * @author firis-games
+ *
+ */
 public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAILM {
 
 	protected boolean fEnable;

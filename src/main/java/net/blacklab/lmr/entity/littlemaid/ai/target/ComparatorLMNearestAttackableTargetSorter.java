@@ -1,15 +1,15 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.target;
 
 import java.util.Comparator;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
-public class EntityAILMNearestAttackableTargetSorter<T extends EntityLivingBase> implements Comparator<EntityLivingBase> {
+public class ComparatorLMNearestAttackableTargetSorter<T extends EntityLivingBase> implements Comparator<EntityLivingBase> {
 
 	private Entity theEntity;
 
-	public EntityAILMNearestAttackableTargetSorter(Entity par1Entity) {
+	public ComparatorLMNearestAttackableTargetSorter(Entity par1Entity) {
 		this.theEntity = par1Entity;
 	}
 

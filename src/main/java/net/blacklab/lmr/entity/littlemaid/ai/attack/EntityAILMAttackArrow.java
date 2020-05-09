@@ -1,9 +1,10 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.attack;
 
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.IEntityLittleMaidAvatar;
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Archer;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.EnumSound;

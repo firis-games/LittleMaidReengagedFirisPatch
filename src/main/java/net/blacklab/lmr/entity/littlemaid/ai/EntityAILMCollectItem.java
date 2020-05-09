@@ -16,6 +16,11 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.MathHelper;
 
+/**
+ * アイテムを拾う
+ * @author firis-games
+ *
+ */
 public class EntityAILMCollectItem extends EntityAIBase {
 
 	protected EntityLittleMaid theMaid;

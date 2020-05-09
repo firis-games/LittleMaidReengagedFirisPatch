@@ -1,7 +1,8 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.move;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -9,6 +10,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+/**
+ * レッドストーンを探して移動する
+ * @author firis-games
+ *
+ */
 public class EntityAILMTracerMove extends EntityAIBase implements IEntityAILM {
 
 	protected EntityLittleMaid theMaid;

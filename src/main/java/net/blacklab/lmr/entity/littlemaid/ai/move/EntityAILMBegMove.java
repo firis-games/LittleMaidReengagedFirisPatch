@@ -1,9 +1,14 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.move;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 
+/**
+ * 砂糖についていくメイドさん
+ * @author firis-games
+ *
+ */
 public class EntityAILMBegMove extends EntityAIBase {
 
 	private EntityLittleMaid theMaid;

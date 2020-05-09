@@ -1,10 +1,15 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.action;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.pathfinding.PathNavigateGround;
 
+/**
+ * ドアを閉じる
+ * @author firis-games
+ *
+ */
 public class EntityAILMRestrictOpenDoor extends EntityAIRestrictOpenDoor {
 
 	protected EntityLittleMaid theMaid;

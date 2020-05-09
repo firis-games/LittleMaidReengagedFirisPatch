@@ -3,6 +3,11 @@ package net.blacklab.lmr.entity.littlemaid.ai;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.ai.EntityAISit;
 
+/**
+ * メイドさんの待機
+ * @author firis-games
+ *
+ */
 public class EntityAILMWait extends EntityAISit {
 
 	public EntityLittleMaid theMaid;

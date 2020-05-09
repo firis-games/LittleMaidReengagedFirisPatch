@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.target;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -18,7 +18,7 @@ public class EntityAILMNearestAttackableTarget<T extends EntityLivingBase> exten
 
 	protected EntityLittleMaid theMaid;
 	protected int targetChance;
-	protected EntityAILMNearestAttackableTargetSorter<?> theNearestAttackableTargetSorter;
+	protected ComparatorLMNearestAttackableTargetSorter<?> theNearestAttackableTargetSorter;
 
 	private boolean fretarget;
 	private int fcanAttack;
@@ -32,7 +32,7 @@ public class EntityAILMNearestAttackableTarget<T extends EntityLivingBase> exten
 		super(par1, par2, par4, par5, par6, null);
 //		targetClass = par2;
 		targetChance = par4;
-		theNearestAttackableTargetSorter = new EntityAILMNearestAttackableTargetSorter<T>(par1);
+		theNearestAttackableTargetSorter = new ComparatorLMNearestAttackableTargetSorter<T>(par1);
 		fretarget = par6;
 		theMaid = par1;
 

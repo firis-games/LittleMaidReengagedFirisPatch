@@ -9,8 +9,8 @@ import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMHurtByTarget;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWildWatchClosest;
+import net.blacklab.lmr.entity.littlemaid.ai.motion.EntityAILMWildWatchClosest;
+import net.blacklab.lmr.entity.littlemaid.ai.target.EntityAILMHurtByTarget;
 import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_Angler;
 import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_Lumberjack;
 import net.blacklab.lmr.entity.littlemaid.mode.custom.EntityMode_SugarCane;
@@ -108,7 +108,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 		ltasks[0].addTask(3, owner.aiPanic);
 		ltasks[0].addTask(4, owner.aiBegMove);
 		ltasks[0].addTask(4, owner.aiBeg);
-		ltasks[0].addTask(5, owner.aiRestrictRain);
+//		ltasks[0].addTask(5, owner.aiRestrictRain);
 		ltasks[0].addTask(6, owner.aiFreeRain);
 //        ltasks[0].addTask(4, new EntityAIMoveIndoors(this));
 //		ltasks[0].addTask(7, owner.aiCloseDoor);
@@ -160,7 +160,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			owner.setMaidMode(mmode_Escort);
 			break;
 		case mmode_Escort :
-			owner.aiAvoidPlayer.setEnable(false);
+//			owner.aiAvoidPlayer.setEnable(false);
 			for (int li = 0; li < owner.mstatSwingStatus.length; li++) {
 				owner.setEquipItem(li, -1);
 			}

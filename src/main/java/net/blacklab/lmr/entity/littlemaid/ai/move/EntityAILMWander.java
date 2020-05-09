@@ -1,9 +1,15 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.move;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIWander;
 
+/**
+ * 自由行動時にいろんなところに向かって歩くメイドさん
+ * @author firis-games
+ *
+ */
 public class EntityAILMWander extends EntityAIWander implements IEntityAILM {
 
 	protected EntityLittleMaid theMaid;
@@ -29,5 +35,5 @@ public class EntityAILMWander extends EntityAIWander implements IEntityAILM {
 	public boolean getEnable() {
 		return isEnable;
 	}
-
+	
 }

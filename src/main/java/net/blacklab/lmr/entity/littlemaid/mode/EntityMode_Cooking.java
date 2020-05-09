@@ -80,7 +80,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 			owner.setBloodsuck(false);
 //			owner.aiJumpTo.setEnable(false);
 			owner.aiFollow.setEnable(false);
-			owner.aiAvoidPlayer.setEnable(false);
+//			owner.aiAvoidPlayer.setEnable(false);
 			owner.aiAttack.setEnable(false);
 			owner.aiShooting.setEnable(false);
 			return true;

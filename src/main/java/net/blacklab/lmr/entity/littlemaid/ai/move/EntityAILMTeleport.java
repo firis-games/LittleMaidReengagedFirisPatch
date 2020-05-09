@@ -1,9 +1,10 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.move;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -12,6 +13,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import scala.util.Random;
 
+/**
+ * メイドさんがご主人さまから離れたらテレポート
+ * @author firis-games
+ *
+ */
 public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 	
 	private EntityLittleMaid theMaid;

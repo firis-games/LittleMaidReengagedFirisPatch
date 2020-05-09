@@ -1,10 +1,15 @@
-package net.blacklab.lmr.entity.littlemaid.ai;
+package net.blacklab.lmr.entity.littlemaid.ai.action;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 
+/**
+ * ドアを開く
+ * @author firis-games
+ *
+ */
 public class EntityAILMOpenDoor extends EntityAIOpenDoor {
 
 	protected EntityLittleMaid theMaid;

@@ -4,7 +4,7 @@ import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMNearestAttackableTarget;
+import net.blacklab.lmr.entity.littlemaid.ai.target.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.entity.Entity;
@@ -70,7 +70,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 		ltasks[0].addTask(5, owner.aiPanic);
 		ltasks[0].addTask(6, owner.aiBeg);
 		ltasks[0].addTask(7, owner.aiBegMove);
-		ltasks[0].addTask(8, owner.aiAvoidPlayer);
+//		ltasks[0].addTask(8, owner.aiAvoidPlayer);
 //		ltasks[0].addTask(7, pentitylittlemaid.aiCloseDoor);
 //		ltasks[0].addTask(8, pentitylittlemaid.aiOpenDoor);
 //		ltasks[0].addTask(9, pentitylittlemaid.aiCollectItem);

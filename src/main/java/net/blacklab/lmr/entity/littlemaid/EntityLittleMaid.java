@@ -30,25 +30,23 @@ import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMAttackArrow;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMAttackOnCollide;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMAvoidPlayer;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMBeg;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMBegMove;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMCollectItem;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMFindBlock;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMFleeRain;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMFollowOwner;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMMoveTowardsRestriction;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMOpenDoor;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMRestrictOpenDoor;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMRestrictRain;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMSwimming;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMTeleport;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMTracerMove;
 import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWait;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWander;
-import net.blacklab.lmr.entity.littlemaid.ai.EntityAILMWatchClosest;
+import net.blacklab.lmr.entity.littlemaid.ai.action.EntityAILMOpenDoor;
+import net.blacklab.lmr.entity.littlemaid.ai.action.EntityAILMRestrictOpenDoor;
+import net.blacklab.lmr.entity.littlemaid.ai.attack.EntityAILMAttackArrow;
+import net.blacklab.lmr.entity.littlemaid.ai.attack.EntityAILMAttackOnCollide;
+import net.blacklab.lmr.entity.littlemaid.ai.motion.EntityAILMBeg;
+import net.blacklab.lmr.entity.littlemaid.ai.motion.EntityAILMWatchClosest;
+import net.blacklab.lmr.entity.littlemaid.ai.move.EntityAILMBegMove;
+import net.blacklab.lmr.entity.littlemaid.ai.move.EntityAILMFindBlock;
+import net.blacklab.lmr.entity.littlemaid.ai.move.EntityAILMFleeRain;
+import net.blacklab.lmr.entity.littlemaid.ai.move.EntityAILMFollowOwner;
+import net.blacklab.lmr.entity.littlemaid.ai.move.EntityAILMMoveTowardsRestriction;
+import net.blacklab.lmr.entity.littlemaid.ai.move.EntityAILMSwimming;
+import net.blacklab.lmr.entity.littlemaid.ai.move.EntityAILMTeleport;
+import net.blacklab.lmr.entity.littlemaid.ai.move.EntityAILMTracerMove;
+import net.blacklab.lmr.entity.littlemaid.ai.move.EntityAILMWander;
 import net.blacklab.lmr.entity.littlemaid.controller.LMExperienceController;
 import net.blacklab.lmr.entity.littlemaid.controller.LMJobController;
 import net.blacklab.lmr.entity.littlemaid.controller.LMSoundController;
@@ -327,13 +325,13 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	public EntityAILMBegMove aiBegMove;
 	public EntityAILMOpenDoor aiOpenDoor;
 	public EntityAILMRestrictOpenDoor aiCloseDoor;
-	public EntityAILMAvoidPlayer aiAvoidPlayer;
+//	public EntityAILMAvoidPlayer aiAvoidPlayer;
 	public EntityAILMFollowOwner aiFollow;
 	public EntityAILMMoveTowardsRestriction aiMoveTowardsRestriction;
 	public EntityAILMAttackOnCollide aiAttack;
 	public EntityAILMAttackArrow aiShooting;
 	public EntityAILMCollectItem aiCollectItem;
-	public EntityAILMRestrictRain aiRestrictRain;
+//	public EntityAILMRestrictRain aiRestrictRain;
 	public EntityAILMFleeRain aiFreeRain;
 	public EntityAILMWander aiWander;
 //	public EntityAILMJumpToMaster aiJumpTo;
@@ -651,13 +649,13 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		aiBegMove = new EntityAILMBegMove(this, 1.0F);
 		aiOpenDoor = new EntityAILMOpenDoor(this, true);
 		aiCloseDoor = new EntityAILMRestrictOpenDoor(this);
-		aiAvoidPlayer = new EntityAILMAvoidPlayer(this, 1.0F, 3);
+//		aiAvoidPlayer = new EntityAILMAvoidPlayer(this, 1.0F, 3);
 		aiFollow = new EntityAILMFollowOwner(this, 1.0F, 81D);
 		aiMoveTowardsRestriction = new EntityAILMMoveTowardsRestriction(this, 1.0);
 		aiAttack = new EntityAILMAttackOnCollide(this, 1.0F, true);
 		aiShooting = new EntityAILMAttackArrow(this);
 		aiCollectItem = new EntityAILMCollectItem(this, 1.0F);
-		aiRestrictRain = new EntityAILMRestrictRain(this);
+//		aiRestrictRain = new EntityAILMRestrictRain(this);
 		aiFreeRain = new EntityAILMFleeRain(this, 1.0F);
 		aiWander = new EntityAILMWander(this, 1.0F);
 		aiJumpTo = new EntityAILMTeleport(this);
@@ -700,7 +698,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		// Mutexの影響しない特殊行動
 		ltasks[0].addTask(40, aiCloseDoor);
 		ltasks[0].addTask(41, aiOpenDoor);
-		ltasks[0].addTask(42, aiRestrictRain);
+//		ltasks[0].addTask(42, aiRestrictRain);
+		
 		// 首の動き単独
 		ltasks[0].addTask(51, aiWatchClosest);
 		ltasks[0].addTask(52, new EntityAILookIdle(this));
@@ -917,7 +916,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		aiFollow.setEnable(true);
 		aiAttack.setEnable(true);
 		aiShooting.setEnable(false);
-		aiAvoidPlayer.setEnable(true);
+//		aiAvoidPlayer.setEnable(true);
 //		aiWander.setEnable(maidFreedom);
 		setBloodsuck(false);
 		clearTilePosAll();
@@ -2210,19 +2209,19 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	}
 
 
-	@Override
-	public void applyEntityCollision(Entity par1Entity) {
-		// 閉所接触回避用
-		super.applyEntityCollision(par1Entity);
-
-		if (par1Entity instanceof EntityLittleMaid) {
-			if (((EntityLittleMaid)par1Entity).aiAvoidPlayer.isActive) {
-				aiAvoidPlayer.isActive = true;
-			}
-		} else if (par1Entity == mstatMasterEntity) {
-			aiAvoidPlayer.setActive();
-		}
-	}
+//	@Override
+//	public void applyEntityCollision(Entity par1Entity) {
+//		// 閉所接触回避用
+//		super.applyEntityCollision(par1Entity);
+//
+//		if (par1Entity instanceof EntityLittleMaid) {
+//			if (((EntityLittleMaid)par1Entity).aiAvoidPlayer.isActive) {
+//				aiAvoidPlayer.isActive = true;
+//			}
+//		} else if (par1Entity == mstatMasterEntity) {
+//			aiAvoidPlayer.setActive();
+//		}
+//	}
 
 	public void updateAITasks()
 	{
@@ -4119,11 +4118,11 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		// AI関連のリセットもここで。
 		maidFreedom = pFlag;
 		if (!getEntityWorld().isRemote) {
-			aiRestrictRain.setEnable(pFlag);
+//			aiRestrictRain.setEnable(pFlag);
 			aiFreeRain.setEnable(pFlag);
 			aiWander.setEnable(pFlag);
 //			aiJumpTo.setEnable(!pFlag);
-			aiAvoidPlayer.setEnable(!pFlag);
+//			aiAvoidPlayer.setEnable(!pFlag);
 			aiFollow.setEnable(!pFlag);
 			aiMoveTowardsRestriction.setEnable(maidFreedom);
 			aiTracer.setEnable(isTracer()&&pFlag);
