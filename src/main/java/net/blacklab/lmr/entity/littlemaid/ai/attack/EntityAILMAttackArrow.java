@@ -77,6 +77,10 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 	protected boolean isExecutable() {
 		EntityLivingBase entityliving = fMaid.getAttackTarget();
 		if(fMaid.isMaidWaitEx()) return false;
+		
+		if (!fEnable) {
+			return false;
+		}
 
 		//ターゲット
 		if (!fEnable || entityliving == null || entityliving.isDead) {
