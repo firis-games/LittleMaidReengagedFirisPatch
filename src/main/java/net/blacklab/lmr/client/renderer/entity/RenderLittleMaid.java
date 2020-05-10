@@ -2,6 +2,7 @@ package net.blacklab.lmr.client.renderer.entity;
 
 import net.blacklab.lmr.api.client.event.ClientEventLMRE;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaid;
+import net.blacklab.lmr.client.renderer.layer.LayerHeldChestLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldItemLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -28,6 +29,7 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 		//描画用Layer登録
 		this.addLayer(new LayerHeldItemLittleMaid(this));
 		this.addLayer(new LayerArmorLittleMaid(this));
+		this.addLayer(new LayerHeldChestLittleMaid(this));
 		
 		//Layer登録用イベント
 		MinecraftForge.EVENT_BUS.post(new ClientEventLMRE.RendererLittleMaidAddLayerEvent(this));

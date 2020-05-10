@@ -2,6 +2,7 @@ package net.blacklab.lmr.entity.maidmodel.base;
 
 import org.lwjgl.opengl.GL11;
 
+import net.blacklab.lmr.entity.maidmodel.api.LMMotionHandler;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
 import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
@@ -282,6 +283,9 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 				bipedLeftArm.addRotateAngleZ(-lc);
 			}
 		}
+		
+		//割込みモーション処理
+		LMMotionHandler.postMotionRotationAngles(this, par1, par2, pTicksExisted, pHeadYaw, pHeadPitch, par6, pEntityCaps);
 	}
 
 	@Override

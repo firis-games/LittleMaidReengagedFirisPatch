@@ -3,6 +3,7 @@ package net.blacklab.lmr.entity.maidmodel;
 import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.config.LMRConfig;
+import net.blacklab.lmr.entity.maidmodel.base.ModelLittleMaidBase;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.util.helper.RendererHelper;
@@ -255,6 +256,17 @@ public class ModelBaseSolo extends ModelBaseNihil {
 	 */
 	public void armPostRender(int arm, float scale) {
 		this.maidModel.Arms[arm].postRender(scale);
+	}
+	
+	/**
+	 * 腕の位置へずらす
+	 */
+	public void bodyPostRender(float scale) {
+		if (this.maidModel instanceof ModelLittleMaidBase) {
+			ModelLittleMaidBase maidmodel = (ModelLittleMaidBase) this.maidModel;
+			
+			maidmodel.bipedBody.postRender(scale);
+		}
 	}
 	
 	/**
