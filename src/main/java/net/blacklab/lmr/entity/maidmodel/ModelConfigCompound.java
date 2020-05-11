@@ -14,11 +14,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * テクスチャ管理用の変数群をまとめたもの。
  */
-public class ModelConfigCompound  {
+public class ModelConfigCompound implements IModelConfigCompound {
 //public class MMM_TextureData implements MMM_ITextureEntity {
 
 	/**
@@ -72,11 +74,13 @@ public class ModelConfigCompound  {
 
 	protected EntityLivingBase owner;
 	
-	public EntityLivingBase getOwner() {
-		return this.owner;
-	}
+//	public EntityLivingBase getOwner() {
+//		return this.owner;
+//	}
 	
 	protected IModelCapsData entityCaps;
+	
+	@Override
 	public IModelCapsData getModelCaps() {
 		return this.entityCaps;
 	}
@@ -187,6 +191,7 @@ public class ModelConfigCompound  {
 	 * メイドさんのテクスチャ
 	 * @return
 	 */
+	@Override
 	public ResourceLocation getTextureLittleMaid() {
 		if (this.textureBoxLittleMaid == null) return null;
 		return this.textureBoxLittleMaid.getTextureLittleMaid(this.color);
@@ -196,6 +201,7 @@ public class ModelConfigCompound  {
 	 * メイドさんの発光テクスチャ
 	 * @return
 	 */
+	@Override
 	public ResourceLocation getLightTextureLittleMaid() {
 		if (this.textureBoxLittleMaid == null) return null;
 		return this.textureBoxLittleMaid.getLightTextureLittleMaid(this.color);
@@ -204,6 +210,7 @@ public class ModelConfigCompound  {
 	/**
 	 * インナー防具テクスチャ
 	 */
+	@Override
 	public ResourceLocation getTextureInnerArmor(EntityEquipmentSlot slot) {
 		
 		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
@@ -216,6 +223,7 @@ public class ModelConfigCompound  {
 	/**
 	 * インナー発光防具テクスチャ
 	 */
+	@Override
 	public ResourceLocation getLightTextureInnerArmor(EntityEquipmentSlot slot) {
 		
 		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
@@ -228,6 +236,7 @@ public class ModelConfigCompound  {
 	/**
 	 * アウター防具テクスチャ
 	 */
+	@Override
 	public ResourceLocation getTextureOuterArmor(EntityEquipmentSlot slot) {
 		
 		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
@@ -240,6 +249,7 @@ public class ModelConfigCompound  {
 	/**
 	 * アウター発光防具テクスチャ
 	 */
+	@Override
 	public ResourceLocation getLightTextureOuterArmor(EntityEquipmentSlot slot) {
 		
 		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
@@ -297,6 +307,7 @@ public class ModelConfigCompound  {
 	 * 2:アウターアーマーモデル
 	 */
 //	protected ModelMultiBase textureModel[];
+	@Override
 	public ModelMultiBase getModelLittleMaid() {
 		if (textureBoxLittleMaid == null) return null;
 		return textureBoxLittleMaid.getModelLittleMaid();
@@ -307,6 +318,7 @@ public class ModelConfigCompound  {
 	 * @param slot
 	 * @return
 	 */
+	@Override
 	public ModelMultiBase getModelInnerArmor(EntityEquipmentSlot slot) {
 		
 		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
@@ -315,6 +327,8 @@ public class ModelConfigCompound  {
 		
 		return armorBox.getModelInnerArmor();
 	}
+	
+	@Override
 	public ModelMultiBase getModelOuterArmor(EntityEquipmentSlot slot) {
 		
 		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
@@ -875,12 +889,31 @@ public class ModelConfigCompound  {
 	 * 防具モデルの表示非表示制御用
 	 * @return
 	 */
-	public boolean isArmorVisible(int no) {
+	@Override
+	public boolean isArmorTypeVisible(int type) {
 		if (owner instanceof EntityLittleMaid) {
 			EntityLittleMaid maid = (EntityLittleMaid) owner;
-			return maid.isArmorVisible(no);
+			return maid.isArmorVisible(type);
 		}
 		return true;
+	}
+	
+	/**
+	 * 対象Entityの透明判定判断
+	 * @return
+	 */
+	public boolean isInvisible() {
+		return this.owner.isInvisible();
+	}
+	
+	/**
+	 * 描画対象の輝度を取得する
+	 * @return
+	 */
+	@SideOnly(Side.CLIENT)
+	@Override
+	public int getBrightnessForRender() {
+		return this.owner.getBrightnessForRender();
 	}
 
 }

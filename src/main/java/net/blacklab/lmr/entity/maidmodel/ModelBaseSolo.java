@@ -6,13 +6,16 @@ import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.maidmodel.base.ModelLittleMaidBase;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
-import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * マルチモデルのメイドさん用ModelBase
+ * @author firis-games
+ *
+ */
 public class ModelBaseSolo extends ModelBaseNihil {
 
 	/**
@@ -30,12 +33,10 @@ public class ModelBaseSolo extends ModelBaseNihil {
 	 */
 	private ResourceLocation maidTextureLight;
 	
-//	public ResourceLocation textures[];
-	private ModelConfigCompound modelConfigCompound;
-	
-//	protected ModelMultiBase getModel() {
-//		return this.maidModel;
-//	}
+	/**
+	 * コンストラクタ
+	 */
+	public ModelBaseSolo() {}
 	
 	/**
 	 * 描画用パラメータを設定する
@@ -44,13 +45,14 @@ public class ModelBaseSolo extends ModelBaseNihil {
 	public void initModelParameter(ModelConfigCompound modelConfigCompound, float entityYaw, float partialTicks) {
 		
 		this.modelConfigCompound = modelConfigCompound;
-		EntityLiving entity = (EntityLiving) this.modelConfigCompound.getOwner();
+//		EntityLiving entity = (EntityLiving) this.modelConfigCompound.getOwner();
 		
 		//内部変数リセット
 		this.entityCaps = null;
 		this.maidModel = null;
 		this.maidTexture = null;
 		this.maidTextureLight = null;
+		this.textureLightColor = null;
 		
 		//設定対象がない場合は処理を中断
 		if (this.modelConfigCompound == null) return;
@@ -67,25 +69,141 @@ public class ModelBaseSolo extends ModelBaseNihil {
 		this.entityCaps.setModelMultiFromModelCaps(this.maidModel, entityYaw, partialTicks);
 		
 		//本体描画設定
-		this.isRendering = true;
-		if (entity.isInvisible()) {
-			this.isRendering = false;
-		}
+		//透明の場合は本体を描画しない
+		this.isRendering = !this.modelConfigCompound.isInvisible();
+//		if (entity.isInvisible()) {
+//			this.isRendering = false;
+//		}
 		
 		//各パラメータの初期化
 		this.showAllParts();
 //		this.isAlphablend = true;
 //		this.renderCount = 0;
-		this.lighting = entity.getBrightnessForRender();
+		this.lighting = this.modelConfigCompound.getBrightnessForRender();
 	}
 	
-//	public static final ResourceLocation[] blanks = new ResourceLocation[0];
+	/**
+	 * マルチモデルのsetRotationAngles
+	 */
+	@Override
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+		if (maidModel != null) {
+			maidModel.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityCaps);
+		}
+	}
+	
+	/**
+	 * マルチモデルのsetLivingAnimations
+	 */
+	@Override
+	public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
+		if (maidModel != null) {
+			maidModel.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
+		}
+	}
+	
+	/**
+	 * メイドさん描画処理
+	 */
+	@Override
+	public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		
+		if (this.maidModel == null) return;
+		
+		//法線再計算
+		GL11.glEnable(GL11.GL_NORMALIZE);
+		
+		//マルチモデル
+		if (this.maidModel != null && this.maidTexture != null) {
+			//透過設定
+			if (LMRConfig.cfg_isModelAlphaBlend) {
+				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			} else {
+				GL11.glDisable(GL11.GL_BLEND);
+			}
+			
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.maidTexture);
+			this.maidModel.render(entityCaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, isRendering);
+		}
+		
+		//発光テクスチャ
+		if (this.maidModel != null && this.maidTextureLight != null) {
+			
+			//発光パーツ
+			Minecraft.getMinecraft().getTextureManager().bindTexture(this.maidTextureLight);
 
-//	public ModelBaseSolo(RenderModelMulti<? extends EntityLiving> pRender) {
-	public ModelBaseSolo() {
-//		rendererLivingEntity = pRender;
+			//発光テクスチャ用事前設定
+			this.glLightTexturePre();
+
+			maidModel.render(entityCaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, isRendering);
+			
+			//発光テクスチャ用事後設定
+			this.glLightTexturePost();
+		}
+	}
+	
+	/**
+	 * メイドさんモデル表示設定
+	 */
+	@Override
+	public void showAllParts() {
+		if (maidModel != null) {
+			maidModel.showAllParts();
+		}
 	}
 
+	
+	/**
+	 * 腕の位置へずらす
+	 */
+	public void armPostRender(int arm, float scale) {
+		this.maidModel.Arms[arm].postRender(scale);
+	}
+	
+	/**
+	 * 腕の位置へずらす
+	 */
+	public void bodyPostRender(float scale) {
+		if (this.maidModel instanceof ModelLittleMaidBase) {
+			ModelLittleMaidBase maidmodel = (ModelLittleMaidBase) this.maidModel;
+			
+			maidmodel.bipedBody.postRender(scale);
+		}
+	}
+	
+	/**
+	 * メイドモデルのスケールを取得する
+	 * @return
+	 */
+	public Float getMultiModelScaleFactor() {
+		
+		if (maidModel == null) return null;
+		
+		Float scale = (Float) maidModel.getCapsValue(IModelCaps.caps_ScaleFactor);
+		
+		return scale;
+	}
+	
+	/**
+	 * リードの位置調整用パラメータ
+	 * @param pEntityCaps
+	 * @return
+	 */
+	public float getLeashOffset() {
+		
+		if (this.maidModel == null) return 0.0F;
+		
+		//リードの位置調整パラメータを取得する
+		return this.maidModel.getLeashOffset(this.entityCaps);
+	}
+	
+	
+	
+	/**
+	 * メイドさん描画処理
+	 */
+/*
 	@Override
 	public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		
@@ -137,47 +255,57 @@ public class ModelBaseSolo extends ModelBaseNihil {
 			//発光パーツ
 			Minecraft.getMinecraft().getTextureManager().bindTexture(this.maidTextureLight);
 			
-//			float var4 = 1.0F;
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glEnable(GL11.GL_ALPHA_TEST);
-			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-			GL11.glDepthFunc(GL11.GL_LEQUAL);
+////			float var4 = 1.0F;
+//			GL11.glEnable(GL11.GL_BLEND);
+//			GL11.glEnable(GL11.GL_ALPHA_TEST);
+//			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+//			GL11.glDepthFunc(GL11.GL_LEQUAL);
+//			RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
+//			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			
-			RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			//発光テクスチャ用事前設定
+			this.glLightTexturePre();
+
 			maidModel.render(entityCaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, isRendering);
 			
-			RendererHelper.setLightmapTextureCoords(lighting);
+			//発光テクスチャ用事後設定
+			this.glLightTexturePre();
 			
-//			GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glDisable(GL11.GL_BLEND);
-			//GL11.glDisable(GL11.GL_ALPHA_TEST);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glDepthMask(true);
+//			RendererHelper.setLightmapTextureCoords(lighting);
+//			
+////			GL11.glEnable(GL11.GL_LIGHTING);
+//			GL11.glDisable(GL11.GL_BLEND);
+//			//GL11.glDisable(GL11.GL_ALPHA_TEST);
+//			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//			GL11.glDepthMask(true);
 		}
 //		textures = blanks;
 //		renderCount++;
 	}
+*/
+	
+//	public ResourceLocation textures[];
+//	private ModelConfigCompound modelConfigCompound;
+	
+//	protected ModelMultiBase getModel() {
+//		return this.maidModel;
+//	}
+	
+	
+	
+//	public static final ResourceLocation[] blanks = new ResourceLocation[0];
+
+//	public ModelBaseSolo(RenderModelMulti<? extends EntityLiving> pRender) {
+//	public ModelBaseSolo() {
+//		rendererLivingEntity = pRender;
+//	}
+
+
 
 //	@Override
 //	public TextureOffset getTextureOffset(String par1Str) {
 //		return maidModel == null ? null : maidModel.getTextureOffset(par1Str);
 //	}
-
-	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-		if (maidModel != null) {
-			maidModel.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityCaps);
-		}
-	}
-	
-	@Override
-	public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
-		if (maidModel != null) {
-			maidModel.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
-		}
-	}
-
 
 	// IModelMMM追加分
 
@@ -242,57 +370,5 @@ public class ModelBaseSolo extends ModelBaseNihil {
 //		}
 //		return false;
 //	}
-
-	@Override
-	public void showAllParts() {
-		if (maidModel != null) {
-			maidModel.showAllParts();
-		}
-	}
-
 	
-	/**
-	 * 腕の位置へずらす
-	 */
-	public void armPostRender(int arm, float scale) {
-		this.maidModel.Arms[arm].postRender(scale);
-	}
-	
-	/**
-	 * 腕の位置へずらす
-	 */
-	public void bodyPostRender(float scale) {
-		if (this.maidModel instanceof ModelLittleMaidBase) {
-			ModelLittleMaidBase maidmodel = (ModelLittleMaidBase) this.maidModel;
-			
-			maidmodel.bipedBody.postRender(scale);
-		}
-	}
-	
-	/**
-	 * メイドモデルのスケールを取得する
-	 * @return
-	 */
-	public Float getMultiModelScaleFactor() {
-		
-		if (maidModel == null) return null;
-		
-		Float scale = (Float) maidModel.getCapsValue(IModelCaps.caps_ScaleFactor);
-		
-		return scale;
-	}
-	
-	/**
-	 * リードの位置調整用パラメータ
-	 * @param pEntityCaps
-	 * @return
-	 */
-	public float getLeashOffset() {
-		
-		if (this.maidModel == null) return 0.0F;
-		
-		//リードの位置調整パラメータを取得する
-		return this.maidModel.getLeashOffset(this.entityCaps);
-	}
-
 }

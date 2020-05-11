@@ -4,10 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
-import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
@@ -19,6 +17,13 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ModelBaseDuo extends ModelBaseNihil {
 
+	/**
+	 * 内部定数
+	 */
+	private static final int ARMOR_INNER_ID = 0;
+	private static final int ARMOR_OUTER_ID = 1;
+	private static final float RENDER_SCALE = 0.0625F;
+	
 	/**
 	 * インナー防具モデル
 	 */
@@ -48,21 +53,11 @@ public class ModelBaseDuo extends ModelBaseNihil {
 	 * 発光インナー防具テクスチャ
 	 */
 	private ResourceLocation textureOuterLight;
-	
-	
-	//内部定数
-	private static final int ARMOR_INNER_ID = 0;
-	private static final int ARMOR_OUTER_ID = 1;
-	private static final float renderScale = 0.0625F;
-	
-//	public ModelMultiBase getModelOuter(int slot) {
-//		return this.modelOuter;
-//	}
-//	public ModelMultiBase getModelInner(int slot) {
-//		return this.modelInner;
-//	}
-	
-	protected ModelConfigCompound modelConfigCompound;
+
+	/**
+	 * コンストラクタ
+	 */
+	public ModelBaseDuo() {}
 	
 	/**
 	 * 描画用パラメータを設定する
@@ -75,7 +70,7 @@ public class ModelBaseDuo extends ModelBaseNihil {
 		
 		this.modelConfigCompound = modelConfigCompound;
 		
-		EntityLiving entity = (EntityLiving) this.modelConfigCompound.getOwner();
+//		EntityLiving entity = (EntityLiving) this.modelConfigCompound.getOwner();
 		
 		//内部変数リセット
 		this.modelInner = null;
@@ -101,7 +96,7 @@ public class ModelBaseDuo extends ModelBaseNihil {
 		this.textureOuterLight = this.modelConfigCompound.getLightTextureOuterArmor(slot);
 		
 		//ModelCapsData設定
-		this.entityCaps = modelConfigCompound.getModelCaps();
+		this.entityCaps = this.modelConfigCompound.getModelCaps();
 		
 		//マルチモデル情報の初期化
 		this.entityCaps.setModelMultiFromModelCaps(this.modelInner, entityYaw, partialTicks);
@@ -123,9 +118,164 @@ public class ModelBaseDuo extends ModelBaseNihil {
 		}
 		
 		//ライティング設定
-		this.lighting = entity.getBrightnessForRender();
+		this.lighting = this.modelConfigCompound.getBrightnessForRender();
 		
 	}
+	
+	/**
+	 * 防具モデルでは呼び出されていない
+	 */
+	@Override
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+	}
+
+	/**
+	 * 防具モデルのsetLivingAnimations
+	 */
+	@Override
+	public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
+		if (modelInner != null) {
+			modelInner.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
+		}
+		if (modelOuter != null) {
+			modelOuter.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
+		}	
+//		isAlphablend = true;
+	}
+
+	/**
+	 * アーマー描画処理
+	 */
+	public void render(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, int renderParts) {
+//		boolean lri = (renderCount & 0x0f) == 0;
+//		//総合
+//		this.showArmorParts(renderParts);
+
+		//法線再計算
+		GL11.glEnable(GL11.GL_NORMALIZE);
+		
+		//インナー
+		INNER:{
+			if(this.modelInner != null 
+					&& this.textureInner != null 
+					&& this.modelConfigCompound.isArmorTypeVisible(0)){
+				try {
+					
+					//テクスチャバインド
+					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureInner);
+					
+					//OpenGL設定
+					GL11.glEnable(GL11.GL_BLEND);
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					
+					//モデル描画
+					this.modelInner.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, RENDER_SCALE, true);
+					
+				} catch(Exception e) {
+					break INNER;
+				}
+			}
+		}
+		
+		//発光インナー
+		INNER_LIGHT:{
+			if(this.modelInner != null 
+					&& this.textureInnerLight != null 
+					&& this.modelConfigCompound.isArmorTypeVisible(1)){
+				try {
+					
+					//テクスチャバインド
+					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureInnerLight);
+					
+					//発光テクスチャ用事前設定
+					this.glLightTexturePre();
+					
+					//モデル描画
+					this.modelInner.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, RENDER_SCALE, true);
+					
+					//発光テクスチャの事後設定
+					this.glLightTexturePost();
+					
+					//透過リセット
+					GL11.glDisable(GL11.GL_BLEND);
+					GL11.glEnable(GL11.GL_ALPHA_TEST);
+					
+				} catch(Exception e) {
+					break INNER_LIGHT;
+				}
+			}
+		}
+
+		//インナー
+		OUTER:{
+			if(this.modelOuter != null 
+					&& this.textureOuter != null 
+					&& this.modelConfigCompound.isArmorTypeVisible(2)){
+				try {
+					
+					//テクスチャバインド
+					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureOuter);
+					
+					//OpenGL設定
+					GL11.glEnable(GL11.GL_BLEND);
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					
+					//モデル描画
+					this.modelOuter.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, RENDER_SCALE, true);
+					
+				} catch(Exception e) {
+					break OUTER;
+				}
+			}
+		}
+		
+		//発光アウター
+		OUTER_LIGHT:{
+			if(this.modelOuter != null 
+					&& this.textureOuterLight != null 
+					&& this.modelConfigCompound.isArmorTypeVisible(3)){
+				try {
+					
+					//テクスチャバインド
+					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureOuterLight);
+					
+					//発光テクスチャ用事前設定
+					this.glLightTexturePre();
+					
+					//モデル描画
+					this.modelOuter.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, RENDER_SCALE, true);
+					
+					//発光テクスチャの事後設定
+					this.glLightTexturePost();
+					
+				} catch (Exception e) {
+					break OUTER_LIGHT;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * アーマーモデルの全部位表示設定
+	 */
+	@Override
+	public void showAllParts() {
+		if (modelInner != null) {
+			modelInner.showAllParts();
+		}
+		if (modelOuter != null) {
+			modelOuter.showAllParts();
+		}
+	}
+	
+//	public ModelMultiBase getModelOuter(int slot) {
+//		return this.modelOuter;
+//	}
+//	public ModelMultiBase getModelInner(int slot) {
+//		return this.modelInner;
+//	}
+	
+//	protected ModelConfigCompound modelConfigCompound;
 	
 	/**
 	 * インナー防具テクスチャ取得
@@ -203,150 +353,19 @@ public class ModelBaseDuo extends ModelBaseNihil {
 	 */
 //	public int renderParts;
 
+/*
 	private float[] textureLightColor;
 	public float[] getTextureLightColor() {
 		return textureLightColor;
 	}
-
+*/
 //	public ModelBaseDuo(RenderModelMulti<? extends EntityLiving> pRender) {
-	public ModelBaseDuo() {
+//	public ModelBaseDuo() {
 //		rendererLivingEntity = pRender;
 //		renderParts = 0;
-	}
+//	}
 	
-	/**
-	 * 防具モデルでは呼び出されていない
-	 */
-	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-		
-	}
 
-	/**
-	 * 防具モデルのsetLivingAnimations
-	 */
-	@Override
-	public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
-		if (modelInner != null) {
-			modelInner.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
-		}
-		if (modelOuter != null) {
-			modelOuter.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
-		}	
-//		isAlphablend = true;
-	}
-
-	/**
-	 * アーマー描画処理
-	 */
-	public void render(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, int renderParts) {
-//		boolean lri = (renderCount & 0x0f) == 0;
-//		//総合
-//		this.showArmorParts(renderParts);
-
-		//法線再計算
-		GL11.glEnable(GL11.GL_NORMALIZE);
-		
-		//インナー
-		INNER:{
-			if(this.modelInner != null 
-					&& this.textureInner != null 
-					&& this.modelConfigCompound.isArmorVisible(0)){
-				try {
-					
-					//テクスチャバインド
-					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureInner);
-					
-					//OpenGL設定
-					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-					
-					//モデル描画
-					this.modelInner.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-					
-				} catch(Exception e) {
-					break INNER;
-				}
-			}
-		}
-		
-		//発光インナー
-		INNER_LIGHT:{
-			if(this.modelInner != null 
-					&& this.textureInnerLight != null 
-					&& this.modelConfigCompound.isArmorVisible(1)){
-				try {
-					
-					//テクスチャバインド
-					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureInnerLight);
-					
-					//発光テクスチャ用事前設定
-					this.glLightTexturePre();
-					
-					//モデル描画
-					this.modelInner.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-					
-					//発光テクスチャの事後設定
-					this.glLightTexturePost();
-					
-					//透過リセット
-					GL11.glDisable(GL11.GL_BLEND);
-					GL11.glEnable(GL11.GL_ALPHA_TEST);
-					
-				} catch(Exception e) {
-					break INNER_LIGHT;
-				}
-			}
-		}
-
-		//インナー
-		OUTER:{
-			if(this.modelOuter != null 
-					&& this.textureOuter != null 
-					&& this.modelConfigCompound.isArmorVisible(2)){
-				try {
-					
-					//テクスチャバインド
-					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureOuter);
-					
-					//OpenGL設定
-					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-					
-					//モデル描画
-					this.modelOuter.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-					
-				} catch(Exception e) {
-					break OUTER;
-				}
-			}
-		}
-		
-		//発光アウター
-		OUTER_LIGHT:{
-			if(this.modelOuter != null 
-					&& this.textureOuterLight != null 
-					&& this.modelConfigCompound.isArmorVisible(3)){
-				try {
-					
-					//テクスチャバインド
-					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureOuterLight);
-					
-					//発光テクスチャ用事前設定
-					this.glLightTexturePre();
-					
-					//モデル描画
-					this.modelOuter.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderScale, true);
-					
-					//発光テクスチャの事後設定
-					this.glLightTexturePost();
-					
-				} catch (Exception e) {
-					break OUTER_LIGHT;
-				}
-			}
-		}
-	}
 	
 //	@Override
 //	public TextureOffset getTextureOffset(String par1Str) {
@@ -437,25 +456,15 @@ public class ModelBaseDuo extends ModelBaseNihil {
 //		}
 //		return false;
 //	}
-
-	@Override
-	public void showAllParts() {
-		if (modelInner != null) {
-			modelInner.showAllParts();
-		}
-		if (modelOuter != null) {
-			modelOuter.showAllParts();
-		}
-	}
 	
 //	@Override
 //	public void showArmorParts(int pParts) {
 //	}
-	
-	
+		
 	/**
 	 * 発光テクスチャの事前設定
 	 */
+/*
 	private void glLightTexturePre() {
 		
 		//発光テクスチャ用設定
@@ -477,10 +486,11 @@ public class ModelBaseDuo extends ModelBaseNihil {
 					this.getTextureLightColor()[3]);
 		}		
 	}
-	
+*/
 	/**
 	 * 発光テクスチャの事後設定
 	 */
+/*
 	private void glLightTexturePost() {
 		
 		//発光色リセット
@@ -492,5 +502,5 @@ public class ModelBaseDuo extends ModelBaseNihil {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glDepthMask(true);
 	}
-
+*/
 }
