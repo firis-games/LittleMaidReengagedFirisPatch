@@ -66,7 +66,7 @@ public class ModelBaseDuo extends ModelBaseNihil {
 	 * 描画用のモデル、テクスチャパスを内部変数へ展開する
 	 * 
 	 */
-	public void initModelParameter(ModelConfigCompound modelConfigCompound, float entityYaw, float partialTicks, EntityEquipmentSlot slot) {
+	public void initModelParameter(IModelConfigCompound modelConfigCompound, float entityYaw, float partialTicks, EntityEquipmentSlot slot) {
 		
 		this.modelConfigCompound = modelConfigCompound;
 		

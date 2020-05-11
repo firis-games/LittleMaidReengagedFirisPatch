@@ -7,7 +7,7 @@ import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.config.LMRConfig;
 import net.firis.lmt.client.event.KeyBindingHandler;
 import net.firis.lmt.client.event.LittleMaidAvatarClientTickEventHandler;
-import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
+import net.firis.lmt.client.renderer.RendererLMAvatar;
 import net.firis.lmt.common.command.LMAvatarCommand;
 import net.firis.lmt.common.item.LMItemPlayerMaidBook;
 import net.firis.lmt.config.ConfigChangedEventHandler;
@@ -110,8 +110,8 @@ public class LMTCore {
 		RenderPlayer renderPlayerDefault = skinMap.get("default");
 		RenderPlayer renderPlayerSlim = skinMap.get("slim");
 		//RendererMaidPlayer renderMaidPlayer = new RendererMaidPlayer(renderPlayer);
-		RendererMaidPlayerMultiModel renderMaidPlayerDefault = new RendererMaidPlayerMultiModel(renderPlayerDefault);
-		RendererMaidPlayerMultiModel renderMaidPlayerSlim = new RendererMaidPlayerMultiModel(renderPlayerSlim);
+		RendererLMAvatar renderMaidPlayerDefault = new RendererLMAvatar(renderPlayerDefault);
+		RendererLMAvatar renderMaidPlayerSlim = new RendererLMAvatar(renderPlayerSlim);
 		
 		
 		//Minecraft.getMinecraft().getRenderManager().playerRenderer = renderMaidPlayer;

@@ -3,6 +3,7 @@ package net.firis.lmt.config;
 import java.io.File;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.firis.lmt.common.modelcaps.PlayerModelConfigCompound;
 import net.minecraftforge.common.config.Configuration;
 
 public class FirisConfig {
@@ -104,6 +105,9 @@ public class FirisConfig {
 				"LMアバターの反映");
 		
 		config.save();
+		
+		//アバターへ反映する
+		PlayerModelConfigCompound.syncConfig();
 		
 	}
 

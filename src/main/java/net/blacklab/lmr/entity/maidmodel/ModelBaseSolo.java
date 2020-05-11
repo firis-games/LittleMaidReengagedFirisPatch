@@ -43,7 +43,7 @@ public class ModelBaseSolo extends ModelBaseNihil {
 	 * 描画用パラメータを設定する
 	 * @param modelConfigCompound
 	 */
-	public void initModelParameter(ModelConfigCompound modelConfigCompound, float entityYaw, float partialTicks) {
+	public void initModelParameter(IModelConfigCompound modelConfigCompound, float entityYaw, float partialTicks) {
 		
 		this.modelConfigCompound = modelConfigCompound;
 //		EntityLiving entity = (EntityLiving) this.modelConfigCompound.getOwner();
@@ -214,7 +214,7 @@ public class ModelBaseSolo extends ModelBaseNihil {
 	 * 一人称の手を描画する
 	 * @param modelConfigCompound
 	 */
-	public void renderFirstPersonArm(ModelConfigCompound modelConfigCompound) {
+	public void renderFirstPersonArm(IModelConfigCompound modelConfigCompound) {
 		
 		//プレイヤーモデルの準備
 		this.initModelParameter(modelConfigCompound, 0, 0);

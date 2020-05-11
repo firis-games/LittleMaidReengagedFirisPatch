@@ -4,15 +4,14 @@ import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
-import net.firis.lmt.client.event.ClientEventLMAvatar;
-import net.firis.lmt.client.model.ModelLittleMaidMultiModel;
-import net.firis.lmt.client.renderer.layer.LayerArmorLittleMaidMultiModel;
-import net.firis.lmt.client.renderer.layer.LayerArrowLittleMaid;
-import net.firis.lmt.client.renderer.layer.LayerCustomHeadLittleMaid;
-import net.firis.lmt.client.renderer.layer.LayerElytraLittleMaid;
-import net.firis.lmt.client.renderer.layer.LayerEntityOnShoulderLittleMaid;
-import net.firis.lmt.client.renderer.layer.LayerHeldItemLittleMaidMultiModel;
-import net.firis.lmt.common.manager.OldPlayerModelManager;
+import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
+import net.firis.lmt.client.renderer.layer.LayerArmorLMAvatar;
+import net.firis.lmt.client.renderer.layer.LayerArrowLMAvatar;
+import net.firis.lmt.client.renderer.layer.LayerCustomHeadLMAvatar;
+import net.firis.lmt.client.renderer.layer.LayerElytraLMAvatar;
+import net.firis.lmt.client.renderer.layer.LayerEntityOnShoulderLMAvatar;
+import net.firis.lmt.client.renderer.layer.LayerHeldItemLMAvatar;
+import net.firis.lmt.common.modelcaps.PlayerModelConfigCompound;
 import net.firis.lmt.config.FirisConfig;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
@@ -21,15 +20,13 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 
 /**
  * マルチモデルでプレイヤーモデル描画
  * @author firis-games
  *
  */
-@Deprecated
-public class RendererMaidPlayerMultiModel extends RenderPlayer {
+public class RendererLMAvatar extends RenderPlayer {
 	
 	protected static ModelBase dummyMainModel = new ModelPlayer(0.0F, false);
 	
@@ -50,7 +47,7 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	 * @param modelBaseIn
 	 * @param shadowSizeIn
 	 */
-	public RendererMaidPlayerMultiModel(RenderPlayer renderPlayer) {
+	public RendererLMAvatar(RenderPlayer renderPlayer) {
 		
 		super(renderPlayer.getRenderManager());
 		
@@ -59,24 +56,24 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		
 		//初期化
 		this.layerRenderers.clear();
-		this.mainModel = new ModelLittleMaidMultiModel();
+		this.mainModel = new ModelBaseSolo();
 		this.shadowSize = 0.5F;
 
 		//Layerロード開始
 		this.isLayerLoading = true;
 		
 		//layer追加
-		this.addLayer(new LayerHeldItemLittleMaidMultiModel(this));
-		this.addLayer(new LayerArmorLittleMaidMultiModel(this));
+		this.addLayer(new LayerHeldItemLMAvatar(this));
+		this.addLayer(new LayerArmorLMAvatar(this));
 		
 		//Player用のlayerを一部改造
-        this.addLayer(new LayerElytraLittleMaid(this));
-        this.addLayer(new LayerCustomHeadLittleMaid(this));
-        this.addLayer(new LayerEntityOnShoulderLittleMaid(renderManager, this));
-        this.addLayer(new LayerArrowLittleMaid(this));
+        this.addLayer(new LayerElytraLMAvatar(this));
+        this.addLayer(new LayerCustomHeadLMAvatar(this));
+        this.addLayer(new LayerEntityOnShoulderLMAvatar(renderManager, this));
+        this.addLayer(new LayerArrowLMAvatar(this));
         
         //Layer登録用イベント
-   		MinecraftForge.EVENT_BUS.post(new ClientEventLMAvatar.RendererAvatarAddLayerEvent(this));
+//   		MinecraftForge.EVENT_BUS.post(new ClientEventLMAvatar.RendererAvatarAddLayerEvent(this));
         
 		//Layerロード完了
 		this.isLayerLoading = false;
@@ -112,6 +109,9 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 	
 	/**
 	 * バインド用のテクスチャ
+	 * 
+	 * Avatarの場合も通常テクスチャを返却する
+	 * 実際の描画時には使用しない
 	 */
 	@Override
 	public ResourceLocation getEntityTexture(AbstractClientPlayer entity) {
@@ -123,7 +123,7 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		
 		//EntityPlayerからテクスチャを取得する
 		//メイドモデルの実装だとこの部分はnullを返却する
-		return OldPlayerModelManager.getPlayerTexture(entity);
+		return this.renderPlayer.getEntityTexture(entity);
 	}
 	
 	/**
@@ -139,6 +139,18 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
     }
 	
 	/**
+	 * メイドさんのサイズ変更を行う
+	 * caps_ScaleFactorをもとに描画前に全体サイズを変更する
+	 */
+	@Override
+	protected void preRenderCallback(AbstractClientPlayer entitylivingbaseIn, float partialTickTime) {
+		Float lscale = this.getLittleMaidMultiModel().getMultiModelScaleFactor();
+		if (lscale != null) {
+			GL11.glScalef(lscale, lscale, lscale);
+		}
+    }
+	
+	/**
 	 * プレイヤーモデルの初期化をしてから描画処理を行う
 	 */
 	@Override
@@ -150,13 +162,9 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 			return;
 		}
 		
-		//パラメータを初期化
-		this.getLittleMaidMultiModel().initPlayerModel(entity, x, y, z, entityYaw, partialTicks);
 		
-		//法線の再計算
-		//GlStateManager.enableRescaleNormal();
-		//GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glEnable(GL11.GL_NORMALIZE);
+		//パラメータの初期化
+		this.setModelValues(entity, x, y, z, entityYaw, partialTicks);
 		
 		//描画処理
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
@@ -187,19 +195,20 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		this.renderFirstPersonArm(clientPlayer);		
 	}
 	
+	
 	/**
 	 * model情報を取得する
 	 * @return
 	 */
-	public ModelLittleMaidMultiModel getLittleMaidMultiModel() {
-		return (ModelLittleMaidMultiModel) this.mainModel;
+	public ModelBaseSolo getLittleMaidMultiModel() {
+		return (ModelBaseSolo) this.mainModel;
 	}
 	
 	/**
 	 * 一人称視点の手を描画する
 	 */
-	protected void renderFirstPersonArm(AbstractClientPlayer clientPlayer) {
-		this.getLittleMaidMultiModel().renderFirstPersonArm(clientPlayer);
+	protected void renderFirstPersonArm(AbstractClientPlayer clientPlayer) {	
+		this.getLittleMaidMultiModel().renderFirstPersonArm(PlayerModelConfigCompound.getModelConfigCompound(clientPlayer));
 	}
 	
 	/**
@@ -211,5 +220,33 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
 		if (this.renderPlayer == null) return true;
 		return FirisConfig.cfg_enable_lmavatar;
 	}
+	
+	/**
+	 * マルチモデルの描画パラメータの初期化処理
+	 * @param entity
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param entityYaw
+	 * @param partialTicks
+	 */
+	public void setModelValues(AbstractClientPlayer entity, 
+			double x, double y, double z, float entityYaw, float partialTicks) {
+		
+		//モデルパラメータ取得
+		PlayerModelConfigCompound modelConfigCompound = PlayerModelConfigCompound.getModelConfigCompound(entity);
+		
+		//パラメータの初期化
+		this.getLittleMaidMultiModel().initModelParameter(modelConfigCompound, entityYaw, partialTicks);
+		
+	}
+	
+	/**
+	 * テクスチャのバインドはモデル側で行うため
+	 * このタイミングでは何もしない
+	 */
+	protected boolean bindEntityTexture(AbstractClientPlayer entity) {
+		return true;
+    }
 	
 }

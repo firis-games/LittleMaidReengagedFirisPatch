@@ -1,22 +1,20 @@
 package net.firis.lmt.client.renderer.layer;
 
-import net.firis.lmt.client.model.ModelLittleMaidMultiModel.EnumMultiModelPartsType;
-import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
+import net.firis.lmt.client.renderer.RendererLMAvatar;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerEntityOnShoulder;
 import net.minecraft.entity.player.EntityPlayer;
 
-@Deprecated
-public class LayerEntityOnShoulderLittleMaid extends LayerEntityOnShoulder {
+public class LayerEntityOnShoulderLMAvatar extends LayerEntityOnShoulder {
 
-	private RendererMaidPlayerMultiModel renderer;
+	private RendererLMAvatar renderer;
 	
-	public LayerEntityOnShoulderLittleMaid(RenderManager manager, RendererMaidPlayerMultiModel renderer) {
+	public LayerEntityOnShoulderLMAvatar(RenderManager manager, RendererLMAvatar renderer) {
 		
 		super(manager);
 		
-		this.renderer = (RendererMaidPlayerMultiModel) renderer;
+		this.renderer = renderer;
 	}
 	
 	@Override
@@ -27,9 +25,7 @@ public class LayerEntityOnShoulderLittleMaid extends LayerEntityOnShoulder {
 		GlStateManager.pushMatrix();
 		
 		//PostRender
-		renderer.getLittleMaidMultiModel().modelPostRender(
-				EnumMultiModelPartsType.BODY, 
-				player, scale);
+		renderer.getLittleMaidMultiModel().bodyPostRender(scale);
 		
 		//微調整
 		if (!player.isSneaking()) {

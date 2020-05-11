@@ -2,12 +2,10 @@ package net.blacklab.lmr.client.renderer.layer;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
-import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
+import net.blacklab.lmr.entity.maidmodel.IModelConfigCompound;
 import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
-import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.fml.relauncher.Side;
@@ -18,7 +16,7 @@ public abstract class LayerArmorLittleMaidBase extends LayerArmorBase<ModelBaseD
 
 	private ModelBaseDuo armorModel;
 	
-	public LayerArmorLittleMaidBase(RenderModelMulti<? extends EntityLiving> rendererIn) {
+	public LayerArmorLittleMaidBase(RenderLivingBase<? extends EntityLivingBase> rendererIn) {
 		
 		super(rendererIn);
 		
@@ -63,8 +61,7 @@ public abstract class LayerArmorLittleMaidBase extends LayerArmorBase<ModelBaseD
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		//防具モデルの準備
-		IMultiModelEntity modelEntity = (IMultiModelEntity) entityLivingBaseIn;
-		ModelConfigCompound modelConfigCompound = modelEntity.getModelConfigCompound();
+		IModelConfigCompound modelConfigCompound = this.getArmorModelConfigCompound(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, slot);
 		this.armorModel.initModelParameter(modelConfigCompound, netHeadYaw, partialTicks, slot);
 
 		//防具モデル描画調整
@@ -93,5 +90,20 @@ public abstract class LayerArmorLittleMaidBase extends LayerArmorBase<ModelBaseD
 	protected boolean isRenderArmorLayer(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slot) {
 		return true;
 	}
-	
+
+	/**
+	 * 描画用パラメータを取得する
+	 * @param entityLivingBaseIn
+	 * @param limbSwing
+	 * @param limbSwingAmount
+	 * @param partialTicks
+	 * @param ageInTicks
+	 * @param netHeadYaw
+	 * @param headPitch
+	 * @param scale
+	 * @param slot
+	 * @return
+	 */
+	abstract protected IModelConfigCompound getArmorModelConfigCompound(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slot);
+
 }

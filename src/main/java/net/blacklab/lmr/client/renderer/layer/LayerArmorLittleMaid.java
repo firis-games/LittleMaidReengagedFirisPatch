@@ -2,6 +2,8 @@ package net.blacklab.lmr.client.renderer.layer;
 
 import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.maidmodel.IModelConfigCompound;
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -40,6 +42,15 @@ public class LayerArmorLittleMaid extends LayerArmorLittleMaidBase {
 		if (maid.maidInventory.armorItemInSlot(slot.getIndex()).isEmpty()) return false;
 		
 		return true;
+	}
+	
+	@Override
+	protected IModelConfigCompound getArmorModelConfigCompound(EntityLivingBase entityLivingBaseIn, float limbSwing,
+			float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale,
+			EntityEquipmentSlot slot) {
+		IMultiModelEntity modelEntity = (IMultiModelEntity) entityLivingBaseIn;
+		IModelConfigCompound modelConfigCompound = modelEntity.getModelConfigCompound();
+		return modelConfigCompound;
 	}
 	
 }

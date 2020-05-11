@@ -19,7 +19,8 @@ import net.minecraft.util.ResourceLocation;
  * @author firis-games
  *
  */
-public class PlayerModelManager {
+@Deprecated
+public class OldPlayerModelManager {
 
 	/*
 	//あかりちゃんの設定

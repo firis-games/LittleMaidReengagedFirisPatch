@@ -1,7 +1,6 @@
 package net.firis.lmt.client.renderer.layer;
 
-import net.firis.lmt.client.model.ModelLittleMaidMultiModel.EnumMultiModelPartsType;
-import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
+import net.firis.lmt.client.renderer.RendererLMAvatar;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,15 +14,14 @@ import net.minecraft.entity.player.EntityPlayer;
  * @author firis-games
  *
  */
-@Deprecated
-public class LayerCustomHeadLittleMaid extends LayerCustomHead
+public class LayerCustomHeadLMAvatar extends LayerCustomHead
 {
-    private final RendererMaidPlayerMultiModel renderer;
+    private final RendererLMAvatar renderer;
     
     //無名クラス定義
     private static ModelRenderer dummyModelRenderer = new ModelRenderer(new ModelBase() {});
 
-    public LayerCustomHeadLittleMaid(RendererMaidPlayerMultiModel renderer)
+    public LayerCustomHeadLMAvatar(RendererLMAvatar renderer)
     {
     	super(dummyModelRenderer);
         this.renderer = renderer;
@@ -36,9 +34,7 @@ public class LayerCustomHeadLittleMaid extends LayerCustomHead
 		GlStateManager.pushMatrix();
 		
 		//PostRender
-		renderer.getLittleMaidMultiModel().modelPostRender(
-				EnumMultiModelPartsType.HEAD, 
-				player, scale);
+		renderer.getLittleMaidMultiModel().headPostRender(scale);
 		
 		//微調整
 		if (player.isSneaking()) {

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import net.blacklab.lmr.util.IModelCapsData;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.firis.lmt.client.event.LittleMaidAvatarClientTickEventHandler;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +24,7 @@ import net.minecraft.util.math.MathHelper;
  * @author firis-games
  *
  */
-public class PlayerModelCaps implements IModelCaps {
+public class PlayerModelCaps implements IModelCapsData {
 	
 	private final EntityPlayer owner;
 	
@@ -348,6 +349,17 @@ public class PlayerModelCaps implements IModelCaps {
        		return itemStack.getItemUseAction();
         }
         return EnumAction.NONE;
+	}
+
+	/**
+	 * IModelCapsData
+	 */
+	@Override
+	public void setModelMultiFromModelCaps(ModelMultiBase model, float entityYaw, float partialTicks) {
+		
+		//初期化設定
+		this.setModelMultiBaseCapsFromModelCaps(model);
+		
 	}
 	
 }

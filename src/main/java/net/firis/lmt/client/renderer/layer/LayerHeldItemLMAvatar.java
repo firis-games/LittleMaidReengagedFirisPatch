@@ -1,11 +1,10 @@
 package net.firis.lmt.client.renderer.layer;
 
-import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
+import net.firis.lmt.client.renderer.RendererLMAvatar;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,15 +12,14 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 
-@Deprecated
-public class LayerHeldItemLittleMaidMultiModel extends LayerHeldItem {
+public class LayerHeldItemLMAvatar extends LayerHeldItem {
 
-	private RendererMaidPlayerMultiModel renderer;
+	private RendererLMAvatar renderer;
 	
-	public LayerHeldItemLittleMaidMultiModel(RenderLivingBase<?> rendererIn) {
+	public LayerHeldItemLMAvatar(RendererLMAvatar rendererIn) {
 		super(rendererIn);
 		
-		this.renderer = (RendererMaidPlayerMultiModel) rendererIn;
+		this.renderer = rendererIn;
 		
 	}
 
@@ -110,6 +108,7 @@ public class LayerHeldItemLittleMaidMultiModel extends LayerHeldItem {
     protected void translateToHand(EnumHandSide handSide)
     {
     	float scale = 0.0625F;
-    	this.renderer.getLittleMaidMultiModel().armsPostRenderer(handSide, scale);
+    	int hand = EnumHandSide.RIGHT == handSide ? 0 : 1;
+    	this.renderer.getLittleMaidMultiModel().armPostRender(hand, scale);
     }
 }

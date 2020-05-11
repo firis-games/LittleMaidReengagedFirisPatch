@@ -11,6 +11,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@Deprecated
 @SideOnly(Side.CLIENT)
 public class LayerArmorLittleMaidMultiModel extends LayerArmorBase<ModelLittleMaidMultiModelArmor> {
 

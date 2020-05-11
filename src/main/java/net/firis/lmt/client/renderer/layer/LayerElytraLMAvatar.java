@@ -1,9 +1,7 @@
 package net.firis.lmt.client.renderer.layer;
 
-import net.firis.lmt.client.model.ModelLittleMaidMultiModel.EnumMultiModelPartsType;
-import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
+import net.firis.lmt.client.renderer.RendererLMAvatar;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerElytra;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,15 +11,14 @@ import net.minecraft.entity.player.EntityPlayer;
  * @author firis-games
  *
  */
-@Deprecated
-public class LayerElytraLittleMaid extends LayerElytra {
+public class LayerElytraLMAvatar extends LayerElytra {
 
-	private RendererMaidPlayerMultiModel renderer;
+	private RendererLMAvatar renderer;
 	
-	public LayerElytraLittleMaid(RenderLivingBase<?> renderer) {
+	public LayerElytraLMAvatar(RendererLMAvatar renderer) {
 		super(renderer);
 		
-		this.renderer = (RendererMaidPlayerMultiModel) renderer;
+		this.renderer = renderer;
 	}
 	
 	@Override
@@ -36,9 +33,7 @@ public class LayerElytraLittleMaid extends LayerElytra {
 		GlStateManager.scale(eltrascale, eltrascale, eltrascale);
 		
 		//PostRender
-		renderer.getLittleMaidMultiModel().modelPostRender(
-				EnumMultiModelPartsType.BODY, 
-				player, scale);
+		renderer.getLittleMaidMultiModel().bodyPostRender(scale);
 		
 		//微調整
 		if (!player.isSneaking()) {

@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.util.helper.RendererHelper;
-import net.firis.lmt.common.manager.PlayerModelManager;
+import net.firis.lmt.common.manager.OldPlayerModelManager;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -23,6 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author firis-games
  *
  */
+@Deprecated
 @SideOnly(Side.CLIENT)
 public class ModelLittleMaidMultiModelArmor extends ModelBase {
 
@@ -51,7 +52,7 @@ public class ModelLittleMaidMultiModelArmor extends ModelBase {
 		EntityPlayer player = (EntityPlayer) entitylivingbaseIn;
 		
 		//アーマーモデルの準備
-		List<ModelMultiBase> modelList = PlayerModelManager.getArmorModels(player, slot);
+		List<ModelMultiBase> modelList = OldPlayerModelManager.getArmorModels(player, slot);
 		armorModel = modelList.get(0);
 		armorOuterModel = modelList.get(1);
 		
@@ -96,8 +97,8 @@ public class ModelLittleMaidMultiModelArmor extends ModelBase {
 		//法線再計算
 		GL11.glEnable(GL11.GL_NORMALIZE);
 		
-		List<ResourceLocation> armorModelTextureList = PlayerModelManager.getArmorTexture(player, armorSlot);
-		List<ResourceLocation> armorLightModelTextureList = PlayerModelManager.getArmorLightTexture(player, armorSlot);
+		List<ResourceLocation> armorModelTextureList = OldPlayerModelManager.getArmorTexture(player, armorSlot);
+		List<ResourceLocation> armorLightModelTextureList = OldPlayerModelManager.getArmorLightTexture(player, armorSlot);
 
 		//innerモデル
 		if (armorModelTextureList.get(0) != null) {

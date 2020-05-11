@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.blacklab.lmr.entity.maidmodel.base.ModelLittleMaidBase;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.util.helper.RendererHelper;
-import net.firis.lmt.common.manager.PlayerModelManager;
+import net.firis.lmt.common.manager.OldPlayerModelManager;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -23,6 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author firis-games
  *
  */
+@Deprecated
 @SideOnly(Side.CLIENT)
 public class ModelLittleMaidMultiModel extends ModelBase {
 
@@ -54,7 +55,7 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 	public void initPlayerModel(EntityPlayer player, boolean isFirstPerson) {
 		
 		//プレイヤーモデルの準備
-		playerModel = PlayerModelManager.getPlayerModel(player);
+		playerModel = OldPlayerModelManager.getPlayerModel(player);
 		playerCaps = getModelCaps(playerModel, player, isFirstPerson);
 		
 		playerModel.showAllParts();
@@ -92,14 +93,14 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 		
 		GL11.glEnable(GL11.GL_NORMALIZE);
 		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(PlayerModelManager.getPlayerTexture(player));
+		Minecraft.getMinecraft().getTextureManager().bindTexture(OldPlayerModelManager.getPlayerTexture(player));
 		
 		//描画する
 		playerModel.render(playerCaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, true);
 		
 		
 		//発光テクスチャ
-		ResourceLocation lightTexture = PlayerModelManager.getPlayerTextureLight(player);
+		ResourceLocation lightTexture = OldPlayerModelManager.getPlayerTextureLight(player);
 		if (lightTexture != null) {
 			
 			
@@ -170,7 +171,7 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 		this.initPlayerModel(player, true);
 		
 		//テクスチャバインド
-		Minecraft.getMinecraft().getTextureManager().bindTexture(PlayerModelManager.getPlayerTexture(player));
+		Minecraft.getMinecraft().getTextureManager().bindTexture(OldPlayerModelManager.getPlayerTexture(player));
 		
 		//お手ての位置調整
 		GlStateManager.translate(0.0F, 0.25F, 0.0F);
