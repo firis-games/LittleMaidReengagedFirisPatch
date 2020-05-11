@@ -7,8 +7,16 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * メイドさん用のModelConfigCompound
+ * @author firis-games
+ *
+ */
 public class ModelConfigCompoundLittleMaid extends ModelConfigCompound {
 
+	/**
+	 * メイドさん
+	 */
 	private EntityLittleMaid maid;
 	
 	/**
@@ -18,8 +26,6 @@ public class ModelConfigCompoundLittleMaid extends ModelConfigCompound {
 	 */
 	public ModelConfigCompoundLittleMaid(EntityLittleMaid pEntity, IModelCapsData pCaps) {
 		super(pEntity, pCaps);
-		
-		
 		this.maid = pEntity;
 		
 	}
@@ -79,5 +85,14 @@ public class ModelConfigCompoundLittleMaid extends ModelConfigCompound {
 		
 		ItemStack stack = maid.maidInventory.armorItemInSlot(slot.getIndex());
 		return armorBox.getLightTextureOuterArmor(stack);
+	}
+	
+	/**
+	 * 防具モデルの表示非表示制御用
+	 * @return
+	 */
+	@Override
+	public boolean isArmorTypeVisible(int type) {
+		return maid.isArmorVisible(type);
 	}
 }
