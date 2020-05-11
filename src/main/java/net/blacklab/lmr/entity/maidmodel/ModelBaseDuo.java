@@ -154,6 +154,10 @@ public class ModelBaseDuo extends ModelBaseNihil {
 		//法線再計算
 		GL11.glEnable(GL11.GL_NORMALIZE);
 		
+		//OpenGL設定
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
 		//インナー
 		INNER:{
 			if(this.modelInner != null 
@@ -163,10 +167,6 @@ public class ModelBaseDuo extends ModelBaseNihil {
 					
 					//テクスチャバインド
 					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureInner);
-					
-					//OpenGL設定
-					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 					
 					//モデル描画
 					this.modelInner.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, RENDER_SCALE, true);
@@ -196,10 +196,6 @@ public class ModelBaseDuo extends ModelBaseNihil {
 					//発光テクスチャの事後設定
 					this.glLightTexturePost();
 					
-					//透過リセット
-					GL11.glDisable(GL11.GL_BLEND);
-					GL11.glEnable(GL11.GL_ALPHA_TEST);
-					
 				} catch(Exception e) {
 					break INNER_LIGHT;
 				}
@@ -215,10 +211,6 @@ public class ModelBaseDuo extends ModelBaseNihil {
 					
 					//テクスチャバインド
 					Minecraft.getMinecraft().getTextureManager().bindTexture(this.textureOuter);
-					
-					//OpenGL設定
-					GL11.glEnable(GL11.GL_BLEND);
-					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 					
 					//モデル描画
 					this.modelOuter.render(this.modelConfigCompound.getModelCaps(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, RENDER_SCALE, true);
@@ -253,6 +245,10 @@ public class ModelBaseDuo extends ModelBaseNihil {
 				}
 			}
 		}
+		
+		//OpenGL設定解除
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
 	}
 	
 	/**
