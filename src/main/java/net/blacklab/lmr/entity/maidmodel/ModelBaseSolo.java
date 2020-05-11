@@ -7,6 +7,7 @@ import net.blacklab.lmr.entity.maidmodel.base.ModelLittleMaidBase;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -162,7 +163,18 @@ public class ModelBaseSolo extends ModelBaseNihil {
 	}
 	
 	/**
-	 * 腕の位置へずらす
+	 * 頭の位置へずらす
+	 */
+	public void headPostRender(float scale) {
+		if (this.maidModel instanceof ModelLittleMaidBase) {
+			ModelLittleMaidBase maidmodel = (ModelLittleMaidBase) this.maidModel;
+			
+			maidmodel.bipedHead.postRender(scale);
+		}
+	}
+	
+	/**
+	 * 胴の位置へずらす
 	 */
 	public void bodyPostRender(float scale) {
 		if (this.maidModel instanceof ModelLittleMaidBase) {
@@ -198,7 +210,24 @@ public class ModelBaseSolo extends ModelBaseNihil {
 		return this.maidModel.getLeashOffset(this.entityCaps);
 	}
 	
-	
+	/**
+	 * 一人称の手を描画する
+	 * @param modelConfigCompound
+	 */
+	public void renderFirstPersonArm(ModelConfigCompound modelConfigCompound) {
+		
+		//プレイヤーモデルの準備
+		this.initModelParameter(modelConfigCompound, 0, 0);
+		
+		//テクスチャバインド
+		Minecraft.getMinecraft().getTextureManager().bindTexture(this.maidTexture);
+		
+		//お手ての位置調整
+		GlStateManager.translate(0.0F, 0.25F, 0.0F);
+
+		//お手てを描画
+		this.maidModel.renderFirstPersonHand(this.entityCaps);
+	}
 	
 	/**
 	 * メイドさん描画処理
