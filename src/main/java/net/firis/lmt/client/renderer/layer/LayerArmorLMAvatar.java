@@ -2,7 +2,7 @@ package net.firis.lmt.client.renderer.layer;
 
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaidBase;
 import net.blacklab.lmr.entity.maidmodel.IModelConfigCompound;
-import net.firis.lmt.common.modelcaps.PlayerModelConfigCompound;
+import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +27,7 @@ public class LayerArmorLMAvatar extends LayerArmorLittleMaidBase {
 			float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale,
 			EntityEquipmentSlot slot) {
 		EntityPlayer player = (EntityPlayer) entityLivingBaseIn;
-		return PlayerModelConfigCompound.getModelConfigCompound(player);
+		return PlayerModelManager.getModelConfigCompound(player);
 	}
 	
 }

@@ -8,7 +8,7 @@ import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.util.IModelCapsData;
 import net.blacklab.lmr.util.helper.ItemHelper;
-import net.firis.lmt.client.event.LittleMaidAvatarClientTickEventHandler;
+import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,7 +52,6 @@ public class PlayerModelCaps implements IModelCapsData {
 		return false;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public Object getCapsValue(int pIndex, Object... pArg) {
 		switch (pIndex) {
 		case caps_Entity:
@@ -112,10 +111,10 @@ public class PlayerModelCaps implements IModelCapsData {
 		case caps_isRiding:
 			if (this.isFirstPerson) return false;
 			//疑似お座りモーションを管理する
-			return owner.isRiding() || LittleMaidAvatarClientTickEventHandler.lmAvatarAction.getStat(owner);
+			return owner.isRiding() || PlayerModelManager.getModelConfigCompound(owner).getLMAvatarAction();
 		case caps_motionSitting:
 			//疑似お座りモーション
-			return LittleMaidAvatarClientTickEventHandler.lmAvatarAction.getStat(owner);
+			return PlayerModelManager.getModelConfigCompound(owner).getLMAvatarAction();
 		case caps_isRidingPlayer:
 			return false;
 		case caps_isChild:
@@ -158,7 +157,8 @@ public class PlayerModelCaps implements IModelCapsData {
 					MathHelper.floor(owner.posY + (Double)pArg[1]),
 					MathHelper.floor(owner.posZ + (Double)pArg[2])));
 			
-			return !state.getBlock().causesSuffocation(state);
+//			return !state.getBlock().causesSuffocation(state);
+			return !(state.getMaterial().blocksMovement() && state.getBlock().getDefaultState().isFullCube());
 			
 		case caps_PosBlockLight:
 			return owner.getEntityWorld().getBlockLightOpacity(new BlockPos(
@@ -229,7 +229,7 @@ public class PlayerModelCaps implements IModelCapsData {
 		//メイドさん待機モーション
 		case caps_isWait:
 			if (this.isFirstPerson) return false;
-			return LittleMaidAvatarClientTickEventHandler.lmAvatarWaitAction.getStat(owner);
+			return PlayerModelManager.getModelConfigCompound(owner).getLMAvatarWaitAction();
 			
 		//砂糖を持った時の首傾げ
 		case caps_isLookSuger:

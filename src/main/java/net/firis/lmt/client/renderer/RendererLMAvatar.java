@@ -11,8 +11,8 @@ import net.firis.lmt.client.renderer.layer.LayerCustomHeadLMAvatar;
 import net.firis.lmt.client.renderer.layer.LayerElytraLMAvatar;
 import net.firis.lmt.client.renderer.layer.LayerEntityOnShoulderLMAvatar;
 import net.firis.lmt.client.renderer.layer.LayerHeldItemLMAvatar;
+import net.firis.lmt.common.manager.PlayerModelManager;
 import net.firis.lmt.common.modelcaps.PlayerModelConfigCompound;
-import net.firis.lmt.config.FirisConfig;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelPlayer;
@@ -40,6 +40,8 @@ public class RendererLMAvatar extends RenderPlayer {
 	 * 初期化中だけロード中に設定しAddLayerを有効化する
 	 */
 	private boolean isLayerLoading = false;
+	
+	private boolean isDummyModel = true;
 	
 	/**
 	 * コンストラクタ
@@ -117,7 +119,7 @@ public class RendererLMAvatar extends RenderPlayer {
 	public ResourceLocation getEntityTexture(AbstractClientPlayer entity) {
 		
 		//通常スキン
-		if (!isRenderLMAvatar()) {
+		if (!isRenderLMAvatar(entity)) {
 			return this.renderPlayer.getEntityTexture(entity);
 		}
 		
@@ -132,7 +134,7 @@ public class RendererLMAvatar extends RenderPlayer {
 	@Override
 	public ModelPlayer getMainModel()
     {
-		if (!isRenderLMAvatar()) {
+		if (this.renderPlayer != null && !this.isDummyModel) {
 			return this.renderPlayer.getMainModel();
 		}
         return (ModelPlayer) dummyMainModel;
@@ -157,7 +159,7 @@ public class RendererLMAvatar extends RenderPlayer {
 	public void doRender(AbstractClientPlayer entity, double x, double y, double z, float entityYaw, float partialTicks) {
 	
 		//通常スキン
-		if (!isRenderLMAvatar()) {
+		if (!isRenderLMAvatar(entity)) {
 			this.renderPlayer.doRender(entity, x, y, z, entityYaw, partialTicks);
 			return;
 		}
@@ -167,15 +169,18 @@ public class RendererLMAvatar extends RenderPlayer {
 		this.setModelValues(entity, x, y, z, entityYaw, partialTicks);
 		
 		//描画処理
+		//setModelVisibilitiesを書き換えできないので
+		//フラグを使って疑似的にgetMainModelを制御
+		this.isDummyModel = true;
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
-		
+		this.isDummyModel = false;
 	}
 	
 	@Override
 	public void renderRightArm(AbstractClientPlayer clientPlayer) {
 		
 		//通常スキン
-		if (!isRenderLMAvatar()) {
+		if (!isRenderLMAvatar(clientPlayer)) {
 			this.renderPlayer.renderRightArm(clientPlayer);
 			return;
 		}
@@ -187,7 +192,7 @@ public class RendererLMAvatar extends RenderPlayer {
 	public void renderLeftArm(AbstractClientPlayer clientPlayer) {
 		
 		//通常スキン
-		if (!isRenderLMAvatar()) {
+		if (!isRenderLMAvatar(clientPlayer)) {
 			this.renderPlayer.renderLeftArm(clientPlayer);
 			return;
 		}
@@ -208,17 +213,17 @@ public class RendererLMAvatar extends RenderPlayer {
 	 * 一人称視点の手を描画する
 	 */
 	protected void renderFirstPersonArm(AbstractClientPlayer clientPlayer) {	
-		this.getLittleMaidMultiModel().renderFirstPersonArm(PlayerModelConfigCompound.getModelConfigCompound(clientPlayer));
+		this.getLittleMaidMultiModel().renderFirstPersonArm(PlayerModelManager.getModelConfigCompound(clientPlayer));
 	}
 	
 	/**
 	 * LMアバターが有効化どうか
 	 * @return
 	 */
-	protected boolean isRenderLMAvatar() {
+	protected boolean isRenderLMAvatar(AbstractClientPlayer player) {
 		//初期化のタイミングはLMアバター扱い
 		if (this.renderPlayer == null) return true;
-		return FirisConfig.cfg_enable_lmavatar;
+		return PlayerModelManager.getModelConfigCompound(player).getEnableLMAvatar();
 	}
 	
 	/**
@@ -234,7 +239,7 @@ public class RendererLMAvatar extends RenderPlayer {
 			double x, double y, double z, float entityYaw, float partialTicks) {
 		
 		//モデルパラメータ取得
-		PlayerModelConfigCompound modelConfigCompound = PlayerModelConfigCompound.getModelConfigCompound(entity);
+		PlayerModelConfigCompound modelConfigCompound = PlayerModelManager.getModelConfigCompound(entity);
 		
 		//パラメータの初期化
 		this.getLittleMaidMultiModel().initModelParameter(modelConfigCompound, entityYaw, partialTicks);

@@ -1,10 +1,8 @@
 package net.firis.lmt.client.event;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import net.firis.lmt.common.manager.PlayerModelManager;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
+import net.firis.lmt.common.modelcaps.PlayerModelConfigCompound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -17,45 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class LittleMaidAvatarClientTickEventHandler {
-	
-	/**
-	 * 管理用クラス
-	 * @param <T>
-	 */
-	public static class PlayerStat<T> {
-		protected Map<UUID, T> statMap = new HashMap<UUID, T>();
-		protected T defaultValue;
-		public PlayerStat() {
-			defaultValue = null;
-		}
-		public PlayerStat(T def) {
-			defaultValue = def;
-		}
-		
-		public T getStat(EntityPlayer player) {
-			T stat = defaultValue;
-			if (statMap.containsKey(player.getUniqueID())) {
-				stat = statMap.get(player.getUniqueID());
-			}
-			return stat;
-		}
-		public void setStat(EntityPlayer player, T value) {
-			statMap.put(player.getUniqueID(), value);
-		}
-		
-	}
-	
-	/**
-	 * アクションキーの保存
-	 */
-	public static PlayerStat<Boolean> lmAvatarAction = new PlayerStat<Boolean>(false);
-
-	/**
-	 * アクションキーの保存
-	 */
-	public static PlayerStat<Boolean> lmAvatarWaitAction = new PlayerStat<Boolean>(false);
-	public static PlayerStat<Integer> lmAvatarWaitCounter = new PlayerStat<Integer>(0);
-
 	
 	@SubscribeEvent
 	public static void onClientTickEvent(ClientTickEvent event) {
@@ -75,6 +34,8 @@ public class LittleMaidAvatarClientTickEventHandler {
 		boolean isMotionWaitReset = false;
 		
 		EntityPlayer player = Minecraft.getMinecraft().player;
+		
+		PlayerModelConfigCompound lmAvatar = PlayerModelManager.getModelConfigCompound(player);
 		
 		//アクション解除
 		//腕振り
@@ -102,26 +63,16 @@ public class LittleMaidAvatarClientTickEventHandler {
 		
 		if (isMotionWaitReset) {
 			//待機モーションリセット
-			lmAvatarWaitAction.setStat(player, false);
-			lmAvatarWaitCounter.setStat(player, player.ticksExisted);
+			lmAvatar.resetLMAvatarWaitAction();
 		}
 		if (isMotionSittingReset) {
 			//お座りモーションリセット
-			lmAvatarAction.setStat(player, false);
+			lmAvatar.resetLMAvatarAction();
 		}
 		
 		if (!isMotionWaitReset && !isMotionSittingReset) {
-			
-			//モーション継続状態と判断
-			Integer counter = lmAvatarWaitCounter.getStat(player);
-			
-			//初期化
-			if (counter == 0) lmAvatarWaitCounter.setStat(player, player.ticksExisted);
-			
-			//100tickで待機状態On
-			if ((player.ticksExisted - counter) >= 100) {
-				lmAvatarWaitAction.setStat(player, true);
-			}
+			//モーション継続と設定の判断
+			lmAvatar.setLMAvatarWaitAction(true);
 		}
 	}
 	

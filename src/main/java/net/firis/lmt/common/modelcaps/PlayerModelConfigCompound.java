@@ -1,29 +1,37 @@
 package net.firis.lmt.common.modelcaps;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompoundBase;
 import net.blacklab.lmr.util.IModelCapsData;
-import net.blacklab.lmr.util.manager.LMTextureBoxManager;
-import net.blacklab.lmr.util.manager.pack.LMTextureBox;
-import net.firis.lmt.config.FirisConfig;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
 
 /**
  * PlayerAvatar用パラメータクラス
  * @author firis-games
+ * 
+ * モーションなどの表示フラグもここで管理する
  *
  */
 public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 	
 	/**
-	 * 内部保持用
-	 * プレイヤー名をキーとして判断する
+	 * LMAvatarが有効化どうかの判断
 	 */
-	private static Map<String, PlayerModelConfigCompound> modelConfigCompoundMap = new HashMap<>();
+	private boolean enableLMAvatar = true;
+	
+	/**
+	 * 待機アクション
+	 */
+	private boolean lmAvatarWaitAction = false;  
+	
+	/**
+	 * 待機アクション用カウンター
+	 */
+	private Integer lmAvatarWaitCounter = 0;
+	
+	/**
+	 *　LMアバターアクション
+	 */
+	private boolean lmAvatarAction = false;  
 	
 	/**
 	 * コンストラクタ
@@ -35,57 +43,73 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 	}
 	
 	/**
-	 * EntityPlayerに紐づくModelConfigCompoundを取得する
+	 * アクション状態を取得する
 	 * @return
 	 */
-	public static PlayerModelConfigCompound getModelConfigCompound(EntityPlayer player) {
-		String key = player.getName();
-		//存在していなければ初期化して作成する
-		if (!modelConfigCompoundMap.containsKey(key)) {
-			modelConfigCompoundMap.put(key, createModelConfigCompound(player));
-		}
-		return modelConfigCompoundMap.get(key); 
+	public boolean getLMAvatarAction() {
+		return this.lmAvatarAction;
 	}
 	
 	/**
-	 * 設定ファイルの内容を反映する
+	 * 待機状態を取得する
 	 */
-	public static void syncConfig() {
-		for (String key : modelConfigCompoundMap.keySet()) {
-			refreshConfig(modelConfigCompoundMap.get(key));
-		}
-	}
-	
-	/**
-	 * 設定から作成する
-	 */
-	private static PlayerModelConfigCompound createModelConfigCompound(EntityPlayer player) {
-		PlayerModelConfigCompound playerModelConfig = new PlayerModelConfigCompound(player, new PlayerModelCaps(player));
-		return refreshConfig(playerModelConfig);
-	}
-	
-	/**
-	 * 設定内容をオブジェクトに反映する
-	 * @param playerModelConfig
-	 */
-	private static PlayerModelConfigCompound refreshConfig(PlayerModelConfigCompound playerModelConfig) {
-		//モデル情報を設定する
-		LMTextureBox maidBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_maid_model);
-		LMTextureBox headBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_head);
-		LMTextureBox bodyBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_body);
-		LMTextureBox legBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_leg);
-		LMTextureBox bootsBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_boots);
-		
-		playerModelConfig.setTextureBoxLittleMaid(maidBox);
-		playerModelConfig.setTextureBoxArmor(EntityEquipmentSlot.HEAD, headBox);
-		playerModelConfig.setTextureBoxArmor(EntityEquipmentSlot.CHEST, bodyBox);
-		playerModelConfig.setTextureBoxArmor(EntityEquipmentSlot.LEGS, legBox);
-		playerModelConfig.setTextureBoxArmor(EntityEquipmentSlot.FEET, bootsBox);
-		
-		playerModelConfig.setColor(FirisConfig.cfg_maid_color);
-		playerModelConfig.setContract(true);
-		
-		return playerModelConfig;
+	public boolean getLMAvatarWaitAction() {
+		return this.lmAvatarWaitAction;
 	}
 
+	/**
+	 * LMアバターのアクションを設定する
+	 */
+	public void setLMAvatarAction(boolean isAction) {
+		this.lmAvatarAction = isAction;
+	}
+	
+	/**
+	 * LMアバターの待機アクション
+	 * 一定時間経過後にtrueと判断する
+	 * @param isAction
+	 */
+	public void setLMAvatarWaitAction(boolean isAction) {
+		//モーション継続状態と判断
+		Integer counter = lmAvatarWaitCounter;
+		
+		//初期化
+		if (counter == 0) lmAvatarWaitCounter = owner.ticksExisted;
+		
+		//100tickで待機状態On
+		if ((owner.ticksExisted - counter) >= 100) {
+			this.lmAvatarWaitAction = true;
+		}
+	}
+	
+	/**
+	 * LMアバターのアクションをリセットする
+	 */
+	public void resetLMAvatarAction() {
+		this.lmAvatarAction = false;
+	}
+	
+	/**
+	 * LMアバターの待機アクションをリセットする
+	 */
+	public void resetLMAvatarWaitAction() {
+		this.lmAvatarWaitAction = false;
+		this.lmAvatarWaitCounter = owner.ticksExisted;
+	}
+	
+	/**
+	 * LMAvatarの有効無効設定
+	 * @param enable
+	 */
+	public void setEnableLMAvatar(boolean enable) {
+		this.enableLMAvatar = enable;
+	}
+	
+	/**
+	 * LMAvatarの設定
+	 * @return
+	 */
+	public boolean getEnableLMAvatar() {
+		return this.enableLMAvatar;
+	}
 }

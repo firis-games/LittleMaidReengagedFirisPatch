@@ -3,7 +3,7 @@ package net.firis.lmt.config;
 import java.io.File;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.firis.lmt.common.modelcaps.PlayerModelConfigCompound;
+import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraftforge.common.config.Configuration;
 
 public class FirisConfig {
@@ -48,7 +48,7 @@ public class FirisConfig {
 		initCategory();
 		
 		//設定値の同期
-		syncConfig();
+		syncConfig(true);
 		
 	}
 	
@@ -66,7 +66,7 @@ public class FirisConfig {
 	/**
 	 * Config値の同期処理
 	 */
-	public static void syncConfig() {
+	public static void syncConfig(boolean lmavatar) {
 		
 		//General
 		
@@ -106,9 +106,18 @@ public class FirisConfig {
 		
 		config.save();
 		
-		//アバターへ反映する
-		PlayerModelConfigCompound.syncConfig();
-		
+		//LMAvatarの反映
+		if (lmavatar) {
+			//アバターへ反映する
+			PlayerModelManager.syncConfig();
+		}
+	}
+	
+	/**
+	 * Config値の同期処理
+	 */
+	public static void syncConfig() {
+		syncConfig(true);
 	}
 
 }
