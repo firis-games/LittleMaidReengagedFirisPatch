@@ -48,7 +48,7 @@ public class FirisConfig {
 		initCategory();
 		
 		//設定値の同期
-		syncConfig(true);
+		syncConfig(false);
 		
 	}
 	

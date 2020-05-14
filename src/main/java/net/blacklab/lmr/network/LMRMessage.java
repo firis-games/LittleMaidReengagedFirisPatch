@@ -123,7 +123,15 @@ public class LMRMessage implements IMessage
 		SERVER_LITTLE_MAID_INVENTORY(0x41,  true),
 			
 		/** クライアント側でコマンド実行 */
-		CLIENT_COMMAND_EXECUTE(0x51,  false);
+		CLIENT_COMMAND_EXECUTE(0x51,  false),
+		
+		/** クライアント側でサーバーのLMアバター情報を受け取る */
+		CLIENT_SYNC_SERVER_LMAVATAR(0x52,  false),
+		
+		/** サーバー側でクライアントのLMアバター情報を受け取る */
+		SERVER_SYNC_CLIENT_LMAVATAR(0x53,  false)
+		
+		;
 
 		public byte modeByte;
 		public boolean withEntity;

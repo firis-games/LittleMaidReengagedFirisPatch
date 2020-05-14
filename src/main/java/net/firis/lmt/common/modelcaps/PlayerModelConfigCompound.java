@@ -2,7 +2,10 @@ package net.firis.lmt.common.modelcaps;
 
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompoundBase;
 import net.blacklab.lmr.util.IModelCapsData;
-import net.minecraft.entity.EntityLivingBase;
+import net.blacklab.lmr.util.manager.LMTextureBoxManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * PlayerAvatar用パラメータクラス
@@ -31,15 +34,22 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 	/**
 	 *　LMアバターアクション
 	 */
-	private boolean lmAvatarAction = false;  
+	private boolean lmAvatarAction = false;
+	
+	/**
+	 * Player
+	 */
+	private final EntityPlayer player;
 	
 	/**
 	 * コンストラクタ
 	 * @param entity
 	 * @param caps
 	 */
-	public PlayerModelConfigCompound(EntityLivingBase entity, IModelCapsData caps) {
+	public PlayerModelConfigCompound(EntityPlayer entity, IModelCapsData caps) {
 		super(entity, caps);
+		
+		this.player = entity;
 	}
 	
 	/**
@@ -111,5 +121,53 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 	 */
 	public boolean getEnableLMAvatar() {
 		return this.enableLMAvatar;
+	}
+	
+	/**
+	 * NBTへ変換する
+	 */
+	public NBTTagCompound serializeToNBT(NBTTagCompound nbt) {
+		
+		String maid = this.getTextureBoxLittleMaid().getTextureModelName();
+		String armorHead = this.getTextureBoxArmor(EntityEquipmentSlot.HEAD).getTextureModelName();
+		String armorChest = this.getTextureBoxArmor(EntityEquipmentSlot.CHEST).getTextureModelName();
+		String armorLegs = this.getTextureBoxArmor(EntityEquipmentSlot.LEGS).getTextureModelName();
+		String armorFeet = this.getTextureBoxArmor(EntityEquipmentSlot.FEET).getTextureModelName();
+		
+		//必要な情報のみNBT化
+		nbt.setUniqueId("uuid", this.player.getUniqueID());
+		nbt.setString("maid", maid);
+		nbt.setInteger("color", this.color);
+		nbt.setString("head", armorHead);
+		nbt.setString("chest", armorChest);
+		nbt.setString("legs", armorLegs);
+		nbt.setString("feet", armorFeet);
+		
+		//モーション系
+
+		return nbt;
+	}
+	
+	/**
+	 * NBTから復元する
+	 */
+	public void deserializeFromNBT(NBTTagCompound nbt) {
+		
+		String maid = nbt.getString("maid");
+		String armorHead = nbt.getString("head");
+		String armorChest = nbt.getString("chest");
+		String armorLegs = nbt.getString("legs");
+		String armorFeet = nbt.getString("feet");
+		
+		Integer color = nbt.getInteger("color");
+		
+		//展開
+		this.setTextureBoxLittleMaid(LMTextureBoxManager.instance.getLMTextureBox(maid));
+		this.setTextureBoxArmor(EntityEquipmentSlot.HEAD, LMTextureBoxManager.instance.getLMTextureBox(armorHead));
+		this.setTextureBoxArmor(EntityEquipmentSlot.CHEST, LMTextureBoxManager.instance.getLMTextureBox(armorChest));
+		this.setTextureBoxArmor(EntityEquipmentSlot.LEGS, LMTextureBoxManager.instance.getLMTextureBox(armorLegs));
+		this.setTextureBoxArmor(EntityEquipmentSlot.FEET, LMTextureBoxManager.instance.getLMTextureBox(armorFeet));
+		this.setColor(color);
+		
 	}
 }

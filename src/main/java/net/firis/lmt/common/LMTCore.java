@@ -10,6 +10,7 @@ import net.firis.lmt.client.event.LittleMaidAvatarClientTickEventHandler;
 import net.firis.lmt.client.renderer.RendererLMAvatar;
 import net.firis.lmt.common.command.LMAvatarCommand;
 import net.firis.lmt.common.item.LMItemPlayerMaidBook;
+import net.firis.lmt.common.manager.PlayerModelManager;
 import net.firis.lmt.config.ConfigChangedEventHandler;
 import net.firis.lmt.config.FirisConfig;
 import net.firis.lmt.config.custom.JConfigLMAvatarManager;
@@ -175,6 +176,8 @@ public class LMTCore {
         //カスタム設定読込
         JConfigLMAvatarManager.init();
         
+        //LMアバター管理用イベント登録
+        MinecraftForge.EVENT_BUS.register(new PlayerModelManager());        
 	}
 	
 	/**

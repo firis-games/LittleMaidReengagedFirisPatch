@@ -213,9 +213,9 @@ public class LMTextureBox {
 	 * テクスチャパック名を返す
 	 * @return
 	 */
-	public String getTexturePackName() {
-		return this.texturePackName;
-	}
+//	public String getTexturePackName() {
+//		return this.texturePackName;
+//	}
 
 	/**
 	 * メイドさんのテクスチャを取得する

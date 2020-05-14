@@ -16,6 +16,7 @@ import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.firis.lmt.common.LMTCore;
 import net.firis.lmt.common.command.LMAvatarCommandClient;
+import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleItemPickup;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -229,6 +230,11 @@ public class ProxyClient extends ProxyCommon
 		case CLIENT_COMMAND_EXECUTE:
 			//コマンド実行
 			LMAvatarCommandClient.execute(tagCompound.getString("command"), tagCompound.getString("param"));
+			break;
+			
+		case CLIENT_SYNC_SERVER_LMAVATAR:
+			//アバター同期
+			PlayerModelManager.receiveLMAvatarDataFromServer(tagCompound);
 			break;
 			
 		default:

@@ -7,6 +7,7 @@ import net.blacklab.lmr.network.LMRMessage.EnumPacketMode;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.helper.CommonHelper;
+import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -171,6 +172,10 @@ public class LMRNetwork
 
 				sendPacketToPlayer(LMRMessage.EnumPacketMode.CLIENT_CURRENT_ITEM, lemaid.getEntityId(), returnTag, sender);
 			}
+			break;
+			
+		case SERVER_SYNC_CLIENT_LMAVATAR:
+			PlayerModelManager.reciveLMAvatarDataFromClient(tagCompound);
 			break;
 			
 		default:
