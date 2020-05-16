@@ -144,6 +144,7 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 		nbt.setString("feet", armorFeet);
 		
 		//モーション系
+		nbt.setBoolean("action", this.lmAvatarAction);
 
 		return nbt;
 	}
@@ -168,6 +169,9 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 		this.setTextureBoxArmor(EntityEquipmentSlot.LEGS, LMTextureBoxManager.instance.getLMTextureBox(armorLegs));
 		this.setTextureBoxArmor(EntityEquipmentSlot.FEET, LMTextureBoxManager.instance.getLMTextureBox(armorFeet));
 		this.setColor(color);
+		
+		//モーション系
+		this.lmAvatarAction = nbt.getBoolean("action");
 		
 	}
 }

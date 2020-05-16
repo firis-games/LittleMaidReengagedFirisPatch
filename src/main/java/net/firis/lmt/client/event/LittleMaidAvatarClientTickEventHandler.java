@@ -1,6 +1,7 @@
 package net.firis.lmt.client.event;
 
 import net.firis.lmt.common.manager.PlayerModelManager;
+import net.firis.lmt.common.manager.SyncPlayerModelClient;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
 import net.firis.lmt.common.modelcaps.PlayerModelConfigCompound;
 import net.minecraft.client.Minecraft;
@@ -68,6 +69,8 @@ public class LittleMaidAvatarClientTickEventHandler {
 		if (isMotionSittingReset) {
 			//お座りモーションリセット
 			lmAvatar.resetLMAvatarAction();
+			//同期処理
+			SyncPlayerModelClient.syncModel();
 		}
 		
 		if (!isMotionWaitReset && !isMotionSittingReset) {

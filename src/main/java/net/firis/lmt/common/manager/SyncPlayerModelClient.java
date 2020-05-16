@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import net.blacklab.lmr.network.LMRMessage.EnumPacketMode;
-import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,7 +30,7 @@ public class SyncPlayerModelClient {
 	 * モデルの同期を行う
 	 */
 	public static void syncModel() {
-		syncPacketQueue.add(LittleMaidReengaged.proxy.getClientPlayer().getUniqueID());
+		syncPacketQueue.add(Minecraft.getMinecraft().player.getUniqueID());
 	}
 	
 	/**

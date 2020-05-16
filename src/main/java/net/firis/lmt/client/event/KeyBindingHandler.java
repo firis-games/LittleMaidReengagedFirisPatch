@@ -3,6 +3,7 @@ package net.firis.lmt.client.event;
 import org.lwjgl.input.Keyboard;
 
 import net.firis.lmt.common.manager.PlayerModelManager;
+import net.firis.lmt.common.manager.SyncPlayerModelClient;
 import net.firis.lmt.common.modelcaps.PlayerModelConfigCompound;
 import net.firis.lmt.config.FirisConfig;
 import net.minecraft.client.Minecraft;
@@ -51,6 +52,10 @@ public class KeyBindingHandler {
 			EntityPlayer player = Minecraft.getMinecraft().player;
 			PlayerModelConfigCompound lmAvatar = PlayerModelManager.getModelConfigCompound(player);
 			lmAvatar.setLMAvatarAction(true);
+			
+			//同期する
+			SyncPlayerModelClient.syncModel();
+			
 		} else if (keyLittleMaidAvatarChange.isKeyDown()) {
 			//GuiConfigの変更
 			Property propEnableLMAvatar = FirisConfig.config.get(FirisConfig.CATEGORY_AVATAR, "07.EnableLMAvatar", FirisConfig.cfg_enable_lmavatar);
