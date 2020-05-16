@@ -14,23 +14,16 @@ import net.minecraftforge.common.config.Configuration;
  */
 public class LMRConfig {
 	
-	// @MLProp(info="Relative spawn weight. The lower the less common. 10=pigs. 0=off")
 	public static int cfg_spawnWeight = 5;
-	// @MLProp(info="Maximum spawn count in the World.")
 	public static int cfg_spawnLimit = 20;
-	// @MLProp(info="Minimum spawn group count.")
 	public static int cfg_minGroupSize = 1;
-	// @MLProp(info="Maximum spawn group count.")
 	public static int cfg_maxGroupSize = 3;
-	// @MLProp(info="It will despawn, if it lets things go. ")
 	public static boolean cfg_canDespawn = false;
 
-	// @MLProp(info="Print Debug Massages.")
 	public static boolean cfg_PrintDebugMessage = false;
-	// @MLProp(info="Print Death Massages.")
 	public static boolean cfg_DeathMessage = true;
-	// @MLProp(info="Spawn Anywhere.")
 	public static boolean cfg_Dominant = false;
+
 	// アルファブレンド
 	public static boolean cfg_isModelAlphaBlend = false;
 	
@@ -62,7 +55,7 @@ public class LMRConfig {
 	public static List<String> cfg_lj_sapling_item_ids = null;
 	
 	/** デフォルトスポーン有効化設定 */
-	public static boolean cfg_spawn_default_enable = true;
+	public static boolean cfg_custom_spawn = false;
 	
 	/** カスタムスポーン バイオームID or バイオーム名 */
 	public static List<String> cfg_spawn_biomes = null;
@@ -72,9 +65,6 @@ public class LMRConfig {
 	
 	/** 騎乗高さ調整 */
 	public static float cfg_custom_riding_height_adjustment = 0.0F;
-	
-	/** 弓（銃）アイテムID */
-	public static List<String> cfg_ac_bow_item_ids = null;
 	
 	/** 矢（弾丸）アイテムID */
 	public static List<String> cfg_ac_arrow_item_ids = null;
@@ -117,6 +107,10 @@ public class LMRConfig {
 	/** LittleMaidAvatarに登録するLayer設定 */
 	public static List<String> cfg_lmavatar_include_layer = null;
 	
+	/** 試験機能 ******************************/
+	/** 水上歩行術 */
+	public static boolean cfg_test_water_walking  = true;
+	
 	/**
 	 * Config初期化
 	 */
@@ -125,49 +119,61 @@ public class LMRConfig {
 		// Config
 		Configuration cfg = new Configuration(configFile);
 		cfg.load();
+		
+		//各設定の初期化
+		initLittleMaid(cfg);
+		initJob(cfg);
+		initSpawn(cfg);
+		initLMAvatar(cfg);
+		initDecoration(cfg);
+		initCollaboration(cfg);
+		initLoader(cfg);
+		initDevelop(cfg);
+		
+		cfg.save();
+	}
+	
+	protected static final String GROUP_GENERAL = "00_GENERAL";
+	
+	protected static final String GROUP_LITTLE_MAID = "01_LITTLE_MAID";
+	
+	protected static final String GROUP_JOB = "02_JOB";
+	
+	protected static final String GROUP_SPAWN = "03_SPAWN";
+	
+	protected static final String GROUP_DECORATION = "04_DECORATION";
+	
+	protected static final String GROUP_AVATAR = "05_LittleMaidAvatar";
 
-		cfg_canDespawn = cfg.getBoolean("canDespawn", "General", false,
-				"Set whether non-contracted maids can despawn.");
+	protected static final String GROUP_COLLABORATION = "06_ModCollaboration";
+	
+	protected static final String GROUP_LOADER = "ex_LOADER";
+	
+	protected static final String GROUP_DEVELOPER = "ex_DEVELOPER";
+	
+	/**
+	 * Mod本体の設定
+	 * @param cfg
+	 */
+	protected static void initGeneral(Configuration cfg) {
 		
-		cfg_DeathMessage = cfg.getBoolean("deathMessage", "General", true,
-				"Set whether prints death message of maids.");
+		//グループコメント
+		cfg.addCustomCategoryComment(GROUP_GENERAL, "Modに含まれる各機能の設定ができます。");
 		
-		cfg_Dominant = cfg.getBoolean("Dominant", "Advanced", false,
-				"Recommended to keep 'false'. If true, non-vanilla check is used for maid spawning.");
+	}
+	
+	/**
+	 * メイドさん本体に関連する設定
+	 */
+	protected static void initLittleMaid(Configuration cfg) {
 		
-		cfg_maxGroupSize = cfg.getInt("maxGroupSize", "Advanced", 3, 1, 20,
-				"Settings for maid spawning. Recommended to keep default.");
-		
-		cfg_minGroupSize = cfg.getInt("minGroupSize", "Advanced", 1, 1, 20,
-				"Settings for maid spawning. Recommended to keep default.");
-		
-		cfg_spawnLimit = cfg.getInt("spawnLimit", "Advanced", 20, 1, 30,
-				"Settings for maid spawning. Recommended to keep default.");
-		
-		cfg_spawnWeight = cfg.getInt("spawnWeight", "Advanced", 5, 1, 9,
-				"Settings for maid spawning. Recommended to keep default.");
-		
-		cfg_PrintDebugMessage = cfg.getBoolean("PrintDebugMessage", "Advanced", false,
-				"Print debug logs. Recommended to keep default.");
-		
-		cfg_isModelAlphaBlend = cfg.getBoolean("isModelAlphaBlend", "Advanced", true,
-				"If your graphics SHOULD be too powerless to draw alpha-blend textures, turn this 'false'.");
-		
-		cfg_isFixedWildMaid = cfg.getBoolean("isFixedWildMaid", "General", false,
-				"If 'true', only default-texture maid spawns. You can still change their textures after employing.");
-		
-		//メイドさんのランダムVoiceRate
-		cfg_voiceRate = cfg.getFloat("VoiceRate", "General", 0.2F, 0.0F, 1.0F,
-				"Set the maid's daily voice rate.[1.0 = 100%]");
-
-		//メイドの土産設定
-		cfg_isResurrection = cfg.getBoolean("isResurrection", "General", true,
-				"If 'true', Drops a resurrection item when a maid dies.");
+		//グループコメント
+		cfg.addCustomCategoryComment(GROUP_LITTLE_MAID, "メイドさんに関連する各機能の設定ができます。");
 		
 		//指定IDを砂糖として認識する
-		String[] sugarItemIds = new String[] {"minecraft:sugar"};
-		cfg_sugar_item_ids = Arrays.asList(cfg.getStringList("Sugar", "Custom", sugarItemIds, "Set the item ID to be treated the same as maid sugar."));
-		
+		String[] sugarItemIds = new String[] {"minecraft:sugar*1"};
+		cfg_sugar_item_ids = Arrays.asList(cfg.getStringList("Favorite.Sugar", GROUP_LITTLE_MAID, sugarItemIds, 
+				"砂糖と同じ扱いとなるアイテムIDを設定できます。[アイテムID]*[数値]で回復量を設定できます。"));
 		//Map形式へ変換する
 		cfg_sugar_item_ids_map = new HashMap<>();
 		for (String sugarItem : cfg_sugar_item_ids) {
@@ -185,32 +191,89 @@ public class LMRConfig {
 			}
 		}
 		
-		
 		//指定IDをケーキとして認識する
 		String[] cakeItemIds = new String[] {"minecraft:cake"};
-		cfg_cake_item_ids = Arrays.asList(cfg.getStringList("Cake", "Custom", cakeItemIds, "Set the item ID to be treated the same as maid cake."));
-		
-		//木こり設定
-		initLumberjack(cfg);
-		
-		//メイドスポーン設定
-		initSpawnBiome(cfg);
+		cfg_cake_item_ids = Arrays.asList(cfg.getStringList("Favorite.Cake", GROUP_LITTLE_MAID, cakeItemIds, 
+				"ケーキと同じ扱いとなるアイテムIDを設定できます。"));
 		
 		//メイドミルクの設定
-		cfg_custom_maid_milk = cfg.getBoolean("MaidMilk", "Custom", false,
-				"Enable maid milk.");
+		cfg_custom_maid_milk = cfg.getBoolean("MaidMilk", GROUP_LITTLE_MAID, false,
+				"メイドミルク機能を有効化できます。");
+		
+		//メイドミルク表示設定
+		cfg_secret_maid_milk = cfg.getBoolean("MaidMilk.Label", GROUP_LITTLE_MAID, false,
+				"ミルクバケツのラベル機能を有効化できます。");
+
+		//デフォルトメイドさんの表示
+		cfg_secret_maid_milk_producer_default = cfg.getString("MaidMilk.Label_DefaultMaidName", GROUP_LITTLE_MAID, 
+				"メイドさん",
+				"名無しメイドさんのミルクバケツのラベルを設定できます。");
+
+		//メイドミルク表示のラベル設定
+		cfg_secret_maid_milk_producer_label = cfg.getString("MaidMilk.Label_DisplayLabel", GROUP_LITTLE_MAID, 
+				"%s印のミルク",
+				"デフォルトメイドさんのミルクバケツのラベルを設定できます。");
+		
+		//メイドの土産設定
+		cfg_isResurrection = cfg.getBoolean("isResurrection", GROUP_LITTLE_MAID, true,
+				"デッドロスト回避機能を有効化できます。有効化するとメイドさん死亡時にメイドの土産をドロップします。");
 		
 		//騎乗メイドの高さ設定
-		cfg_custom_riding_height_adjustment = cfg.getFloat("RidingHeightAdjustment", "Custom", 0.0F, -2.0F, 2.0F, 
-				"Riding mode height adjustment.Standard setting of PFLM is -0.5.");
+		cfg_custom_riding_height_adjustment = cfg.getFloat("RidingMode.HeightAdjustment", GROUP_LITTLE_MAID, 0.0F, -2.0F, 2.0F, 
+				"疑似騎乗モードのメイドさんの描画位置（高さ）を設定します。LMアバターが有効化されている場合は-0.5されます。");
 		
 		//指定IDをアニマルメイドの変更対象として認識する
 		String[] animalMaidMobIds = new String[] {"minecraft:rabbit"};
-		cfg_custom_animal_maid_mob_ids = Arrays.asList(cfg.getStringList("AnimalMaidMobs", "Custom", animalMaidMobIds,
-				"Set a Mob ID that can be transformed into an Animal Maid."));
-
-		//アーチャー設定
-		initArcher(cfg);
+		cfg_custom_animal_maid_mob_ids = Arrays.asList(cfg.getStringList("AnimalMaidMobs", GROUP_LITTLE_MAID, animalMaidMobIds,
+				"アニマルメイドさんの変身対象となる動物のエンティティIDを設定できます。"));
+		
+		//死亡時のメッセージ表示
+		cfg_DeathMessage = cfg.getBoolean("deathMessage", GROUP_LITTLE_MAID, true,
+				"メイドさん死亡時のメッセージ表示を設定できます。");
+		
+	}
+	
+	/**
+	 * メイドさんのお仕事に関連する設定
+	 * @param cfg
+	 */
+	protected static void initJob(Configuration cfg) {
+		
+		//グループコメント
+		cfg.addCustomCategoryComment(GROUP_JOB, "メイドさんにお仕事に関連する各機能の設定ができます。");
+		
+		//指定IDを矢として認識する
+		String[] arrowItemIds = new String[] {"minecraft:arrow"};
+		cfg_ac_arrow_item_ids = Arrays.asList(
+				cfg.getStringList("Archer.Arrow", GROUP_JOB, arrowItemIds, 
+						"弓兵メイドさんが矢と同じ扱いをするアイテムIDを設定できます。")
+		);
+		
+		//指定IDを原木として認識する
+		String[] logBlockIds = new String[] {"minecraft:log"};
+		cfg_lj_log_block_ids = Arrays.asList(
+				cfg.getStringList("Lumberjack.Log", GROUP_JOB, logBlockIds, 
+						"木こりメイドさんが原木と同じ扱いをするアイテムIDを設定できます。")
+		);
+		
+		//指定IDを葉ブロックとして認識する
+		String[] leafBlockIds = new String[] {"minecraft:leaves"};
+		cfg_lj_leaf_block_ids = Arrays.asList(
+				cfg.getStringList("Lumberjack.Leaf", GROUP_JOB, leafBlockIds, 
+						"木こりメイドさんが葉ブロックと同じ扱いをするアイテムIDを設定できます。")
+		);
+		
+		//指定IDを苗木として認識する
+		String[] saplingItemIds = new String[] {"minecraft:sapling"};
+		cfg_lj_sapling_item_ids = Arrays.asList(
+				cfg.getStringList("Lumberjack.Sapling", GROUP_JOB, saplingItemIds, 
+						"木こりメイドさんが苗木ブロックと同じ扱いをするアイテムIDを設定できます。")
+		);
+		
+		//指定IDを調理しない
+		String[] noCookingItemIds = new String[] {"minecraft:iron_sword", "minecraft:golden_sword"};
+		cfg_cock_no_cooking_item_ids = Arrays.asList(cfg.getStringList("Cook.NotCookingItemIds", GROUP_JOB, noCookingItemIds,
+				"コックメイドさんが料理対象としないアイテムIDを設定できます。"));
 		
 		//triggerの設定化
 		String[] triggerItemIds = new String[] {
@@ -220,157 +283,166 @@ public class LMRConfig {
 				"lumberjack:minecraft:iron_axe"
 		};
 		cfg_trigger_item_ids = Arrays.asList(
-				cfg.getStringList("ItemIds", "Trigger", triggerItemIds, "Set the item ID of the trigger used for maid mode judgment.ex [maidmode]:[modid]:[itemid]")
+				cfg.getStringList("Trigger.ItemIds", GROUP_JOB, triggerItemIds, 
+						"メイドさんの転職用のトリガーアイテムを設定できます。 [maidmode]:[modid]:[itemid]")
 		);
 		
-		//みんなのメイドさん
-		cfg_cstm_everyones_maid = cfg.getBoolean("EveryonesMaid", "Custom", false,
-				"Maid listening to instructions other than the master.");
-		
-		//試験機能
-		initTest(cfg);
-		
-		//Hwyla連携
-		cfg_plugin_hwyla = cfg.getBoolean("Hwyla", "Plugin", true,
-				"Enable Hwyla　integration.");
-		
-		//秘密機能
-		initSecret(cfg);
-		
-		//開発者用テストモジュール有効化設定
-		cfg_developer_test_module = cfg.getBoolean("TestModule", "Develop", false,
-				"developer only.");
-		
-		//指定IDを調理しない
-		String[] noCookingItemIds = new String[] {"minecraft:iron_sword", "minecraft:golden_sword"};
-		cfg_cock_no_cooking_item_ids = Arrays.asList(cfg.getStringList("NotCookingItemIds", "Cock", noCookingItemIds,
-				"Set the item ID that does not cook in the furnace."));
-		
-		
-		//ファイルローダー機能のキャッシュ機能設定
-		cfg_loader_is_cache = cfg.getBoolean("EnableFileLoaderCache", "Loader", true,
-				"Enable FileLoader Caching.");
-		
-		//sounds.jsonファイルの出力設定
-		cfg_loader_output_sounds_json = cfg.getBoolean("OutputSoundsJson", "Loader", false,
-				"Output sounds.json.");
-		
-		//テクスチャのリソースパックロードの設定
-		cfg_loader_texture_load_from_resoucepack = cfg.getBoolean("EnableTextureLoadResourcepack", "Loader", false,
-				"Developer mode setting. Reads a texture from a resourcepack.");
-		
-		//指定されたIDのLayerは登録する
-		String[] lma_include_layer = new String[] {"LayerSlashBlade"};
-		cfg_lmavatar_include_layer = Arrays.asList(cfg.getStringList("IncludeLayer", "LMAvatar", lma_include_layer, 
-				"Add Layer containing specified characters to LMAvatar."));
-		
-		//メイドアバター機能
-		cfg_lmabatar_maid_avatar = cfg.getBoolean("EnableLittleMaidAvatar", "LMAvatar", false,
-				"Player looks like a LittleMaid.");
-		
-		cfg.save();
 	}
 	
 	/**
-	 * 木こり用設定
+	 * メイドさんのスポーンに関連する設定
+	 * @param cfg
 	 */
-	public static void initLumberjack(Configuration cfg) {
+	protected static void initSpawn(Configuration cfg) {
 		
-		//指定IDを原木として認識する
-		String[] logBlockIds = new String[] {"minecraft:log"};
-		cfg_lj_log_block_ids = Arrays.asList(
-				cfg.getStringList("Log", "Lumberjack", logBlockIds, "Set the block ID to be processed in the same way as the log.")
-		);
+		//グループコメント
+		cfg.addCustomCategoryComment(GROUP_SPAWN, "メイドさんにスポーン条件に関連する設定ができます。");
 		
-		//指定IDを葉ブロックとして認識する
-		String[] leafBlockIds = new String[] {"minecraft:leaves"};
-		cfg_lj_leaf_block_ids = Arrays.asList(
-				cfg.getStringList("Leaf", "Lumberjack", leafBlockIds, "Set the block ID to be processed in the same way as the leaf.")
-		);
+		//デスポーン設定
+		cfg_canDespawn = cfg.getBoolean("WildLittleMaidDespawn", GROUP_SPAWN, false,
+				"野生のメイドさんがデスポーンするかを設定できます。");
 		
-		//指定IDを苗木として認識する
-		String[] saplingItemIds = new String[] {"minecraft:sapling"};
-		cfg_lj_sapling_item_ids = Arrays.asList(
-				cfg.getStringList("Sapling", "Lumberjack", saplingItemIds, "Set the item ID to be processed in the same way as the sapling.")
-		);
-	}
-	
-	/**
-	 * カスタムスポーン設定
-	 */
-	public static void initSpawnBiome(Configuration cfg) {
+		//スポーンする群れの最大サイズ
+		cfg_maxGroupSize = cfg.getInt("SpawnMaxGroupSize", GROUP_SPAWN, 2, 1, 20,
+				"自然スポーン時の最大沸き数を設定できます。");
+		
+		//スポーンする群れの最小サイズ
+		cfg_minGroupSize = cfg.getInt("SpawnMinGroupSize", GROUP_SPAWN, 1, 1, 20,
+				"自然スポーン時の最小沸き数を設定できます。");
+		
+		//自然スポーンのリミット
+		cfg_spawnLimit = cfg.getInt("SpawnLimit", GROUP_SPAWN, 20, 1, 30,
+				"自然スポーン時のスポーン上限を設定できます。読込範囲に指定数以上メイドさんが存在する場合に自然スポーンが発生しなくなります。");
+		
+		//スポーンのウェイト
+		cfg_spawnWeight = cfg.getInt("SpawnWeight", GROUP_SPAWN, 5, 0, 10,
+				"自然スポーン時の沸きやすさを設定できます。0の場合は自然スポーンが停止します。");
 		
 		//カスタムスポーン有効設定
-		cfg_spawn_default_enable = cfg.getBoolean("SpawnDefaultEnable", "Custom", true,
-				"Enable the default spawn for Maid.");
+		cfg_custom_spawn = cfg.getBoolean("CustomBiomeSpwan", GROUP_SPAWN, false,
+				"カスタムスポーンを有効化します。カスタムスポーンを有効化するとデフォルトのバイオームでスポーンしなくなります。");
 		
 		//スポーンバイオーム設定
 		String[] biomeList = new String[] {
 				"Plains",
 				"minecraft:plains"};
 		cfg_spawn_biomes = Arrays.asList(
-				cfg.getStringList("SpawnBiomeList", "Custom", biomeList, 
-						"Setting for Maid custom spawn Biome Name or Biome Id.")
+				cfg.getStringList("CustomBiomeSpwan.BiomeList", GROUP_SPAWN, biomeList, 
+						"カスタムスポーン有効時にスポーンするバイオーム名 or バイオームIDを設定できます。")
 		);
-		
 	}
 	
-	
 	/**
-	 * アーチャー用設定
-	 */
-	public static void initArcher(Configuration cfg) {
-		
-		//指定IDを弓として認識する
-		String[] bowItemIds = new String[] {"minecraft:bow"};
-		cfg_ac_bow_item_ids = Arrays.asList(
-				cfg.getStringList("Bow", "Archer", bowItemIds, "Set the item ID to be processed in the same way as the Bow or Gun.")
-		);
-		
-		//指定IDを矢として認識する
-		String[] arrowItemIds = new String[] {"minecraft:arrow"};
-		cfg_ac_arrow_item_ids = Arrays.asList(
-				cfg.getStringList("Arrow", "Archer", arrowItemIds, "Set the item ID to be processed in the same way as the arrow or bullet.")
-		);
-		
-	}
-	
-	
-	/** 試験機能 ******************************/
-	/** 水上歩行術 */
-	public static boolean cfg_test_water_walking  = true;
-	
-	/**
-	 * 試験的に実装した機能の設定
-	 */
-	public static void initTest(Configuration cfg) {
-		
-		//水上歩行術
-		cfg_test_water_walking = cfg.getBoolean("MaidWaterWalking", "Test", false,
-				"Enable Maid's water walking technique.");
-		
-	}
-	
-	/****************************************/
-	
-	/**
-	 * メイドさんの秘密機能のConfig
+	 * メイドさんの見た目に関連する設定
 	 * @param cfg
 	 */
-	public static void initSecret(Configuration cfg) {
+	protected static void initDecoration(Configuration cfg) {
 		
-		//メイドミルク表示設定
-		cfg_secret_maid_milk = cfg.getBoolean("MaidMilkLabel", "Secret", false,
-				"Enable producer labeling for maid milk.");
-
-		//デフォルトメイドさんの表示
-		cfg_secret_maid_milk_producer_default = cfg.getString("MaidMilkLabel_DefaultMaidName", "Secret", "メイドさん",
-				"Maid milk default littlemaid name.");
-
-		//メイドミルク表示のラベル設定
-		cfg_secret_maid_milk_producer_label = cfg.getString("MaidMilkLabel_DisplayLabel", "Secret", "%s印のミルク",
-				"Maid milk producer display label.");
+		//グループコメント
+		cfg.addCustomCategoryComment(GROUP_DECORATION, "メイドさんの見た目に関連する設定ができます。");
 		
+		//野生メイドさんのスポーン設定
+		cfg_isFixedWildMaid = cfg.getBoolean("WildLittleMaid.DefaultOnly", GROUP_DECORATION, false,
+				"スポーン時の野生メイドさんのテクスチャをデフォルトのみにするか設定できます。");
+		
+		//透過設定
+		cfg_isModelAlphaBlend = cfg.getBoolean("isModelAlphaBlend", GROUP_DECORATION, true,
+				"グラフィックが無力すぎてアルファブレンドテクスチャを描画できない場合は、「false」にしてください。");
+		
+		//メイドさんのランダムVoiceRate
+		cfg_voiceRate = cfg.getFloat("VoiceRate", GROUP_DECORATION, 0.2F, 0.0F, 1.0F,
+				"メイドさんの通常おしゃべりのレートを設定できます。[1.0 = 100%]");
+		
+	}
+	
+	/**
+	 * LMアバターの設定
+	 * @param cfg
+	 */
+	protected static void initLMAvatar(Configuration cfg) {
+		
+		//グループコメント
+		cfg.addCustomCategoryComment(GROUP_AVATAR, "リトルメイドアバターに関連する設定ができます。");
+
+		//メイドアバター機能
+		cfg_lmabatar_maid_avatar = cfg.getBoolean("LittleMaidAvatar", GROUP_AVATAR, false,
+				"プレイヤーの見た目をメイドさんにするLittleMaidAvatar機能を有効化します。");
+		
+		//指定されたIDのLayerは登録する
+		String[] lma_include_layer = new String[] {"LayerSlashBlade"};
+		cfg_lmavatar_include_layer = Arrays.asList(cfg.getStringList("LittleMaidAvatar.IncludeLayer", GROUP_AVATAR, lma_include_layer, 
+				"指定された文字を含むLayerクラスをLittleMaidAvatarに追加します。"));
+		
+	}
+	
+	/**
+	 * Mod連携
+	 * @param cfg
+	 */
+	protected static void initCollaboration(Configuration cfg) {
+		//グループコメント
+		cfg.addCustomCategoryComment(GROUP_COLLABORATION, "Mod連携");
+		
+		//Hwyla連携
+		cfg_plugin_hwyla = cfg.getBoolean("Hwyla", GROUP_COLLABORATION, true,
+				"Hwyla連携を有効化します。");
+	}
+	
+	
+	/**
+	 * メイドさんの見た目に関連する設定
+	 * @param cfg
+	 */
+	protected static void initLoader(Configuration cfg) {
+		//グループコメント
+		cfg.addCustomCategoryComment(GROUP_LOADER, "LittleMaidLoader Setting");
+		
+		//ファイルローダー機能のキャッシュ機能設定
+		cfg_loader_is_cache = cfg.getBoolean("EnableFileLoaderCache", GROUP_LOADER, false,
+				"Enable FileLoader Caching.");
+		
+		//sounds.jsonファイルの出力設定
+		cfg_loader_output_sounds_json = cfg.getBoolean("OutputSoundsJson", GROUP_LOADER, false,
+				"Output sounds.json.");
+		
+		//テクスチャのリソースパックロードの設定
+		cfg_loader_texture_load_from_resoucepack = cfg.getBoolean("EnableTextureLoadResourcepack", GROUP_LOADER, false,
+				"Developer mode setting. Reads a texture from a resourcepack.");
+		
+	}
+	
+	/**
+	 * テスト用機能の設定
+	 */
+	protected static void initDevelop(Configuration cfg) {
+		
+		//グループコメント
+		cfg.addCustomCategoryComment(GROUP_DEVELOPER, "Developer Mode Setting");
+		
+		cfg_PrintDebugMessage = cfg.getBoolean("PrintDebugMessage", GROUP_DEVELOPER, false,
+				"Print debug logs. Recommended to keep default.");
+		
+		//みんなのメイドさん
+		cfg_cstm_everyones_maid = cfg.getBoolean("Test.EveryonesMaid", GROUP_DEVELOPER, false,
+				"Maid listening to instructions other than the master.");
+		
+		//水上歩行術
+		cfg_test_water_walking = cfg.getBoolean("Test.MaidWaterWalking", GROUP_DEVELOPER, false,
+				"Enable Maid's water walking technique.");
+		
+		//開発者用テストモジュール有効化設定
+		cfg_developer_test_module = cfg.getBoolean("Test.Module", GROUP_DEVELOPER, false,
+				"developer only.");
+	}
+	
+	/**
+	 * 現在未使用の設定
+	 * 一定期間後に削除する
+	 * @param cfg
+	 */
+	protected static void initDelete(Configuration cfg) {
+		cfg_Dominant = cfg.getBoolean("Dominant", "Advanced", false,
+				"Recommended to keep 'false'. If true, non-vanilla check is used for maid spawning.");		
 	}
 	
 }

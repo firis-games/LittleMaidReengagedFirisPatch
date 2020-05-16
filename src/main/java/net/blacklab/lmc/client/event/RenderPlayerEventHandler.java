@@ -76,7 +76,9 @@ public class RenderPlayerEventHandler {
 		
 		//微調整 PFLMの標準設定は0.5F
 		//GlStateManager.translate(0, -0.5F, 0);
-		GlStateManager.translate(0, LMRConfig.cfg_custom_riding_height_adjustment, 0);
+		float heightAdjustment = LMRConfig.cfg_custom_riding_height_adjustment;
+		if (LMRConfig.cfg_lmabatar_maid_avatar) heightAdjustment -= 0.5F;
+		GlStateManager.translate(0, heightAdjustment, 0);
 		
 		
 		//スニーク位置調整

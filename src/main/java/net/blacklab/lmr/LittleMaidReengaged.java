@@ -389,7 +389,7 @@ public class LittleMaidReengaged {
 				boolean isSpawn = false;
 				
 				//デフォルトスポーン設定
-				if (!isSpawn && LMRConfig.cfg_spawn_default_enable) {
+				if (!isSpawn && !LMRConfig.cfg_custom_spawn) {
 					//Biomeタイプが一致した場合にスポーン設定を行う
 					for (BiomeDictionary.Type biomeType : spawnBiomeList) {
 						if (BiomeDictionary.hasType(biome, biomeType)) {
