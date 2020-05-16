@@ -143,7 +143,7 @@ public class ModelLittleMaidMultiModel extends ModelBase {
 		
 		PlayerModelCaps caps = new PlayerModelCaps(player);
 		
-		caps.setFirstPerson(isFirstPerson);
+		//caps.setFirstPerson(isFirstPerson);
 		
 		//モデルにCaps情報を設定する
 		caps.setModelMultiBaseCapsFromModelCaps(modelMain);

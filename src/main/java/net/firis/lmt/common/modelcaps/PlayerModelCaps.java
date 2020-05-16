@@ -10,6 +10,7 @@ import net.blacklab.lmr.util.IModelCapsData;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -27,12 +28,6 @@ import net.minecraft.util.math.MathHelper;
 public class PlayerModelCaps implements IModelCapsData {
 	
 	private final EntityPlayer owner;
-	
-	private boolean isFirstPerson = false;
-	
-	public void setFirstPerson(boolean flg) {
-		this.isFirstPerson = flg;
-	}
 	
 	public PlayerModelCaps(EntityPlayer player) {
 		this.owner = player;
@@ -109,7 +104,7 @@ public class PlayerModelCaps implements IModelCapsData {
 		case caps_onGround:
 			return this.getOnGrounds();
 		case caps_isRiding:
-			if (this.isFirstPerson) return false;
+			if (this.isFirstPersonView()) return false;
 			//疑似お座りモーションを管理する
 			return owner.isRiding() || PlayerModelManager.getModelConfigCompound(owner).getLMAvatarAction();
 		case caps_motionSitting:
@@ -130,7 +125,7 @@ public class PlayerModelCaps implements IModelCapsData {
 		case caps_isSwingInProgress:
 			return owner.isSwingInProgress;
 		case caps_isSneak:
-			if (this.isFirstPerson) return false;
+			if (this.isFirstPersonView()) return false;
 			return owner.isSneaking();
 		case caps_isBurning:
 			return owner.isBurning();
@@ -228,7 +223,7 @@ public class PlayerModelCaps implements IModelCapsData {
 			
 		//メイドさん待機モーション
 		case caps_isWait:
-			if (this.isFirstPerson) return false;
+			if (this.isFirstPersonView()) return false;
 			return PlayerModelManager.getModelConfigCompound(owner).getLMAvatarWaitAction();
 			
 		//砂糖を持った時の首傾げ
@@ -360,6 +355,10 @@ public class PlayerModelCaps implements IModelCapsData {
 		//初期化設定
 		this.setModelMultiBaseCapsFromModelCaps(model);
 		
+	}
+	
+	private boolean isFirstPersonView() {
+		return Minecraft.getMinecraft().gameSettings.thirdPersonView == 0;
 	}
 	
 }
