@@ -11,6 +11,8 @@ import net.firis.lmt.client.renderer.RendererLMAvatar;
 import net.firis.lmt.common.command.LMAvatarCommand;
 import net.firis.lmt.common.item.LMItemPlayerMaidBook;
 import net.firis.lmt.common.manager.PlayerModelManager;
+import net.firis.lmt.common.manager.SyncPlayerModelClient;
+import net.firis.lmt.common.manager.SyncPlayerModelServer;
 import net.firis.lmt.config.ConfigChangedEventHandler;
 import net.firis.lmt.config.FirisConfig;
 import net.firis.lmt.config.custom.JConfigLMAvatarManager;
@@ -133,6 +135,9 @@ public class LMTCore {
 		
 		MinecraftForge.EVENT_BUS.register(KeyBindingHandler.class);
 		MinecraftForge.EVENT_BUS.register(LittleMaidAvatarClientTickEventHandler.class);
+		
+		//LMアバター管理用イベント登録
+        MinecraftForge.EVENT_BUS.register(new SyncPlayerModelClient());
 	}
 	
 	/**
@@ -177,7 +182,9 @@ public class LMTCore {
         JConfigLMAvatarManager.init();
         
         //LMアバター管理用イベント登録
-        MinecraftForge.EVENT_BUS.register(new PlayerModelManager());        
+        MinecraftForge.EVENT_BUS.register(new PlayerModelManager());
+        MinecraftForge.EVENT_BUS.register(new SyncPlayerModelServer());
+        
 	}
 	
 	/**

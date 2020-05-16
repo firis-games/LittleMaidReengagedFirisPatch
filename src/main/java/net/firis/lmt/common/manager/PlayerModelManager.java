@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.network.LMRMessage.EnumPacketMode;
-import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.manager.LMTextureBoxManager;
 import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
@@ -44,7 +42,7 @@ public class PlayerModelManager {
 	 * 同期のタイミングではインスタンス生成を行わない
 	 * パラメータへの初回アクセスのタイミングで生成する
 	 */
-	private static Map<UUID, NBTTagCompound> clientModelNbtMap = new HashMap<>();
+	protected static Map<UUID, NBTTagCompound> clientModelNbtMap = new HashMap<>();
 	
 	/**
 	 * EntityPlayerに紐づくModelConfigCompoundを取得する
@@ -76,7 +74,8 @@ public class PlayerModelManager {
 		
 		clientModelNbtMap.put(getClientPlayer().getUniqueID(), clientNBT);
 		
-		LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_SYNC_CLIENT_LMAVATAR, -1, clientNBT);
+		//LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_SYNC_CLIENT_LMAVATAR, -1, clientNBT);
+		SyncPlayerModelClient.syncModel();
 	}
 	
 	/**
@@ -160,7 +159,8 @@ public class PlayerModelManager {
 		
 		if (isServerSync) {
 			//サーバー側へ再送信
-			LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_SYNC_CLIENT_LMAVATAR, -1, clientNBT);
+			//LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_SYNC_CLIENT_LMAVATAR, -1, clientNBT);
+			SyncPlayerModelClient.syncModel();
 		}
 	}
 	
@@ -190,13 +190,14 @@ public class PlayerModelManager {
 		
 		//変更する
 		if (isClientSync) {
-			NBTTagCompound send = new NBTTagCompound();
-			NBTTagList tagList = new NBTTagList();
-			tagList.appendTag(tagCompound);
-			send.setTag("avatar", tagList);
+			//NBTTagCompound send = new NBTTagCompound();
+			//NBTTagList tagList = new NBTTagList();
+			//tagList.appendTag(tagCompound);
+			//send.setTag("avatar", tagList);
 			
 			//全クライアントへ送信する
-			LMRNetwork.sendPacketToAllPlayer(EnumPacketMode.CLIENT_SYNC_SERVER_LMAVATAR, -1, send);
+			//LMRNetwork.sendPacketToAllPlayer(EnumPacketMode.CLIENT_SYNC_SERVER_LMAVATAR, -1, send);
+			SyncPlayerModelServer.syncModel(uuid);
 		}
 	}
 	
@@ -231,6 +232,7 @@ public class PlayerModelManager {
 		send.setTag("avatar", tagList);
 		
 		//送信
-		LMRNetwork.sendPacketToPlayer(EnumPacketMode.CLIENT_SYNC_SERVER_LMAVATAR, 0, send, event.player);
+		//LMRNetwork.sendPacketToPlayer(EnumPacketMode.CLIENT_SYNC_SERVER_LMAVATAR, 0, send, event.player);
+		SyncPlayerModelServer.syncModel(event.player.getUniqueID());
 	}
 }
