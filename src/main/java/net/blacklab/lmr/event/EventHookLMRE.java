@@ -140,7 +140,13 @@ public class EventHookLMRE
 		
 		EntityLittleMaid maid = event.maid;
 		ItemStack stack = event.stack;
+		Integer stackIndex = event.maidStackIndex;
 //		String maidModeString = maid.getMaidModeString();
+		
+		//16番目以降は無条件で格納する
+		if (15 <= event.maidStackIndex) {
+			return;
+		}
 
 		//砂糖扱いのアイテムと時計を除外する
 		if(ItemHelper.isSugar(stack) || stack.getItem() == Items.CLOCK){
@@ -148,7 +154,7 @@ public class EventHookLMRE
 		}
 		
 		//各職業のアイテム除外判定
-		boolean isCancelPut = maid.jobController.isCancelPutChestItemStack(stack, event.maidStackIndex);
+		boolean isCancelPut = maid.jobController.isCancelPutChestItemStack(stack, stackIndex);
 //		Iterator<EntityModeBase> maidModeIterator = maid.maidEntityModeList.iterator();
 //		while (maidModeIterator.hasNext()) {
 //			EntityModeBase maidMode = maidModeIterator.next();

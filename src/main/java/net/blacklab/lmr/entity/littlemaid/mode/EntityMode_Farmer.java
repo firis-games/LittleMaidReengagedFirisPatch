@@ -475,7 +475,7 @@ public class EntityMode_Farmer extends EntityModeBase {
 			
 			//13番目のスロットまで
 			//種はのこす
-			if(slotIndedx <= 13 && this.isTriggerItemSeed(stack)) {
+			if(slotIndedx < 9 && this.isTriggerItemSeed(stack)) {
 				return true;
 			}
 		}
