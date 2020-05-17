@@ -195,3 +195,5 @@ commands.lmacommand.load=load %s
 commands.lmacommand.load.error=non exists %s
 commands.lmacommand.list.error=non exists %s
 
+entity.Villager.MaidBroker=Maid Broker
+

@@ -13,6 +13,8 @@ import net.blacklab.lmc.common.helper.ReflectionHelper;
 import net.blacklab.lmc.common.item.LMItemMaidCarry;
 import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
 import net.blacklab.lmc.common.item.LMItemMaidSugar;
+import net.blacklab.lmc.common.villager.StructureVillagePiecesMaidBrokerHouse;
+import net.blacklab.lmc.common.villager.VillagerProfessionMaidBroker;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.config.LMRConfig;
@@ -61,6 +63,7 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -156,6 +159,12 @@ public class LittleMaidReengaged {
     	public final static Item MAID_SUGAR = null;
     	public final static Item PLAYER_MAID_BOOK = null;
     }
+    
+    /**
+     * 村人職業のインスタンス保持用
+     */
+	@ObjectHolder(LittleMaidReengaged.MODID + ":maid_broker")
+	public final static VillagerProfession MAID_BROKER = null;
 
     /**
      * 開発用デバッグログ
@@ -351,6 +360,9 @@ public class LittleMaidReengaged {
 
 		//Plugin初期化処理
 		PluginManager.initRegisterPlugin(event);
+		
+		//村人構造物の初期化処理
+		StructureVillagePiecesMaidBrokerHouse.init();
 	}
 
 	// public static ProxyClient.CountThread countThread;
@@ -545,7 +557,15 @@ public class LittleMaidReengaged {
 		//リトルメイドテスト用モジュール
     	LMTCore.serverStatingEvent(event);
 	}
-     
-    
+		
+	/**
+	 * 村人登録イベント
+	 * @param event
+	 */
+    @SubscribeEvent
+    public static void registerVillagerProfession(RegistryEvent.Register<VillagerProfession> event) {
+    	//メイド仲介人を登録
+    	event.getRegistry().register(new VillagerProfessionMaidBroker());
+    }
 
 }

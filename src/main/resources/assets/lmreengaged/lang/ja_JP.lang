@@ -192,3 +192,5 @@ commands.lmacommand.load=「%s」が読み込まれました
 commands.lmacommand.load.error=「%s」は登録されていません
 commands.lmacommand.list.error=「%s」は登録されていません
 
+entity.Villager.MaidBroker=メイド仲介人
+
