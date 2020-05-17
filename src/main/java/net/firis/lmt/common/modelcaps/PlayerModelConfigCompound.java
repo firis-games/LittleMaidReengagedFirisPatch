@@ -1,9 +1,12 @@
 package net.firis.lmt.common.modelcaps;
 
+import java.util.UUID;
+
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompoundBase;
 import net.blacklab.lmr.util.IModelCapsData;
 import net.blacklab.lmr.util.manager.LMTextureBoxManager;
 import net.blacklab.lmr.util.manager.pack.LMTextureBox;
+import net.firis.lmt.config.FirisConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -176,6 +179,34 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 		//モーション系
 		this.lmAvatarAction = nbt.getBoolean("action");
 		
+	}
+	
+	/**
+	 * デフォルト状態のNBTを作成する
+	 * @return
+	 */
+	public static NBTTagCompound createDefaultNBT(UUID uuid) {
+		NBTTagCompound nbt = new NBTTagCompound();
+		
+		LMTextureBox maidBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_maid_model);
+		LMTextureBox headBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_head);
+		LMTextureBox bodyBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_body);
+		LMTextureBox legBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_leg);
+		LMTextureBox bootsBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_boots);
+		
+		//必要な情報のみNBT化
+		nbt.setUniqueId("uuid", uuid);
+		nbt.setString("maid", maidBox.getTextureModelName());
+		nbt.setInteger("color", FirisConfig.cfg_maid_color);
+		nbt.setString("head", headBox.getTextureModelName());
+		nbt.setString("chest", bodyBox.getTextureModelName());
+		nbt.setString("legs", legBox.getTextureModelName());
+		nbt.setString("feet", bootsBox.getTextureModelName());
+		
+		//モーション系
+		nbt.setBoolean("action", false);
+
+		return nbt;
 	}
 	
 	/**

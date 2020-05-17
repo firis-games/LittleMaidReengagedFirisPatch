@@ -49,7 +49,9 @@ public class PlayerModelManager {
 	 * @return
 	 */
 	public static PlayerModelConfigCompound getModelConfigCompound(EntityPlayer player) {
+		
 		UUID uuid = player.getUniqueID();
+		
 		//存在していなければ初期化して作成する
 		if (!modelConfigCompoundMap.containsKey(uuid)) {
 			modelConfigCompoundMap.put(uuid, createModelConfigCompound(player));
@@ -179,6 +181,7 @@ public class PlayerModelManager {
 			//	}
 			////その他ユーザーかつインスタンス生成済みの場合
 			//} else
+			//既にオブジェクトが存在する場合は上書きする
 			if (modelConfigCompoundMap.containsKey(uuid)){
 				//その他のユーザーの場合
 				PlayerModelConfigCompound playerModel = modelConfigCompoundMap.get(uuid);
@@ -253,8 +256,8 @@ public class PlayerModelManager {
 	public void onPlayerLoggedInEvent(PlayerLoggedInEvent event) {
 		
 		//ログインのタイミングでサーバー側のNBTを作成する
-		PlayerModelConfigCompound modelConfig = PlayerModelManager.getModelConfigCompound(event.player);
-		PlayerModelManager.serverModelNbtMap.put(event.player.getUniqueID(), modelConfig.serializeToNBT(new NBTTagCompound()));
+		NBTTagCompound modelConfigNbt = PlayerModelConfigCompound.createDefaultNBT(event.player.getUniqueID());
+		PlayerModelManager.serverModelNbtMap.put(event.player.getUniqueID(), modelConfigNbt);
 
 		//サーバー上で管理しているNBTリストをクライアントへ送る
 		NBTTagCompound send = new NBTTagCompound();
