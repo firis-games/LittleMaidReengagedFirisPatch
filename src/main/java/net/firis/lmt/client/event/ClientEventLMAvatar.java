@@ -1,11 +1,10 @@
 package net.firis.lmt.client.event;
 
-import net.firis.lmt.client.renderer.RendererMaidPlayerMultiModel;
+import net.firis.lmt.client.renderer.RendererLMAvatar;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Deprecated
 @SideOnly(Side.CLIENT)
 public class ClientEventLMAvatar extends Event {
 
@@ -21,13 +20,13 @@ public class ClientEventLMAvatar extends Event {
 	 */
 	public static class RendererAvatarAddLayerEvent extends ClientEventLMAvatar {
 		
-		private final RendererMaidPlayerMultiModel renderer;
+		private final RendererLMAvatar renderer;
 		
-		public RendererAvatarAddLayerEvent(RendererMaidPlayerMultiModel renderer) {
+		public RendererAvatarAddLayerEvent(RendererLMAvatar renderer) {
 			this.renderer = renderer;
 		}
 		
-		public RendererMaidPlayerMultiModel getRenderer() {
+		public RendererLMAvatar getRenderer() {
 			return this.renderer;
 		}
 	}

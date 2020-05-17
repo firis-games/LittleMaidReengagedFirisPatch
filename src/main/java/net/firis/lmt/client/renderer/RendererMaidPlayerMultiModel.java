@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
-import net.firis.lmt.client.event.ClientEventLMAvatar;
 import net.firis.lmt.client.model.ModelLittleMaidMultiModel;
 import net.firis.lmt.client.renderer.layer.LayerArmorLittleMaidMultiModel;
 import net.firis.lmt.client.renderer.layer.LayerArrowLittleMaid;
@@ -21,7 +20,6 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 
 /**
  * マルチモデルでプレイヤーモデル描画
@@ -76,7 +74,7 @@ public class RendererMaidPlayerMultiModel extends RenderPlayer {
         this.addLayer(new LayerArrowLittleMaid(this));
         
         //Layer登録用イベント
-   		MinecraftForge.EVENT_BUS.post(new ClientEventLMAvatar.RendererAvatarAddLayerEvent(this));
+//   		MinecraftForge.EVENT_BUS.post(new ClientEventLMAvatar.RendererAvatarAddLayerEvent(this));
         
 		//Layerロード完了
 		this.isLayerLoading = false;
