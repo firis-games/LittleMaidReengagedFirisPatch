@@ -218,6 +218,17 @@ public class LMTextureBox {
 //	}
 
 	/**
+	 * メイドさんのデフォルトテクスチャを取得する
+	 * @return
+	 */
+	public ResourceLocation getTextureLittleMaidDefault() {
+		for (EnumColor color : this.textureLittleMaid.keySet()) {
+			return this.textureLittleMaid.get(color);
+		}
+		return null;
+	}
+	
+	/**
 	 * メイドさんのテクスチャを取得する
 	 * @return
 	 */
@@ -225,17 +236,6 @@ public class LMTextureBox {
 		EnumColor enumColor = EnumColor.getColorFromInt(color);
 		if (this.textureLittleMaid.containsKey(enumColor)) {
 			return this.textureLittleMaid.get(enumColor);
-		}
-		return null;
-	}
-	
-	/**
-	 * メイドさんのデフォルトテクスチャを取得する
-	 * @return
-	 */
-	public ResourceLocation getTextureLittleMaidDefault() {
-		for (EnumColor color : this.textureLittleMaid.keySet()) {
-			return this.textureLittleMaid.get(color);
 		}
 		return null;
 	}
@@ -257,6 +257,38 @@ public class LMTextureBox {
 			return textureDefaultLightLittleMaid;
 		}
 		
+		//対象なし
+		return null;
+	}
+	
+	/**
+	 * 野生メイドさんのテクスチャを取得する
+	 * @return
+	 */
+	public ResourceLocation getTextureWildLittleMaid(int color) {
+		EnumColor enumColor = EnumColor.getColorFromInt(color);
+		if (this.textureWildLittleMaid.containsKey(enumColor)) {
+			return this.textureWildLittleMaid.get(enumColor);
+		}
+		return null;
+	}
+	
+	/**
+	 * メイドさんの発光テクスチャを取得する
+	 * @return
+	 */
+	public ResourceLocation getLightTextureWildLittleMaid(int color) {
+		
+		//個別テクスチャ確認
+		EnumColor enumColor = EnumColor.getColorFromInt(color);
+		if (this.textureLightWildLittleMaid.containsKey(enumColor)) {
+			return this.textureLightWildLittleMaid.get(enumColor);
+		}
+		
+		//デフォルト発光テクスチャ確認
+		if (this.textureDefaultLightWildLittleMaid != null) {
+			return textureDefaultLightWildLittleMaid;
+		}
 		//対象なし
 		return null;
 	}

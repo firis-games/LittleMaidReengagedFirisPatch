@@ -121,6 +121,9 @@ public abstract class ModelConfigCompoundBase implements IModelConfigCompound {
 	@Override
 	public ResourceLocation getTextureLittleMaid() {
 		if (this.textureBoxLittleMaid == null) return null;
+		if (!this.isContract()) {
+			return this.textureBoxLittleMaid.getTextureWildLittleMaid(this.color);
+		}
 		return this.textureBoxLittleMaid.getTextureLittleMaid(this.color);
 	}
 	
@@ -131,6 +134,9 @@ public abstract class ModelConfigCompoundBase implements IModelConfigCompound {
 	@Override
 	public ResourceLocation getLightTextureLittleMaid() {
 		if (this.textureBoxLittleMaid == null) return null;
+		if (!this.isContract()) {
+			return this.textureBoxLittleMaid.getLightTextureWildLittleMaid(this.color);
+		}
 		return this.textureBoxLittleMaid.getLightTextureLittleMaid(this.color);
 	}
 	
