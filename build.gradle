@@ -21,7 +21,7 @@ repositories {
     }
 }
 
-version = "9.0.4.fp.038"
+version = "9.0.5.fp.039"
 group= "net.blacklab.lmr" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "LittleMaidReengaged_FirisPatch"
 
