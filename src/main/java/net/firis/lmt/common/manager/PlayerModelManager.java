@@ -54,7 +54,9 @@ public class PlayerModelManager {
 		if (!modelConfigCompoundMap.containsKey(uuid)) {
 			modelConfigCompoundMap.put(uuid, createModelConfigCompound(player));
 		}
-		return modelConfigCompoundMap.get(uuid); 
+		PlayerModelConfigCompound modelConfig = modelConfigCompoundMap.get(uuid);
+		modelConfig.player = player;
+		return modelConfig; 
 	}
 	
 	/**

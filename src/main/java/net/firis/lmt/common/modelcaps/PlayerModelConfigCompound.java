@@ -39,7 +39,7 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 	/**
 	 * Player
 	 */
-	private final EntityPlayer player;
+	public EntityPlayer player;
 	
 	/**
 	 * コンストラクタ
