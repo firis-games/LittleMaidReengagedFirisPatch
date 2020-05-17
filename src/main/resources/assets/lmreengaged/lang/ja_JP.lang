@@ -194,3 +194,6 @@ commands.lmacommand.list.error=「%s」は登録されていません
 
 entity.Villager.MaidBroker=メイド仲介人
 
+item.maid_spawn_egg.name=お手製スポーンエッグ
+item.maid_spawn_egg.info=おいでませメイドさん
+

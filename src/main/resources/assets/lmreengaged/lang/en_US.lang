@@ -197,3 +197,6 @@ commands.lmacommand.list.error=non exists %s
 
 entity.Villager.MaidBroker=Maid Broker
 
+item.maid_spawn_egg.name=Maked Spawn Egg
+item.maid_spawn_egg.info=Spawn LittleMaid
+

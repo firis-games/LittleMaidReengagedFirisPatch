@@ -1,6 +1,0 @@
-{
-	"parent": "item/generated",
-	"textures": {
-		"layer0": "lmreengaged:items/spawn_littlemaid_egg"
-	}
-}

@@ -12,14 +12,20 @@ import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.ReflectionHelper;
 import net.blacklab.lmc.common.item.LMItemMaidCarry;
 import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
+import net.blacklab.lmc.common.item.LMItemMaidSpawnEgg;
 import net.blacklab.lmc.common.item.LMItemMaidSugar;
 import net.blacklab.lmc.common.villager.StructureVillagePiecesMaidBrokerHouse;
 import net.blacklab.lmc.common.villager.VillagerProfessionMaidBroker;
+import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
 import net.blacklab.lmr.entity.maidmodel.api.LMMotionHandler;
+import net.blacklab.lmr.entity.renderfactory.RenderFactoryLittleMaid;
+import net.blacklab.lmr.entity.renderfactory.RenderFactoryMarkerDummy;
+import net.blacklab.lmr.entity.renderfactory.RenderFactoryModelSelect;
 import net.blacklab.lmr.event.EventHookLMRE;
 import net.blacklab.lmr.item.ItemMaidPorter;
 import net.blacklab.lmr.item.ItemMaidSpawnEgg;
@@ -47,6 +53,7 @@ import net.minecraftforge.common.BiomeDictionary;
 //github.com/Verclene/LittleMaidReengaged.git
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -157,6 +164,7 @@ public class LittleMaidReengaged {
     	public final static Item MAID_SOUVENIR = null;
     	public final static Item MAID_CARRY = null;
     	public final static Item MAID_SUGAR = null;
+    	public final static Item MAID_SPAWN_EGG = null;
     	public final static Item PLAYER_MAID_BOOK = null;
     }
     
@@ -457,15 +465,15 @@ public class LittleMaidReengaged {
 	@SubscribeEvent
     protected static void registerItems(RegistryEvent.Register<Item> event) {
 		
-		//メイドさんスポーンエッグ
-		event.getRegistry().register(new ItemMaidSpawnEgg()
-    			.setRegistryName(MODID, "spawn_littlemaid_egg"));
+//		//メイドさんスポーンエッグ
+//		event.getRegistry().register(new ItemMaidSpawnEgg()
+//   			.setRegistryName(MODID, "spawn_littlemaid_egg"));
 		
-		event.getRegistry().register(new ItemTriggerRegisterKey()
-    			.setRegistryName(MODID, "registerkey"));
+//		event.getRegistry().register(new ItemTriggerRegisterKey()
+//    			.setRegistryName(MODID, "registerkey"));
 		
-		event.getRegistry().register(new ItemMaidPorter()
-    			.setRegistryName(MODID, "maidporter"));
+//		event.getRegistry().register(new ItemMaidPorter()
+//   			.setRegistryName(MODID, "maidporter"));
 		
 		//メイドの土産
     	event.getRegistry().register(new LMItemMaidSouvenir()
@@ -482,6 +490,11 @@ public class LittleMaidReengaged {
     			.setRegistryName(MODID, "maid_sugar")
     			.setUnlocalizedName("maid_sugar"));
     	
+		//お手製スポーンエッグ
+		event.getRegistry().register(new LMItemMaidSpawnEgg()
+    			.setRegistryName(MODID, "maid_spawn_egg")
+    			.setUnlocalizedName("maid_spawn_egg"));
+    	
 		//テスト用モジュール登録
 		LMTCore.registerItems(event);
 	}
@@ -490,8 +503,8 @@ public class LittleMaidReengaged {
     @SideOnly(Side.CLIENT)
     protected static void registerModels(ModelRegistryEvent event)
     {
-    	// Register model and renderer
-    	proxy.rendererRegister();
+//		// Register model and renderer
+//		proxy.rendererRegister();
     	
     	// メイドの土産
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_SOUVENIR, 0,
@@ -505,7 +518,19 @@ public class LittleMaidReengaged {
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_SUGAR, 0,
 				new ModelResourceLocation(LMItems.MAID_SUGAR.getRegistryName(), "inventory"));
 		
+    	// スポーンエッグ
+		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_SPAWN_EGG, 0,
+				new ModelResourceLocation(LMItems.MAID_SPAWN_EGG.getRegistryName(), "inventory"));
+
 		LMTCore.registerModels(event);
+		
+		//Entityの描画設定
+		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
+		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());
+		RenderingRegistry.registerEntityRenderingHandler(EntityMarkerDummy.class, new RenderFactoryMarkerDummy());
+		
+		//リトルメイドテスト用モジュール
+		LMTCore.rendererRegister();
 		
     }
     

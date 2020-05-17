@@ -39,6 +39,11 @@ public class VillagerProfessionMaidBroker extends VillagerProfession {
 		VillagerCareerMaidBroker career = new VillagerCareerMaidBroker(this);
 		
 		//レベル1トレード
+		//売サトウキビ
+		career.addTrade(1, 
+				new EntityVillager.ListItemForEmeralds(
+						Items.REEDS,
+						new EntityVillager.PriceInfo(12, 18)));
 		//売メイドシュガー
 		career.addTrade(1, 
 				new EntityVillager.ListItemForEmeralds(
@@ -54,7 +59,7 @@ public class VillagerProfessionMaidBroker extends VillagerProfession {
 		career.addTrade(1, 
 				new ItemAndEmeraldsToItem(Items.CAKE, 
 						new EntityVillager.PriceInfo(1, 1), 
-						LMItems.SPAWN_LITTLEMAID_EGG, 
+						LMItems.MAID_SPAWN_EGG, 
 						new EntityVillager.PriceInfo(1, 1),
 						new EntityVillager.PriceInfo(12, 32)));
 		
