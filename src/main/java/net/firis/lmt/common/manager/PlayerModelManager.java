@@ -2,7 +2,6 @@ package net.firis.lmt.common.manager;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.util.manager.LMTextureBoxManager;
@@ -25,24 +24,24 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 public class PlayerModelManager {
 
 	/**
-	 * 内部保持用
+	 * クライアント側のみ使う用にする
 	 * 
 	 */
-	private static Map<UUID, PlayerModelConfigCompound> modelConfigCompoundMap = new HashMap<>();
+	private static Map<String, PlayerModelConfigCompound> modelConfigCompoundMap = new HashMap<>();
 	
 	/**
 	 * server側で保持するNBTリスト
 	 * 同期のタイミングではインスタンス生成を行わない
 	 * パラメータへの初回アクセスのタイミングで生成する
 	 */
-	protected static Map<UUID, NBTTagCompound> serverModelNbtMap = new HashMap<>();
+	protected static Map<String, NBTTagCompound> serverModelNbtMap = new HashMap<>();
 	
 	/**
 	 * Client側で保持するNBTリスト
 	 * 同期のタイミングではインスタンス生成を行わない
 	 * パラメータへの初回アクセスのタイミングで生成する
 	 */
-	protected static Map<UUID, NBTTagCompound> clientModelNbtMap = new HashMap<>();
+	protected static Map<String, NBTTagCompound> clientModelNbtMap = new HashMap<>();
 	
 	/**
 	 * EntityPlayerに紐づくModelConfigCompoundを取得する
@@ -50,14 +49,17 @@ public class PlayerModelManager {
 	 */
 	public static PlayerModelConfigCompound getModelConfigCompound(EntityPlayer player) {
 		
-		UUID uuid = player.getUniqueID();
+		String key = player.getName();
 		
 		//存在していなければ初期化して作成する
-		if (!modelConfigCompoundMap.containsKey(uuid)) {
-			modelConfigCompoundMap.put(uuid, createModelConfigCompound(player));
+		if (!modelConfigCompoundMap.containsKey(key)) {
+			modelConfigCompoundMap.put(key, createModelConfigCompound(player));
 		}
-		PlayerModelConfigCompound modelConfig = modelConfigCompoundMap.get(uuid);
-		modelConfig.player = player;
+		PlayerModelConfigCompound modelConfig = modelConfigCompoundMap.get(key);
+		
+		//プレイヤーを最新化
+		modelConfig.setPlayer(player);
+		
 		return modelConfig; 
 	}
 	
@@ -76,7 +78,7 @@ public class PlayerModelManager {
 		//変更値をサーバーへ送信
 		NBTTagCompound clientNBT = modelConfig.serializeToNBT(new NBTTagCompound());
 		
-		clientModelNbtMap.put(getClientPlayer().getUniqueID(), clientNBT);
+		clientModelNbtMap.put(getClientPlayer().getName(), clientNBT);
 		
 		//LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_SYNC_CLIENT_LMAVATAR, -1, clientNBT);
 		SyncPlayerModelClient.syncModel();
@@ -90,19 +92,19 @@ public class PlayerModelManager {
 		PlayerModelConfigCompound playerModelConfig = new PlayerModelConfigCompound(player, new PlayerModelCaps(player));
 		playerModelConfig = refreshConfig(playerModelConfig);
 		
-		UUID uuid = player.getUniqueID();
+		String key = player.getName();
 		
 		//Ownerの場合
 		if (player == getClientPlayer()) {
 			//初回はローカル情報優先
 			boolean isSend = false;
-			if (!clientModelNbtMap.containsKey(uuid)) {
+			if (!clientModelNbtMap.containsKey(key)) {
 				//キーがない場合は同期
 				isSend = true;
 			} else {
 				NBTTagCompound clientNBT = playerModelConfig.serializeToNBT(new NBTTagCompound());
-				if (!clientNBT.equals(clientModelNbtMap.get(player.getUniqueID()))) {
-					clientModelNbtMap.put(uuid, clientNBT);
+				if (!clientNBT.equals(clientModelNbtMap.get(key))) {
+					clientModelNbtMap.put(key, clientNBT);
 					isSend = true;
 				}
 			}
@@ -110,9 +112,9 @@ public class PlayerModelManager {
 			if (isSend) {
 				SyncPlayerModelClient.syncModel();
 			}
-		} else if (clientModelNbtMap.containsKey(uuid)) {
+		} else if (clientModelNbtMap.containsKey(key)) {
 			//サーバーから情報が来てる場合は適応する
-			playerModelConfig.deserializeFromNBT(clientModelNbtMap.get(player.getUniqueID()));
+			playerModelConfig.deserializeFromNBT(clientModelNbtMap.get(key));
 		}
 		return playerModelConfig;
 	}
@@ -154,9 +156,6 @@ public class PlayerModelManager {
 	public static void receiveLMAvatarDataFromServer(NBTTagCompound tagCompound) {
 
 //		EntityPlayer ownerPlayer = getClientPlayer();
-		
-		
-		
 		NBTTagList tagList = tagCompound.getTagList("avatar", 10);
 		
 		//サーバーと同期するかの判断用
@@ -166,10 +165,10 @@ public class PlayerModelManager {
 		
 		for (int i = 0; i < tagList.tagCount(); i++) {
 			NBTTagCompound nbt = tagList.getCompoundTagAt(i);
-			UUID uuid = nbt.getUniqueId("uuid");
+			String key = nbt.getString("name");
 			
 			//クライアントのNBTキャッシュへ保存する
-			clientModelNbtMap.put(uuid, nbt);
+			clientModelNbtMap.put(key, nbt);
 			
 			////OwnerPlayerの場合
 			//if (uuid.equals(getClientPlayer().getUniqueID())) {
@@ -182,9 +181,9 @@ public class PlayerModelManager {
 			////その他ユーザーかつインスタンス生成済みの場合
 			//} else
 			//既にオブジェクトが存在する場合は上書きする
-			if (modelConfigCompoundMap.containsKey(uuid)){
+			if (modelConfigCompoundMap.containsKey(key)){
 				//その他のユーザーの場合
-				PlayerModelConfigCompound playerModel = modelConfigCompoundMap.get(uuid);
+				PlayerModelConfigCompound playerModel = modelConfigCompoundMap.get(key);
 				NBTTagCompound playerNbt = playerModel.serializeToNBT(new NBTTagCompound());
 				if (!playerNbt.equals(nbt)) {
 					//サーバーから来た情報が更新されている場合
@@ -211,15 +210,15 @@ public class PlayerModelManager {
 		//サーバーと同期するかの判断用
 		boolean isClientSync = false;
 		
-		UUID uuid = tagCompound.getUniqueId("uuid");
+		String key = tagCompound.getString("name");
 		
-		if (!serverModelNbtMap.containsKey(uuid)) {
-			serverModelNbtMap.put(uuid, tagCompound);
+		if (!serverModelNbtMap.containsKey(key)) {
+			serverModelNbtMap.put(key, tagCompound);
 			isClientSync = true;
 		} else {
-			NBTTagCompound playerNbt = serverModelNbtMap.get(uuid);
+			NBTTagCompound playerNbt = serverModelNbtMap.get(key);
 			if (!playerNbt.equals(tagCompound)) {
-				serverModelNbtMap.put(uuid, tagCompound);
+				serverModelNbtMap.put(key, tagCompound);
 				isClientSync = true;
 			}
 		}
@@ -233,7 +232,7 @@ public class PlayerModelManager {
 			
 			//全クライアントへ送信する
 			//LMRNetwork.sendPacketToAllPlayer(EnumPacketMode.CLIENT_SYNC_SERVER_LMAVATAR, -1, send);
-			SyncPlayerModelServer.syncModel(uuid);
+			SyncPlayerModelServer.syncModel(key);
 		}
 	}
 	
@@ -255,20 +254,22 @@ public class PlayerModelManager {
 	@SubscribeEvent
 	public void onPlayerLoggedInEvent(PlayerLoggedInEvent event) {
 		
+		String playerName = event.player.getName();
+		
 		//ログインのタイミングでサーバー側のNBTを作成する
 		NBTTagCompound modelConfigNbt = PlayerModelConfigCompound.createDefaultNBT(event.player.getUniqueID());
-		PlayerModelManager.serverModelNbtMap.put(event.player.getUniqueID(), modelConfigNbt);
+		serverModelNbtMap.put(playerName, modelConfigNbt);
 
 		//サーバー上で管理しているNBTリストをクライアントへ送る
 		NBTTagCompound send = new NBTTagCompound();
 		NBTTagList tagList = new NBTTagList();
-		for (UUID key : PlayerModelManager.serverModelNbtMap.keySet()) {
-			tagList.appendTag(PlayerModelManager.serverModelNbtMap.get(key));
+		for (String key : serverModelNbtMap.keySet()) {
+			tagList.appendTag(serverModelNbtMap.get(key));
 		}
 		send.setTag("avatar", tagList);
 		
 		//送信
 		//LMRNetwork.sendPacketToPlayer(EnumPacketMode.CLIENT_SYNC_SERVER_LMAVATAR, 0, send, event.player);
-		SyncPlayerModelServer.syncModel(event.player.getUniqueID());
+		SyncPlayerModelServer.syncModel(playerName);
 	}
 }

@@ -45,7 +45,11 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 	/**
 	 * Player
 	 */
-	public EntityPlayer player;
+	private EntityPlayer player;
+	public void setPlayer(EntityPlayer player) {
+		this.player = player;
+		this.entityCaps = new PlayerModelCaps(player);
+	}
 	
 	/**
 	 * コンストラクタ
@@ -142,6 +146,7 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 		
 		//必要な情報のみNBT化
 		nbt.setUniqueId("uuid", this.player.getUniqueID());
+		nbt.setString("name", this.player.getName());
 		nbt.setString("maid", maid);
 		nbt.setInteger("color", this.color);
 		nbt.setString("head", armorHead);

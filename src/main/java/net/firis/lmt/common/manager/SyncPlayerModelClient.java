@@ -3,7 +3,6 @@ package net.firis.lmt.common.manager;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.UUID;
 
 import net.blacklab.lmr.network.LMRMessage.EnumPacketMode;
 import net.blacklab.lmr.network.LMRNetwork;
@@ -24,13 +23,13 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
  */
 public class SyncPlayerModelClient {
 
-	private final static Set<UUID> syncPacketQueue = new HashSet<>();
+	private final static Set<String> syncPacketQueue = new HashSet<>();
 	
 	/**
 	 * モデルの同期を行う
 	 */
 	public static void syncModel() {
-		syncPacketQueue.add(Minecraft.getMinecraft().player.getUniqueID());
+		syncPacketQueue.add(Minecraft.getMinecraft().player.getName());
 	}
 	
 	/**
@@ -50,7 +49,7 @@ public class SyncPlayerModelClient {
 	 */
 	protected void onClientTickEventPost(ClientTickEvent event) {
 		
-		Iterator<UUID> syncPacketIterator = syncPacketQueue.iterator();
+		Iterator<String> syncPacketIterator = syncPacketQueue.iterator();
 		
 		NBTTagCompound tagCompound = null;
 		
@@ -72,11 +71,11 @@ public class SyncPlayerModelClient {
 	 * @param tagCompound
 	 * @return
 	 */
-	protected NBTTagCompound getAvatarModelNbt(UUID uuid) {
-		if (!PlayerModelManager.clientModelNbtMap.containsKey(uuid)) {
+	protected NBTTagCompound getAvatarModelNbt(String key) {
+		if (!PlayerModelManager.clientModelNbtMap.containsKey(key)) {
 			return null;
 		}
-		NBTTagCompound tagCompound = PlayerModelManager.clientModelNbtMap.get(uuid);
+		NBTTagCompound tagCompound = PlayerModelManager.clientModelNbtMap.get(key);
 		return tagCompound;
 	}
 	
