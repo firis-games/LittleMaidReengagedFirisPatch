@@ -3,9 +3,12 @@ package net.firis.lmt.common.modelcaps;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompoundBase;
 import net.blacklab.lmr.util.IModelCapsData;
 import net.blacklab.lmr.util.manager.LMTextureBoxManager;
+import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * PlayerAvatar用パラメータクラス
@@ -173,5 +176,62 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 		//モーション系
 		this.lmAvatarAction = nbt.getBoolean("action");
 		
+	}
+	
+	/**
+	 * インナー防具テクスチャ
+	 */
+	@Override
+	public ResourceLocation getTextureInnerArmor(EntityEquipmentSlot slot) {
+		
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		
+		if (armorBox == null) return null;
+		
+		ItemStack stack = player.inventory.armorItemInSlot(slot.getIndex());
+		return armorBox.getTextureInnerArmor(stack);
+		
+	}
+	
+	/**
+	 * インナー発光防具テクスチャ
+	 */
+	@Override
+	public ResourceLocation getLightTextureInnerArmor(EntityEquipmentSlot slot) {
+		
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		
+		if (armorBox == null) return null;
+		
+		ItemStack stack = player.inventory.armorItemInSlot(slot.getIndex());
+		return armorBox.getLightTextureInnerArmor(stack);
+	}
+	
+	/**
+	 * アウター防具テクスチャ
+	 */
+	@Override
+	public ResourceLocation getTextureOuterArmor(EntityEquipmentSlot slot) {
+		
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		
+		if (armorBox == null) return null;
+		
+		ItemStack stack = player.inventory.armorItemInSlot(slot.getIndex());
+		return armorBox.getTextureOuterArmor(stack);
+	}
+	
+	/**
+	 * アウター発光防具テクスチャ
+	 */
+	@Override
+	public ResourceLocation getLightTextureOuterArmor(EntityEquipmentSlot slot) {
+		
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		
+		if (armorBox == null) return null;
+		
+		ItemStack stack = player.inventory.armorItemInSlot(slot.getIndex());
+		return armorBox.getLightTextureOuterArmor(stack);
 	}
 }
