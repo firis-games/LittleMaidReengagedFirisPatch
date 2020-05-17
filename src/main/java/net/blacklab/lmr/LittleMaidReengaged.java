@@ -45,6 +45,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -69,10 +70,12 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 @Mod(
 		modid = LittleMaidReengaged.MODID,
@@ -371,7 +374,9 @@ public class LittleMaidReengaged {
 		PluginManager.initRegisterPlugin(event);
 		
 		//村人構造物の初期化処理
-		StructureVillagePiecesMaidBrokerHouse.init();
+		if (LMRConfig.cfg_general_villager_maid_broker) {
+			StructureVillagePiecesMaidBrokerHouse.init();
+		}
 	}
 
 	// public static ProxyClient.CountThread countThread;
@@ -459,7 +464,13 @@ public class LittleMaidReengaged {
 
 		// IFFのロード
 		IFF.loadIFFs();
-
+		
+		//お手製スポーンエッグのレシピ削除
+		if (!LMRConfig.cfg_general_recipe_maid_spawn_egg) {
+			((IForgeRegistryModifiable<IRecipe>) ForgeRegistries.RECIPES)
+				.remove(new ResourceLocation(LittleMaidReengaged.MODID, "lmreengaged_recipe_0"));
+			logger.info("delete recipe lmreengaged:maid_spawn_egg");
+		}
 	}
 	
 	
@@ -599,8 +610,11 @@ public class LittleMaidReengaged {
 	 */
     @SubscribeEvent
     public static void registerVillagerProfession(RegistryEvent.Register<VillagerProfession> event) {
+    	
     	//メイド仲介人を登録
-    	event.getRegistry().register(new VillagerProfessionMaidBroker());
+    	if (LMRConfig.cfg_general_villager_maid_broker) {
+    		event.getRegistry().register(new VillagerProfessionMaidBroker());
+    	}
     }
 
 }

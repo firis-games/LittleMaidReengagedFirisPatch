@@ -107,6 +107,12 @@ public class LMRConfig {
 	/** LittleMaidAvatarに登録するLayer設定 */
 	public static List<String> cfg_lmavatar_include_layer = null;
 	
+	/** メイドスポーンエッグのレシピ */
+	public static boolean cfg_general_recipe_maid_spawn_egg = true;
+	
+	/** 仲介人村人 */
+	public static boolean cfg_general_villager_maid_broker = true;
+	
 	/** 試験機能 ******************************/
 	/** 水上歩行術 */
 	public static boolean cfg_test_water_walking  = true;
@@ -121,6 +127,7 @@ public class LMRConfig {
 		cfg.load();
 		
 		//各設定の初期化
+		initGeneral(cfg);
 		initLittleMaid(cfg);
 		initJob(cfg);
 		initSpawn(cfg);
@@ -159,6 +166,14 @@ public class LMRConfig {
 		
 		//グループコメント
 		cfg.addCustomCategoryComment(GROUP_GENERAL, "Modに含まれる各機能の設定ができます。");
+		
+		//レシピ
+		cfg_general_recipe_maid_spawn_egg = cfg.getBoolean("Recipe.SpawnEgg", GROUP_GENERAL, true,
+				"お手製スポーンエッグのレシピを有効化できます。");
+		
+		//村人追加
+		cfg_general_villager_maid_broker = cfg.getBoolean("Villager.MaidBroker", GROUP_GENERAL, true,
+				"仲介人村人を有効化できます。");
 		
 	}
 	
