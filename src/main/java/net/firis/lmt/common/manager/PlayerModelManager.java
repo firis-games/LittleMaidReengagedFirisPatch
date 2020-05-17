@@ -84,8 +84,35 @@ public class PlayerModelManager {
 	 * 設定から作成する
 	 */
 	private static PlayerModelConfigCompound createModelConfigCompound(EntityPlayer player) {
+		
 		PlayerModelConfigCompound playerModelConfig = new PlayerModelConfigCompound(player, new PlayerModelCaps(player));
-		return refreshConfig(playerModelConfig);
+		playerModelConfig = refreshConfig(playerModelConfig);
+		
+		UUID uuid = player.getUniqueID();
+		
+		//Ownerの場合
+		if (player == getClientPlayer()) {
+			//初回はローカル情報優先
+			boolean isSend = false;
+			if (!clientModelNbtMap.containsKey(uuid)) {
+				//キーがない場合は同期
+				isSend = true;
+			} else {
+				NBTTagCompound clientNBT = playerModelConfig.serializeToNBT(new NBTTagCompound());
+				if (!clientNBT.equals(clientModelNbtMap.get(player.getUniqueID()))) {
+					clientModelNbtMap.put(uuid, clientNBT);
+					isSend = true;
+				}
+			}
+			//同期する
+			if (isSend) {
+				SyncPlayerModelClient.syncModel();
+			}
+		} else if (clientModelNbtMap.containsKey(uuid)) {
+			//サーバーから情報が来てる場合は適応する
+			playerModelConfig.deserializeFromNBT(clientModelNbtMap.get(player.getUniqueID()));
+		}
+		return playerModelConfig;
 	}
 	
 	/**
@@ -120,17 +147,20 @@ public class PlayerModelManager {
 	 * 呼ばれるパターン
 	 *　・ログイン時
 	 *　・クライアント側でLMアバター切り替えたタイミング
+	 *　・このタイミングではクライアントのPlayerが生成されていない可能性があるので何もしない
 	 */
 	public static void receiveLMAvatarDataFromServer(NBTTagCompound tagCompound) {
 
-		EntityPlayer ownerPlayer = getClientPlayer();
+//		EntityPlayer ownerPlayer = getClientPlayer();
+		
+		
 		
 		NBTTagList tagList = tagCompound.getTagList("avatar", 10);
 		
 		//サーバーと同期するかの判断用
-		boolean isServerSync = false;
-		PlayerModelConfigCompound modelConfig = getModelConfigCompound(ownerPlayer);
-		NBTTagCompound clientNBT = modelConfig.serializeToNBT(new NBTTagCompound());
+//		boolean isServerSync = false;
+//		PlayerModelConfigCompound modelConfig = getModelConfigCompound(ownerPlayer);
+//		NBTTagCompound clientNBT = modelConfig.serializeToNBT(new NBTTagCompound());
 		
 		for (int i = 0; i < tagList.tagCount(); i++) {
 			NBTTagCompound nbt = tagList.getCompoundTagAt(i);
@@ -139,16 +169,17 @@ public class PlayerModelManager {
 			//クライアントのNBTキャッシュへ保存する
 			clientModelNbtMap.put(uuid, nbt);
 			
-			//OwnerPlayerの場合
-			if (uuid.equals(getClientPlayer().getUniqueID())) {
-				//サーバーのデフォルトと差異がある場合は同期する
-				//差異がある場合はクライアントを優先する
-				if (!clientNBT.equals(nbt)) {
-					clientModelNbtMap.put(uuid, clientNBT);
-					isServerSync = true;
-				}
-			//その他ユーザーかつインスタンス生成済みの場合
-			} else if (modelConfigCompoundMap.containsKey(uuid)){
+			////OwnerPlayerの場合
+			//if (uuid.equals(getClientPlayer().getUniqueID())) {
+			//	//サーバーのデフォルトと差異がある場合は同期する
+			//	//差異がある場合はクライアントを優先する
+			//	if (!clientNBT.equals(nbt)) {
+			//		clientModelNbtMap.put(uuid, clientNBT);
+			//		isServerSync = true;
+			//	}
+			////その他ユーザーかつインスタンス生成済みの場合
+			//} else
+			if (modelConfigCompoundMap.containsKey(uuid)){
 				//その他のユーザーの場合
 				PlayerModelConfigCompound playerModel = modelConfigCompoundMap.get(uuid);
 				NBTTagCompound playerNbt = playerModel.serializeToNBT(new NBTTagCompound());
@@ -159,11 +190,11 @@ public class PlayerModelManager {
 			}
 		}
 		
-		if (isServerSync) {
-			//サーバー側へ再送信
-			//LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_SYNC_CLIENT_LMAVATAR, -1, clientNBT);
-			SyncPlayerModelClient.syncModel();
-		}
+//		if (isServerSync) {
+//			//サーバー側へ再送信
+//			//LMRNetwork.sendPacketToServer(EnumPacketMode.SERVER_SYNC_CLIENT_LMAVATAR, -1, clientNBT);
+//			SyncPlayerModelClient.syncModel();
+//		}
 	}
 	
 	/**
