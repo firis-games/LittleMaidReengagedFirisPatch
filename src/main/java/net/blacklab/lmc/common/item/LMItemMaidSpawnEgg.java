@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,16 +28,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * メイドさん用のスポーンエッグ
  * 
- * スポーンエッグのスポーン処理を利用する方式
  * @author firis-games
+ * 
+ * スポーンエッグのスポーン処理を利用する方式
+ * 契約書と共通処理
  *
  */
 public class LMItemMaidSpawnEgg extends Item {
 
 	private static ResourceLocation rlLittleMaid = new ResourceLocation(LittleMaidReengaged.MODID, "littlemaid");
 	
-	public LMItemMaidSpawnEgg() {
+	private boolean isContract = false;
+	
+	public LMItemMaidSpawnEgg(boolean isContract) {
+		
 		this.setCreativeTab(CreativeTabs.MISC);
+		
+		this.isContract = isContract;
+		
 	}
 	
 	 /**
@@ -68,6 +77,11 @@ public class LMItemMaidSpawnEgg extends Item {
 			if (!player.capabilities.isCreativeMode) {
 				itemstack.shrink(1);
 			}
+			
+			//契約処理
+			if (this.isContract && entity instanceof EntityLittleMaid) {
+				this.setContractLittleMaid(player, (EntityLittleMaid) entity);
+			}
 		}
 		return EnumActionResult.SUCCESS;
 	}
@@ -76,7 +90,27 @@ public class LMItemMaidSpawnEgg extends Item {
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-		tooltip.add(TextFormatting.LIGHT_PURPLE + I18n.format("item.maid_spawn_egg.info"));
+		if (!isContract) {
+			tooltip.add(TextFormatting.LIGHT_PURPLE + I18n.format("item.maid_spawn_egg.info"));
+		} else {
+			tooltip.add(TextFormatting.LIGHT_PURPLE + I18n.format("item.maid_contract.info"));
+		}
     }
+	
+	/**
+	 * メイドさんの契約処理
+	 * @param player
+	 * @param maid
+	 */
+	protected void setContractLittleMaid(EntityPlayer player, EntityLittleMaid maid) {
+		
+		//メイドさんと契約
+		maid.setFirstContract(player);
+		
+		//ハートパーティクルと音設定
+		player.world.setEntityState(maid, (byte)7);
+		maid.playSound("entity.item.pickup");
+		
+	}
 	
 }

@@ -196,4 +196,6 @@ entity.Villager.MaidBroker=メイド仲介人
 
 item.maid_spawn_egg.name=お手製スポーンエッグ
 item.maid_spawn_egg.info=おいでませメイドさん
+item.maid_contract.name=メイドさんの契約書
+item.maid_contract.info=村人からのお仕事紹介
 

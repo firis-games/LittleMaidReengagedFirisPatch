@@ -199,4 +199,6 @@ entity.Villager.MaidBroker=Maid Broker
 
 item.maid_spawn_egg.name=Maked Spawn Egg
 item.maid_spawn_egg.info=Spawn LittleMaid
+item.maid_contract.name=Maid Contract
+item.maid_contract.info=purchase from villager
 

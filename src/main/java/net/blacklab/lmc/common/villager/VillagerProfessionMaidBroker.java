@@ -55,11 +55,11 @@ public class VillagerProfessionMaidBroker extends VillagerProfession {
 						Items.CAKE, 
 						new EntityVillager.PriceInfo(2, 3)));
 		
-		//売スポーンエッグ
+		//売契約書
 		career.addTrade(1, 
 				new ItemAndEmeraldsToItem(Items.CAKE, 
 						new EntityVillager.PriceInfo(1, 1), 
-						LMItems.MAID_SPAWN_EGG, 
+						LMItems.MAID_CONTRACT, 
 						new EntityVillager.PriceInfo(1, 1),
 						new EntityVillager.PriceInfo(12, 32)));
 		

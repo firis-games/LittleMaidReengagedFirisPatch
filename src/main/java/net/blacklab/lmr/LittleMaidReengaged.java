@@ -157,7 +157,7 @@ public class LittleMaidReengaged {
      * アイテムインスタンス保持用
      */
     @ObjectHolder(LittleMaidReengaged.MODID)
-    public static class LMItems{
+    public static class LMItems {
     	public final static ItemMaidSpawnEgg SPAWN_LITTLEMAID_EGG = null;
     	public final static ItemTriggerRegisterKey REGISTERKEY = null;
     	public final static ItemMaidPorter MAIDPORTER = null;
@@ -165,6 +165,7 @@ public class LittleMaidReengaged {
     	public final static Item MAID_CARRY = null;
     	public final static Item MAID_SUGAR = null;
     	public final static Item MAID_SPAWN_EGG = null;
+    	public final static Item MAID_CONTRACT = null;
     	public final static Item PLAYER_MAID_BOOK = null;
     }
     
@@ -491,9 +492,14 @@ public class LittleMaidReengaged {
     			.setUnlocalizedName("maid_sugar"));
     	
 		//お手製スポーンエッグ
-		event.getRegistry().register(new LMItemMaidSpawnEgg()
+		event.getRegistry().register(new LMItemMaidSpawnEgg(false)
     			.setRegistryName(MODID, "maid_spawn_egg")
     			.setUnlocalizedName("maid_spawn_egg"));
+		
+		//メイドさんの契約書
+		event.getRegistry().register(new LMItemMaidSpawnEgg(true)
+    			.setRegistryName(MODID, "maid_contract")
+    			.setUnlocalizedName("maid_contract"));
     	
 		//テスト用モジュール登録
 		LMTCore.registerItems(event);
@@ -518,9 +524,13 @@ public class LittleMaidReengaged {
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_SUGAR, 0,
 				new ModelResourceLocation(LMItems.MAID_SUGAR.getRegistryName(), "inventory"));
 		
-    	// スポーンエッグ
+    	// お手製スポーンエッグ
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_SPAWN_EGG, 0,
 				new ModelResourceLocation(LMItems.MAID_SPAWN_EGG.getRegistryName(), "inventory"));
+
+    	// メイドさんの契約書
+		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_CONTRACT, 0,
+				new ModelResourceLocation(LMItems.MAID_CONTRACT.getRegistryName(), "inventory"));
 
 		LMTCore.registerModels(event);
 		
