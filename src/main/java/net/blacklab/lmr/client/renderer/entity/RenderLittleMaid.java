@@ -5,6 +5,8 @@ import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldChestLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldItemLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
+import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,6 +35,27 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 		
 		//Layer登録用イベント
 		MinecraftForge.EVENT_BUS.post(new ClientEventLMRE.RendererLittleMaidAddLayerEvent(this));
+	}
+	
+	/**
+	 * マルチモデルの描画パラメータの初期化処理
+	 * @param entity
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param entityYaw
+	 * @param partialTicks
+	 */
+	@Override
+	public void setModelValues(EntityLittleMaid entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		
+		//モデルパラメータ取得
+		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
+		ModelConfigCompound modelConfigCompound = modelEntity.getModelConfigCompound();
+		
+		//パラメータの初期化
+		modelMain.initModelParameter(modelConfigCompound, entityYaw, partialTicks);
+		
 	}
 	
 //	@Override
