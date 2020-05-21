@@ -324,6 +324,8 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 	 * @return
 	 */
 	public boolean isUpdateSize() {
-		return false;
+		Boolean isUpdateSize = (Boolean) this.getCapsValue(IModelCaps.caps_isUpdateSize);
+		if (isUpdateSize == null) return false;
+		return isUpdateSize;
 	}
 }
