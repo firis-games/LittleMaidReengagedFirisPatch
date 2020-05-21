@@ -5135,6 +5135,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			//onSpawnWild();
 		}
 		
+		//モデルの更新
+		this.refreshModels();
+		
 		return ret;
 		
 	}
