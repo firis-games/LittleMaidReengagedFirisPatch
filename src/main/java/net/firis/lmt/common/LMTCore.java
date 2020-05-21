@@ -8,6 +8,7 @@ import net.blacklab.lmr.config.LMRConfig;
 import net.firis.lmt.client.event.KeyBindingHandler;
 import net.firis.lmt.client.event.LittleMaidAvatarClientTickEventHandler;
 import net.firis.lmt.client.renderer.RendererLMAvatar;
+import net.firis.lmt.client.renderer.RendererLMVillager;
 import net.firis.lmt.common.command.LMAvatarCommand;
 import net.firis.lmt.common.item.LMItemPlayerMaidBook;
 import net.firis.lmt.common.manager.PlayerModelManager;
@@ -18,8 +19,11 @@ import net.firis.lmt.config.FirisConfig;
 import net.firis.lmt.config.custom.JConfigLMAvatarManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -97,12 +101,17 @@ public class LMTCore {
 		if (!isLMTCore()) return;
 
 		////テスト用処理
-		////にわとりのrenderを独自renderへ差し替え
-		//Map<Class<? extends Entity>, Render<? extends Entity>> entityMap = Minecraft.getMinecraft().getRenderManager().entityRenderMap;
-		//Render<?> renderer = entityMap.get(EntityChicken.class);
-		
-		//entityMap.put(EntityChicken.class, new RendererMaidChicken((RenderChicken) renderer));
-		
+		if (LMRConfig.cfg_developer_test_module) {
+			////にわとりのrenderを独自renderへ差し替え
+			Map<Class<? extends Entity>, Render<? extends Entity>> entityMap = Minecraft.getMinecraft().getRenderManager().entityRenderMap;
+			////にわとりのRenderの差し替え
+			//Render<?> renderer = entityMap.get(EntityChicken.class);
+			//entityMap.put(EntityChicken.class, new RendererMaidChicken((RenderChicken) renderer));
+			
+			//村人のRenderの差し替え
+			Render<?> renderVillager = entityMap.get(EntityVillager.class);
+			entityMap.put(EntityVillager.class, new RendererLMVillager(renderVillager.getRenderManager()));
+		}
 		
 		//Playerのスキン差し替え
 		//Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().skinMap;
