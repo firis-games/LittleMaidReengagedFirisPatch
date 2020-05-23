@@ -1,8 +1,5 @@
 package net.blacklab.lmr.entity.maidmodel.base;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
 import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -34,6 +31,7 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 	/**
 	 * モデルが持っている機能群
 	 */
+/*
 	@SuppressWarnings("serial")
 	private final Map<String, Integer> fcapsmap = new HashMap<String, Integer>() {{
 		put("onGround",			caps_onGround);
@@ -48,7 +46,7 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 		put("entityIdFactor",	caps_entityIdFactor);
 		put("dominantArm",	caps_dominantArm);
 	}};
-
+*/
 
 
 	public ModelMultiBase() {
@@ -197,11 +195,10 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 
 
 	// IModelCaps
-
-	@Override
-	public Map<String, Integer> getModelCaps() {
-		return fcapsmap;
-	}
+//	@Override
+//	public Map<String, Integer> getModelCaps() {
+//		return fcapsmap;
+//	}
 
 	@Override
 	public Object getCapsValue(int pIndex, Object ...pArg) {

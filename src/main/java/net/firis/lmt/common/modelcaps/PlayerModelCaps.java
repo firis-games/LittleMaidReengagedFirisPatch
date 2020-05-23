@@ -2,7 +2,6 @@ package net.firis.lmt.common.modelcaps;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
@@ -33,11 +32,11 @@ public class PlayerModelCaps implements IModelCapsData {
 		this.owner = player;
 	}
 	
-	@Deprecated
-	@Override
-	public Map<String, Integer> getModelCaps() {
-		return null;
-	}
+//	@Deprecated
+//	@Override
+//	public Map<String, Integer> getModelCaps() {
+//		return null;
+//	}
 
 	/**
 	 * set処理は利用しない

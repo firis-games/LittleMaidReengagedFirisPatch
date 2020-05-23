@@ -1,8 +1,5 @@
 package net.blacklab.lmr.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
@@ -18,8 +15,8 @@ import net.minecraft.util.EnumHandSide;
 public class ModelCapsLittleMaid extends ModelCapsData {
 
 	private EntityLittleMaid owner;
-	private static Map<String, Integer> caps;
-
+//	private static Map<String, Integer> caps;
+/*
 	static {
 		caps = new HashMap<String, Integer>();
 		caps.putAll(getStaticModelCaps());
@@ -65,16 +62,17 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 		caps.put("currentArmor", caps_currentArmor);
 		caps.put("currentEquippedItem", caps_currentEquippedItem);
 	}
+*/
 
 	public ModelCapsLittleMaid(EntityLittleMaid pOwner) {
 		super(pOwner);
 		owner = pOwner;
 	}
 
-	@Override
-	public Map<String, Integer> getModelCaps() {
-		return caps;
-	}
+//	@Override
+//	public Map<String, Integer> getModelCaps() {
+//		return caps;
+//	}
 
 	@Override
 	public Object getCapsValue(int pIndex, Object ...pArg) {
@@ -194,8 +192,8 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 			return getItemStackNull(owner.getCurrentEquippedItem());
 //		case caps_PartsVisible:
 //			return owner.getModelConfigCompound().selectValue;
-		case caps_textureData:
-			return owner.getModelConfigCompound();
+//		case caps_textureData:
+//			return owner.getModelConfigCompound();
 		case caps_currentRightHandItem:
 			return getItemStackNull(getHandSideItemStack(EnumHandSide.RIGHT));
 		case caps_currentLeftHandItem:

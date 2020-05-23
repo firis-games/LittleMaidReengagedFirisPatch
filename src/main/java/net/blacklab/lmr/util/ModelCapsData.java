@@ -1,8 +1,6 @@
 package net.blacklab.lmr.util;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
@@ -24,8 +22,9 @@ import net.minecraft.util.math.MathHelper;
 public abstract class ModelCapsData implements IModelCapsData {
 
 	protected EntityLivingBase owner;
-	private static Map<String, Integer> caps;
-
+	
+	//private static Map<String, Integer> caps;
+	/*
 	static {
 		caps = new HashMap<String, Integer>();
 		caps.put("Entity", caps_Entity);
@@ -73,22 +72,21 @@ public abstract class ModelCapsData implements IModelCapsData {
 		caps.put("prevRotationPitch", caps_prevRotationPitch);
 		caps.put("renderYawOffset", caps_renderYawOffset);
 		caps.put("TextureEntity", caps_TextureEntity);
-
-
 	}
+	*/
 
-	public static Map<String, Integer> getStaticModelCaps() {
-		return caps;
-	}
+//	public static Map<String, Integer> getStaticModelCaps() {
+//		return caps;
+//	}
 
 	public ModelCapsData(EntityLivingBase pOwner) {
 		owner = pOwner;
 	}
 
-	@Override
-	public Map<String, Integer> getModelCaps() {
-		return caps;
-	}
+//	@Override
+//	public Map<String, Integer> getModelCaps() {
+//		return caps;
+//	}
 
 	@Override
 	public Object getCapsValue(int pIndex, Object... pArg) {

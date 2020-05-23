@@ -9,9 +9,9 @@ public class ModelCapsHelper {
 		return pOwner == null ? null : pOwner.getCapsValue(pCapsIndex, pArg);
 	}
 
-	public static Object getCapsValue(IModelCaps pOwner, String pCapsName, Object ...pArg) {
-		return pOwner == null ? null : pOwner.getCapsValue(pOwner.getModelCaps().get(pCapsName), pArg);
-	}
+//	public static Object getCapsValue(IModelCaps pOwner, String pCapsName, Object ...pArg) {
+//		return pOwner == null ? null : pOwner.getCapsValue(pOwner.getModelCaps().get(pCapsName), pArg);
+//	}
 
 	public static int getCapsValueInt(IModelCaps pOwner, int pIndex, Object ...pArg) {
 		if (pOwner == null) return 0;
@@ -37,8 +37,8 @@ public class ModelCapsHelper {
 		return lb == null ? false : lb;
 	}
 
-	public static boolean setCapsValue(IModelCaps pOwner, String pCapsName, Object... pArg) {
-		return pOwner == null ? false : pOwner.setCapsValue(pOwner.getModelCaps().get(pCapsName), pArg);
-	}
+//	public static boolean setCapsValue(IModelCaps pOwner, String pCapsName, Object... pArg) {
+//		return pOwner == null ? false : pOwner.setCapsValue(pOwner.getModelCaps().get(pCapsName), pArg);
+//	}
 
 }

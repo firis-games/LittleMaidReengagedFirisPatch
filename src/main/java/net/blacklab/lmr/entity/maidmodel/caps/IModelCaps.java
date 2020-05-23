@@ -1,7 +1,5 @@
 package net.blacklab.lmr.entity.maidmodel.caps;
 
-import java.util.Map;
-
 /**
  * モデル共通化用インターフェース。
  * 形式指定の値読み出しはModelCapsHelperを使うこと。
@@ -150,14 +148,15 @@ public interface IModelCaps {
 //	public static final int caps_Actors			= 0x0203;
 //	public static final int caps_PartsStrings	= 0x0204;
 
-	// test
-	/** モデルが変更された時に実行される関数へリンクします **/
-	public static final int caps_changeModel		= 0x0300;
-	public static final int caps_renderFace			= 0x0310;
-	public static final int caps_renderBody			= 0x0311;
-	public static final int caps_setFaceTexture		= 0x0312;
-	/** TextureDataのインスタンスを返します。 **/
-	public static final int caps_textureData		= 0x0313;
+//	// test
+//	/** モデルが変更された時に実行される関数へリンクします **/
+//	public static final int caps_changeModel		= 0x0300;
+//	public static final int caps_renderFace			= 0x0310;
+//	public static final int caps_renderBody			= 0x0311;
+//	public static final int caps_setFaceTexture		= 0x0312;
+//	/** TextureDataのインスタンスを返します。 **/
+//	public static final int caps_textureData		= 0x0313;
+	
 	/** 発光テクスチャの色補正 */
 	public static final int caps_textureLightColor	= 0x0314;
 
@@ -170,7 +169,7 @@ public interface IModelCaps {
 	 * モデルが実装している機能をリストに入れて返す。
 	 * @return
 	 */
-	public Map<String, Integer> getModelCaps();
+//	public Map<String, Integer> getModelCaps();
 
 	/**
 	 * 現在の設定値を読み取る。
