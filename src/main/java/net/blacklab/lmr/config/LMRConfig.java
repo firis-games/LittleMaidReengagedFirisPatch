@@ -113,6 +113,9 @@ public class LMRConfig {
 	/** 仲介人村人 */
 	public static boolean cfg_general_villager_maid_broker = true;
 	
+	/** 村人の交換レート */
+	public static int cfg_general_villager_trade_rate = 1;
+	
 	/** 試験機能 ******************************/
 	/** 水上歩行術 */
 	public static boolean cfg_test_water_walking  = true;
@@ -174,6 +177,10 @@ public class LMRConfig {
 		//村人追加
 		cfg_general_villager_maid_broker = cfg.getBoolean("Villager.MaidBroker", GROUP_GENERAL, true,
 				"仲介人村人を有効化できます。");
+		
+		//トレードレート
+		cfg_general_villager_trade_rate = cfg.getInt("Villager.MaidContractTradeRate", GROUP_GENERAL, 2, 1, 3,
+				"メイドさんの契約書の取引レートを変更します。1:easy[4-12], 2:normal[8-32] 3:hard[24-64]");
 		
 	}
 	

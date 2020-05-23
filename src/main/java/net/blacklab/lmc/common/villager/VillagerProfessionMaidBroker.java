@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.LittleMaidReengaged.LMItems;
+import net.blacklab.lmr.config.LMRConfig;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityVillager.PriceInfo;
@@ -44,33 +45,56 @@ public class VillagerProfessionMaidBroker extends VillagerProfession {
 				new EntityVillager.ListItemForEmeralds(
 						Items.REEDS,
 						new EntityVillager.PriceInfo(12, 18)));
-		//売メイドシュガー
-		career.addTrade(1, 
-				new EntityVillager.ListItemForEmeralds(
-						LMItems.MAID_SUGAR, 
-						new EntityVillager.PriceInfo(6, 12)));
-		//売ケーキ
-		career.addTrade(1, 
-				new EntityVillager.ListItemForEmeralds(
-						Items.CAKE, 
-						new EntityVillager.PriceInfo(2, 3)));
-		
-		//売契約書
-		career.addTrade(1, 
-				new ItemAndEmeraldsToItem(Items.CAKE, 
-						new EntityVillager.PriceInfo(1, 1), 
-						LMItems.MAID_CONTRACT, 
-						new EntityVillager.PriceInfo(1, 1),
-						new EntityVillager.PriceInfo(12, 32)));
-		
-		//買取ケーキ
-		career.addTrade(1,
-				new EntityVillager.EmeraldForItems(Items.CAKE, 
-						new EntityVillager.PriceInfo(1, 1)));
 		//買取砂糖
 		career.addTrade(1,
 				new EntityVillager.EmeraldForItems(Items.SUGAR, 
 						new EntityVillager.PriceInfo(20, 30)));
+		
+		//売ケーキ
+		career.addTrade(2, 
+				new EntityVillager.ListItemForEmeralds(
+						Items.CAKE, 
+						new EntityVillager.PriceInfo(2, 3)));
+		
+		//レベル2トレード
+		//買取ケーキ
+		career.addTrade(2,
+				new EntityVillager.EmeraldForItems(Items.CAKE, 
+						new EntityVillager.PriceInfo(1, 1)));
+		
+		int contractRateMin = 16;
+		int contractRateMax = 32;
+		if (LMRConfig.cfg_general_villager_trade_rate == 1) {
+			contractRateMin = 4;
+			contractRateMax = 12;
+		}
+		if (LMRConfig.cfg_general_villager_trade_rate == 3) {
+			contractRateMin = 24;
+			contractRateMax = 64;
+		}
+		
+		//レベル3トレード
+		//売契約書
+		career.addTrade(3, 
+				new ItemAndEmeraldsToItem(Items.CAKE, 
+						new EntityVillager.PriceInfo(1, 1), 
+						LMItems.MAID_CONTRACT, 
+						new EntityVillager.PriceInfo(1, 1),
+						new EntityVillager.PriceInfo(contractRateMin, contractRateMax)));
+		
+		//レベル4トレード
+		//売メイドシュガー
+		career.addTrade(4, 
+				new EntityVillager.ListItemForEmeralds(
+						LMItems.MAID_SUGAR, 
+						new EntityVillager.PriceInfo(6, 12)));
+		
+		//売りメイドキャリー
+		career.addTrade(4, 
+				new EntityVillager.ListItemForEmeralds(
+						LMItems.MAID_CARRY, 
+						new EntityVillager.PriceInfo(6, 12)));
+		
 	}
 	
 	/**
