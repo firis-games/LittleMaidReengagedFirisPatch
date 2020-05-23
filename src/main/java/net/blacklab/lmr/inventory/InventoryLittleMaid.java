@@ -445,12 +445,14 @@ public class InventoryLittleMaid extends InventoryPlayer {
 	public int getSmeltingItem() {
 		// 調理可能アイテムを返す
 		for (int i = 0; i < entityLittleMaid.maidInventory.getSizeInventory(); i++) {
-			if (isItemSmelting(i) && i != getCurrentItemIndex()) {
-				ItemStack mi = mainInventory.get(i);
-				if (mi.getMaxDamage() > 0 && mi.getItemDamage() == 0) {
-					// 修復レシピ対策
-					continue;
-				}
+			// 防具スロットは除外する
+			if (i < maxInventorySize && isItemSmelting(i) && i != getCurrentItemIndex()) {
+				//耐久もちアイテムは除外
+//				ItemStack mi = this.getStackInSlot(i);
+//				if (mi.getMaxDamage() > 0 && mi.getItemDamage() == 0) {
+//					// 修復レシピ対策
+//					continue;
+//				}
 				// レシピ対応品
 				return i;
 			}
