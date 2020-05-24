@@ -3,6 +3,7 @@ package net.blacklab.lmc.common.event;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.LittleMaidHelper;
 import net.blacklab.lmc.common.item.LMItemMaidSugar;
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber
+@EventBusSubscriber(modid=LittleMaidReengaged.MODID)
 public class LivingDeathEventHandler {
 
 	/**

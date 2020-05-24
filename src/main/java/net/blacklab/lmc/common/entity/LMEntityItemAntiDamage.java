@@ -1,5 +1,6 @@
 package net.blacklab.lmc.common.entity;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -13,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @author computer
  *
  */
-@EventBusSubscriber
+@EventBusSubscriber(modid=LittleMaidReengaged.MODID)
 public class LMEntityItemAntiDamage extends EntityItem {
 
 	public LMEntityItemAntiDamage(World worldIn, double x, double y, double z, ItemStack stack) {

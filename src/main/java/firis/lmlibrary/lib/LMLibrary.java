@@ -2,22 +2,26 @@ package firis.lmlibrary.lib;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import firis.lmlibrary.lib.client.resources.OldZipTexturesWrapper;
 import firis.lmlibrary.lib.client.resources.SoundResourcePack;
 import firis.lmlibrary.lib.loader.LMFileLoader;
 import firis.lmlibrary.lib.manager.LMTextureBoxManager;
 import firis.lmlibrary.lib.manager.SoundManager;
-import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourcePack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(
 		modid = LMLibrary.MODID, 
@@ -26,7 +30,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 		dependencies = LMLibrary.MOD_DEPENDENCIES,
 		acceptedMinecraftVersions = LMLibrary.MOD_ACCEPTED_MINECRAFT_VERSIONS
 )
-@EventBusSubscriber
+@EventBusSubscriber(modid=LMLibrary.MODID)
 public class LMLibrary {
 
     public static final String MODID = "lmlibrary";
@@ -38,12 +42,17 @@ public class LMLibrary {
     @Instance(LMLibrary.MODID)
     public static LMLibrary INSTANCE;
     
+    /** logger */
+    public static Logger logger = LogManager.getLogger(LMLibrary.MODID);
     
+    /**
+     * コンストラクタ
+     */
 	public LMLibrary() {
-		if (CommonHelper.isClient) {
+		//カスタムリソースパック追加
+		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			@SuppressWarnings("unchecked")
 			List<IResourcePack> defaultResourcePacks = (List<IResourcePack>)ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), new String[] { "defaultResourcePacks", "field_110449_ao" });
-
 			defaultResourcePacks.add(new SoundResourcePack());
 			defaultResourcePacks.add(new OldZipTexturesWrapper());
 		}
