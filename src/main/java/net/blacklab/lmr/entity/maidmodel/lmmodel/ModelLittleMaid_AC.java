@@ -1,8 +1,8 @@
 package net.blacklab.lmr.entity.maidmodel.lmmodel;
 
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiMMMBase;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
-import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
+import firis.lmlibrary.api.caps.IModelCaps;
+import firis.lmlibrary.api.model.ModelMultiMMMBase;
+import firis.lmlibrary.api.renderer.ModelRenderer;
 
 /**
  * スタビライザー搭載機

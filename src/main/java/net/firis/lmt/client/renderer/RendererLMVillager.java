@@ -1,6 +1,6 @@
 package net.firis.lmt.client.renderer;
 
-import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
+import firis.lmlibrary.client.renderer.RenderModelMulti;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.passive.EntityVillager;
 

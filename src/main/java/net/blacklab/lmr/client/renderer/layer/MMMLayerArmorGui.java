@@ -1,9 +1,9 @@
 package net.blacklab.lmr.client.renderer.layer;
 
+import firis.lmlibrary.client.model.ModelBaseDuo;
+import firis.lmlibrary.common.data.IMultiModelEntity;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.entity.RenderEntitySelect;
-import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
-import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;

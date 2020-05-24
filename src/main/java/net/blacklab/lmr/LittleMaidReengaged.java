@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 
+import firis.lmlibrary.client.resources.OldZipTexturesWrapper;
+import firis.lmlibrary.client.resources.SoundResourcePack;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmc.common.command.LMCommand;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
@@ -17,8 +19,6 @@ import net.blacklab.lmc.common.item.LMItemMaidSugar;
 import net.blacklab.lmc.common.villager.StructureVillagePiecesMaidBrokerHouse;
 import net.blacklab.lmc.common.villager.VillagerProfessionMaidBroker;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
-import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
-import net.blacklab.lmr.client.resource.SoundResourcePack;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;

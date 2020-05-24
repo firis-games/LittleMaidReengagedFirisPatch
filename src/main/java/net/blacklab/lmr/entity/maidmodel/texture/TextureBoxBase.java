@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import firis.lmlibrary.api.caps.IModelCaps;
 
 @Deprecated
 public abstract class TextureBoxBase {

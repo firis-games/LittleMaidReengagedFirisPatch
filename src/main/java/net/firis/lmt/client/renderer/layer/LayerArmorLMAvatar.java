@@ -1,7 +1,7 @@
 package net.firis.lmt.client.renderer.layer;
 
+import firis.lmlibrary.common.data.IModelConfigCompound;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaidBase;
-import net.blacklab.lmr.entity.maidmodel.IModelConfigCompound;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.EntityLivingBase;

@@ -3,7 +3,7 @@ package net.firis.lmt.common.manager;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import firis.lmlibrary.api.model.ModelMultiBase;
 import net.blacklab.lmr.util.manager.LMTextureBoxManager;
 import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.firis.lmt.config.FirisConfig;

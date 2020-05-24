@@ -3,7 +3,7 @@ package net.blacklab.lmr.util.manager.pack;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import firis.lmlibrary.api.model.ModelMultiBase;
 
 /**
  * マルチモデルパック管理用クラス

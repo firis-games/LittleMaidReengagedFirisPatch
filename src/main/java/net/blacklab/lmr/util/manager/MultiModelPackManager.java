@@ -3,9 +3,9 @@ package net.blacklab.lmr.util.manager;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import firis.lmlibrary.api.model.ModelMultiBase;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.util.loader.LMMultiModelHandler;
 import net.blacklab.lmr.util.manager.pack.MultiModelPack;
 

@@ -19,12 +19,12 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import firis.lmlibrary.api.model.ModelMultiBase;
+import firis.lmlibrary.client.resources.OldZipTexturesWrapper;
+import firis.lmlibrary.common.data.IMultiModelEntity;
 import net.blacklab.lib.classutil.FileClassUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
 import net.blacklab.lmr.entity.maidmodel.texture.TextureBox;
 import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxBase;
 import net.blacklab.lmr.entity.maidmodel.texture.TextureBoxServer;

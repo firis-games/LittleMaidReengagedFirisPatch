@@ -1,6 +1,6 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
+import firis.lmlibrary.api.caps.IModelCaps;
 
 @Deprecated
 public interface IModelBaseMMM extends IModelCaps {

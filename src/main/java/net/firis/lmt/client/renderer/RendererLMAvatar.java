@@ -2,9 +2,9 @@ package net.firis.lmt.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 
+import firis.lmlibrary.client.model.ModelBaseSolo;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.entity.maidmodel.ModelBaseSolo;
 import net.firis.lmt.client.event.ClientEventLMAvatar;
 import net.firis.lmt.client.renderer.layer.LayerArmorLMAvatar;
 import net.firis.lmt.client.renderer.layer.LayerArrowLMAvatar;

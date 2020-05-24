@@ -1,8 +1,8 @@
 package net.firis.lmt.client.renderer;
 
-import net.blacklab.lmr.entity.maidmodel.IModelConfigCompound;
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
-import net.blacklab.lmr.util.IModelCapsData;
+import firis.lmlibrary.api.model.ModelMultiBase;
+import firis.lmlibrary.common.data.IModelCapsData;
+import firis.lmlibrary.common.data.IModelConfigCompound;
 import net.blacklab.lmr.util.manager.LMTextureBoxManager;
 import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.minecraft.entity.EntityLivingBase;

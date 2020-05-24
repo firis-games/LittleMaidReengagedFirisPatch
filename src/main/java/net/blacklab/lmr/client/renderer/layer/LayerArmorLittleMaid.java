@@ -1,9 +1,9 @@
 package net.blacklab.lmr.client.renderer.layer;
 
-import net.blacklab.lmr.client.renderer.entity.RenderModelMulti;
+import firis.lmlibrary.client.renderer.RenderModelMulti;
+import firis.lmlibrary.common.data.IModelConfigCompound;
+import firis.lmlibrary.common.data.IMultiModelEntity;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.maidmodel.IModelConfigCompound;
-import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;

@@ -2,8 +2,8 @@ package net.blacklab.lmr.client.renderer.layer;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.entity.maidmodel.IModelConfigCompound;
-import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
+import firis.lmlibrary.client.model.ModelBaseDuo;
+import firis.lmlibrary.common.data.IModelConfigCompound;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;

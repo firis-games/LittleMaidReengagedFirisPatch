@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import net.blacklab.lmr.client.resource.OldZipTexturesWrapper;
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import firis.lmlibrary.api.model.ModelMultiBase;
+import firis.lmlibrary.client.resources.OldZipTexturesWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;

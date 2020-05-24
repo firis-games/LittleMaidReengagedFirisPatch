@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import firis.lmlibrary.common.data.IMultiModelEntity;
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
@@ -51,7 +52,6 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Archer;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
-import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompoundLittleMaid;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;

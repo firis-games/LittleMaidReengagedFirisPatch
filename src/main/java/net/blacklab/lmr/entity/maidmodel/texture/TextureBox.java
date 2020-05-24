@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
-import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
+import firis.lmlibrary.api.caps.IModelCaps;
+import firis.lmlibrary.api.caps.ModelCapsHelper;
+import firis.lmlibrary.api.model.ModelMultiBase;
 import net.blacklab.lmr.util.manager.deprecated.ModelManager;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;

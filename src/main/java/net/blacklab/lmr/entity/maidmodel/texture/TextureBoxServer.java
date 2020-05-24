@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.maidmodel.texture;
 
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
-import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
+import firis.lmlibrary.api.caps.IModelCaps;
+import firis.lmlibrary.api.caps.ModelCapsHelper;
 import net.blacklab.lmr.util.helper.NetworkHelper;
 
 @Deprecated

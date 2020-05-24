@@ -1,11 +1,12 @@
 package net.blacklab.lmr.client.renderer.entity;
 
+import firis.lmlibrary.client.renderer.RenderModelMulti;
+import firis.lmlibrary.common.data.IMultiModelEntity;
 import net.blacklab.lmr.api.client.event.ClientEventLMRE;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldChestLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldItemLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;

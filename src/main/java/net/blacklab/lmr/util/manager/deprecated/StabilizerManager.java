@@ -2,9 +2,11 @@ package net.blacklab.lmr.util.manager.deprecated;
 
 import java.util.Map;
 import java.util.Map.Entry;
+
+import firis.lmlibrary.api.model.ModelBase;
+
 import java.util.TreeMap;
 
-import net.blacklab.lmr.entity.maidmodel.base.ModelBase;
 import net.blacklab.lmr.entity.maidmodel.deprecated.EquippedStabilizer;
 import net.blacklab.lmr.entity.maidmodel.deprecated.ModelStabilizerBase;
 

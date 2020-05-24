@@ -1,9 +1,10 @@
 package net.blacklab.lmr.entity.maidmodel.deprecated;
 
-import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+
+import firis.lmlibrary.api.renderer.ModelRenderer;
 
 @Deprecated
 public class MMM_ModelStabilizer_WitchHat extends ModelStabilizerBase {

@@ -2,10 +2,10 @@ package net.blacklab.lmr.entity.maidmodel.lmmodel;
 
 import org.lwjgl.opengl.GL11;
 
-import net.blacklab.lmr.entity.maidmodel.base.ModelLittleMaidBase;
-import net.blacklab.lmr.entity.maidmodel.caps.IModelCaps;
-import net.blacklab.lmr.entity.maidmodel.caps.ModelCapsHelper;
-import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
+import firis.lmlibrary.api.caps.IModelCaps;
+import firis.lmlibrary.api.caps.ModelCapsHelper;
+import firis.lmlibrary.api.model.ModelLittleMaidBase;
+import firis.lmlibrary.api.renderer.ModelRenderer;
 
 /**
  * 旧型モデル互換のベースモデル。

@@ -2,8 +2,8 @@ package net.blacklab.lmr.entity.maidmodel.deprecated;
 
 import java.util.Map;
 
-import net.blacklab.lmr.entity.maidmodel.base.ModelBase;
-import net.blacklab.lmr.entity.maidmodel.renderer.ModelRenderer;
+import firis.lmlibrary.api.model.ModelBase;
+import firis.lmlibrary.api.renderer.ModelRenderer;
 
 /**
  * 装備品用のクラス。

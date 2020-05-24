@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.maidmodel.deprecated;
 
-import net.blacklab.lmr.entity.maidmodel.base.ModelBase;
-import net.blacklab.lmr.entity.maidmodel.base.ModelMultiBase;
+import firis.lmlibrary.api.model.ModelBase;
+import firis.lmlibrary.api.model.ModelMultiBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 

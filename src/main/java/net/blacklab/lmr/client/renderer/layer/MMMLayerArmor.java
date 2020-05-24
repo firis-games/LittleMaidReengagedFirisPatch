@@ -1,8 +1,8 @@
 package net.blacklab.lmr.client.renderer.layer;
 
+import firis.lmlibrary.client.model.ModelBaseDuo;
 import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.maidmodel.ModelBaseDuo;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
