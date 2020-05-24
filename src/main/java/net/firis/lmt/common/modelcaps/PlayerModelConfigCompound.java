@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import firis.lmlibrary.common.data.IModelCapsData;
 import firis.lmlibrary.common.data.ModelConfigCompoundBase;
-import net.blacklab.lmr.util.manager.LMTextureBoxManager;
-import net.blacklab.lmr.util.manager.pack.LMTextureBox;
+import firis.lmlibrary.manager.LMTextureBoxManager;
+import firis.lmlibrary.manager.pack.LMTextureBox;
 import net.firis.lmt.config.FirisConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;

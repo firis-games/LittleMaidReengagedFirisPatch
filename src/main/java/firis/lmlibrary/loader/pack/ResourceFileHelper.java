@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.loader.resource;
+package firis.lmlibrary.loader.pack;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

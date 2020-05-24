@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.loader;
+package firis.lmlibrary.loader;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import firis.lmlibrary.loader.pack.JsonResourceLittleMaidSound;
+import firis.lmlibrary.loader.pack.ResourceFileHelper;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidSound;
-import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 
 /**
  * メイドさんのサウンド関連ファイルをロードする

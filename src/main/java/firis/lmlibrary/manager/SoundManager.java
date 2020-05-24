@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.manager;
+package firis.lmlibrary.manager;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -11,15 +11,15 @@ import java.util.Map;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import firis.lmlibrary.loader.LMSoundHandler;
+import firis.lmlibrary.loader.pack.JsonResourceLittleMaidCustomSound;
+import firis.lmlibrary.loader.pack.ResourceFileHelper;
+import firis.lmlibrary.loader.pack.JsonResourceLittleMaidCustomSound.ModelVoice;
+import firis.lmlibrary.loader.pack.JsonResourceLittleMaidSound.ResourceLittleMaidSoundpack;
+import firis.lmlibrary.manager.pack.LMTextureBox;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.loader.LMSoundHandler;
-import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidCustomSound;
-import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidCustomSound.ModelVoice;
-import net.blacklab.lmr.util.loader.resource.JsonResourceLittleMaidSound.ResourceLittleMaidSoundpack;
-import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
-import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.minecraft.util.ResourceLocation;
 
 /**

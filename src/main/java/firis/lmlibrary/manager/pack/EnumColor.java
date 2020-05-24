@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.manager.pack;
+package firis.lmlibrary.manager.pack;
 
 /**
  * メイドさんのカラー情報

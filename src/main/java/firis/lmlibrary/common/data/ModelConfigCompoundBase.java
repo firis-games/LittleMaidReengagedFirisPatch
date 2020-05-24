@@ -4,9 +4,9 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import firis.lmlibrary.api.model.ModelMultiBase;
-import net.blacklab.lmr.util.manager.LMTextureBoxManager;
-import net.blacklab.lmr.util.manager.pack.EnumColor;
-import net.blacklab.lmr.util.manager.pack.LMTextureBox;
+import firis.lmlibrary.manager.LMTextureBoxManager;
+import firis.lmlibrary.manager.pack.EnumColor;
+import firis.lmlibrary.manager.pack.LMTextureBox;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;

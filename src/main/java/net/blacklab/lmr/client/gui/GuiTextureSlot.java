@@ -6,10 +6,10 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import firis.lmlibrary.manager.LMTextureBoxManager;
+import firis.lmlibrary.manager.pack.LMTextureBox;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.util.helper.RendererHelper;
-import net.blacklab.lmr.util.manager.LMTextureBoxManager;
-import net.blacklab.lmr.util.manager.pack.LMTextureBox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiSlot;

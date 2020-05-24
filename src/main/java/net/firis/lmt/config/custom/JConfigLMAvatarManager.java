@@ -1,6 +1,6 @@
 package net.firis.lmt.config.custom;
 
-import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
+import firis.lmlibrary.loader.pack.ResourceFileHelper;
 
 /**
  * 独自設定の管理用クラス

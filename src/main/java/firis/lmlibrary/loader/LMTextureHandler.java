@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.loader;
+package firis.lmlibrary.loader;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -11,9 +11,9 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import firis.lmlibrary.loader.pack.ResourceFileHelper;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 
 /**
  * メイドさんのテクスチャをロードする

@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.manager;
+package firis.lmlibrary.manager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,9 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.blacklab.lmr.util.loader.LMTextureHandler;
-import net.blacklab.lmr.util.manager.pack.EnumColor;
-import net.blacklab.lmr.util.manager.pack.TexturePack;
+import firis.lmlibrary.loader.LMTextureHandler;
+import firis.lmlibrary.manager.pack.EnumColor;
+import firis.lmlibrary.manager.pack.TexturePack;
 
 /**
  * マルチモデルのテクスチャパックを管理する

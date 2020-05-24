@@ -3,12 +3,12 @@ package net.blacklab.lmr.entity.littlemaid.controller;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import firis.lmlibrary.manager.SoundManager;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.util.EnumSound;
-import net.blacklab.lmr.util.manager.SoundManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;

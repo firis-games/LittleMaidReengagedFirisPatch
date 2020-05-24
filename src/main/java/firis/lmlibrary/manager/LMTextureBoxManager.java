@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.manager;
+package firis.lmlibrary.manager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import net.blacklab.lmr.util.manager.pack.LMTextureBox;
-import net.blacklab.lmr.util.manager.pack.MultiModelPack;
-import net.blacklab.lmr.util.manager.pack.TexturePack;
+import firis.lmlibrary.manager.pack.LMTextureBox;
+import firis.lmlibrary.manager.pack.MultiModelPack;
+import firis.lmlibrary.manager.pack.TexturePack;
 
 /**
  * メイドさんのテクスチャモデルを管理するクラス

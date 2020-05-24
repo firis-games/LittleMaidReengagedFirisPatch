@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.loader;
+package firis.lmlibrary.loader;
 
 import java.io.InputStream;
 import java.nio.file.Path;

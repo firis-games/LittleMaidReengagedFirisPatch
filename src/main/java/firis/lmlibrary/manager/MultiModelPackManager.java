@@ -1,13 +1,13 @@
-package net.blacklab.lmr.util.manager;
+package firis.lmlibrary.manager;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import firis.lmlibrary.api.model.ModelMultiBase;
+import firis.lmlibrary.loader.LMMultiModelHandler;
+import firis.lmlibrary.manager.pack.MultiModelPack;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.util.loader.LMMultiModelHandler;
-import net.blacklab.lmr.util.manager.pack.MultiModelPack;
 
 /**
  * マルチモデルパックを管理する

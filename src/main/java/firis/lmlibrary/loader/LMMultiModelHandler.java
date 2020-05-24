@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util.loader;
+package firis.lmlibrary.loader;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import firis.lmlibrary.api.model.ModelMultiBase;
+import firis.lmlibrary.loader.pack.ResourceFileHelper;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.util.loader.resource.ResourceFileHelper;
 
 /**
  * メイドさんのマルチモデルをロードする
