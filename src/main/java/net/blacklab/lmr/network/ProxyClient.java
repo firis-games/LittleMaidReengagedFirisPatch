@@ -2,7 +2,6 @@ package net.blacklab.lmr.network;
 
 import net.blacklab.lmc.client.event.RenderPlayerEventHandler;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.gui.GuiIFF;
 import net.blacklab.lmr.client.gui.inventory.GuiMaidInventory;
@@ -19,18 +18,14 @@ import net.firis.lmt.common.command.LMAvatarCommandClient;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleItemPickup;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
@@ -42,22 +37,6 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 public class ProxyClient extends ProxyCommon
 {
 	public void rendererRegister() {
-		
-		ModelLoader.setCustomModelResourceLocation(
-				LMItems.SPAWN_LITTLEMAID_EGG, 0, new ModelResourceLocation(
-						LittleMaidReengaged.MODID+":spawn_littlemaid_egg", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(LMItems.REGISTERKEY, 0,
-				new ModelResourceLocation(LittleMaidReengaged.MODID+":registerkey",
-						"inventory"));
-		ModelLoader.setCustomModelResourceLocation(LMItems.REGISTERKEY, 1,
-				new ModelResourceLocation(LittleMaidReengaged.MODID+":registerkey",
-						"inventory"));
-		String porter_modelName_A = LittleMaidReengaged.MODID + ":maidporter_0";
-		String porter_modelName_B = LittleMaidReengaged.MODID + ":maidporter_1";
-//		ModelLoader.addVariantName(LittleMaidReengaged.maidPorter, LittleMaidReengaged.DOMAIN + ":maidporter_0", LittleMaidReengaged.DOMAIN + ":maidporter_1");
-		ModelBakery.registerItemVariants(LMItems.MAIDPORTER, new ResourceLocation(porter_modelName_A), new ResourceLocation(porter_modelName_B));
-		ModelLoader.setCustomModelResourceLocation(LMItems.MAIDPORTER, 0, new ModelResourceLocation(porter_modelName_A, "inventory"));
-		ModelLoader.setCustomModelResourceLocation(LMItems.MAIDPORTER, 1, new ModelResourceLocation(porter_modelName_B, "inventory"));
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());

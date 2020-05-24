@@ -27,9 +27,6 @@ import net.blacklab.lmr.entity.renderfactory.RenderFactoryLittleMaid;
 import net.blacklab.lmr.entity.renderfactory.RenderFactoryMarkerDummy;
 import net.blacklab.lmr.entity.renderfactory.RenderFactoryModelSelect;
 import net.blacklab.lmr.event.EventHookLMRE;
-import net.blacklab.lmr.item.ItemMaidPorter;
-import net.blacklab.lmr.item.ItemMaidSpawnEgg;
-import net.blacklab.lmr.item.ItemTriggerRegisterKey;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.network.ProxyCommon;
@@ -161,9 +158,6 @@ public class LittleMaidReengaged {
      */
     @ObjectHolder(LittleMaidReengaged.MODID)
     public static class LMItems {
-    	public final static ItemMaidSpawnEgg SPAWN_LITTLEMAID_EGG = null;
-    	public final static ItemTriggerRegisterKey REGISTERKEY = null;
-    	public final static ItemMaidPorter MAIDPORTER = null;
     	public final static Item MAID_SOUVENIR = null;
     	public final static Item MAID_CARRY = null;
     	public final static Item MAID_SUGAR = null;
