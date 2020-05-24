@@ -21,10 +21,10 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import firis.lmlibrary.common.data.IMultiModelEntity;
-import firis.lmlibrary.manager.LMTextureBoxManager;
-import firis.lmlibrary.manager.pack.EnumColor;
-import firis.lmlibrary.manager.pack.LMTextureBox;
+import firis.lmlibrary.lib.common.data.IMultiModelEntity;
+import firis.lmlibrary.lib.manager.LMTextureBoxManager;
+import firis.lmlibrary.lib.manager.pack.EnumColor;
+import firis.lmlibrary.lib.manager.pack.LMTextureBox;
 import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;

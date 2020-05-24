@@ -31,9 +31,9 @@ import firis.lmlibrary.api.model.parts.ModelBox;
 import firis.lmlibrary.api.model.parts.ModelBoxBase;
 import firis.lmlibrary.api.model.parts.ModelPlate;
 import firis.lmlibrary.api.renderer.ModelRenderer;
-import firis.lmlibrary.common.model.ModelLittleMaid_Aug;
-import firis.lmlibrary.common.model.ModelLittleMaid_Orign;
-import firis.lmlibrary.common.model.ModelLittleMaid_SR2;
+import firis.lmlibrary.lib.common.model.ModelLittleMaid_Aug;
+import firis.lmlibrary.lib.common.model.ModelLittleMaid_Orign;
+import firis.lmlibrary.lib.common.model.ModelLittleMaid_SR2;
 import net.blacklab.lmr.config.LMRConfig;
 import net.minecraft.launchwrapper.IClassTransformer;
 

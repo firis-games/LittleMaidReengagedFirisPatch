@@ -1,7 +1,7 @@
 package net.blacklab.lmr.client.renderer.entity;
 
-import firis.lmlibrary.client.renderer.RenderModelMulti;
-import firis.lmlibrary.common.data.IMultiModelEntity;
+import firis.lmlibrary.lib.client.renderer.RenderModelMulti;
+import firis.lmlibrary.lib.common.data.IMultiModelEntity;
 import net.blacklab.lmr.api.client.event.ClientEventLMRE;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldChestLittleMaid;

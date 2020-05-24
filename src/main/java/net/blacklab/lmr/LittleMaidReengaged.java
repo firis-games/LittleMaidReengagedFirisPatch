@@ -6,11 +6,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 
-import firis.lmlibrary.client.resources.OldZipTexturesWrapper;
-import firis.lmlibrary.client.resources.SoundResourcePack;
-import firis.lmlibrary.loader.LMFileLoader;
-import firis.lmlibrary.manager.LMTextureBoxManager;
-import firis.lmlibrary.manager.SoundManager;
 import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmc.common.command.LMCommand;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
@@ -34,12 +29,9 @@ import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.network.ProxyCommon;
 import net.blacklab.lmr.util.IFF;
-import net.blacklab.lmr.util.helper.CommonHelper;
 import net.blacklab.lmr.util.manager.PluginManager;
 import net.firis.lmt.common.LMTCore;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -56,7 +48,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -195,15 +186,15 @@ public class LittleMaidReengaged {
 
 	//public static Random randomSoundChance;
 	
-	@SuppressWarnings("unchecked")
-	public LittleMaidReengaged() {
-		if (CommonHelper.isClient) {
-			List<IResourcePack> defaultResourcePacks = (List<IResourcePack>)ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), new String[] { "defaultResourcePacks", "field_110449_ao" });
-
-			defaultResourcePacks.add(new SoundResourcePack());
-			defaultResourcePacks.add(new OldZipTexturesWrapper());
-		}
-	}
+//	@SuppressWarnings("unchecked")
+//	public LittleMaidReengaged() {
+//		if (CommonHelper.isClient) {
+//			List<IResourcePack> defaultResourcePacks = (List<IResourcePack>)ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), new String[] { "defaultResourcePacks", "field_110449_ao" });
+//
+//			defaultResourcePacks.add(new SoundResourcePack());
+//			defaultResourcePacks.add(new OldZipTexturesWrapper());
+//		}
+//	}
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
@@ -229,17 +220,17 @@ public class LittleMaidReengaged {
 		}
 		*/
 		
-		//リトルメイドファイルローダー
-		LMFileLoader.instance.load();
+//		//リトルメイドファイルローダー
+//		LMFileLoader.instance.load();
 		
 //		//マルチモデルセットアップ
 //		ModelManager.instance.createLittleMaidModels();
 		
-		//テクスチャモデル初期化
-		LMTextureBoxManager.instance.init();
+//		//テクスチャモデル初期化
+//		LMTextureBoxManager.instance.init();
 		
-		//サウンドパックセットアップ
-		SoundManager.instance.createSounds();
+//		//サウンドパックセットアップ
+//		SoundManager.instance.createSounds();
 
 //		StabilizerManager.init();
 

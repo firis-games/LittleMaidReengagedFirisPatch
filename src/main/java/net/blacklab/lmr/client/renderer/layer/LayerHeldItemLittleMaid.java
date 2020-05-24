@@ -1,6 +1,6 @@
 package net.blacklab.lmr.client.renderer.layer;
 
-import firis.lmlibrary.client.renderer.RenderModelMulti;
+import firis.lmlibrary.lib.client.renderer.RenderModelMulti;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
