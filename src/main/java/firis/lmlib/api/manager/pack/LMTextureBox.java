@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import firis.lmlib.client.resources.OldZipTexturesWrapper;
+import firis.lmlib.client.resources.LMTextureResourcePack;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -195,7 +195,7 @@ public class LMTextureBox {
 		//大文字小文字が含まれる場合はOldZipTexturesWrapperを利用する
 		if(FMLCommonHandler.instance().getSide() == Side.CLIENT &&
 				((!path.equals(path.toLowerCase())))) {
-			OldZipTexturesWrapper.addTexturePath(path);
+			LMTextureResourcePack.addTexturePath(path);
 		}
 		
 		return new ResourceLocation(path.replace("assets/minecraft/", ""));

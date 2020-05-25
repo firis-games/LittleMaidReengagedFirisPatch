@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import firis.lmlib.api.loader.LMFileLoader;
 import firis.lmlib.api.manager.LMTextureBoxManager;
 import firis.lmlib.api.manager.SoundManager;
-import firis.lmlib.client.resources.OldZipTexturesWrapper;
-import firis.lmlib.client.resources.SoundResourcePack;
+import firis.lmlib.client.resources.LMTextureResourcePack;
+import firis.lmlib.client.resources.LMSoundResourcePack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -53,8 +53,8 @@ public class LMLibrary {
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			@SuppressWarnings("unchecked")
 			List<IResourcePack> defaultResourcePacks = (List<IResourcePack>)ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), new String[] { "defaultResourcePacks", "field_110449_ao" });
-			defaultResourcePacks.add(new SoundResourcePack());
-			defaultResourcePacks.add(new OldZipTexturesWrapper());
+			defaultResourcePacks.add(new LMSoundResourcePack());
+			defaultResourcePacks.add(new LMTextureResourcePack());
 		}
 	}
     

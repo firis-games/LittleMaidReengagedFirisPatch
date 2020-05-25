@@ -8,13 +8,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import net.blacklab.lmr.LittleMaidReengaged;
+import firis.lmlib.LMLibrary;
 import net.blacklab.lmr.config.LMRConfig;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
@@ -22,58 +22,73 @@ import net.minecraft.client.resources.data.MetadataSerializer;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * 旧方式テクスチャのロード用リソースパック
+ * 旧リトルメイドテクスチャパック用リソースパック
  * @author firis-games
  *
+ *　大文字を含むテクスチャパス対応用リソースパック
  */
-public class OldZipTexturesWrapper implements IResourcePack {
+public class LMTextureResourcePack implements IResourcePack {
 
-	protected static ArrayList<String> keys = new ArrayList<String>();
-
+	/**
+	 * テクスチャのリアルパス保持用
+	 */
+	protected static Set<String> texturePath = new HashSet<>();
+	
+	/**
+	 * リソースファイルの実体を取得する
+	 */
 	@Override
-	public InputStream getInputStream(ResourceLocation arg0) throws IOException {
-		if(resourceExists(arg0)){
-			String key = texturesResourcePath(arg0);
+	public InputStream getInputStream(ResourceLocation location) throws IOException {
+		//リソースファイル
+		if(resourceExists(location)){
+			String key = texturesResourcePath(location);
 			key = containsKey(key);
 			InputStream stream = getInputStreamFromResoucepacks(key);
 			if (stream == null) {
-				stream = LittleMaidReengaged.class.getClassLoader().getResourceAsStream(key);
+				stream = LMLibrary.class.getClassLoader().getResourceAsStream(key);
 			}
 			return stream;
 		}
 		return null;
 	}
 	
+	/**
+	 * リソースファイルの存在チェック
+	 */
+	@Override
+	public boolean resourceExists(ResourceLocation location) {
+		String key = texturesResourcePath(location);
+		if (key == null) {
+			return false;
+		}
+		return containsKey(key) == null ? false : true;
+	}
+	
+	
+	@Override
+	public <T extends IMetadataSection> T getPackMetadata(MetadataSerializer metadataSerializer, String metadataSectionName) throws IOException {
+		return null;
+	}
+
 	@Override
 	public BufferedImage getPackImage() throws IOException {
 		return null;
 	}
 
-	@Override
-	public <T extends IMetadataSection> T getPackMetadata(MetadataSerializer arg0,
-			String arg1) throws IOException {
-		return null;
-	}
-
+	/**
+	 * リソースパック名
+	 */
 	@Override
 	public String getPackName() {
-		return "OldTexturesLoader";
+		return "LMTextureResourcePack";
 	}
 
+	/**
+	 * リトルメイドテクスチャはminecraft階層へ配置する
+	 */
 	@Override
 	public Set<String> getResourceDomains() {
 		return ImmutableSet.of("minecraft");
-	}
-
-	@Override
-	public boolean resourceExists(ResourceLocation arg0) {
-		
-		String key = texturesResourcePath(arg0);
-		if (key == null) {
-			return false;
-		}
-		
-		return containsKey(key) == null ? false : true;
 	}
 	
 	/**
@@ -107,18 +122,14 @@ public class OldZipTexturesWrapper implements IResourcePack {
 	 * @return
 	 */
 	public String containsKey(String path) {
-		
 		String ret = null;
-		
-		for (String key : keys) {
+		for (String key : texturePath) {
 			if (key.toLowerCase().equals(path.toLowerCase())) {
 				ret = key;
 				break;
 			}
 		}
-		
 		return ret;
-		
 	}
 	
 	/**
@@ -126,7 +137,7 @@ public class OldZipTexturesWrapper implements IResourcePack {
 	 * @param texture
 	 */
 	public static void addTexturePath(String texture) {
-		keys.add(texture);
+		texturePath.add(texture);
 	}
 	
 	/**
@@ -149,6 +160,9 @@ public class OldZipTexturesWrapper implements IResourcePack {
 		return null;
 	}
 	
+	/**
+	 * テクスチャの配置場所
+	 */
 	private static Path resourcepacksPath = Paths.get("resourcepacks", "LittleMaidResource");
 	
 	/**
