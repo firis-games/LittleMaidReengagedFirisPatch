@@ -1,10 +1,11 @@
 package firis.lmlib.core;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -19,8 +20,6 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.MultiANewArrayInsnNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 
-import com.google.common.collect.Lists;
-
 import firis.lmlib.common.model.ModelLittleMaid_Aug;
 import firis.lmlib.common.model.ModelLittleMaid_Orign;
 import firis.lmlib.common.model.ModelLittleMaid_SR2;
@@ -34,7 +33,6 @@ import firis.lmmm.api.model.parts.ModelBox;
 import firis.lmmm.api.model.parts.ModelBoxBase;
 import firis.lmmm.api.model.parts.ModelPlate;
 import firis.lmmm.api.renderer.ModelRenderer;
-import net.blacklab.lmr.config.LMRConfig;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 
@@ -45,100 +43,75 @@ import net.minecraft.launchwrapper.IClassTransformer;
  */
 public class LMLibTransformer implements IClassTransformer, Opcodes {
 
-	static String oldPackageString = "mmmlibx/lib/multiModel/model/mc162/";
-	static String newPackageString = "net/blacklab/lmr/entity/maidmodel/";
+	/** logger */
+    public static Logger logger = LogManager.getLogger("lmlibrary_coremod");
+    
+	/** 1.7.2  パッケージ階層 */
+	private static final String oldPackageString172 = "mmmlibx/lib/multiModel/model/mc162/";
+	
+	/** 1.10.2パッケージ階層 */
+	private static final String oldPackageString1102 = "net/blacklab/lmr/entity/maidmodel/";
+	
+	/**
+	 * 変換前 -> 変換後のクラス定義
+	 */
 	@SuppressWarnings("serial")
 	private static final Map<String, String> targets = new HashMap<String, String>() {
 		{
-			//リトルメイド側の制御に使ってるだけのはず
-			//モデル側には不要
-//			addModelClassToTransform("IModelBaseMMM", "");
-//			addModelClassToTransform("ModelBaseDuo", "");
-//			addModelClassToTransform("ModelBaseNihil", "");
-//			addModelClassToTransform("ModelBaseSolo", "");
-
-			addModelClassToTransform(IModelCaps.class, "IModelCaps", "caps");
-			addModelClassToTransform(ModelCapsHelper.class, "ModelCapsHelper", "caps");
-
-			addModelClassToTransform(ModelBox.class, "ModelBox", "modelparts");
-			addModelClassToTransform(ModelBoxBase.class, "ModelBoxBase", "modelparts");
-			addModelClassToTransform(ModelPlate.class, "ModelPlate", "modelparts");
+			//LittleMaidAPI
+			addModelClassToTransform(IModelCaps.class, "IModelCaps");
+			addModelClassToTransform(ModelCapsHelper.class, "ModelCapsHelper");
+			addModelClassToTransform(ModelBox.class, "ModelBox");
+			addModelClassToTransform(ModelBoxBase.class, "ModelBoxBase");
+			addModelClassToTransform(ModelPlate.class, "ModelPlate");
+			addModelClassToTransform(ModelRenderer.class, "ModelRenderer");
+			addModelClassToTransform(ModelBase.class, "ModelBase");
+			addModelClassToTransform(ModelLittleMaidBase.class, "ModelLittleMaidBase");
+			addModelClassToTransform(ModelMultiBase.class, "ModelMultiBase");
+			addModelClassToTransform(ModelMultiMMMBase.class, "ModelMultiMMMBase");
 			
-			//ベースモデルとして継承している可能性があるので
-			//差し替え対象
-//			addModelClassToTransform("ModelLittleMaid_AC", "lmmodel");
-//			addModelClassToTransform("ModelLittleMaid_Archetype", "lmmodel");
-			addModelClassToTransform(ModelLittleMaid_Orign.class, "ModelLittleMaid_Orign", "lmmodel");
-//			addModelClassToTransform("ModelLittleMaid_RX2", "lmmodel");
-			addModelClassToTransform(ModelLittleMaid_Aug.class, "ModelLittleMaid_Aug", "lmmodel");
-			addModelClassToTransform(ModelLittleMaid_SR2.class, "ModelLittleMaid_SR2", "lmmodel");
+			//標準LittleMaidモデル
+			//標準拡張版を考慮して変換対象とする
+			addModelClassToTransform(ModelLittleMaid_Orign.class, "ModelLittleMaid_Orign");
+			addModelClassToTransform(ModelLittleMaid_Aug.class, "ModelLittleMaid_Aug");
+			addModelClassToTransform(ModelLittleMaid_SR2.class, "ModelLittleMaid_SR2");
 			
-			addModelClassToTransform(ModelBase.class, "ModelBase", "base");
-			addModelClassToTransform(ModelLittleMaidBase.class, "ModelLittleMaidBase", "base");
-			addModelClassToTransform(ModelMultiBase.class, "ModelMultiBase", "base");
-			addModelClassToTransform(ModelMultiMMMBase.class, "ModelMultiMMMBase", "base");
-			
-			addModelClassToTransform(ModelRenderer.class, "ModelRenderer", "renderer");
-			
-			//addModelClassToTransform("EquippedStabilizer", "");
-			//addModelClassToTransform("ModelStabilizerBase", "");
-			//addModelClassToTransform("ModelStabilizer_WitchHat", "");
-
-//			put("mmmlibx/lib/MMM_EntityCaps", "net/blacklab/lmr/util/EntityCapsLiving");
-//			put("littleMaidMobX/EntityCaps", "net/blacklab/lmr/util/EntityCaps");
-			
-			//後方互換用
-			//撤去予定
+			//LMR 後方互換用
 			put("net/blacklab/lmr/entity/EntityLittleMaid", "net/blacklab/lmr/entity/littlemaid/EntityLittleMaid");
 		}
-		private void addModelClassToTransform(Class<?> clazz, String pName, String base) {
-//			String newName = (base.equals("") ? "" : base + "/") + pName;
-			String newPackageName = clazz.getName().replace(".", "/"); 
-//			put("MMM_" + pName, newPackageString + newName);
-//			put(oldPackageString + pName, newPackageString + newName);
-			put("MMM_" + pName, newPackageName);
-			put(oldPackageString + pName, newPackageName);
-			
-			//互換用
-//			if (!base.equals("")) {
-//				put(newPackageString + pName, newPackageString + newName);
-//			}
-			put(newPackageString + pName, newPackageName);
+		/**
+		 * 各バージョン変換定義を追加する
+		 * @param newClazz
+		 * @param className
+		 * 
+		 * 1.6.2  MMM_xxxxx
+		 * 1.7.2  mmmlibx/lib/multiModel/model/mc162/xxxxx
+		 * 1.10.2 net/blacklab/lmr/entity/maidmodel/xxxxx
+		 */
+		private void addModelClassToTransform(Class<?> newClazz, String className) {
+			String newPackageClassName = newClazz.getName().replace(".", "/"); 
+			//1.6.2
+			put("MMM_" + className, newPackageClassName);
+			//1.7.2
+			put(oldPackageString172 + className, newPackageClassName);
+			//1.10.2
+			put(oldPackageString1102 + className, newPackageClassName);
 		}
 	};
-
-	public static boolean isEnable = false;
-	private boolean isChange;
-
-
-	public static void Debug(String pText, Object... pData) {
-		// デバッグメッセージ
-		if(LMRConfig.cfg_PrintDebugMessage)
-		{
-			System.out.println(String.format("Transformer-" + pText, pData));
-		}
-	}
-
-	public static List<String> ignoreNameSpace = Lists.newArrayList(
-		"modchu.model",
-		"modchu.lib",
-		"net.minecraft.src.mod_Modchu_ModchuLib",
-		"modchu.pflm",
-		"modchu.pflmf");
-
+	
+	/**
+	 * transform
+	 */
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] basicClass) {
-		LMLibTransformer.isEnable = true;
-
-		for(String header : ignoreNameSpace){
-			if(name.startsWith(header))	return basicClass;
-		}
-
-		if (basicClass != null && isEnable) {
+		if (basicClass != null) {
 			return replacer(name, transformedName, basicClass);
 		}
 		return basicClass;
 	}
+
+	/** 変換保持用一時変数 */
+	private boolean isChange = false;;
 
 	/**
 	 * バイナリを解析して旧MMMLibのクラスを置き換える。
@@ -148,10 +121,9 @@ public class LMLibTransformer implements IClassTransformer, Opcodes {
 	 * @return
 	 */
 	private byte[] replacer(String name, String transformedName, byte[] basicClass) {
+		
 		ClassReader lcreader = new ClassReader(basicClass);
-		final String superName = lcreader.getSuperName();
-		final boolean replaceSuper = targets.containsKey(superName);
-
+		
 		// どのクラスがMMMLibのクラスを使っているかわからないので、全クラスチェックする。当然重い。
 		// (親クラスだけでなく、引数や戻り値だけ使っている可能性もある)
 
@@ -161,11 +133,7 @@ public class LMLibTransformer implements IClassTransformer, Opcodes {
 		ClassNode lcnode = new ClassNode();
 		lcreader.accept(lcnode, 0);
 		lcnode.superName = checkMMM(lcnode.superName);
-		if(replaceSuper)
-		{
-			Debug("Load Old-MulitiModel: %s extends %s -> %s", name, superName, lcnode.superName);
-		}
-
+		
 		// フィールドの置き換え
 		for (FieldNode lfn : lcnode.fields) {
 			lfn.desc = checkMMM(lfn.desc);
@@ -212,26 +180,30 @@ public class LMLibTransformer implements IClassTransformer, Opcodes {
 			ClassWriter lcwriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
 			lcnode.accept(lcwriter);
 			byte[] lb = lcwriter.toByteArray();
-			Debug("Replace: %s", name);
+			logger.info("MultiModel Transform　: " + name);
 			return lb;
 		}
 		return basicClass;
 	}
-
-	private String checkMMM(String pText) {
+	
+	/**
+	 * 変換対象のクラスチェックを行う
+	 * @param pText
+	 * @return
+	 * 
+	 * clazzNameに入ってくる名称が L[クラス名]; と [クラス名] のみの2パターンがある
+	 * そのためindexOfで照合をやっているがその場合例えば
+	 * ModelBaseSoloがModelBaseで条件一致しておかしくなる
+	 * 対応として末尾に ; を追加して上のような条件を除外できるように対応
+	 */
+	private String checkMMM(String clazzName) {
 		for (Entry<String, String> le : targets.entrySet()) {
-			//pTextに入ってくる名称が L[クラス名]; と [クラス名] のみの2パターンがある
-			//そのためindexOfで照合をやっているがその場合例えば
-			//ModelBaseSoloがModelBaseで条件一致しておかしくなる
-			//対応として末尾に ; を追加して上のような条件を除外できるように対応
-			if ((pText+";").indexOf(le.getKey() + ";") > -1) {
-				String result = pText.replace(le.getKey(), le.getValue());
-//				Debug("%d Hit and Replace: %s -> %s", debugOut, pText, result);
+			if ((clazzName + ";").indexOf(le.getKey() + ";") > -1) {
+				String result = clazzName.replace(le.getKey(), le.getValue());
 				isChange = true;
 				return result;
 			}
 		}
-		return pText;
+		return clazzName;
 	}
-
 }

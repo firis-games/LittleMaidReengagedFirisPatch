@@ -4,6 +4,11 @@ import java.util.Map;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
+/**
+ * LMLibraryCore
+ * @author firis-games
+ *
+ */
 public class LMLibCoreMod implements IFMLLoadingPlugin{
 
 	@Override
@@ -20,11 +25,9 @@ public class LMLibCoreMod implements IFMLLoadingPlugin{
 	public String getSetupClass() {
 		return null;
 	}
-
+	
 	@Override
-	public void injectData(Map<String, Object> data) {
-		
-	}
+	public void injectData(Map<String, Object> data) {}
 
 	@Override
 	public String getAccessTransformerClass() {
