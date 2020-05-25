@@ -20,9 +20,6 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.MultiANewArrayInsnNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 
-import firis.lmlib.common.model.ModelLittleMaid_Aug;
-import firis.lmlib.common.model.ModelLittleMaid_Orign;
-import firis.lmlib.common.model.ModelLittleMaid_SR2;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.caps.ModelCapsHelper;
 import firis.lmmm.api.model.ModelBase;
@@ -33,6 +30,9 @@ import firis.lmmm.api.model.parts.ModelBox;
 import firis.lmmm.api.model.parts.ModelBoxBase;
 import firis.lmmm.api.model.parts.ModelPlate;
 import firis.lmmm.api.renderer.ModelRenderer;
+import firis.lmmm.builtin.model.ModelLittleMaid_Aug;
+import firis.lmmm.builtin.model.ModelLittleMaid_Orign;
+import firis.lmmm.builtin.model.ModelLittleMaid_SR2;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 
