@@ -1,6 +1,6 @@
 package net.firis.lmt.config.custom;
 
-import firis.lmlibrary.lib.loader.pack.ResourceFileHelper;
+import firis.lmlib.loader.pack.ResourceFileHelper;
 
 /**
  * 独自設定の管理用クラス

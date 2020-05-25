@@ -1,8 +1,8 @@
 package net.blacklab.lmr.util;
 
-import firis.lmlibrary.api.caps.IModelCaps;
-import firis.lmlibrary.api.model.ModelMultiBase;
-import firis.lmlibrary.lib.common.data.ModelCapsData;
+import firis.lmlib.common.data.ModelCapsData;
+import firis.lmmm.api.caps.IModelCaps;
+import firis.lmmm.api.model.ModelMultiBase;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;

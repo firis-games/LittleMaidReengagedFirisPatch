@@ -1,10 +1,10 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import firis.lmlibrary.lib.common.data.IModelCapsData;
-import firis.lmlibrary.lib.common.data.IMultiModelEntity;
-import firis.lmlibrary.lib.common.data.ModelConfigCompoundBase;
-import firis.lmlibrary.lib.manager.LMTextureBoxManager;
-import firis.lmlibrary.lib.manager.pack.LMTextureBox;
+import firis.lmlib.common.data.IModelCapsData;
+import firis.lmlib.common.data.IMultiModelEntity;
+import firis.lmlib.common.data.ModelConfigCompoundBase;
+import firis.lmlib.manager.LMTextureBoxManager;
+import firis.lmlib.manager.pack.LMTextureBox;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;

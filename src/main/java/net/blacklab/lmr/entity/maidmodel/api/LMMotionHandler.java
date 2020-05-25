@@ -3,9 +3,9 @@ package net.blacklab.lmr.entity.maidmodel.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import firis.lmlibrary.api.caps.IModelCaps;
-import firis.lmlibrary.api.model.ModelLittleMaidBase;
-import firis.lmlibrary.api.model.motion.ILMMotionRotationAngles;
+import firis.lmmm.api.caps.IModelCaps;
+import firis.lmmm.api.model.ModelLittleMaidBase;
+import firis.lmmm.api.model.motion.ILMMotionRotationAngles;
 import net.blacklab.lmr.entity.maidmodel.base.motion.LMMotionItemCarryer;
 
 /**

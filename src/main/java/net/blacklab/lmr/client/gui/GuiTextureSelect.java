@@ -6,7 +6,7 @@ import org.lwjgl.opengl.EXTRescaleNormal;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import firis.lmlibrary.lib.manager.pack.LMTextureBox;
+import firis.lmlib.manager.pack.LMTextureBox;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRMessage;
 import net.minecraft.client.gui.GuiButton;

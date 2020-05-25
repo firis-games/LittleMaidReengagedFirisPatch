@@ -3,9 +3,9 @@ package net.firis.lmt.common.modelcaps;
 import java.util.ArrayList;
 import java.util.List;
 
-import firis.lmlibrary.api.caps.IModelCaps;
-import firis.lmlibrary.api.model.ModelMultiBase;
-import firis.lmlibrary.lib.common.data.IModelCapsData;
+import firis.lmlib.common.data.IModelCapsData;
+import firis.lmmm.api.caps.IModelCaps;
+import firis.lmmm.api.model.ModelMultiBase;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.block.state.IBlockState;

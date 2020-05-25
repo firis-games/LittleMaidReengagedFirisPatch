@@ -94,7 +94,7 @@ processResources {
 // ASM
 jar {
     manifest {
-        attributes('FMLCorePlugin': 'firis.lmlibrary.core.LMLibCoreMod', 'FMLCorePluginContainsFMLMod': 'true')
+        attributes('FMLCorePlugin': 'firis.lmlib.core.LMLibCoreMod', 'FMLCorePluginContainsFMLMod': 'true')
     }
 }
 

@@ -1,8 +1,8 @@
 package net.blacklab.lmr.entity.maidmodel.base.motion;
 
-import firis.lmlibrary.api.caps.IModelCaps;
-import firis.lmlibrary.api.model.ModelLittleMaidBase;
-import firis.lmlibrary.api.model.motion.ILMMotionRotationAngles;
+import firis.lmmm.api.caps.IModelCaps;
+import firis.lmmm.api.model.ModelLittleMaidBase;
+import firis.lmmm.api.model.motion.ILMMotionRotationAngles;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.minecraft.entity.Entity;

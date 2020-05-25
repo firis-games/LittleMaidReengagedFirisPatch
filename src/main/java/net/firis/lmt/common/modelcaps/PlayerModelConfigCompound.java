@@ -2,10 +2,10 @@ package net.firis.lmt.common.modelcaps;
 
 import java.util.UUID;
 
-import firis.lmlibrary.lib.common.data.IModelCapsData;
-import firis.lmlibrary.lib.common.data.ModelConfigCompoundBase;
-import firis.lmlibrary.lib.manager.LMTextureBoxManager;
-import firis.lmlibrary.lib.manager.pack.LMTextureBox;
+import firis.lmlib.common.data.IModelCapsData;
+import firis.lmlib.common.data.ModelConfigCompoundBase;
+import firis.lmlib.manager.LMTextureBoxManager;
+import firis.lmlib.manager.pack.LMTextureBox;
 import net.firis.lmt.config.FirisConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
