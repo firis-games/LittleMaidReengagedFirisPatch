@@ -1,4 +1,4 @@
-package firis.lmlib.manager;
+package firis.lmlib.api.manager;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -11,12 +11,12 @@ import java.util.Map;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import firis.lmlib.loader.LMSoundHandler;
-import firis.lmlib.loader.pack.JsonResourceLittleMaidCustomSound;
-import firis.lmlib.loader.pack.ResourceFileHelper;
-import firis.lmlib.loader.pack.JsonResourceLittleMaidCustomSound.ModelVoice;
-import firis.lmlib.loader.pack.JsonResourceLittleMaidSound.ResourceLittleMaidSoundpack;
-import firis.lmlib.manager.pack.LMTextureBox;
+import firis.lmlib.api.loader.LMSoundHandler;
+import firis.lmlib.api.loader.pack.JsonResourceLittleMaidCustomSound;
+import firis.lmlib.api.loader.pack.ResourceFileHelper;
+import firis.lmlib.api.loader.pack.JsonResourceLittleMaidCustomSound.ModelVoice;
+import firis.lmlib.api.loader.pack.JsonResourceLittleMaidSound.ResourceLittleMaidSoundpack;
+import firis.lmlib.api.manager.pack.LMTextureBox;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.util.EnumSound;

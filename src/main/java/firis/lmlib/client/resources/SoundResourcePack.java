@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 import com.google.common.collect.ImmutableSet;
 
-import firis.lmlib.manager.SoundManager;
+import firis.lmlib.api.manager.SoundManager;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.client.resources.DefaultResourcePack;
 import net.minecraft.client.resources.IResourcePack;

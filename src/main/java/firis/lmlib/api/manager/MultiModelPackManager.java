@@ -1,10 +1,10 @@
-package firis.lmlib.manager;
+package firis.lmlib.api.manager;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import firis.lmlib.loader.LMMultiModelHandler;
-import firis.lmlib.manager.pack.MultiModelPack;
+import firis.lmlib.api.loader.LMMultiModelHandler;
+import firis.lmlib.api.manager.pack.MultiModelPack;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;

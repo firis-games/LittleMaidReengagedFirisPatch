@@ -3,8 +3,8 @@ package net.firis.lmt.common.manager;
 import java.util.HashMap;
 import java.util.Map;
 
-import firis.lmlib.manager.LMTextureBoxManager;
-import firis.lmlib.manager.pack.LMTextureBox;
+import firis.lmlib.api.manager.LMTextureBoxManager;
+import firis.lmlib.api.manager.pack.LMTextureBox;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
 import net.firis.lmt.common.modelcaps.PlayerModelConfigCompound;

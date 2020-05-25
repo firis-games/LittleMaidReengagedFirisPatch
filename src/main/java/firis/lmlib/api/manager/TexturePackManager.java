@@ -1,4 +1,4 @@
-package firis.lmlib.manager;
+package firis.lmlib.api.manager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,9 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import firis.lmlib.loader.LMTextureHandler;
-import firis.lmlib.manager.pack.EnumColor;
-import firis.lmlib.manager.pack.TexturePack;
+import firis.lmlib.api.loader.LMTextureHandler;
+import firis.lmlib.api.manager.pack.EnumColor;
+import firis.lmlib.api.manager.pack.TexturePack;
 
 /**
  * マルチモデルのテクスチャパックを管理する

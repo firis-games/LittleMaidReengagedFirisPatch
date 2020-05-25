@@ -5,11 +5,11 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import firis.lmlib.api.loader.LMFileLoader;
+import firis.lmlib.api.manager.LMTextureBoxManager;
+import firis.lmlib.api.manager.SoundManager;
 import firis.lmlib.client.resources.OldZipTexturesWrapper;
 import firis.lmlib.client.resources.SoundResourcePack;
-import firis.lmlib.loader.LMFileLoader;
-import firis.lmlib.manager.LMTextureBoxManager;
-import firis.lmlib.manager.SoundManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraftforge.fml.common.FMLCommonHandler;

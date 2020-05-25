@@ -1,4 +1,4 @@
-package firis.lmlib.loader.pack;
+package firis.lmlib.api.loader.pack;
 
 import java.util.HashMap;
 import java.util.Map;

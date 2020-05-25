@@ -1,4 +1,4 @@
-package firis.lmlib.loader;
+package firis.lmlib.api.loader;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -11,7 +11,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import firis.lmlib.loader.pack.ResourceFileHelper;
+import firis.lmlib.api.loader.pack.ResourceFileHelper;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 

@@ -1,9 +1,9 @@
 package net.firis.lmt.client.renderer;
 
+import firis.lmlib.api.manager.LMTextureBoxManager;
+import firis.lmlib.api.manager.pack.LMTextureBox;
 import firis.lmlib.common.data.IModelCapsData;
 import firis.lmlib.common.data.IModelConfigCompound;
-import firis.lmlib.manager.LMTextureBoxManager;
-import firis.lmlib.manager.pack.LMTextureBox;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;

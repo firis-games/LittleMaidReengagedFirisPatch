@@ -6,8 +6,8 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import firis.lmlib.manager.LMTextureBoxManager;
-import firis.lmlib.manager.pack.LMTextureBox;
+import firis.lmlib.api.manager.LMTextureBoxManager;
+import firis.lmlib.api.manager.pack.LMTextureBox;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.Minecraft;

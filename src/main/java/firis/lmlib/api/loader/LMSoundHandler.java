@@ -1,4 +1,4 @@
-package firis.lmlib.loader;
+package firis.lmlib.api.loader;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import firis.lmlib.loader.pack.JsonResourceLittleMaidSound;
-import firis.lmlib.loader.pack.ResourceFileHelper;
+import firis.lmlib.api.loader.pack.JsonResourceLittleMaidSound;
+import firis.lmlib.api.loader.pack.ResourceFileHelper;
 import net.blacklab.lmr.config.LMRConfig;
 
 /**

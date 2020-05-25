@@ -1,4 +1,4 @@
-package firis.lmlib.manager;
+package firis.lmlib.api.manager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import firis.lmlib.manager.pack.LMTextureBox;
-import firis.lmlib.manager.pack.MultiModelPack;
-import firis.lmlib.manager.pack.TexturePack;
+import firis.lmlib.api.manager.pack.LMTextureBox;
+import firis.lmlib.api.manager.pack.MultiModelPack;
+import firis.lmlib.api.manager.pack.TexturePack;
 
 /**
  * メイドさんのテクスチャモデルを管理するクラス

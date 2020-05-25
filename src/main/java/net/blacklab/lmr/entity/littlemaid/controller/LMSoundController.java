@@ -3,7 +3,7 @@ package net.blacklab.lmr.entity.littlemaid.controller;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import firis.lmlib.manager.SoundManager;
+import firis.lmlib.api.manager.SoundManager;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;

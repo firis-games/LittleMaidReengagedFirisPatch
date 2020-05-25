@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.maidmodel;
 
+import firis.lmlib.api.manager.pack.LMTextureBox;
 import firis.lmlib.common.data.IModelCapsData;
-import firis.lmlib.manager.pack.LMTextureBox;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;

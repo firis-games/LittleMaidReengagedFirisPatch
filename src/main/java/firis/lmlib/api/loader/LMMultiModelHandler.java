@@ -1,4 +1,4 @@
-package firis.lmlib.loader;
+package firis.lmlib.api.loader;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import firis.lmlib.loader.pack.ResourceFileHelper;
+import firis.lmlib.api.loader.pack.ResourceFileHelper;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;

@@ -3,9 +3,9 @@ package firis.lmlib.common.data;
 import java.util.EnumMap;
 import java.util.Map;
 
-import firis.lmlib.manager.LMTextureBoxManager;
-import firis.lmlib.manager.pack.EnumColor;
-import firis.lmlib.manager.pack.LMTextureBox;
+import firis.lmlib.api.manager.LMTextureBoxManager;
+import firis.lmlib.api.manager.pack.EnumColor;
+import firis.lmlib.api.manager.pack.LMTextureBox;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;

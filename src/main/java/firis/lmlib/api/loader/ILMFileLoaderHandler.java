@@ -1,4 +1,4 @@
-package firis.lmlib.loader;
+package firis.lmlib.api.loader;
 
 import java.io.InputStream;
 import java.nio.file.Path;
