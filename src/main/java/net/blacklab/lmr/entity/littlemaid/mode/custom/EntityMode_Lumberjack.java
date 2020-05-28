@@ -3,13 +3,13 @@ package net.blacklab.lmr.entity.littlemaid.mode.custom;
 import java.util.ArrayList;
 import java.util.List;
 
+import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTriggerRegisterHelper;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
-import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;

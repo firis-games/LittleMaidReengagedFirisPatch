@@ -3,6 +3,7 @@ package net.blacklab.lmr.entity.littlemaid.mode.custom;
 import java.util.HashMap;
 import java.util.Map;
 
+import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
@@ -10,7 +11,6 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Farmer.checkBlockBlack
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger.Status;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTriggerRegisterHelper;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
-import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.block.BlockReed;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

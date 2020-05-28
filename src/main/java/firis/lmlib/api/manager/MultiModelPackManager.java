@@ -3,11 +3,10 @@ package firis.lmlib.api.manager;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import firis.lmlib.LMLibrary;
 import firis.lmlib.api.loader.LMMultiModelHandler;
 import firis.lmlib.api.manager.pack.MultiModelPack;
 import firis.lmmm.api.model.ModelMultiBase;
-import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.config.LMRConfig;
 
 /**
  * マルチモデルパックを管理する
@@ -51,11 +50,10 @@ public class MultiModelPackManager {
 				multiModelPackMap.put(key, mmodelPack);
 				
 				//モデルロードメッセージ
-				LittleMaidReengaged.logger.info(String.format("MultiModelPackManager-Load-MultiModel : %s", key));
+				LMLibrary.logger.info(String.format("MultiModelPackManager-Load-MultiModel : %s", key));
 
 			} catch (Exception e) {
-				LittleMaidReengaged.logger.error(String.format("MultiModelPackManager-MultiModelInstanceException : %s", ""));
-				if (LMRConfig.cfg_PrintDebugMessage) e.printStackTrace();
+				LMLibrary.logger.error(String.format("MultiModelPackManager-MultiModelInstanceException : %s", ""), e);
 			}
 		}
 	}

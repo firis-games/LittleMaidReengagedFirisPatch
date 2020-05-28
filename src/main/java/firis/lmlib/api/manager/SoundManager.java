@@ -11,15 +11,15 @@ import java.util.Map;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import firis.lmlib.LMLibrary;
+import firis.lmlib.api.constant.EnumSound;
 import firis.lmlib.api.loader.LMSoundHandler;
 import firis.lmlib.api.loader.pack.JsonResourceLittleMaidCustomSound;
 import firis.lmlib.api.loader.pack.ResourceFileHelper;
 import firis.lmlib.api.loader.pack.JsonResourceLittleMaidCustomSound.ModelVoice;
 import firis.lmlib.api.loader.pack.JsonResourceLittleMaidSound.ResourceLittleMaidSoundpack;
 import firis.lmlib.api.manager.pack.LMTextureBox;
-import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.util.EnumSound;
+import firis.lmlib.common.config.LMLConfig;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -173,7 +173,7 @@ public class SoundManager {
 				for (String voice : soundinfo.voices.get(voiceId)) {
 					//sounds.json形式のパスへ変換する
 					String voicePath = voice;
-					voicePath = LittleMaidReengaged.MODID + ":" + elementName + "//" + voicePath;
+					voicePath = LMLibrary.MODID + ":" + elementName + "//" + voicePath;
 					soundsElements.add(voicePath);
 				}
 				elementObject.add("sounds", soundsElements);
@@ -186,7 +186,7 @@ public class SoundManager {
 		this.sounds_json = ResourceFileHelper.jsonToString(jsonObject);
 		
 		//ファイルを書き出し
-		if (LMRConfig.cfg_loader_output_sounds_json) {
+		if (LMLConfig.cfg_loader_output_sounds_json) {
 			ResourceFileHelper.writeToFile("sounds.json", this.sounds_json);
 		}
 		
@@ -285,12 +285,12 @@ public class SoundManager {
 		InputStream is = null;
 		try {
 			String sounds = this.sounds_json;
-			if (LMRConfig.cfg_loader_output_sounds_json) {
+			if (LMLConfig.cfg_loader_output_sounds_json) {
 				ResourceFileHelper.writeToFile("sounds.json", this.sounds_json);
 			}
 			is = new ByteArrayInputStream(sounds.getBytes("utf-8"));
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			LMLibrary.logger.error("getResourcepackSoundsJson : ", e);
 		};
 		return is;
 	}
@@ -307,6 +307,6 @@ public class SoundManager {
 		}
 		
 		//対象外の場合は標準レートを返却する
-		return LMRConfig.cfg_voiceRate;
+		return LMLConfig.cfg_voiceRate;
 	}
 }

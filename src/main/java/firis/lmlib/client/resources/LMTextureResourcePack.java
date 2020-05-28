@@ -15,7 +15,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 import firis.lmlib.LMLibrary;
-import net.blacklab.lmr.config.LMRConfig;
+import firis.lmlib.common.config.LMLConfig;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.MetadataSerializer;
@@ -148,7 +148,7 @@ public class LMTextureResourcePack implements IResourcePack {
 	protected InputStream getInputStreamFromResoucepacks(String key) throws IOException {
 		
 		//設定が無効の場合は何もしない
-		if (!LMRConfig.cfg_loader_texture_load_from_resoucepack) return null;
+		if (!LMLConfig.cfg_loader_texture_from_directory) return null;
 		
 		//設定系の初期化
 		createResourcepacksConfig();
@@ -171,7 +171,7 @@ public class LMTextureResourcePack implements IResourcePack {
 	public static void createResourcepacksConfig() {
 		
 		//設定が無効の場合は何もしない
-		if (!LMRConfig.cfg_loader_texture_load_from_resoucepack) return;
+		if (!LMLConfig.cfg_loader_texture_from_directory) return;
 		
 		//フォルダを作成する
 		Path basePath = resourcepacksPath;

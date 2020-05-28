@@ -2,9 +2,9 @@ package net.blacklab.lmr.entity.littlemaid.ai;
 
 import java.util.List;
 
+import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;

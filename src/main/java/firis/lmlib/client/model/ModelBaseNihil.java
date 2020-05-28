@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import firis.lmlib.common.data.IModelCapsData;
 import firis.lmlib.common.data.IModelConfigCompound;
-import net.blacklab.lmr.util.helper.RendererHelper;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.OpenGlHelper;
 
 /**
  * マルチモデル用ModelBaseの基底クラス
@@ -49,7 +49,7 @@ public abstract class ModelBaseNihil extends ModelBase {
 		GL11.glDepthFunc(GL11.GL_LEQUAL);
 
 		//発光色調整
-		RendererHelper.setLightmapTextureCoords(0x00f000f0);//61680
+		this.setLightmapTextureCoords(0x00f000f0);//61680
 		
 		//発光色を調整
 		float[] lightColor = this.getTextureLightColor();
@@ -66,7 +66,7 @@ public abstract class ModelBaseNihil extends ModelBase {
 	protected void glLightTexturePost() {
 		
 		//発光色リセット
-		RendererHelper.setLightmapTextureCoords(this.lighting);
+		this.setLightmapTextureCoords(this.lighting);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		//発光テクスチャリセット
@@ -109,5 +109,13 @@ public abstract class ModelBaseNihil extends ModelBase {
 //			float par5, float par6, float par7) {
 //		renderCount++;
 //	}
+	
+	public void setLightmapTextureCoords(int pValue) {
+//		int ls = pValue % 65536;
+//		int lt = pValue / 65536;
+		int ls = pValue & 0xffff;
+		int lt = pValue >>> 16;
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, ls, lt);
+	}
 	
 }

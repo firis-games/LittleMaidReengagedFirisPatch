@@ -3,12 +3,13 @@ package net.blacklab.lmr.entity.littlemaid.controller;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import firis.lmlib.LMLibrary;
+import firis.lmlib.api.constant.EnumSound;
 import firis.lmlib.api.manager.SoundManager;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRMessage;
-import net.blacklab.lmr.util.EnumSound;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -159,7 +160,7 @@ public class LMSoundController {
 			//音声の再生
 			LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", maid.getEntityId(), sound.index, sound.name(), soundName));
 
-			SoundEvent soundEvent = new SoundEvent(new ResourceLocation(LittleMaidReengaged.MODID, soundName));
+			SoundEvent soundEvent = new SoundEvent(new ResourceLocation(LMLibrary.MODID, soundName));
 			this.maid.world.playSound(maid.posX, maid.posY, maid.posZ, 
 					soundEvent, maid.getSoundCategory(), maid.getSoundVolume(), 1.0F, false);
 			playingSound.remove(sound);

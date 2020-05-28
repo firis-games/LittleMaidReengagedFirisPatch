@@ -1,4 +1,4 @@
-package net.blacklab.lmr.util;
+package firis.lmlib.api.constant;
 
 public enum EnumSound {
 

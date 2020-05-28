@@ -1,10 +1,10 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
+import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.ai.EntityAITasks;

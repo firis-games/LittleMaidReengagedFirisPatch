@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableSet;
 
 import firis.lmlib.LMLibrary;
 import firis.lmlib.api.manager.SoundManager;
-import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.MetadataSerializer;
@@ -60,7 +59,7 @@ public class LMSoundResourcePack implements IResourcePack {
 	 */
 	@Override
 	public Set<String> getResourceDomains() {
-		return ImmutableSet.of(LMLibrary.MODID, LittleMaidReengaged.MODID);
+		return ImmutableSet.of(LMLibrary.MODID);
 	}
 
 	@Override

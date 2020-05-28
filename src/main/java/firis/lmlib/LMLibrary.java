@@ -8,8 +8,9 @@ import org.apache.logging.log4j.Logger;
 import firis.lmlib.api.loader.LMFileLoader;
 import firis.lmlib.api.manager.LMTextureBoxManager;
 import firis.lmlib.api.manager.SoundManager;
-import firis.lmlib.client.resources.LMTextureResourcePack;
 import firis.lmlib.client.resources.LMSoundResourcePack;
+import firis.lmlib.client.resources.LMTextureResourcePack;
+import firis.lmlib.common.config.LMLConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -61,6 +62,9 @@ public class LMLibrary {
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+    	
+    	//設定ファイル初期化
+    	LMLConfig.init(event);
     	
 		//リトルメイドファイルローダー
 		LMFileLoader.instance.load();

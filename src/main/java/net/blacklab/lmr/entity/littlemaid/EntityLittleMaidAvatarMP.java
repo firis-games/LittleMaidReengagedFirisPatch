@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
-import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.enchantment.EnchantmentHelper;

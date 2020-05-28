@@ -1,11 +1,11 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
+import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.ai.target.EntityAILMNearestAttackableTarget;
-import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

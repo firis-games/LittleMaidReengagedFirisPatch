@@ -2,10 +2,10 @@ package net.blacklab.lmr.client.entity;
 
 import java.util.Collection;
 
+import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.IEntityLittleMaidAvatar;
-import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

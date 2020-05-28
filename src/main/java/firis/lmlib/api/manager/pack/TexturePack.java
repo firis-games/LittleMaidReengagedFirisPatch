@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import firis.lmlib.api.constant.EnumColor;
+
 /**
  * テクスチャパック管理用クラス
  * 

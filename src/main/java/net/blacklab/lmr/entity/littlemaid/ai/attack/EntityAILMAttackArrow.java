@@ -1,5 +1,6 @@
 package net.blacklab.lmr.entity.littlemaid.ai.attack;
 
+import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -8,7 +9,6 @@ import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Archer;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
-import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.SwingStatus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

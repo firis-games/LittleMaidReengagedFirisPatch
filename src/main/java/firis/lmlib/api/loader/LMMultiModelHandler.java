@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import firis.lmlib.LMLibrary;
 import firis.lmlib.api.loader.pack.ResourceFileHelper;
+import firis.lmlib.common.config.LMLConfig;
 import firis.lmmm.api.model.ModelMultiBase;
-import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.config.LMRConfig;
 
 /**
  * メイドさんのマルチモデルをロードする
@@ -53,7 +53,7 @@ public class LMMultiModelHandler implements ILMFileLoaderHandler {
 	public void init() {
 		
 		//キャッシュ機能の利用可否
-		if (!LMRConfig.cfg_loader_is_cache) return;
+		if (!LMLConfig.cfg_loader_is_cache) return;
 		
 		//変換用キャッシュ
 		Map<String, String> cachemultiModelClassMap = new HashMap<>();
@@ -150,8 +150,7 @@ public class LMMultiModelHandler implements ILMFileLoaderHandler {
 			}
 			
 		} catch (Exception e) {
-			LittleMaidReengaged.logger.error(String.format("LMMultiModelHandler-Exception : %s", path));
-			if (LMRConfig.cfg_PrintDebugMessage) e.printStackTrace();
+			LMLibrary.logger.error(String.format("LMMultiModelHandler-Exception : %s", path), e);
 		}
 	}
 	
@@ -163,7 +162,7 @@ public class LMMultiModelHandler implements ILMFileLoaderHandler {
 	public void postLoadHandler() {
 		
 		//キャッシュファイルを出力する
-		if (LMRConfig.cfg_loader_is_cache) {
+		if (LMLConfig.cfg_loader_is_cache) {
 			
 			//キャッシュファイル出力用に変換する
 			Map<String, String> cachemultiModelClassMap = new HashMap<>();

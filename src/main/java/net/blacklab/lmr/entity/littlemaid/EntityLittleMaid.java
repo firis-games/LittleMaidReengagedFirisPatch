@@ -21,8 +21,9 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import firis.lmlib.api.constant.EnumColor;
+import firis.lmlib.api.constant.EnumSound;
 import firis.lmlib.api.manager.LMTextureBoxManager;
-import firis.lmlib.api.manager.pack.EnumColor;
 import firis.lmlib.api.manager.pack.LMTextureBox;
 import firis.lmlib.common.data.IMultiModelEntity;
 import net.blacklab.lib.minecraft.item.ItemUtil;
@@ -64,7 +65,6 @@ import net.blacklab.lmr.network.LMRMessage;
 import net.blacklab.lmr.network.LMRNetwork;
 import net.blacklab.lmr.util.Counter;
 import net.blacklab.lmr.util.EnumMaidMotion;
-import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.ModelCapsLittleMaid;
 import net.blacklab.lmr.util.SwingStatus;

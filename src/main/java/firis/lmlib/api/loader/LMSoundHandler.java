@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import firis.lmlib.api.loader.pack.JsonResourceLittleMaidSound;
 import firis.lmlib.api.loader.pack.ResourceFileHelper;
-import net.blacklab.lmr.config.LMRConfig;
+import firis.lmlib.common.config.LMLConfig;
 
 /**
  * メイドさんのサウンド関連ファイルをロードする
@@ -57,7 +57,7 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 	public void init() {
 		
 		//キャッシュ機能の利用可否
-		if (!LMRConfig.cfg_loader_is_cache) return;
+		if (!LMLConfig.cfg_loader_is_cache) return;
 		
 		//キャッシュファイルの読み込み
 		resourceLittleMaidSound = ResourceFileHelper.readFromJson(this.cacheFileName, JsonResourceLittleMaidSound.class);
@@ -263,7 +263,7 @@ public class LMSoundHandler implements ILMFileLoaderHandler {
 		}
 		
 		//キャッシュファイルを出力する
-		if (LMRConfig.cfg_loader_is_cache) {
+		if (LMLConfig.cfg_loader_is_cache) {
 			ResourceFileHelper.writeToJson(this.cacheFileName, resourceLittleMaidSound);
 		}	
 	}

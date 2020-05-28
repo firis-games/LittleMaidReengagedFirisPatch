@@ -1,8 +1,8 @@
 package net.blacklab.lmr.entity.littlemaid.ai.attack;
 
+import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
-import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.helper.MaidHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;

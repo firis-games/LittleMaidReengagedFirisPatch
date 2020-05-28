@@ -6,16 +6,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.config.LMRConfig;
-import net.blacklab.lmr.util.DevMode;
+import firis.lmlib.LMLibrary;
+import firis.lmlib.common.config.LMLConfig;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
-import scala.actors.threadpool.Arrays;
 
 /**
  * メイドさんの外部読み込みファイルのLoader
@@ -52,7 +51,7 @@ public class LMFileLoader {
 	 */
 	public void load() {
 		
-		LittleMaidReengaged.logger.info("LMFileLoader-load : start");
+		LMLibrary.logger.info("LMFileLoader-load : start");
 		
 		//LoaderHandlerの初期化処理
 		for (ILMFileLoaderHandler handler : loaderHandler) {
@@ -70,7 +69,7 @@ public class LMFileLoader {
 		
 		//Loaderのファイル読込処理をスキップ
 		if (procLoaderHandler.size() == 0) {
-			LittleMaidReengaged.logger.info("LMFileLoader-load : cache-load end");
+			LMLibrary.logger.info("LMFileLoader-load : cache-load end");
 			return;
 		};
 		
@@ -81,8 +80,7 @@ public class LMFileLoader {
 		try {
 			filePathList = getLoadPath();
 		} catch (Exception e) {
-			LittleMaidReengaged.logger.error("LMFileLoader-Exception : getLoadPath");
-			if (LMRConfig.cfg_PrintDebugMessage) e.printStackTrace();
+			LMLibrary.logger.error("LMFileLoader-Exception : getLoadPath", e);
 			return;
 		}
 		
@@ -118,8 +116,7 @@ public class LMFileLoader {
 					
 				}
 			} catch (Exception e){
-				LittleMaidReengaged.logger.error(String.format("LMFileLoader-LoadException : %s", loaderPath.path.toString()));
-				if (LMRConfig.cfg_PrintDebugMessage) e.printStackTrace();
+				LMLibrary.logger.error(String.format("LMFileLoader-LoadException : %s", loaderPath.path.toString()), e);
 			}
 		}
 		
@@ -128,7 +125,7 @@ public class LMFileLoader {
 			handler.postLoadHandler();
 		}
 		
-		LittleMaidReengaged.logger.info("LMFileLoader-load : end");
+		LMLibrary.logger.info("LMFileLoader-load : end");
 	}
 	
 	/**
@@ -143,11 +140,10 @@ public class LMFileLoader {
 		List<ModPath> pathList = new ArrayList<>();
 		
 		//開発環境専用パス
-		if (DevMode.DEVELOPMENT_DEBUG_MODE) {
+		if (LMLConfig.DEVELOPER_MODE) {
 			String classPath = System.getProperty("java.class.path");
 			String separator = System.getProperty("path.separator");
 			
-			@SuppressWarnings("unchecked")
 			List<String> classPathList = Arrays.asList(classPath.split(separator));
 			
 			//対象パスからファイルを取得する

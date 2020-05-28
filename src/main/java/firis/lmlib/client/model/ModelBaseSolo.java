@@ -6,7 +6,6 @@ import firis.lmlib.common.data.IModelConfigCompound;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelLittleMaidBase;
 import firis.lmmm.api.model.ModelMultiBase;
-import net.blacklab.lmr.config.LMRConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -118,12 +117,8 @@ public class ModelBaseSolo extends ModelBaseNihil {
 		//マルチモデル
 		if (this.maidModel != null && this.maidTexture != null) {
 			//透過設定
-			if (LMRConfig.cfg_isModelAlphaBlend) {
-				GL11.glEnable(GL11.GL_BLEND);
-				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			} else {
-				GL11.glDisable(GL11.GL_BLEND);
-			}
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			
 			Minecraft.getMinecraft().getTextureManager().bindTexture(this.maidTexture);
 			this.maidModel.render(entityCaps, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, isRendering);

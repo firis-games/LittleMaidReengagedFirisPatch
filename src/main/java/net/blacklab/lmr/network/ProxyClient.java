@@ -1,5 +1,6 @@
 package net.blacklab.lmr.network;
 
+import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmc.client.event.RenderPlayerEventHandler;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
@@ -10,7 +11,6 @@ import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
 import net.blacklab.lmr.entity.renderfactory.RenderFactoryLittleMaid;
 import net.blacklab.lmr.entity.renderfactory.RenderFactoryMarkerDummy;
 import net.blacklab.lmr.entity.renderfactory.RenderFactoryModelSelect;
-import net.blacklab.lmr.util.EnumSound;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.firis.lmt.common.LMTCore;

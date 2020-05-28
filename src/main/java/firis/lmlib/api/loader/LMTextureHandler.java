@@ -11,9 +11,9 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import firis.lmlib.LMLibrary;
 import firis.lmlib.api.loader.pack.ResourceFileHelper;
-import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.config.LMRConfig;
+import firis.lmlib.common.config.LMLConfig;
 
 /**
  * メイドさんのテクスチャをロードする
@@ -67,7 +67,7 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 	public void init() {
 		
 		//キャッシュ機能の利用可否
-		if (!LMRConfig.cfg_loader_is_cache) return;
+		if (!LMLConfig.cfg_loader_is_cache) return;
 		
 		//キャッシュファイルの読み込み
 		textureMap = (Map<String, List<String>>) ResourceFileHelper.readFromJson(this.cacheFileName, Map.class);
@@ -129,7 +129,7 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 			textureMap.get(textureName).add(path);
 		} else {
 			//カラー番号が不正な場合はエラーとして扱う
-			LittleMaidReengaged.logger.error(String.format("LMTextureHandler-ColorIndexException : %s", path));
+			LMLibrary.logger.error(String.format("LMTextureHandler-ColorIndexException : %s", path));
 		}
 	}
 	
@@ -141,7 +141,7 @@ public class LMTextureHandler implements ILMFileLoaderHandler {
 	public void postLoadHandler() {
 		
 		//キャッシュファイルを出力する
-		if (LMRConfig.cfg_loader_is_cache) {
+		if (LMLConfig.cfg_loader_is_cache) {
 			ResourceFileHelper.writeToJson(this.cacheFileName, textureMap);
 		}
 		
