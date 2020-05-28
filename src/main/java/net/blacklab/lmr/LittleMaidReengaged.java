@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 
-import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmc.common.command.LMCommand;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.ReflectionHelper;
@@ -154,7 +153,6 @@ public class LittleMaidReengaged {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
 		MinecraftForge.EVENT_BUS.register(new EventHookLMRE());
-		VEventBus.instance.registerListener(new EventHookLMRE());
 		
 		//描画イベント登録
 		proxy.initClientRendererEventRegister();

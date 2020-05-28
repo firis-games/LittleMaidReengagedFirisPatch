@@ -1,6 +1,5 @@
 package net.blacklab.lmr.event;
 
-import net.blacklab.lib.vevent.SubscribeVEvent;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
@@ -134,7 +133,7 @@ public class EventHookLMRE
 		return false;
 	}
 
-	@SubscribeVEvent
+	@SubscribeEvent
 	public void onItemPutChest(EventLMRE.ItemPutChestEvent event){
 		LittleMaidReengaged.Debug("HOOK");
 		

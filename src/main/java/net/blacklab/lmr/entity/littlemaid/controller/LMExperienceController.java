@@ -2,7 +2,6 @@ package net.blacklab.lmr.entity.littlemaid.controller;
 
 import java.util.UUID;
 
-import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -11,6 +10,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * メイドさんの経験値管理クラス
@@ -304,7 +304,7 @@ public class LMExperienceController {
 				flag = true;
 			}
 			this.onLevelUp(currentLevel + 1);
-			VEventBus.instance.post(new EventLMRE.MaidLevelUpEvent(this.theMaid, getMaidLevel()));
+			MinecraftForge.EVENT_BUS.post(new EventLMRE.MaidLevelUpEvent(this.theMaid, getMaidLevel()));
 		}
 	}
 	

@@ -1,64 +1,53 @@
 package net.blacklab.lmr.api.event;
 
-import net.blacklab.lib.vevent.IVEventCancelable;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
-public class EventLMRE implements IVEventCancelable {
+/**
+ * LMRFP用イベント
+ * @author firis-games
+ *
+ */
+public class EventLMRE extends Event {
 	
-	private boolean canceled = false;
-	
-	public EntityLittleMaid maid;
-
-	public static class MaidLevelUpEvent extends EventLMRE {
-		
-		public int level = 0;
-		
-		public MaidLevelUpEvent(EntityLittleMaid maid, int level) {
-			super(maid);
-			this.level = level;
-		}
-	}
-
+	/**
+	 * チェスト格納イベント
+	 * @author firis-games
+	 *
+	 */
 	@Cancelable
-	public static class ItemPutChestEvent extends EventLMRE{
+	public static class ItemPutChestEvent extends EventLMRE {
 		
+		public EntityLittleMaid maid;
 		public IInventory target;
 		public ItemStack stack;
 		public int maidStackIndex;
 	
-		public ItemPutChestEvent(EntityLittleMaid maid, IInventory target, ItemStack stack, int maidStackIndex){
-			super(maid);
+		public ItemPutChestEvent(EntityLittleMaid maid, IInventory target, ItemStack stack, int maidStackIndex) {
+			this.maid = maid;
 			this.target = target;
 			this.stack = stack;
 			this.maidStackIndex = maidStackIndex;
 		}
+	}
+	
+	/**
+	 * レベルが上がったタイミングのイベント
+	 * @author firis-games
+	 *
+	 */
+	@Cancelable
+	public static class MaidLevelUpEvent extends EventLMRE {
 		
+		public EntityLittleMaid maid;
+		public int level = 0;
+		
+		public MaidLevelUpEvent(EntityLittleMaid maid, int level) {
+			this.maid = maid;
+			this.level = level;
+		}
 	}
-
-	public EventLMRE(EntityLittleMaid living) {
-		maid = living;
-	}
-	
-	@Override
-	public void setCanceled(boolean flag) {
-		if (!canceled) canceled = flag; 
-	}
-	
-	@Override
-	public boolean isCanceled() {
-		return canceled;
-	}
-	
-	@Override
-	public Result getResult() {
-		return Result.PASS;
-	}
-
-	@Override
-	public void setResult(Result result) {
-	}
-	
 }

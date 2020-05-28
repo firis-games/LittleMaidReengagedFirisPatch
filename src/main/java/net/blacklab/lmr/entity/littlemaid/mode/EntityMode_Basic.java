@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import firis.lmlib.api.constant.EnumSound;
-import net.blacklab.lib.vevent.VEventBus;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.event.EventLMRE;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -33,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * 野生モード
@@ -430,8 +430,8 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 			}
 			
 			if (!is.isEmpty()){
-				EventLMRE.ItemPutChestEvent event = new EventLMRE.ItemPutChestEvent(owner,myChest,is,maidSearchCount);
-				if(!VEventBus.instance.post(event)){
+				EventLMRE.ItemPutChestEvent event = new EventLMRE.ItemPutChestEvent(owner, myChest, is, maidSearchCount);
+				if(!MinecraftForge.EVENT_BUS.post(event)){
 //					mod_littleMaidMob.Debug("getchest2.");
 					boolean f = false;
 					for (int j = 0; j < myChest.getSizeInventory() && is.getCount() > 0; j++)
