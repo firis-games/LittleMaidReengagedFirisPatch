@@ -16,13 +16,13 @@ import net.blacklab.lmc.common.item.LMItemMaidSugar;
 import net.blacklab.lmc.common.villager.StructureVillagePiecesMaidBrokerHouse;
 import net.blacklab.lmc.common.villager.VillagerProfessionMaidBroker;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
+import net.blacklab.lmr.client.renderer.entity.RenderEntityMarkerDummy;
+import net.blacklab.lmr.client.renderer.entity.RenderEntitySelect;
+import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
 import net.blacklab.lmr.entity.maidmodel.api.LMMotionHandler;
-import net.blacklab.lmr.entity.renderfactory.RenderFactoryLittleMaid;
-import net.blacklab.lmr.entity.renderfactory.RenderFactoryMarkerDummy;
-import net.blacklab.lmr.entity.renderfactory.RenderFactoryModelSelect;
 import net.blacklab.lmr.event.EventHookLMRE;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
@@ -31,6 +31,8 @@ import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.manager.PluginManager;
 import net.firis.lmt.common.LMTCore;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -42,6 +44,7 @@ import net.minecraftforge.common.BiomeDictionary;
 //github.com/Verclene/LittleMaidReengaged.git
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -303,9 +306,24 @@ public class LittleMaidReengaged {
 		LMTCore.registerModels(event);
 		
 		//Entityの描画設定
-		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
-		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());
-		RenderingRegistry.registerEntityRenderingHandler(EntityMarkerDummy.class, new RenderFactoryMarkerDummy());
+		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new IRenderFactory<EntityLittleMaid>() {
+			@Override
+			public Render<? super EntityLittleMaid> createRenderFor(RenderManager manager) {
+				return new RenderLittleMaid(manager);
+			}
+		});
+		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new IRenderFactory<EntityLittleMaidForTexSelect>() {
+			@Override
+			public Render<? super EntityLittleMaidForTexSelect> createRenderFor(RenderManager manager) {
+				return new RenderEntitySelect(manager);
+			}
+		});
+		RenderingRegistry.registerEntityRenderingHandler(EntityMarkerDummy.class, new IRenderFactory<EntityMarkerDummy>() {
+			@Override
+			public Render<? super EntityMarkerDummy> createRenderFor(RenderManager manager) {
+				return new RenderEntityMarkerDummy();
+			}
+		});
 		
 		//リトルメイドテスト用モジュール
 		LMTCore.rendererRegister();

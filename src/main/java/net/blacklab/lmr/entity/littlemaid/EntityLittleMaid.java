@@ -26,7 +26,6 @@ import firis.lmlib.api.constant.EnumSound;
 import firis.lmlib.api.manager.LMTextureBoxManager;
 import firis.lmlib.api.manager.pack.LMTextureBox;
 import firis.lmlib.common.data.IMultiModelEntity;
-import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
@@ -4280,7 +4279,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //	}
 
 	public boolean isHeadMount(){
-		return ItemUtil.isHelm(maidInventory.armorInventory.get(3));
+		return ItemHelper.isHelm(maidInventory.armorInventory.get(3));
 	}
 
 //	/**

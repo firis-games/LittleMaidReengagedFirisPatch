@@ -5,12 +5,12 @@ import java.util.Iterator;
 import java.util.Map;
 
 import firis.lmlib.api.constant.EnumSound;
-import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTriggerRegisterHelper;
 import net.blacklab.lmr.inventory.InventoryLittleMaid;
+import net.blacklab.lmr.util.helper.VectorUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockFarmland;

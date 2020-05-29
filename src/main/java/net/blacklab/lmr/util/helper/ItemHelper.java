@@ -8,8 +8,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -162,6 +165,38 @@ public class ItemHelper {
 			return false;
 		Item li = pItemstack.getItem();
 		return (!pItemstack.isEmpty() && li instanceof ItemBlock && Block.getBlockFromItem(li).getMaterial(Block.getBlockFromItem(li).getDefaultState()) == Material.TNT);
+	}
+	
+	
+	/**
+	 * net.blacklab.lib.minecraft.item.ItemUtilから移動
+	 * @param pStack
+	 * @return
+	 */
+	public static int getFoodAmount(ItemStack pStack) {
+		if (pStack.isEmpty()) {
+			return -1;
+		}
+		if (pStack.getItem() instanceof ItemFood) {
+			return ((ItemFood) pStack.getItem()).getHealAmount(pStack);
+		}
+		return -1;
+	}
+	
+	/**
+	 * net.blacklab.lib.minecraft.item.ItemUtilから移動
+	 * @param stack
+	 * @return
+	 */
+	public static boolean isHelm(ItemStack stack){
+		if(!stack.isEmpty()){
+			if(stack.getItem() instanceof ItemArmor){
+				if(((ItemArmor)stack.getItem()).armorType == EntityEquipmentSlot.HEAD){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

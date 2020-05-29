@@ -25,9 +25,9 @@ public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
 	/**
 	 * コンストラクタ
 	 */
-	public RenderLittleMaid(RenderManager manager, float f) {
+	public RenderLittleMaid(RenderManager manager) {
 		
-		super(manager, f);
+		super(manager, 0.3F);
 		
 		//描画用Layer登録
 		this.addLayer(new LayerHeldItemLittleMaid(this));

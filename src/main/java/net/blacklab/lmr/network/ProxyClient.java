@@ -3,14 +3,9 @@ package net.blacklab.lmr.network;
 import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmc.client.event.RenderPlayerEventHandler;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.gui.GuiIFF;
 import net.blacklab.lmr.client.gui.inventory.GuiMaidInventory;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
-import net.blacklab.lmr.entity.renderfactory.RenderFactoryLittleMaid;
-import net.blacklab.lmr.entity.renderfactory.RenderFactoryMarkerDummy;
-import net.blacklab.lmr.entity.renderfactory.RenderFactoryModelSelect;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.firis.lmt.common.LMTCore;
@@ -27,7 +22,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 /**
  * クライアント専用処理。
@@ -36,15 +30,15 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
  */
 public class ProxyClient extends ProxyCommon
 {
-	public void rendererRegister() {
-		
-		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
-		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());
-		RenderingRegistry.registerEntityRenderingHandler(EntityMarkerDummy.class, new RenderFactoryMarkerDummy());
-		
-		//リトルメイドテスト用モジュール
-		LMTCore.rendererRegister();
-	}
+//	public void rendererRegister() {
+//		
+//		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaid.class, new RenderFactoryLittleMaid());
+//		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new RenderFactoryModelSelect());
+//		RenderingRegistry.registerEntityRenderingHandler(EntityMarkerDummy.class, new RenderFactoryMarkerDummy());
+//		
+//		//リトルメイドテスト用モジュール
+//		LMTCore.rendererRegister();
+//	}
 
 	/* 呼び出し箇所なし
 	public GuiContainer getContainerGUI(EntityClientPlayerMP var1, int var2,

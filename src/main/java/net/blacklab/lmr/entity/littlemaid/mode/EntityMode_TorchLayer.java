@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import firis.lmlib.api.constant.EnumSound;
-import net.blacklab.lib.minecraft.vector.VectorUtil;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger.Status;
 import net.blacklab.lmr.util.helper.MaidHelper;
+import net.blacklab.lmr.util.helper.VectorUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.block.state.IBlockState;

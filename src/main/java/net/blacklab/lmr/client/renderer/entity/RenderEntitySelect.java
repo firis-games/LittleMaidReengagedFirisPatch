@@ -19,8 +19,8 @@ public class RenderEntitySelect extends RenderModelMulti<EntityLittleMaidForTexS
 	 * @param manager
 	 * @param pShadowSize
 	 */
-	public RenderEntitySelect(RenderManager manager, float pShadowSize) {
-		super(manager, pShadowSize);
+	public RenderEntitySelect(RenderManager manager) {
+		super(manager, 0.0F);
 		addLayer(new LayerArmorLittleMaidGui(this));
 	}
 

@@ -3,7 +3,6 @@ package net.blacklab.lmr.inventory;
 import java.util.Iterator;
 import java.util.List;
 
-import net.blacklab.lib.minecraft.item.ItemUtil;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.block.Block;
@@ -416,15 +415,15 @@ public class InventoryLittleMaid extends InventoryPlayer {
 
 	public int getInventorySlotContainItemFood() {
 		// インベントリの最初の食料を返す
-		if (ItemUtil.getFoodAmount(mainHandInventory.get(0)) > 0) {
+		if (ItemHelper.getFoodAmount(mainHandInventory.get(0)) > 0) {
 			return getSizeInventory() - 2;
 		}
-		if (ItemUtil.getFoodAmount(offHandInventory.get(0)) > 0) {
+		if (ItemHelper.getFoodAmount(offHandInventory.get(0)) > 0) {
 			return getSizeInventory() - 1;
 		}
 		for (int j = 0; j < getSizeInventory(); j++) {
 			ItemStack mi = getStackInSlot(j);
-			if (ItemUtil.getFoodAmount(mi) > 0) {
+			if (ItemHelper.getFoodAmount(mi) > 0) {
 				return j;
 			}
 		}

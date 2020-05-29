@@ -1,4 +1,4 @@
-package net.blacklab.lib.minecraft.vector;
+package net.blacklab.lmr.util.helper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
