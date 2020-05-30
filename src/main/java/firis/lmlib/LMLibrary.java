@@ -7,6 +7,8 @@ import org.apache.logging.log4j.Logger;
 
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.loader.LMFileLoader;
+import firis.lmlib.api.manager.MultiModelPackManager;
+import firis.lmlib.api.manager.TexturePackManager;
 import firis.lmlib.client.resources.LMSoundResourcePack;
 import firis.lmlib.client.resources.LMTextureResourcePack;
 import firis.lmlib.common.config.LMLConfig;
@@ -67,6 +69,12 @@ public class LMLibrary {
     	
 		//リトルメイドファイルローダー
 		LMFileLoader.instance.load();
+		
+		//マルチモデル初期化
+		MultiModelPackManager.instance.init();
+		
+		//テクスチャパック初期化
+		TexturePackManager.instance.init();
 		
 		//テクスチャモデル初期化
 		LMLibraryAPI.instance().getTextureManager().init();

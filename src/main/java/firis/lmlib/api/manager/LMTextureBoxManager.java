@@ -40,12 +40,6 @@ public class LMTextureBoxManager {
 	 */
 	public void init() {
 		
-		//マルチモデル初期化
-		MultiModelPackManager.instance.init();
-		
-		//テクスチャパック初期化
-		TexturePackManager.instance.init();
-		
 		//TexturePackをベースにメイドさんのテクスチャモデルを作成する
 		for(String texturePackName : TexturePackManager.instance.texturePackMap.keySet()) {
 			
