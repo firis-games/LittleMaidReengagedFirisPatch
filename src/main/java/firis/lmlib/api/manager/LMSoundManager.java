@@ -27,9 +27,9 @@ import net.minecraft.util.ResourceLocation;
  * @author firis-games
  *
  */
-public class SoundManager {
+public class LMSoundManager {
 	
-	public static SoundManager instance = new SoundManager();
+	public static LMSoundManager instance = new LMSoundManager();
 	
 	/**
 	 * カスタムモデルサウンド

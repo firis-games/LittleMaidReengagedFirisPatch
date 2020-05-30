@@ -8,7 +8,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 import firis.lmlib.LMLibrary;
-import firis.lmlib.api.manager.SoundManager;
+import firis.lmlib.api.manager.LMSoundManager;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.MetadataSerializer;
@@ -28,11 +28,11 @@ public class LMSoundResourcePack implements IResourcePack {
 	public InputStream getInputStream(ResourceLocation location) throws IOException {
 		//sounds.json
 		if (location.getResourcePath().endsWith("sounds.json")) {
-			return SoundManager.instance.getResourcepackSoundsJson();
+			return LMSoundManager.instance.getResourcepackSoundsJson();
 			
 		//oggファイル
 		} else if (location.getResourcePath().endsWith(".ogg")) {
-			String soundPath = SoundManager.instance.getResourceClassLoaderPath(location);
+			String soundPath = LMSoundManager.instance.getResourceClassLoaderPath(location);
 			return LMLibrary.class.getClassLoader().getResourceAsStream(soundPath);
 		}
 		return null;
@@ -49,7 +49,7 @@ public class LMSoundResourcePack implements IResourcePack {
 			
 		//oggファイル
 		} else if (location.getResourcePath().endsWith(".ogg")) {
-			return SoundManager.instance.isResourceExists(location);
+			return LMSoundManager.instance.isResourceExists(location);
 		}
 		return false;
 	}

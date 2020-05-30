@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import firis.lmlib.api.loader.LMFileLoader;
 import firis.lmlib.api.manager.LMTextureBoxManager;
-import firis.lmlib.api.manager.SoundManager;
+import firis.lmlib.api.manager.LMSoundManager;
 import firis.lmlib.client.resources.LMSoundResourcePack;
 import firis.lmlib.client.resources.LMTextureResourcePack;
 import firis.lmlib.common.config.LMLConfig;
@@ -73,7 +73,7 @@ public class LMLibrary {
 		LMTextureBoxManager.instance.init();
 		
 		//サウンドパックセットアップ
-		SoundManager.instance.createSounds();
+		LMSoundManager.instance.createSounds();
     	
     }
     
