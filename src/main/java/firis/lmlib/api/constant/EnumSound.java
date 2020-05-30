@@ -11,9 +11,7 @@ public enum EnumSound {
 	sighting(0x140,			"Adopt a fire Voice. Null is no Voice",					""),
 	healing(0x150,			"Healing Voice. Null is no Voice",						""),
 	healing_potion(0x151, 	"Healing with potion Voice. Null is no Voice",			""),
-	TNT_D(0x160, 			"Enable TNT-D Voice. Null is no Voice",					""),
-//	eatGunpowder(0x161, 	"Eat Gunpowder Voice. Null is no Voice",				""),
-
+	tnt_d(0x160, 			"Enable TNT-D Voice. Null is no Voice",					""),
 	eatSugar(0x200, 		"Eat Sugar Voice. Null is no Voice",					""),
 	eatSugar_MaxPower(0x201,"Eat Sugar to MAX healing Voice. Null is no Voice",		""),
 	getCake(0x210, 			"Get Cake Voice. Null is no Voice",						""),
@@ -49,17 +47,13 @@ public enum EnumSound {
 	living_hot(0x507,		"Living Voice at Hot. Null is no Voice",				""),
 	goodmorning(0x551,		"Goodmorning Voice. Null is no Voice",					"entity.wolf.howl"),
 	goodnight(0x561,		"Goodnight Voice. Null is no Voice",					"entity.ghast.warn"),
-
-
+	
 	Null(0, "", null);
-
-
+	
 	public final int index;
 	public final String info;
 	public final String DefaultValue;
-
-
-
+	
 	private EnumSound(int findex, String finfo, String fdefault) {
 		index = findex;
 		info = finfo;
@@ -77,5 +71,4 @@ public enum EnumSound {
 		}
 		return Null;
 	}
-
 }

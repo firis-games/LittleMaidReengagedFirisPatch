@@ -2701,7 +2701,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			lf = maidOverDriveTime.isEnable();
 			if (getMaidFlags(dataWatch_Flags_OverDrive) != lf) {
 				if (lf) {
-					playLittleMaidVoiceSound(EnumSound.TNT_D, false);
+					playLittleMaidVoiceSound(EnumSound.tnt_d, false);
 				}
 				setMaidFlags(lf, dataWatch_Flags_OverDrive);
 			}

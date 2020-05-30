@@ -23,71 +23,10 @@ public abstract class ModelCapsData implements IModelCapsData {
 
 	protected EntityLivingBase owner;
 	
-	//private static Map<String, Integer> caps;
-	/*
-	static {
-		caps = new HashMap<String, Integer>();
-		caps.put("Entity", caps_Entity);
-		caps.put("health", caps_health);
-		caps.put("healthFloat", caps_healthFloat);
-		caps.put("ticksExisted", caps_ticksExisted);
-		caps.put("heldItems", caps_heldItems);
-		caps.put("currentEquippedItem", caps_currentEquippedItem);
-		caps.put("currentArmor", caps_currentArmor);
-		caps.put("onGround", caps_onGround);
-		caps.put("isRiding", caps_isRiding);
-		caps.put("isChild", caps_isChild);
-		caps.put("isWet", caps_isWet);
-		caps.put("isDead", caps_isDead);
-		caps.put("isJumping", caps_isJumping);
-		caps.put("isInWeb", caps_isInWeb);
-		caps.put("isSwingInProgress", caps_isSwingInProgress);
-		caps.put("isSneak", caps_isSneak);
-		caps.put("isBlocking", caps_isBlocking);
-		caps.put("isBurning", caps_isBurning);
-		caps.put("isInWater", caps_isInWater);
-		caps.put("isInvisible", caps_isInvisible);
-		caps.put("isSprinting", caps_isSprinting);
-//		caps.put("PosBlock", caps_PosBlock);
-		caps.put("PosBlockID", caps_PosBlockID);
-		caps.put("PosBlockState", caps_PosBlockState);
-		caps.put("PosBlockAir", caps_PosBlockAir);
-		caps.put("PosBlockLight", caps_PosBlockLight);
-		caps.put("PosBlockPower", caps_PosBlockPower);
-		caps.put("isRidingPlayer", caps_isRidingPlayer);
-		caps.put("posX", caps_posX);
-		caps.put("posY", caps_posY);
-		caps.put("posZ", caps_posZ);
-		caps.put("pos", caps_pos);
-		caps.put("motionX", caps_motionX);
-		caps.put("motionY", caps_motionY);
-		caps.put("motionZ", caps_motionZ);
-		caps.put("motion", caps_pos);
-		caps.put("WorldTotalTime", caps_WorldTotalTime);
-		caps.put("WorldTime", caps_WorldTime);
-		caps.put("MoonPhase", caps_MoonPhase);
-		caps.put("rotationYaw", caps_rotationYaw);
-		caps.put("rotationPitch", caps_rotationPitch);
-		caps.put("prevRotationYaw", caps_prevRotationYaw);
-		caps.put("prevRotationPitch", caps_prevRotationPitch);
-		caps.put("renderYawOffset", caps_renderYawOffset);
-		caps.put("TextureEntity", caps_TextureEntity);
-	}
-	*/
-
-//	public static Map<String, Integer> getStaticModelCaps() {
-//		return caps;
-//	}
-
 	public ModelCapsData(EntityLivingBase pOwner) {
 		owner = pOwner;
 	}
-
-//	@Override
-//	public Map<String, Integer> getModelCaps() {
-//		return caps;
-//	}
-
+	
 	@Override
 	public Object getCapsValue(int pIndex, Object... pArg) {
 		switch (pIndex) {

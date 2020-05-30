@@ -86,30 +86,10 @@ public abstract class ModelBaseNihil extends ModelBase {
 		return this.textureLightColor;
 	}
 
-//	/**
-//	 * レンダリングが実行された回数。
-//	 * ダメージ時などの対策。
-//	 */
-//	protected int renderCount;
-
-
-//	@Override
-//	public ModelRenderer getRandomModelBox(Random par1Random) {
-//		return modelArmorInner.getRandomModelBox(par1Random);
-//	}
-	
-//	protected RenderModelMulti<? extends EntityLiving> rendererLivingEntity;
-
-//	protected boolean isAlphablend;
-//	public boolean isModelAlphablend;
-//	public IModelBaseMMM capsLink;
-	
-//	@Override
-//	public void render(Entity par1Entity, float par2, float par3, float par4,
-//			float par5, float par6, float par7) {
-//		renderCount++;
-//	}
-	
+	/**
+	 * 互換用メソッド
+	 * @param pValue
+	 */
 	public void setLightmapTextureCoords(int pValue) {
 //		int ls = pValue % 65536;
 //		int lt = pValue / 65536;
