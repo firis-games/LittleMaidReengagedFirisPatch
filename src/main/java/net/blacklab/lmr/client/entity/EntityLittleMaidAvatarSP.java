@@ -505,7 +505,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		avatar.motionX = motionX;
 		avatar.motionY = motionY;
 		avatar.motionZ = motionZ;
-		if (isSwingInProgress) avatar.setSwinging(EnumSound.Null, false);
+		if (isSwingInProgress) avatar.setSwinging(EnumSound.NULL, false);
 
 	}
 
@@ -526,7 +526,7 @@ public class EntityLittleMaidAvatarSP extends EntityPlayer implements IEntityLit
 		avatar.motionX = motionX;
 		avatar.motionY = motionY;
 		avatar.motionZ = motionZ;
-		if (isSwingInProgress) avatar.setSwinging(EnumSound.Null, false);
+		if (isSwingInProgress) avatar.setSwinging(EnumSound.NULL, false);
 	}
 
 	public void W_damageArmor(float par1){

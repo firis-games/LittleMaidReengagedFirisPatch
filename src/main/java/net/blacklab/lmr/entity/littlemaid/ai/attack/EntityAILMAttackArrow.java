@@ -280,7 +280,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 						// フルオート武器は射撃停止
 						LittleMaidReengaged.Debug("id:%d shoot.", fMaid.getEntityId());
 						fAvatar.stopActiveHand();
-						fMaid.setSwing(30, EnumSound.shoot, !fMaid.isPlaying());
+						fMaid.setSwing(30, EnumSound.SHOOT, !fMaid.isPlaying());
 						if (fMaid.isPlaying()) {
 							resetTask();
 						}
@@ -300,7 +300,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 											resetTask();
 											return;
 										}
-										fMaid.setSwing(at, EnumSound.sighting, !fMaid.isPlaying());
+										fMaid.setSwing(at, EnumSound.SIGHTING, !fMaid.isPlaying());
 										litemstack = result.getResult();
 										LittleMaidReengaged.Debug("id:%d redygun.", fMaid.getEntityId());
 									}
@@ -318,7 +318,7 @@ public class EntityAILMAttackArrow extends EntityAIBase implements IEntityAILM {
 									litemstack = litemstack.useItemRightClick(worldObj, fAvatar, EnumHand.MAIN_HAND).getResult();
 									// 意図的にショートスパンで音が鳴るようにしてある
 									fMaid.mstatAimeBow = false;
-									fMaid.setSwing(10, (litemstack.getCount() == itemcount) ? EnumSound.shoot_burst : EnumSound.Null, !fMaid.isPlaying());
+									fMaid.setSwing(10, (litemstack.getCount() == itemcount) ? EnumSound.SHOOT_BURST : EnumSound.NULL, !fMaid.isPlaying());
 									LittleMaidReengaged.Debug(String.format("id:%d throw weapon.(%d:%f:%f)", fMaid.getEntityId(), swingState.attackTime, fMaid.rotationYaw, fMaid.rotationYawHead));
 									swingState.attackTime = 5;
 									if (!fMaid.jobController.getMaidModeString().equals(EntityMode_Playing.mmode_Playing)) {

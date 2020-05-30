@@ -465,7 +465,7 @@ public class EntityMode_Basic extends EntityModeBlockBase {
 					}
 					if (f) {
 						owner.playSound("entity.item.pickup");
-						owner.setSwing(2, EnumSound.Null, false);
+						owner.setSwing(2, EnumSound.NULL, false);
 					}
 				}
 			}

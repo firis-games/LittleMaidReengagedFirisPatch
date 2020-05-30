@@ -190,7 +190,7 @@ public class EntityMode_TorchLayer extends EntityModeBase {
 		int li = lis.getCount();
 		// TODO:当たり判定をどうするか
 		if (lis.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px, py - 1, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
-			owner.setSwing(10, EnumSound.installation, false);
+			owner.setSwing(10, EnumSound.INSTALLATION, false);
 			owner.addMaidExperience(0.32f);
 			if (owner.maidAvatar.capabilities.isCreativeMode) {
 				lis.setCount(li);

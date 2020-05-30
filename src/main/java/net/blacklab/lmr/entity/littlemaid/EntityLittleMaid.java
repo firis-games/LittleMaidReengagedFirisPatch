@@ -1042,7 +1042,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 */
 	@Override
 	protected SoundEvent getDeathSound() {
-		playLittleMaidVoiceSound(EnumSound.death, false);
+		playLittleMaidVoiceSound(EnumSound.DEATH, false);
 		return null;
 	}
 
@@ -1254,13 +1254,13 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		//現在時刻
 		int worldtime = (int)(getEntityWorld().getWorldTime() % 24000);
 		
-		EnumSound sound = EnumSound.Null;
+		EnumSound sound = EnumSound.NULL;
 		
 		boolean isClock = this.isClockMaid();
 		
 		//HPが低い時
 		if (getHealth() < 10) {
-			sound = EnumSound.living_whine;
+			sound = EnumSound.LIVING_WHINE;
 			
 		//天気による
 		} else if (getEntityWorld().isRaining()) {
@@ -1268,27 +1268,27 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			//雪か雨
 			if (biome.isSnowyBiome()) {
 				//雪の時
-				sound = EnumSound.living_snow;
+				sound = EnumSound.LIVING_SNOW;
 			} else {
 				//雨の時
-				sound = EnumSound.living_rain;
+				sound = EnumSound.LIVING_RAIN;
 			}
 		//時計所持の朝の啼き声
 		} else if ((worldtime > 23500 || worldtime < 1500) && isClock) {
-			sound = EnumSound.living_morning;
+			sound = EnumSound.LIVING_MORNING;
 		//時計所持の夜の啼き声
 		} else if (12500 < worldtime && isClock) {
-			sound = EnumSound.living_night;
+			sound = EnumSound.LIVING_NIGHT;
 		//こんにちはの挨拶
 		} else {
-			sound = EnumSound.living_daytime;
+			sound = EnumSound.LIVING_DAYTIME;
 			//バイオームの気温でセリフ変更
 			Biome biome = getEntityWorld().getBiome(getPosition());
 			TempCategory tempCategory = biome.getTempCategory();
 			if (tempCategory == TempCategory.COLD) {
-				sound = EnumSound.living_cold;
+				sound = EnumSound.LIVING_COLD;
 			} else if (tempCategory == TempCategory.WARM) {
-				sound = EnumSound.living_hot;
+				sound = EnumSound.LIVING_HOT;
 			}
 		}
 		
@@ -1338,7 +1338,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		//視線が通っているか
 		if (!getEntitySenses().canSee(player)) return;
 		
-		EnumSound sound = EnumSound.Null;
+		EnumSound sound = EnumSound.NULL;
 
 		//現在時刻
 		int worldtime = (int)(getEntityWorld().getWorldTime() % 24000);
@@ -1347,19 +1347,19 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		//6:00 - 7:30まで
 		if (littleMaidClockVoiceFlg != 1 && worldtime <= 1500) {
 			//朝の挨拶
-			sound = EnumSound.goodmorning;
+			sound = EnumSound.GOODMORNING;
 			littleMaidClockVoiceFlg = 1;
 			
 		//18:00 - 
 		} else if (littleMaidClockVoiceFlg != 2 && 12000 <= worldtime && player.isPlayerSleeping()) {
 			//おやすみなさい
-			sound = EnumSound.goodnight;
+			sound = EnumSound.GOODNIGHT;
 			littleMaidClockVoiceFlg = 2;
 			
 		}
 		
 		//ボイス再生
-		if (sound != EnumSound.Null) {
+		if (sound != EnumSound.NULL) {
 			playLittleMaidVoiceSound(sound, false);
 		}
 	}
@@ -1368,7 +1368,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	public void onKillEntity(EntityLivingBase par1EntityLiving) {
 		super.onKillEntity(par1EntityLiving);
 		if (isBloodsuck()) {
-			playLittleMaidVoiceSound(EnumSound.laughter, true);
+			playLittleMaidVoiceSound(EnumSound.LAUGHTER, true);
 		} else {
 			setAttackTarget(null);
 		}
@@ -1636,7 +1636,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 
 		// 標準処理
-		setSwing(20, isBloodsuck() ? EnumSound.attack_bloodsuck : EnumSound.attack, !isPlaying());
+		setSwing(20, isBloodsuck() ? EnumSound.ATTACK_BLOODSUCK : EnumSound.ATTACK, !isPlaying());
 		maidAvatar.attackTargetEntityWithCurrentItem(par1Entity);
 		return true;
 	}
@@ -2060,7 +2060,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	protected void damageEntity(DamageSource par1DamageSource, float damageAmount) {
 		// ダメージソースに応じて音声変更
 		if (par1DamageSource == DamageSource.FALL) {
-			setMaidDamegeSound(EnumSound.hurt_fall);
+			setMaidDamegeSound(EnumSound.HURT_FALL);
 			if (isContractEX() && damageAmount>=19 && damageAmount<getHealth()) {
 				//進捗
 				AchievementsLMRE.grantAC(getMaidMasterEntity(), AC.Ashikubi);
@@ -2070,7 +2070,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			// ブロッキング
 //			par2 = (1.0F + par2) * 0.5F;
 			LittleMaidReengaged.Debug(String.format("Blocking success ID:%d, %f -> %f" , getEntityId(), damageAmount, (damageAmount = (1.0F + damageAmount) * 0.5F)));
-			setMaidDamegeSound(EnumSound.hurt_guard);
+			setMaidDamegeSound(EnumSound.HURT_GUARD);
 		}
 		//デバッグ
 		//maidInventory.armorInventory[2] = null;
@@ -2118,9 +2118,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		LittleMaidReengaged.Debug("LMM_EntityLittleMaid.attackEntityFrom "+this+"("+maidAvatar+") <= "+entity);
 
 		// ダメージソースを特定して音声の設定
-		setMaidDamegeSound(EnumSound.hurt);
+		setMaidDamegeSound(EnumSound.HURT);
 		if (par1DamageSource == DamageSource.IN_FIRE || par1DamageSource == DamageSource.ON_FIRE || par1DamageSource == DamageSource.LAVA) {
-			setMaidDamegeSound(EnumSound.hurt_fire);
+			setMaidDamegeSound(EnumSound.HURT_FIRE);
 		}
 		
 //		for (EntityModeBase lm : maidEntityModeList) {
@@ -2169,8 +2169,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		if (par2 == 0 && maidMode != mmode_Detonator) {
 		if (par2 == 0) {
 			// ノーダメージ
-			if (this.soundManager.getDamageSound() == EnumSound.hurt) {
-				setMaidDamegeSound(EnumSound.hurt_nodamege);
+			if (this.soundManager.getDamageSound() == EnumSound.HURT) {
+				setMaidDamegeSound(EnumSound.HURT_NODAMEGE);
 			}
 			
 			//playLittleMaidVoiceSound(getMaidDamegeSound(), !force);
@@ -2701,7 +2701,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			lf = maidOverDriveTime.isEnable();
 			if (getMaidFlags(dataWatch_Flags_OverDrive) != lf) {
 				if (lf) {
-					playLittleMaidVoiceSound(EnumSound.tnt_d, false);
+					playLittleMaidVoiceSound(EnumSound.TNT_D, false);
 				}
 				setMaidFlags(lf, dataWatch_Flags_OverDrive);
 			}
@@ -3369,14 +3369,14 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 					if(!isMaidContractOwner(par1EntityPlayer)){
 						// あんなご主人なんか捨てて、僕のもとへおいで(洗脳)
 						OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
-						playLittleMaidVoiceSound(EnumSound.getCake, false);
+						playLittleMaidVoiceSound(EnumSound.CONTRACT, false);
 						getEntityWorld().setEntityState(this, (byte)7);
 						maidContractLimit = (24000 * 7);
 						maidAnniversary = getEntityWorld().getTotalWorldTime();
 					}else{
 						// ごめんねメイドちゃん
 						getEntityWorld().setEntityState(this, (byte)11);
-						playLittleMaidVoiceSound(EnumSound.Recontract, false);
+						playLittleMaidVoiceSound(EnumSound.RECONTRACT, false);
 
 					}
 					return true;
@@ -3653,7 +3653,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 						//getNavigator().clearPath();
 						//OwnableEntityHelper.setOwner(this, CommonHelper.getPlayerUUID(par1EntityPlayer));
 
-						playLittleMaidVoiceSound(EnumSound.getCake, false);
+						playLittleMaidVoiceSound(EnumSound.CONTRACT, false);
 //							playLittleMaidSound(LMM_EnumSound.getCake, true);
 //							playTameEffect(true);
 						getEntityWorld().setEntityState(this, (byte)7);
@@ -3976,7 +3976,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		if (!getEntityWorld().isRemote) {
 			NBTTagCompound tagCompound = new NBTTagCompound();
 			tagCompound.setByte("Arm", (byte) pArm);
-			tagCompound.setInteger("Sound", enumsound.index);
+			tagCompound.setInteger("Sound", enumsound.getId());
 			tagCompound.setBoolean("Force", force);
 
 			syncNet(LMRMessage.EnumPacketMode.CLIENT_SWINGARM, tagCompound);
@@ -3988,7 +3988,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	}
 	
 	public void setSwinging(int pArm, EnumSound pSound, boolean force) {
-		if(!pSound.equals(EnumSound.Null)) playLittleMaidVoiceSound(pSound, !force);
+		if(!pSound.equals(EnumSound.NULL)) playLittleMaidVoiceSound(pSound, !force);
 		if (mstatSwingStatus[pArm].setSwinging()) {
 			maidAvatar.swingProgressInt = -1;
 //			maidAvatar.swingProgressInt = -1;
@@ -4116,7 +4116,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 */
 	public void eatSugar(boolean heal, boolean motion, boolean recontract) {
 		if (motion) {
-			setSwing(2, (getMaxHealth() - getHealth() <= 1F) ?  EnumSound.eatSugar_MaxPower : EnumSound.eatSugar, false);
+			setSwing(2, (getMaxHealth() - getHealth() <= 1F) ?  EnumSound.EAT_SUGAR_MAXPOWER : EnumSound.EAT_SUGAR, false);
 		}
 		int h = hurtResistantTime;
 		if(heal) {

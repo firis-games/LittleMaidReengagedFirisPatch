@@ -273,7 +273,7 @@ public class SoundManager {
 		}
 		
 		//サウンドIDを生成
-		String soundType = soundpack + "." + sound.toString();
+		String soundType = soundpack + "." + sound.getVoiceId();
 		return soundType;
 	}
 	

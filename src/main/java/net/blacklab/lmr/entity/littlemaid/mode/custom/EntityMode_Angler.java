@@ -251,7 +251,7 @@ public class EntityMode_Angler extends EntityModeBase {
 			} else if (this.progressTime > 0) {
 				
 				//腕振りのみ
-				owner.setSwing(10, EnumSound.Null, false);
+				owner.setSwing(10, EnumSound.NULL, false);
 				this.progressTime--;
 				
 			//アニメーション完了
@@ -266,7 +266,7 @@ public class EntityMode_Angler extends EntityModeBase {
 				//ツールにダメージ
 				curStack.damageItem(1, owner.maidAvatar);
 				
-				owner.playLittleMaidVoiceSound(EnumSound.farmer_harvest, true);
+				owner.playLittleMaidVoiceSound(EnumSound.FARMER_HARVEST, true);
 				owner.addMaidExperience(1.0F);
 				
 				//関連パラメータをリセット

@@ -282,17 +282,17 @@ public class EntityMode_Shearer extends EntityModeBase {
 					e.printStackTrace();
 				}
 //				((EntityCreeper)pEntity).timeSinceIgnited = 0;
-				owner.setSwing(20, EnumSound.attack_bloodsuck, false);
+				owner.setSwing(20, EnumSound.ATTACK_BLOODSUCK, false);
 				owner.addMaidExperience(0.6f);
 			} else if (pEntity instanceof EntityTNTPrimed) {
 				pEntity.setDead();
 				lis.damageItem(1, owner);
 //				lis.damageItem(1, owner.maidAvatar);
-				owner.setSwing(20, EnumSound.attack_bloodsuck, false);
+				owner.setSwing(20, EnumSound.ATTACK_BLOODSUCK, false);
 				owner.addMaidExperience(4.5f);
 			} else {
 				owner.maidAvatar.interactOn(pEntity, EnumHand.MAIN_HAND);
-				owner.setSwing(20, EnumSound.attack, false);
+				owner.setSwing(20, EnumSound.ATTACK, false);
 				owner.addMaidExperience(2.1f);
 			}
 			if (lis.getCount() <= 0) {

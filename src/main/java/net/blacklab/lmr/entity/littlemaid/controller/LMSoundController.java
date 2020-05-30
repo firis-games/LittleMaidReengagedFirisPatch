@@ -56,7 +56,7 @@ public class LMSoundController {
 	public LMSoundController(EntityLittleMaid maid) {
 		this.maid = maid;
 		this.maidVoiceSoundInterval = 0;
-		this.lmDamageSound = EnumSound.hurt;
+		this.lmDamageSound = EnumSound.HURT;
 	}
 	
 	/**
@@ -76,7 +76,7 @@ public class LMSoundController {
 	public void playVoiceSound(EnumSound sound, boolean isRandom) {
 		
 		//Null設定の場合はなにもしない
-		if (EnumSound.Null == sound) return;
+		if (EnumSound.NULL == sound) return;
 		
 		//ランダムの場合はここでレートの設定を行う
 		if (isRandom && !isRandomPlayVoiceSound()) {
@@ -86,11 +86,11 @@ public class LMSoundController {
 		
 		if (!maid.world.isRemote) {
 			//サーバーサイド
-			LittleMaidReengaged.Debug("id:%d-%s, seps:%04x-%s", maid.getEntityId(), "Server",  sound.index, sound.name());
+			LittleMaidReengaged.Debug("id:%d-%s, seps:%04x-%s", maid.getEntityId(), "Server",  sound.getId(), sound.name());
 			
 			//送信用パケット生成
 			NBTTagCompound tagCompound = new NBTTagCompound();
-			tagCompound.setInteger("Sound", sound.index);
+			tagCompound.setInteger("Sound", sound.getId());
 			
 			//パケット送信
 			maid.syncNet(LMRMessage.EnumPacketMode.CLIENT_PLAY_SOUND, tagCompound);
@@ -129,7 +129,7 @@ public class LMSoundController {
 
 			//音声パックがロードされていない場合は通常音声として再生する
 			if (!SoundManager.instance.isFoundSoundpack()) {
-				this.maid.playSound(sound.DefaultValue, 1.0f);
+				this.maid.playSound(sound.getDefaultVoice(), 1.0f);
 				playingSound.remove(sound);
 				continue;
 			}
@@ -147,7 +147,7 @@ public class LMSoundController {
 			//通常啼声のレート設定
 			//0x500番台はレート判定する
 			//0x5x0番台は対象外
-			if ((sound.index & 0xff0) == 0x500) {
+			if ((sound.getId() & 0xff0) == 0x500) {
 				// LivingSound LivingVoiceRateを確認
 				Float ratio = this.getLivingVoiceRatio(soundName);
 				// カットオフ
@@ -158,7 +158,7 @@ public class LMSoundController {
 			}
 			
 			//音声の再生
-			LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", maid.getEntityId(), sound.index, sound.name(), soundName));
+			LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", maid.getEntityId(), sound.getId(), sound.name(), soundName));
 
 			SoundEvent soundEvent = new SoundEvent(new ResourceLocation(LMLibrary.MODID, soundName));
 			this.maid.world.playSound(maid.posX, maid.posY, maid.posZ, 

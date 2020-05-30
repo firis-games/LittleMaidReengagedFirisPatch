@@ -162,7 +162,7 @@ public class EntityMode_Healer extends EntityModeBase {
 						if (itemstack1.getItem() instanceof ItemFood) {
 							// 食料を突っ込む
 							if (h < 18) {
-								owner.setSwing(10, EnumSound.healing, true);
+								owner.setSwing(10, EnumSound.HEALING, true);
 								itemstack1 = ((ItemFood)itemstack1.getItem()).onItemUseFinish(itemstack1, owner.getEntityWorld(), lmaster);
 //	                        	owner.getEntityWorld().playSoundAtEntity(lmaster, lmaster.getHurtSound(), 0.5F, (owner.rand.nextFloat() - owner.rand.nextFloat()) * 0.2F + 1.0F);
 								if (itemstack1.getCount() <= 0) {
@@ -199,7 +199,7 @@ public class EntityMode_Healer extends EntityModeBase {
 							}
 
 							if (lswing) {
-								owner.setSwing(10, EnumSound.healing_potion, true);
+								owner.setSwing(10, EnumSound.HEALING_POTION, true);
 								owner.usePotionTotarget(lmaster);
 //	                        	owner.getEntityWorld().playSoundAtEntity(lmaster, lmaster.getHurtSound(), 0.5F, (owner.rand.nextFloat() - owner.rand.nextFloat()) * 0.2F + 1.0F);
 								owner.getNextEquipItem();

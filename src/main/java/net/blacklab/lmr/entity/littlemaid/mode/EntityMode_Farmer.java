@@ -228,8 +228,8 @@ public class EntityMode_Farmer extends EntityModeBase {
 
 		if (!haveNothing && isUnfarmedLand(px,py,pz) &&
 				curStack.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F) == EnumActionResult.SUCCESS) {
-			owner.setSwing(10, EnumSound.Null, false);
-			owner.playLittleMaidVoiceSound(EnumSound.farmer_farm, true);
+			owner.setSwing(10, EnumSound.NULL, false);
+			owner.playLittleMaidVoiceSound(EnumSound.FARMER_FARM, true);
 
 			/*
 			if (owner.maidAvatar.capabilities.isCreativeMode) {
@@ -257,11 +257,11 @@ public class EntityMode_Farmer extends EntityModeBase {
 				
 				owner.maidInventory.setCurrentItemIndex(svCurrentIdx);
 				
-				owner.playLittleMaidVoiceSound(EnumSound.farmer_plant, true);
+				owner.playLittleMaidVoiceSound(EnumSound.FARMER_PLANT, true);
 				if (owner.maidAvatar.capabilities.isCreativeMode) {
 					stack.setCount(li);
 				}
-				owner.setSwing(10, EnumSound.Null, false);
+				owner.setSwing(10, EnumSound.NULL, false);
 				if(stack.getCount()<=0){
 					owner.maidInventory.setInventorySlotContents(index, ItemStack.EMPTY);
 				}
@@ -274,8 +274,8 @@ public class EntityMode_Farmer extends EntityModeBase {
 			// 収穫
 			BlockPos pos = new BlockPos(px,py,pz);
 			owner.getEntityWorld().destroyBlock(pos, true);
-			owner.setSwing(10, EnumSound.Null, false);
-			owner.playLittleMaidVoiceSound(EnumSound.farmer_harvest, true);
+			owner.setSwing(10, EnumSound.NULL, false);
+			owner.playLittleMaidVoiceSound(EnumSound.FARMER_HARVEST, true);
 			owner.addMaidExperience(4f);
 			executeBlock(pMode, px, py-1, pz);
 			ret = true;

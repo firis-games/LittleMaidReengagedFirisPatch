@@ -143,7 +143,7 @@ public class EntityMode_Playing extends EntityModeBase {
 			if (this.fcounter <= 6) {
 				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.SNOWBALL))) {
 					owner.playSound("entity.item.pickup");
-					owner.setSwing(30, EnumSound.collect_snow, false);
+					owner.setSwing(30, EnumSound.COLLECT_SNOW, false);
 				} else {
 					this.fcounter = 6;
 				}
@@ -406,7 +406,7 @@ public class EntityMode_Playing extends EntityModeBase {
 		
 		if (par1DamageSource.getImmediateSource() instanceof EntitySnowball) {
 			// お遊び判定用、雪玉かどうか判定
-			owner.setMaidDamegeSound(EnumSound.hurt_snow);
+			owner.setMaidDamegeSound(EnumSound.HURT_SNOW);
 			if (!owner.isContractEX() || (owner.isFreedom() && owner.jobController.getMaidModeString().equals(EntityMode_Basic.mmode_Escort))) {
 //				owner.setPlayingRole(PlayRole.QUICKSHOOTER);
 				owner.setMaidWait(false);

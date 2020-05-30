@@ -251,7 +251,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 			//伐採中アニメーション
 			} else if (this.fellingTime > 0) {
 				//腕振りのみ
-				owner.setSwing(10, EnumSound.Null, false);
+				owner.setSwing(10, EnumSound.NULL, false);
 				this.fellingTime--;
 				
 			//伐採完了
@@ -269,7 +269,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 				//葉ブロック分は無視
 				curStack.damageItem(this.fellingBlockPosList.size(), owner.maidAvatar);
 				
-				owner.playLittleMaidVoiceSound(EnumSound.farmer_harvest, true);
+				owner.playLittleMaidVoiceSound(EnumSound.FARMER_HARVEST, true);
 				owner.addMaidExperience(0.5f * (float)this.fellingBlockPosList.size());
 				
 				//関連パラメータをリセット
@@ -287,7 +287,7 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 					EnumActionResult useResult = saplingStack.onItemUse(owner.maidAvatar, owner.getEntityWorld(), new BlockPos(px, py, pz), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5F, 1.0F, 0.5F);
 					owner.maidInventory.setCurrentItemIndex(svCurrentIdx);
 					if (useResult == EnumActionResult.SUCCESS) {
-						owner.playLittleMaidVoiceSound(EnumSound.farmer_farm, true);
+						owner.playLittleMaidVoiceSound(EnumSound.FARMER_FARM, true);
 					}
 				}
 				

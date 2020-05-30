@@ -183,7 +183,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 					if (owner.maidInventory.addItemStackToInventory(litemstack)) {
 						dropExpOrb(litemstack, li - litemstack.getCount());
 						owner.playSound("entity.item.pickup");
-						owner.setSwing(5, EnumSound.cookingOver, false);
+						owner.setSwing(5, EnumSound.COOKING_OVER, false);
 						owner.addMaidExperience(4.2f);
 //                    	if (!pEntityLittleMaid.maidInventory.isItemBurned(pEntityLittleMaid.maidInventory.currentItem)) {
 						owner.getNextEquipItem();
@@ -211,7 +211,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 						owner.maidInventory.setInventorySlotContents(li, ItemStack.EMPTY);
 					}
 					owner.playSound("entity.item.pickup");
-					owner.setSwing(5, EnumSound.cookingStart, false);
+					owner.setSwing(5, EnumSound.COOKING_START, false);
 					lflag = true;
 				}
 			}
@@ -231,7 +231,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 					}
 					owner.getNextEquipItem();
 					owner.playSound("entity.item.pickup");
-					owner.setSwing(5, EnumSound.addFuel, false);
+					owner.setSwing(5, EnumSound.ADD_FUEL, false);
 					lflag = true;
 				} else {
 					if (ltile.isBurning()) {
@@ -241,7 +241,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 						ItemStack litemstack2 = ltile.removeStackFromSlot(0);
 						if (owner.maidInventory.addItemStackToInventory(litemstack2)) {
 							owner.playSound("entity.item.pickup");
-							owner.setSwing(5, EnumSound.Null, false);
+							owner.setSwing(5, EnumSound.NULL, false);
 							owner.getNextEquipItem();
 							lflag = false;
 						} else {
@@ -256,7 +256,7 @@ public class EntityMode_Cooking extends EntityModeBlockBase {
 				ItemStack litemstack2 = ltile.removeStackFromSlot(1);
 				if (owner.maidInventory.addItemStackToInventory(litemstack2)) {
 					owner.playSound("entity.item.pickup");
-					owner.setSwing(5, EnumSound.Null, false);
+					owner.setSwing(5, EnumSound.NULL, false);
 					owner.getNextEquipItem();
 					lflag = isTriggerItem(mmode_Cooking, owner.getCurrentEquippedItem());
 				} else {

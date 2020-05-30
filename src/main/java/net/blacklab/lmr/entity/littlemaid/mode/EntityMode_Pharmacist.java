@@ -221,7 +221,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 				if (owner.maidInventory.addItemStackToInventory(lIngredientStack)) {
 					ltile.setInventorySlotContents(3, ItemStack.EMPTY);
 					owner.playSound("entity.item.pickup");
-					owner.setSwing(5, EnumSound.Null, false);
+					owner.setSwing(5, EnumSound.NULL, false);
 				}
 			}
 			// 完成品
@@ -233,7 +233,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					if (!litemstack1.isEmpty() && owner.maidInventory.addItemStackToInventory(litemstack1)) {
 						ltile.setInventorySlotContents(li, ItemStack.EMPTY);
 						owner.playSound("entity.item.pickup");
-						owner.setSwing(5, EnumSound.cookingOver, false);
+						owner.setSwing(5, EnumSound.COOKING_OVER, false);
 						owner.addMaidExperience(0.25f);
 						lflag = true;
 					}
@@ -255,7 +255,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 						ltile.setInventorySlotContents(li, litemstack1);
 						owner.maidInventory.setInventoryCurrentSlotContents(ItemStack.EMPTY);
 						owner.playSound("entity.item.pickup");
-						owner.setSwing(5, EnumSound.cookingStart, false);
+						owner.setSwing(5, EnumSound.COOKING_START, false);
 						owner.getNextEquipItem();
 						owner.addMaidExperience(0.25f);
 						lflag = true;
@@ -285,7 +285,7 @@ public class EntityMode_Pharmacist extends EntityModeBlockBase {
 					ltile.setInventorySlotContents(3, litemstack1);
 					owner.maidInventory.setInventorySlotContents(inventryPos, ItemStack.EMPTY);
 					owner.playSound("entity.item.pickup");
-					owner.setSwing(15, EnumSound.Null, false);
+					owner.setSwing(15, EnumSound.NULL, false);
 					owner.addMaidExperience(3.5f);
 					lflag = true;
 				}

@@ -1,9 +1,8 @@
 package firis.lmlib.api.constant;
 
 /**
- * メイドさんのカラー情報
-
- * 染料のメタデータと逆順
+ * リトルメイドの色情報
+ * 染料のメタデータと逆順となっている
  * @author firis-games
  *
  */

@@ -66,7 +66,7 @@ public class EntityAILMCollectItem extends EntityAIBase {
 							return false;
 						}
 					}
-					theMaid.playLittleMaidVoiceSound(EnumSound.findTarget_I, true);
+					theMaid.playLittleMaidVoiceSound(EnumSound.FIND_TARGET_I, true);
 					targetItem = ei;
 					return true;
 				}
