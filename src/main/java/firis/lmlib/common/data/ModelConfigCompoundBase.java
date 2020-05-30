@@ -3,8 +3,8 @@ package firis.lmlib.common.data;
 import java.util.EnumMap;
 import java.util.Map;
 
+import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.constant.EnumColor;
-import firis.lmlib.api.manager.LMTextureBoxManager;
 import firis.lmlib.api.manager.pack.LMTextureBox;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.minecraft.entity.EntityLivingBase;
@@ -63,7 +63,7 @@ public abstract class ModelConfigCompoundBase implements IModelConfigCompound {
 		this.entityCaps = caps;
 		
 		//パラメータ初期化
-		this.textureBoxLittleMaid = LMTextureBoxManager.instance.getDefaultLMTextureBox();
+		this.textureBoxLittleMaid = LMLibraryAPI.instance().getTextureManager().getDefaultLMTextureBox();
 		
 		//防具モデル初期化
 		this.setTextureBoxArmorAll(this.textureBoxLittleMaid);
@@ -264,7 +264,7 @@ public abstract class ModelConfigCompoundBase implements IModelConfigCompound {
 		textureBox = this.getTextureBoxArmor(EntityEquipmentSlot.FEET);
 		if (textureBox != null) return textureBox;
 		
-		return LMTextureBoxManager.instance.getDefaultLMTextureBox();
+		return LMLibraryAPI.instance().getTextureManager().getDefaultLMTextureBox();
 		
 	}
 	

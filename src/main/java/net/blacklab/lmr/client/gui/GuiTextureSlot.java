@@ -6,7 +6,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import firis.lmlib.api.manager.LMTextureBoxManager;
+import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.manager.pack.LMTextureBox;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.util.helper.RendererHelper;
@@ -59,7 +59,7 @@ public class GuiTextureSlot extends GuiSlot {
 //		LMTextureBox ltbox[] = owner.target.getModelConfigCompound().getLMTextureBox();
 		LMTextureBox ltboxLittleMaid = owner.target.getModelConfigCompound().getTextureBoxLittleMaid();
 		LMTextureBox ltboxArmor = owner.target.getModelConfigCompound().getTextureBoxArmorAll();
-		for (LMTextureBox lbox : LMTextureBoxManager.instance.getLMTextureBoxList()) {
+		for (LMTextureBox lbox : LMLibraryAPI.instance().getTextureManager().getLMTextureBoxList()) {
 			if (isContract) {
 				if (lbox.hasLittleMaid()) {
 					indexTexture.add(lbox);

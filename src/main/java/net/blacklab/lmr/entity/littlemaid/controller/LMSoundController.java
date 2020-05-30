@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import firis.lmlib.LMLibrary;
+import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.constant.EnumSound;
-import firis.lmlib.api.manager.LMSoundManager;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -128,14 +128,14 @@ public class LMSoundController {
 			LittleMaidReengaged.Debug("REQ %s", sound);
 
 			//音声パックがロードされていない場合は通常音声として再生する
-			if (!LMSoundManager.instance.isFoundSoundpack()) {
+			if (!LMLibraryAPI.instance().getSoundManager().isFoundSoundpack()) {
 				this.maid.playSound(sound.getDefaultVoice(), 1.0f);
 				playingSound.remove(sound);
 				continue;
 			}
 
 			//ボイスパックから再生する
-			String soundName = LMSoundManager.instance.getSoundNameWithModel(sound, textureName, textureColor);
+			String soundName = LMLibraryAPI.instance().getSoundManager().getSoundNameWithModel(sound, textureName, textureColor);
 			LittleMaidReengaged.Debug("STC %s,%d/FRS %s", textureName, textureColor, soundName);
 			
 			//対象が存在しない場合は次へ
@@ -200,7 +200,7 @@ public class LMSoundController {
 		//soundからサウンドパック名を取得
 		String soundpack = sound.substring(0 , sound.lastIndexOf("."));
 		
-		return LMSoundManager.instance.getLivingVoiceRatio(soundpack);
+		return LMLibraryAPI.instance().getSoundManager().getLivingVoiceRatio(soundpack);
 	}
 	
 }

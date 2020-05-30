@@ -5,9 +5,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.loader.LMFileLoader;
-import firis.lmlib.api.manager.LMTextureBoxManager;
-import firis.lmlib.api.manager.LMSoundManager;
 import firis.lmlib.client.resources.LMSoundResourcePack;
 import firis.lmlib.client.resources.LMTextureResourcePack;
 import firis.lmlib.common.config.LMLConfig;
@@ -70,10 +69,10 @@ public class LMLibrary {
 		LMFileLoader.instance.load();
 		
 		//テクスチャモデル初期化
-		LMTextureBoxManager.instance.init();
+		LMLibraryAPI.instance().getTextureManager().init();
 		
 		//サウンドパックセットアップ
-		LMSoundManager.instance.createSounds();
+		LMLibraryAPI.instance().getSoundManager().createSounds();
     	
     }
     

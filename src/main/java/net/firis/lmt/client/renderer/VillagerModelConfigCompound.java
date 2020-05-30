@@ -1,6 +1,6 @@
 package net.firis.lmt.client.renderer;
 
-import firis.lmlib.api.manager.LMTextureBoxManager;
+import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.manager.pack.LMTextureBox;
 import firis.lmlib.common.data.IModelCapsData;
 import firis.lmlib.common.data.IModelConfigCompound;
@@ -15,7 +15,7 @@ public class VillagerModelConfigCompound implements IModelConfigCompound {
 	private IModelCapsData modelCaps = null;
 	
 	public VillagerModelConfigCompound(EntityLivingBase entity) {
-		textureBox = LMTextureBoxManager.instance.getDefaultLMTextureBox();
+		textureBox = LMLibraryAPI.instance().getTextureManager().getDefaultLMTextureBox();
 		modelCaps = new VillagerModelCapsData(entity);
 	}
 	

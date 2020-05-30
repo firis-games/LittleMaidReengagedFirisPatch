@@ -1,5 +1,6 @@
 package net.blacklab.lmr.entity.maidmodel;
 
+import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.manager.LMTextureBoxManager;
 import firis.lmlib.api.manager.pack.LMTextureBox;
 import firis.lmlib.common.data.IModelCapsData;
@@ -39,14 +40,14 @@ public class ModelConfigCompound extends ModelConfigCompoundBase {
 	 */
 	public void setNextTexturePackege() {
 		//次のテクスチャを探す
-		LMTextureBox nextTextureBox = LMTextureBoxManager.instance.getNextPackege(this.textureBoxLittleMaid, this.color);
+		LMTextureBox nextTextureBox = LMLibraryAPI.instance().getTextureManager().getNextPackege(this.textureBoxLittleMaid, this.color);
 		this.textureBoxLittleMaid = nextTextureBox;
 		
 		//防具テクスチャも設定
 		if (this.textureBoxLittleMaid.hasArmor()) {
 			this.setTextureBoxArmorAll(this.textureBoxLittleMaid);
 		} else {
-			this.setTextureBoxArmorAll(LMTextureBoxManager.instance.getDefaultLMTextureBox());
+			this.setTextureBoxArmorAll(LMLibraryAPI.instance().getTextureManager().getDefaultLMTextureBox());
 		}
 	}
 	
@@ -55,7 +56,7 @@ public class ModelConfigCompound extends ModelConfigCompoundBase {
 	 * @param pTargetTexture
 	 */
 	public void setNextTextureArmorPackege() {
-		LMTextureBox nextTextureBox = LMTextureBoxManager.instance.getNextArmorPackege(this.getTextureBoxArmorAll());
+		LMTextureBox nextTextureBox = LMLibraryAPI.instance().getTextureManager().getNextArmorPackege(this.getTextureBoxArmorAll());
 		this.setTextureBoxArmorAll(nextTextureBox);
 	}
 	
@@ -65,14 +66,14 @@ public class ModelConfigCompound extends ModelConfigCompoundBase {
 	 */
 	public void setPrevTexturePackege() {
 		//次のテクスチャを探す
-		LMTextureBox prevTextureBox = LMTextureBoxManager.instance.getPrevPackege(this.textureBoxLittleMaid, this.color);
+		LMTextureBox prevTextureBox = LMLibraryAPI.instance().getTextureManager().getPrevPackege(this.textureBoxLittleMaid, this.color);
 		this.textureBoxLittleMaid = prevTextureBox;
 		
 		//防具テクスチャも設定
 		if (this.textureBoxLittleMaid.hasArmor()) {
 			this.setTextureBoxArmorAll(this.textureBoxLittleMaid);
 		} else {
-			this.setTextureBoxArmorAll(LMTextureBoxManager.instance.getDefaultLMTextureBox());
+			this.setTextureBoxArmorAll(LMLibraryAPI.instance().getTextureManager().getDefaultLMTextureBox());
 		}
 	}
 	
@@ -81,7 +82,7 @@ public class ModelConfigCompound extends ModelConfigCompoundBase {
 	 * @param pTargetTexture
 	 */
 	public void setPrevTextureArmorPackege() {
-		LMTextureBox prevTextureBox = LMTextureBoxManager.instance.getPrevArmorPackege(this.getTextureBoxArmorAll());
+		LMTextureBox prevTextureBox = LMLibraryAPI.instance().getTextureManager().getPrevArmorPackege(this.getTextureBoxArmorAll());
 		this.setTextureBoxArmorAll(prevTextureBox);
 	}
 	
@@ -183,11 +184,11 @@ public class ModelConfigCompound extends ModelConfigCompoundBase {
 		}
 		
 		//再設定
-		this.setTextureBoxLittleMaid(LMTextureBoxManager.instance.getLMTextureBox(modelMaid));
-		this.setTextureBoxArmor(EntityEquipmentSlot.HEAD, LMTextureBoxManager.instance.getLMTextureBox(modelArmorHead));
-		this.setTextureBoxArmor(EntityEquipmentSlot.CHEST, LMTextureBoxManager.instance.getLMTextureBox(modelArmorChest));
-		this.setTextureBoxArmor(EntityEquipmentSlot.LEGS, LMTextureBoxManager.instance.getLMTextureBox(modelArmorLegs));
-		this.setTextureBoxArmor(EntityEquipmentSlot.FEET, LMTextureBoxManager.instance.getLMTextureBox(modelArmorFeet));
+		this.setTextureBoxLittleMaid(LMLibraryAPI.instance().getTextureManager().getLMTextureBox(modelMaid));
+		this.setTextureBoxArmor(EntityEquipmentSlot.HEAD, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(modelArmorHead));
+		this.setTextureBoxArmor(EntityEquipmentSlot.CHEST, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(modelArmorChest));
+		this.setTextureBoxArmor(EntityEquipmentSlot.LEGS, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(modelArmorLegs));
+		this.setTextureBoxArmor(EntityEquipmentSlot.FEET, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(modelArmorFeet));
 		this.setColor(color);
 		this.setContract(isContract);
 		
@@ -207,7 +208,7 @@ public class ModelConfigCompound extends ModelConfigCompoundBase {
 	 */
 	public boolean refreshModelsLittleMaid(String modelMaid, byte color) {
 		//再設定
-		this.setTextureBoxLittleMaid(LMTextureBoxManager.instance.getLMTextureBox(modelMaid));
+		this.setTextureBoxLittleMaid(LMLibraryAPI.instance().getTextureManager().getLMTextureBox(modelMaid));
 		this.setColor(color);
 		//メイドモデルのサイズを更新
 		this.setSizeMultiModel();
@@ -224,7 +225,7 @@ public class ModelConfigCompound extends ModelConfigCompoundBase {
 	 */
 	public boolean refreshModelsArmor(EntityEquipmentSlot slot, String modelArmor) {
 		//再設定
-		this.setTextureBoxArmor(slot, LMTextureBoxManager.instance.getLMTextureBox(modelArmor));
+		this.setTextureBoxArmor(slot, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(modelArmor));
 		return true;
 	}
 }

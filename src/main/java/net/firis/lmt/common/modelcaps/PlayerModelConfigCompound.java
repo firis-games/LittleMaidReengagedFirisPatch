@@ -2,7 +2,7 @@ package net.firis.lmt.common.modelcaps;
 
 import java.util.UUID;
 
-import firis.lmlib.api.manager.LMTextureBoxManager;
+import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.manager.pack.LMTextureBox;
 import firis.lmlib.common.data.IModelCapsData;
 import firis.lmlib.common.data.ModelConfigCompoundBase;
@@ -174,11 +174,11 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 		Integer color = nbt.getInteger("color");
 		
 		//展開
-		this.setTextureBoxLittleMaid(LMTextureBoxManager.instance.getLMTextureBox(maid));
-		this.setTextureBoxArmor(EntityEquipmentSlot.HEAD, LMTextureBoxManager.instance.getLMTextureBox(armorHead));
-		this.setTextureBoxArmor(EntityEquipmentSlot.CHEST, LMTextureBoxManager.instance.getLMTextureBox(armorChest));
-		this.setTextureBoxArmor(EntityEquipmentSlot.LEGS, LMTextureBoxManager.instance.getLMTextureBox(armorLegs));
-		this.setTextureBoxArmor(EntityEquipmentSlot.FEET, LMTextureBoxManager.instance.getLMTextureBox(armorFeet));
+		this.setTextureBoxLittleMaid(LMLibraryAPI.instance().getTextureManager().getLMTextureBox(maid));
+		this.setTextureBoxArmor(EntityEquipmentSlot.HEAD, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorHead));
+		this.setTextureBoxArmor(EntityEquipmentSlot.CHEST, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorChest));
+		this.setTextureBoxArmor(EntityEquipmentSlot.LEGS, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorLegs));
+		this.setTextureBoxArmor(EntityEquipmentSlot.FEET, LMLibraryAPI.instance().getTextureManager().getLMTextureBox(armorFeet));
 		this.setColor(color);
 		
 		//モーション系
@@ -193,11 +193,11 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 	public static NBTTagCompound createDefaultNBT(UUID uuid) {
 		NBTTagCompound nbt = new NBTTagCompound();
 		
-		LMTextureBox maidBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_maid_model);
-		LMTextureBox headBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_head);
-		LMTextureBox bodyBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_body);
-		LMTextureBox legBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_leg);
-		LMTextureBox bootsBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_boots);
+		LMTextureBox maidBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_maid_model);
+		LMTextureBox headBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_head);
+		LMTextureBox bodyBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_body);
+		LMTextureBox legBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_leg);
+		LMTextureBox bootsBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_boots);
 		
 		//必要な情報のみNBT化
 		nbt.setUniqueId("uuid", uuid);

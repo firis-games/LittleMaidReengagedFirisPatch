@@ -12,6 +12,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import firis.lmlib.LMLibrary;
+import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.constant.EnumSound;
 import firis.lmlib.api.loader.LMSoundHandler;
 import firis.lmlib.api.loader.pack.JsonResourceLittleMaidCustomSound;
@@ -28,9 +29,7 @@ import net.minecraft.util.ResourceLocation;
  *
  */
 public class LMSoundManager {
-	
-	public static LMSoundManager instance = new LMSoundManager();
-	
+		
 	/**
 	 * カスタムモデルサウンド
 	 * 
@@ -120,7 +119,7 @@ public class LMSoundManager {
 		JsonResourceLittleMaidCustomSound jsonObject = new JsonResourceLittleMaidCustomSound();
 		jsonObject.default_voice = this.defaultSoundpack;
 		
-		for (LMTextureBox textureBox : LMTextureBoxManager.instance.getLMTextureBoxList()) {
+		for (LMTextureBox textureBox : LMLibraryAPI.instance().getTextureManager().getLMTextureBoxList()) {
 			
 			//メイドさんのテクスチャが存在する場合のみ対象とする
 			if (textureBox.hasLittleMaid()) {

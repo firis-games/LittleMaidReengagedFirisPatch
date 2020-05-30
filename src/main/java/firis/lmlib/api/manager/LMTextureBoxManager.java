@@ -23,8 +23,6 @@ import firis.lmlib.api.manager.pack.TexturePack;
  */
 public class LMTextureBoxManager {
 	
-	public static LMTextureBoxManager instance = new LMTextureBoxManager();
-	
 	public static String defaultTextureModelName = "default_Orign";
 	
 	/**

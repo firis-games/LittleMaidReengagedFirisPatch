@@ -3,7 +3,7 @@ package net.firis.lmt.common.manager;
 import java.util.HashMap;
 import java.util.Map;
 
-import firis.lmlib.api.manager.LMTextureBoxManager;
+import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.manager.pack.LMTextureBox;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
@@ -125,11 +125,11 @@ public class PlayerModelManager {
 	 */
 	private static PlayerModelConfigCompound refreshConfig(PlayerModelConfigCompound playerModelConfig) {
 		//モデル情報を設定する
-		LMTextureBox maidBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_maid_model);
-		LMTextureBox headBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_head);
-		LMTextureBox bodyBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_body);
-		LMTextureBox legBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_leg);
-		LMTextureBox bootsBox = LMTextureBoxManager.instance.getLMTextureBox(FirisConfig.cfg_armor_model_boots);
+		LMTextureBox maidBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_maid_model);
+		LMTextureBox headBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_head);
+		LMTextureBox bodyBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_body);
+		LMTextureBox legBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_leg);
+		LMTextureBox bootsBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(FirisConfig.cfg_armor_model_boots);
 		
 		playerModelConfig.setTextureBoxLittleMaid(maidBox);
 		playerModelConfig.setTextureBoxArmor(EntityEquipmentSlot.HEAD, headBox);

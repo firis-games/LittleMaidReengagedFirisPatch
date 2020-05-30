@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.constant.EnumColor;
 import firis.lmlib.api.constant.EnumSound;
 import firis.lmlib.api.manager.LMTextureBoxManager;
@@ -5117,7 +5118,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		//デフォルト野良モデルを設定する
 		if (!LMRConfig.cfg_isFixedWildMaid) {
 			//String littleMaidTexture = ModelManager.instance.getRandomTextureString(rand);
-			LMTextureBox littleMaidTextureBox = LMTextureBoxManager.instance.getRandomTexture(rand);
+			LMTextureBox littleMaidTextureBox = LMLibraryAPI.instance().getTextureManager().getRandomTexture(rand);
 			maidColor = (byte) littleMaidTextureBox.getRandomWildColor(rand).getColor();
 			littleMaidTexture = littleMaidTextureBox.getTextureModelName();
 		}
