@@ -6,12 +6,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import firis.lmlib.api.LMLibraryAPI;
-import firis.lmlib.api.loader.LMFileLoader;
 import firis.lmlib.api.manager.MultiModelPackManager;
 import firis.lmlib.api.manager.TexturePackManager;
 import firis.lmlib.client.resources.LMSoundResourcePack;
 import firis.lmlib.client.resources.LMTextureResourcePack;
 import firis.lmlib.common.config.LMLConfig;
+import firis.lmlib.common.loader.LMFileLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraftforge.fml.common.FMLCommonHandler;

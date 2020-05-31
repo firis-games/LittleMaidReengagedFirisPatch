@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import firis.lmlib.api.LMLibraryAPI;
-import firis.lmlib.api.manager.pack.LMTextureBox;
+import firis.lmlib.api.resource.LMTextureBox;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.firis.lmt.common.modelcaps.PlayerModelCaps;
 import net.firis.lmt.common.modelcaps.PlayerModelConfigCompound;

@@ -3,7 +3,7 @@ package net.firis.lmt.common.modelcaps;
 import java.util.UUID;
 
 import firis.lmlib.api.LMLibraryAPI;
-import firis.lmlib.api.manager.pack.LMTextureBox;
+import firis.lmlib.api.resource.LMTextureBox;
 import firis.lmlib.common.data.IModelCapsData;
 import firis.lmlib.common.data.ModelConfigCompoundBase;
 import net.firis.lmt.config.FirisConfig;

@@ -1,4 +1,4 @@
-package firis.lmlib.common.model;
+package firis.lmlib.multimodel;
 
 import org.lwjgl.opengl.GL11;
 

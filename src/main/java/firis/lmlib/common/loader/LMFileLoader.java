@@ -1,4 +1,4 @@
-package firis.lmlib.api.loader;
+package firis.lmlib.common.loader;
 
 import java.io.File;
 import java.io.IOException;

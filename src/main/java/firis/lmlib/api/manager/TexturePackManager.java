@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import firis.lmlib.api.constant.EnumColor;
-import firis.lmlib.api.loader.LMTextureHandler;
-import firis.lmlib.api.manager.pack.TexturePack;
+import firis.lmlib.api.resource.TexturePack;
+import firis.lmlib.common.loader.LMTextureHandler;
 
 /**
  * マルチモデルのテクスチャパックを管理する

@@ -1,4 +1,4 @@
-package firis.lmlib.common.model;
+package firis.lmlib.multimodel;
 
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.renderer.ModelRenderer;

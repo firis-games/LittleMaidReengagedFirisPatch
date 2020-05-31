@@ -1,4 +1,4 @@
-package firis.lmlib.api.manager.pack;
+package firis.lmlib.api.resource;
 
 import java.util.EnumMap;
 import java.util.HashMap;

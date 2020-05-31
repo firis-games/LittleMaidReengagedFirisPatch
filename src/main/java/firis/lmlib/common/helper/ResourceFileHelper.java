@@ -1,4 +1,4 @@
-package firis.lmlib.api.loader.pack;
+package firis.lmlib.common.helper;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import firis.lmlib.api.manager.pack.LMTextureBox;
-import firis.lmlib.api.manager.pack.MultiModelPack;
-import firis.lmlib.api.manager.pack.TexturePack;
+import firis.lmlib.api.resource.LMTextureBox;
+import firis.lmlib.api.resource.MultiModelPack;
+import firis.lmlib.api.resource.TexturePack;
 
 /**
  * メイドさんのテクスチャモデルを管理するクラス

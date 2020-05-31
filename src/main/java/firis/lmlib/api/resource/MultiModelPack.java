@@ -1,4 +1,4 @@
-package firis.lmlib.api.manager.pack;
+package firis.lmlib.api.resource;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

@@ -14,13 +14,13 @@ import com.google.gson.JsonObject;
 import firis.lmlib.LMLibrary;
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.constant.EnumSound;
-import firis.lmlib.api.loader.LMSoundHandler;
-import firis.lmlib.api.loader.pack.JsonResourceLittleMaidCustomSound;
-import firis.lmlib.api.loader.pack.ResourceFileHelper;
-import firis.lmlib.api.loader.pack.JsonResourceLittleMaidCustomSound.ModelVoice;
-import firis.lmlib.api.loader.pack.JsonResourceLittleMaidSound.ResourceLittleMaidSoundpack;
-import firis.lmlib.api.manager.pack.LMTextureBox;
+import firis.lmlib.api.resource.LMTextureBox;
 import firis.lmlib.common.config.LMLConfig;
+import firis.lmlib.common.helper.ResourceFileHelper;
+import firis.lmlib.common.loader.LMSoundHandler;
+import firis.lmlib.common.loader.json.JsonResourceLittleMaidCustomSound;
+import firis.lmlib.common.loader.json.JsonResourceLittleMaidCustomSound.ModelVoice;
+import firis.lmlib.common.loader.json.JsonResourceLittleMaidSound.ResourceLittleMaidSoundpack;
 import net.minecraft.util.ResourceLocation;
 
 /**

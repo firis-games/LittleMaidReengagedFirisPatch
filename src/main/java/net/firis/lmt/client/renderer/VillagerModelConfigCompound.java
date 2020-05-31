@@ -1,7 +1,7 @@
 package net.firis.lmt.client.renderer;
 
 import firis.lmlib.api.LMLibraryAPI;
-import firis.lmlib.api.manager.pack.LMTextureBox;
+import firis.lmlib.api.resource.LMTextureBox;
 import firis.lmlib.common.data.IModelCapsData;
 import firis.lmlib.common.data.IModelConfigCompound;
 import firis.lmmm.api.model.ModelMultiBase;

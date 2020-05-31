@@ -1,4 +1,4 @@
-package firis.lmlib.api.loader;
+package firis.lmlib.common.loader;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -12,8 +12,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import firis.lmlib.LMLibrary;
-import firis.lmlib.api.loader.pack.ResourceFileHelper;
 import firis.lmlib.common.config.LMLConfig;
+import firis.lmlib.common.helper.ResourceFileHelper;
 
 /**
  * メイドさんのテクスチャをロードする

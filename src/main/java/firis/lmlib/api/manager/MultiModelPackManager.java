@@ -4,8 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import firis.lmlib.LMLibrary;
-import firis.lmlib.api.loader.LMMultiModelHandler;
-import firis.lmlib.api.manager.pack.MultiModelPack;
+import firis.lmlib.api.resource.MultiModelPack;
+import firis.lmlib.common.loader.LMMultiModelHandler;
 import firis.lmmm.api.model.ModelMultiBase;
 
 /**

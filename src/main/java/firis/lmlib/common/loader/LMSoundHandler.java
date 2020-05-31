@@ -1,4 +1,4 @@
-package firis.lmlib.api.loader;
+package firis.lmlib.common.loader;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import firis.lmlib.api.loader.pack.JsonResourceLittleMaidSound;
-import firis.lmlib.api.loader.pack.ResourceFileHelper;
 import firis.lmlib.common.config.LMLConfig;
+import firis.lmlib.common.helper.ResourceFileHelper;
+import firis.lmlib.common.loader.json.JsonResourceLittleMaidSound;
 
 /**
  * メイドさんのサウンド関連ファイルをロードする
