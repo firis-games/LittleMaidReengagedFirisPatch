@@ -3,6 +3,8 @@ package firis.lmlib.client.renderer;
 import org.lwjgl.opengl.GL11;
 
 import firis.lmlib.client.model.ModelBaseSolo;
+import firis.lmlib.common.data.IModelConfigCompound;
+import firis.lmmm.api.caps.IModelCaps;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLiving;
@@ -40,6 +42,13 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 			GL11.glScalef(lscale, lscale, lscale);
 		}
     }
+	
+	/**
+	 * 描画用マルチモデル情報をEntityから取得する
+	 * @param entity
+	 * @return
+	 */
+	abstract protected IModelConfigCompound getModelConfigCompoundFromEntity(T entity);
 
 	/**
 	 * マルチモデルの描画パラメータの初期化処理
@@ -50,7 +59,14 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	 * @param entityYaw
 	 * @param partialTicks
 	 */
-	abstract public void setModelValues(T entity, double x, double y, double z, float entityYaw, float partialTicks);
+	protected void setModelValues(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		
+		//マルチモデル関連情報を取得する
+		IModelConfigCompound modelConfig = this.getModelConfigCompoundFromEntity(entity);
+		
+		//パラメータの初期化
+		modelMain.initModelParameter(modelConfig, entityYaw, partialTicks);
+	}
 	
 	/**
 	 * Rendererのメイン処理
@@ -96,5 +112,23 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 	protected boolean bindEntityTexture(T entity) {
 		return true;
     }
+	
+	/**
+	 * 向いている方向に合わせてモデルの位置を調整する
+	 * 特定の場合のみ無効化する
+	 */
+	@Override
+	protected void applyRotations(T entityLiving, float p_77043_2_, float rotationYaw, float partialTicks) {
+		
+		IModelConfigCompound modelConfig = this.getModelConfigCompoundFromEntity(entityLiving);
+		
+		Boolean lookingRotation = (Boolean) modelConfig.getModelCaps().getCapsValue(IModelCaps.caps_looking_rotation);
+		if (lookingRotation == null || lookingRotation == true) {
+			super.applyRotations(entityLiving, p_77043_2_, rotationYaw, partialTicks);
+		}
+		
+	}
+	
+	
 	
 }

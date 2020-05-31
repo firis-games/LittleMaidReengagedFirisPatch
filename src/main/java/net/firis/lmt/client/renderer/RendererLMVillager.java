@@ -1,6 +1,7 @@
 package net.firis.lmt.client.renderer;
 
 import firis.lmlib.client.renderer.RenderModelMulti;
+import firis.lmlib.common.data.IModelConfigCompound;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.passive.EntityVillager;
 
@@ -9,17 +10,13 @@ public class RendererLMVillager extends RenderModelMulti<EntityVillager> {
 	public RendererLMVillager(RenderManager renderManagerIn) {
 		super(renderManagerIn, 0.3F);
 	}
-
+	
 	/**
-	 * パラメータ設定
+	 * 村人用マルチモデル設定を生成する
 	 */
 	@Override
-	public void setModelValues(EntityVillager entity, double x, double y, double z, float entityYaw,	float partialTicks) {
-		
-		VillagerModelConfigCompound modelConfig = new VillagerModelConfigCompound(entity);
-		//パラメータの初期化
-		modelMain.initModelParameter(modelConfig, entityYaw, partialTicks);
-		
+	protected IModelConfigCompound getModelConfigCompoundFromEntity(EntityVillager entity) {
+		return new VillagerModelConfigCompound(entity);
 	}
 
 }

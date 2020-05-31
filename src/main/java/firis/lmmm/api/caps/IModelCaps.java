@@ -164,6 +164,11 @@ public interface IModelCaps {
 	//カスタム追加分
 	//お座りモーション
 	public static final int caps_motionSitting      = 0x0401;
+	
+	//モーション制御系処理
+	//null or trueの場合にEntityの向いている方向に体の向きを補正する（デフォルト）
+	//falseの場合にEntityの向いている方向は無視する（ベッド就寝時などの制御用）
+	public static final int caps_looking_rotation   = 0x0501;
 
 	/**
 	 * モデルが実装している機能をリストに入れて返す。

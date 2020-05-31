@@ -1,6 +1,7 @@
 package net.blacklab.lmr.client.renderer.entity;
 
 import firis.lmlib.client.renderer.RenderModelMulti;
+import firis.lmlib.common.data.IModelConfigCompound;
 import firis.lmlib.common.data.IMultiModelEntity;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaidGui;
@@ -23,40 +24,15 @@ public class RenderEntitySelect extends RenderModelMulti<EntityLittleMaidForTexS
 		super(manager, 0.0F);
 		addLayer(new LayerArmorLittleMaidGui(this));
 	}
-
+	
 	/**
-	 * マルチモデルの描画パラメータの初期化処理
-	 * @param entity
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param entityYaw
-	 * @param partialTicks
+	 * 描画用のマルチモデル情報を取得する
 	 */
 	@Override
-	public void setModelValues(EntityLittleMaidForTexSelect entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		
-		//モデルパラメータ取得
+	protected IModelConfigCompound getModelConfigCompoundFromEntity(EntityLittleMaidForTexSelect entity) {
 		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
 		ModelConfigCompound modelConfigCompound = modelEntity.getModelConfigCompound();
-		
-		//パラメータの初期化
-		modelMain.initModelParameter(modelConfigCompound, entityYaw, partialTicks);
-		
+		return modelConfigCompound;
 	}
-
-//	/**
-//	 * Rendererのメイン処理
-//	 */
-//	@Override
-//	public void doRender(EntityLittleMaidForTexSelect entity, double x, double y, double z, float entityYaw, float partialTicks) {
-//		
-//		//モデルパラメータセット
-//		fcaps = entity.getModelConfigCompound().getModelCaps();
-//		
-//		//マルチモデルの描画
-//		doRenderMultiModel(entity, x, y, z, entityYaw, partialTicks, fcaps);
-//		
-//	}
 	
 }
