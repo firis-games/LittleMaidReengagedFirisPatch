@@ -3,7 +3,7 @@ package net.firis.lmt.common.modelcaps;
 import java.util.ArrayList;
 import java.util.List;
 
-import firis.lmlib.common.data.IModelCapsData;
+import firis.lmlib.api.caps.IModelCapsData;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.blacklab.lmr.util.helper.ItemHelper;

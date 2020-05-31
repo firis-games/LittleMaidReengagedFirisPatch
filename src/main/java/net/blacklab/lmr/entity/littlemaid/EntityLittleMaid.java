@@ -22,11 +22,11 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import firis.lmlib.api.LMLibraryAPI;
+import firis.lmlib.api.caps.IMultiModelEntity;
 import firis.lmlib.api.constant.EnumColor;
 import firis.lmlib.api.constant.EnumSound;
 import firis.lmlib.api.manager.LMTextureBoxManager;
 import firis.lmlib.api.resource.LMTextureBox;
-import firis.lmlib.common.data.IMultiModelEntity;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;

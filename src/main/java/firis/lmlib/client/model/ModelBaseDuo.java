@@ -2,7 +2,7 @@ package firis.lmlib.client.model;
 
 import org.lwjgl.opengl.GL11;
 
-import firis.lmlib.common.data.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelConfigCompound;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.minecraft.client.Minecraft;

@@ -1,6 +1,6 @@
 package net.blacklab.lmr.util;
 
-import firis.lmlib.common.data.ModelCapsData;
+import firis.lmlib.api.caps.ModelCapsData;
 import net.minecraft.entity.EntityLivingBase;
 
 /**

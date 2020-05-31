@@ -1,8 +1,8 @@
 package net.blacklab.lmr.client.renderer.entity;
 
+import firis.lmlib.api.caps.IModelConfigCompound;
+import firis.lmlib.api.caps.IMultiModelEntity;
 import firis.lmlib.client.renderer.RenderModelMulti;
-import firis.lmlib.common.data.IModelConfigCompound;
-import firis.lmlib.common.data.IMultiModelEntity;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaidGui;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;

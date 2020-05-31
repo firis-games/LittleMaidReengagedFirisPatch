@@ -2,8 +2,8 @@ package firis.lmlib.client.model;
 
 import org.lwjgl.opengl.GL11;
 
-import firis.lmlib.common.data.IModelCapsData;
-import firis.lmlib.common.data.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelCapsData;
+import firis.lmlib.api.caps.IModelConfigCompound;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.OpenGlHelper;
 

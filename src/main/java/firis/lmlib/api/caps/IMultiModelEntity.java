@@ -1,4 +1,4 @@
-package firis.lmlib.common.data;
+package firis.lmlib.api.caps;
 
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 

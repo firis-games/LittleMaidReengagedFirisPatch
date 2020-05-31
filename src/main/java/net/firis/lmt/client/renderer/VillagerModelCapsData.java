@@ -1,6 +1,6 @@
 package net.firis.lmt.client.renderer;
 
-import firis.lmlib.common.data.ModelCapsData;
+import firis.lmlib.api.caps.ModelCapsData;
 import net.minecraft.entity.EntityLivingBase;
 
 public class VillagerModelCapsData extends ModelCapsData {

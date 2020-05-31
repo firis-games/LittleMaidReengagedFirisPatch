@@ -1,7 +1,7 @@
 package net.firis.lmt.client.renderer;
 
+import firis.lmlib.api.caps.IModelConfigCompound;
 import firis.lmlib.client.renderer.RenderModelMulti;
-import firis.lmlib.common.data.IModelConfigCompound;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.passive.EntityVillager;
 

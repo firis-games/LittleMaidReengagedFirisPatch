@@ -3,9 +3,9 @@ package net.firis.lmt.common.modelcaps;
 import java.util.UUID;
 
 import firis.lmlib.api.LMLibraryAPI;
+import firis.lmlib.api.caps.IModelCapsData;
+import firis.lmlib.api.caps.ModelConfigCompoundBase;
 import firis.lmlib.api.resource.LMTextureBox;
-import firis.lmlib.common.data.IModelCapsData;
-import firis.lmlib.common.data.ModelConfigCompoundBase;
 import net.firis.lmt.config.FirisConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;

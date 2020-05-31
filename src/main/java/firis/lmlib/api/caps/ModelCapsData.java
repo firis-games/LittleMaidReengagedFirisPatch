@@ -1,4 +1,4 @@
-package firis.lmlib.common.data;
+package firis.lmlib.api.caps;
 
 import java.util.List;
 

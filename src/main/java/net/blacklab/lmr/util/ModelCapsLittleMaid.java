@@ -1,6 +1,6 @@
 package net.blacklab.lmr.util;
 
-import firis.lmlib.common.data.ModelCapsData;
+import firis.lmlib.api.caps.ModelCapsData;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
