@@ -123,9 +123,9 @@ public class ModelLittleMaid_Aug extends ModelLittleMaid_SR2 {
 	}
 
 	@Override
-	public void setRotationAngles(float par1, float par2, float pTicksExisted,
-			float pHeadYaw, float pHeadPitch, float par6, IModelCaps pEntityCaps) {
-		super.setRotationAngles(par1, par2, pTicksExisted, pHeadYaw, pHeadPitch, par6, pEntityCaps);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks,
+			float netHeadYaw, float headPitch, float scaleFactor, IModelCaps entityCaps) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityCaps);
 		
 		SideTailR.setRotateAngleX(SideTailL.setRotateAngleX(bipedHead.getRotateAngleX() * -0.666666666F));
 	}

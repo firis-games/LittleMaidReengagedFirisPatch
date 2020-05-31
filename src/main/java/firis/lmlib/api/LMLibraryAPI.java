@@ -2,6 +2,8 @@ package firis.lmlib.api;
 
 import firis.lmlib.api.manager.LMSoundManager;
 import firis.lmlib.api.manager.LMTextureBoxManager;
+import firis.lmmm.api.model.ModelLittleMaidBase;
+import firis.lmmm.api.model.motion.ILMMotion;
 
 /**
  * LMLibraryのAPI
@@ -42,6 +44,13 @@ public class LMLibraryAPI {
 	 */
 	public LMSoundManager getSoundManager() {
 		return this.soundManager;
+	}
+	
+	/**
+	 * リトルメイド用追加モーションを登録する
+	 */
+	public void registerLittleMaidMotion(ILMMotion lmMotion) {
+		ModelLittleMaidBase.littleMaidMotions.add(lmMotion);
 	}
 
 }

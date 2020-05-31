@@ -110,8 +110,8 @@ public abstract class ModelMultiMMMBase extends ModelMultiBase {
 	public void setDefaultPause() {
 	}
 
-	public void setDefaultPause(float par1, float par2, float pTicksExisted,
-			float pHeadYaw, float pHeadPitch, float par6, IModelCaps pEntityCaps) {
+	public void setDefaultPause(float limbSwing, float limbSwingAmount, float ageInTicks,
+			float netHeadYaw, float headPitch, float scaleFactor, IModelCaps entityCaps) {
 		setDefaultPause();
 	}
 

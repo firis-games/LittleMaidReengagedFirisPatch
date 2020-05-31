@@ -56,11 +56,11 @@ public class ModelLittleMaid_SR2 extends ModelLittleMaidBase {
 	}
 
 	@Override
-	public void setRotationAngles(float par1, float par2, float pTicksExisted,
-			float pHeadYaw, float pHeadPitch, float par6, IModelCaps pEntityCaps) {
-		super.setRotationAngles(par1, par2, pTicksExisted, pHeadYaw, pHeadPitch, par6, pEntityCaps);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks,
+			float netHeadYaw, float headPitch, float scaleFactor, IModelCaps entityCaps) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityCaps);
 		if (aimedBow) {
-			if (ModelCapsHelper.getCapsValueInt(pEntityCaps, caps_dominantArm) == 0) {
+			if (ModelCapsHelper.getCapsValueInt(entityCaps, caps_dominantArm) == 0) {
 				eyeL.setVisible(true);
 			} else {
 				eyeR.setVisible(true);

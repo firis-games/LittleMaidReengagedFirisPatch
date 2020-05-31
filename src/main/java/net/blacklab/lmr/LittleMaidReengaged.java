@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 
+import firis.lmlib.api.LMLibraryAPI;
 import net.blacklab.lmc.common.command.LMCommand;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.ReflectionHelper;
@@ -22,7 +23,7 @@ import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
-import net.blacklab.lmr.entity.maidmodel.api.LMMotionHandler;
+import net.blacklab.lmr.entity.maidmodel.base.motion.LMMotionItemCarryer;
 import net.blacklab.lmr.event.EventHookLMRE;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
@@ -146,8 +147,6 @@ public class LittleMaidReengaged {
 		//テスト用preInit
 		LMTCore.preInit(evt);
 		
-		//メイドさんのモーション初期化
-		LMMotionHandler.init();
 	}
 
 	@EventHandler
@@ -167,6 +166,9 @@ public class LittleMaidReengaged {
 		if (LMRConfig.cfg_general_villager_maid_broker) {
 			StructureVillagePiecesMaidBrokerHouse.init();
 		}
+		
+		//追加モーション設定
+		LMLibraryAPI.instance().registerLittleMaidMotion(new LMMotionItemCarryer());
 	}
 	
 	@EventHandler

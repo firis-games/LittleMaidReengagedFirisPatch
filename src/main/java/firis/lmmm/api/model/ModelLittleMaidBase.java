@@ -1,11 +1,14 @@
 package firis.lmmm.api.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.caps.ModelCapsHelper;
+import firis.lmmm.api.model.motion.ILMMotion;
 import firis.lmmm.api.renderer.ModelRenderer;
-import net.blacklab.lmr.entity.maidmodel.api.LMMotionHandler;
 
 /**
  * LMM用に最適化
@@ -23,7 +26,11 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 	public ModelRenderer bipedRightLeg;
 	public ModelRenderer bipedLeftLeg;
 	public ModelRenderer Skirt;
-
+	
+	/**
+	 * メイドさんのカスタムモーション
+	 */
+	public static List<ILMMotion> littleMaidMotions = new ArrayList<>();
 
 	/**
 	 * コンストラクタは全て継承させること
@@ -154,9 +161,11 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 	 * 独自追加分
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float pTicksExisted,
-			float pHeadYaw, float pHeadPitch, float par6, IModelCaps pEntityCaps) {
-		setDefaultPause(par1, par2, pTicksExisted, pHeadYaw, pHeadPitch, par6, pEntityCaps);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks,
+			float netHeadYaw, float headPitch, float scaleFactor, IModelCaps entityCaps) {
+		
+		//標準
+		setDefaultPause(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityCaps);
 
 		if (isRiding) {
 			// 乗り物に乗っている
@@ -249,7 +258,7 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 		}
 		if (isWait) {
 			//待機状態の特別表示
-			float lx = mh_sin(pTicksExisted * 0.067F) * 0.05F -0.7F;
+			float lx = mh_sin(ageInTicks * 0.067F) * 0.05F -0.7F;
 			bipedRightArm.setRotateAngle(lx, 0.0F, -0.4F);
 			bipedLeftArm.setRotateAngle(lx, 0.0F, 0.4F);
 		} else {
@@ -263,20 +272,20 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 				bipedRightArm.setRotateAngle(-1.470796F, -la, 0.0F);
 				bipedLeftArm.setRotateAngle(-1.470796F, la, 0.0F);
 				la = bipedHead.rotateAngleX;
-				lb = mh_sin(pTicksExisted * 0.067F) * 0.05F;
+				lb = mh_sin(ageInTicks * 0.067F) * 0.05F;
 				lc = f6 * 1.2F - f7 * 0.4F;
 				bipedRightArm.addRotateAngleX(la + lb - lc);
 				bipedLeftArm.addRotateAngleX(la - lb - lc);
 				la = bipedHead.rotateAngleY;
 				bipedRightArm.addRotateAngleY(la);
 				bipedLeftArm.addRotateAngleY(la);
-				la = mh_cos(pTicksExisted * 0.09F) * 0.05F + 0.05F;
+				la = mh_cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
 				bipedRightArm.addRotateAngleZ(la);
 				bipedLeftArm.addRotateAngleZ(-la);
 			} else {
 				// 通常
-				la = mh_sin(pTicksExisted * 0.067F) * 0.05F;
-				lc = 0.5F + mh_cos(pTicksExisted * 0.09F) * 0.05F + 0.05F;
+				la = mh_sin(ageInTicks * 0.067F) * 0.05F;
+				lc = 0.5F + mh_cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
 				bipedRightArm.addRotateAngleX(la);
 				bipedLeftArm.addRotateAngleX(-la);
 				bipedRightArm.addRotateAngleZ(lc);
@@ -284,8 +293,31 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 			}
 		}
 		
-		//割込みモーション処理
-		LMMotionHandler.postMotionRotationAngles(this, par1, par2, pTicksExisted, pHeadYaw, pHeadPitch, par6, pEntityCaps);
+		//追加モーション
+		postMotionRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityCaps);
+		
+	}
+	
+	/**
+	 * 追加モーションの設定を行う
+	 * @param limbSwing
+	 * @param limbSwingAmount
+	 * @param ageInTicks
+	 * @param netHeadYaw
+	 * @param headPitch
+	 * @param scaleFactor
+	 * @param pEntityCaps
+	 */
+	protected void postMotionRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, IModelCaps entityCaps) {
+		
+		String multiModelMotion = (String) entityCaps.getCapsValue(IModelCaps.caps_multimodel_motion);
+		
+		for (ILMMotion lmmotion : littleMaidMotions) {
+			//trueで以降のモーション制御を行わない
+			if (lmmotion.postRotationAngles(this, multiModelMotion, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityCaps)) {
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -293,25 +325,27 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 	}
 
 	@Override
-	public void setDefaultPause(float par1, float par2, float pTicksExisted,
-			float pHeadYaw, float pHeadPitch, float par6, IModelCaps pEntityCaps) {
-		super.setDefaultPause(par1, par2, pTicksExisted, pHeadYaw, pHeadPitch, par6, pEntityCaps);
+	public void setDefaultPause(float limbSwing, float limbSwingAmount, float ageInTicks,
+			float netHeadYaw, float headPitch, float scaleFactor, IModelCaps entityCaps) {
+		
+		super.setDefaultPause(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityCaps);
 		mainFrame.setRotationPoint(0F, 8F, 0F);
+		mainFrame.setRotateAngleDegX(0);
 		bipedTorso.setRotationPoint(0F, 0F, 0F).setRotateAngle(0F, 0F, 0F);
 		bipedNeck.setRotationPoint(0F, 0F, 0F).setRotateAngle(0F, 0F, 0F);
 		bipedPelvic.setRotationPoint(0F, 7F, 0F).setRotateAngle(0F, 0F, 0F);
 		bipedHead.setRotationPoint(0F, 0F, 0F);
-		bipedHead.setRotateAngleDegY(pHeadYaw);
-		bipedHead.setRotateAngleDegX(pHeadPitch);
+		bipedHead.setRotateAngleDegY(netHeadYaw);
+		bipedHead.setRotateAngleDegX(headPitch);
 		bipedBody.setRotationPoint(0F, 0F, 0F).setRotateAngle(0F, 0F, 0F);
 		bipedRightArm.setRotationPoint(-3.0F, 1.6F, 0F);
-		bipedRightArm.setRotateAngle(mh_cos(par1 * 0.6662F + 3.141593F) * 2.0F * par2 * 0.5F, 0F, 0F);
+		bipedRightArm.setRotateAngle(mh_cos(limbSwing * 0.6662F + 3.141593F) * 2.0F * limbSwingAmount * 0.5F, 0F, 0F);
 		bipedLeftArm.setRotationPoint(3.0F, 1.6F, 0F);
-		bipedLeftArm.setRotateAngle(mh_cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F, 0F, 0F);
+		bipedLeftArm.setRotateAngle(mh_cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F, 0F, 0F);
 		bipedRightLeg.setRotationPoint(-1F, 0F, 0F);
-		bipedRightLeg.setRotateAngle(mh_cos(par1 * 0.6662F) * 1.4F * par2, 0F, 0F);
+		bipedRightLeg.setRotateAngle(mh_cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount, 0F, 0F);
 		bipedLeftLeg.setRotationPoint(1F, 0F, 0F);
-		bipedLeftLeg.setRotateAngle(mh_cos(par1 * 0.6662F + 3.141593F) * 1.4F * par2, 0F, 0F);
+		bipedLeftLeg.setRotateAngle(mh_cos(limbSwing * 0.6662F + 3.141593F) * 1.4F * limbSwingAmount, 0F, 0F);
 
 		Skirt.setRotationPoint(0F, 0F, 0F).setRotateAngle(0F, 0F, 0F);
 
@@ -352,37 +386,12 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 		return -1;
 	}
 
-//	@Override
-//	public void renderItems(IModelCaps pEntityCaps) {
-//		// 手持ちの表示
-//		GL11.glPushMatrix();
-//		// R
-//		Arms[0].loadMatrix();
-//		GL11.glTranslatef(0F, 0.05F, -0.05F);
-//		Arms[0].renderItems(this, pEntityCaps, false, 0);
-//		// L
-//		Arms[1].loadMatrix();
-//		GL11.glTranslatef(0F, 0.05F, -0.05F);
-//		Arms[1].renderItems(this, pEntityCaps, false, 1);
-//		// 頭部装飾品
-//		boolean lplanter = ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isPlanter);
-//		if (ModelCapsHelper.getCapsValueBoolean(pEntityCaps, caps_isCamouflage) || lplanter) {
-//			HeadMount.loadMatrix();
-//			if (lplanter) {
-//				HeadTop.loadMatrix().renderItemsHead(this, pEntityCaps);
-//			} else {
-//				HeadMount.loadMatrix().renderItemsHead(this, pEntityCaps);
-//			}
-//		}
-//		GL11.glPopMatrix();
-//	}
-
 	@Override
-	public void renderFirstPersonHand(IModelCaps pEntityCaps) {
-		float var2 = 1.0F;
-		GL11.glColor3f(var2, var2, var2);
+	public void renderFirstPersonHand(IModelCaps entityCaps) {
+		float color = 1.0F;
+		GL11.glColor3f(color, color, color);
 		onGrounds[0] = onGrounds[1] = 0.0F;
-		setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, pEntityCaps);
+		setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, entityCaps);
 		bipedRightArm.render(0.0625F);
 	}
 

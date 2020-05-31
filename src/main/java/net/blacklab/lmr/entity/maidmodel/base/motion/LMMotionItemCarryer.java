@@ -2,7 +2,7 @@ package net.blacklab.lmr.entity.maidmodel.base.motion;
 
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelLittleMaidBase;
-import firis.lmmm.api.model.motion.ILMMotionRotationAngles;
+import firis.lmmm.api.model.motion.ILMMotion;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.minecraft.entity.Entity;
@@ -12,13 +12,13 @@ import net.minecraft.entity.Entity;
  * @author firis-games
  *
  */
-public class LMMotionItemCarryer implements ILMMotionRotationAngles {
+public class LMMotionItemCarryer implements ILMMotion {
 
 	/**
 	 * メイドさんがチェストを持っている動き
 	 */
 	@Override
-	public boolean postRotationAngles(ModelLittleMaidBase model, float limbSwing, float limbSwingAmount,
+	public boolean postRotationAngles(ModelLittleMaidBase model, String motion, float limbSwing, float limbSwingAmount,
 			float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, IModelCaps pEntityCaps) {
 		
 		Entity entity = (Entity) pEntityCaps.getCapsValue(IModelCaps.caps_Entity);

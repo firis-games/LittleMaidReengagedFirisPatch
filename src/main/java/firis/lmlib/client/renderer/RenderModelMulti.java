@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import firis.lmlib.client.model.ModelBaseSolo;
 import firis.lmlib.common.data.IModelConfigCompound;
 import firis.lmmm.api.caps.IModelCaps;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLiving;
@@ -122,9 +123,12 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 		
 		IModelConfigCompound modelConfig = this.getModelConfigCompoundFromEntity(entityLiving);
 		
-		Boolean lookingRotation = (Boolean) modelConfig.getModelCaps().getCapsValue(IModelCaps.caps_looking_rotation);
-		if (lookingRotation == null || lookingRotation == true) {
+		Float lookingRotation = (Float) modelConfig.getModelCaps().getCapsValue(IModelCaps.caps_looking_rotation);
+		if (lookingRotation == null) {
 			super.applyRotations(entityLiving, p_77043_2_, rotationYaw, partialTicks);
+		} else {
+			GlStateManager.rotate(lookingRotation, 0.0F, 1.0F, 0.0F);
+			//GlStateManager.rotate(-90.0F, 0.0F, 0.0F, 0.0F);
 		}
 		
 	}

@@ -38,8 +38,8 @@ public abstract class ModelBase extends AbstractModelBase {
 			float ticksExisted, float pheadYaw, float pheadPitch, float par7, boolean pIsRender) {
 	}
 
-	public void setRotationAngles(float par1, float par2, float pTicksExisted,
-			float pHeadYaw, float pHeadPitch, float par6, IModelCaps pEntityCaps) {
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks,
+			float netHeadYaw, float headPitch, float scaleFactor, IModelCaps entityCaps) {
 	}
 
 	public void setLivingAnimations(IModelCaps pEntityCaps, float par2, float par3, float pRenderPartialTicks) {

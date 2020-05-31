@@ -135,17 +135,17 @@ public class ModelMulti_Steve extends ModelMultiBase {
 	}
 
 	@Override
-	public void setRotationAngles(float par1, float par2, float pTicksExisted,
-			float pHeadYaw, float pHeadPitch, float par6, IModelCaps pEntityCaps) {
-		setDefaultPause(par1, par2, pTicksExisted, pHeadYaw, pHeadPitch, par6, pEntityCaps);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks,
+			float netHeadYaw, float headPitch, float scaleFactor, IModelCaps entityCaps) {
+		setDefaultPause(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityCaps);
 		
 		// 腕ふり、腿上げ
-		float lf1 = mh_cos(par1 * 0.6662F);
-		float lf2 = mh_cos(par1 * 0.6662F + PI);
-		this.bipedRightArm.rotateAngleX = lf2 * 2.0F * par2 * 0.5F;
-		this.bipedLeftArm.rotateAngleX = lf1 * 2.0F * par2 * 0.5F;
-		this.bipedRightLeg.rotateAngleX = lf1 * 1.4F * par2;
-		this.bipedLeftLeg.rotateAngleX = lf2 * 1.4F * par2;
+		float lf1 = mh_cos(limbSwing * 0.6662F);
+		float lf2 = mh_cos(limbSwing * 0.6662F + PI);
+		this.bipedRightArm.rotateAngleX = lf2 * 2.0F * limbSwingAmount * 0.5F;
+		this.bipedLeftArm.rotateAngleX = lf1 * 2.0F * limbSwingAmount * 0.5F;
+		this.bipedRightLeg.rotateAngleX = lf1 * 1.4F * limbSwingAmount;
+		this.bipedLeftLeg.rotateAngleX = lf2 * 1.4F * limbSwingAmount;
 		
 		
 		if (isRiding) {
@@ -233,7 +233,7 @@ public class ModelMulti_Steve extends ModelMultiBase {
 			bipedLeftArm.rotateAngleX = -lf + bipedHead.rotateAngleX;
 			bipedRightArm.rotateAngleX -= lf1 * 1.2F - lf2 * 0.4F;
 			bipedLeftArm.rotateAngleX -= lf1 * 1.2F - lf2 * 0.4F;
-			if (ModelCapsHelper.getCapsValueInt(pEntityCaps, caps_dominantArm) == 0) {
+			if (ModelCapsHelper.getCapsValueInt(entityCaps, caps_dominantArm) == 0) {
 				bipedLeftArm.rotateAngleY += 0.4F;
 			} else {
 				bipedRightArm.rotateAngleY += 0.4F;
@@ -241,10 +241,10 @@ public class ModelMulti_Steve extends ModelMultiBase {
 		}
 		
 		// 腕の揺らぎ
-		lf = mh_cos(pTicksExisted * 0.09F) * 0.05F + 0.05F;
+		lf = mh_cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
 		this.bipedRightArm.rotateAngleZ += lf;
 		this.bipedLeftArm.rotateAngleZ -= lf;
-		lf = mh_sin(pTicksExisted * 0.067F) * 0.05F;
+		lf = mh_sin(ageInTicks * 0.067F) * 0.05F;
 		this.bipedRightArm.rotateAngleX += lf;
 		this.bipedLeftArm.rotateAngleX -= lf;
 		
