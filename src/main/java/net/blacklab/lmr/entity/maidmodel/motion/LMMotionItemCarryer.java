@@ -1,4 +1,4 @@
-package net.blacklab.lmr.entity.maidmodel.base.motion;
+package net.blacklab.lmr.entity.maidmodel.motion;
 
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelLittleMaidBase;

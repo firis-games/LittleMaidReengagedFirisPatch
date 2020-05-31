@@ -23,7 +23,7 @@ import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityMarkerDummy;
-import net.blacklab.lmr.entity.maidmodel.base.motion.LMMotionItemCarryer;
+import net.blacklab.lmr.entity.maidmodel.motion.LMMotionItemCarryer;
 import net.blacklab.lmr.event.EventHookLMRE;
 import net.blacklab.lmr.network.GuiHandler;
 import net.blacklab.lmr.network.LMRNetwork;
