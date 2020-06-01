@@ -1,9 +1,9 @@
-package firis.lmlib.client.renderer;
+package firis.lmlib.api.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 
 import firis.lmlib.api.caps.IModelConfigCompound;
-import firis.lmlib.client.model.ModelBaseSolo;
+import firis.lmlib.api.client.model.LMModelLittleMaid;
 import firis.lmmm.api.caps.IModelCaps;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -14,20 +14,20 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiving<T> {
+public abstract class LMRenderMultiModel<T extends EntityLiving> extends RenderLiving<T> {
 
 	//メイド用モデル
-	public ModelBaseSolo modelMain;
+	public LMModelLittleMaid modelMain;
 	
 	/**
 	 * コンストラクタ
 	 */
-	public RenderModelMulti(RenderManager manager, float pShadowSize) {
+	public LMRenderMultiModel(RenderManager manager, float pShadowSize) {
 		
 		super(manager, null, pShadowSize);
 		
 		//メイド本体描画用モデル初期化
-		this.modelMain = new ModelBaseSolo();
+		this.modelMain = new LMModelLittleMaid();
 		this.mainModel = this.modelMain;
 		
 	}
@@ -128,11 +128,6 @@ public abstract class RenderModelMulti<T extends EntityLiving> extends RenderLiv
 			super.applyRotations(entityLiving, p_77043_2_, rotationYaw, partialTicks);
 		} else {
 			GlStateManager.rotate(lookingRotation, 0.0F, 1.0F, 0.0F);
-			//GlStateManager.rotate(-90.0F, 0.0F, 0.0F, 0.0F);
 		}
-		
 	}
-	
-	
-	
 }

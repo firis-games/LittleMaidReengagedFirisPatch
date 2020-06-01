@@ -1,6 +1,6 @@
 package net.blacklab.lmr.client.renderer.layer;
 
-import firis.lmlib.client.renderer.RenderModelMulti;
+import firis.lmlib.api.client.renderer.LMRenderMultiModel;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.minecraft.block.state.IBlockState;
@@ -20,13 +20,13 @@ import net.minecraft.init.Blocks;
  */
 public class LayerHeldChestLittleMaid extends LayerHeldItem {
 	
-	protected final RenderModelMulti<? extends EntityLiving> renderer;
+	protected final LMRenderMultiModel<? extends EntityLiving> renderer;
 	
 	/**
 	 * コンストラクタ
 	 * @param rendererIn
 	 */
-	public LayerHeldChestLittleMaid(RenderModelMulti<? extends EntityLiving> rendererIn) {
+	public LayerHeldChestLittleMaid(LMRenderMultiModel<? extends EntityLiving> rendererIn) {
 		
 		super(rendererIn);
 		

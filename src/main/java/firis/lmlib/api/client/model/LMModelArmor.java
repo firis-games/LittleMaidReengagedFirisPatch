@@ -1,4 +1,4 @@
-package firis.lmlib.client.model;
+package firis.lmlib.api.client.model;
 
 import org.lwjgl.opengl.GL11;
 
@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
  * 必ずInner側にはモデルを設定すること。
  * 通常のRendererで描画するためのクラスなので、Renderをちゃんと記述するならいらないクラスです。
  */
-public class ModelBaseDuo extends ModelBaseNihil {
+public class LMModelArmor extends LMModelBase {
 
 	/**
 	 * 内部定数
@@ -58,7 +58,7 @@ public class ModelBaseDuo extends ModelBaseNihil {
 	/**
 	 * コンストラクタ
 	 */
-	public ModelBaseDuo() {}
+	public LMModelArmor() {}
 	
 	/**
 	 * 描画用パラメータを設定する

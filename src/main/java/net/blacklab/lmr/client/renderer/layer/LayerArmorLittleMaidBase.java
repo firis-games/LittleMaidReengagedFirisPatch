@@ -3,7 +3,7 @@ package net.blacklab.lmr.client.renderer.layer;
 import org.lwjgl.opengl.GL11;
 
 import firis.lmlib.api.caps.IModelConfigCompound;
-import firis.lmlib.client.model.ModelBaseDuo;
+import firis.lmlib.api.client.model.LMModelArmor;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,23 +12,23 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class LayerArmorLittleMaidBase extends LayerArmorBase<ModelBaseDuo> {
+public abstract class LayerArmorLittleMaidBase extends LayerArmorBase<LMModelArmor> {
 
-	private ModelBaseDuo armorModel;
+	private LMModelArmor armorModel;
 	
 	public LayerArmorLittleMaidBase(RenderLivingBase<? extends EntityLivingBase> rendererIn) {
 		
 		super(rendererIn);
 		
 		//モデルの初期化
-		this.armorModel = new ModelBaseDuo();
+		this.armorModel = new LMModelArmor();
 	}
 
 	@Override
 	protected void initArmor() {}
 
 	@Override
-	protected void setModelSlotVisible(ModelBaseDuo modelIn, EntityEquipmentSlot slotIn) {}
+	protected void setModelSlotVisible(LMModelArmor modelIn, EntityEquipmentSlot slotIn) {}
 	
 	/**
 	 * Layerの描画

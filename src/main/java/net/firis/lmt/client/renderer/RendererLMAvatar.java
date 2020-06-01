@@ -2,7 +2,7 @@ package net.firis.lmt.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 
-import firis.lmlib.client.model.ModelBaseSolo;
+import firis.lmlib.api.client.model.LMModelLittleMaid;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.config.LMRConfig;
 import net.firis.lmt.client.event.ClientEventLMAvatar;
@@ -60,7 +60,7 @@ public class RendererLMAvatar extends RenderPlayer {
 		
 		//初期化
 		this.layerRenderers.clear();
-		this.mainModel = new ModelBaseSolo();
+		this.mainModel = new LMModelLittleMaid();
 		this.shadowSize = 0.5F;
 
 		//Layerロード開始
@@ -207,8 +207,8 @@ public class RendererLMAvatar extends RenderPlayer {
 	 * model情報を取得する
 	 * @return
 	 */
-	public ModelBaseSolo getLittleMaidMultiModel() {
-		return (ModelBaseSolo) this.mainModel;
+	public LMModelLittleMaid getLittleMaidMultiModel() {
+		return (LMModelLittleMaid) this.mainModel;
 	}
 	
 	/**

@@ -1,4 +1,4 @@
-package firis.lmlib.client.model;
+package firis.lmlib.api.client.model;
 
 import org.lwjgl.opengl.GL11;
 
@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
  * @author firis-games
  *
  */
-public abstract class ModelBaseNihil extends ModelBase {
+public abstract class LMModelBase extends ModelBase {
 
 	/**
 	 * デフォルト発光色

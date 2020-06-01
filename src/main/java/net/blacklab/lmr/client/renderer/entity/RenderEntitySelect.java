@@ -1,7 +1,7 @@
 package net.blacklab.lmr.client.renderer.entity;
 
 import firis.lmlib.api.caps.IModelConfigCompound;
-import firis.lmlib.client.renderer.RenderModelMulti;
+import firis.lmlib.api.client.renderer.LMRenderMultiModel;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaidGui;
 import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
  * GUIに表示するメイドさん
  *
  */
-public class RenderEntitySelect extends RenderModelMulti<EntityLittleMaidForTexSelect> {
+public class RenderEntitySelect extends LMRenderMultiModel<EntityLittleMaidForTexSelect> {
 
 	/**
 	 * コンストラクタ

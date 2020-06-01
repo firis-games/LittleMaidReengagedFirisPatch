@@ -1,6 +1,6 @@
 package net.blacklab.lmr.client.renderer.entity;
 
-import firis.lmlib.client.renderer.RenderModelMulti;
+import firis.lmlib.api.client.renderer.LMRenderMultiModel;
 import net.blacklab.lmr.api.client.event.ClientEventLMRE;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldChestLittleMaid;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * メイドさんを描画するRenderer
  */
 @SideOnly(Side.CLIENT)
-public class RenderLittleMaid extends RenderModelMulti<EntityLittleMaid> {
+public class RenderLittleMaid extends LMRenderMultiModel<EntityLittleMaid> {
 	
 	/**
 	 * コンストラクタ

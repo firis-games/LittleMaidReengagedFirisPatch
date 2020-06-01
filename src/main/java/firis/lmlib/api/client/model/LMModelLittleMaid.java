@@ -1,4 +1,4 @@
-package firis.lmlib.client.model;
+package firis.lmlib.api.client.model;
 
 import org.lwjgl.opengl.GL11;
 
@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
  * @author firis-games
  *
  */
-public class ModelBaseSolo extends ModelBaseNihil {
+public class LMModelLittleMaid extends LMModelBase {
 
 	/**
 	 * メイドさんモデル
@@ -37,7 +37,7 @@ public class ModelBaseSolo extends ModelBaseNihil {
 	/**
 	 * コンストラクタ
 	 */
-	public ModelBaseSolo() {}
+	public LMModelLittleMaid() {}
 	
 	/**
 	 * 描画用パラメータを設定する
