@@ -1,6 +1,4 @@
-package firis.lmlib.api.caps;
-
-import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
+package net.blacklab.lmr.entity.maidmodel;
 
 /**
  * MMM_Texture仕様のテクスチャパック設定に対応しているEntityへ継承させる。

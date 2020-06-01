@@ -2,7 +2,6 @@ package net.blacklab.lmr.entity.maidmodel;
 
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.caps.IModelCapsData;
-import firis.lmlib.api.caps.IMultiModelEntity;
 import firis.lmlib.api.caps.ModelConfigCompoundBase;
 import firis.lmlib.api.manager.LMTextureBoxManager;
 import firis.lmlib.api.resource.LMTextureBox;

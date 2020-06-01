@@ -1,6 +1,6 @@
 package net.blacklab.lmr.client.entity;
 
-import firis.lmlib.api.caps.IMultiModelEntity;
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.util.ModelCapsLittleMaidGui;
 import net.minecraft.entity.EntityLiving;

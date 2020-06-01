@@ -22,7 +22,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import firis.lmlib.api.LMLibraryAPI;
-import firis.lmlib.api.caps.IMultiModelEntity;
 import firis.lmlib.api.constant.EnumColor;
 import firis.lmlib.api.constant.EnumSound;
 import firis.lmlib.api.manager.LMTextureBoxManager;
@@ -56,6 +55,7 @@ import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Archer;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Playing;
 import net.blacklab.lmr.entity.littlemaid.trigger.ModeTrigger;
+import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompoundLittleMaid;
 import net.blacklab.lmr.entity.pathnavigate.PathNavigatorLittleMaid;
