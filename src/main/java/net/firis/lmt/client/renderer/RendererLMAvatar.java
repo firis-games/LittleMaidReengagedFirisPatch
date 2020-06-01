@@ -67,7 +67,7 @@ public class RendererLMAvatar extends RenderPlayer {
 		this.isLayerLoading = true;
 		
 		//layer追加
-		this.addLayer(new LayerHeldItemLMAvatar(this));
+		this.addLayer(new LayerHeldItemLMAvatar(this, this.getLittleMaidMultiModel()));
 		this.addLayer(new LayerArmorLMAvatar(this));
 		
 		//Player用のlayerを一部改造
