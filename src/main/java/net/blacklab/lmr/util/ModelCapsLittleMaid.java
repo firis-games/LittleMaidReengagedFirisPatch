@@ -203,15 +203,6 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 
 		return super.getCapsValue(pIndex, pArg);
 	}
-
-	@Override
-	public boolean setCapsValue(int pIndex, Object... pArg) {
-//		switch (pIndex) {
-//		case caps_PartsVisible:
-//			owner.getModelConfigCompound().selectValue = (Integer)pArg[0];
-//		}
-		return super.setCapsValue(pIndex, pArg);
-	}
 	
 	/**
 	 * 空の場合はnullに変換するItemStack
