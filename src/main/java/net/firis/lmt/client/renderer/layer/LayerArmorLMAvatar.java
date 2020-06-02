@@ -1,7 +1,7 @@
 package net.firis.lmt.client.renderer.layer;
 
 import firis.lmlib.api.caps.IModelConfigCompound;
-import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaidBase;
+import firis.lmlib.api.client.renderer.layer.LMLayerArmorBase;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 @SideOnly(Side.CLIENT)
-public class LayerArmorLMAvatar extends LayerArmorLittleMaidBase {
+public class LayerArmorLMAvatar extends LMLayerArmorBase {
 
 	public LayerArmorLMAvatar(RenderLivingBase<? extends EntityLivingBase> rendererIn) {
 		super(rendererIn);

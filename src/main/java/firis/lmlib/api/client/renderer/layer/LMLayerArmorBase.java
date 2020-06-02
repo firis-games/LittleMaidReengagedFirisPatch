@@ -1,4 +1,4 @@
-package net.blacklab.lmr.client.renderer.layer;
+package firis.lmlib.api.client.renderer.layer;
 
 import org.lwjgl.opengl.GL11;
 
@@ -11,12 +11,17 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * リトルメイドの防具用レイヤー
+ * @author firis-games
+ *
+ */
 @SideOnly(Side.CLIENT)
-public abstract class LayerArmorLittleMaidBase extends LayerArmorBase<LMModelArmor> {
+public abstract class LMLayerArmorBase extends LayerArmorBase<LMModelArmor> {
 
 	private LMModelArmor armorModel;
 	
-	public LayerArmorLittleMaidBase(RenderLivingBase<? extends EntityLivingBase> rendererIn) {
+	public LMLayerArmorBase(RenderLivingBase<? extends EntityLivingBase> rendererIn) {
 		
 		super(rendererIn);
 		

@@ -2,6 +2,7 @@ package net.blacklab.lmr.client.renderer.layer;
 
 import firis.lmlib.api.caps.IModelConfigCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;
+import firis.lmlib.api.client.renderer.layer.LMLayerArmorBase;
 import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 @SideOnly(Side.CLIENT)
-public class LayerArmorLittleMaidGui extends LayerArmorLittleMaidBase {
+public class LayerArmorLittleMaidGui extends LMLayerArmorBase {
 
 	public LayerArmorLittleMaidGui(LMRenderMultiModel<? extends EntityLiving> rendererIn) {
 		

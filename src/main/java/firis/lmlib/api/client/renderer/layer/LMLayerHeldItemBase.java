@@ -9,12 +9,15 @@ import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * リトルメイドの手持ちアイテム用Layer
  * @author firis-games
  *
  */
+@SideOnly(Side.CLIENT)
 public abstract class LMLayerHeldItemBase extends LayerHeldItem {
 
 	private LMModelLittleMaid rendererModel;
@@ -106,17 +109,6 @@ public abstract class LMLayerHeldItemBase extends LayerHeldItem {
     	rendererModel.armPostRender(hand, scale);
     }
     
-    /**
-     * Layerの描画判定
-     * @param entitylivingbaseIn
-     * @param stackIn
-     * @param transformType
-     * @return
-     */
-    protected boolean isRenderHeldItem(EntityLivingBase entitylivingbaseIn, ItemStack stackIn, ItemCameraTransforms.TransformType transformType) {
-    	return true;
-    }
-    
 	/**
 	 * 右手のアイテムを取得する
 	 * @param entitylivingbase
@@ -129,6 +121,17 @@ public abstract class LMLayerHeldItemBase extends LayerHeldItem {
 	 */
 	abstract protected ItemStack getLeftHandItemStack(EntityLivingBase entitylivingbaseIn);
 	
+	/**
+     * Layerの描画判定
+     * @param entitylivingbaseIn
+     * @param stackIn
+     * @param transformType
+     * @return
+     */
+    protected boolean isRenderHeldItem(EntityLivingBase entitylivingbaseIn, ItemStack stackIn, ItemCameraTransforms.TransformType transformType) {
+    	return true;
+    }
+    
 	/**
 	 * アイテムの位置を調整する
 	 */
