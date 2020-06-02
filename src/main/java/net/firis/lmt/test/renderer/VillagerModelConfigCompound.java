@@ -1,4 +1,4 @@
-package net.firis.lmt.client.renderer;
+package net.firis.lmt.test.renderer;
 
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.caps.IModelCapsEntity;

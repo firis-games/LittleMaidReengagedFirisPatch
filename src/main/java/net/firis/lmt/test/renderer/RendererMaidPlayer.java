@@ -1,8 +1,8 @@
-package net.firis.lmt.client.renderer;
+package net.firis.lmt.test.renderer;
 
-import net.firis.lmt.client.model.ModelLittleMaidTest;
-import net.firis.lmt.client.renderer.layer.LayerArmorLittleMaidTest;
-import net.firis.lmt.client.renderer.layer.LayerHeldItemLittleMaidTest;
+import net.firis.lmt.test.model.ModelLittleMaidTest;
+import net.firis.lmt.test.renderer.layer.LayerArmorLittleMaidTest;
+import net.firis.lmt.test.renderer.layer.LayerHeldItemLittleMaidTest;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelPlayer;

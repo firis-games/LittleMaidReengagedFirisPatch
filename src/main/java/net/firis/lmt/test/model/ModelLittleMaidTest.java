@@ -1,4 +1,4 @@
-package net.firis.lmt.client.model;
+package net.firis.lmt.test.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

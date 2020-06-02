@@ -1,4 +1,4 @@
-package net.firis.lmt.client.renderer;
+package net.firis.lmt.test.renderer;
 
 import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;

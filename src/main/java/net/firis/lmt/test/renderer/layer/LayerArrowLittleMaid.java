@@ -1,4 +1,4 @@
-package net.firis.lmt.client.renderer.layer;
+package net.firis.lmt.test.renderer.layer;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;

@@ -1,4 +1,4 @@
-package net.firis.lmt.common.entity;
+package net.firis.lmt.test.entity;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityTameable;

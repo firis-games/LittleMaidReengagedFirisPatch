@@ -1,7 +1,7 @@
-package net.firis.lmt.client.renderer;
+package net.firis.lmt.test.renderer;
 
-import net.firis.lmt.client.model.ModelLittleMaidTest;
-import net.firis.lmt.common.entity.EntityLittleMaidTest;
+import net.firis.lmt.test.entity.EntityLittleMaidTest;
+import net.firis.lmt.test.model.ModelLittleMaidTest;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;

@@ -1,9 +1,9 @@
-package net.firis.lmt.client.renderer.layer;
+package net.firis.lmt.test.renderer.layer;
 
 import org.lwjgl.opengl.GL11;
 
-import net.firis.lmt.client.model.ModelLittleMaidTest;
-import net.firis.lmt.client.renderer.RendererMaidPlayer;
+import net.firis.lmt.test.model.ModelLittleMaidTest;
+import net.firis.lmt.test.renderer.RendererMaidPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
