@@ -37,43 +37,43 @@ public class ModelMulti_Steve extends ModelMultiBase {
 	}
 
 	@Override
-	public void initModel(float psize, float pyoffset) {
+	public void initModel(float size, float yOffset) {
 		bipedCloak = new ModelRenderer(this, 0, 0);
-		bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1, psize);
+		bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1, size);
 		bipedEars = new ModelRenderer(this, 24, 0);
-		bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1, psize);
+		bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1, size);
 		
 		bipedHead = new ModelRenderer(this, 0, 0);
-		bipedHead.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, psize);
+		bipedHead.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, size);
 		bipedHead.setRotationPoint(0.0F, 0.0F, 0.0F);
 		bipedHeadwear = new ModelRenderer(this, 32, 0);
-		bipedHeadwear.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, psize + 0.5F);
+		bipedHeadwear.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, size + 0.5F);
 		bipedHeadwear.setRotationPoint(0.0F, 0.0F, 0.0F);
 		eyeL = new ModelRenderer(this, 0, 0);
-		eyeL.addBox(0.0F, -5F, -4.001F, 4, 4, 0, psize);
+		eyeL.addBox(0.0F, -5F, -4.001F, 4, 4, 0, size);
 		eyeL.setRotationPoint(0.0F, 0.0F, 0.0F);
 		eyeR = new ModelRenderer(this, 0, 4);
-		eyeR.addBox(-4F, -5F, -4.001F, 4, 4, 0, psize);
+		eyeR.addBox(-4F, -5F, -4.001F, 4, 4, 0, size);
 		eyeR.setRotationPoint(0.0F, 0.0F, 0.0F);
 		
 		bipedBody = new ModelRenderer(this, 16, 16);
-		bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, psize);
+		bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, size);
 		bipedBody.setRotationPoint(0.0F, 0.0F, 0.0F);
 
 		bipedRightArm = new ModelRenderer(this, 40, 16);
-		bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, psize);
+		bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, size);
 		bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
 		bipedLeftArm = new ModelRenderer(this, 40, 16);
 		bipedLeftArm.mirror = true;
-		bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, psize);
+		bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, size);
 		bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
 		
 		bipedRightLeg = new ModelRenderer(this, 0, 16);
-		bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, psize);
+		bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, size);
 		bipedRightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
 		bipedLeftLeg = new ModelRenderer(this, 0, 16);
 		bipedLeftLeg.mirror = true;
-		bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, psize);
+		bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, size);
 		bipedLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
 		
 		HeadMount.setRotationPoint(0.0F, -4.0F, 0.0F);
@@ -88,7 +88,7 @@ public class ModelMulti_Steve extends ModelMultiBase {
 		bipedPelvic = new ModelRenderer(this);
 		
 		mainFrame = new ModelRenderer(this);
-		mainFrame.setRotationPoint(0F, pyoffset, 0F);
+		mainFrame.setRotationPoint(0F, yOffset, 0F);
 		mainFrame.addChild(bipedTorso);
 		bipedTorso.addChild(bipedNeck);
 		bipedTorso.addChild(bipedPelvic);
@@ -114,10 +114,10 @@ public class ModelMulti_Steve extends ModelMultiBase {
 	}
 
 	@Override
-	public void render(IModelCaps pEntityCaps, float par2, float par3, float ticksExisted,
-			float pheadYaw, float pheadPitch, float par7, boolean pIsRender) {
-		setRotationAngles(par2, par3, ticksExisted, pheadYaw, pheadPitch, par7, pEntityCaps);
-		mainFrame.render(par7, pIsRender);
+	public void render(IModelCaps entityCaps, float limbSwing, float limbSwingAmount, float ageInTicks,
+			float netHeadYaw, float headPitch, float scale, boolean isRender) {
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityCaps);
+		mainFrame.render(scale, isRender);
 	}
 
 	public void setDefaultPause(float par1, float par2, float pTicksExisted,

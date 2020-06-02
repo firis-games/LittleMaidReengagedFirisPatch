@@ -53,15 +53,15 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 		this(0.0F);
 	}
 
-	public ModelMultiBase(float pSizeAdjust) {
-		this(pSizeAdjust, 0.0F, 64, 32);
+	public ModelMultiBase(float sizeAdjust) {
+		this(sizeAdjust, 0.0F, 64, 32);
 	}
 
 	public ModelMultiBase(float pSizeAdjust, float pYOffset, int pTextureWidth, int pTextureHeight) {
-		isSneak = false;
-		aimedBow = false;
-		textureWidth = pTextureWidth;
-		textureHeight = pTextureHeight;
+		this.isSneak = false;
+		this.aimedBow = false;
+		this.textureWidth = pTextureWidth;
+		this.textureHeight = pTextureHeight;
 		
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 //			LittleMaidReengaged.Debug("ModelMulti.InitClient");
@@ -79,7 +79,7 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 	/**
 	 * モデルの初期化コード
 	 */
-	public abstract void initModel(float psize, float pyoffset);
+	public abstract void initModel(float size, float yOffset);
 
 	/**
 	 * モデル指定詞に依らずに使用するテクスチャパック名。
@@ -98,18 +98,20 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 	/**
 	 *  身長
 	 */
-	public float getHeight(IModelCaps pEntityCaps) {
+	public float getHeight(IModelCaps entityCaps) {
 		return getHeight();
 	}
+	
 	/**
 	 * 横幅
 	 */
 	@Deprecated
 	public abstract float getWidth();
+	
 	/**
 	 * 横幅
 	 */
-	public float getWidth(IModelCaps pEntityCaps) {
+	public float getWidth(IModelCaps entityCaps) {
 		return getWidth();
 	}
 	/**
@@ -120,7 +122,7 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 	/**
 	 * モデルのYオフセット
 	 */
-	public float getyOffset(IModelCaps pEntityCaps) {
+	public float getyOffset(IModelCaps entityCaps) {
 		return getyOffset();
 	}
 	/**
@@ -131,7 +133,7 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 	/**
 	 * 上に乗せる時のオフセット高
 	 */
-	public float getMountedYOffset(IModelCaps pEntityCaps) {
+	public float getMountedYOffset(IModelCaps entityCaps) {
 		return getMountedYOffset();
 	}
 
@@ -139,7 +141,7 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 	 * ロープの取り付け位置調整用
 	 * @return
 	 */
-	public float getLeashOffset(IModelCaps pEntityCaps) {
+	public float getLeashOffset(IModelCaps entityCaps) {
 		return 0.4F;
 	}
 
@@ -153,7 +155,7 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 	/**
 	 * アイテムを持っているときに手を前に出すかどうか。
 	 */
-	public boolean isItemHolder(IModelCaps pEntityCaps) {
+	public boolean isItemHolder(IModelCaps entityCaps) {
 		return isItemHolder();
 	}
 
@@ -164,7 +166,7 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 	/**
 	 * 表示すべきすべての部品
 	 */
-	public void showAllParts(IModelCaps pEntityCaps) {
+	public void showAllParts(IModelCaps entityCaps) {
 		showAllParts();
 	}
 
@@ -188,9 +190,9 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 //	/**
 //	 * ハードポイントに接続されたアイテムを表示する
 //	 */
-//	public abstract void renderItems(IModelCaps pEntityCaps);
+//	public abstract void renderItems(IModelCaps entityCaps);
 
-	public abstract void renderFirstPersonHand(IModelCaps pEntityCaps);
+	public abstract void renderFirstPersonHand(IModelCaps entityCaps);
 
 
 

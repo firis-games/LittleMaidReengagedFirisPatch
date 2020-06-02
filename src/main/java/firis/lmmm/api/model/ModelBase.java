@@ -34,15 +34,15 @@ public abstract class ModelBase extends AbstractModelBase {
 
 	// ModelBase互換関数群
 
-	public void render(IModelCaps pEntityCaps, float par2, float par3,
-			float ticksExisted, float pheadYaw, float pheadPitch, float par7, boolean pIsRender) {
+	public void render(IModelCaps entityCaps, float limbSwing, float limbSwingAmount,
+			float ageInTicks, float netHeadYaw, float headPitch, float scale, boolean isRender) {
 	}
 
 	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks,
 			float netHeadYaw, float headPitch, float scaleFactor, IModelCaps entityCaps) {
 	}
 
-	public void setLivingAnimations(IModelCaps pEntityCaps, float par2, float par3, float pRenderPartialTicks) {
+	public void setLivingAnimations(IModelCaps entityCaps, float limbSwing, float limbSwingAmount, float partialTickTime) {
 	}
 
 	public ModelRenderer getRandomModelBox(Random par1Random) {

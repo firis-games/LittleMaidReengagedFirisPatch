@@ -41,19 +41,19 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 	/**
 	 * コンストラクタは全て継承させること
 	 */
-	public ModelLittleMaidBase(float psize) {
-		super(psize);
+	public ModelLittleMaidBase(float size) {
+		super(size);
 	}
 	/**
 	 * コンストラクタは全て継承させること
 	 */
-	public ModelLittleMaidBase(float psize, float pyoffset, int pTextureWidth, int pTextureHeight) {
-		super(psize, pyoffset, pTextureWidth, pTextureHeight);
+	public ModelLittleMaidBase(float size, float yOffset, int textureWidth, int textureHeight) {
+		super(size, yOffset, textureWidth, textureHeight);
 	}
 
 
 	@Override
-	public void initModel(float psize, float pyoffset) {
+	public void initModel(float size, float yOffset) {
 		// 標準型
 		// 手持ち
 		Arms[0] = new ModelRenderer(this);
@@ -67,40 +67,40 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 
 
 		bipedHead = new ModelRenderer(this, 0, 0);
-		bipedHead.setTextureOffset( 0,  0).addBox(-4F, -8F, -4F, 8, 8, 8, psize);		// Head
-		bipedHead.setTextureOffset(24,  0).addBox(-4F, 0F, 1F, 8, 4, 3, psize);			// Hire
-		bipedHead.setTextureOffset(24, 18).addBox(-4.995F, -7F, 0.2F, 1, 3, 3, psize);		// ChignonR
-		bipedHead.setTextureOffset(24, 18).addBox(3.995F, -7F, 0.2F, 1, 3, 3, psize);		// ChignonL
-		bipedHead.setTextureOffset(52, 10).addBox(-2F, -7.2F, 4F, 4, 4, 2, psize);		// ChignonB
-		bipedHead.setTextureOffset(46, 20).addBox(-1.5F, -6.8F, 4F, 3, 9, 3, psize);	// Tail
-		bipedHead.setTextureOffset(58, 21).addBox(-5.5F, -6.8F, 0.9F, 1, 8, 2, psize);	// SideTailR
+		bipedHead.setTextureOffset( 0,  0).addBox(-4F, -8F, -4F, 8, 8, 8, size);		// Head
+		bipedHead.setTextureOffset(24,  0).addBox(-4F, 0F, 1F, 8, 4, 3, size);			// Hire
+		bipedHead.setTextureOffset(24, 18).addBox(-4.995F, -7F, 0.2F, 1, 3, 3, size);		// ChignonR
+		bipedHead.setTextureOffset(24, 18).addBox(3.995F, -7F, 0.2F, 1, 3, 3, size);		// ChignonL
+		bipedHead.setTextureOffset(52, 10).addBox(-2F, -7.2F, 4F, 4, 4, 2, size);		// ChignonB
+		bipedHead.setTextureOffset(46, 20).addBox(-1.5F, -6.8F, 4F, 3, 9, 3, size);	// Tail
+		bipedHead.setTextureOffset(58, 21).addBox(-5.5F, -6.8F, 0.9F, 1, 8, 2, size);	// SideTailR
 		bipedHead.setMirror(true);
-		bipedHead.setTextureOffset(58, 21).addBox(4.5F, -6.8F, 0.9F, 1, 8, 2, psize);	// SideTailL
+		bipedHead.setTextureOffset(58, 21).addBox(4.5F, -6.8F, 0.9F, 1, 8, 2, size);	// SideTailL
 		bipedHead.setRotationPoint(0F, 0F, 0F);
 
 		bipedRightArm = new ModelRenderer(this, 48, 0);
-		bipedRightArm.addBox(-2.0F, -1F, -1F, 2, 8, 2, psize);
+		bipedRightArm.addBox(-2.0F, -1F, -1F, 2, 8, 2, size);
 		bipedRightArm.setRotationPoint(-3.0F, 1.5F, 0F);
 
 		bipedLeftArm = new ModelRenderer(this, 56, 0);
-		bipedLeftArm.addBox(0.0F, -1F, -1F, 2, 8, 2, psize);
+		bipedLeftArm.addBox(0.0F, -1F, -1F, 2, 8, 2, size);
 		bipedLeftArm.setRotationPoint(3.0F, 1.5F, 0F);
 
 		bipedRightLeg = new ModelRenderer(this, 32, 19);
-		bipedRightLeg.addBox(-2F, 0F, -2F, 3, 9, 4, psize);
+		bipedRightLeg.addBox(-2F, 0F, -2F, 3, 9, 4, size);
 		bipedRightLeg.setRotationPoint(-1F, 0F, 0F);
 
 		bipedLeftLeg = new ModelRenderer(this, 32, 19);
 		bipedLeftLeg.setMirror(true);
-		bipedLeftLeg.addBox(-1F, 0F, -2F, 3, 9, 4, psize);
+		bipedLeftLeg.addBox(-1F, 0F, -2F, 3, 9, 4, size);
 		bipedLeftLeg.setRotationPoint(1F, 0F, 0F);
 
 		Skirt = new ModelRenderer(this, 0, 16);
-		Skirt.addBox(-4F, -2F, -4F, 8, 8, 8, psize);
+		Skirt.addBox(-4F, -2F, -4F, 8, 8, 8, size);
 		Skirt.setRotationPoint(0F, 0F, 0F);
 
 		bipedBody = new ModelRenderer(this, 32, 8);
-		bipedBody.addBox(-3F, 0F, -2F, 6, 7, 4, psize);
+		bipedBody.addBox(-3F, 0F, -2F, 6, 7, 4, size);
 		bipedBody.setRotationPoint(0F, 0F, 0F);
 
 		bipedTorso = new ModelRenderer(this);
@@ -108,7 +108,7 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 		bipedPelvic = new ModelRenderer(this);
 		bipedPelvic.setRotationPoint(0F, 7F, 0F);
 		mainFrame = new ModelRenderer(this, 0, 0);
-		mainFrame.setRotationPoint(0F, 0F + pyoffset + 8F, 0F);
+		mainFrame.setRotationPoint(0F, 0F + yOffset + 8F, 0F);
 		mainFrame.addChild(bipedTorso);
 		bipedTorso.addChild(bipedNeck);
 		bipedTorso.addChild(bipedBody);
@@ -151,8 +151,8 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 	}
 
 	@Override
-	public void setLivingAnimations(IModelCaps pEntityCaps, float par2, float par3, float pRenderPartialTicks) {
-		float angle = ModelCapsHelper.getCapsValueFloat(pEntityCaps, caps_interestedAngle, (Float)pRenderPartialTicks);
+	public void setLivingAnimations(IModelCaps entityCaps, float limbSwing, float limbSwingAmount, float partialTickTime) {
+		float angle = ModelCapsHelper.getCapsValueFloat(entityCaps, caps_interestedAngle, (Float)partialTickTime);
 		bipedHead.setRotateAngleZ(angle);
 	}
 

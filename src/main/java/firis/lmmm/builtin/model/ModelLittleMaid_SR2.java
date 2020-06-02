@@ -26,25 +26,25 @@ public class ModelLittleMaid_SR2 extends ModelLittleMaidBase {
 
 
 	@Override
-	public void initModel(float psize, float pyoffset) {
-		super.initModel(psize, pyoffset);
+	public void initModel(float size, float yOffset) {
+		super.initModel(size, yOffset);
 		
 		// 追加パーツ
 		eyeR = new ModelRenderer(this, 32, 19);
-		eyeR.addPlate(-4.0F, -5.0F, -4.001F, 4, 4, 0, psize);
+		eyeR.addPlate(-4.0F, -5.0F, -4.001F, 4, 4, 0, size);
 		eyeR.setRotationPoint(0.0F, 0.0F, 0.0F);
 		eyeL = new ModelRenderer(this, 42, 19);
-		eyeL.addPlate(0.0F, -5.0F, -4.001F, 4, 4, 0, psize);
+		eyeL.addPlate(0.0F, -5.0F, -4.001F, 4, 4, 0, size);
 		eyeL.setRotationPoint(0.0F, 0.0F, 0.0F);
 		bipedHead.addChild(eyeR);
 		bipedHead.addChild(eyeL);
 	}
 
 	@Override
-	public void setLivingAnimations(IModelCaps pEntityCaps, float par2, float par3, float pRenderPartialTicks) {
-		super.setLivingAnimations(pEntityCaps, par2, par3, pRenderPartialTicks);
+	public void setLivingAnimations(IModelCaps entityCaps, float limbSwing, float limbSwingAmount, float partialTickTime) {
+		super.setLivingAnimations(entityCaps, limbSwing, limbSwingAmount, partialTickTime);
 		
-		float f3 = entityTicksExisted + pRenderPartialTicks + entityIdFactor;
+		float f3 = entityTicksExisted + partialTickTime + entityIdFactor;
 		// 目パチ
 		if( 0 > mh_sin(f3 * 0.05F) + mh_sin(f3 * 0.13F) + mh_sin(f3 * 0.7F) + 2.55F) { 
 			eyeR.setVisible(true);

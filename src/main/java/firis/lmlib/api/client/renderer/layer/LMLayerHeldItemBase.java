@@ -89,7 +89,7 @@ public abstract class LMLayerHeldItemBase extends LayerHeldItem {
             }
             
             //条件に応じて位置を調整する
-            translateAdjustment(entitylivingbaseIn, stackIn, transformType, handSide);
+            this.translateAdjustment(entitylivingbaseIn, stackIn, transformType, handSide);
             
             //アイテム描画
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(entitylivingbaseIn, stackIn, transformType, flag);

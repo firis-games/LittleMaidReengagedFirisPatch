@@ -33,21 +33,21 @@ public abstract class ModelMultiMMMBase extends ModelMultiBase {
 	public ModelMultiMMMBase() {
 		super();
 	}
-	public ModelMultiMMMBase(float pSizeAdjust) {
-		super(pSizeAdjust);
+	public ModelMultiMMMBase(float sizeAdjust) {
+		super(sizeAdjust);
 	}
-	public ModelMultiMMMBase(float pSizeAdjust, float pYOffset, int pTextureWidth, int pTextureHeight) {
-		super(pSizeAdjust, pYOffset, pTextureWidth, pTextureHeight);
+	public ModelMultiMMMBase(float sizeAdjust, float yOffset, int textureWidth, int textureHeight) {
+		super(sizeAdjust, yOffset, textureWidth, textureHeight);
 	}
 
 	/**
 	 * mainFrameに全てぶら下がっているならば標準で描画する。
 	 */
 	@Override
-	public void render(IModelCaps pEntityCaps, float par2, float par3, float ticksExisted,
-			float pheadYaw, float pheadPitch, float par7, boolean pIsRender) {
-		setRotationAngles(par2, par3, ticksExisted, pheadYaw, pheadPitch, par7, pEntityCaps);
-		mainFrame.render(par7, pIsRender);
+	public void render(IModelCaps entityCaps, float limbSwing, float limbSwingAmount, float ageInTicks,
+			float netHeadYaw, float headPitch, float scale, boolean isRender) {
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityCaps);
+		mainFrame.render(scale, isRender);
 //		renderStabilizer(pEntityCaps, par2, par3, ticksExisted, pheadYaw, pheadPitch, par7);
 	}
 
