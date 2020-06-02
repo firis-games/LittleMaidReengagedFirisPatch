@@ -3,103 +3,38 @@ package net.firis.lmt.common.modelcaps;
 import java.util.ArrayList;
 import java.util.List;
 
-import firis.lmlib.api.caps.IModelCapsEntity;
+import firis.lmlib.api.caps.ModelCapsEntityBase;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.firis.lmt.common.manager.PlayerModelManager;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 
 /**
  * IModelCapsのEntityPlayer用
  * @author firis-games
  *
  */
-public class PlayerModelCaps implements IModelCapsEntity {
+public class PlayerModelCaps extends ModelCapsEntityBase<EntityPlayer> {
 	
-	private final EntityPlayer owner;
-	
-	public PlayerModelCaps(EntityPlayer player) {
-		this.owner = player;
-	}
-	
-//	@Deprecated
-//	@Override
-//	public Map<String, Integer> getModelCaps() {
-//		return null;
-//	}
-
 	/**
-	 * set処理は利用しない
+	 * コンストラクタ
+	 * @param player
 	 */
-	@Override
-	public boolean setCapsValue(int pIndex, Object... pArg) {
-		return false;
+	public PlayerModelCaps(EntityPlayer player) {
+		super(player);
 	}
 	
+	/**
+	 * Playerの情報を取得する
+	 */
 	public Object getCapsValue(int pIndex, Object... pArg) {
 		switch (pIndex) {
-		case caps_Entity:
-			return owner;
-		case caps_health:
-			int iCapsHealth = (int) (owner.getHealth() / owner.getMaxHealth() * 20F);
-			return Math.min(iCapsHealth, 20);
-		case caps_healthFloat:
-			float fCapsHealth = (owner.getHealth() / owner.getMaxHealth() * 20F);
-			return Math.min(fCapsHealth, 20F);
-		case caps_ticksExisted:
-			return owner.ticksExisted;
-		case caps_heldItems:
-		case caps_currentEquippedItem:
-			ItemStack mainhand = owner.getHeldItemMainhand();
-			if (mainhand.isEmpty()) mainhand = null;
-			return mainhand;
-		case caps_currentArmor:
-			ItemStack aromor = ((List<ItemStack>)owner.getArmorInventoryList()).get((Integer) pArg[0]);
-			if (aromor.isEmpty()) aromor = null;
-			return aromor;
-		case caps_posX:
-			return owner.posX;
-		case caps_posY:
-			return owner.posY;
-		case caps_posZ:
-			return owner.posZ;
-		case caps_pos:
-			if (pArg == null) {
-				return new Double[] {owner.posX, owner.posY, owner.posZ};
-			}
-			return (Integer)pArg[0] == 0 ? owner.posX : (Integer)pArg[0] == 1 ? owner.posY : owner.posZ;
-		case caps_motionX:
-			return owner.motionX;
-		case caps_motionY:
-			return owner.motionY;
-		case caps_motionZ:
-			return owner.motionZ;
-		case caps_motion:
-			if (pArg == null) {
-				return new Double[] {owner.motionX, owner.motionY, owner.motionZ};
-			}
-			return (Integer)pArg[0] == 0 ? owner.motionX : (Integer)pArg[0] == 1 ? owner.motionY : owner.motionZ;
-
-		case caps_rotationYaw:
-			return owner.rotationYaw;
-		case caps_rotationPitch:
-			return owner.rotationPitch;
-		case caps_prevRotationYaw:
-			return owner.prevRotationYaw;
-		case caps_prevRotationPitch:
-			return owner.prevRotationPitch;
-		case caps_renderYawOffset:
-			return owner.renderYawOffset;
 		case caps_onGround:
 			return this.getOnGrounds();
 		case caps_isRiding:
@@ -111,91 +46,11 @@ public class PlayerModelCaps implements IModelCapsEntity {
 			return PlayerModelManager.getModelConfigCompound(owner).getLMAvatarAction();
 		case caps_isRidingPlayer:
 			return false;
-		case caps_isChild:
-			return owner.isChild();
-		case caps_isWet:
-			return owner.isWet();
-		case caps_isDead:
-			return owner.isDead;
-		case caps_isJumping:
-			return false;//owner.isJumping;
-		case caps_isInWeb:
-			return false;//owner.isInWeb;
-		case caps_isSwingInProgress:
-			return owner.isSwingInProgress;
 		case caps_isSneak:
 			if (this.isFirstPersonView()) return false;
 			return owner.isSneaking();
-		case caps_isBurning:
-			return owner.isBurning();
-		case caps_isInWater:
-			return owner.isInWater();
-		case caps_isInvisible:
-			return owner.isInvisible();
-		case caps_isSprinting:
-			return owner.isSprinting();
-		case caps_PosBlockID:
-			return owner.getEntityWorld().getBlockState(new BlockPos(
-					MathHelper.floor(owner.posX + (Double)pArg[0]),
-					MathHelper.floor(owner.posY + (Double)pArg[1]),
-					MathHelper.floor(owner.posZ + (Double)pArg[2]))).getBlock();
-		case caps_PosBlockState:
-			return owner.getEntityWorld().getBlockState(new BlockPos(
-					MathHelper.floor(owner.posX + (Double)pArg[0]),
-					MathHelper.floor(owner.posY + (Double)pArg[1]),
-					MathHelper.floor(owner.posZ + (Double)pArg[2])));
-		case caps_PosBlockAir:
-			
-			IBlockState state = owner.getEntityWorld().getBlockState(new BlockPos(
-					MathHelper.floor(owner.posX + (Double)pArg[0]),
-					MathHelper.floor(owner.posY + (Double)pArg[1]),
-					MathHelper.floor(owner.posZ + (Double)pArg[2])));
-			
-//			return !state.getBlock().causesSuffocation(state);
-			return !(state.getMaterial().blocksMovement() && state.getBlock().getDefaultState().isFullCube());
-			
-		case caps_PosBlockLight:
-			return owner.getEntityWorld().getBlockLightOpacity(new BlockPos(
-					MathHelper.floor(owner.posX + (Double)pArg[0]),
-					MathHelper.floor(owner.posY + (Double)pArg[1]),
-					MathHelper.floor(owner.posZ + (Double)pArg[2])));
-		case caps_PosBlockPower:
-			return owner.getEntityWorld().getStrongPower(new BlockPos(
-					MathHelper.floor(owner.posX + (Double)pArg[0]),
-					MathHelper.floor(owner.posY + (Double)pArg[1]),
-					MathHelper.floor(owner.posZ + (Double)pArg[2])));
-		case caps_boundingBox:
-			if (pArg == null) {
-				return owner.getEntityBoundingBox();
-			}
-			switch ((Integer)pArg[0]) {
-			case 0:
-				return owner.getEntityBoundingBox().maxX;
-			case 1:
-				return owner.getEntityBoundingBox().maxY;
-			case 2:
-				return owner.getEntityBoundingBox().maxZ;
-			case 3:
-				return owner.getEntityBoundingBox().minX;
-			case 4:
-				return owner.getEntityBoundingBox().minY;
-			case 5:
-				return owner.getEntityBoundingBox().minZ;
-			}
 		case caps_isLeeding:
 			return false;
-		case caps_getRidingName:
-			return owner.getRidingEntity() == null ? "" : EntityList.getEntityString(owner.getRidingEntity());
-
-		// World
-		case caps_WorldTotalTime:
-			return owner.getEntityWorld().getWorldInfo().getWorldTotalTime();
-		case caps_WorldTime:
-			return owner.getEntityWorld().getWorldInfo().getWorldTime();
-		case caps_MoonPhase:
-			return owner.getEntityWorld().getMoonPhase();
-		case caps_TextureEntity:
-			return owner;
 			
 		//弓構え
 		case caps_aimedBow:
@@ -230,7 +85,8 @@ public class PlayerModelCaps implements IModelCapsEntity {
 			return ItemHelper.isSugar(this.owner.getHeldItemMainhand());
 		}
 
-		return null;
+		//親クラスの情報を取得する
+		return super.getCapsValue(pIndex, pArg);
 	}
 	
 	private List<Integer> modelCapsList = this.initModelCapsList();
@@ -253,24 +109,6 @@ public class PlayerModelCaps implements IModelCapsEntity {
 		
 		return caps;
 	}
-	
-	/**
-	 * ModelCapsの情報をModelBaseへ反映する
-	 */
-	public void setModelMultiBaseCapsFromModelCaps(ModelMultiBase model) {
-		
-		for (Integer capsId : modelCapsList) {
-			//onGroundだけ特殊処理
-			if (IModelCaps.caps_onGround == capsId) {
-				float[] onGround = (float[]) this.getCapsValue(capsId);
-				model.setCapsValue(capsId, onGround[0], onGround[1]);
-			} else {
-				model.setCapsValue(capsId, this.getCapsValue(capsId));
-			}
-		}
-		
-	}
-	
 	
 	/**
 	 * メイドさんのmstatSwingStatusを仮想で再現
@@ -346,16 +184,28 @@ public class PlayerModelCaps implements IModelCapsEntity {
 	}
 
 	/**
-	 * IModelCapsData
+	 * ModelMultiBase初期化
 	 */
 	@Override
 	public void initModelMultiBase(ModelMultiBase model, float entityYaw, float partialTicks) {
 		
 		//初期化設定
-		this.setModelMultiBaseCapsFromModelCaps(model);
+		for (Integer capsId : modelCapsList) {
+			//onGroundだけ特殊処理
+			if (IModelCaps.caps_onGround == capsId) {
+				float[] onGround = (float[]) this.getCapsValue(capsId);
+				model.setCapsValue(capsId, onGround[0], onGround[1]);
+			} else {
+				model.setCapsValue(capsId, this.getCapsValue(capsId));
+			}
+		}
 		
 	}
 	
+	/**
+	 * 一人称視点の判断を行う
+	 * @return
+	 */
 	private boolean isFirstPersonView() {
 		return Minecraft.getMinecraft().gameSettings.thirdPersonView == 0;
 	}

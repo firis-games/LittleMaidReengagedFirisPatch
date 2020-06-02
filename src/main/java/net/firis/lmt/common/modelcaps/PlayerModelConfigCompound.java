@@ -45,9 +45,8 @@ public class PlayerModelConfigCompound extends ModelCompoundBase<EntityPlayer> {
 	/**
 	 * Player
 	 */
-	private EntityPlayer player;
 	public void setPlayer(EntityPlayer player) {
-		this.player = player;
+		this.owner = player;
 		this.entityCaps = new PlayerModelCaps(player);
 	}
 	
@@ -58,8 +57,6 @@ public class PlayerModelConfigCompound extends ModelCompoundBase<EntityPlayer> {
 	 */
 	public PlayerModelConfigCompound(EntityPlayer entity, IModelCapsEntity caps) {
 		super(entity, caps);
-		
-		this.player = entity;
 	}
 	
 	/**
@@ -145,8 +142,8 @@ public class PlayerModelConfigCompound extends ModelCompoundBase<EntityPlayer> {
 		String armorFeet = this.getTextureBoxArmor(EntityEquipmentSlot.FEET).getTextureModelName();
 		
 		//必要な情報のみNBT化
-		nbt.setUniqueId("uuid", this.player.getUniqueID());
-		nbt.setString("name", this.player.getName());
+		nbt.setUniqueId("uuid", this.owner.getUniqueID());
+		nbt.setString("name", this.owner.getName());
 		nbt.setString("maid", maid);
 		nbt.setInteger("color", this.color);
 		nbt.setString("head", armorHead);
@@ -224,7 +221,7 @@ public class PlayerModelConfigCompound extends ModelCompoundBase<EntityPlayer> {
 		
 		if (armorBox == null) return null;
 		
-		ItemStack stack = player.inventory.armorItemInSlot(slot.getIndex());
+		ItemStack stack = this.owner.inventory.armorItemInSlot(slot.getIndex());
 		return armorBox.getTextureInnerArmor(stack);
 		
 	}
@@ -239,7 +236,7 @@ public class PlayerModelConfigCompound extends ModelCompoundBase<EntityPlayer> {
 		
 		if (armorBox == null) return null;
 		
-		ItemStack stack = player.inventory.armorItemInSlot(slot.getIndex());
+		ItemStack stack = this.owner.inventory.armorItemInSlot(slot.getIndex());
 		return armorBox.getLightTextureInnerArmor(stack);
 	}
 	
@@ -253,7 +250,7 @@ public class PlayerModelConfigCompound extends ModelCompoundBase<EntityPlayer> {
 		
 		if (armorBox == null) return null;
 		
-		ItemStack stack = player.inventory.armorItemInSlot(slot.getIndex());
+		ItemStack stack = this.owner.inventory.armorItemInSlot(slot.getIndex());
 		return armorBox.getTextureOuterArmor(stack);
 	}
 	
@@ -267,7 +264,7 @@ public class PlayerModelConfigCompound extends ModelCompoundBase<EntityPlayer> {
 		
 		if (armorBox == null) return null;
 		
-		ItemStack stack = player.inventory.armorItemInSlot(slot.getIndex());
+		ItemStack stack = this.owner.inventory.armorItemInSlot(slot.getIndex());
 		return armorBox.getLightTextureOuterArmor(stack);
 	}
 }
