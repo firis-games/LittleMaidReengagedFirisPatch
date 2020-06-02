@@ -11,13 +11,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author firis-games
  *
  */
-public interface IModelConfigCompound {
+public interface IModelCompound {
 
 	/**
 	 * マルチモデル描画用パラメータ管理クラス
 	 * @return
 	 */
-	public IModelCapsData getModelCaps();
+	public IModelCapsEntity getModelCaps();
 	
 	/**
 	 * マルチモデルのテクスチャ系取得

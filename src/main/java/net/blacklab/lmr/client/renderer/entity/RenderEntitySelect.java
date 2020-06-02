@@ -1,6 +1,6 @@
 package net.blacklab.lmr.client.renderer.entity;
 
-import firis.lmlib.api.caps.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;
 import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaidGui;
@@ -29,7 +29,7 @@ public class RenderEntitySelect extends LMRenderMultiModel<EntityLittleMaidForTe
 	 * 描画用のマルチモデル情報を取得する
 	 */
 	@Override
-	protected IModelConfigCompound getModelConfigCompoundFromEntity(EntityLittleMaidForTexSelect entity) {
+	protected IModelCompound getModelConfigCompoundFromEntity(EntityLittleMaidForTexSelect entity) {
 		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
 		ModelConfigCompound modelConfigCompound = modelEntity.getModelConfigCompound();
 		return modelConfigCompound;

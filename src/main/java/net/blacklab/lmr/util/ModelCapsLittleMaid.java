@@ -1,6 +1,6 @@
 package net.blacklab.lmr.util;
 
-import firis.lmlib.api.caps.ModelCapsData;
+import firis.lmlib.api.caps.ModelCapsEntityBase;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -13,7 +13,7 @@ import net.minecraft.util.EnumHandSide;
  * Entityのデータ読み取り用のクラス
  * 別にEntityにインターフェース付けてもOK
  */
-public class ModelCapsLittleMaid extends ModelCapsData {
+public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 
 	private EntityLittleMaid owner;
 //	private static Map<String, Integer> caps;
@@ -243,9 +243,9 @@ public class ModelCapsLittleMaid extends ModelCapsData {
 	 * @param modelCaps
 	 */
 	@Override
-	public void setModelMultiFromModelCaps(ModelMultiBase model, float entityYaw, float partialTicks) {
+	public void initModelMultiBase(ModelMultiBase model, float entityYaw, float partialTicks) {
 		
-		super.setModelMultiFromModelCaps(model, entityYaw, partialTicks);
+		super.initModelMultiBase(model, entityYaw, partialTicks);
 		
 		if (model == null) return;
 		

@@ -2,7 +2,7 @@ package firis.lmlib.api.client.model;
 
 import org.lwjgl.opengl.GL11;
 
-import firis.lmlib.api.caps.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelCompound;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.minecraft.client.Minecraft;
@@ -67,7 +67,7 @@ public class LMModelArmor extends LMModelBase {
 	 * 描画用のモデル、テクスチャパスを内部変数へ展開する
 	 * 
 	 */
-	public void initModelParameter(IModelConfigCompound modelConfigCompound, float entityYaw, float partialTicks, EntityEquipmentSlot slot) {
+	public void initModelParameter(IModelCompound modelConfigCompound, float entityYaw, float partialTicks, EntityEquipmentSlot slot) {
 		
 		this.modelConfigCompound = modelConfigCompound;
 		
@@ -98,8 +98,8 @@ public class LMModelArmor extends LMModelBase {
 		this.entityCaps = this.modelConfigCompound.getModelCaps();
 		
 		//マルチモデル情報の初期化
-		this.entityCaps.setModelMultiFromModelCaps(this.modelInner, entityYaw, partialTicks);
-		this.entityCaps.setModelMultiFromModelCaps(this.modelOuter, entityYaw, partialTicks);
+		this.entityCaps.initModelMultiBase(this.modelInner, entityYaw, partialTicks);
+		this.entityCaps.initModelMultiBase(this.modelOuter, entityYaw, partialTicks);
 		
 		//モデルの表示設定
 		if (this.modelInner != null) {

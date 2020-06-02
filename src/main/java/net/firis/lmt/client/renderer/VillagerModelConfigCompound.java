@@ -1,18 +1,18 @@
 package net.firis.lmt.client.renderer;
 
 import firis.lmlib.api.LMLibraryAPI;
-import firis.lmlib.api.caps.IModelCapsData;
-import firis.lmlib.api.caps.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelCapsEntity;
+import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.resource.LMTextureBox;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 
-public class VillagerModelConfigCompound implements IModelConfigCompound {
+public class VillagerModelConfigCompound implements IModelCompound {
 
 	private LMTextureBox textureBox = null;
-	private IModelCapsData modelCaps = null;
+	private IModelCapsEntity modelCaps = null;
 	
 	public VillagerModelConfigCompound(EntityLivingBase entity) {
 		textureBox = LMLibraryAPI.instance().getTextureManager().getDefaultLMTextureBox();
@@ -20,7 +20,7 @@ public class VillagerModelConfigCompound implements IModelConfigCompound {
 	}
 	
 	@Override
-	public IModelCapsData getModelCaps() {
+	public IModelCapsEntity getModelCaps() {
 		return modelCaps;
 	}
 

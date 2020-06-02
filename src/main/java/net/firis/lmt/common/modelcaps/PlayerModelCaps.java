@@ -3,7 +3,7 @@ package net.firis.lmt.common.modelcaps;
 import java.util.ArrayList;
 import java.util.List;
 
-import firis.lmlib.api.caps.IModelCapsData;
+import firis.lmlib.api.caps.IModelCapsEntity;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
 import net.blacklab.lmr.util.helper.ItemHelper;
@@ -24,7 +24,7 @@ import net.minecraft.util.math.MathHelper;
  * @author firis-games
  *
  */
-public class PlayerModelCaps implements IModelCapsData {
+public class PlayerModelCaps implements IModelCapsEntity {
 	
 	private final EntityPlayer owner;
 	
@@ -349,7 +349,7 @@ public class PlayerModelCaps implements IModelCapsData {
 	 * IModelCapsData
 	 */
 	@Override
-	public void setModelMultiFromModelCaps(ModelMultiBase model, float entityYaw, float partialTicks) {
+	public void initModelMultiBase(ModelMultiBase model, float entityYaw, float partialTicks) {
 		
 		//初期化設定
 		this.setModelMultiBaseCapsFromModelCaps(model);

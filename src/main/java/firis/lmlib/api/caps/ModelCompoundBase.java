@@ -19,17 +19,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * 
  * 各モデルへのアクセスと設定用のメソッドと変数を定義
  */
-public abstract class ModelConfigCompoundBase implements IModelConfigCompound {
+public abstract class ModelCompoundBase<T extends EntityLivingBase> implements IModelCompound {
 	
 	/**
 	 * 対象のEntity
 	 */
-	protected EntityLivingBase owner;
+	protected T owner;
 	
 	/**
 	 * 描画用のModelCaps
 	 */
-	protected IModelCapsData entityCaps;
+	protected IModelCapsEntity entityCaps;
 
 	/**
 	 * 選択色
@@ -56,7 +56,7 @@ public abstract class ModelConfigCompoundBase implements IModelConfigCompound {
 	 * @param pEntity
 	 * @param pCaps
 	 */
-	public ModelConfigCompoundBase(EntityLivingBase entity, IModelCapsData caps) {
+	public ModelCompoundBase(T entity, IModelCapsEntity caps) {
 		
 		//パラメータ保存
 		this.owner = entity;
@@ -77,7 +77,7 @@ public abstract class ModelConfigCompoundBase implements IModelConfigCompound {
 	 * 描画用のModelCapsを取得する
 	 */
 	@Override
-	public IModelCapsData getModelCaps() {
+	public IModelCapsEntity getModelCaps() {
 		return this.entityCaps;
 	}
 	

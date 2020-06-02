@@ -2,7 +2,7 @@ package firis.lmlib.api.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 
-import firis.lmlib.api.caps.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.model.LMModelLittleMaid;
 import firis.lmmm.api.caps.IModelCaps;
 import net.minecraft.client.renderer.GlStateManager;
@@ -49,7 +49,7 @@ public abstract class LMRenderMultiModel<T extends EntityLiving> extends RenderL
 	 * @param entity
 	 * @return
 	 */
-	abstract protected IModelConfigCompound getModelConfigCompoundFromEntity(T entity);
+	abstract protected IModelCompound getModelConfigCompoundFromEntity(T entity);
 
 	/**
 	 * マルチモデルの描画パラメータの初期化処理
@@ -63,7 +63,7 @@ public abstract class LMRenderMultiModel<T extends EntityLiving> extends RenderL
 	protected void setModelValues(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		
 		//マルチモデル関連情報を取得する
-		IModelConfigCompound modelConfig = this.getModelConfigCompoundFromEntity(entity);
+		IModelCompound modelConfig = this.getModelConfigCompoundFromEntity(entity);
 		
 		//パラメータの初期化
 		modelMain.initModelParameter(modelConfig, entityYaw, partialTicks);
@@ -121,7 +121,7 @@ public abstract class LMRenderMultiModel<T extends EntityLiving> extends RenderL
 	@Override
 	protected void applyRotations(T entityLiving, float p_77043_2_, float rotationYaw, float partialTicks) {
 		
-		IModelConfigCompound modelConfig = this.getModelConfigCompoundFromEntity(entityLiving);
+		IModelCompound modelConfig = this.getModelConfigCompoundFromEntity(entityLiving);
 		
 		Float lookingRotation = (Float) modelConfig.getModelCaps().getCapsValue(IModelCaps.caps_looking_rotation);
 		if (lookingRotation == null) {

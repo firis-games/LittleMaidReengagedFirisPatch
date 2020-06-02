@@ -1,6 +1,6 @@
 package net.firis.lmt.client.renderer;
 
-import firis.lmlib.api.caps.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.passive.EntityVillager;
@@ -15,7 +15,7 @@ public class RendererLMVillager extends LMRenderMultiModel<EntityVillager> {
 	 * 村人用マルチモデル設定を生成する
 	 */
 	@Override
-	protected IModelConfigCompound getModelConfigCompoundFromEntity(EntityVillager entity) {
+	protected IModelCompound getModelConfigCompoundFromEntity(EntityVillager entity) {
 		return new VillagerModelConfigCompound(entity);
 	}
 

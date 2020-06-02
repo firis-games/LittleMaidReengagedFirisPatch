@@ -2,7 +2,7 @@ package firis.lmlib.api.client.model;
 
 import org.lwjgl.opengl.GL11;
 
-import firis.lmlib.api.caps.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelCompound;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelLittleMaidBase;
 import firis.lmmm.api.model.ModelMultiBase;
@@ -43,7 +43,7 @@ public class LMModelLittleMaid extends LMModelBase {
 	 * 描画用パラメータを設定する
 	 * @param modelConfigCompound
 	 */
-	public void initModelParameter(IModelConfigCompound modelConfigCompound, float entityYaw, float partialTicks) {
+	public void initModelParameter(IModelCompound modelConfigCompound, float entityYaw, float partialTicks) {
 		
 		this.modelConfigCompound = modelConfigCompound;
 		
@@ -66,7 +66,7 @@ public class LMModelLittleMaid extends LMModelBase {
 		this.entityCaps = this.modelConfigCompound.getModelCaps();
 		
 		//マルチモデル初期化
-		this.entityCaps.setModelMultiFromModelCaps(this.maidModel, entityYaw, partialTicks);
+		this.entityCaps.initModelMultiBase(this.maidModel, entityYaw, partialTicks);
 		
 		//本体描画設定
 		//透明の場合は本体を描画しない
@@ -205,7 +205,7 @@ public class LMModelLittleMaid extends LMModelBase {
 	 * 一人称の手を描画する
 	 * @param modelConfigCompound
 	 */
-	public void renderFirstPersonArm(IModelConfigCompound modelConfigCompound) {
+	public void renderFirstPersonArm(IModelCompound modelConfigCompound) {
 		
 		//プレイヤーモデルの準備
 		this.initModelParameter(modelConfigCompound, 0, 0);

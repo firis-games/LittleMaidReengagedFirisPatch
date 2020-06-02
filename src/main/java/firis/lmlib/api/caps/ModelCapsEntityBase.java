@@ -15,16 +15,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 /**
- * 描画パラメータ管理用クラス
+ * Entity用マルチモデルのパラメータ管理のベースクラス
  * @author firis-games
  *
  */
-public abstract class ModelCapsData implements IModelCapsData {
+public abstract class ModelCapsEntityBase<T extends EntityLivingBase> implements IModelCapsEntity {
 
-	protected EntityLivingBase owner;
+	/**
+	 * ModelCapsEntityのOwner
+	 */
+	protected T owner;
 	
-	public ModelCapsData(EntityLivingBase pOwner) {
-		owner = pOwner;
+	/**
+	 * コンストラクタ
+	 * @param pOwner
+	 */
+	public ModelCapsEntityBase(T pOwner) {
+		this.owner = pOwner;
 	}
 	
 	@Override
@@ -258,7 +265,7 @@ public abstract class ModelCapsData implements IModelCapsData {
 	 * @param modelCaps
 	 */
 	@Override
-	public void setModelMultiFromModelCaps(ModelMultiBase model, float entityYaw, float partialTicks) {
+	public void initModelMultiBase(ModelMultiBase model, float entityYaw, float partialTicks) {
 		
 		if (model == null) return;
 		

@@ -1,6 +1,6 @@
 package net.firis.lmt.client.renderer.layer;
 
-import firis.lmlib.api.caps.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.layer.LMLayerArmorBase;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
@@ -45,7 +45,7 @@ public class LayerArmorLMAvatar extends LMLayerArmorBase {
 	}
 	
 	@Override
-	protected IModelConfigCompound getArmorModelConfigCompound(EntityLivingBase entityLivingBaseIn, float limbSwing,
+	protected IModelCompound getArmorModelConfigCompound(EntityLivingBase entityLivingBaseIn, float limbSwing,
 			float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale,
 			EntityEquipmentSlot slot) {
 		EntityPlayer player = (EntityPlayer) entityLivingBaseIn;

@@ -2,8 +2,8 @@ package firis.lmlib.api.client.model;
 
 import org.lwjgl.opengl.GL11;
 
-import firis.lmlib.api.caps.IModelCapsData;
-import firis.lmlib.api.caps.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelCapsEntity;
+import firis.lmlib.api.caps.IModelCompound;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.OpenGlHelper;
 
@@ -22,8 +22,8 @@ public abstract class LMModelBase extends ModelBase {
 	/**
 	 * 描画に必要なマルチモデル関連のパラメータ
 	 */
-	protected IModelConfigCompound modelConfigCompound;
-	protected IModelCapsData entityCaps;
+	protected IModelCompound modelConfigCompound;
+	protected IModelCapsEntity entityCaps;
 	
 	/**
 	 * 描画に必要な個別パラメータ

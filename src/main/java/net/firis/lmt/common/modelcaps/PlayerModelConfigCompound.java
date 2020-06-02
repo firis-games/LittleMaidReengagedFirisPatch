@@ -3,8 +3,8 @@ package net.firis.lmt.common.modelcaps;
 import java.util.UUID;
 
 import firis.lmlib.api.LMLibraryAPI;
-import firis.lmlib.api.caps.IModelCapsData;
-import firis.lmlib.api.caps.ModelConfigCompoundBase;
+import firis.lmlib.api.caps.IModelCapsEntity;
+import firis.lmlib.api.caps.ModelCompoundBase;
 import firis.lmlib.api.resource.LMTextureBox;
 import net.firis.lmt.config.FirisConfig;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
  * モーションなどの表示フラグもここで管理する
  *
  */
-public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
+public class PlayerModelConfigCompound extends ModelCompoundBase<EntityPlayer> {
 	
 	/**
 	 * LMAvatarが有効化どうかの判断
@@ -56,7 +56,7 @@ public class PlayerModelConfigCompound extends ModelConfigCompoundBase {
 	 * @param entity
 	 * @param caps
 	 */
-	public PlayerModelConfigCompound(EntityPlayer entity, IModelCapsData caps) {
+	public PlayerModelConfigCompound(EntityPlayer entity, IModelCapsEntity caps) {
 		super(entity, caps);
 		
 		this.player = entity;

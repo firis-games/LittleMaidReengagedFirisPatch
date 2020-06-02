@@ -1,6 +1,6 @@
 package net.blacklab.lmr.entity.maidmodel;
 
-import firis.lmlib.api.caps.IModelCapsData;
+import firis.lmlib.api.caps.IModelCapsEntity;
 import firis.lmlib.api.resource.LMTextureBox;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -24,7 +24,7 @@ public class ModelConfigCompoundLittleMaid extends ModelConfigCompound {
 	 * @param pEntity
 	 * @param pCaps
 	 */
-	public ModelConfigCompoundLittleMaid(EntityLittleMaid pEntity, IModelCapsData pCaps) {
+	public ModelConfigCompoundLittleMaid(EntityLittleMaid pEntity, IModelCapsEntity pCaps) {
 		super(pEntity, pCaps);
 		this.maid = pEntity;
 		

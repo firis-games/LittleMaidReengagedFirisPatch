@@ -1,6 +1,6 @@
 package net.blacklab.lmr.util;
 
-import firis.lmlib.api.caps.ModelCapsData;
+import firis.lmlib.api.caps.ModelCapsEntityBase;
 import net.minecraft.entity.EntityLivingBase;
 
 /**
@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
  * @author firis-games
  *
  */
-public class ModelCapsLittleMaidGui extends ModelCapsData {
+public class ModelCapsLittleMaidGui extends ModelCapsEntityBase<EntityLivingBase> {
 
 	public ModelCapsLittleMaidGui(EntityLivingBase pOwner) {
 		super(pOwner);

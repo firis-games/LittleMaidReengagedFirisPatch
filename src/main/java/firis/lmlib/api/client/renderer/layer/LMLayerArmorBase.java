@@ -2,7 +2,7 @@ package firis.lmlib.api.client.renderer.layer;
 
 import org.lwjgl.opengl.GL11;
 
-import firis.lmlib.api.caps.IModelConfigCompound;
+import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.model.LMModelArmor;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
@@ -66,7 +66,7 @@ public abstract class LMLayerArmorBase extends LayerArmorBase<LMModelArmor> {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		//防具モデルの準備
-		IModelConfigCompound modelConfigCompound = this.getArmorModelConfigCompound(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, slot);
+		IModelCompound modelConfigCompound = this.getArmorModelConfigCompound(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, slot);
 		this.armorModel.initModelParameter(modelConfigCompound, netHeadYaw, partialTicks, slot);
 
 		//防具モデル描画調整
@@ -109,6 +109,6 @@ public abstract class LMLayerArmorBase extends LayerArmorBase<LMModelArmor> {
 	 * @param slot
 	 * @return
 	 */
-	abstract protected IModelConfigCompound getArmorModelConfigCompound(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slot);
+	abstract protected IModelCompound getArmorModelConfigCompound(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slot);
 
 }
