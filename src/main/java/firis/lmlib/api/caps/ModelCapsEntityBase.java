@@ -9,7 +9,6 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -186,76 +185,12 @@ public abstract class ModelCapsEntityBase<T extends EntityLivingBase> implements
 		return null;
 	}
 
+	/**
+	 * setCapsValueは使用しない
+	 */
+	@Deprecated
 	@Override
 	public boolean setCapsValue(int pIndex, Object... pArg) {
-		switch (pIndex) {
-		case caps_health:
-			owner.setHealth((Integer)pArg[0]);
-			return true;
-		case caps_ticksExisted:
-			owner.ticksExisted = (Integer)pArg[0];
-			return true;
-		case caps_heldItems:
-		case caps_currentEquippedItem:
-			for (EntityEquipmentSlot fSlot : EntityEquipmentSlot.values()) {
-				if (fSlot.getSlotIndex() == (Integer)pArg[0]) {
-					owner.setItemStackToSlot(fSlot, (ItemStack) pArg[1]);
-				}
-			}
-//			owner.setCurrentItemOrArmor((Integer)pArg[0], (ItemStack)pArg[1]);
-			return true;
-		case caps_currentArmor:
-			for (EntityEquipmentSlot fSlot : EntityEquipmentSlot.values()) {
-				if (fSlot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && fSlot.getIndex() == (Integer)pArg[0]) {
-					owner.setItemStackToSlot(fSlot, (ItemStack) pArg[1]);
-				}
-			}
-//			owner.setCurrentItemOrArmor((Integer)pArg[0] + 1, (ItemStack)pArg[1]);
-			return true;
-		case caps_posX:
-			owner.posX = (Double)pArg[0];
-			return true;
-		case caps_posY:
-			owner.posY = (Double)pArg[0];
-			return true;
-		case caps_posZ:
-			owner.posZ = (Double)pArg[0];
-			return true;
-		case caps_pos:
-			owner.setPosition((Double)pArg[0], (Double)pArg[1], (Double)pArg[2]);
-			return true;
-		case caps_motionX:
-			owner.motionX = (Double)pArg[0];
-			return true;
-		case caps_motionY:
-			owner.motionY = (Double)pArg[0];
-			return true;
-		case caps_motionZ:
-			owner.motionZ = (Double)pArg[0];
-			return true;
-		case caps_motion:
-			owner.setVelocity((Double)pArg[0], (Double)pArg[1], (Double)pArg[2]);
-			return true;
-		case caps_onGround:
-			owner.onGround = (Boolean)pArg[0];
-			return true;
-		case caps_isRiding:
-			return owner.isRiding();
-//		case caps_isChild:
-//		case caps_isWet:
-//		case caps_isDead:
-//		case caps_isJumping:
-//		case caps_isInWeb:
-//		case caps_isSwingInProgress:
-		case caps_isSneak:
-			owner.setSneaking((Boolean)pArg[0]);
-//		case caps_isBlocking:
-//		case caps_isBurning:
-//		case caps_isInWater:
-//		case caps_isInvisible:
-//		case caps_isSprinting:
-		}
-
 		return false;
 	}
 	

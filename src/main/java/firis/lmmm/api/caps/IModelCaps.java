@@ -191,6 +191,7 @@ public interface IModelCaps {
 	 * @param pArg
 	 * @return
 	 */
+	@Deprecated
 	public boolean setCapsValue(int pIndex, Object ... pArg);
 
 }
