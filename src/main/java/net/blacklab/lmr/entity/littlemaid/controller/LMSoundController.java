@@ -3,15 +3,13 @@ package net.blacklab.lmr.entity.littlemaid.controller;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import firis.lmlib.LMLibrary;
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.constant.EnumSound;
-import firis.lmlib.common.config.LMLConfig;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRMessage;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
 /**
@@ -128,41 +126,26 @@ public class LMSoundController {
 			LittleMaidReengaged.Debug("REQ %s", sound);
 
 			//音声パックがロードされていない場合は通常音声として再生する
-			if (!LMLibraryAPI.instance().getSoundManager().isFoundSoundpack()) {
+			if (!LMLibraryAPI.instance().isSoundPack()) {
 				this.maid.playSound(sound.getDefaultVoice(), 1.0f);
 				playingSound.remove(sound);
 				continue;
 			}
 
 			//ボイスパックから再生する
-			String soundName = LMLibraryAPI.instance().getSoundManager().getSoundNameWithModel(sound, textureName, textureColor);
-			LittleMaidReengaged.Debug("STC %s,%d/FRS %s", textureName, textureColor, soundName);
-			
+			SoundEvent soundEvent = LMLibraryAPI.instance().getSoundEvent(sound, textureName, textureColor, true);
 			//対象が存在しない場合は次へ
-			if (soundName == null || soundName.isEmpty()) {
+			if (soundEvent == null) {
 				playingSound.remove(sound);
 				continue;
 			}
-			
-			//通常啼声のレート設定
-			//0x500番台はレート判定する
-			//0x5x0番台は対象外
-			if ((sound.getId() & 0xff0) == 0x500) {
-				// LivingSound LivingVoiceRateを確認
-				Float ratio = this.getLivingVoiceRatio(soundName);
-				// カットオフ
-				if (Math.random() > ratio) {
-					playingSound.remove(sound);
-					continue;
-				}
-			}
+
+			LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", maid.getEntityId(), sound.getId(), sound.name(), soundEvent.getSoundName().toString()));
 			
 			//音声の再生
-			LittleMaidReengaged.Debug(String.format("id:%d, se:%04x-%s (%s)", maid.getEntityId(), sound.getId(), sound.name(), soundName));
-
-			SoundEvent soundEvent = new SoundEvent(new ResourceLocation(LMLibrary.MODID, soundName));
 			this.maid.world.playSound(maid.posX, maid.posY, maid.posZ, 
 					soundEvent, maid.getSoundCategory(), maid.getSoundVolume(), 1.0F, false);
+			
 			playingSound.remove(sound);
 			
 		}
@@ -183,24 +166,10 @@ public class LMSoundController {
 	 * @return
 	 */
 	protected boolean isRandomPlayVoiceSound() {
-		if(Math.random() > LMLConfig.cfg_voiceRate) {
+		if(Math.random() > LMRConfig.cfg_voiceRate) {
 			return false;
 		}
 		return true;
-	}
-	
-	
-	/**
-	 * LivingVoiceRateを取得する
-	 * @param soundName
-	 * @return
-	 */
-	protected Float getLivingVoiceRatio(String sound) {
-
-		//soundからサウンドパック名を取得
-		String soundpack = sound.substring(0 , sound.lastIndexOf("."));
-		
-		return LMLibraryAPI.instance().getSoundManager().getLivingVoiceRatio(soundpack);
 	}
 	
 }

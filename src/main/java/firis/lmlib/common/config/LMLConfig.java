@@ -39,7 +39,7 @@ public class LMLConfig {
 	/**
 	 * おしゃべり頻度の設定
 	 */
-	public static float cfg_voiceRate = 0.2F;
+	public static float cfg_livingVoiceRate = 0.2F;
 	
 	/**
 	 * 設定ファイル読込
@@ -67,8 +67,8 @@ public class LMLConfig {
 				"Developer mode setting. Reads a texture from a resourcepack.");
 		
 		//メイドさんのランダムVoiceRate
-		cfg_voiceRate = config.getFloat("VoiceRate", GROUP_LOADER, 0.2F, 0.0F, 1.0F,
-				"Setting the rate for voice playback.[1.0 = 100%]");
+		cfg_livingVoiceRate = config.getFloat("LivingVoiceRate", GROUP_LOADER, 0.2F, 0.0F, 1.0F,
+				"Setting the rate for living voice playback.[1.0 = 100%]");
 		
 		config.save();
 	}

@@ -31,7 +31,7 @@ public class LMRConfig {
 	public static boolean cfg_isFixedWildMaid = false;
 
 	// VoiceRate
-	//public static float cfg_voiceRate = 0.2f;
+	public static float cfg_voiceRate = 0.2f;
 	
 	/** メイドの土産 */
 	public static boolean cfg_isResurrection = true;
@@ -371,9 +371,9 @@ public class LMRConfig {
 		cfg_isModelAlphaBlend = cfg.getBoolean("isModelAlphaBlend", GROUP_DECORATION, true,
 				"グラフィックが無力すぎてアルファブレンドテクスチャを描画できない場合は、「false」にしてください。");
 		
-		////メイドさんのランダムVoiceRate
-		//cfg_voiceRate = cfg.getFloat("VoiceRate", GROUP_DECORATION, 0.2F, 0.0F, 1.0F,
-		//		"メイドさんの通常おしゃべりのレートを設定できます。[1.0 = 100%]");
+		//メイドさんのランダムVoiceRate
+		cfg_voiceRate = cfg.getFloat("VoiceRate", GROUP_DECORATION, 0.2F, 0.0F, 1.0F,
+				"メイドさんの通常おしゃべりのレートを設定できます。[1.0 = 100%]");
 		
 	}
 	

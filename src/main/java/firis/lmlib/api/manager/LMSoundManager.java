@@ -306,6 +306,6 @@ public class LMSoundManager {
 		}
 		
 		//対象外の場合は標準レートを返却する
-		return LMLConfig.cfg_voiceRate;
+		return LMLConfig.cfg_livingVoiceRate;
 	}
 }
