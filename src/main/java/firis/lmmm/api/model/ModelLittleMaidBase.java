@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.caps.ModelCapsHelper;
 import firis.lmmm.api.model.motion.ILMMotion;
+import firis.lmmm.api.model.motion.LMMotionSitdown;
 import firis.lmmm.api.renderer.ModelRenderer;
 
 /**
@@ -30,7 +31,7 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 	/**
 	 * メイドさんのカスタムモーション
 	 */
-	public static List<ILMMotion> littleMaidMotions = new ArrayList<>();
+	public static List<ILMMotion> littleMaidMotions = initLittleMaidMotions();
 
 	/**
 	 * コンストラクタは全て継承させること
@@ -178,12 +179,6 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 //			mainFrame.rotationPointY += 5.00F;
 		}
 		
-		//カスタム設定
-		//お座りモーションの場合はモデル側で位置を調整する
-		if (motionSitting && isRiding) {
-			mainFrame.rotationPointY += 5.00F;
-		}
-
 		// アイテム持ってるときの腕振りを抑える+表示角オフセット
 		if (heldItem[1] != 0) {
 			bipedLeftArm.setRotateAngleX(bipedLeftArm.getRotateAngleX() * 0.5F);
@@ -394,5 +389,14 @@ public abstract class ModelLittleMaidBase extends ModelMultiMMMBase {
 		setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, entityCaps);
 		bipedRightArm.render(0.0625F);
 	}
-
+	
+	/**
+	 * モーション初期化
+	 * @return
+	 */
+	private static List<ILMMotion> initLittleMaidMotions() {
+		List<ILMMotion> lmMotions = new ArrayList<>();
+		lmMotions.add(new LMMotionSitdown());
+		return lmMotions;
+	}
 }

@@ -229,9 +229,6 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 			return scaleFactor;
 		case caps_dominantArm:
 			return dominantArm;
-		//お座りモーション判定
-		case caps_motionSitting:
-			return motionSitting;
 		}
 		return null;
 	}
@@ -284,10 +281,6 @@ public abstract class ModelMultiBase extends ModelBase implements IModelCaps {
 			return true;
 		case caps_dominantArm:
 			dominantArm = (Integer)pArg[0];
-			return true;
-		//お座りモーション判定
-		case caps_motionSitting:
-			motionSitting = (Boolean)pArg[0];
 			return true;
 		}
 		

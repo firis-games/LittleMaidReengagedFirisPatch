@@ -77,9 +77,9 @@ public interface IModelCaps {
 	public static final int caps_PosBlockState			= 0x0082;
 	/** Entityの位置にオフセットした座標のBlockが空気ブロックかを取得する [0]:offsetX, [1]:offsetY, [2]:offsetZ **/
 	public static final int caps_PosBlockAir			= 0x0083;
-	/** Entityの位置にオフセットした座標のBlockが空気ブロックかを取得する [0]:offsetX, [1]:offsetY, [2]:offsetZ **/
+	/** Entityの位置にオフセットした座標のBlockが光源ブロックかを取得する [0]:offsetX, [1]:offsetY, [2]:offsetZ **/
 	public static final int caps_PosBlockLight			= 0x0084;
-	/** Entityの位置にオフセットした座標のBlockが空気ブロックかを取得する [0]:offsetX, [1]:offsetY, [2]:offsetZ **/
+	/** Entityの位置にオフセットした座標のBlockがRS動力ブロックかを取得する [0]:offsetX, [1]:offsetY, [2]:offsetZ **/
 	public static final int caps_PosBlockPower			= 0x0085;
 	/** playerに乗っているかを判定**/
 	public static final int caps_isRidingPlayer			= 0x0086;
@@ -118,14 +118,17 @@ public interface IModelCaps {
 	public static final int caps_YOffset			= 0x0123;
 	public static final int caps_mountedYOffset		= 0x0124;
 	public static final int caps_dominantArm		= 0x0125;
+	@Deprecated
 	public static final int caps_render				= 0x0130;
+	@Deprecated
 	public static final int caps_Arms				= 0x0131;
-	
 	@Deprecated
 	public static final int caps_HeadMount			= 0x0132;
 	/** モデルに設定されているハードポイントを配列で返します **/
+	@Deprecated
 	public static final int caps_HardPoint			= 0x0133;
 	/** 装備しているスタビライザーを返します **/
+	@Deprecated
 	public static final int caps_stabiliser			= 0x0134;
 	/** 現在保持しているアイテムの配列を返します **/
 	public static final int caps_Items				= 0x0135;
@@ -138,7 +141,7 @@ public interface IModelCaps {
 	public static final int caps_Ground				= 0x0139;
 	public static final int caps_interestedAngle	= 0x0150;
 
-	/** マルチモデルから描画サイズを取得します */
+	/** マルチモデルから描画サイズを取得します MultiModelCase用　*/
 	public static final int caps_ScaleFactor	= 0x0200;
 
 //	// PlayerFormLittleMaid
@@ -157,13 +160,13 @@ public interface IModelCaps {
 //	/** TextureDataのインスタンスを返します。 **/
 //	public static final int caps_textureData		= 0x0313;
 	
-	/** 発光テクスチャの色補正 */
+	/** 発光テクスチャの色補正 MultiModelCase用 */
 	public static final int caps_textureLightColor	= 0x0314;
 
 	
-	//カスタム追加分
-	//お座りモーション
-	public static final int caps_motionSitting      = 0x0401;
+//	//カスタム追加分
+//	//お座りモーション
+//	public static final int caps_motionSitting      = 0x0401;
 	
 	//モーション制御系処理
 	//カスタムアニメーション用

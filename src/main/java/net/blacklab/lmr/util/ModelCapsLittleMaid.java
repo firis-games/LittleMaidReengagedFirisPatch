@@ -3,6 +3,7 @@ package net.blacklab.lmr.util;
 import firis.lmlib.api.caps.ModelCapsEntityBase;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
+import firis.lmmm.api.model.motion.LMMotionSitdown;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -199,17 +200,15 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 			return getItemStackNull(getHandSideItemStack(EnumHandSide.RIGHT));
 		case caps_currentLeftHandItem:
 			return getItemStackNull(getHandSideItemStack(EnumHandSide.LEFT));
+		case caps_multimodel_motion:
+			boolean isMotionSitting = owner.isMotionSitting();
+			if (isMotionSitting) {
+				return LMMotionSitdown.SITDOWN;
+			}
+			return null;
 		}
 
 		return super.getCapsValue(pIndex, pArg);
-	}
-	
-	/**
-	 * 空の場合はnullに変換するItemStack
-	 * @return
-	 */
-	private ItemStack getItemStackNull(ItemStack stack) {
-		return stack.isEmpty() ? null : stack;
 	}
 	
 	/**
@@ -217,7 +216,8 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 	 * @param handSide
 	 * @return
 	 */
-	private ItemStack getHandSideItemStack(EnumHandSide handSide) {
+	@Override
+	protected ItemStack getHandSideItemStack(EnumHandSide handSide) {
 		EnumHandSide mainSide = this.owner.getDominantArm() == 0 ? EnumHandSide.RIGHT : EnumHandSide.LEFT;
 		if (mainSide == handSide) {
 			//利き手
@@ -261,9 +261,6 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 		model.setCapsValue(IModelCaps.caps_entityIdFactor, maid.entityIdFactor);
 		model.setCapsValue(IModelCaps.caps_ticksExisted, maid.ticksExisted);
 		model.setCapsValue(IModelCaps.caps_dominantArm, maid.getDominantArm());
-
-		//カスタム設定
-		model.setCapsValue(IModelCaps.caps_motionSitting, maid.isMotionSitting());
 		
 	}
 	
@@ -305,7 +302,6 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 			case SIT:
 				model.setCapsValue(IModelCaps.caps_isWait, true);
 				model.setCapsValue(IModelCaps.caps_isRiding, true);
-				model.setCapsValue(IModelCaps.caps_motionSitting, true);
 				break;
 			
 			//弓構え

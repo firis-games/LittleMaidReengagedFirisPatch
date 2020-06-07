@@ -1,18 +1,15 @@
 package net.firis.lmt.common.modelcaps;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import firis.lmlib.api.caps.ModelCapsEntityBase;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
+import firis.lmmm.api.model.motion.LMMotionSitdown;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 
 /**
@@ -35,36 +32,24 @@ public class PlayerModelCaps extends ModelCapsEntityBase<EntityPlayer> {
 	 */
 	public Object getCapsValue(int pIndex, Object... pArg) {
 		switch (pIndex) {
-		case caps_onGround:
-			return this.getOnGrounds();
 		case caps_isRiding:
 			if (this.isFirstPersonView()) return false;
 			//疑似お座りモーションを管理する
 			return owner.isRiding() || PlayerModelManager.getModelConfigCompound(owner).getLMAvatarAction();
-		case caps_motionSitting:
+		//お座りモーション制御用
+		case caps_multimodel_motion:
 			//疑似お座りモーション
-			return PlayerModelManager.getModelConfigCompound(owner).getLMAvatarAction();
-		case caps_isRidingPlayer:
-			return false;
+			boolean isSitdown = PlayerModelManager.getModelConfigCompound(owner).getLMAvatarAction();
+			return isSitdown ? LMMotionSitdown.SITDOWN : null;
 		case caps_isSneak:
 			if (this.isFirstPersonView()) return false;
 			return owner.isSneaking();
-		case caps_isLeeding:
-			return false;
 			
 		//弓構え
 		case caps_aimedBow:
 			//プレイヤーが弓構え
 			return getPlayerAction(owner, EnumHandSide.RIGHT) == EnumAction.BOW 
 			|| getPlayerAction(owner, EnumHandSide.LEFT) == EnumAction.BOW;
-			
-		//Entityごとの揺らぎを持たせているらしい？
-		case caps_entityIdFactor:
-			return 0.0F;
-			
-		//利き手
-		case caps_dominantArm:
-			return owner.getPrimaryHand() == EnumHandSide.RIGHT ? 0 : 1;
 		
 		//アイテムを持った時の腕振り制御
 		case caps_heldItemLeft:
@@ -87,79 +72,6 @@ public class PlayerModelCaps extends ModelCapsEntityBase<EntityPlayer> {
 
 		//親クラスの情報を取得する
 		return super.getCapsValue(pIndex, pArg);
-	}
-	
-	private List<Integer> modelCapsList = this.initModelCapsList();
-	private List<Integer> initModelCapsList() {
-		List<Integer> caps = new ArrayList<>();
-		
-		//モデル側へ受け渡すcapsIdを設定
-		caps.add(IModelCaps.caps_heldItemLeft);
-		caps.add(IModelCaps.caps_heldItemRight);
-		caps.add(IModelCaps.caps_onGround);
-		caps.add(IModelCaps.caps_isRiding);
-		caps.add(IModelCaps.caps_isSneak);
-		caps.add(IModelCaps.caps_aimedBow);
-		caps.add(IModelCaps.caps_isWait);
-		caps.add(IModelCaps.caps_isChild);
-		caps.add(IModelCaps.caps_entityIdFactor);
-		caps.add(IModelCaps.caps_ticksExisted);
-		caps.add(IModelCaps.caps_dominantArm);
-		caps.add(IModelCaps.caps_motionSitting);
-		
-		return caps;
-	}
-	
-	/**
-	 * メイドさんのmstatSwingStatusを仮想で再現
-	 * @param player
-	 * @return
-	 */
-	protected float[] getOnGrounds() {
-		
-		float onGrounds[] = new float[] {0.0F, 0.0F};
-		
-		//利き腕取得
-		EnumHandSide dominantHand = this.owner.getPrimaryHand();
-		boolean isDominantRight = dominantHand == EnumHandSide.RIGHT;
-		
-		//右か左かの判断
-		boolean isMainHand = EnumHand.MAIN_HAND == this.owner.swingingHand;
-		
-		//左利きの場合は左右逆転する
-		if (!isDominantRight) {
-			isMainHand = !isMainHand;
-		}
-		
-		//腕振り
-		/*　tick単位での腕振り制御位置
-		腕を振った時にplayer.swingProgressにこの値が設定される
-		0.16666667
-		0.16666667
-		0.16666667
-		0.33333334
-		0.33333334
-		0.33333334
-		0.5
-		0.5
-		0.5
-		0.6666667
-		0.6666667
-		0.6666667
-		0.8333333
-		0.8333333
-		0.8333333
-		*/
-		if (isMainHand) {
-			//右振り
-			onGrounds[0] = this.owner.swingProgress;
-			onGrounds[1] = 0.0F;
-		} else {
-			//左振り
-			onGrounds[0] = 0.0F;
-			onGrounds[1] = this.owner.swingProgress;
-		}
-		return onGrounds;
 	}
 	
 	/**
