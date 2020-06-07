@@ -6,8 +6,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import firis.lmlib.LMLibrary;
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.constant.EnumSound;
+import firis.lmlib.common.config.LMLConfig;
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRMessage;
 import net.minecraft.nbt.NBTTagCompound;
@@ -183,7 +183,7 @@ public class LMSoundController {
 	 * @return
 	 */
 	protected boolean isRandomPlayVoiceSound() {
-		if(Math.random() > LMRConfig.cfg_voiceRate) {
+		if(Math.random() > LMLConfig.cfg_voiceRate) {
 			return false;
 		}
 		return true;

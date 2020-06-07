@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  */
 public class LMLConfig {
 	
+	protected static final String GROUP_LOADER = "LOADER";
 	
 	/**
 	 * 開発モード判定用
@@ -50,7 +51,24 @@ public class LMLConfig {
 		Configuration config = new Configuration(configFile, LMLibrary.VERSION, true);
 		config.load();
 		
+		//グループコメント
+		config.addCustomCategoryComment(GROUP_LOADER, "LMLibrary Loader Setting");
 		
+		//ファイルローダー機能のキャッシュ機能設定
+		cfg_loader_is_cache = config.getBoolean("EnableFileLoaderCache", GROUP_LOADER, false,
+				"Enable FileLoader Caching.");
+		
+		//sounds.jsonファイルの出力設定
+		cfg_loader_output_sounds_json = config.getBoolean("OutputSoundsJson", GROUP_LOADER, false,
+				"Output sounds.json.");
+		
+		//テクスチャのリソースパックロードの設定
+		cfg_loader_texture_from_directory = config.getBoolean("EnableTextureLoadResourcepack", GROUP_LOADER, false,
+				"Developer mode setting. Reads a texture from a resourcepack.");
+		
+		//メイドさんのランダムVoiceRate
+		cfg_voiceRate = config.getFloat("VoiceRate", GROUP_LOADER, 0.2F, 0.0F, 1.0F,
+				"Setting the rate for voice playback.[1.0 = 100%]");
 		
 		config.save();
 	}

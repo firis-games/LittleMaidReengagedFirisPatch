@@ -31,7 +31,7 @@ public class LMRConfig {
 	public static boolean cfg_isFixedWildMaid = false;
 
 	// VoiceRate
-	public static float cfg_voiceRate = 0.2f;
+	//public static float cfg_voiceRate = 0.2f;
 	
 	/** メイドの土産 */
 	public static boolean cfg_isResurrection = true;
@@ -95,14 +95,14 @@ public class LMRConfig {
 	/** メイドアバター */
 	public static boolean cfg_lmabatar_maid_avatar = false;
 	
-	/** ファイルローダー機能のキャッシュ機能のON/OFF設定 */
-	public static boolean cfg_loader_is_cache = true;
+	///** ファイルローダー機能のキャッシュ機能のON/OFF設定 */
+	//public static boolean cfg_loader_is_cache = true;
 	
-	/** sounds.jsonファイルの出力設定 */
-	public static boolean cfg_loader_output_sounds_json = false;
+	///** sounds.jsonファイルの出力設定 */
+	//public static boolean cfg_loader_output_sounds_json = false;
 	
-	/** テクスチャのリソースパックロードモード設定 */
-	public static boolean cfg_loader_texture_load_from_resoucepack = false;
+	///** テクスチャのリソースパックロードモード設定 */
+	//public static boolean cfg_loader_texture_load_from_resoucepack = false;
 	
 	/** LittleMaidAvatarに登録するLayer設定 */
 	public static List<String> cfg_lmavatar_include_layer = null;
@@ -137,7 +137,7 @@ public class LMRConfig {
 		initLMAvatar(cfg);
 		initDecoration(cfg);
 		initCollaboration(cfg);
-		initLoader(cfg);
+//		initLoader(cfg);
 		initDevelop(cfg);
 		
 		cfg.save();
@@ -157,7 +157,7 @@ public class LMRConfig {
 
 	protected static final String GROUP_COLLABORATION = "06_ModCollaboration";
 	
-	protected static final String GROUP_LOADER = "ex_LOADER";
+	//protected static final String GROUP_LOADER = "ex_LOADER";
 	
 	protected static final String GROUP_DEVELOPER = "ex_DEVELOPER";
 	
@@ -371,9 +371,9 @@ public class LMRConfig {
 		cfg_isModelAlphaBlend = cfg.getBoolean("isModelAlphaBlend", GROUP_DECORATION, true,
 				"グラフィックが無力すぎてアルファブレンドテクスチャを描画できない場合は、「false」にしてください。");
 		
-		//メイドさんのランダムVoiceRate
-		cfg_voiceRate = cfg.getFloat("VoiceRate", GROUP_DECORATION, 0.2F, 0.0F, 1.0F,
-				"メイドさんの通常おしゃべりのレートを設定できます。[1.0 = 100%]");
+		////メイドさんのランダムVoiceRate
+		//cfg_voiceRate = cfg.getFloat("VoiceRate", GROUP_DECORATION, 0.2F, 0.0F, 1.0F,
+		//		"メイドさんの通常おしゃべりのレートを設定できます。[1.0 = 100%]");
 		
 	}
 	
@@ -411,27 +411,27 @@ public class LMRConfig {
 	}
 	
 	
-	/**
-	 * メイドさんの見た目に関連する設定
-	 * @param cfg
-	 */
-	protected static void initLoader(Configuration cfg) {
-		//グループコメント
-		cfg.addCustomCategoryComment(GROUP_LOADER, "LittleMaidLoader Setting");
-		
-		//ファイルローダー機能のキャッシュ機能設定
-		cfg_loader_is_cache = cfg.getBoolean("EnableFileLoaderCache", GROUP_LOADER, false,
-				"Enable FileLoader Caching.");
-		
-		//sounds.jsonファイルの出力設定
-		cfg_loader_output_sounds_json = cfg.getBoolean("OutputSoundsJson", GROUP_LOADER, false,
-				"Output sounds.json.");
-		
-		//テクスチャのリソースパックロードの設定
-		cfg_loader_texture_load_from_resoucepack = cfg.getBoolean("EnableTextureLoadResourcepack", GROUP_LOADER, false,
-				"Developer mode setting. Reads a texture from a resourcepack.");
-		
-	}
+//	/**
+//	 * メイドさんの見た目に関連する設定
+//	 * @param cfg
+//	 */
+//	protected static void initLoader(Configuration cfg) {
+//		//グループコメント
+//		cfg.addCustomCategoryComment(GROUP_LOADER, "LittleMaidLoader Setting");
+//		
+//		//ファイルローダー機能のキャッシュ機能設定
+//		cfg_loader_is_cache = cfg.getBoolean("EnableFileLoaderCache", GROUP_LOADER, false,
+//				"Enable FileLoader Caching.");
+//		
+//		//sounds.jsonファイルの出力設定
+//		cfg_loader_output_sounds_json = cfg.getBoolean("OutputSoundsJson", GROUP_LOADER, false,
+//				"Output sounds.json.");
+//		
+//		//テクスチャのリソースパックロードの設定
+//		cfg_loader_texture_load_from_resoucepack = cfg.getBoolean("EnableTextureLoadResourcepack", GROUP_LOADER, false,
+//				"Developer mode setting. Reads a texture from a resourcepack.");
+//		
+//	}
 	
 	/**
 	 * テスト用機能の設定
