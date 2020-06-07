@@ -322,7 +322,7 @@ public abstract class ModelCapsEntityBase<T extends EntityLivingBase> implements
 		//メイド状態の初期化
 		model.setCapsValue(IModelCaps.caps_heldItemLeft, 0);
 		model.setCapsValue(IModelCaps.caps_heldItemRight, 0);
-//		modelMain.setCapsValue(IModelCaps.caps_onGround, getSwingProgress(par1EntityLiving, par9));
+		model.setCapsValue(IModelCaps.caps_onGround, 0.0F, 0.0F);
 		model.setCapsValue(IModelCaps.caps_isRiding, false);
 		model.setCapsValue(IModelCaps.caps_isSneak, false);
 		model.setCapsValue(IModelCaps.caps_aimedBow, false);

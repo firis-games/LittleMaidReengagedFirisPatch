@@ -16,77 +16,17 @@ import net.minecraft.util.EnumHandSide;
  */
 public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 
-	private EntityLittleMaid owner;
-//	private static Map<String, Integer> caps;
-/*
-	static {
-		caps = new HashMap<String, Integer>();
-		caps.putAll(getStaticModelCaps());
-		caps.put("isBloodsuck", caps_isBloodsuck);
-		caps.put("isFreedom", caps_isFreedom);
-		caps.put("isTracer", caps_isTracer);
-		caps.put("isPlaying", caps_isPlaying);
-		caps.put("isLookSuger", caps_isLookSuger);
-		caps.put("isBlocking", caps_isBlocking);
-		caps.put("isWait", caps_isWait);
-		caps.put("isWaitEX", caps_isWaitEX);
-		caps.put("isOpenInv", caps_isOpenInv);
-		caps.put("isWorking", caps_isWorking);
-		caps.put("isWorkingDelay", caps_isWorkingDelay);
-		caps.put("isContract", caps_isContract);
-		caps.put("isContractEX", caps_isContractEX);
-		caps.put("isRemainsC", caps_isRemainsC);
-		caps.put("isClock", caps_isClock);
-		caps.put("isMasked", caps_isMasked);
-		caps.put("isCamouflage", caps_isCamouflage);
-		caps.put("isPlanter", caps_isPlanter);
-		caps.put("isOverdrive", caps_isOverdrive);
-		caps.put("isOverdriveDelay", caps_isOverdriveDelay);
-		caps.put("entityIdFactor", caps_entityIdFactor);
-		caps.put("height", caps_height);
-		caps.put("width", caps_width);
-		caps.put("YOffset", caps_YOffset);
-		caps.put("mountedYOffset", caps_mountedYOffset);
-		caps.put("dominantArm", caps_dominantArm);
-//		caps.put("render", caps_render);
-//		caps.put("Arms", caps_Arms);
-//		caps.put("HeadMount", caps_HeadMount);
-//		caps.put("HardPoint", caps_HardPoint);
-		caps.put("stabiliser", caps_stabiliser);
-		caps.put("Items", caps_Items);
-		caps.put("Actions", caps_Actions);
-		caps.put("Grounds", caps_Grounds);
-		caps.put("Ground", caps_Ground);
-		caps.put("Inventory", caps_Inventory);
-		caps.put("interestedAngle", caps_interestedAngle);
-//		caps.put("Entity", caps_Entity);
-//		caps.put("health", caps_health);
-		caps.put("currentArmor", caps_currentArmor);
-		caps.put("currentEquippedItem", caps_currentEquippedItem);
-	}
-*/
-
 	public ModelCapsLittleMaid(EntityLittleMaid pOwner) {
 		super(pOwner);
-		owner = pOwner;
 	}
 
-//	@Override
-//	public Map<String, Integer> getModelCaps() {
-//		return caps;
-//	}
-
+	/**
+	 * メイドさんのパラメータ
+	 */
 	@Override
 	public Object getCapsValue(int pIndex, Object ...pArg) {
 		int li = 0;
-
 		switch (pIndex) {
-//		case caps_Entity:
-//			return owner;
-//		case caps_health:
-//			return (int)owner.getHealth();
-//		case caps_healthFloat:
-//			return owner.getHealth();
 		case caps_isBloodsuck:
 			return owner.isBloodsuck();
 		case caps_isFreedom:
@@ -147,16 +87,6 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 					null : owner.getModelConfigCompound().getTextureBoxLittleMaid().getModelLittleMaid().getMountedYOffset(this);
 		case caps_dominantArm:
 			return owner.getDominantArm();
-//		case caps_mountedYOffset:
-//			return owner.textureModel0 == null ? null : owner.textureModel0.getHeight();
-//		case caps_render:
-//		case caps_Arms:
-////		case caps_HeadMount:
-////			// TODO 従来HeadMountとか使ってた部分は全部削除した方がすっきりすると思う．
-////			return owner.maidInventory.armorInventory.get(3);
-//		case caps_HardPoint:
-//		case caps_stabiliser:
-//			return owner.maidStabilizer;
 		case caps_Items:
 			ItemStack[] lstacks = new ItemStack[owner.mstatSwingStatus.length];
 			for (SwingStatus ls : owner.mstatSwingStatus) {
@@ -192,22 +122,18 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 		case caps_heldItems:
 		case caps_currentEquippedItem:
 			return getItemStackNull(owner.getCurrentEquippedItem());
-//		case caps_PartsVisible:
-//			return owner.getModelConfigCompound().selectValue;
-//		case caps_textureData:
-//			return owner.getModelConfigCompound();
 		case caps_currentRightHandItem:
 			return getItemStackNull(getHandSideItemStack(EnumHandSide.RIGHT));
 		case caps_currentLeftHandItem:
 			return getItemStackNull(getHandSideItemStack(EnumHandSide.LEFT));
 		case caps_multimodel_motion:
 			boolean isMotionSitting = owner.isMotionSitting();
-			if (isMotionSitting) {
+			EnumMaidMotion lmmotion = owner.getMaidMotion();
+			if (isMotionSitting || (lmmotion == EnumMaidMotion.SIT)) {
 				return LMMotionSitdown.SITDOWN;
 			}
 			return null;
 		}
-
 		return super.getCapsValue(pIndex, pArg);
 	}
 	
@@ -249,7 +175,6 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 		
 		model.setCapsValue(IModelCaps.caps_heldItemLeft, 0);
 		model.setCapsValue(IModelCaps.caps_heldItemRight, 0);
-//				modelMain.setCapsValue(IModelCaps.caps_onGround, renderSwingProgress(lmaid, par9));
 		model.setCapsValue(IModelCaps.caps_onGround,
 				maid.mstatSwingStatus[0].getSwingProgress(partialTicks),
 				maid.mstatSwingStatus[1].getSwingProgress(partialTicks));
