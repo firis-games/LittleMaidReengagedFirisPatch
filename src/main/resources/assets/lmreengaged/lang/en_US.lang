@@ -167,9 +167,6 @@ commands.lmcommand.list.failure=Looks like there is no maid nearby.
 
 littlemaid.inventory.name=InsideSkirt
 
-item.player_maid_book.name=Player Maid Model
-item.player_maid_book.info=Your Maid
-
 littleMaidMob.mode.Angler=Angler girl
 littleMaidMob.mode.F-Angler=Angler Maid
 littleMaidMob.mode.T-Angler=Angler Maid(Trace RS)
@@ -185,15 +182,6 @@ littleMaidMob.mode.T-LumberjackPort=Lumberjack Carry(Trace RS)
 littleMaidMob.mode.T-SugarCanePort=SugarCane Carry(Trace RS)
 littleMaidMob.mode.T-ShearerPort=Shearer Carry(Trace RS)
 littleMaidMob.mode.T-AnglerPort=Angler Carry(Trace RS)
-
-key.lmavatar.action=LMAvatar Action
-key.lmavatar.change=LMAvatar Change
-
-commands.lmacommand.save.new=register %s
-commands.lmacommand.save.update=update %s
-commands.lmacommand.load=load %s
-commands.lmacommand.load.error=non exists %s
-commands.lmacommand.list.error=non exists %s
 
 entity.Villager.MaidBroker=Maid Broker
 

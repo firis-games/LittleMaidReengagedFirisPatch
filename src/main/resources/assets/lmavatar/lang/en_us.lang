@@ -1,0 +1,12 @@
+item.player_maid_book.name=Player Maid Model
+item.player_maid_book.info=Your Maid
+
+key.lmavatar.action=LMAvatar Action
+key.lmavatar.change=LMAvatar Change
+
+commands.lmacommand.save.new=register %s
+commands.lmacommand.save.update=update %s
+commands.lmacommand.load=load %s
+commands.lmacommand.load.error=non exists %s
+commands.lmacommand.list.error=non exists %s
+

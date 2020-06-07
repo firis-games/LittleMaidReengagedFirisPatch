@@ -2,34 +2,15 @@ package net.firis.lmt.common;
 
 import java.util.Map;
 
-import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.config.LMRConfig;
-import net.firis.lmt.client.event.KeyBindingHandler;
-import net.firis.lmt.client.event.LittleMaidAvatarClientTickEventHandler;
-import net.firis.lmt.client.renderer.RendererLMAvatar;
-import net.firis.lmt.common.command.LMAvatarCommand;
-import net.firis.lmt.common.item.LMItemPlayerMaidBook;
-import net.firis.lmt.common.manager.PlayerModelManager;
-import net.firis.lmt.common.manager.SyncPlayerModelClient;
-import net.firis.lmt.common.manager.SyncPlayerModelServer;
-import net.firis.lmt.config.ConfigChangedEventHandler;
-import net.firis.lmt.config.FirisConfig;
-import net.firis.lmt.config.custom.JConfigLMAvatarManager;
 import net.firis.lmt.test.renderer.RendererLMVillager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -113,6 +94,7 @@ public class LMTCore {
 			entityMap.put(EntityVillager.class, new RendererLMVillager(renderVillager.getRenderManager()));
 		}
 		
+		/*
 		//Playerのスキン差し替え
 		//Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().skinMap;
 		Map<String, RenderPlayer> skinMap = ObfuscationReflectionHelper.getPrivateValue(RenderManager.class, 
@@ -147,6 +129,7 @@ public class LMTCore {
 		
 		//LMアバター管理用イベント登録
         MinecraftForge.EVENT_BUS.register(new SyncPlayerModelClient());
+        */
 	}
 	
 	/**
@@ -156,10 +139,12 @@ public class LMTCore {
 
 		if (!isLMTCore()) return;
 
+		/*
 		//メイドさんになる本
     	event.getRegistry().register(new LMItemPlayerMaidBook()
     			.setRegistryName(LittleMaidReengaged.MODID, "player_maid_book")
     			.setUnlocalizedName("player_maid_book"));
+    	*/
     	
 	}
 	
@@ -171,9 +156,11 @@ public class LMTCore {
 		
 		if (!isLMTCore()) return;
 		
+		/*
 		// メイドさんになる本
 		ModelLoader.setCustomModelResourceLocation(LMItems.PLAYER_MAID_BOOK, 0,
 				new ModelResourceLocation(LMItems.PLAYER_MAID_BOOK.getRegistryName(), "inventory"));
+		*/
 	}
 	
 	/**
@@ -184,6 +171,7 @@ public class LMTCore {
 		
 		if (!isLMTCore()) return;
 		
+		/*
 		//設定読込
         FirisConfig.init(event.getModConfigurationDirectory());
         
@@ -193,6 +181,7 @@ public class LMTCore {
         //LMアバター管理用イベント登録
         MinecraftForge.EVENT_BUS.register(new PlayerModelManager());
         MinecraftForge.EVENT_BUS.register(new SyncPlayerModelServer());
+        */
         
 	}
 	
@@ -202,8 +191,10 @@ public class LMTCore {
 	public static void serverStatingEvent(FMLServerStartingEvent event) {
 		
 		if (!isLMTCore()) return;
-		
+
+		/*
 		event.registerServerCommand(new LMAvatarCommand());
+		*/
 		
 	}
 	

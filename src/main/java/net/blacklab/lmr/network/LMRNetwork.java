@@ -1,5 +1,6 @@
 package net.blacklab.lmr.network;
 
+import firis.lmavatar.common.manager.PlayerModelManager;
 import net.blacklab.lmc.common.network.PacketSpawnParticleS2C;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -7,7 +8,6 @@ import net.blacklab.lmr.network.LMRMessage.EnumPacketMode;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.SwingStatus;
 import net.blacklab.lmr.util.helper.CommonHelper;
-import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

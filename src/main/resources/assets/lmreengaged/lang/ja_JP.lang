@@ -164,9 +164,6 @@ commands.lmcommand.list.failure=近くにメイドさんはいないようだ...
 
 littlemaid.inventory.name=InsideSkirt
 
-item.player_maid_book.name=メイドさんになる本
-item.player_maid_book.info=あなたをメイドさん
-
 littleMaidMob.mode.Angler=釣り師の小娘
 littleMaidMob.mode.F-Angler=釣り人メイド
 littleMaidMob.mode.T-Angler=釣り人メイド(赤石)
@@ -182,15 +179,6 @@ littleMaidMob.mode.T-LumberjackPort=木材の運び屋(赤石)
 littleMaidMob.mode.T-SugarCanePort=お砂糖運び隊(赤石)
 littleMaidMob.mode.T-ShearerPort=もふもふ運び隊(赤石)
 littleMaidMob.mode.T-AnglerPort=おさかな運び隊(赤石)
-
-key.lmavatar.action=LMアバターアクション
-key.lmavatar.change=LMアバター切り替え
-
-commands.lmacommand.save.new=「%s」を新規登録しました
-commands.lmacommand.save.update=「%s」を保存しました
-commands.lmacommand.load=「%s」が読み込まれました
-commands.lmacommand.load.error=「%s」は登録されていません
-commands.lmacommand.list.error=「%s」は登録されていません
 
 entity.Villager.MaidBroker=メイド仲介人
 

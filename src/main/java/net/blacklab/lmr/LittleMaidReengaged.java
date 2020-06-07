@@ -73,8 +73,7 @@ import net.minecraftforge.registries.IForgeRegistryModifiable;
 		name = LittleMaidReengaged.NAME,
 		version = LittleMaidReengaged.VERSION,
 		acceptedMinecraftVersions=LittleMaidReengaged.ACCEPTED_MCVERSION,
-		dependencies = LittleMaidReengaged.DEPENDENCIES,
-		guiFactory = "net.firis.lmt.config.FirisConfigGuiFactory"
+		dependencies = LittleMaidReengaged.DEPENDENCIES
 		/*,
 		updateJSON = "http://mc.el-blacklab.net/lmr-version.json"*/)
 @EventBusSubscriber(modid=LittleMaidReengaged.MODID)
@@ -104,7 +103,6 @@ public class LittleMaidReengaged {
     	public final static Item MAID_SUGAR = null;
     	public final static Item MAID_SPAWN_EGG = null;
     	public final static Item MAID_CONTRACT = null;
-    	public final static Item PLAYER_MAID_BOOK = null;
     }
     
     /**

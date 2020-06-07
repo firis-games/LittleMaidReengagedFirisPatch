@@ -1,5 +1,7 @@
 package net.blacklab.lmr.network;
 
+import firis.lmavatar.common.command.LMAvatarCommandClient;
+import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmc.client.event.RenderPlayerEventHandler;
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -9,8 +11,6 @@ import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.firis.lmt.common.LMTCore;
-import net.firis.lmt.common.command.LMAvatarCommandClient;
-import net.firis.lmt.common.manager.PlayerModelManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleItemPickup;
 import net.minecraft.entity.Entity;
