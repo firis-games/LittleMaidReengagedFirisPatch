@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import net.blacklab.lmr.LittleMaidReengaged;
-import net.firis.lmt.common.LMTCore;
+import firis.lmavatar.LittleMaidAvatar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
@@ -45,10 +44,10 @@ public class FirisConfigGuiFactory implements IModGuiFactory {
 		public FirisGuiConfig(GuiScreen parentScreen) {
 			super(parentScreen,
 					getConfigElements(),
-					LittleMaidReengaged.MODID,
+					LittleMaidAvatar.MODID,
 					false,
 					false,
-					LittleMaidReengaged.NAME);
+					LittleMaidAvatar.NAME);
 		}
 		
 		/**
@@ -57,7 +56,7 @@ public class FirisConfigGuiFactory implements IModGuiFactory {
 		private static List<IConfigElement> getConfigElements() {
 			List<IConfigElement> elements = new ArrayList<>();
 			
-			if (LMTCore.isLMTCore()) {
+			if (FirisConfig.cfg_lmabatar_maid_avatar) {
 				elements.addAll((new ConfigElement(FirisConfig.config.getCategory(FirisConfig.CATEGORY_AVATAR))).getChildElements());
 			}
 			

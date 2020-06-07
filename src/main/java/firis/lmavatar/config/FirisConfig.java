@@ -1,9 +1,11 @@
 package firis.lmavatar.config;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
+import firis.lmavatar.LittleMaidAvatar;
 import firis.lmavatar.common.manager.PlayerModelManager;
-import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraftforge.common.config.Configuration;
 
 public class FirisConfig {
@@ -14,6 +16,12 @@ public class FirisConfig {
 	public static String CATEGORY_AVATAR = "PlayerMaidAvatar";
 	
 	public static String DEFAULT_MAID_MODEL = "default_Orign";
+	
+	/** メイドアバター */
+	public static boolean cfg_lmabatar_maid_avatar = false;
+	
+	/** LittleMaidAvatarに登録するLayer設定 */
+	public static List<String> cfg_lmavatar_include_layer = null;
 	
 	/**
 	 * メイドさんモデル
@@ -40,9 +48,9 @@ public class FirisConfig {
 	
 	public static void init(File configDir) {
 		
-		File configFile = new File(configDir, "lmrfp_maidavatar.cfg");
+		File configFile = new File(configDir, "LittleMaidAvatar.cfg");
 		
-		config = new Configuration(configFile, LittleMaidReengaged.VERSION, true);
+		config = new Configuration(configFile, LittleMaidAvatar.VERSION, true);
 		
 		//カテゴリーコメントの設定
 		initCategory();
@@ -69,6 +77,15 @@ public class FirisConfig {
 	public static void syncConfig(boolean lmavatar) {
 		
 		//General
+		//メイドアバター機能
+		cfg_lmabatar_maid_avatar = config.getBoolean("LittleMaidAvatar", CATEGORY_GENERAL, false,
+				"プレイヤーの見た目をメイドさんにするLittleMaidAvatar機能を有効化します。");
+		
+		//指定されたIDのLayerは登録する
+		String[] lma_include_layer = new String[] {"LayerSlashBlade"};
+		cfg_lmavatar_include_layer = Arrays.asList(config.getStringList("LittleMaidAvatar.IncludeLayer", CATEGORY_GENERAL, lma_include_layer, 
+				"指定された文字を含むLayerクラスをLittleMaidAvatarに追加します。"));
+		
 		
 		//--------------------------------------------------
 		

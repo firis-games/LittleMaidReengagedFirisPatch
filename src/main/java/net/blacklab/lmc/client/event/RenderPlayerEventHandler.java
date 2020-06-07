@@ -1,5 +1,6 @@
 package net.blacklab.lmc.client.event;
 
+import firis.lmavatar.config.FirisConfig;
 import net.blacklab.lmc.common.helper.LittleMaidHelper;
 import net.blacklab.lmc.common.item.LMItemMaidCarry;
 import net.blacklab.lmr.config.LMRConfig;
@@ -77,7 +78,7 @@ public class RenderPlayerEventHandler {
 		//微調整 PFLMの標準設定は0.5F
 		//GlStateManager.translate(0, -0.5F, 0);
 		float heightAdjustment = LMRConfig.cfg_custom_riding_height_adjustment;
-		if (LMRConfig.cfg_lmabatar_maid_avatar) heightAdjustment -= 0.5F;
+		if (FirisConfig.cfg_lmabatar_maid_avatar) heightAdjustment -= 0.5F;
 		GlStateManager.translate(0, heightAdjustment, 0);
 		
 		

@@ -5,9 +5,9 @@ import firis.lmlib.api.caps.ModelCapsEntityBase;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
 import firis.lmmm.api.model.motion.LMMotionSitdown;
-import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
@@ -67,7 +67,7 @@ public class PlayerModelCaps extends ModelCapsEntityBase<EntityPlayer> {
 			
 		//砂糖を持った時の首傾げ
 		case caps_isLookSuger:
-			return ItemHelper.isSugar(this.owner.getHeldItemMainhand());
+			return this.owner.getHeldItemMainhand().getItem() == Items.SUGAR;
 		}
 
 		//親クラスの情報を取得する

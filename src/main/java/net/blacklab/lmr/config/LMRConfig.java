@@ -92,8 +92,8 @@ public class LMRConfig {
 	/** 開発用テストモジュールの有効化設定 */
 	public static boolean cfg_developer_test_module = false;
 	
-	/** メイドアバター */
-	public static boolean cfg_lmabatar_maid_avatar = false;
+	///** メイドアバター */
+	//public static boolean cfg_lmabatar_maid_avatar = false;
 	
 	///** ファイルローダー機能のキャッシュ機能のON/OFF設定 */
 	//public static boolean cfg_loader_is_cache = true;
@@ -104,8 +104,8 @@ public class LMRConfig {
 	///** テクスチャのリソースパックロードモード設定 */
 	//public static boolean cfg_loader_texture_load_from_resoucepack = false;
 	
-	/** LittleMaidAvatarに登録するLayer設定 */
-	public static List<String> cfg_lmavatar_include_layer = null;
+	///** LittleMaidAvatarに登録するLayer設定 */
+	//public static List<String> cfg_lmavatar_include_layer = null;
 	
 	/** メイドスポーンエッグのレシピ */
 	public static boolean cfg_general_recipe_maid_spawn_egg = true;
@@ -134,7 +134,7 @@ public class LMRConfig {
 		initLittleMaid(cfg);
 		initJob(cfg);
 		initSpawn(cfg);
-		initLMAvatar(cfg);
+//		initLMAvatar(cfg);
 		initDecoration(cfg);
 		initCollaboration(cfg);
 //		initLoader(cfg);
@@ -381,21 +381,21 @@ public class LMRConfig {
 	 * LMアバターの設定
 	 * @param cfg
 	 */
-	protected static void initLMAvatar(Configuration cfg) {
-		
-		//グループコメント
-		cfg.addCustomCategoryComment(GROUP_AVATAR, "リトルメイドアバターに関連する設定ができます。");
-
-		//メイドアバター機能
-		cfg_lmabatar_maid_avatar = cfg.getBoolean("LittleMaidAvatar", GROUP_AVATAR, false,
-				"プレイヤーの見た目をメイドさんにするLittleMaidAvatar機能を有効化します。");
-		
-		//指定されたIDのLayerは登録する
-		String[] lma_include_layer = new String[] {"LayerSlashBlade"};
-		cfg_lmavatar_include_layer = Arrays.asList(cfg.getStringList("LittleMaidAvatar.IncludeLayer", GROUP_AVATAR, lma_include_layer, 
-				"指定された文字を含むLayerクラスをLittleMaidAvatarに追加します。"));
-		
-	}
+//	protected static void initLMAvatar(Configuration cfg) {
+//		
+//		//グループコメント
+//		cfg.addCustomCategoryComment(GROUP_AVATAR, "リトルメイドアバターに関連する設定ができます。");
+//
+//		//メイドアバター機能
+//		cfg_lmabatar_maid_avatar = cfg.getBoolean("LittleMaidAvatar", GROUP_AVATAR, false,
+//				"プレイヤーの見た目をメイドさんにするLittleMaidAvatar機能を有効化します。");
+//		
+//		//指定されたIDのLayerは登録する
+//		String[] lma_include_layer = new String[] {"LayerSlashBlade"};
+//		cfg_lmavatar_include_layer = Arrays.asList(cfg.getStringList("LittleMaidAvatar.IncludeLayer", GROUP_AVATAR, lma_include_layer, 
+//				"指定された文字を含むLayerクラスをLittleMaidAvatarに追加します。"));
+//		
+//	}
 	
 	/**
 	 * Mod連携

@@ -2,6 +2,7 @@ package firis.lmavatar.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 
+import firis.lmavatar.LittleMaidAvatar;
 import firis.lmavatar.client.event.ClientEventLMAvatar;
 import firis.lmavatar.client.renderer.layer.LayerArmorLMAvatar;
 import firis.lmavatar.client.renderer.layer.LayerArrowLMAvatar;
@@ -11,9 +12,8 @@ import firis.lmavatar.client.renderer.layer.LayerEntityOnShoulderLMAvatar;
 import firis.lmavatar.client.renderer.layer.LayerHeldItemLMAvatar;
 import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmavatar.common.modelcaps.PlayerModelConfigCompound;
+import firis.lmavatar.config.FirisConfig;
 import firis.lmlib.api.client.model.LMModelLittleMaid;
-import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.config.LMRConfig;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelPlayer;
@@ -98,11 +98,11 @@ public class RendererLMAvatar extends RenderPlayer {
 		
 		//LMアバター
 		if (!this.isLayerLoading) {
-			if (LMRConfig.cfg_lmavatar_include_layer.stream()
+			if (FirisConfig.cfg_lmavatar_include_layer.stream()
 				.anyMatch(p -> layer.getClass().toString().indexOf(p) > -1)) {
-				LittleMaidReengaged.logger.info("LittleMaidAvatar include layer : " + layer.getClass().toString());
+				LittleMaidAvatar.logger.info("LittleMaidAvatar include layer : " + layer.getClass().toString());
 			} else {
-				LittleMaidReengaged.logger.info("LittleMaidAvatar exclude layer : " + layer.getClass().toString());
+				LittleMaidAvatar.logger.info("LittleMaidAvatar exclude layer : " + layer.getClass().toString());
 				return true;
 			}
 		}

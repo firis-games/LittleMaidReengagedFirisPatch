@@ -2,6 +2,9 @@ package firis.lmavatar;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import firis.lmavatar.client.event.KeyBindingHandler;
 import firis.lmavatar.client.event.LittleMaidAvatarClientTickEventHandler;
 import firis.lmavatar.client.renderer.RendererLMAvatar;
@@ -56,6 +59,9 @@ public class LittleMaidAvatar {
     
     @Instance(MODID)
 	public static LittleMaidAvatar instance;
+    
+    /** logger */
+    public static Logger logger = LogManager.getLogger(MODID);
 	
 	/**
      * アイテムインスタンス保持用
@@ -72,6 +78,9 @@ public class LittleMaidAvatar {
 		//設定読込
         FirisConfig.init(event.getModConfigurationDirectory());
         
+      //LMAvatarの有効化無効化設定
+        if (!FirisConfig.cfg_lmabatar_maid_avatar) return;
+        
         //カスタム設定読込
         JConfigLMAvatarManager.init();
         
@@ -84,6 +93,9 @@ public class LittleMaidAvatar {
     @EventHandler
     public void init(FMLInitializationEvent event) {
     	
+    	//LMAvatarの有効化無効化設定
+        if (!FirisConfig.cfg_lmabatar_maid_avatar) return;
+        
     	//Renderer差し替え
     	if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
     		registerClient();
@@ -101,6 +113,9 @@ public class LittleMaidAvatar {
 	@EventHandler
 	public void serverStatingEvent(FMLServerStartingEvent event) {
 		
+		//LMAvatarの有効化無効化設定
+        if (!FirisConfig.cfg_lmabatar_maid_avatar) return;
+        
 		//コマンド登録
 		event.registerServerCommand(new LMAvatarCommand());
 		
@@ -111,6 +126,9 @@ public class LittleMaidAvatar {
      */
     public void registerClient() {
     	
+    	//LMAvatarの有効化無効化設定
+        if (!FirisConfig.cfg_lmabatar_maid_avatar) return;
+        
     	//Playerのスキン差し替え
 		//Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().skinMap;
 		Map<String, RenderPlayer> skinMap = ObfuscationReflectionHelper.getPrivateValue(RenderManager.class, 
@@ -154,6 +172,9 @@ public class LittleMaidAvatar {
     @SubscribeEvent
     protected static void registerItems(RegistryEvent.Register<Item> event) {
     	
+    	//LMAvatarの有効化無効化設定
+        if (!FirisConfig.cfg_lmabatar_maid_avatar) return;
+        
     	//メイドさんになる本
     	event.getRegistry().register(new LMItemPlayerMaidBook()
     			.setRegistryName(LittleMaidAvatar.MODID, "player_maid_book")
@@ -169,6 +190,9 @@ public class LittleMaidAvatar {
     @SideOnly(Side.CLIENT)
     protected static void registerModels(ModelRegistryEvent event) {
     	
+    	//LMAvatarの有効化無効化設定
+        if (!FirisConfig.cfg_lmabatar_maid_avatar) return;
+        
     	// メイドさんになる本
 		ModelLoader.setCustomModelResourceLocation(LMAItems.PLAYER_MAID_BOOK, 0,
 				new ModelResourceLocation(LMAItems.PLAYER_MAID_BOOK.getRegistryName(), "inventory"));
