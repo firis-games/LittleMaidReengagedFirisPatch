@@ -18,7 +18,6 @@ import net.blacklab.lmr.entity.littlemaid.controller.ExperienceUtil;
 import net.blacklab.lmr.inventory.ClientInventoryLittleMaid;
 import net.blacklab.lmr.inventory.ContainerInventoryLittleMaid;
 import net.blacklab.lmr.network.LMRMessage;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -502,6 +501,7 @@ public class GuiMaidInventory extends GuiContainer {
 		}
 
 		// Air
+		/*
 		ldrawy = guiTop + 46;
 		if (entitylittlemaid.isInsideOfMaterial(Material.WATER)) {
 			int var23 = entitylittlemaid.getAir();
@@ -517,6 +517,7 @@ public class GuiMaidInventory extends GuiContainer {
 				}
 			}
 		}
+		*/
 
 	}
 
