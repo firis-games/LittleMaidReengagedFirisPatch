@@ -54,28 +54,30 @@ public class LittleMaidAvatarClientTickEventHandler {
 		
 		//アクション解除
 		//縦方向は重力が発生してるので微調整して判断
-		if (!isMotionWaitReset || !isMotionSittingReset) {
-			if (player.motionX != 0.0D || player.motionZ != 0.0D
-					|| player.motionY > 0.0D) {
-				isMotionWaitReset = true;
-				isMotionSittingReset = true;
+		if (lmAvatar.getLMAvatarAction() || lmAvatar.getLMAvatarWaitAction()) {
+			if (!isMotionWaitReset || !isMotionSittingReset) {
+				if (player.motionX != 0.0D || player.motionZ != 0.0D
+						|| player.motionY > 0.0D) {
+					isMotionWaitReset = true;
+					isMotionSittingReset = true;
+				}
 			}
-		}
-		
-		if (isMotionWaitReset) {
-			//待機モーションリセット
-			lmAvatar.resetLMAvatarWaitAction();
-		}
-		if (isMotionSittingReset) {
-			//お座りモーションリセット
-			lmAvatar.resetLMAvatarAction();
-			//同期処理
-			SyncPlayerModelClient.syncModel();
-		}
-		
-		if (!isMotionWaitReset && !isMotionSittingReset) {
-			//モーション継続と設定の判断
-			lmAvatar.setLMAvatarWaitAction(true);
+			
+			if (isMotionWaitReset) {
+				//待機モーションリセット
+				lmAvatar.resetLMAvatarWaitAction();
+			}
+			if (isMotionSittingReset) {
+				//お座りモーションリセット
+				lmAvatar.resetLMAvatarAction();
+				//同期処理
+				SyncPlayerModelClient.syncModel();
+			}
+			
+			if (!isMotionWaitReset && !isMotionSittingReset) {
+				//モーション継続と設定の判断
+				lmAvatar.setLMAvatarWaitAction(true);
+			}
 		}
 	}
 	

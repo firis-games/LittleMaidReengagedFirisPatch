@@ -13,6 +13,8 @@ import firis.lmavatar.common.item.LMItemPlayerMaidBook;
 import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmavatar.common.manager.SyncPlayerModelClient;
 import firis.lmavatar.common.manager.SyncPlayerModelServer;
+import firis.lmavatar.common.network.NetworkHandler;
+import firis.lmavatar.common.proxy.IProxy;
 import firis.lmavatar.config.ConfigChangedEventHandler;
 import firis.lmavatar.config.FirisConfig;
 import firis.lmavatar.config.json.JConfigLMAvatarManager;
@@ -31,6 +33,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -62,6 +65,11 @@ public class LittleMaidAvatar {
     
     /** logger */
     public static Logger logger = LogManager.getLogger(MODID);
+    
+    /** proxy */
+    @SidedProxy(serverSide = "firis.lmavatar.common.proxy.CommonProxy", 
+    		clientSide = "firis.lmavatar.client.proxy.ClientProxy")
+	public static IProxy proxy;
 	
 	/**
      * アイテムインスタンス保持用
@@ -78,7 +86,7 @@ public class LittleMaidAvatar {
 		//設定読込
         FirisConfig.init(event.getModConfigurationDirectory());
         
-      //LMAvatarの有効化無効化設定
+        //LMAvatarの有効化無効化設定
         if (!FirisConfig.cfg_lmabatar_maid_avatar) return;
         
         //カスタム設定読込
@@ -87,6 +95,9 @@ public class LittleMaidAvatar {
         //LMアバター管理用イベント登録
         MinecraftForge.EVENT_BUS.register(new PlayerModelManager());
         MinecraftForge.EVENT_BUS.register(new SyncPlayerModelServer());
+        
+        
+        NetworkHandler.preInit();
     	
     }
     

@@ -3,12 +3,12 @@ package firis.lmavatar.common.manager;
 import java.util.HashMap;
 import java.util.Map;
 
+import firis.lmavatar.LittleMaidAvatar;
 import firis.lmavatar.common.modelcaps.PlayerModelCaps;
 import firis.lmavatar.common.modelcaps.PlayerModelConfigCompound;
 import firis.lmavatar.config.FirisConfig;
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.resource.LMTextureBox;
-import net.blacklab.lmr.LittleMaidReengaged;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTTagCompound;
@@ -244,7 +244,7 @@ public class PlayerModelManager {
 	 * @return
 	 */
 	private static EntityPlayer getClientPlayer() {
-		return LittleMaidReengaged.proxy.getClientPlayer();
+		return LittleMaidAvatar.proxy.getClientPlayer();
 	}
 	
 	/**
