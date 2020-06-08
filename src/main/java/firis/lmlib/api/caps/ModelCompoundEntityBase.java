@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * 
  * 各モデルへのアクセスと設定用のメソッドと変数を定義
  */
-public abstract class ModelCompoundBase<T extends EntityLivingBase> implements IModelCompound {
+public abstract class ModelCompoundEntityBase<T extends EntityLivingBase> implements IModelCompoundEntity {
 	
 	/**
 	 * 対象のEntity
@@ -56,7 +56,7 @@ public abstract class ModelCompoundBase<T extends EntityLivingBase> implements I
 	 * @param pEntity
 	 * @param pCaps
 	 */
-	public ModelCompoundBase(T entity, IModelCapsEntity caps) {
+	public ModelCompoundEntityBase(T entity, IModelCapsEntity caps) {
 		
 		//パラメータ保存
 		this.owner = entity;
@@ -93,6 +93,7 @@ public abstract class ModelCompoundBase<T extends EntityLivingBase> implements I
 	 * 色取得
 	 * @return
 	 */
+	@Override
 	public int getColor() {
 		return this.color;
 	}
@@ -109,6 +110,7 @@ public abstract class ModelCompoundBase<T extends EntityLivingBase> implements I
 	 * 契約状態確認
 	 * @return
 	 */
+	@Override
 	public boolean isContract() {
 		return contract;
 	}
@@ -208,6 +210,25 @@ public abstract class ModelCompoundBase<T extends EntityLivingBase> implements I
 		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
 		if (armorBox == null) return null;
 		return armorBox.getModelOuterArmor();
+	}
+	
+	/**
+	 * メイドモデルの名称を取得する
+	 */
+	@Override
+	public String getTextureModelNameLittleMaid() {
+		if (textureBoxLittleMaid == null) return null;
+		return textureBoxLittleMaid.getTextureModelName();
+	}
+	
+	/**
+	 * アーマーモデルの名称を取得する
+	 */
+	@Override
+	public String getTextureModelNameArmor(EntityEquipmentSlot slot) {
+		LMTextureBox armorBox = this.getTextureBoxArmor(slot);
+		if (armorBox == null) return null;
+		return armorBox.getTextureModelName();
 	}
 	
 	/**

@@ -5,7 +5,7 @@ import java.util.UUID;
 import firis.lmavatar.config.FirisConfig;
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.caps.IModelCapsEntity;
-import firis.lmlib.api.caps.ModelCompoundBase;
+import firis.lmlib.api.caps.ModelCompoundEntityBase;
 import firis.lmlib.api.resource.LMTextureBox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
  * モーションなどの表示フラグもここで管理する
  *
  */
-public class PlayerModelConfigCompound extends ModelCompoundBase<EntityPlayer> {
+public class PlayerModelConfigCompound extends ModelCompoundEntityBase<EntityPlayer> {
 	
 	/**
 	 * LMAvatarが有効化どうかの判断

@@ -8,6 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Model系と連携するための定義
+ * モデルの描画時のテクスチャとマルチモデルクラスのみを取得するインターフェース
  * @author firis-games
  *
  */

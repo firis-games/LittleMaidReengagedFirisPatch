@@ -2,7 +2,7 @@ package net.blacklab.lmr.entity.maidmodel;
 
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.caps.IModelCapsEntity;
-import firis.lmlib.api.caps.ModelCompoundBase;
+import firis.lmlib.api.caps.ModelCompoundEntityBase;
 import firis.lmlib.api.manager.LMTextureBoxManager;
 import firis.lmlib.api.resource.LMTextureBox;
 import net.minecraft.entity.EntityAgeable;
@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * テクスチャ管理用クラス
  */
-public class ModelConfigCompound extends ModelCompoundBase<EntityLivingBase> {
+public class ModelConfigCompound extends ModelCompoundEntityBase<EntityLivingBase> {
 	
 	/**
 	 * 初回ロード用フラグ

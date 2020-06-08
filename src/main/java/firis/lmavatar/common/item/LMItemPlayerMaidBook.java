@@ -5,7 +5,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import firis.lmavatar.config.FirisConfig;
-import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+import firis.lmlib.api.caps.IModelCompoundEntity;
+import firis.lmlib.api.entity.ILMModelEntity;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -58,18 +59,20 @@ public class LMItemPlayerMaidBook extends Item {
 		
 		if (!player.world.isRemote) return;
 		
-		if (!(entity instanceof EntityLittleMaid)) return;
+		//マルチモデル対応Entity
+		if (!(entity instanceof ILMModelEntity)) return;
 		
 		//対象のメイドさんからモデル情報を取得する
-		EntityLittleMaid entityMaid = (EntityLittleMaid) entity;
+		ILMModelEntity lmModelEntity = (ILMModelEntity) entity;
+		IModelCompoundEntity modelCompound = lmModelEntity.getModelCompoundEntity();
 		
 		//メイドモデル名取得
-		String maidModelName = entityMaid.getModelConfigCompound().getTextureNameLittleMaid();
-		Integer maidModelColor = (int) entityMaid.getColor();
-		String armorModelNameHead = entityMaid.getModelConfigCompound().getTextureBoxArmor(EntityEquipmentSlot.HEAD).getTextureModelName();
-		String armorModelNameChest = entityMaid.getModelConfigCompound().getTextureBoxArmor(EntityEquipmentSlot.CHEST).getTextureModelName();
-		String armorModelNameLegs = entityMaid.getModelConfigCompound().getTextureBoxArmor(EntityEquipmentSlot.LEGS).getTextureModelName();
-		String armorModelNameFeet = entityMaid.getModelConfigCompound().getTextureBoxArmor(EntityEquipmentSlot.FEET).getTextureModelName();
+		String maidModelName = modelCompound.getTextureModelNameLittleMaid();
+		Integer maidModelColor = (int) modelCompound.getColor();
+		String armorModelNameHead = modelCompound.getTextureModelNameArmor(EntityEquipmentSlot.HEAD);
+		String armorModelNameChest = modelCompound.getTextureModelNameArmor(EntityEquipmentSlot.CHEST);
+		String armorModelNameLegs = modelCompound.getTextureModelNameArmor(EntityEquipmentSlot.LEGS);
+		String armorModelNameFeet = modelCompound.getTextureModelNameArmor(EntityEquipmentSlot.FEET);
 		
 		//メイドモデルの設定
 		if (!player.isSneaking()) {
