@@ -1,4 +1,4 @@
-package firis.lmavatar.client.event;
+package firis.lmavatar.api.client.event;
 
 import firis.lmavatar.client.renderer.RendererLMAvatar;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -18,11 +18,11 @@ public class ClientEventLMAvatar extends Event {
 	 * ClientEventLMAvatarはClientサイド限定なのでproxyなどで分離して登録処理を呼び出す
 	 * 
 	 */
-	public static class RendererAvatarAddLayerEvent extends ClientEventLMAvatar {
+	public static class RendererLMAvatarAddLayerEvent extends ClientEventLMAvatar {
 		
 		private final RendererLMAvatar renderer;
 		
-		public RendererAvatarAddLayerEvent(RendererLMAvatar renderer) {
+		public RendererLMAvatarAddLayerEvent(RendererLMAvatar renderer) {
 			this.renderer = renderer;
 		}
 		

@@ -3,7 +3,7 @@ package firis.lmavatar.client.renderer;
 import org.lwjgl.opengl.GL11;
 
 import firis.lmavatar.LittleMaidAvatar;
-import firis.lmavatar.client.event.ClientEventLMAvatar;
+import firis.lmavatar.api.client.event.ClientEventLMAvatar;
 import firis.lmavatar.client.renderer.layer.LayerArmorLMAvatar;
 import firis.lmavatar.client.renderer.layer.LayerArrowLMAvatar;
 import firis.lmavatar.client.renderer.layer.LayerCustomHeadLMAvatar;
@@ -77,7 +77,7 @@ public class RendererLMAvatar extends RenderPlayer {
         this.addLayer(new LayerArrowLMAvatar(this));
         
         //Layer登録用イベント
-   		MinecraftForge.EVENT_BUS.post(new ClientEventLMAvatar.RendererAvatarAddLayerEvent(this));
+   		MinecraftForge.EVENT_BUS.post(new ClientEventLMAvatar.RendererLMAvatarAddLayerEvent(this));
         
 		//Layerロード完了
 		this.isLayerLoading = false;
