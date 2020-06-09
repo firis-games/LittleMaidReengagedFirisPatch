@@ -150,13 +150,15 @@ public class LMFileLoader {
 			for (String path : classPathList) {
 				//Pathリストを追加
 				Path basePath = Paths.get(path);
-				pathList.addAll(
-						Files.walk(basePath)
-						.filter(p -> !Files.isDirectory(p))
-						.map(p -> {
-							return new ModPath(basePath, p);
-						})
-						.collect(Collectors.toList()));
+				if (Files.exists(basePath)) {
+					pathList.addAll(
+							Files.walk(basePath)
+							.filter(p -> !Files.isDirectory(p))
+							.map(p -> {
+								return new ModPath(basePath, p);
+							})
+							.collect(Collectors.toList()));
+				}
 			}
 		}
 		
