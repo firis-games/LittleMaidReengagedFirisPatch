@@ -15,8 +15,8 @@ LittleMaidReengaged Firis's Patch
 バックアップの上自己責任にてご使用ください。  
   
 オリジナルとは以下の点が異なります。
-* 前提ModのEBLibが統合されています
-* 1.12.2対応のため処理の改変  
+* 前提ModのLMLibraryが必要です。
+* LittleMaidReengagedの一部機能に変更があります。
 
 ## LICENCE
 このMODは以下のプログラムを改変して作成しています。  
