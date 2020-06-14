@@ -1,4 +1,4 @@
-import net.blacklab.lmr.entity.maidmodel.ModelLittleMaid_SR2;
+import firis.lmmm.builtin.model.ModelLittleMaid_SR2;
 
 /**
  * サンプルマルチモデル定義

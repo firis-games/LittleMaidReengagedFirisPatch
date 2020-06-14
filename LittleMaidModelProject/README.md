@@ -25,7 +25,7 @@ LittleMaidReengaged Firis's Patchを使ったメイドさんのマルチモデ�
    - 以降この手順では任意のフォルダを[LittleMaidModelProject]と想定して説明を記載します。
 1. [LittleMaidModelProject]フォルダ直下にあるsrcフォルダを削除して下さい。
    - mdkにはmod用のsampleが含まれているので削除します。
-1. LittleMaidModelProject-8.1.6.141.fp.xxx.zipファイルの中身を[LittleMaidModelProject]の中へ上書きして下さい。
+1. LittleMaidModelProject-xxx.fp.xxx.zipファイルの中身を[LittleMaidModelProject]の中へ上書きして下さい。
    - メイドさんのマルチモデルに必要なファイルが一式入っているので上書きして下さい。
 1. pleiades-4.8.0-java-win-64bit-jre_20180923.zipを任意の場所へ展開して下さい。
    - 展開したフォルダのpleiades\eclipse\eclipse.exeが統合開発環境のEclipseになります。
