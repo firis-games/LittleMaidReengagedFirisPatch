@@ -1,13 +1,13 @@
 package net.blacklab.lmr.client.renderer.entity;
 
+import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.client.event.ClientEventLMRE;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldChestLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldItemLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
-import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,10 +41,13 @@ public class RenderLittleMaid extends LMRenderMultiModel<EntityLittleMaid> {
 	 * メイドさんからModelConfigCompoundを取得する
 	 */
 	@Override
-	protected ModelConfigCompound getModelConfigCompoundFromEntity(EntityLittleMaid entity) {
-		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
-		ModelConfigCompound modelConfigCompound = modelEntity.getModelConfigCompound();
-		return modelConfigCompound;
+	protected IModelCompound getModelConfigCompoundFromEntity(EntityLittleMaid entity) {
+		
+		LittleMaidReengaged.logger.info(entity.getClass());
+		LittleMaidReengaged.logger.info(entity.modelConfigCompound);
+		
+		return entity.getModelConfigCompound();
+		
 	}
 	
 	/**
@@ -70,9 +73,7 @@ public class RenderLittleMaid extends LMRenderMultiModel<EntityLittleMaid> {
 	 */
 	@Override
 	protected int getColorMultiplier(EntityLittleMaid entityLivingBaseIn, float lightBrightness, float partialTickTime) {
-		
 		return entityLivingBaseIn.colorMultiplier(lightBrightness, partialTickTime);
-		
 	}
 	
 }

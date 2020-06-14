@@ -1,7 +1,5 @@
 package net.blacklab.lmr.network;
 
-import firis.lmavatar.common.command.LMAvatarCommandClient;
-import firis.lmavatar.common.manager.PlayerModelManager;
 import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmc.client.event.RenderPlayerEventHandler;
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -200,15 +198,15 @@ public class ProxyClient extends ProxyCommon
 			lemaid.maidInventory.setPacketInventory(tagCompound.getTagList("Inventory", 10));
 			break;
 			
-		case CLIENT_COMMAND_EXECUTE:
-			//コマンド実行
-			LMAvatarCommandClient.execute(tagCompound.getString("command"), tagCompound.getString("param"));
-			break;
+//		case CLIENT_COMMAND_EXECUTE:
+//			//コマンド実行
+//			LMAvatarCommandClient.execute(tagCompound.getString("command"), tagCompound.getString("param"));
+//			break;
 			
-		case CLIENT_SYNC_SERVER_LMAVATAR:
-			//アバター同期
-			PlayerModelManager.receiveLMAvatarDataFromServer(tagCompound);
-			break;
+//		case CLIENT_SYNC_SERVER_LMAVATAR:
+//			//アバター同期
+//			PlayerModelManager.receiveLMAvatarDataFromServer(tagCompound);
+//			break;
 			
 		default:
 			break;

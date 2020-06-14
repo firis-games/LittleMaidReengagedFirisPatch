@@ -1,6 +1,5 @@
 package net.blacklab.lmr.network;
 
-import firis.lmavatar.common.manager.PlayerModelManager;
 import net.blacklab.lmc.common.network.PacketSpawnParticleS2C;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -174,9 +173,9 @@ public class LMRNetwork
 			}
 			break;
 			
-		case SERVER_SYNC_CLIENT_LMAVATAR:
-			PlayerModelManager.reciveLMAvatarDataFromClient(tagCompound);
-			break;
+//		case SERVER_SYNC_CLIENT_LMAVATAR:
+//			PlayerModelManager.reciveLMAvatarDataFromClient(tagCompound);
+//			break;
 			
 		default:
 			break;

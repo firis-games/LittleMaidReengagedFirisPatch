@@ -91,13 +91,6 @@ processResources {
 
 [compileJava, compileTestJava].each{ it.options.encoding = 'UTF-8' }
 
-// ASM
-jar {
-    manifest {
-        attributes('FMLCorePlugin': 'firis.lmlib.core.LMLibCoreMod', 'FMLCorePluginContainsFMLMod': 'true')
-    }
-}
-
 //Develop Mod
 task devJar(type: Jar) {
     from sourceSets.main.java

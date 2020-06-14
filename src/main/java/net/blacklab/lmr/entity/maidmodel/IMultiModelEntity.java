@@ -27,7 +27,7 @@ public interface IMultiModelEntity extends ILMModelEntity {
 	 */
 	@Override
 	default public IModelCompoundEntity getModelCompoundEntity() {
-		return getModelConfigCompound();	
+		return getModelConfigCompound();
 	}
 
 }

@@ -217,7 +217,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	private int maidDominantArm;			// 利き腕、1Byte
 	
 	/** テクスチャ関連のデータを管理 **/
-	protected ModelConfigCompound modelConfigCompound;
+	public ModelConfigCompound modelConfigCompound;
 	
 //	public Map<String, EquippedStabilizer> maidStabilizer = new HashMap<String, EquippedStabilizer>();
 
@@ -5141,4 +5141,5 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		return ret;
 		
 	}
+	
 }

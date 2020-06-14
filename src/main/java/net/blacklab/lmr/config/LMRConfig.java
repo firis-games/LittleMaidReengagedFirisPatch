@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 
 /**
  * LittleMaidReengaged設定
@@ -465,6 +466,17 @@ public class LMRConfig {
 	protected static void initDelete(Configuration cfg) {
 		cfg_Dominant = cfg.getBoolean("Dominant", "Advanced", false,
 				"Recommended to keep 'false'. If true, non-vanilla check is used for maid spawning.");		
+	}
+	
+	/**
+	 * LMアバターロード判定
+	 */
+	private static Boolean loadedlittleMaidAvatar = null;
+	public static boolean isLoadedLittleMaidAvatar() {
+		if (loadedlittleMaidAvatar == null) {
+			loadedlittleMaidAvatar = Loader.isModLoaded("lmavatar");
+		}
+		return loadedlittleMaidAvatar;
 	}
 	
 }
