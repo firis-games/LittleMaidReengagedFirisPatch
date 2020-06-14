@@ -2,7 +2,6 @@ package net.blacklab.lmr.client.renderer.entity;
 
 import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;
-import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.api.client.event.ClientEventLMRE;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldChestLittleMaid;
@@ -42,12 +41,7 @@ public class RenderLittleMaid extends LMRenderMultiModel<EntityLittleMaid> {
 	 */
 	@Override
 	protected IModelCompound getModelConfigCompoundFromEntity(EntityLittleMaid entity) {
-		
-		LittleMaidReengaged.logger.info(entity.getClass());
-		LittleMaidReengaged.logger.info(entity.modelConfigCompound);
-		
 		return entity.getModelConfigCompound();
-		
 	}
 	
 	/**
