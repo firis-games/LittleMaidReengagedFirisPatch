@@ -27,6 +27,9 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 	public Object getCapsValue(int pIndex, Object ...pArg) {
 		int li = 0;
 		switch (pIndex) {
+		case caps_getRidingType:
+			if (owner.getRidingEntity() instanceof EntityLittleMaid) return "littlemaid";
+			break;
 		case caps_isBloodsuck:
 			return owner.isBloodsuck();
 		case caps_isFreedom:
@@ -126,6 +129,8 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 			return getItemStackNull(getHandSideItemStack(EnumHandSide.RIGHT));
 		case caps_currentLeftHandItem:
 			return getItemStackNull(getHandSideItemStack(EnumHandSide.LEFT));
+		case caps_job:
+			return owner.jobController.getMaidModeString().toLowerCase();
 		case caps_multimodel_motion:
 			boolean isMotionSitting = owner.isMotionSitting();
 			EnumMaidMotion lmmotion = owner.getMaidMotion();
