@@ -21,7 +21,7 @@ repositories {
     }
 }
 
-version = "9.1.0.fp.041"
+version = "9.1.1.fp.042"
 group= "net.blacklab.lmr" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "LittleMaidReengaged_FirisPatch"
 
@@ -104,7 +104,7 @@ task zipBuild(type: Zip, dependsOn: devJar) {
    	from "/LittleMaidModelProject"
     into('mods') {
 	    from "/build/libs/${archivesBaseName}-${version}-dev.jar"
-	    from "/mods/LMLibrary-1.0.0-dev.jar"
+	    from "/mods/LMLibrary-1.0.1-dev.jar"
     }
 }
 
