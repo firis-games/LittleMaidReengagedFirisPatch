@@ -3,7 +3,7 @@ package net.blacklab.lmr.client.renderer.layer;
 import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;
 import firis.lmlib.api.client.renderer.layer.LMLayerArmorBase;
-import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
+import firis.lmlib.api.entity.ILMModelEntity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -28,9 +28,8 @@ public class LayerArmorLittleMaidGui extends LMLayerArmorBase {
 	protected IModelCompound getArmorModelConfigCompound(EntityLivingBase entityLivingBaseIn, float limbSwing,
 			float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale,
 			EntityEquipmentSlot slot) {
-		IMultiModelEntity modelEntity = (IMultiModelEntity) entityLivingBaseIn;
-		IModelCompound modelConfigCompound = modelEntity.getModelConfigCompound();
-		return modelConfigCompound;
+		ILMModelEntity modelEntity = (ILMModelEntity) entityLivingBaseIn;
+		return modelEntity.getModelCompoundEntity();
 	}
 	
 }

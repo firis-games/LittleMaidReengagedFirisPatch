@@ -4,8 +4,6 @@ import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;
 import firis.lmlib.client.entity.EntityLittleMaidGui;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaidGui;
-import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
-import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
 import net.minecraft.client.renderer.entity.RenderManager;
 
 
@@ -30,9 +28,9 @@ public class RenderEntitySelect extends LMRenderMultiModel<EntityLittleMaidGui> 
 	 */
 	@Override
 	protected IModelCompound getModelConfigCompoundFromEntity(EntityLittleMaidGui entity) {
-		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
-		ModelConfigCompound modelConfigCompound = modelEntity.getModelConfigCompound();
-		return modelConfigCompound;
+//		IMultiModelEntity modelEntity = (IMultiModelEntity) entity;
+//		ModelConfigCompound modelConfigCompound = modelEntity.getModelConfigCompound();
+		return entity.getModelCompoundEntity();
 	}
 	
 }

@@ -281,13 +281,16 @@ public class LMGuiTextureSelect extends GuiScreen {
 
 		//ResourceLocation ltex[];
 		if (selectPanel.mode) {
-			selectPanel.entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
-			selectPanel.entity.getModelConfigCompound().setTextureBoxArmorAll(lbox);
+//			selectPanel.entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
+//			selectPanel.entity.getModelConfigCompound().setTextureBoxArmorAll(lbox);
+			selectPanel.entity.setTextureArmor(lbox);
 //			selectPanel.entity.setTextureNames("default");			
 		} else {
-			selectPanel.entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
-			selectPanel.entity.getModelConfigCompound().setTextureBoxArmorAll(null);
-			selectPanel.entity.getModelConfigCompound().setColor(selectColor);
+//			selectPanel.entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
+//			selectPanel.entity.getModelConfigCompound().setTextureBoxArmorAll(null);
+//			selectPanel.entity.getModelConfigCompound().setColor(selectColor);
+			selectPanel.entity.setTextureLittleMaid(lbox);
+			selectPanel.entity.setTextureLittleMaidColor(selectColor, true);
 //			selectPanel.entity.getModelConfigCompound().setTextureNames();
 		}
 		mc.getRenderManager().renderEntity(selectPanel.entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);

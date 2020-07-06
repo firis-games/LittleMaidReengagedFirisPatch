@@ -15,30 +15,36 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * リトルメイド/アーマーモデルの描画スロット
+ * @author firis-games
+ *
+ */
 @SideOnly(Side.CLIENT)
 public class LMGuiPartsTextureSlot extends GuiSlot {
 
-	public LMGuiTextureSelect owner;
-	public int selected;
 	public EntityLittleMaidGui entity;
-	public List<LMTextureBox> indexTexture;
-	public List<LMTextureBox> indexArmor;
+
+	protected LMGuiTextureSelect owner;
+	protected int selected;
+	protected List<LMTextureBox> indexTexture;
+	protected List<LMTextureBox> indexArmor;
+	
 	public boolean mode;
 	public int texsel[] = new int[2];
-	public byte color;
-	public byte selectColor;
-	private ItemStack armors[] = new ItemStack[] {
-			new ItemStack(Items.LEATHER_BOOTS),
-			new ItemStack(Items.LEATHER_LEGGINGS),
-			new ItemStack(Items.LEATHER_CHESTPLATE),
-			new ItemStack(Items.LEATHER_HELMET)
-	};
+	protected byte color;
+	protected byte selectColor;
+	
+//	private ItemStack armors[] = new ItemStack[] {
+//			new ItemStack(Items.LEATHER_BOOTS),
+//			new ItemStack(Items.LEATHER_LEGGINGS),
+//			new ItemStack(Items.LEATHER_CHESTPLATE),
+//			new ItemStack(Items.LEATHER_HELMET)
+//	};
 	protected boolean isContract;
 //	protected static LMTextureBox blankBox;
 
@@ -59,7 +65,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		indexArmor = new ArrayList<LMTextureBox>();
 //		isContract = owner.target.isContract();
 		isContract = true;
-		entity.getModelConfigCompound().setContract(isContract);
+//		entity.getModelConfigCompound().setContract(isContract);
 //		LMTextureBox ltbox[] = owner.target.getModelConfigCompound().getLMTextureBox();
 //		LMTextureBox ltboxLittleMaid = owner.target.getModelConfigCompound().getTextureBoxLittleMaid();
 		LMTextureBox ltboxLittleMaid = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(owner.target.getTextureLittleMaid());
@@ -177,12 +183,14 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		LMTextureBox lbox;
 		if (mode) {
 			lbox = indexArmor.get(slotIndex);
-			entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
-			entity.getModelConfigCompound().setTextureBoxArmorAll(lbox);
+//			entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
+//			entity.getModelConfigCompound().setTextureBoxArmorAll(lbox);
+			entity.setTextureArmor(lbox);
 		} else {
 			lbox = indexTexture.get(slotIndex);
-			entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
-			entity.getModelConfigCompound().setTextureBoxArmorAll(null);
+//			entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
+//			entity.getModelConfigCompound().setTextureBoxArmorAll(null);
+			entity.setTextureLittleMaid(lbox);
 		}
 
 		if (!mode) {
@@ -215,7 +223,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		entity.renderYawOffset = 30F;
 		entity.rotationYawHead = 15F;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
-		entity.modeArmor = mode;
+//		entity.modeArmor = mode;
 		
 		if (mode) {
 			//デフォルトアーマー
@@ -246,8 +254,10 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 				GL11.glTranslatef(1F, 0, 0);
 				
 				if (hasColorContract(lbox, li, isContract)) {
-					entity.getModelConfigCompound().setColor(li);
-					entity.getModelConfigCompound().setContract(isContract);
+//					entity.getModelConfigCompound().setColor(li);
+//					entity.getModelConfigCompound().setContract(isContract);
+					entity.setTextureLittleMaidColor(li, isContract);
+					
 //					entity.setTextureNames();
 //					entity.getTextures(0)[0] = lbox.getTextureName(li + (isContract ? 0 : MMM_TextureManager.tx_wild));
 					Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
@@ -268,7 +278,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		return getSelectedBox(selected);
 	}
 
-	public LMTextureBox getSelectedBox(int pIndex) {
+	protected LMTextureBox getSelectedBox(int pIndex) {
 		return mode ? indexArmor.get(pIndex) : indexTexture.get(pIndex);
 	}
 
@@ -278,21 +288,21 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 
 	public void setMode(boolean pFlag) {
 		scrollBy(slotHeight * -getSize());
-		entity.modeArmor = pFlag;
+//		entity.modeArmor = pFlag;
 		if (pFlag) {
 			selected = texsel[1];
 			mode = true;
-			entity.setItemStackToSlot(EntityEquipmentSlot.FEET,  armors[0]);
-			entity.setItemStackToSlot(EntityEquipmentSlot.LEGS,  armors[1]);
-			entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, armors[2]);
-			entity.setItemStackToSlot(EntityEquipmentSlot.HEAD,  armors[3]);
+//			entity.setItemStackToSlot(EntityEquipmentSlot.FEET,  armors[0]);
+//			entity.setItemStackToSlot(EntityEquipmentSlot.LEGS,  armors[1]);
+//			entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, armors[2]);
+//			entity.setItemStackToSlot(EntityEquipmentSlot.HEAD,  armors[3]);
 		} else {
 			selected = texsel[0];
 			mode = false;
-			entity.setItemStackToSlot(EntityEquipmentSlot.FEET,  ItemStack.EMPTY);
-			entity.setItemStackToSlot(EntityEquipmentSlot.LEGS,  ItemStack.EMPTY);
-			entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStack.EMPTY);
-			entity.setItemStackToSlot(EntityEquipmentSlot.HEAD,  ItemStack.EMPTY);
+//			entity.setItemStackToSlot(EntityEquipmentSlot.FEET,  ItemStack.EMPTY);
+//			entity.setItemStackToSlot(EntityEquipmentSlot.LEGS,  ItemStack.EMPTY);
+//			entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStack.EMPTY);
+//			entity.setItemStackToSlot(EntityEquipmentSlot.HEAD,  ItemStack.EMPTY);
 		}
 		scrollBy(slotHeight * selected);
 	}
