@@ -1,4 +1,4 @@
-package net.blacklab.lmr.client.gui;
+package firis.lmlib.client.gui.parts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,23 +8,25 @@ import org.lwjgl.opengl.GL12;
 
 import firis.lmlib.api.LMLibraryAPI;
 import firis.lmlib.api.resource.LMTextureBox;
-import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
-import net.blacklab.lmr.util.helper.RendererHelper;
+import firis.lmlib.client.entity.EntityLittleMaidGui;
+import firis.lmlib.client.gui.LMGuiTextureSelect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class GuiTextureSlot extends GuiSlot {
+@SideOnly(Side.CLIENT)
+public class LMGuiPartsTextureSlot extends GuiSlot {
 
-	public GuiTextureSelect owner;
+	public LMGuiTextureSelect owner;
 	public int selected;
-	public EntityLittleMaidForTexSelect entity;
+	public EntityLittleMaidGui entity;
 	public List<LMTextureBox> indexTexture;
 	public List<LMTextureBox> indexArmor;
 	public boolean mode;
@@ -41,11 +43,12 @@ public class GuiTextureSlot extends GuiSlot {
 //	protected static LMTextureBox blankBox;
 
 
-	public GuiTextureSlot(GuiTextureSelect pOwner) {
+	public LMGuiPartsTextureSlot(LMGuiTextureSelect pOwner) {
 		super(pOwner.mc, pOwner.width, pOwner.height, 16, pOwner.height - 64, 36);
 		owner = pOwner;
-		entity = new EntityLittleMaidForTexSelect(owner.mc.world);
-		color = owner.target.getColor();
+		entity = new EntityLittleMaidGui(owner.mc.world);
+//		color = owner.target.getColor();
+		color = (byte) owner.target.getTextureColor();
 		selectColor = -1;
 //		blankBox = new LMTextureBox();
 //		blankBox.models = new ModelMultiBase[] {null, null, null};
@@ -54,11 +57,17 @@ public class GuiTextureSlot extends GuiSlot {
 		texsel[1] = 0;//-1;
 		indexTexture = new ArrayList<LMTextureBox>();
 		indexArmor = new ArrayList<LMTextureBox>();
-		isContract = owner.target.isContract();
+//		isContract = owner.target.isContract();
+		isContract = true;
 		entity.getModelConfigCompound().setContract(isContract);
 //		LMTextureBox ltbox[] = owner.target.getModelConfigCompound().getLMTextureBox();
-		LMTextureBox ltboxLittleMaid = owner.target.getModelConfigCompound().getTextureBoxLittleMaid();
-		LMTextureBox ltboxArmor = owner.target.getModelConfigCompound().getTextureBoxArmorAll();
+//		LMTextureBox ltboxLittleMaid = owner.target.getModelConfigCompound().getTextureBoxLittleMaid();
+		LMTextureBox ltboxLittleMaid = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(owner.target.getTextureLittleMaid());
+//		LMTextureBox ltboxArmor = owner.target.getModelConfigCompound().getTextureBoxArmorAll();
+		LMTextureBox ltboxArmor = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(owner.target.getTextureArmor(EntityEquipmentSlot.HEAD));
+		
+		
+		
 		for (LMTextureBox lbox : LMLibraryAPI.instance().getTextureManager().getLMTextureBoxList()) {
 			if (isContract) {
 				if (lbox.hasLittleMaid()) {
@@ -159,6 +168,10 @@ public class GuiTextureSlot extends GuiSlot {
 
 	@Override
 	protected void drawSlot(int slotIndex, int xPos, int yPos, int heightIn, int mouseXIn, int mouseYIn, float partialTicks) {
+		
+		//表示対象判断
+		if (!isSlotView(slotIndex)) return;
+		
 		GL11.glPushMatrix();
 
 		LMTextureBox lbox;
@@ -203,12 +216,13 @@ public class GuiTextureSlot extends GuiSlot {
 		entity.rotationYawHead = 15F;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 		entity.modeArmor = mode;
+		
 		if (mode) {
 			//デフォルトアーマー
 			GL11.glTranslatef(1f, 0.25F, 0f);
 //			entity.setTextureNames("default");
 			Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
-			RendererHelper.setLightmapTextureCoords(0x00f0);//61680
+//			RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 
 //			// 素材別アーマー
 //			for (int li = 0; li < ModelManager.armorFilenamePrefix.length; li++) {
@@ -226,21 +240,23 @@ public class GuiTextureSlot extends GuiSlot {
 //				}
 //			}
 		} else {
+			
 			// テクスチャ表示
 			for (byte li = 0; li < 16; li++) {
 				GL11.glTranslatef(1F, 0, 0);
+				
 				if (hasColorContract(lbox, li, isContract)) {
 					entity.getModelConfigCompound().setColor(li);
 					entity.getModelConfigCompound().setContract(isContract);
 //					entity.setTextureNames();
 //					entity.getTextures(0)[0] = lbox.getTextureName(li + (isContract ? 0 : MMM_TextureManager.tx_wild));
 					Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
-					RendererHelper.setLightmapTextureCoords(0x00f0);//61680
+//					RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 				}
 			}
 		}
 		
-		RenderHelper.disableStandardItemLighting();
+//		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -298,6 +314,30 @@ public class GuiTextureSlot extends GuiSlot {
 		scrollBy(slotHeight * -getSize());
 		selected = idx;
 		scrollBy(slotHeight * selected);
+	}
+	
+	/**
+	 * 対象スロットが描画位置かどうか判断する
+	 * @param slot
+	 * @return
+	 */
+	private boolean isSlotView(int slot) {
+		
+		//スロットの開始位置と終了位置
+		float slotHeightStart = this.slotHeight * slot;
+		float slotHeightEnd = this.slotHeight + slotHeightStart;
+		
+		float nowHeightStart = this.amountScrolled; 
+		float nowHeightEnd = this.height + nowHeightStart;
+		
+		boolean slotView = false;
+		
+		if (nowHeightStart <= slotHeightStart &&  slotHeightStart <= nowHeightEnd) {
+			slotView = true;
+		} else if (nowHeightStart <= slotHeightEnd &&  slotHeightEnd <= nowHeightEnd) {
+			slotView = true;
+		}
+		return slotView;
 	}
 
 }

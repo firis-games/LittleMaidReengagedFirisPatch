@@ -7,12 +7,12 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
+import firis.lmlib.client.gui.LMGuiTextureSelect;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.client.gui.GuiButtonArmorToggle;
 import net.blacklab.lmr.client.gui.GuiButtonBoostChange;
 import net.blacklab.lmr.client.gui.GuiButtonFreedomToggle;
 import net.blacklab.lmr.client.gui.GuiButtonNextPage;
-import net.blacklab.lmr.client.gui.GuiTextureSelect;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.controller.ExperienceUtil;
 import net.blacklab.lmr.inventory.ClientInventoryLittleMaid;
@@ -670,7 +670,7 @@ public class GuiMaidInventory extends GuiContainer {
 //			entitylittlemaid.syncModelNames();
 			break;
 		case 200 :
-			mc.displayGuiScreen(new GuiTextureSelect(this, entitylittlemaid, true));
+			mc.displayGuiScreen(new LMGuiTextureSelect(this, entitylittlemaid, true));
 			break;
 		case 300 :
 			visarmorbutton[0].toggle=!visarmorbutton[0].toggle;

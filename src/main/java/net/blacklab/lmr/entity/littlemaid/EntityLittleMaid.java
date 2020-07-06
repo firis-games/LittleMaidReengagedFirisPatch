@@ -22,6 +22,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import firis.lmlib.api.LMLibraryAPI;
+import firis.lmlib.api.caps.IGuiTextureSelect;
 import firis.lmlib.api.constant.EnumColor;
 import firis.lmlib.api.constant.EnumSound;
 import firis.lmlib.api.manager.LMTextureBoxManager;
@@ -140,7 +141,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityLittleMaid extends EntityTameable implements IMultiModelEntity {
+public class EntityLittleMaid extends EntityTameable implements IMultiModelEntity, IGuiTextureSelect {
 
 	// 定数はStaticsへ移動
 //	protected static final UUID maidUUID = UUID.nameUUIDFromBytes("lmm.littleMaidMob".getBytes());
@@ -833,7 +834,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * クライアントのモデル情報をサーバーへ送信する
 	 */
 	@SideOnly(Side.CLIENT)
-	public void syncModelNamesToServer() {
+	protected void syncModelNamesToServer() {
 		
 		NBTTagCompound tagCompound = new NBTTagCompound();
 		tagCompound.setString("Main", this.modelConfigCompound.getTextureBoxLittleMaid().getTextureModelName());
@@ -5139,6 +5140,64 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		this.refreshModels();
 		
 		return ret;
+		
+	}
+
+	/**
+	 * @IGuiTextureSelect
+	 */
+	@Override
+	public String getTextureLittleMaid() {
+		return this.getModelCompoundEntity().getTextureModelNameLittleMaid();
+	}
+
+	/**
+	 * @IGuiTextureSelect
+	 */
+	@Override
+	public String getTextureArmor(EntityEquipmentSlot slot) {
+		return this.getModelCompoundEntity().getTextureModelNameArmor(slot);
+	}
+
+	/**
+	 * @IGuiTextureSelect
+	 */
+	@Override
+	public int getTextureColor() {
+		return this.getModelCompoundEntity().getColor();
+	}
+
+	/**
+	 * Guiから設定されたテクスチャを同期する
+	 * @IGuiTextureSelect
+	 */
+	@Override
+	public void syncTextureLittleMaid(String textureName, int color) {
+		
+		//各パラメータを設定
+		this.setColor((byte) color);
+		this.getModelConfigCompound().refreshModelsLittleMaid(textureName, (byte) color);
+		
+		//同期処理
+		this.syncModelNamesToServer();
+		
+	}
+
+	/**
+	 * Guiから設定されたテクスチャを同期する
+	 * @IGuiTextureSelect
+	 */
+	@Override
+	public void syncTextureArmor(String headTextureName, String chestTextureName, String legsTextureName, String feetTextureName) {
+		
+		//各パラメータ設定
+		this.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.HEAD, headTextureName);
+		this.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.CHEST, chestTextureName);
+		this.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.LEGS, legsTextureName);
+		this.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.FEET, feetTextureName);
+		
+		//同期処理
+		this.syncModelNamesToServer();
 		
 	}
 	

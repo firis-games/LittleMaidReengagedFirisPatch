@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 
 import firis.lmlib.api.LMLibraryAPI;
+import firis.lmlib.client.entity.EntityLittleMaidGui;
 import net.blacklab.lmc.common.command.LMCommand;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.ReflectionHelper;
@@ -16,7 +17,6 @@ import net.blacklab.lmc.common.item.LMItemMaidSpawnEgg;
 import net.blacklab.lmc.common.item.LMItemMaidSugar;
 import net.blacklab.lmc.common.villager.StructureVillagePiecesMaidBrokerHouse;
 import net.blacklab.lmc.common.villager.VillagerProfessionMaidBroker;
-import net.blacklab.lmr.client.entity.EntityLittleMaidForTexSelect;
 import net.blacklab.lmr.client.renderer.entity.RenderEntityMarkerDummy;
 import net.blacklab.lmr.client.renderer.entity.RenderEntitySelect;
 import net.blacklab.lmr.client.renderer.entity.RenderLittleMaid;
@@ -315,9 +315,9 @@ public class LittleMaidReengaged {
 				return new RenderLittleMaid(manager);
 			}
 		});
-		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidForTexSelect.class, new IRenderFactory<EntityLittleMaidForTexSelect>() {
+		RenderingRegistry.registerEntityRenderingHandler(EntityLittleMaidGui.class, new IRenderFactory<EntityLittleMaidGui>() {
 			@Override
-			public Render<? super EntityLittleMaidForTexSelect> createRenderFor(RenderManager manager) {
+			public Render<? super EntityLittleMaidGui> createRenderFor(RenderManager manager) {
 				return new RenderEntitySelect(manager);
 			}
 		});

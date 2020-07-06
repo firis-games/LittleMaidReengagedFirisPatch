@@ -1,35 +1,41 @@
-package net.blacklab.lmr.client.gui;
+package firis.lmlib.client.gui;
 
 import java.io.IOException;
+import java.util.EnumMap;
+import java.util.Map;
 
 import org.lwjgl.opengl.EXTRescaleNormal;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import firis.lmlib.api.LMLibraryAPI;
+import firis.lmlib.api.caps.IGuiTextureSelect;
 import firis.lmlib.api.resource.LMTextureBox;
-import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.network.LMRMessage;
+import firis.lmlib.client.gui.parts.LMGuiPartsTextureSlot;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * 選択時にサーバーへ染料の使用を通知するための処理。
+ * リトルメイドテクスチャ選択画面
  */
-public class GuiTextureSelect extends GuiScreen {
+@SideOnly(Side.CLIENT)
+public class LMGuiTextureSelect extends GuiScreen {
 
-	private String screenTitle = "Texture Select";
+	protected String screenTitle = "Texture Select";
 	protected GuiScreen owner;
-	protected GuiTextureSlot selectPanel;
+	protected LMGuiPartsTextureSlot selectPanel;
 	protected GuiButton modeButton[] = new GuiButton[2];
 	protected GuiButton armorButton;
-	public EntityLittleMaid target;
+	public IGuiTextureSelect target;
 	public byte selectColor;
-	protected boolean toServer;
+	
+//	protected boolean toServer;
 	
 	/**
 	 * 防具ボタン情報
@@ -78,11 +84,11 @@ public class GuiTextureSelect extends GuiScreen {
 		}
 	}
 
-	public GuiTextureSelect(GuiScreen pOwner, EntityLittleMaid pTarget, boolean pToServer) {
+	public LMGuiTextureSelect(GuiScreen pOwner, IGuiTextureSelect pTarget, boolean pToServer) {
 		owner = pOwner;
 		target = pTarget;
-		selectColor = pTarget.getColor();
-		toServer = pToServer;
+		selectColor = (byte) pTarget.getTextureColor();
+//		toServer = pToServer;
 	}
 
 	@Override
@@ -105,8 +111,10 @@ public class GuiTextureSelect extends GuiScreen {
 			if (this.armorButton.enabled == false) {
 				if (selectPanel.texsel[0] > -1) {
 	//				target.setTextureNameMain(selectPanel.getSelectedBox(false).textureName);
-					target.setColor(selectColor);
-					target.getModelConfigCompound().refreshModelsLittleMaid(selectPanel.getSelectedBox(false).getTextureModelName(), selectColor);
+//					target.setColor(selectColor);
+//					target.getModelConfigCompound().refreshModelsLittleMaid(selectPanel.getSelectedBox(false).getTextureModelName(), selectColor);
+					//同期処理
+					target.syncTextureLittleMaid(selectPanel.getSelectedBox(false).getTextureModelName(), selectColor);
 	//				target.getTextureBox()[0] = selectPanel.getSelectedBox(false);
 				}
 			}
@@ -124,23 +132,44 @@ public class GuiTextureSelect extends GuiScreen {
 						
 						String textureName = selectPanel.getSelectedBox(true).getTextureModelName();
 						
-						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.HEAD, textureName);
-						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.CHEST, textureName);
-						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.LEGS, textureName);
-						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.FEET, textureName);
+//						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.HEAD, textureName);
+//						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.CHEST, textureName);
+//						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.LEGS, textureName);
+//						target.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.FEET, textureName);
+						
+						//同期
+						target.syncTextureArmor(textureName, textureName, textureName, textureName);
 						
 					//個別
 					} else {
-						target.getModelConfigCompound().refreshModelsArmor(
-								EnumArmorButton.get(this.armorButton.displayString).getSlot(), 
+
+//						target.getModelConfigCompound().refreshModelsArmor(
+//								EnumArmorButton.get(this.armorButton.displayString).getSlot(), 
+//								selectPanel.getSelectedBox(true).getTextureModelName());
+						
+						//各パラメータ
+						Map<EntityEquipmentSlot, String> textureNameHash = new EnumMap<>(EntityEquipmentSlot.class);
+						textureNameHash.put(EntityEquipmentSlot.HEAD, target.getTextureArmor(EntityEquipmentSlot.HEAD));
+						textureNameHash.put(EntityEquipmentSlot.CHEST, target.getTextureArmor(EntityEquipmentSlot.CHEST));
+						textureNameHash.put(EntityEquipmentSlot.LEGS, target.getTextureArmor(EntityEquipmentSlot.LEGS));
+						textureNameHash.put(EntityEquipmentSlot.FEET, target.getTextureArmor(EntityEquipmentSlot.FEET));
+						
+						//選択状態を設定する
+						textureNameHash.put(EnumArmorButton.get(this.armorButton.displayString).getSlot(), 
 								selectPanel.getSelectedBox(true).getTextureModelName());
+						
+						//同期
+						target.syncTextureArmor(textureNameHash.get(EntityEquipmentSlot.HEAD), 
+								textureNameHash.get(EntityEquipmentSlot.CHEST),
+								textureNameHash.get(EntityEquipmentSlot.LEGS),
+								textureNameHash.get(EntityEquipmentSlot.FEET));
 					}
 					
 				}
 			}
 			
-			//サーバーへ情報送信
-			target.syncModelNamesToServer();
+//			//サーバーへ情報送信
+//			target.syncModelNamesToServer();
 			
 //			target.getModelConfigCompound().setTextureNames();
 /*
@@ -158,17 +187,17 @@ public class GuiTextureSelect extends GuiScreen {
 //					selectPanel.texsel[1], target.getModelConfigCompound().getTextureBoxArmor().getTextureModelName()));
 			mc.displayGuiScreen(owner);
 			
-			if (toServer) {
+//			if (toServer) {
 //				MMM_TextureManager.instance.postSetTexturePack(target, selectColor, target.getTextureBox());
-				if (selectColor != selectPanel.color) {
-					// 色情報の設定
-//					theMaid.maidColor = selectPanel.color | 0x010000 | (selectColor << 8);
-					NBTTagCompound tagCompound = new NBTTagCompound();
-					tagCompound.setByte("Color", selectColor);
-
-					target.syncNet(LMRMessage.EnumPacketMode.SERVER_DECREMENT_DYE, tagCompound);
-				}
-			}
+//				if (selectColor != selectPanel.color) {
+//					// 色情報の設定
+////					theMaid.maidColor = selectPanel.color | 0x010000 | (selectColor << 8);
+//					NBTTagCompound tagCompound = new NBTTagCompound();
+//					tagCompound.setByte("Color", selectColor);
+//
+//					target.syncNet(LMRMessage.EnumPacketMode.SERVER_DECREMENT_DYE, tagCompound);
+//				}
+//			}
 			break;
 		case 300:
 			this.armorButton.displayString = EnumArmorButton.next(this.armorButton.displayString).getName();
@@ -176,9 +205,11 @@ public class GuiTextureSelect extends GuiScreen {
 			
 			LMTextureBox texturebox;
 			if (EnumArmorButton.ALL == enumArmorButton) {
-				texturebox = target.getModelConfigCompound().getTextureBoxArmorAll();
+//				texturebox = target.getModelConfigCompound().getTextureBoxArmorAll();
+				texturebox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureArmor(EntityEquipmentSlot.HEAD));
 			} else {
-				texturebox = target.getModelConfigCompound().getTextureBoxArmor(enumArmorButton.getSlot());
+//				texturebox = target.getModelConfigCompound().getTextureBoxArmor(enumArmorButton.getSlot());
+				texturebox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureArmor(enumArmorButton.getSlot()));
 			}
 			selectPanel.setSelectedBoxArmor(texturebox.getTextureModelName());
 			
@@ -188,7 +219,7 @@ public class GuiTextureSelect extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		selectPanel = new GuiTextureSlot(this);
+		selectPanel = new LMGuiPartsTextureSlot(this);
 		selectPanel.registerScrollButtons(4, 5);
 		buttonList.add(modeButton[0] = new GuiButton(100, width / 2 - 55, height - 55, 80, 20, "Texture"));
 		buttonList.add(modeButton[1] = new GuiButton(101, width / 2 + 30, height - 55, 80, 20, "Armor"));

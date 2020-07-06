@@ -1,4 +1,4 @@
-package net.blacklab.lmr.client.entity;
+package firis.lmlib.client.entity;
 
 import net.blacklab.lmr.entity.maidmodel.IMultiModelEntity;
 import net.blacklab.lmr.entity.maidmodel.ModelConfigCompound;
@@ -6,7 +6,7 @@ import net.blacklab.lmr.util.ModelCapsLittleMaidGui;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 
-public class EntityLittleMaidForTexSelect extends EntityLiving implements IMultiModelEntity {
+public class EntityLittleMaidGui extends EntityLiving implements IMultiModelEntity {
 
 //	public int color;
 //	public int textureIndex[] = new int[] { 0, 0 };
@@ -24,7 +24,7 @@ public class EntityLittleMaidForTexSelect extends EntityLiving implements IMulti
 	protected ModelConfigCompound modelConfigCompound;
 	public boolean modeArmor = false;
 
-	public EntityLittleMaidForTexSelect(World par1World) {
+	public EntityLittleMaidGui(World par1World) {
 		super(par1World);
 //		entityCaps = new EntityCapsLiving(this);
 		modelConfigCompound = new ModelConfigCompound(this, new ModelCapsLittleMaidGui(this));
