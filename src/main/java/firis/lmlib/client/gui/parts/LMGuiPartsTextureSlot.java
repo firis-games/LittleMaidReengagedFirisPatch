@@ -1,15 +1,19 @@
 package firis.lmlib.client.gui.parts;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import firis.lmlib.api.LMLibraryAPI;
+import firis.lmlib.api.caps.IGuiTextureSelect;
 import firis.lmlib.api.resource.LMTextureBox;
 import firis.lmlib.client.entity.EntityLittleMaidGui;
 import firis.lmlib.client.gui.LMGuiTextureSelect;
+import firis.lmlib.client.gui.LMGuiTextureSelect.EnumGuiArmorButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiSlot;
@@ -30,14 +34,42 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	public EntityLittleMaidGui entity;
 
 	protected LMGuiTextureSelect owner;
-	protected int selected;
 	protected List<LMTextureBox> indexTexture;
 	protected List<LMTextureBox> indexArmor;
 	
-	public boolean mode;
-	public int texsel[] = new int[2];
-	protected byte color;
-	protected byte selectColor;
+	/**
+	 * 選択モード
+	 */
+	protected boolean isArmorMode;
+//	public int texsel[] = new int[2];
+	
+	/**
+	 * マウスオーバー
+	 */
+	protected int mouseoverColor;
+	
+	/**
+	 * 最後に選択した位置
+	 */
+	protected int nowSelected;
+	
+	/**
+	 * 選択カラー
+	 */
+	protected int selectColor;
+	
+	/**
+	 * テクスチャモデルGUI表示時の初期状態
+	 */
+	protected int targetColor;
+	protected boolean targetContract;
+	
+	/**
+	 * テクスチャ選択位置
+	 */
+	protected int selTextureLittleMaid = 0;
+	protected Map<EntityEquipmentSlot, Integer> selTextureArmors = new HashMap<>();	
+	
 	
 //	private ItemStack armors[] = new ItemStack[] {
 //			new ItemStack(Items.LEATHER_BOOTS),
@@ -45,105 +77,148 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 //			new ItemStack(Items.LEATHER_CHESTPLATE),
 //			new ItemStack(Items.LEATHER_HELMET)
 //	};
-	protected boolean isContract;
+//	protected boolean isContract;
 //	protected static LMTextureBox blankBox;
 
 
-	public LMGuiPartsTextureSlot(LMGuiTextureSelect pOwner) {
-		super(pOwner.mc, pOwner.width, pOwner.height, 16, pOwner.height - 64, 36);
-		owner = pOwner;
-		entity = new EntityLittleMaidGui(owner.mc.world);
+	/**
+	 * コンストラクタ
+	 * @param pOwner
+	 */
+	public LMGuiPartsTextureSlot(LMGuiTextureSelect owner, IGuiTextureSelect target) {
+		super(owner.mc, owner.width, owner.height, 16, owner.height - 64, 36);
+		
+		this.owner = owner;
+		this.entity = new EntityLittleMaidGui(owner.mc.world);
 //		color = owner.target.getColor();
-		color = (byte) owner.target.getTextureColor();
-		selectColor = -1;
+		
+		//ターゲット初期値設定
+		this.targetColor = target.getTextureColor();
+		this.targetContract = target.getTextureContract();
+		
 //		blankBox = new LMTextureBox();
 //		blankBox.models = new ModelMultiBase[] {null, null, null};
 
-		texsel[0] = 0;//-1;
-		texsel[1] = 0;//-1;
-		indexTexture = new ArrayList<LMTextureBox>();
-		indexArmor = new ArrayList<LMTextureBox>();
+//		texsel[0] = 0;//-1;
+//		texsel[1] = 0;//-1;
+		
+		//選択位置初期化
+		this.selTextureLittleMaid = 0;
+		this.selTextureArmors.put(EntityEquipmentSlot.HEAD, 0);
+		this.selTextureArmors.put(EntityEquipmentSlot.CHEST, 0);
+		this.selTextureArmors.put(EntityEquipmentSlot.LEGS, 0);
+		this.selTextureArmors.put(EntityEquipmentSlot.FEET, 0);
+		this.mouseoverColor = -1;
+		
 //		isContract = owner.target.isContract();
-		isContract = true;
 //		entity.getModelConfigCompound().setContract(isContract);
 //		LMTextureBox ltbox[] = owner.target.getModelConfigCompound().getLMTextureBox();
 //		LMTextureBox ltboxLittleMaid = owner.target.getModelConfigCompound().getTextureBoxLittleMaid();
-		LMTextureBox ltboxLittleMaid = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(owner.target.getTextureLittleMaid());
+//		LMTextureBox ltboxLittleMaid = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(owner.target.getTextureLittleMaid());
 //		LMTextureBox ltboxArmor = owner.target.getModelConfigCompound().getTextureBoxArmorAll();
-		LMTextureBox ltboxArmor = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(owner.target.getTextureArmor(EntityEquipmentSlot.HEAD));
+//		LMTextureBox ltboxArmor = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(owner.target.getTextureArmor(EntityEquipmentSlot.HEAD));
 		
+		//ターゲットのテクスチャボックスを取得する
+		LMTextureBox ltboxLittleMaid = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureLittleMaid());
+		LMTextureBox ltboxArmorHead = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureArmor(EntityEquipmentSlot.HEAD));
+		LMTextureBox ltboxArmorChest = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureArmor(EntityEquipmentSlot.CHEST));
+		LMTextureBox ltboxArmorLegs = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureArmor(EntityEquipmentSlot.LEGS));
+		LMTextureBox ltboxArmorFeet = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureArmor(EntityEquipmentSlot.FEET));
 		
-		
+		//表示用キャッシュ初期化
+		this.indexTexture = new ArrayList<LMTextureBox>();
+		this.indexArmor = new ArrayList<LMTextureBox>();
 		for (LMTextureBox lbox : LMLibraryAPI.instance().getTextureManager().getLMTextureBoxList()) {
-			if (isContract) {
+			//リトルメイドモデル
+			if (this.targetContract) {
+				//通常種
 				if (lbox.hasLittleMaid()) {
-					indexTexture.add(lbox);
+					this.indexTexture.add(lbox);
 				}
 			} else {
+				//野生種
 				if (lbox.hasWildLittleMaid()) {
-					indexTexture.add(lbox);
+					this.indexTexture.add(lbox);
 				}
 			}
+			//アーマーモデル
 			if (lbox.hasArmor()) {
-				indexArmor.add(lbox);
+				this.indexArmor.add(lbox);
 			}
+			
+			//選択位置設定
+			//リトルメイド
 			if (lbox == ltboxLittleMaid) {
-				texsel[0] = indexTexture.size() - 1;
+				this.selTextureLittleMaid = indexTexture.size() - 1;
 			}
-			if (lbox == ltboxArmor) {
-				texsel[1] = indexArmor.size() - 1;
+			//頭防具
+			if (lbox == ltboxArmorHead) {
+				this.selTextureArmors.put(EntityEquipmentSlot.HEAD, indexArmor.size() - 1);
+			}
+			//胴防具
+			if (lbox == ltboxArmorChest) {
+				this.selTextureArmors.put(EntityEquipmentSlot.CHEST, indexArmor.size() - 1);
+			}
+			//腰防具
+			if (lbox == ltboxArmorLegs) {
+				this.selTextureArmors.put(EntityEquipmentSlot.LEGS, indexArmor.size() - 1);
+			}
+			//足防具
+			if (lbox == ltboxArmorFeet) {
+				this.selTextureArmors.put(EntityEquipmentSlot.FEET, indexArmor.size() - 1);
 			}
 		}
-		
-		setMode(false);
-		
-//		for (int li = 0; li < ModelManager.instance.getTextureCount(); li++) {
-//			LMTextureBox lbox = ModelManager.getTextureList().get(li);
-//			if (isContract) {
-//				if (lbox.getContractColorBits() > 0) {
-//					indexTexture.add(lbox);
-//				}
-//			} else {
-//				if (lbox.getWildColorBits() > 0) {
-//					indexTexture.add(lbox);
-//				}
-//			}
-//			if (lbox.hasArmor()) {
-//				indexArmor.add(lbox);
-//			}
-//			if (lbox == ltboxLittleMaid) {
-//				texsel[0] = indexTexture.size() - 1;
-//			}
-//			if (lbox == ltboxArmor) {
-//				texsel[1] = indexArmor.size() - 1;
-//			}
-//		}
+		//初期選択状態設定
+		this.setArmorMode(false);
 	}
 
+	/**
+	 * スロット表示数
+	 */
 	@Override
 	protected int getSize() {
-		return mode ? indexArmor.size() : indexTexture.size();
+		return isArmorMode ? indexArmor.size() : indexTexture.size();
 	}
 
 //	public static LMTextureBox getBlankBox() {
 //		return blankBox;
 //	}
 
+	/**
+	 * クリック時の処理
+	 * @param slotIndex
+	 * @param isDoubleClick
+	 * @param mouseX
+	 * @param mouseY
+	 */
 	@Override
-	protected void elementClicked(int var1, boolean var2, int var3, int var4) {
-		if (mode) {
-			selected = var1;
-			texsel[1] = var1;
+	protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
+		
+		//防具モデル
+		if (this.isArmorMode) {
+			this.nowSelected = slotIndex;
+			EnumGuiArmorButton mode = this.owner.getGuiArmorButtonMode();
+			if (mode == EnumGuiArmorButton.ALL) {
+				//全部位
+				this.selTextureArmors.put(EntityEquipmentSlot.HEAD, slotIndex);
+				this.selTextureArmors.put(EntityEquipmentSlot.CHEST, slotIndex);
+				this.selTextureArmors.put(EntityEquipmentSlot.LEGS, slotIndex);
+				this.selTextureArmors.put(EntityEquipmentSlot.FEET, slotIndex);
+			} else {
+				//各部位
+				this.selTextureArmors.put(mode.getSlot(), slotIndex);
+			}
+		//リトルメイドモデル
 		} else {
-			LMTextureBox lbox = getSelectedBox(var1);
-			if (hasColorContract(lbox, selectColor, isContract)) {
-				selected = var1;
-				texsel[0] = var1;
-				owner.selectColor = selectColor;
-			} else if (hasColorContract(lbox, color, isContract)) {
-				selected = var1;
-				texsel[0] = var1;
-				owner.selectColor = color;
+			LMTextureBox lbox = getSelectedBox(slotIndex);
+			if (hasColorContract(lbox, this.mouseoverColor, this.targetContract)) {
+				this.nowSelected = slotIndex;
+				this.selTextureLittleMaid = slotIndex;
+				this.selectColor = this.mouseoverColor;
+			} else if (hasColorContract(lbox, this.targetColor, this.targetContract)) {
+				this.nowSelected = slotIndex;
+				this.selTextureLittleMaid = slotIndex;
+				this.selectColor = this.targetColor;
 			}
 		}
 	}
@@ -164,8 +239,8 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	}
 
 	@Override
-	protected boolean isSelected(int var1) {
-		return selected == var1;
+	protected boolean isSelected(int slotIndex) {
+		return this.nowSelected == slotIndex;
 	}
 
 	@Override
@@ -181,11 +256,11 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		GL11.glPushMatrix();
 
 		LMTextureBox lbox;
-		if (mode) {
+		if (isArmorMode) {
 			lbox = indexArmor.get(slotIndex);
 //			entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
 //			entity.getModelConfigCompound().setTextureBoxArmorAll(lbox);
-			entity.setTextureArmor(lbox);
+			entity.setTextureArmor(lbox, lbox, lbox, lbox);
 		} else {
 			lbox = indexTexture.get(slotIndex);
 //			entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
@@ -193,16 +268,17 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 			entity.setTextureLittleMaid(lbox);
 		}
 
-		if (!mode) {
+		if (!isArmorMode) {
 			for (int li = 0; li < 16; li++) {
 				int lx = xPos + 15 + 12 * li;
-				selectColor = (byte)((mouseX - (xPos + 15)) / 12);
-				if ((selectColor < 0) && (selectColor > 15)) {
-					selectColor = -1;
+				mouseoverColor = (byte)((mouseX - (xPos + 15)) / 12);
+				if ((mouseoverColor < 0) && (mouseoverColor > 15)) {
+					mouseoverColor = -1;
 				}
-				if (color == li) {
+				//背景色描画
+				if (targetColor == li) {
 					Gui.drawRect(lx, yPos, lx + 11, yPos + 36, 0x88882222);
-				} else if (owner.selectColor == li) {
+				} else if (this.selectColor == li) {
 					Gui.drawRect(lx, yPos, lx + 11, yPos + 36, 0x88226622);
 				} else if (lbox.hasColor(li)) {
 					Gui.drawRect(lx, yPos, lx + 11, yPos + 36, 0x66888888);
@@ -225,7 +301,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 //		entity.modeArmor = mode;
 		
-		if (mode) {
+		if (isArmorMode) {
 			//デフォルトアーマー
 			GL11.glTranslatef(1f, 0.25F, 0f);
 //			entity.setTextureNames("default");
@@ -253,10 +329,10 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 			for (byte li = 0; li < 16; li++) {
 				GL11.glTranslatef(1F, 0, 0);
 				
-				if (hasColorContract(lbox, li, isContract)) {
+				if (hasColorContract(lbox, li, this.targetContract)) {
 //					entity.getModelConfigCompound().setColor(li);
 //					entity.getModelConfigCompound().setContract(isContract);
-					entity.setTextureLittleMaidColor(li, isContract);
+					entity.setTextureLittleMaidColor(li, this.targetContract);
 					
 //					entity.setTextureNames();
 //					entity.getTextures(0)[0] = lbox.getTextureName(li + (isContract ? 0 : MMM_TextureManager.tx_wild));
@@ -274,44 +350,74 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		GL11.glPopMatrix();
 	}
 
-	public LMTextureBox getSelectedBox() {
-		return getSelectedBox(selected);
+//	public LMTextureBox getSelectedBox() {
+//		return getSelectedBox(nowSelected);
+//	}
+
+	/**
+	 * 指定されたスロット番号のTexutreBoxを取得する
+	 * @param slotIndex
+	 * @return
+	 */
+	protected LMTextureBox getSelectedBox(int slotIndex) {
+		return this.isArmorMode ? 
+				this.indexArmor.get(slotIndex) : this.indexTexture.get(slotIndex);
+	}
+	
+	/**
+	 * 選択しているリトルメイド/アーマーモデルを描画用Entityに設定する
+	 */
+	public void setTextureSelectedBox() {
+		if (!this.isArmorMode) {
+			//リトルメイドモデル
+			this.entity.setTextureLittleMaid(this.getSelectedBox(this.selTextureLittleMaid));
+			this.entity.setTextureLittleMaidColor(this.selectColor, this.targetContract);
+		} else {
+			//アーマーモデル
+			this.entity.setTextureArmor(this.getSelectedBox(this.selTextureArmors.get(EntityEquipmentSlot.HEAD)),
+					this.getSelectedBox(this.selTextureArmors.get(EntityEquipmentSlot.CHEST)),
+					this.getSelectedBox(this.selTextureArmors.get(EntityEquipmentSlot.LEGS)),
+					this.getSelectedBox(this.selTextureArmors.get(EntityEquipmentSlot.FEET)));
+		}
+		
 	}
 
-	protected LMTextureBox getSelectedBox(int pIndex) {
-		return mode ? indexArmor.get(pIndex) : indexTexture.get(pIndex);
-	}
+//	public LMTextureBox getSelectedBox(boolean pMode) {
+//		return pMode ? indexArmor.get(texsel[1]) : indexTexture.get(texsel[0]);
+//	}
 
-	public LMTextureBox getSelectedBox(boolean pMode) {
-		return pMode ? indexArmor.get(texsel[1]) : indexTexture.get(texsel[0]);
-	}
-
-	public void setMode(boolean pFlag) {
+	/**
+	 * スクロール制御を含めたモード変更
+	 * @param pFlag
+	 */
+	public void setArmorMode(boolean pFlag) {
 		scrollBy(slotHeight * -getSize());
 //		entity.modeArmor = pFlag;
 		if (pFlag) {
-			selected = texsel[1];
-			mode = true;
+			this.nowSelected = this.selTextureArmors.get(this.owner.getGuiArmorButtonMode().getSlot());
+			this.isArmorMode = true;
 //			entity.setItemStackToSlot(EntityEquipmentSlot.FEET,  armors[0]);
 //			entity.setItemStackToSlot(EntityEquipmentSlot.LEGS,  armors[1]);
 //			entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, armors[2]);
 //			entity.setItemStackToSlot(EntityEquipmentSlot.HEAD,  armors[3]);
 		} else {
-			selected = texsel[0];
-			mode = false;
+			this.nowSelected = this.selTextureLittleMaid;
+			this.isArmorMode = false;
 //			entity.setItemStackToSlot(EntityEquipmentSlot.FEET,  ItemStack.EMPTY);
 //			entity.setItemStackToSlot(EntityEquipmentSlot.LEGS,  ItemStack.EMPTY);
 //			entity.setItemStackToSlot(EntityEquipmentSlot.CHEST, ItemStack.EMPTY);
 //			entity.setItemStackToSlot(EntityEquipmentSlot.HEAD,  ItemStack.EMPTY);
 		}
-		scrollBy(slotHeight * selected);
+		scrollBy(slotHeight * nowSelected);
 	}
 	
 	/**
 	 * 選択位置を設定する
 	 * @param pIndex
 	 */
-	public void setSelectedBoxArmor(String modelName) {
+	public void setSelectedBoxArmor(EntityEquipmentSlot slot) {
+		
+		String modelName = this.getSelectedBox(this.selTextureArmors.get(slot)).getTextureModelName();
 		
 		int idx = 0;
 		for (LMTextureBox box : indexArmor) {
@@ -322,8 +428,8 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		}
 		
 		scrollBy(slotHeight * -getSize());
-		selected = idx;
-		scrollBy(slotHeight * selected);
+		nowSelected = idx;
+		scrollBy(slotHeight * nowSelected);
 	}
 	
 	/**
@@ -349,5 +455,30 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		}
 		return slotView;
 	}
+	
+	
+	/**
+	 * 選択中のリトルメイドモデル名を取得する
+	 * @return
+	 */
+	public String getTextureLittleMaid() {
+		return this.getSelectedBox(this.selTextureLittleMaid).getTextureModelName();
+	}
+	
+	/**
+	 * 選択中のリトルメイドカラーを取得する
+	 * @return
+	 */
+	public int getTextureLittleMaidColor() {
+		return this.selectColor;
+	}
+	
+	/**
+	 * 選択中のアーマーモデルを取得する
+	 * @return
+	 */
+	public String getTextureArmor(EntityEquipmentSlot slot) {
+		return this.getSelectedBox(this.selTextureArmors.get(slot)).getTextureModelName();
+	} 
 
 }

@@ -5168,6 +5168,15 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	}
 
 	/**
+	 * @IGuiTextureSelect
+	 */
+	@Override
+	public boolean getTextureContract() {
+		return this.isContract();
+	}
+
+
+	/**
 	 * Guiから設定されたテクスチャを同期する
 	 * @IGuiTextureSelect
 	 */

@@ -6,6 +6,7 @@ import firis.lmlib.api.caps.ModelCompoundEntityBase;
 import firis.lmlib.api.entity.ILMModelEntity;
 import firis.lmlib.api.resource.LMTextureBox;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.world.World;
 
 /**
@@ -73,13 +74,16 @@ public class EntityLittleMaidGui extends EntityLiving implements ILMModelEntity 
 	/**
 	 * アーマーテクスチャを設定する
 	 */
-	public void setTextureArmor(LMTextureBox textureBox) {
+	public void setTextureArmor(LMTextureBox head, LMTextureBox chest, LMTextureBox legs, LMTextureBox feet) {
 		
 		//メイドモデル非表示設定
 		this.modelConfigCompound.setTextureBoxLittleMaid(null);
 		
 		//アーマーモデル非表示設定
-		this.modelConfigCompound.setTextureBoxArmorAll(textureBox);
+		this.modelConfigCompound.setTextureBoxArmor(EntityEquipmentSlot.HEAD, head);
+		this.modelConfigCompound.setTextureBoxArmor(EntityEquipmentSlot.CHEST, chest);
+		this.modelConfigCompound.setTextureBoxArmor(EntityEquipmentSlot.LEGS, legs);
+		this.modelConfigCompound.setTextureBoxArmor(EntityEquipmentSlot.FEET, feet);
 		
 	}
 }

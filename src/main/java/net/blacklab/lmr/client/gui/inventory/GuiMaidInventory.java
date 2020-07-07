@@ -670,7 +670,7 @@ public class GuiMaidInventory extends GuiContainer {
 //			entitylittlemaid.syncModelNames();
 			break;
 		case 200 :
-			mc.displayGuiScreen(new LMGuiTextureSelect(this, entitylittlemaid, true));
+			mc.displayGuiScreen(new LMGuiTextureSelect(this, entitylittlemaid));
 			break;
 		case 300 :
 			visarmorbutton[0].toggle=!visarmorbutton[0].toggle;

@@ -217,7 +217,7 @@ public class ModelConfigCompound extends ModelCompoundEntityBase<EntityLivingBas
 	/**
 	 * メイドテクスチャを設定する
 	 * @param modelMaid
-	 * @param color
+	 * @param targetColor
 	 * @param modelArmor
 	 * @param isContract
 	 * @return

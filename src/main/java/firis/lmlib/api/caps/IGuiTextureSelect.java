@@ -4,7 +4,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 
 /**
  * テクスチャ選択機能を使う場合に必要なインターフェース定義
- * 野生状態のGUI機能の利用は想定していない
  * @author firis-games
  *
  */
@@ -20,6 +19,12 @@ public interface IGuiTextureSelect {
 	 * 色情報を取得する
 	 */
 	public int getTextureColor();
+	
+	/**
+	 * 契約状態を取得する
+	 * @return
+	 */
+	public boolean getTextureContract();
 	
 	/**
 	 * リトルメイドモデルを設定する
