@@ -20,7 +20,7 @@ public class EntityLittleMaidGui extends EntityLiving implements ILMModelEntity 
 	/**
 	 * マルチモデル描画用パラメータ
 	 */
-	protected ModelCompoundEntityBase<EntityLittleMaidGui> modelConfigCompound;
+	protected ModelCompoundEntityBase<EntityLittleMaidGui> modelCompound;
 
 	/**
 	 * コンストラクタ
@@ -28,7 +28,7 @@ public class EntityLittleMaidGui extends EntityLiving implements ILMModelEntity 
 	 */
 	public EntityLittleMaidGui(World world) {
 		super(world);
-		this.modelConfigCompound = new ModelCompoundEntityBase<EntityLittleMaidGui>(this, new ModelCapsEntityBase<EntityLittleMaidGui>(this) {}) {};
+		this.modelCompound = new ModelCompoundEntityBase<EntityLittleMaidGui>(this, new ModelCapsEntityBase<EntityLittleMaidGui>(this) {}) {};
 	}
 	
 	@Override
@@ -46,7 +46,7 @@ public class EntityLittleMaidGui extends EntityLiving implements ILMModelEntity 
 	 */
 	@Override
 	public IModelCompoundEntity getModelCompoundEntity() {
-		return this.modelConfigCompound;
+		return this.modelCompound;
 	}
 	
 	/**
@@ -55,10 +55,10 @@ public class EntityLittleMaidGui extends EntityLiving implements ILMModelEntity 
 	public void setTextureLittleMaid(LMTextureBox textureBox) {
 		
 		//メイドモデル設定
-		this.modelConfigCompound.setTextureBoxLittleMaid(textureBox);
+		this.modelCompound.setTextureBoxLittleMaid(textureBox);
 		
 		//アーマーモデル非表示設定
-		this.modelConfigCompound.setTextureBoxArmorAll(null);
+		this.modelCompound.setTextureBoxArmorAll(null);
 	}
 	
 	/**
@@ -67,8 +67,8 @@ public class EntityLittleMaidGui extends EntityLiving implements ILMModelEntity 
 	 * @param contract
 	 */
 	public void setTextureLittleMaidColor(int color, boolean contract) {
-		this.modelConfigCompound.setColor(color);
-		this.modelConfigCompound.setContract(contract);		
+		this.modelCompound.setColor(color);
+		this.modelCompound.setContract(contract);		
 	}
 	
 	/**
@@ -77,13 +77,13 @@ public class EntityLittleMaidGui extends EntityLiving implements ILMModelEntity 
 	public void setTextureArmor(LMTextureBox head, LMTextureBox chest, LMTextureBox legs, LMTextureBox feet) {
 		
 		//メイドモデル非表示設定
-		this.modelConfigCompound.setTextureBoxLittleMaid(null);
+		this.modelCompound.setTextureBoxLittleMaid(null);
 		
 		//アーマーモデル非表示設定
-		this.modelConfigCompound.setTextureBoxArmor(EntityEquipmentSlot.HEAD, head);
-		this.modelConfigCompound.setTextureBoxArmor(EntityEquipmentSlot.CHEST, chest);
-		this.modelConfigCompound.setTextureBoxArmor(EntityEquipmentSlot.LEGS, legs);
-		this.modelConfigCompound.setTextureBoxArmor(EntityEquipmentSlot.FEET, feet);
+		this.modelCompound.setTextureBoxArmor(EntityEquipmentSlot.HEAD, head);
+		this.modelCompound.setTextureBoxArmor(EntityEquipmentSlot.CHEST, chest);
+		this.modelCompound.setTextureBoxArmor(EntityEquipmentSlot.LEGS, legs);
+		this.modelCompound.setTextureBoxArmor(EntityEquipmentSlot.FEET, feet);
 		
 	}
 }

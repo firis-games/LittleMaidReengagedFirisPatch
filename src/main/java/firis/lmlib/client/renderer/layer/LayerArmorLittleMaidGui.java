@@ -1,4 +1,4 @@
-package net.blacklab.lmr.client.renderer.layer;
+package firis.lmlib.client.renderer.layer;
 
 import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;

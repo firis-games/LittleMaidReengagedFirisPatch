@@ -1,9 +1,9 @@
-package net.blacklab.lmr.client.renderer.entity;
+package firis.lmlib.client.renderer;
 
 import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;
 import firis.lmlib.client.entity.EntityLittleMaidGui;
-import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaidGui;
+import firis.lmlib.client.renderer.layer.LayerArmorLittleMaidGui;
 import net.minecraft.client.renderer.entity.RenderManager;
 
 
@@ -11,14 +11,14 @@ import net.minecraft.client.renderer.entity.RenderManager;
  * GUIに表示するメイドさん
  *
  */
-public class RenderEntitySelect extends LMRenderMultiModel<EntityLittleMaidGui> {
+public class RenderEntityLittleMaidGui extends LMRenderMultiModel<EntityLittleMaidGui> {
 
 	/**
 	 * コンストラクタ
 	 * @param manager
 	 * @param pShadowSize
 	 */
-	public RenderEntitySelect(RenderManager manager) {
+	public RenderEntityLittleMaidGui(RenderManager manager) {
 		super(manager, 0.0F);
 		addLayer(new LayerArmorLittleMaidGui(this));
 	}
