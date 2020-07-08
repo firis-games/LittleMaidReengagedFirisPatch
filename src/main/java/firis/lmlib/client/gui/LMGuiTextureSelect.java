@@ -228,21 +228,34 @@ public class LMGuiTextureSelect extends GuiScreen {
 //			}
 			break;
 		case 300:
-			this.btnArmorParts.displayString = EnumGuiArmorButton.next(this.btnArmorParts.displayString).getName();
-			EnumGuiArmorButton enumArmorButton = EnumGuiArmorButton.get(this.btnArmorParts.displayString);
-			EntityEquipmentSlot armorSlot = enumArmorButton.getSlot();
-//			LMTextureBox texturebox;
-//			if (EnumGuiArmorButton.ALL == enumArmorButton) {
-//				armorSlot = EntityEquipmentSlot.HEAD;
-////				texturebox = target.getModelConfigCompound().getTextureBoxArmorAll();
-//				texturebox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureArmor(EntityEquipmentSlot.HEAD));
-//			} else {
-////				texturebox = target.getModelConfigCompound().getTextureBoxArmor(enumArmorButton.getSlot());
-//				texturebox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureArmor(enumArmorButton.getSlot()));
-//			}
-			this.selectPanel.setSelectedBoxArmor(armorSlot);
+//			this.btnArmorParts.displayString = EnumGuiArmorButton.next(this.btnArmorParts.displayString).getName();
+//			EnumGuiArmorButton enumArmorButton = EnumGuiArmorButton.get(this.btnArmorParts.displayString);
+//			EntityEquipmentSlot armorSlot = enumArmorButton.getSlot();
+////			LMTextureBox texturebox;
+////			if (EnumGuiArmorButton.ALL == enumArmorButton) {
+////				armorSlot = EntityEquipmentSlot.HEAD;
+//////				texturebox = target.getModelConfigCompound().getTextureBoxArmorAll();
+////				texturebox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureArmor(EntityEquipmentSlot.HEAD));
+////			} else {
+//////				texturebox = target.getModelConfigCompound().getTextureBoxArmor(enumArmorButton.getSlot());
+////				texturebox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(target.getTextureArmor(enumArmorButton.getSlot()));
+////			}
+//			this.selectPanel.setSelectedBoxArmor(armorSlot);
+			
+			//モード変更
+			this.setChangeButtonArmorParts(EnumGuiArmorButton.next(this.btnArmorParts.displayString), true);
 			
 			break;
+		}
+	}
+	
+	/**
+	 * 指定したアーマーパーツモードへ変更する
+	 */
+	public void setChangeButtonArmorParts(EnumGuiArmorButton guiArmorButton, boolean setScroll) {
+		this.btnArmorParts.displayString = guiArmorButton.getName();
+		if (setScroll) {
+			this.selectPanel.setSelectedBoxArmor(guiArmorButton.getSlot());
 		}
 	}
 

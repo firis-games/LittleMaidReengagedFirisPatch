@@ -196,6 +196,20 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		
 		//防具モデル
 		if (this.isArmorMode) {
+			
+			EnumGuiArmorButton clickArmorMode = null;
+			clickArmorMode = this.mouseoverColor == 2 ? EnumGuiArmorButton.ALL : clickArmorMode;
+			clickArmorMode = this.mouseoverColor == 5 ? EnumGuiArmorButton.HEAD : clickArmorMode;
+			clickArmorMode = this.mouseoverColor == 7 ? EnumGuiArmorButton.CHEST : clickArmorMode;
+			clickArmorMode = this.mouseoverColor == 9 ? EnumGuiArmorButton.LEGS : clickArmorMode;
+			clickArmorMode = this.mouseoverColor == 11 ? EnumGuiArmorButton.FEET : clickArmorMode;
+			
+			if (clickArmorMode != null) {
+				//個別選択
+				this.owner.setChangeButtonArmorParts(clickArmorMode, false);
+				
+			}
+			//通常選択
 			this.nowSelected = slotIndex;
 			EnumGuiArmorButton mode = this.owner.getGuiArmorButtonMode();
 			if (mode == EnumGuiArmorButton.ALL) {
@@ -208,9 +222,10 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 				//各部位
 				this.selTextureArmors.put(mode.getSlot(), slotIndex);
 			}
+			
 		//リトルメイドモデル
 		} else {
-			LMTextureBox lbox = getSelectedBox(slotIndex);
+			LMTextureBox lbox = getSlotTextureBox(slotIndex);
 			if (hasColorContract(lbox, this.mouseoverColor, this.targetContract)) {
 				this.nowSelected = slotIndex;
 				this.selTextureLittleMaid = slotIndex;
@@ -246,7 +261,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	@Override
 	protected void drawBackground() {
 	}
-
+	
 	@Override
 	protected void drawSlot(int slotIndex, int xPos, int yPos, int heightIn, int mouseXIn, int mouseYIn, float partialTicks) {
 		
@@ -254,36 +269,57 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		if (!isSlotView(slotIndex)) return;
 		
 		GL11.glPushMatrix();
-
-		LMTextureBox lbox;
+		
+		//テクスチャ取得
+		LMTextureBox lbox = this.getSlotTextureBox(slotIndex);
 		if (isArmorMode) {
-			lbox = indexArmor.get(slotIndex);
+//			lbox = indexArmor.get(slotIndex);
 //			entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
 //			entity.getModelConfigCompound().setTextureBoxArmorAll(lbox);
 			entity.setTextureArmor(lbox, lbox, lbox, lbox);
 		} else {
-			lbox = indexTexture.get(slotIndex);
+//			lbox = indexTexture.get(slotIndex);
 //			entity.getModelConfigCompound().setTextureBoxLittleMaid(lbox);
 //			entity.getModelConfigCompound().setTextureBoxArmorAll(null);
 			entity.setTextureLittleMaid(lbox);
 		}
 
+		//マウスの位置を計算
+		this.mouseoverColor = (byte)((this.mouseX - (xPos + 15)) / 12);
+		if ((this.mouseoverColor < 0) && (this.mouseoverColor > 15)) {
+			this.mouseoverColor = -1;
+		}
+		
 		if (!isArmorMode) {
 			for (int li = 0; li < 16; li++) {
 				int lx = xPos + 15 + 12 * li;
-				mouseoverColor = (byte)((mouseX - (xPos + 15)) / 12);
-				if ((mouseoverColor < 0) && (mouseoverColor > 15)) {
-					mouseoverColor = -1;
-				}
+//				mouseoverColor = (byte)((mouseX - (xPos + 15)) / 12);
+//				if ((mouseoverColor < 0) && (mouseoverColor > 15)) {
+//					mouseoverColor = -1;
+//				}
 				//背景色描画
 				if (targetColor == li) {
+					//赤
 					Gui.drawRect(lx, yPos, lx + 11, yPos + 36, 0x88882222);
 				} else if (this.selectColor == li) {
+					//緑
 					Gui.drawRect(lx, yPos, lx + 11, yPos + 36, 0x88226622);
 				} else if (lbox.hasColor(li)) {
+					//灰
 					Gui.drawRect(lx, yPos, lx + 11, yPos + 36, 0x66888888);
 				}
 			}
+		} else {
+			//防具スロット
+			//ALL
+			this.drawArmorSlotBackColor(xPos, yPos, 2, this.getArmorSlotBackColor(EnumGuiArmorButton.ALL, lbox));
+			
+			//各部位
+			this.drawArmorSlotBackColor(xPos, yPos, 5, this.getArmorSlotBackColor(EnumGuiArmorButton.HEAD, lbox));
+			this.drawArmorSlotBackColor(xPos, yPos, 7, this.getArmorSlotBackColor(EnumGuiArmorButton.CHEST, lbox));
+			this.drawArmorSlotBackColor(xPos, yPos, 9, this.getArmorSlotBackColor(EnumGuiArmorButton.LEGS, lbox));
+			this.drawArmorSlotBackColor(xPos, yPos, 11, this.getArmorSlotBackColor(EnumGuiArmorButton.FEET, lbox));
+			
 		}
 
 		//アーマー選択画面の文字が2行目以降おかしくなる
@@ -292,22 +328,52 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		//		MMM_TextureManager.instance.checkLMTextureBoxServer(lbox);
 		GL11.glDisable(GL11.GL_BLEND);
 
-		owner.drawString(this.owner.mc.fontRenderer, lbox.getTextureModelName(),
+		//文字表示
+		this.owner.drawString(this.owner.mc.fontRenderer, lbox.getTextureModelName(),
 				xPos + 207 - mc.fontRenderer.getStringWidth(lbox.getTextureModelName()), yPos + 25, -1);
+		
+		//位置調整
 		GL11.glTranslatef(xPos + 8F, yPos + 25F, 50F);
 		GL11.glScalef(12F, -12F, 12F);
-		entity.renderYawOffset = 30F;
-		entity.rotationYawHead = 15F;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 //		entity.modeArmor = mode;
-		
+
+		//リトルメイドの向き調整
+		this.entity.renderYawOffset = 30F;
+		this.entity.rotationYawHead = 15F;
+
 		if (isArmorMode) {
 			//デフォルトアーマー
 			GL11.glTranslatef(1f, 0.25F, 0f);
+			
+			GL11.glTranslatef(2.0F, 0, 0);
+			
 //			entity.setTextureNames("default");
 			Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 //			RendererHelper.setLightmapTextureCoords(0x00f0);//61680
 
+			//GL11.glScalef(0.8F, 0.8F, 0.8F);
+			
+			GL11.glTranslatef(1.0F, 0, 0);
+			
+			//各パーツ
+			entity.setTextureArmor(lbox, null, null, null);
+			GL11.glTranslatef(2.0F, 0, 0);
+			Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+			
+			entity.setTextureArmor(null, lbox, null, null);
+			GL11.glTranslatef(2.0F, 0, 0);
+			Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+			
+			entity.setTextureArmor(null, null, lbox, null);
+			GL11.glTranslatef(2.0F, 0, 0);
+			Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+			
+			entity.setTextureArmor(null, null, null, lbox);
+			GL11.glTranslatef(2.0F, 0, 0);
+			Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+			
+			
 //			// 素材別アーマー
 //			for (int li = 0; li < ModelManager.armorFilenamePrefix.length; li++) {
 //				GL11.glTranslatef(1F, 0, 0);
@@ -355,11 +421,67 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 //	}
 
 	/**
+	 * 現在の選択防具と表示行のテクスチャをもとに背景色を判断する
+	 * @param armorMode アーマー部位
+	 * @param textureBox　現在描画予定のTextureBox
+	 * @return
+	 */
+	private int getArmorSlotBackColor(EnumGuiArmorButton armorMode, LMTextureBox textureBox) {
+		
+		int colorType = 2;
+		
+		//現在のモードを取得する
+		EnumGuiArmorButton guiArmorMode = this.owner.getGuiArmorButtonMode();
+		
+		//現在の選択防具かの判断
+		if (EnumGuiArmorButton.ALL != armorMode
+				&& this.getSlotTextureBox(this.selTextureArmors.get(armorMode.getSlot())) == textureBox) {
+			//赤色
+			colorType = 0;
+
+		//現在のモード選択判断
+		} else if (armorMode == guiArmorMode) {
+			//緑
+			colorType = 1;
+		
+		//通常背景色
+		} else {
+			//灰色
+			colorType = 2;
+		}
+		
+		return colorType;
+	}
+	
+	/**
+	 * アーマースロットの背景色を塗る
+	 * @param xPos
+	 * @param yPos
+	 * @param no 0-15
+	 * @param colorType 0:赤色 1:緑 2:灰色
+	 */
+	private void drawArmorSlotBackColor(int xPos, int yPos, int no, int colorType) {
+		int li = no;
+		int lx = xPos + 15 + 12 * li;
+		int ly = yPos - 2;
+		if (colorType == 0) {
+			//赤
+			Gui.drawRect(lx, ly, lx + 11, ly + 36, 0x88882222);
+		} else if (colorType == 1) {
+			//緑
+			Gui.drawRect(lx, ly, lx + 11, ly + 36, 0x88226622);
+		} else if (colorType == 2) {
+			//灰
+			Gui.drawRect(lx, ly, lx + 11, ly + 36, 0x66888888);
+		}
+	}
+	
+	/**
 	 * 指定されたスロット番号のTexutreBoxを取得する
 	 * @param slotIndex
 	 * @return
 	 */
-	protected LMTextureBox getSelectedBox(int slotIndex) {
+	protected LMTextureBox getSlotTextureBox(int slotIndex) {
 		return this.isArmorMode ? 
 				this.indexArmor.get(slotIndex) : this.indexTexture.get(slotIndex);
 	}
@@ -370,14 +492,14 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	public void setTextureSelectedBox() {
 		if (!this.isArmorMode) {
 			//リトルメイドモデル
-			this.entity.setTextureLittleMaid(this.getSelectedBox(this.selTextureLittleMaid));
+			this.entity.setTextureLittleMaid(this.getSlotTextureBox(this.selTextureLittleMaid));
 			this.entity.setTextureLittleMaidColor(this.selectColor, this.targetContract);
 		} else {
 			//アーマーモデル
-			this.entity.setTextureArmor(this.getSelectedBox(this.selTextureArmors.get(EntityEquipmentSlot.HEAD)),
-					this.getSelectedBox(this.selTextureArmors.get(EntityEquipmentSlot.CHEST)),
-					this.getSelectedBox(this.selTextureArmors.get(EntityEquipmentSlot.LEGS)),
-					this.getSelectedBox(this.selTextureArmors.get(EntityEquipmentSlot.FEET)));
+			this.entity.setTextureArmor(this.getSlotTextureBox(this.selTextureArmors.get(EntityEquipmentSlot.HEAD)),
+					this.getSlotTextureBox(this.selTextureArmors.get(EntityEquipmentSlot.CHEST)),
+					this.getSlotTextureBox(this.selTextureArmors.get(EntityEquipmentSlot.LEGS)),
+					this.getSlotTextureBox(this.selTextureArmors.get(EntityEquipmentSlot.FEET)));
 		}
 		
 	}
@@ -417,7 +539,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	 */
 	public void setSelectedBoxArmor(EntityEquipmentSlot slot) {
 		
-		String modelName = this.getSelectedBox(this.selTextureArmors.get(slot)).getTextureModelName();
+		String modelName = this.getSlotTextureBox(this.selTextureArmors.get(slot)).getTextureModelName();
 		
 		int idx = 0;
 		for (LMTextureBox box : indexArmor) {
@@ -462,7 +584,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	 * @return
 	 */
 	public String getTextureLittleMaid() {
-		return this.getSelectedBox(this.selTextureLittleMaid).getTextureModelName();
+		return this.getSlotTextureBox(this.selTextureLittleMaid).getTextureModelName();
 	}
 	
 	/**
@@ -478,7 +600,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	 * @return
 	 */
 	public String getTextureArmor(EntityEquipmentSlot slot) {
-		return this.getSelectedBox(this.selTextureArmors.get(slot)).getTextureModelName();
+		return this.getSlotTextureBox(this.selTextureArmors.get(slot)).getTextureModelName();
 	} 
 
 }
