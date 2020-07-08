@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import firis.lmlib.api.caps.IGuiTextureSelect;
-import firis.lmlib.client.gui.parts.LMGuiPartsTextureSlot;
+import firis.lmlib.client.gui.parts.LMGuiSlotTextureSelect;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -23,19 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class LMGuiTextureSelect extends GuiScreen {
 
-	protected String screenTitle = "Texture Select";
-	protected GuiScreen owner;
-	protected LMGuiPartsTextureSlot selectPanel;
-//	protected GuiButton modeButton[] = new GuiButton[2];
-	protected GuiButton btnTexture;
-	protected GuiButton btnArmor;
-	protected GuiButton btnArmorParts;
-	protected IGuiTextureSelect target;
-	
-//	public byte selectColor;
-	
-//	protected boolean toServer;
-	
 	/**
 	 * 防具ボタン情報
 	 * @author firis-games
@@ -82,7 +69,26 @@ public class LMGuiTextureSelect extends GuiScreen {
 			return ret;
 		}
 	}
-
+	
+	//表示タイトル
+	protected String screenTitle = "Texture Select";
+	
+	//親画面
+	protected GuiScreen owner;
+	
+	//GUIパーツ
+	protected LMGuiSlotTextureSelect selectPanel;
+	protected GuiButton btnTexture;
+	protected GuiButton btnArmor;
+	protected GuiButton btnArmorParts;
+	
+	//テクスチャ変更ターゲット
+	protected IGuiTextureSelect target;
+	
+//	protected GuiButton modeButton[] = new GuiButton[2];
+//	public byte selectColor;
+//	protected boolean toServer;
+	
 	/**
 	 * コンストラクタ
 	 * @param owner
@@ -94,7 +100,7 @@ public class LMGuiTextureSelect extends GuiScreen {
 //		selectColor = (byte) pTarget.getTextureColor();
 //		toServer = pToServer;
 	}
-
+	
 	/**
 	 * ボタン押下時の処理
 	 */
@@ -250,32 +256,25 @@ public class LMGuiTextureSelect extends GuiScreen {
 	}
 	
 	/**
-	 * 指定したアーマーパーツモードへ変更する
-	 */
-	public void setChangeButtonArmorParts(EnumGuiArmorButton guiArmorButton, boolean setScroll) {
-		this.btnArmorParts.displayString = guiArmorButton.getName();
-		if (setScroll) {
-			this.selectPanel.setSelectedBoxArmor(guiArmorButton.getSlot());
-		}
-	}
-
-	/**
 	 * Guiパーツ初期化
 	 */
 	@Override
 	public void initGui() {
 		
-		this.selectPanel = new LMGuiPartsTextureSlot(this, this.target);
+		//テクスチャ選択スロット
+		this.selectPanel = new LMGuiSlotTextureSelect(this, this.target);
 		this.selectPanel.registerScrollButtons(4, 5);
+		
+		//各ボタン登録
 		this.buttonList.add(this.btnTexture = new GuiButton(100, width / 2 - 55, height - 55, 80, 20, "Texture"));
 		this.buttonList.add(this.btnArmor = new GuiButton(101, width / 2 + 30, height - 55, 80, 20, "Armor"));
 		this.buttonList.add(new GuiButton(200, width / 2 - 10 + 20, height - 30, 100, 20, "Select"));
+		this.buttonList.add(this.btnArmorParts = new GuiButton(300, width / 2 - 55, height - 30, 60, 20, EnumGuiArmorButton.ALL.getName()));
+		
+		//ボタン有効無効設定
 		this.btnTexture.enabled = false;
-
-		//防具別ボタン
-		btnArmorParts = new GuiButton(300, width / 2 - 55, height - 30, 60, 20, EnumGuiArmorButton.ALL.getName());
-		btnArmorParts.enabled = false;
-		buttonList.add(btnArmorParts);
+		this.btnArmor.enabled = true;
+		this.btnArmorParts.enabled = false;
 	}
 
 	/**
@@ -305,20 +304,26 @@ public class LMGuiTextureSelect extends GuiScreen {
 //		super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
 //	}
 
+	/**
+	 * 画面描画
+	 */
 	@Override
-	public void drawScreen(int par1, int par2, float par3) {
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		
 		//背景描画
 		this.drawDefaultBackground();
 		
 		//テクスチャ選択画面描画
-		this.selectPanel.drawScreen(par1, par2, par3);
+		this.selectPanel.drawScreen(mouseX, mouseY, partialTicks);
 		
+		//タイトル文字描画
 		drawCenteredString(mc.fontRenderer, I18n.format(screenTitle), width / 2, 4, 0xffffff);
 		
-		super.drawScreen(par1, par2, par3);
+		super.drawScreen(mouseX, mouseY, partialTicks);
 		
+		//リトルメイド/アーマーモデル表示
 		GL11.glPushMatrix();
+		
 		GL11.glEnable(EXTRescaleNormal.GL_RESCALE_NORMAL_EXT);
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -396,6 +401,16 @@ public class LMGuiTextureSelect extends GuiScreen {
 	 */
 	public EnumGuiArmorButton getGuiArmorButtonMode() {
 		return EnumGuiArmorButton.get(this.btnArmorParts.displayString);
+	}
+	
+	/**
+	 * 指定したアーマーパーツモードへ変更する
+	 */
+	public void setChangeButtonArmorParts(EnumGuiArmorButton guiArmorButton, boolean setScroll) {
+		this.btnArmorParts.displayString = guiArmorButton.getName();
+		if (setScroll) {
+			this.selectPanel.setSelectedBoxArmor(guiArmorButton.getSlot());
+		}
 	}
 
 }

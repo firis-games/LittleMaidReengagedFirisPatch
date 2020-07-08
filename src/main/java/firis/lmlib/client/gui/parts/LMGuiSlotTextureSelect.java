@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  */
 @SideOnly(Side.CLIENT)
-public class LMGuiPartsTextureSlot extends GuiSlot {
+public class LMGuiSlotTextureSelect extends GuiSlot {
 
 	public EntityLittleMaidGui entity;
 
@@ -85,7 +85,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	 * コンストラクタ
 	 * @param pOwner
 	 */
-	public LMGuiPartsTextureSlot(LMGuiTextureSelect owner, IGuiTextureSelect target) {
+	public LMGuiSlotTextureSelect(LMGuiTextureSelect owner, IGuiTextureSelect target) {
 		super(owner.mc, owner.width, owner.height, 16, owner.height - 64, 36);
 		
 		this.owner = owner;
@@ -225,7 +225,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 			
 		//リトルメイドモデル
 		} else {
-			LMTextureBox lbox = getSlotTextureBox(slotIndex);
+			LMTextureBox lbox = getTextureBoxFromSlot(slotIndex);
 			if (hasColorContract(lbox, this.mouseoverColor, this.targetContract)) {
 				this.nowSelected = slotIndex;
 				this.selTextureLittleMaid = slotIndex;
@@ -259,8 +259,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	}
 
 	@Override
-	protected void drawBackground() {
-	}
+	protected void drawBackground() {}
 	
 	@Override
 	protected void drawSlot(int slotIndex, int xPos, int yPos, int heightIn, int mouseXIn, int mouseYIn, float partialTicks) {
@@ -271,7 +270,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		GL11.glPushMatrix();
 		
 		//テクスチャ取得
-		LMTextureBox lbox = this.getSlotTextureBox(slotIndex);
+		LMTextureBox lbox = this.getTextureBoxFromSlot(slotIndex);
 		if (isArmorMode) {
 //			lbox = indexArmor.get(slotIndex);
 //			entity.getModelConfigCompound().setTextureBoxLittleMaid(null);
@@ -435,7 +434,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 		
 		//現在の選択防具かの判断
 		if (EnumGuiArmorButton.ALL != armorMode
-				&& this.getSlotTextureBox(this.selTextureArmors.get(armorMode.getSlot())) == textureBox) {
+				&& this.getTextureBoxFromSlot(this.selTextureArmors.get(armorMode.getSlot())) == textureBox) {
 			//赤色
 			colorType = 0;
 
@@ -481,7 +480,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	 * @param slotIndex
 	 * @return
 	 */
-	protected LMTextureBox getSlotTextureBox(int slotIndex) {
+	private LMTextureBox getTextureBoxFromSlot(int slotIndex) {
 		return this.isArmorMode ? 
 				this.indexArmor.get(slotIndex) : this.indexTexture.get(slotIndex);
 	}
@@ -492,14 +491,14 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	public void setTextureSelectedBox() {
 		if (!this.isArmorMode) {
 			//リトルメイドモデル
-			this.entity.setTextureLittleMaid(this.getSlotTextureBox(this.selTextureLittleMaid));
+			this.entity.setTextureLittleMaid(this.getTextureBoxFromSlot(this.selTextureLittleMaid));
 			this.entity.setTextureLittleMaidColor(this.selectColor, this.targetContract);
 		} else {
 			//アーマーモデル
-			this.entity.setTextureArmor(this.getSlotTextureBox(this.selTextureArmors.get(EntityEquipmentSlot.HEAD)),
-					this.getSlotTextureBox(this.selTextureArmors.get(EntityEquipmentSlot.CHEST)),
-					this.getSlotTextureBox(this.selTextureArmors.get(EntityEquipmentSlot.LEGS)),
-					this.getSlotTextureBox(this.selTextureArmors.get(EntityEquipmentSlot.FEET)));
+			this.entity.setTextureArmor(this.getTextureBoxFromSlot(this.selTextureArmors.get(EntityEquipmentSlot.HEAD)),
+					this.getTextureBoxFromSlot(this.selTextureArmors.get(EntityEquipmentSlot.CHEST)),
+					this.getTextureBoxFromSlot(this.selTextureArmors.get(EntityEquipmentSlot.LEGS)),
+					this.getTextureBoxFromSlot(this.selTextureArmors.get(EntityEquipmentSlot.FEET)));
 		}
 		
 	}
@@ -539,7 +538,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	 */
 	public void setSelectedBoxArmor(EntityEquipmentSlot slot) {
 		
-		String modelName = this.getSlotTextureBox(this.selTextureArmors.get(slot)).getTextureModelName();
+		String modelName = this.getTextureBoxFromSlot(this.selTextureArmors.get(slot)).getTextureModelName();
 		
 		int idx = 0;
 		for (LMTextureBox box : indexArmor) {
@@ -584,7 +583,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	 * @return
 	 */
 	public String getTextureLittleMaid() {
-		return this.getSlotTextureBox(this.selTextureLittleMaid).getTextureModelName();
+		return this.getTextureBoxFromSlot(this.selTextureLittleMaid).getTextureModelName();
 	}
 	
 	/**
@@ -600,7 +599,7 @@ public class LMGuiPartsTextureSlot extends GuiSlot {
 	 * @return
 	 */
 	public String getTextureArmor(EntityEquipmentSlot slot) {
-		return this.getSlotTextureBox(this.selTextureArmors.get(slot)).getTextureModelName();
+		return this.getTextureBoxFromSlot(this.selTextureArmors.get(slot)).getTextureModelName();
 	} 
 
 }
