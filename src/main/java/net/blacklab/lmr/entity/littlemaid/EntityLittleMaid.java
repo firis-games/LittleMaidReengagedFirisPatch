@@ -5147,7 +5147,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * @IGuiTextureSelect
 	 */
 	@Override
-	public String getTextureLittleMaid() {
+	public String getGuiTargetLittleMaidName() {
 		return this.getModelCompoundEntity().getTextureModelNameLittleMaid();
 	}
 
@@ -5155,7 +5155,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * @IGuiTextureSelect
 	 */
 	@Override
-	public String getTextureArmor(EntityEquipmentSlot slot) {
+	public String getGuiTargetArmorName(EntityEquipmentSlot slot) {
 		return this.getModelCompoundEntity().getTextureModelNameArmor(slot);
 	}
 
@@ -5163,7 +5163,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * @IGuiTextureSelect
 	 */
 	@Override
-	public int getTextureColor() {
+	public int getGuiTargetColor() {
 		return this.getModelCompoundEntity().getColor();
 	}
 
@@ -5171,7 +5171,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * @IGuiTextureSelect
 	 */
 	@Override
-	public boolean getTextureContract() {
+	public boolean getGuiTargetContract() {
 		return this.isContract();
 	}
 
@@ -5181,7 +5181,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * @IGuiTextureSelect
 	 */
 	@Override
-	public void syncTextureLittleMaid(String textureName, int color) {
+	public void syncSelectTextureLittleMaid(String textureName, int color) {
 		
 		//各パラメータを設定
 		this.setColor((byte) color);
@@ -5197,7 +5197,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * @IGuiTextureSelect
 	 */
 	@Override
-	public void syncTextureArmor(String headTextureName, String chestTextureName, String legsTextureName, String feetTextureName) {
+	public void syncSelectTextureArmor(String headTextureName, String chestTextureName, String legsTextureName, String feetTextureName) {
 		
 		//各パラメータ設定
 		this.getModelConfigCompound().refreshModelsArmor(EntityEquipmentSlot.HEAD, headTextureName);
@@ -5209,5 +5209,4 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		this.syncModelNamesToServer();
 		
 	}
-	
 }
