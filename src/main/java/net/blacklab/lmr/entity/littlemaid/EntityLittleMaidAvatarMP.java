@@ -746,9 +746,12 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 	@Override
 	public PlayerAdvancements getAdvancements()
     {
-		EntityPlayer player = this.avatar.getMaidMasterEntity();
-		if (player instanceof EntityPlayerMP) {
-			return ((EntityPlayerMP) player).getAdvancements();
+    		if(this.avatar != null)
+		{
+			EntityPlayer player = this.avatar.getMaidMasterEntity();
+			if (player instanceof EntityPlayerMP) {
+				return ((EntityPlayerMP) player).getAdvancements();
+			}
 		}
 		return super.getAdvancements();
     }
