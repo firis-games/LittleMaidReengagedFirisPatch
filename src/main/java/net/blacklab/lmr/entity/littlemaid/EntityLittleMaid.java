@@ -429,8 +429,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 					maidAvatar = new EntityLittleMaidAvatarMP(par1World, this);
 				}catch(Throwable throwable){
 					throwable.printStackTrace();
-					maidAvatar = null;
 					setDead();
+					maidAvatar = null;
 					return;
 				} finally {
 					if (oldGameRules != null) {
