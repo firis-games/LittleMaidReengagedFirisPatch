@@ -946,7 +946,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 
 		// AIモードを初期化する
-		maidAvatar.stopActiveHand();
+		if (this.maidAvatar != null) {
+			maidAvatar.stopActiveHand();
+		}
 		setSitting(false);
 //		setSneaking(false);
 //		setActiveModeClass(null);
@@ -1424,7 +1426,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //		}
 		
 		//PlayerAvatarも消去
-		this.maidAvatar.setDead();
+		if (this.maidAvatar != null) {
+			this.maidAvatar.setDead();
+		}
 		
 		super.setDead();
 	}
@@ -1639,7 +1643,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 		// 標準処理
 		setSwing(20, isBloodsuck() ? EnumSound.ATTACK_BLOODSUCK : EnumSound.ATTACK, !isPlaying());
-		maidAvatar.attackTargetEntityWithCurrentItem(par1Entity);
+		if (this.maidAvatar != null) {
+			maidAvatar.attackTargetEntityWithCurrentItem(par1Entity);
+		}
 		return true;
 	}
 
@@ -2045,6 +2051,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	@Override
 	public int getTotalArmorValue() {
+		if (this.maidAvatar == null) return 0;
 		return maidAvatar.getTotalArmorValue();
 	}
 
@@ -2521,7 +2528,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 				if (list != null) {
 					for (int i = 0; i < list.size(); i++) {
 						Entity entity = (Entity)list.get(i);
-						if (!entity.isDead) {
+						if (!entity.isDead && this.maidAvatar != null) {
 							if (entity instanceof EntityArrow &&
 									(getEntityWorld().getDifficulty() == EnumDifficulty.HARD ? ((EntityArrow) entity).shootingEntity == this : true)) {
 								// 特殊回収
@@ -2755,13 +2762,13 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 		// SwingUpdate
 		SwingStatus lmss1 = getSwingStatusDominant();
-		prevSwingProgress = maidAvatar.prevSwingProgress = lmss1.prevSwingProgress;
-		swingProgress = maidAvatar.swingProgress = lmss1.swingProgress;
-		swingProgressInt = maidAvatar.swingProgressInt = lmss1.swingProgressInt;
-		isSwingInProgress = maidAvatar.isSwingInProgress = lmss1.isSwingInProgress;
 
 		// Aveterの毎時処理
 		if (maidAvatar != null) {
+			prevSwingProgress = maidAvatar.prevSwingProgress = lmss1.prevSwingProgress;
+			swingProgress = maidAvatar.swingProgress = lmss1.swingProgress;
+			swingProgressInt = maidAvatar.swingProgressInt = lmss1.swingProgressInt;
+			isSwingInProgress = maidAvatar.isSwingInProgress = lmss1.isSwingInProgress;
 			getAvatarIF().getValue();
 			maidAvatar.onUpdate();
 //			maidAvatar.setValue();
@@ -2808,10 +2815,12 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 		// 標準変数に対する数値の代入
 		SwingStatus lmss = getSwingStatusDominant();
-		prevSwingProgress = maidAvatar.prevSwingProgress = lmss.prevSwingProgress;
-		swingProgress = maidAvatar.swingProgress = lmss.swingProgress;
-		swingProgressInt = maidAvatar.swingProgressInt = lmss.swingProgressInt;
-		isSwingInProgress = maidAvatar.isSwingInProgress = lmss.isSwingInProgress;
+		if (this.maidAvatar != null) {
+			prevSwingProgress = maidAvatar.prevSwingProgress = lmss.prevSwingProgress;
+			swingProgress = maidAvatar.swingProgress = lmss.swingProgress;
+			swingProgressInt = maidAvatar.swingProgressInt = lmss.swingProgressInt;
+			isSwingInProgress = maidAvatar.isSwingInProgress = lmss.isSwingInProgress;
+		}
 
 		// 持ち物の確認
 		this.onInventoryChanged();
@@ -3991,7 +4000,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	
 	public void setSwinging(int pArm, EnumSound pSound, boolean force) {
 		if(!pSound.equals(EnumSound.NULL)) playLittleMaidVoiceSound(pSound, !force);
-		if (mstatSwingStatus[pArm].setSwinging()) {
+		if (mstatSwingStatus[pArm].setSwinging() && this.maidAvatar != null) {
 			maidAvatar.swingProgressInt = -1;
 //			maidAvatar.swingProgressInt = -1;
 			maidAvatar.isSwingInProgress = true;
