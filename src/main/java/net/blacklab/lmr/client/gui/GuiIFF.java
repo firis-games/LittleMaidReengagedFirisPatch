@@ -65,16 +65,16 @@ public class GuiIFF extends GuiScreen {
 
 		// IFFをサーバーから取得
 		if (!Minecraft.getMinecraft().isSingleplayer()) {
-			int li = 0;
+//			int li = 0;
 			for (String ls : IFF.getUserIFF(player.getUniqueID()).keySet()) {
 				// TODO Too much packet with many entities
 				NBTTagCompound tagCompound = new NBTTagCompound();
-				tagCompound.setInteger("Index", li);
+//				tagCompound.setInteger("Index", li);
 				tagCompound.setString("Name", ls);
 
-				LittleMaidReengaged.Debug("RequestIFF %s(%d)", ls, li);
-				LMRNetwork.sendPacketToServer(LMRMessage.EnumPacketMode.SERVER_REQUEST_IFF, null, tagCompound);
-				li++;
+//				LittleMaidReengaged.Debug("RequestIFF %s(%d)", ls, li);
+				LMRNetwork.sendPacketToServer(LMRMessage.EnumPacketMode.SERVER_REQUEST_IFF, -1, tagCompound);
+//				li++;
 			}
 		}
 	}

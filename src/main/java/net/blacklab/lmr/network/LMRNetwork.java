@@ -210,7 +210,7 @@ public class LMRNetwork
 		sendTag.setByte("Value", pValue);
 		sendTag.setString("Name", name);
 
-		sendPacketToPlayer(LMRMessage.EnumPacketMode.CLIENT_RESPOND_IFF, null, sendTag, player);
+		sendPacketToPlayer(LMRMessage.EnumPacketMode.CLIENT_RESPOND_IFF, -1, sendTag, player);
 	}
 
 	
