@@ -187,3 +187,7 @@ item.maid_spawn_egg.info=おいでませメイドさん
 item.maid_contract.name=メイドさんの契約書
 item.maid_contract.info=村人からのお仕事紹介
 
+tile.sugar_box.name=シュガーボックス
+tile.sugar_box.info=メイドさんのお給料箱
+tile.sugar_box.details=砂糖の入ったチェストを上に置く
+

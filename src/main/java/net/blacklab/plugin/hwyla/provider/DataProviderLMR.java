@@ -11,7 +11,6 @@ import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -82,13 +81,7 @@ public class DataProviderLMR implements IWailaEntityProvider {
 		}
 		
 		//砂糖
-		int sugar = 0;
-		for (int i = 0; i < maid.maidInventory.getSizeInventory(); i++) {
-			ItemStack stack = maid.maidInventory.getStackInSlot(i);
-			if (ItemHelper.isSugar(stack)) {
-				sugar += stack.getCount();
-			}
-		}
+		int sugar = ItemHelper.getSugarCount(maid);
 		tag.setInteger("sugar", sugar);
 		
 		return tag;

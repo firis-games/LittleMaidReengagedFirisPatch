@@ -1,0 +1,22 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"sms",
+		"mcm",
+		"sms"
+	],
+	"key": {
+		"s": {
+			"item": "minecraft:sugar"
+		},
+		"m": {
+			"item": "lmreengaged:maid_sugar"
+		},
+		"c": {
+			"item": "minecraft:chest"
+		}
+	},
+	"result": {
+		"item": "lmreengaged:sugar_box"
+	}
+}

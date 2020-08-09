@@ -124,6 +124,22 @@ public class ItemHelper {
 	}
 	
 	/**
+	 * メイドさんが持っている砂糖の数を取得する
+	 * @param maid
+	 * @return
+	 */
+	public static int getSugarCount(EntityLittleMaid maid) {
+		int sugar = 0;
+		for (int i = 0; i < maid.maidInventory.getSizeInventory(); i++) {
+			ItemStack stack = maid.maidInventory.getStackInSlot(i);
+			if (ItemHelper.isSugar(stack)) {
+				sugar += stack.getCount();
+			}
+		}
+		return sugar;
+	}
+	
+	/**
 	 * 契約アイテム（ケーキ）かの判断を行う
 	 * @param item
 	 * @return

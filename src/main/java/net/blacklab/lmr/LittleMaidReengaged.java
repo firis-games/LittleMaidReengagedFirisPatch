@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import firis.lmlib.api.LMLibraryAPI;
+import net.blacklab.lmc.common.block.LMBlockSugarBox;
 import net.blacklab.lmc.common.command.LMCommand;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.ReflectionHelper;
@@ -15,6 +16,7 @@ import net.blacklab.lmc.common.item.LMItemMaidCarry;
 import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
 import net.blacklab.lmc.common.item.LMItemMaidSpawnEgg;
 import net.blacklab.lmc.common.item.LMItemMaidSugar;
+import net.blacklab.lmc.common.tileentity.LMTileSugarBox;
 import net.blacklab.lmc.common.villager.StructureVillagePiecesMaidBrokerHouse;
 import net.blacklab.lmc.common.villager.VillagerProfessionMaidBroker;
 import net.blacklab.lmr.client.renderer.entity.RenderEntityMarkerDummy;
@@ -30,11 +32,13 @@ import net.blacklab.lmr.network.ProxyCommon;
 import net.blacklab.lmr.util.IFF;
 import net.blacklab.lmr.util.manager.PluginManager;
 import net.firis.lmt.common.LMTCore;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
@@ -61,6 +65,7 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 import net.minecraftforge.fml.relauncher.Side;
@@ -108,6 +113,14 @@ public class LittleMaidReengaged {
     }
     
     /**
+     * ブロックインスタンス保持用
+     */
+    @ObjectHolder(LittleMaidReengaged.MODID)
+    public static class LMBlocks {
+    	public final static Block SUGAR_BOX = null;
+    }
+    
+    /**
      * 村人職業のインスタンス保持用
      */
 	@ObjectHolder(LittleMaidReengaged.MODID + ":maid_broker")
@@ -146,6 +159,10 @@ public class LittleMaidReengaged {
 
 		//テスト用preInit
 		LMTCore.preInit(evt);
+		
+		//TileEntity登録
+		GameRegistry.registerTileEntity(LMTileSugarBox.class, 
+        		new ResourceLocation(MODID, "te_sugar_box"));
 		
 	}
 
@@ -248,6 +265,17 @@ public class LittleMaidReengaged {
 		}
 	}
 	
+	@SubscribeEvent
+    protected static void registerBlocks(RegistryEvent.Register<Block> event) {
+		
+		//シュガーボックス
+        event.getRegistry().register(
+                new LMBlockSugarBox()
+                .setRegistryName(MODID, "sugar_box")
+                .setUnlocalizedName("sugar_box")
+        );
+		
+	}
 	
 	@SubscribeEvent
     protected static void registerItems(RegistryEvent.Register<Item> event) {
@@ -276,6 +304,10 @@ public class LittleMaidReengaged {
 		event.getRegistry().register(new LMItemMaidSpawnEgg(true)
     			.setRegistryName(MODID, "maid_contract")
     			.setUnlocalizedName("maid_contract"));
+		
+		//シュガーボックス
+    	event.getRegistry().register(new ItemBlock(LMBlocks.SUGAR_BOX)
+    			.setRegistryName(MODID, "sugar_box"));
     	
 		//テスト用モジュール登録
 		LMTCore.registerItems(event);
@@ -305,6 +337,10 @@ public class LittleMaidReengaged {
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_CONTRACT, 0,
 				new ModelResourceLocation(LMItems.MAID_CONTRACT.getRegistryName(), "inventory"));
 
+		// シュガーボックス
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(LMBlocks.SUGAR_BOX), 0,
+				new ModelResourceLocation(LMBlocks.SUGAR_BOX.getRegistryName(), "inventory"));
+		
 		LMTCore.registerModels(event);
 		
 		//Entityの描画設定

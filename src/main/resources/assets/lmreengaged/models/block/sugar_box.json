@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "side": "lmreengaged:blocks/sugar_box",
+        "end": "lmreengaged:blocks/sugar_box_top"
+    }
+}

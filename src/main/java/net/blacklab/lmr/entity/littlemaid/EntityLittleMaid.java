@@ -27,6 +27,7 @@ import firis.lmlib.api.constant.EnumColor;
 import firis.lmlib.api.constant.EnumSound;
 import firis.lmlib.api.manager.LMTextureBoxManager;
 import firis.lmlib.api.resource.LMTextureBox;
+import net.blacklab.lmc.common.event.SugarBoxHandler;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
@@ -2937,6 +2938,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 		
 		//this.modelConfigCompound.setTextureInitServer(pName);
+		
+		//シュガーボックス連携
+		SugarBoxHandler.onUpdate(this);
 
 	}
 
