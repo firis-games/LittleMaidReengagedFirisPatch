@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import firis.lmlib.api.LMLibraryAPI;
@@ -86,7 +87,7 @@ public class LittleMaidReengaged {
 			+ "before:gvclib@[1.12.2,);"
 			+ "before:generalguns@[1.,);";
 	
-	public static Logger logger;
+	public static Logger logger = LogManager.getLogger(MODID);;
 
 	@SidedProxy(clientSide = "net.blacklab.lmr.network.ProxyClient", serverSide = "net.blacklab.lmr.network.ProxyCommon")
 	public static ProxyCommon proxy;
@@ -118,7 +119,7 @@ public class LittleMaidReengaged {
 	public static void Debug(String pText, Object... pVals) {
 		// デバッグメッセージ
 		if (LMRConfig.cfg_PrintDebugMessage) {
-			System.out.println(String.format("littleMaidMob-" + pText, pVals));
+			logger.debug(String.format("littleMaidMob-" + pText, pVals));
 		}
 	}
 	
@@ -132,7 +133,7 @@ public class LittleMaidReengaged {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
 		
-		logger = evt.getModLog();
+		//logger = evt.getModLog();
 		
 		// Config初期化
 		LMRConfig.init(evt.getSuggestedConfigurationFile());

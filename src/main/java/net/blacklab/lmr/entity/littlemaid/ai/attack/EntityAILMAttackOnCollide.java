@@ -196,7 +196,7 @@ public class EntityAILMAttackOnCollide extends EntityAIBase implements IEntityAI
 		double vdx = -Math.sin(theMaid.renderYawOffset * 3.1415926535897932384626433832795F / 180F);
 		double vdz = Math.cos(theMaid.renderYawOffset * 3.1415926535897932384626433832795F / 180F);
 		double ld = (tdx * vdx + tdz * vdz) / (Math.sqrt(tdx * tdx + tdz * tdz) * Math.sqrt(vdx * vdx + vdz * vdz));
-//	        System.out.println(theMaid.renderYawOffset + ", " + ld);
+//	        LittleMaidReengaged.Debug(theMaid.renderYawOffset + ", " + ld);
 		if (ld < -0.35D) {
 			return;
 		}

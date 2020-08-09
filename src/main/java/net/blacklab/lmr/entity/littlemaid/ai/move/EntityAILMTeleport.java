@@ -3,6 +3,7 @@ package net.blacklab.lmr.entity.littlemaid.ai.move;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.ai.IEntityAILM;
 import net.minecraft.block.material.Material;
@@ -72,7 +73,7 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 		if (lMaster != null) {
 			
 			BlockPos lMasterPos = lMaster.getPosition();
-			System.out.println("MASTER=" + lMasterPos.toString());
+			LittleMaidReengaged.Debug("MASTER=" + lMasterPos.toString());
 			
 			List<BlockPos> posList = new ArrayList<>();
 			

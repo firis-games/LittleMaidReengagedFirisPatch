@@ -2479,7 +2479,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		try {
 			super.onLivingUpdate();
 		} catch (Exception exception) {
-			System.out.println("EntityLittleMaid.onLivingUpdate.super");
+			LittleMaidReengaged.logger.error("EntityLittleMaid.onLivingUpdate.super");
 			exception.printStackTrace();
 		}
 

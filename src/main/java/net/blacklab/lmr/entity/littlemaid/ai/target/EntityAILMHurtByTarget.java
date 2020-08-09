@@ -1,5 +1,6 @@
 package net.blacklab.lmr.entity.littlemaid.ai.target;
 
+import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.util.helper.MaidHelper;
@@ -51,13 +52,13 @@ public class EntityAILMHurtByTarget extends EntityAIHurtByTarget {
 		super.updateTask();
 		String s1 = taskOwner.getRevengeTarget() == null ? "Null" : taskOwner.getRevengeTarget().getClass().toString();
 		String s2 = taskOwner.getAttackTarget() == null ? "Null" : taskOwner.getAttackTarget().getClass().toString();
-		System.out.println(String.format("ID:%d, target:%s, attack:%s", taskOwner.getEntityId(), s1, s2));
+		LittleMaidReengaged.Debug(String.format("ID:%d, target:%s, attack:%s", taskOwner.getEntityId(), s1, s2));
 
 		// 殴られた仕返し
 		EntityLivingBase leliving = taskOwner.getRevengeTarget();
 		if (leliving != null && leliving != taskOwner.getAttackTarget()) {
 			taskOwner.setAttackTarget(null);
-			System.out.println(String.format("ID:%d, ChangeTarget.", taskOwner.getEntityId()));
+			LittleMaidReengaged.Debug(String.format("ID:%d, ChangeTarget.", taskOwner.getEntityId()));
 		}
 
 	}
