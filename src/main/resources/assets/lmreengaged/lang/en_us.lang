@@ -194,3 +194,8 @@ tile.sugar_box.name=Sugar Box
 tile.sugar_box.info=Maid salary box
 tile.sugar_box.details=Put a chest of sugar on top
 
+item.maid_stick.name=Maid Tackt
+item.maid_stick.info=Instruct the maid
+item.maid_stick.details1=Waiting action switching
+item.maid_stick.details2=Free action switching[Sneak]
+

@@ -5222,4 +5222,27 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		this.syncModelNamesToServer();
 		
 	}
+	
+	/**
+	 * 待機状態とお仕事状態を切り替える
+	 */
+	public void changeMaidWaitAndFreedom(boolean isWait, boolean isFreedom, EntityPlayer player) {
+		//サーバーサイドのみ切り替え処理を行う
+		if (!this.world.isRemote) {
+			//自由行動の設定
+			if (this.isFreedom() != isFreedom) {
+				this.setFreedom(isFreedom);
+			}
+			if (this.isMaidWait() != isWait) {
+				if (!isWait) {
+					// 動作モードの切替
+					this.refreshMaidMode(player);
+					this.setMaidWait(false);
+				} else {
+					// 待機
+					this.setMaidWait(true);
+				}
+			}
+		}
+	}
 }

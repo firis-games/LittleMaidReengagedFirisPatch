@@ -15,6 +15,7 @@ import net.blacklab.lmc.common.helper.ReflectionHelper;
 import net.blacklab.lmc.common.item.LMItemMaidCarry;
 import net.blacklab.lmc.common.item.LMItemMaidSouvenir;
 import net.blacklab.lmc.common.item.LMItemMaidSpawnEgg;
+import net.blacklab.lmc.common.item.LMItemMaidStick;
 import net.blacklab.lmc.common.item.LMItemMaidSugar;
 import net.blacklab.lmc.common.tileentity.LMTileSugarBox;
 import net.blacklab.lmc.common.villager.StructureVillagePiecesMaidBrokerHouse;
@@ -110,6 +111,7 @@ public class LittleMaidReengaged {
     	public final static Item MAID_SUGAR = null;
     	public final static Item MAID_SPAWN_EGG = null;
     	public final static Item MAID_CONTRACT = null;
+    	public final static Item MAID_STICK = null;
     }
     
     /**
@@ -305,6 +307,11 @@ public class LittleMaidReengaged {
     			.setRegistryName(MODID, "maid_contract")
     			.setUnlocalizedName("maid_contract"));
 		
+		//メイド棒
+		event.getRegistry().register(new LMItemMaidStick()
+    			.setRegistryName(MODID, "maid_stick")
+    			.setUnlocalizedName("maid_stick"));
+		
 		//シュガーボックス
     	event.getRegistry().register(new ItemBlock(LMBlocks.SUGAR_BOX)
     			.setRegistryName(MODID, "sugar_box"));
@@ -333,9 +340,13 @@ public class LittleMaidReengaged {
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_SPAWN_EGG, 0,
 				new ModelResourceLocation(LMItems.MAID_SPAWN_EGG.getRegistryName(), "inventory"));
 
-    	// メイドさんの契約書
+		// メイドさんの契約書
 		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_CONTRACT, 0,
 				new ModelResourceLocation(LMItems.MAID_CONTRACT.getRegistryName(), "inventory"));
+		
+		// メイド棒
+		ModelLoader.setCustomModelResourceLocation(LMItems.MAID_STICK, 0,
+				new ModelResourceLocation(LMItems.MAID_STICK.getRegistryName(), "inventory"));
 
 		// シュガーボックス
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(LMBlocks.SUGAR_BOX), 0,

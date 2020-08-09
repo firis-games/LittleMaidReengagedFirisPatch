@@ -1,0 +1,19 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"  m",
+		" s ",
+		"s  "
+	],
+	"key": {
+		"s": {
+			"item": "minecraft:stick"
+		},
+		"m": {
+			"item": "lmreengaged:maid_sugar"
+		}
+	},
+	"result": {
+		"item": "lmreengaged:maid_stick"
+	}
+}
