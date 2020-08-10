@@ -10,6 +10,7 @@ import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRMessage;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
 /**
@@ -127,7 +128,11 @@ public class LMSoundController {
 
 			//音声パックがロードされていない場合は通常音声として再生する
 			if (!LMLibraryAPI.instance().isSoundPack()) {
-				this.maid.playSound(sound.getDefaultVoice(), 1.0f);
+				SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(sound.getDefaultVoice()));
+				if (soundEvent != null) {
+					this.maid.world.playSound(maid.posX, maid.posY, maid.posZ, 
+							soundEvent, maid.getSoundCategory(), maid.getSoundVolume(), 0.8F, false);
+				}
 				playingSound.remove(sound);
 				continue;
 			}
