@@ -34,6 +34,9 @@ public class LMRConfig {
 	// VoiceRate
 	public static float cfg_voiceRate = 0.2f;
 	
+	// デフォルトボイス
+	public static boolean cfg_default_voice = true;
+	
 	/** メイドの土産 */
 	public static boolean cfg_isResurrection = true;
 	
@@ -117,6 +120,12 @@ public class LMRConfig {
 	/** 村人の交換レート */
 	public static int cfg_general_villager_trade_rate = 1;
 	
+	/** シュガーボックス範囲 */
+	public static int cfg_general_sugar_box_range = 3;
+	
+	/** メイド指揮棒範囲 */
+	public static int cfg_general_maid_stick_range = 10;
+	
 	/** 試験機能 ******************************/
 	/** 水上歩行術 */
 	public static boolean cfg_test_water_walking  = true;
@@ -182,6 +191,14 @@ public class LMRConfig {
 		//トレードレート
 		cfg_general_villager_trade_rate = cfg.getInt("Villager.MaidContractTradeRate", GROUP_GENERAL, 2, 1, 3,
 				"メイドさんの契約書の取引レートを変更します。1:easy[4-12], 2:normal[8-32] 3:hard[24-64]");
+		
+		//シュガーボックス範囲
+		cfg_general_sugar_box_range = cfg.getInt("Item.SugarBox.Range", GROUP_GENERAL, 3, 1, 10,
+				"シュガーボックスの有効範囲チャンクの半径を設定します。例：3を設定した場合はシュガーボックスを中心に7×7チャンクの範囲");
+		
+		//メイド指揮棒
+		cfg_general_maid_stick_range = cfg.getInt("Item.MaidStick.Range", GROUP_GENERAL, 10, 1, 30,
+				"ご主人様を中心の有効範囲ブロック数の半径を設定します。");
 		
 	}
 	
@@ -375,6 +392,10 @@ public class LMRConfig {
 		//メイドさんのランダムVoiceRate
 		cfg_voiceRate = cfg.getFloat("VoiceRate", GROUP_DECORATION, 0.2F, 0.0F, 1.0F,
 				"メイドさんの通常おしゃべりのレートを設定できます。[1.0 = 100%]");
+		
+		//メイドさんのデフォルトボイス設定
+		cfg_default_voice = cfg.getBoolean("DefaultVoice", GROUP_DECORATION, true,
+				"メイドさんのデフォルトボイスを有効化します。有効化するとガストの啼き声で啼きます。");
 		
 	}
 	

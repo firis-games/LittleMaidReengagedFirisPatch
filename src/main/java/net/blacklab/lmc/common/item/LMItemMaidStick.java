@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -43,8 +44,12 @@ public class LMItemMaidStick extends Item {
 	 */
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
     	
+    	//有効範囲
+    	//デフォルト10ブロック
+    	int range = LMRConfig.cfg_general_maid_stick_range;
+    	
     	List<EntityLittleMaid> maidList = worldIn.getEntitiesWithinAABB(EntityLittleMaid.class, new AxisAlignedBB(
-    			playerIn.getPosition().add(-10, -10, -10), playerIn.getPosition().add(10, 10, 10)));
+    			playerIn.getPosition().add(-range, -range, -range), playerIn.getPosition().add(range, range, range)));
     	
     	Boolean isWait = null;
     	Boolean isFreedom = null;

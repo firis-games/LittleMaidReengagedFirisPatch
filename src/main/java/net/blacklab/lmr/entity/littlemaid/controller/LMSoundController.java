@@ -128,10 +128,12 @@ public class LMSoundController {
 
 			//音声パックがロードされていない場合は通常音声として再生する
 			if (!LMLibraryAPI.instance().isSoundPack()) {
-				SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(sound.getDefaultVoice()));
-				if (soundEvent != null) {
-					this.maid.world.playSound(maid.posX, maid.posY, maid.posZ, 
-							soundEvent, maid.getSoundCategory(), maid.getSoundVolume(), 0.8F, false);
+				if (LMRConfig.cfg_default_voice) {
+					SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(sound.getDefaultVoice()));
+					if (soundEvent != null) {
+						this.maid.world.playSound(maid.posX, maid.posY, maid.posZ, 
+								soundEvent, maid.getSoundCategory(), maid.getSoundVolume(), 0.8F, false);
+					}
 				}
 				playingSound.remove(sound);
 				continue;

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.util.helper.ItemHelper;
 import net.minecraft.item.ItemStack;
@@ -87,12 +88,15 @@ public class SugarBoxHandler {
 			try {
 				ChunkPos tilePos = new ChunkPos(tileSugarBox.getPos());
 				int tileDimensionId = tileSugarBox.getWorld().provider.getDimension();
-
+				
+				//有効範囲
+				//デフォルト7x7チャンク判定
+				int range = LMRConfig.cfg_general_sugar_box_range;
+				
 				// チャンクの範囲か判断する
-				// 7x7チャンク判定
 				if (dimensionId == tileDimensionId 
-						&& tilePos.x - 3 <= checkChunk.x && checkChunk.x <= tilePos.x + 3
-						&& tilePos.z - 3 <= checkChunk.z && checkChunk.z <= tilePos.z + 3) {
+						&& tilePos.x - range <= checkChunk.x && checkChunk.x <= tilePos.x + range
+						&& tilePos.z - range <= checkChunk.z && checkChunk.z <= tilePos.z + range) {
 					
 					//シュガーボックスの上にチェスト系アイテムがあるかの判断
 					BlockPos pos = new BlockPos(tileSugarBox.getPos().up());
