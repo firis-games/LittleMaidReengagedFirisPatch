@@ -3548,7 +3548,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //								registerTick.setEnable(false);
 //								return true;
 //							}
-						else if (par3ItemStack.getItem() == Items.DYE) {
+						else if (LMRConfig.cfg_lm_change_maid_color_dye 
+								&& par3ItemStack.getItem() == Items.DYE) {
 							// カラーメイド
 							if (canChangeModel()) {
 								if (!getEntityWorld().isRemote) {

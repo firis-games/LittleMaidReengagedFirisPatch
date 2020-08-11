@@ -126,6 +126,9 @@ public class LMRConfig {
 	/** メイド指揮棒範囲 */
 	public static int cfg_general_maid_stick_range = 10;
 	
+	/** 染料によるメイドさんの色変更機能 */
+	public static boolean cfg_lm_change_maid_color_dye = false;
+	
 	/** 試験機能 ******************************/
 	/** 水上歩行術 */
 	public static boolean cfg_test_water_walking  = true;
@@ -270,6 +273,10 @@ public class LMRConfig {
 		//死亡時のメッセージ表示
 		cfg_DeathMessage = cfg.getBoolean("deathMessage", GROUP_LITTLE_MAID, true,
 				"メイドさん死亡時のメッセージ表示を設定できます。");
+		
+		//染料によるメイドさんの色変更機能
+		cfg_lm_change_maid_color_dye = cfg.getBoolean("ChangeMaidColorDye", GROUP_LITTLE_MAID, false,
+				"染料を与えるとメイドさんの色を変更できる機能を有効化できます。");
 		
 	}
 	
