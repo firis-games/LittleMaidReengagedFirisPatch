@@ -132,7 +132,7 @@ public class LMSoundController {
 					SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(sound.getDefaultVoice()));
 					if (soundEvent != null) {
 						this.maid.world.playSound(maid.posX, maid.posY, maid.posZ, 
-								soundEvent, maid.getSoundCategory(), maid.getSoundVolume(), 0.8F, false);
+								soundEvent, maid.getSoundCategory(), maid.getSoundVolume(), 1.0F, false);
 					}
 				}
 				playingSound.remove(sound);
