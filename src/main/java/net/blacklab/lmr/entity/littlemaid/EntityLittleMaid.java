@@ -3590,19 +3590,21 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 										(int)posZ);
 //								}
 							return true;
-						}/*
-						else if ((itemstack1.getItem() == Items.glass_bottle) && (experienceValue >= 5)) {
+						}
+						else if ((par3ItemStack.getItem() == Items.GLASS_BOTTLE) && (this.experienceHandler.getMaidExperience() >= 5)) {
 							// Expボトル
-							MMM_Helper.decPlayerInventory(par1EntityPlayer, -1, 1);
+							//効果音
+							playSound("entity.item.pickup");
+							
+							par3ItemStack.shrink(1);
 							if (!getEntityWorld().isRemote) {
-								entityDropItem(new ItemStack(Items.experience_bottle), 0.5F);
-								experienceValue -= 5;
-								if (maidAvatar != null) {
-									maidAvatar.experienceTotal -= 5;
-								}
+								entityDropItem(new ItemStack(Items.EXPERIENCE_BOTTLE), 0.5F);
+								this.experienceHandler.setMaidExperience(this.experienceHandler.getMaidExperience() - 5.0F);
+								//同期処理
+								this.dataManager.set(EntityLittleMaid.dataWatch_MaidExpValue, this.getExperienceHandler().getMaidExperience());
 							}
 							return true;
-						}*/
+						}
 						else if (par3ItemStack.getItem() instanceof ItemPotion) {
 							// ポーション
 							if(!getEntityWorld().isRemote) {
