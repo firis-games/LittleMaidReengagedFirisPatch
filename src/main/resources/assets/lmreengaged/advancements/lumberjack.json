@@ -1,16 +1,16 @@
 {
     "display": {
         "icon": {
-            "item": "minecraft:iron_shovel"
+            "item": "minecraft:diamond_axe"
         },
         "title": {
-            "translate": "achievement.zombuster"
+            "translate": "advancements.lumberjack"
         },
         "description": {
-            "translate": "achievement.zombuster.desc"
+            "translate": "advancements.lumberjack.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:farmer",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

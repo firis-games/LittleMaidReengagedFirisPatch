@@ -4,13 +4,13 @@
             "item": "minecraft:gunpowder"
         },
         "title": {
-            "translate": "achievement.boost"
+            "translate": "advancements.boost"
         },
         "description": {
-            "translate": "achievement.boost.desc"
+            "translate": "advancements.boost.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:blazingstar",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

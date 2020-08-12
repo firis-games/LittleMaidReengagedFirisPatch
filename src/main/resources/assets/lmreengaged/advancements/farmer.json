@@ -4,13 +4,13 @@
             "item": "minecraft:diamond_hoe"
         },
         "title": {
-            "translate": "achievement.farmer"
+            "translate": "advancements.farmer"
         },
         "description": {
-            "translate": "achievement.farmer.desc"
+            "translate": "advancements.farmer.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:contract",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

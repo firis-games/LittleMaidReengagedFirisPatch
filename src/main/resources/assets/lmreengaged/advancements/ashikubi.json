@@ -4,13 +4,13 @@
             "item": "minecraft:chainmail_boots"
         },
         "title": {
-            "translate": "achievement.ashikubi"
+            "translate": "advancements.ashikubi"
         },
         "description": {
-            "translate": "achievement.ashikubi.desc"
+            "translate": "advancements.ashikubi.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:overprtct",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

@@ -42,6 +42,11 @@ public class AchievementsLMRE {
 		Boost("boost"),
 		Overprtct("overprtct"),
 		Ashikubi("ashikubi"),
+		
+		//追加モード
+		LumberJack("lumberjack"),
+		SugarCane("sugar_cane"),
+		Angler("angler"),
 		;
 		
 		private AC(String value) {

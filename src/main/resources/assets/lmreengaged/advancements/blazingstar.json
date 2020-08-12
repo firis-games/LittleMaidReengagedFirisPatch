@@ -1,16 +1,16 @@
 {
     "display": {
         "icon": {
-            "item": "minecraft:bow"
+            "item": "minecraft:flint_and_steel"
         },
         "title": {
-            "translate": "achievement.blazingstar"
+            "translate": "advancements.blazingstar"
         },
         "description": {
-            "translate": "achievement.blazingstar.desc"
+            "translate": "advancements.blazingstar.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:archer",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

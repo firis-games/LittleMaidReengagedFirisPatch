@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import firis.lmlib.api.constant.EnumSound;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
+import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
@@ -116,8 +118,8 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		if (!litemstack.isEmpty()) {
 			if (isTriggerItem(mode_Lumberjack, litemstack)) {
 				owner.setMaidMode(mode_Lumberjack);
-				//進捗があったらここに設定する
-				
+				//進捗
+				AchievementsLMRE.grantAC(pentityplayer, AC.LumberJack);
 				return true;
 			}
 		}

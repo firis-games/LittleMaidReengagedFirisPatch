@@ -4,13 +4,13 @@
             "item": "minecraft:shears"
         },
         "title": {
-            "translate": "achievement.ripper"
+            "translate": "advancements.ripper"
         },
         "description": {
-            "translate": "achievement.ripper.desc"
+            "translate": "advancements.ripper.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:contract",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

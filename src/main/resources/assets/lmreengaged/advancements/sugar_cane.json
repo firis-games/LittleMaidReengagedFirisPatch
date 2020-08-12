@@ -1,16 +1,16 @@
 {
     "display": {
         "icon": {
-            "item": "minecraft:bread"
+            "item": "minecraft:reeds"
         },
         "title": {
-            "translate": "advancements.healer"
+            "translate": "advancements.sugar_cane"
         },
         "description": {
-            "translate": "advancements.healer.desc"
+            "translate": "advancements.sugar_cane.desc"
         }
     },
-    "parent": "lmreengaged:contract",
+    "parent": "lmreengaged:farmer",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

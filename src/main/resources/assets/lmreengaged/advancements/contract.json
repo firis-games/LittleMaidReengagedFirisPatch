@@ -4,10 +4,10 @@
             "item": "minecraft:cake"
         },
         "title": {
-            "translate": "achievement.contract"
+            "translate": "advancements.contract"
         },
         "description": {
-            "translate": "achievement.contract.desc"
+            "translate": "advancements.contract.desc"
         }
     },
     "parent": "lmreengaged:root",

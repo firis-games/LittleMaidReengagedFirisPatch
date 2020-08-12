@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "minecraft:sugar"
+            "item": "minecraft:cake"
         },
         "title": {
             "translate": "advancements.root"
@@ -10,8 +10,8 @@
             "translate": "advancements.root.desc"
         },
         "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
-        "show_toast": false,
-        "announce_to_chat": false,
+        "show_toast": true,
+        "announce_to_chat": true,
         "hidden": false
     },
     "criteria": {

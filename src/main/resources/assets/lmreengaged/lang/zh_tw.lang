@@ -7,43 +7,43 @@ item.lmreengaged:maidporter.name=女僕攜帶蛋
 
 advancements.root=Little Maid Reengaged
 advancements.root.desc=跟女僕在一起
-achievement.contract=領悟
-achievement.contract.desc=僱用一名小女僕
-achievement.fencer=我來保護你! 主人!
-achievement.fencer.desc=讓小女僕進入"劍士"模式
-achievement.bloodsucker=請讓我看到更多的血吧
-achievement.bloodsucker.desc=讓小女僕進入”嗜血女僕”模式
-achievement.archer=你逃不掉的! 
-achievement.archer.desc=讓小女僕進入"射手"模式
-achievement.blazingstar=才不要讓你碰~
-achievement.blazingstar.desc=讓女僕進入"嗜血射手"模式
-achievement.cooking=誒? 鐵"煮"好了...
-achievement.cooking.desc=讓小女僕進入"烹飪"或"廚師小姐"模式
-achievement.farmer="感受到那陣微風嗎? 馬上下載光影模組吧..."
-achievement.farmer.desc=讓小女僕進入"農家小女孩"或"農耕女僕"模式
-achievement.healer=要讓主人一直飽飽的!
-achievement.healer.desc=讓小女僕進入"治療"或"餵食"模式
-achievement.pharmacist=鄰羥基苯甲醛加乙酸酐，會變成甚麼呢?
-achievement.pharmacist.desc=讓小女僕進入"釀造"模式
-achievement.ripper=我也想在床上睡覺覺QAQ
-achievement.ripper.desc=讓小女僕進入"剪羊毛"模式
-achievement.torcher=幽靈甚麼的好可怕QAQ(抖)
-achievement.torcher.desc=讓小女僕進入"火把放置"模式
+advancements.contract=領悟
+advancements.contract.desc=僱用一名小女僕
+advancements.fencer=我來保護你! 主人!
+advancements.fencer.desc=讓小女僕進入"劍士"模式
+advancements.bloodsucker=請讓我看到更多的血吧
+advancements.bloodsucker.desc=讓小女僕進入”嗜血女僕”模式
+advancements.archer=你逃不掉的! 
+advancements.archer.desc=讓小女僕進入"射手"模式
+advancements.blazingstar=才不要讓你碰~
+advancements.blazingstar.desc=讓女僕進入"嗜血射手"模式
+advancements.cooking=誒? 鐵"煮"好了...
+advancements.cooking.desc=讓小女僕進入"烹飪"或"廚師小姐"模式
+advancements.farmer="感受到那陣微風嗎? 馬上下載光影模組吧..."
+advancements.farmer.desc=讓小女僕進入"農家小女孩"或"農耕女僕"模式
+advancements.healer=要讓主人一直飽飽的!
+advancements.healer.desc=讓小女僕進入"治療"或"餵食"模式
+advancements.pharmacist=鄰羥基苯甲醛加乙酸酐，會變成甚麼呢?
+advancements.pharmacist.desc=讓小女僕進入"釀造"模式
+advancements.ripper=我也想在床上睡覺覺QAQ
+advancements.ripper.desc=讓小女僕進入"剪羊毛"模式
+advancements.torcher=幽靈甚麼的好可怕QAQ(抖)
+advancements.torcher.desc=讓小女僕進入"火把放置"模式
 
-achievement.zombuster=這個根本不是武器，是鋸齒邊邊的鏟子!
-achievement.zombuster.desc="我挖，我挖就好了吧!"
+advancements.zombuster=這個根本不是武器，是鋸齒邊邊的鏟子!
+advancements.zombuster.desc="我挖，我挖就好了吧!"
 
-achievement.overprtct=過度保護
-achievement.overprtct.desc="這是最硬的裝甲了"
+advancements.overprtct=過度保護
+advancements.overprtct.desc="這是最硬的裝甲了"
 
-achievement.ashikubi=扭到腳啦-
-achievement.ashikubi.desc="只是傷到腳? 你差點就死了..."
+advancements.ashikubi=扭到腳啦-
+advancements.ashikubi.desc="只是傷到腳? 你差點就死了..."
 
-achievement.boost=變得更狂熱吧!
-achievement.boost.desc="用來代替糖...行不通呢..."
+advancements.boost=變得更狂熱吧!
+advancements.boost.desc="用來代替糖...行不通呢..."
 
-achievement.myfavorite=我最喜歡的東西
-achievement.myfavorite.desc="幾乎都是甜甜的東西。"
+advancements.myfavorite=我最喜歡的東西
+advancements.myfavorite.desc="幾乎都是甜甜的東西。"
 
 littleMaidMob.mode.TorchLayer=照明模式
 littleMaidMob.mode.F-TorchLayer=照明模式(自由)

@@ -4,13 +4,13 @@
             "item": "minecraft:nether_wart"
         },
         "title": {
-            "translate": "achievement.pharmacist"
+            "translate": "advancements.pharmacist"
         },
         "description": {
-            "translate": "achievement.pharmacist.desc"
+            "translate": "advancements.pharmacist.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:cooking",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

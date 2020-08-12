@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import firis.lmlib.api.constant.EnumSound;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
+import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
@@ -93,8 +95,8 @@ public class EntityMode_SugarCane extends EntityModeBase {
 		if (!litemstack.isEmpty()) {
 			if (isTriggerItem(mode_SugarCane, litemstack)) {
 				owner.setMaidMode(mode_SugarCane);
-				//進捗があったらここに設定する
-				
+				//進捗
+				AchievementsLMRE.grantAC(pentityplayer, AC.SugarCane);
 				return true;
 			}
 		}

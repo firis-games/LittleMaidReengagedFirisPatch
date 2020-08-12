@@ -5,42 +5,52 @@ item.lmreengaged:spawn_littlemaid_egg.name=スポーン リトルメイド
 item.lmreengaged:registerkey.name=§eTrigger Item Registerer
 item.lmreengaged:maidporter.name=メイド ポーター
 
-advancements.root=LittleMaidReengaged
+advancements.root=お帰りなさいませ、ご主人様
 advancements.root.desc=メイドさんといっしょ
-achievement.contract=悟り。
-achievement.contract.desc=リトルメイドを雇用する
-achievement.fencer=お護りしますご主人様!
-achievement.fencer.desc=リトルメイドを"剣士"モードにする
-achievement.bloodsucker=もっと血を見せてくださいませ
-achievement.bloodsucker.desc=リトルメイドを"血に飢えた冥土"か"通魔冥土"モードにする
-achievement.archer=逃しませんわ
-achievement.archer.desc=リトルメイドを"射手"モードにする
-achievement.blazingstar=触れさせませんわ
-achievement.blazingstar.desc=リトルメイドを"刃鳴散らす者"モードにする
-achievement.cooking=あれ？鉄ができた…
-achievement.cooking.desc=リトルメイドを"お料理係"か"コックさん"モードにする
-achievement.farmer="そよ風を感じませんか?今すぐShadersModを入手..."
-achievement.farmer.desc=リトルメイドを"農家の小娘"か"自作農家"モードにする
-achievement.healer=ご主人様はいつでも満腹
-achievement.healer.desc=リトルメイドを"回復係"か"食事係"モードにする
-achievement.pharmacist=C6H4(COOH)(OH)+(CH3CO)2O=?
-achievement.pharmacist.desc=リトルメイドを"調合係"か"薬屋さん"モードにする
-achievement.ripper=私もベッドで寝てみたいのです(泣)
-achievement.ripper.desc=リトルメイドを"毛刈り隊"モードにする
-achievement.torcher=おばけがこわいのです(泣)(震)
-achievement.torcher.desc=リトルメイドを"照明確保係"モードにする
+advancements.contract=悟り。
+advancements.contract.desc=リトルメイドを雇用する
+advancements.fencer=お護りしますご主人様!
+advancements.fencer.desc=リトルメイドを"剣士"モードにする
+advancements.bloodsucker=もっと血を見せてくださいませ
+advancements.bloodsucker.desc=リトルメイドを"血に飢えた冥土"か"通魔冥土"モードにする
+advancements.archer=逃しませんわ
+advancements.archer.desc=リトルメイドを"射手"モードにする
+advancements.blazingstar=触れさせませんわ
+advancements.blazingstar.desc=リトルメイドを"刃鳴散らす者"モードにする
+advancements.cooking=あれ？鉄ができた…
+advancements.cooking.desc=リトルメイドを"お料理係"か"コックさん"モードにする
+advancements.farmer="そよ風を感じませんか?今すぐShadersModを入手..."
+advancements.farmer.desc=リトルメイドを"農家の小娘"か"自作農家"モードにする
+advancements.healer=ご主人様はいつでも満腹
+advancements.healer.desc=リトルメイドを"回復係"か"食事係"モードにする
+advancements.pharmacist=C6H4(COOH)(OH)+(CH3CO)2O=?
+advancements.pharmacist.desc=リトルメイドを"調合係"か"薬屋さん"モードにする
+advancements.ripper=私もベッドで寝てみたいのです(泣)
+advancements.ripper.desc=リトルメイドを"毛刈り隊"モードにする
+advancements.torcher=おばけがこわいのです(泣)(震)
+advancements.torcher.desc=リトルメイドを"照明確保係"モードにする
+
+advancements.lumberjack=ヘイヘイホー
+advancements.lumberjack.desc=リトルメイドを"木こりの小娘"モードにする
+advancements.sugar_cane=お砂糖はお任せください!
+advancements.sugar_cane.desc=リトルメイドを"自給自足農家"モードにする
+advancements.angler=おさかな天国
+advancements.angler.desc=リトルメイドを"釣り師の小娘"モードにする
 
 achievement.zombuster=こんなの武器じゃないわ．歯形のついたシャベルよ!
 achievement.zombuster.desc="だったら掘ればいいだろ!"
 
-achievement.ashikubi=ｱｼｸﾋﾞｦｸｼﾞｷﾏｼﾀｰ
-achievement.ashikubi.desc="そのまま奴らの餌食に"
+advancements.ashikubi=ｱｼｸﾋﾞｦｸｼﾞｷﾏｼﾀｰ
+advancements.ashikubi.desc="そのまま奴らの餌食に"
 
-achievement.boost=もっと熱くなれよ!
-achievement.boost.desc="砂糖の代わりには…ならないね．"
+advancements.boost=もっと熱くなれよ!
+advancements.boost.desc="砂糖の代わりには…ならないね．"
 
-achievement.myfavorite=My Favorite Things
-achievement.myfavorite.desc="ほとんど甘いものです．"
+advancements.myfavorite=My Favorite Things
+advancements.myfavorite.desc="ほとんど甘いものです．"
+
+advancements.overprtct=かちかちメイドさん
+advancements.overprtct.desc="メイド式フルアーマー"
 
 littleMaidMob.mode.TorchLayer=移動時照明確保係
 littleMaidMob.mode.F-TorchLayer=待機時照明確保係

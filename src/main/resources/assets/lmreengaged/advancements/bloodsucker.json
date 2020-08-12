@@ -1,16 +1,16 @@
 {
     "display": {
         "icon": {
-            "item": "minecraft:diamond_axe"
+            "item": "minecraft:iron_axe"
         },
         "title": {
-            "translate": "achievement.bloodsucker"
+            "translate": "advancements.bloodsucker"
         },
         "description": {
-            "translate": "achievement.bloodsucker.desc"
+            "translate": "advancements.bloodsucker.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:fencer",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

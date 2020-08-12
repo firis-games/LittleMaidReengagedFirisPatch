@@ -4,13 +4,13 @@
             "item": "minecraft:diamond_chestplate"
         },
         "title": {
-            "translate": "achievement.overprtct"
+            "translate": "advancements.overprtct"
         },
         "description": {
-            "translate": "achievement.overprtct.desc"
+            "translate": "advancements.overprtct.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:contract",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

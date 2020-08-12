@@ -7,43 +7,46 @@ item.lmreengaged:maidporter.name=Maid Porter
 
 advancements.root=LittleMaidReengaged
 advancements.root.desc=With LittleMaid
-achievement.contract=Realization
-achievement.contract.desc=Employ a LittleMaid
-achievement.fencer=Protect our master!
-achievement.fencer.desc=Make LittleMaid "Fencer" Mode
-achievement.bloodsucker=Ni6HTmAR3 f0R U
-achievement.bloodsucker.desc=Make LittleMaid "Random Killer" or "Phantom Killer" Mode
-achievement.archer=You can't escape
-achievement.archer.desc=Make LittleMaid "Archer" Mode
-achievement.blazingstar=Anything can't touch me
-achievement.blazingstar.desc=Make LittleMaid "Blazing Star" Mode
-achievement.cooking=I "cooked" iron!?
-achievement.cooking.desc=Make LittleMaid "Cook" Mode
-achievement.farmer="Can't feel the breeze? Get ShadersMod now..."
-achievement.farmer.desc=Make LittleMaid "Harvester Girl" or "Farmer" Mode
-achievement.healer=Our master is everytime full
-achievement.healer.desc=Make LittleMaid "Healer" Mode
-achievement.pharmacist=C6H4(COOH)(OH)+(CH3CO)2O=?
-achievement.pharmacist.desc=Make LittleMaid "Pharmacist" Mode
-achievement.ripper=Go back, Green!
-achievement.ripper.desc=Make LittleMaid "Shearer" Mode
-achievement.torcher=I'm afraid of ghosts...
-achievement.torcher.desc=Make LittleMaid "Torch Layer" Mode
+advancements.contract=Realization
+advancements.contract.desc=Employ a LittleMaid
+advancements.fencer=Protect our master!
+advancements.fencer.desc=Make LittleMaid "Fencer" Mode
+advancements.bloodsucker=Ni6HTmAR3 f0R U
+advancements.bloodsucker.desc=Make LittleMaid "Random Killer" or "Phantom Killer" Mode
+advancements.archer=You can't escape
+advancements.archer.desc=Make LittleMaid "Archer" Mode
+advancements.blazingstar=Anything can't touch me
+advancements.blazingstar.desc=Make LittleMaid "Blazing Star" Mode
+advancements.cooking=I "cooked" iron!?
+advancements.cooking.desc=Make LittleMaid "Cook" Mode
+advancements.farmer="Can't feel the breeze? Get ShadersMod now..."
+advancements.farmer.desc=Make LittleMaid "Harvester Girl" or "Farmer" Mode
+advancements.healer=Our master is everytime full
+advancements.healer.desc=Make LittleMaid "Healer" Mode
+advancements.pharmacist=C6H4(COOH)(OH)+(CH3CO)2O=?
+advancements.pharmacist.desc=Make LittleMaid "Pharmacist" Mode
+advancements.ripper=Go back, Green!
+advancements.ripper.desc=Make LittleMaid "Shearer" Mode
+advancements.torcher=I'm afraid of ghosts...
+advancements.torcher.desc=Make LittleMaid "Torch Layer" Mode
 
 achievement.zombuster=This's a shovel with a tooth-mark!
 achievement.zombuster.desc="Get it and start digging!"
 
-achievement.overprtct=Overprotection
-achievement.overprtct.desc="This is the hardest armor."
+advancements.overprtct=Overprotection
+advancements.overprtct.desc="This is the hardest armor."
 
-achievement.ashikubi=Ouch. That hurt :(
-achievement.ashikubi.desc="Just injured legs? You're almost dead."
+advancements.ashikubi=Ouch. That hurt :(
+advancements.ashikubi.desc="Just injured legs? You're almost dead."
 
-achievement.boost=Motto atsuku nareyo!
-achievement.boost.desc="Instead sugar? ... No way.
+advancements.boost=Motto atsuku nareyo!
+advancements.boost.desc="Instead sugar? ... No way.
 
-achievement.myfavorite=My Favorite Things
-achievement.myfavorite.desc="Silver white sugars that melt into ..."
+advancements.myfavorite=My Favorite Things
+advancements.myfavorite.desc="Silver white sugars that melt into ..."
+
+advancements.overprtct=Hard Maid
+advancements.overprtct.desc="Maid Full Armor."
 
 littleMaidMob.mode.Torcher=Torch Layer
 littleMaidMob.mode.F-Torcher=Torch Layer(Free)

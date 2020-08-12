@@ -4,13 +4,13 @@
             "item": "minecraft:torch"
         },
         "title": {
-            "translate": "achievement.torcher"
+            "translate": "advancements.torcher"
         },
         "description": {
-            "translate": "achievement.torcher.desc"
+            "translate": "advancements.torcher.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:healer",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

@@ -4,13 +4,13 @@
             "item": "minecraft:coal"
         },
         "title": {
-            "translate": "achievement.cooking"
+            "translate": "advancements.cooking"
         },
         "description": {
-            "translate": "achievement.cooking.desc"
+            "translate": "advancements.cooking.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:contract",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

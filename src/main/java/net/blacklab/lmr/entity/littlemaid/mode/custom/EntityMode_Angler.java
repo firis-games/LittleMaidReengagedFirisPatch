@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 import firis.lmlib.api.constant.EnumSound;
+import net.blacklab.lmr.achievements.AchievementsLMRE;
+import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityModeBase;
 import net.blacklab.lmr.entity.littlemaid.mode.EntityMode_Basic;
@@ -115,8 +117,8 @@ public class EntityMode_Angler extends EntityModeBase {
 		if (!litemstack.isEmpty()) {
 			if (isTriggerItem(mode_Angler, litemstack)) {
 				owner.setMaidMode(mode_Angler);
-				//進捗があったらここに設定する
-				
+				//進捗
+				AchievementsLMRE.grantAC(pentityplayer, AC.Angler);
 				return true;
 			}
 		}

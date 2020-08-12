@@ -3,16 +3,12 @@ package net.blacklab.lmr.inventory;
 import java.util.List;
 
 import net.blacklab.lmr.LittleMaidReengaged;
-import net.blacklab.lmr.achievements.AchievementsLMRE;
-import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -99,16 +95,17 @@ public class ContainerInventoryLittleMaid extends Container {
 	@Override
 	public void putStackInSlot(int p_75141_1_, ItemStack p_75141_2_) {
 		super.putStackInSlot(p_75141_1_, p_75141_2_);
-		checkAchievements();
+//		checkAchievements();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
     public void setAll(List<ItemStack> p_190896_1_) {
 		super.setAll(p_190896_1_);
-		checkAchievements();
+//		checkAchievements();
 	}
 
+/*
 	protected void checkAchievements() {
 		boolean flag = true;
 		Slot slot;
@@ -126,6 +123,7 @@ public class ContainerInventoryLittleMaid extends Container {
 		if (flag && !owner.getEntityWorld().isRemote)
 			AchievementsLMRE.grantAC(owner.getMaidMasterEntity(), AC.Overprtct);
 	}
+*/
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {

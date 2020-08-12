@@ -103,6 +103,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
@@ -2071,7 +2073,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		// ダメージソースに応じて音声変更
 		if (par1DamageSource == DamageSource.FALL) {
 			setMaidDamegeSound(EnumSound.HURT_FALL);
-			if (isContractEX() && damageAmount>=19 && damageAmount<getHealth()) {
+			if (isContractEX() && damageAmount > 5.0F) {
 				//進捗
 				AchievementsLMRE.grantAC(getMaidMasterEntity(), AC.Ashikubi);
 			}
@@ -3977,6 +3979,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		
 		//Inventory Change
 		maidInventory.inventoryChanged = true;
+		
+		//進捗チェック
+		checkInventoryAchievements();
 	}
 
 	// 腕振り
@@ -4151,7 +4156,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 				maidContractLimit = 168000;	// 24000 * 7
 			}
 
-			if (getEntityWorld().getTotalWorldTime() - maidAnniversary > 24000 * 365) {
+			if (!getEntityWorld().isRemote 
+					&& getEntityWorld().getTotalWorldTime() - maidAnniversary > 24000 * 7) {
 				//進捗
 				AchievementsLMRE.grantAC(getMaidMasterEntity(), AC.MyFavorite);
 			}
@@ -5135,7 +5141,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		//デフォルト野良モデルを設定する
 		if (!LMRConfig.cfg_isFixedWildMaid) {
 			//String littleMaidTexture = ModelManager.instance.getRandomTextureString(rand);
-			LMTextureBox littleMaidTextureBox = LMLibraryAPI.instance().getTextureManager().getRandomTexture(rand);
+			LMTextureBox littleMaidTextureBox = LMLibraryAPI.instance().getTextureManager().getRandomWildTexture(rand);
 			maidColor = (byte) littleMaidTextureBox.getRandomWildColor(rand).getColor();
 			littleMaidTexture = littleMaidTextureBox.getTextureModelName();
 		}
@@ -5246,6 +5252,24 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 					this.setMaidWait(true);
 				}
 			}
+		}
+	}
+	
+	
+	/**
+	 * アイテム関連の進捗チェック
+	 */
+	protected void checkInventoryAchievements() {
+		boolean flag = true;
+		
+		//防具進捗チェック
+		for (int i = 0; i < 4; i++) {
+			flag &= !this.maidInventory.armorInventory.get(i).isEmpty() 
+					&& this.maidInventory.armorInventory.get(i).getItem() instanceof ItemArmor
+					&& ((ItemArmor)this.maidInventory.armorInventory.get(i).getItem()).getArmorMaterial() == ArmorMaterial.DIAMOND;
+		}		
+		if (flag && !this.getEntityWorld().isRemote) {
+			AchievementsLMRE.grantAC(this.getMaidMasterEntity(), AC.Overprtct);
 		}
 	}
 }

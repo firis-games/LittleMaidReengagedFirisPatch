@@ -1,16 +1,16 @@
 {
     "display": {
         "icon": {
-            "item": "minecraft:diamond_sword"
+            "item": "minecraft:iron_sword"
         },
         "title": {
-            "translate": "achievement.fencer"
+            "translate": "advancements.fencer"
         },
         "description": {
-            "translate": "achievement.fencer.desc"
+            "translate": "advancements.fencer.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:contract",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

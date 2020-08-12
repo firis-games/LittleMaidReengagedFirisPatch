@@ -4,13 +4,13 @@
             "item": "minecraft:bow"
         },
         "title": {
-            "translate": "achievement.archer"
+            "translate": "advancements.archer"
         },
         "description": {
-            "translate": "achievement.archer.desc"
+            "translate": "advancements.archer.desc"
         }
     },
-    "parent": "lmreengaged:root",
+    "parent": "lmreengaged:fencer",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"

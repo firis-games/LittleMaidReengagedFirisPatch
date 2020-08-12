@@ -1,16 +1,16 @@
 {
     "display": {
         "icon": {
-            "item": "minecraft:bread"
+            "item": "minecraft:fishing_rod"
         },
         "title": {
-            "translate": "advancements.healer"
+            "translate": "advancements.angler"
         },
         "description": {
-            "translate": "advancements.healer.desc"
+            "translate": "advancements.angler.desc"
         }
     },
-    "parent": "lmreengaged:contract",
+    "parent": "lmreengaged:ripper",
     "criteria": {
         "done": {
             "trigger": "minecraft:impossible"
