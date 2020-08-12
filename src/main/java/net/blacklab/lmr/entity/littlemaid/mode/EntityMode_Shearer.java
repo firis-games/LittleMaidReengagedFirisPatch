@@ -4,6 +4,7 @@ import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmr.LittleMaidReengaged;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.ai.target.EntityAILMNearestAttackableTarget;
 import net.blacklab.lmr.util.helper.ItemHelper;
@@ -182,7 +183,7 @@ public class EntityMode_Shearer extends EntityModeBase {
 				AchievementsLMRE.grantAC(pentityplayer, AC.Ripper);
 				return true;
 			}
-			if (ItemHelper.isItemExplord(litemstack)) {
+			if (ItemHelper.isItemExplord(litemstack) && LMRConfig.cfg_job_secret_work_detonator) {
 				owner.setMaidMode(mmode_Detonator);
 				return true;
 			}

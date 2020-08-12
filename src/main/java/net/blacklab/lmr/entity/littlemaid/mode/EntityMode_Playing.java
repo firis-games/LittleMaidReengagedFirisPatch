@@ -4,6 +4,7 @@ import java.util.List;
 
 import firis.lmlib.api.constant.EnumSound;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -483,6 +484,9 @@ public class EntityMode_Playing extends EntityModeBase {
 	 * @return
 	 */
 	public static boolean isSnowPlaying(EntityLittleMaid maid) {
+		
+		if (!LMRConfig.cfg_job_secret_work_playing) return false;
+		
 		//自由行動 or 未契約
 		if (maid.isFreedom() || !maid.isContractEX()) {
 			//昼間 かつ 雪の状態を確認

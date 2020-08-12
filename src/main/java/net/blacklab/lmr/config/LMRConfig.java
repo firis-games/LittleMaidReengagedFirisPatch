@@ -136,6 +136,12 @@ public class LMRConfig {
 	/** ボーナスチェストへのアイテム追加 */
 	public static boolean cfg_general_bonus_chest_add_item = true;
 	
+	/** 爆弾魔有効化設定 */
+	public static boolean cfg_job_secret_work_detonator = false;
+	
+	/** 雪合戦有効化設定 */
+	public static boolean cfg_job_secret_work_playing = false;
+	
 	/** 試験機能 ******************************/
 	/** 水上歩行術 */
 	public static boolean cfg_test_water_walking  = true;
@@ -348,6 +354,13 @@ public class LMRConfig {
 						"メイドさんの転職用のトリガーアイテムを設定できます。 [maidmode]:[modid]:[itemid]")
 		);
 		
+		//爆弾魔メイドさん
+		cfg_job_secret_work_detonator = cfg.getBoolean("SecretWork.Detonator", GROUP_JOB, false,
+				"爆弾魔メイドさんの有効無効を設定できます。[非推奨]");
+		
+		//雪合戦メイドさん
+		cfg_job_secret_work_playing = cfg.getBoolean("SecretWork.SnowPlaying", GROUP_JOB, false,
+				"雪合戦メイドさんの有効無効を設定できます。[非推奨]");
 	}
 	
 	/**
