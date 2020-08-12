@@ -1,0 +1,29 @@
+{
+	"type": "forge:ore_shaped",
+	"pattern": [
+		"scs",
+		"sbs",
+		"pep"
+	],
+	"key": {
+		"s": {
+			"item": "lmreengaged:maid_sugar"
+		},
+		"c": {
+			"item": "minecraft:dye",
+			"data": 3
+		},
+		"b": {
+			"item": "minecraft:slime_ball"
+		},
+		"e": {
+			"item": "minecraft:egg"
+		},
+		"p": {
+			"item": "minecraft:paper"
+		}
+	},
+	"result": {
+		"item": "lmreengaged:maid_contract"
+	}
+}

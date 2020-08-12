@@ -265,6 +265,13 @@ public class LittleMaidReengaged {
 				.remove(new ResourceLocation(LittleMaidReengaged.MODID, "lmreengaged_recipe_0"));
 			logger.info("delete recipe lmreengaged:maid_spawn_egg");
 		}
+		
+		//メイドさんの契約書のレシピ削除
+		if (!LMRConfig.cfg_general_recipe_maid_contract) {
+			((IForgeRegistryModifiable<IRecipe>) ForgeRegistries.RECIPES)
+				.remove(new ResourceLocation(LittleMaidReengaged.MODID, "lmreengaged_recipe_5"));
+			logger.info("delete recipe lmreengaged:maid_contract");
+		}
 	}
 	
 	@SubscribeEvent

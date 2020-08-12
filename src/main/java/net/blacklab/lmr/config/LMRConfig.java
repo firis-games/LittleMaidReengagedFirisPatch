@@ -114,6 +114,9 @@ public class LMRConfig {
 	/** メイドスポーンエッグのレシピ */
 	public static boolean cfg_general_recipe_maid_spawn_egg = true;
 	
+	/** 契約書のレシピ */
+	public static boolean cfg_general_recipe_maid_contract = false;
+	
 	/** 仲介人村人 */
 	public static boolean cfg_general_villager_maid_broker = true;
 	
@@ -128,6 +131,9 @@ public class LMRConfig {
 	
 	/** 染料によるメイドさんの色変更機能 */
 	public static boolean cfg_lm_change_maid_color_dye = false;
+	
+	/** ボーナスチェストへのアイテム追加 */
+	public static boolean cfg_general_bonus_chest_add_item = true;
 	
 	/** 試験機能 ******************************/
 	/** 水上歩行術 */
@@ -183,9 +189,13 @@ public class LMRConfig {
 		//グループコメント
 		cfg.addCustomCategoryComment(GROUP_GENERAL, "Modに含まれる各機能の設定ができます。");
 		
-		//レシピ
+		//スポーンエッグレシピ
 		cfg_general_recipe_maid_spawn_egg = cfg.getBoolean("Recipe.SpawnEgg", GROUP_GENERAL, true,
 				"お手製スポーンエッグのレシピを有効化できます。");
+		
+		//契約書レシピ
+		cfg_general_recipe_maid_contract = cfg.getBoolean("Recipe.MaidContract", GROUP_GENERAL, false,
+				"メイドさんの契約書のレシピを有効化できます。");
 		
 		//村人追加
 		cfg_general_villager_maid_broker = cfg.getBoolean("Villager.MaidBroker", GROUP_GENERAL, true,
@@ -202,6 +212,10 @@ public class LMRConfig {
 		//メイド指揮棒
 		cfg_general_maid_stick_range = cfg.getInt("Item.MaidStick.Range", GROUP_GENERAL, 10, 1, 30,
 				"ご主人様を中心の有効範囲ブロック数の半径を設定します。");
+		
+		//ボーナスチェストへのアイテム追加
+		cfg_general_bonus_chest_add_item = cfg.getBoolean("BounusChest.Add.LMRItem", GROUP_GENERAL, true,
+				"ボーナスチェストへLMRアイテムの追加を設定します。");
 		
 	}
 	
@@ -277,7 +291,6 @@ public class LMRConfig {
 		//染料によるメイドさんの色変更機能
 		cfg_lm_change_maid_color_dye = cfg.getBoolean("ChangeMaidColorDye", GROUP_LITTLE_MAID, false,
 				"染料を与えるとメイドさんの色を変更できる機能を有効化できます。");
-		
 	}
 	
 	/**
