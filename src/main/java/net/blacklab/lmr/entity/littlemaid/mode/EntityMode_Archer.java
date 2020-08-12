@@ -39,7 +39,7 @@ import net.minecraft.world.World;
 public class EntityMode_Archer extends EntityModeBase {
 
 	public static final String mmode_Archer			= "Archer";
-	public static final String mmode_Blazingstar	= "BlazingStar";
+	public static final String mmode_Blazingstar	= "Blazingstar";
 	
 	public static final String mtrigger_Bow			= "Archer:Bow";
 	public static final String mtrigger_Arrow		= "Archer:Arrow";
