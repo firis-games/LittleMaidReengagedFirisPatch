@@ -5,7 +5,7 @@ item.lmreengaged:spawn_littlemaid_egg.name=スポーン リトルメイド
 item.lmreengaged:registerkey.name=§eTrigger Item Registerer
 item.lmreengaged:maidporter.name=メイド ポーター
 
-advancements.root=お帰りなさいませ、ご主人様
+advancements.root=お帰りなさいませ、ご主人様!
 advancements.root.desc=メイドさんといっしょ
 advancements.contract=悟り。
 advancements.contract.desc=リトルメイドを雇用する

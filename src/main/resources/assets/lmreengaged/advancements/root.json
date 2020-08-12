@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "minecraft:cake"
+            "item": "lmreengaged:maid_souvenir"
         },
         "title": {
             "translate": "advancements.root"
@@ -15,7 +15,7 @@
         "hidden": false
     },
     "criteria": {
-        "done": {
+        "done1": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
@@ -24,6 +24,19 @@
                     }
                 ]
             }
+        },
+        "done2": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "lmreengaged:maid_contract"
+                    }
+                ]
+            }
         }
-    }
+    },
+    "requirements": [
+    	["done1", "done2"]
+    ]
 }

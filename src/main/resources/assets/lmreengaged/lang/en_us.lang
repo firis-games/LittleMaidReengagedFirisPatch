@@ -5,7 +5,7 @@ item.lmreengaged:spawn_littlemaid_egg.name=Spawn LittleMaid
 item.lmreengaged:registerkey.name=§eTrigger Item Registerer
 item.lmreengaged:maidporter.name=Maid Porter
 
-advancements.root=LittleMaidReengaged
+advancements.root=Welcome back, master!
 advancements.root.desc=With LittleMaid
 advancements.contract=Realization
 advancements.contract.desc=Employ a LittleMaid
