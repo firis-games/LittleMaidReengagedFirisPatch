@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import firis.lmlib.common.config.LMLConfig;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
 
@@ -254,7 +255,7 @@ public class LMRConfig {
 				"ケーキと同じ扱いとなるアイテムIDを設定できます。"));
 		
 		//メイドミルクの設定
-		cfg_custom_maid_milk = cfg.getBoolean("MaidMilk", GROUP_LITTLE_MAID, false,
+		cfg_custom_maid_milk = cfg.getBoolean("MaidMilk", GROUP_LITTLE_MAID, LMLConfig.DEVELOPER_MODE,
 				"メイドミルク機能を有効化できます。");
 		
 		//メイドミルク表示設定
@@ -420,26 +421,6 @@ public class LMRConfig {
 	}
 	
 	/**
-	 * LMアバターの設定
-	 * @param cfg
-	 */
-//	protected static void initLMAvatar(Configuration cfg) {
-//		
-//		//グループコメント
-//		cfg.addCustomCategoryComment(GROUP_AVATAR, "リトルメイドアバターに関連する設定ができます。");
-//
-//		//メイドアバター機能
-//		cfg_lmabatar_maid_avatar = cfg.getBoolean("LittleMaidAvatar", GROUP_AVATAR, false,
-//				"プレイヤーの見た目をメイドさんにするLittleMaidAvatar機能を有効化します。");
-//		
-//		//指定されたIDのLayerは登録する
-//		String[] lma_include_layer = new String[] {"LayerSlashBlade"};
-//		cfg_lmavatar_include_layer = Arrays.asList(cfg.getStringList("LittleMaidAvatar.IncludeLayer", GROUP_AVATAR, lma_include_layer, 
-//				"指定された文字を含むLayerクラスをLittleMaidAvatarに追加します。"));
-//		
-//	}
-	
-	/**
 	 * Mod連携
 	 * @param cfg
 	 */
@@ -451,29 +432,6 @@ public class LMRConfig {
 		cfg_plugin_hwyla = cfg.getBoolean("Hwyla", GROUP_COLLABORATION, true,
 				"Hwyla連携を有効化します。");
 	}
-	
-	
-//	/**
-//	 * メイドさんの見た目に関連する設定
-//	 * @param cfg
-//	 */
-//	protected static void initLoader(Configuration cfg) {
-//		//グループコメント
-//		cfg.addCustomCategoryComment(GROUP_LOADER, "LittleMaidLoader Setting");
-//		
-//		//ファイルローダー機能のキャッシュ機能設定
-//		cfg_loader_is_cache = cfg.getBoolean("EnableFileLoaderCache", GROUP_LOADER, false,
-//				"Enable FileLoader Caching.");
-//		
-//		//sounds.jsonファイルの出力設定
-//		cfg_loader_output_sounds_json = cfg.getBoolean("OutputSoundsJson", GROUP_LOADER, false,
-//				"Output sounds.json.");
-//		
-//		//テクスチャのリソースパックロードの設定
-//		cfg_loader_texture_load_from_resoucepack = cfg.getBoolean("EnableTextureLoadResourcepack", GROUP_LOADER, false,
-//				"Developer mode setting. Reads a texture from a resourcepack.");
-//		
-//	}
 	
 	/**
 	 * テスト用機能の設定
@@ -487,7 +445,7 @@ public class LMRConfig {
 				"Print debug logs. Recommended to keep default.");
 		
 		//みんなのメイドさん
-		cfg_cstm_everyones_maid = cfg.getBoolean("Test.EveryonesMaid", GROUP_DEVELOPER, false,
+		cfg_cstm_everyones_maid = cfg.getBoolean("Test.EveryonesMaid", GROUP_DEVELOPER, LMLConfig.DEVELOPER_MODE,
 				"Maid listening to instructions other than the master.");
 		
 		//水上歩行術
@@ -497,16 +455,6 @@ public class LMRConfig {
 		//開発者用テストモジュール有効化設定
 		cfg_developer_test_module = cfg.getBoolean("Test.Module", GROUP_DEVELOPER, false,
 				"developer only.");
-	}
-	
-	/**
-	 * 現在未使用の設定
-	 * 一定期間後に削除する
-	 * @param cfg
-	 */
-	protected static void initDelete(Configuration cfg) {
-		cfg_Dominant = cfg.getBoolean("Dominant", "Advanced", false,
-				"Recommended to keep 'false'. If true, non-vanilla check is used for maid spawning.");		
 	}
 	
 	/**
