@@ -12,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
@@ -81,6 +82,11 @@ public class LMItemMaidSpawnEgg extends Item {
 			//契約処理
 			if (this.isContract && entity instanceof EntityLittleMaid) {
 				this.setContractLittleMaid(player, (EntityLittleMaid) entity);
+				//砂糖を追加
+				((EntityLittleMaid) entity).maidInventory.addItemStackToInventory(new ItemStack(Items.SUGAR, 16 + entity.world.rand.nextInt(9)));
+				
+				//テクスチャのランダム選択
+				((EntityLittleMaid) entity).setRandomLittleMaidTexture();
 			}
 		}
 		return EnumActionResult.SUCCESS;

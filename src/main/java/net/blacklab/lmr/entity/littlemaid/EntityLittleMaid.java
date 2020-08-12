@@ -5255,7 +5255,6 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		}
 	}
 	
-	
 	/**
 	 * アイテム関連の進捗チェック
 	 */
@@ -5271,5 +5270,25 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		if (flag && !this.getEntityWorld().isRemote) {
 			AchievementsLMRE.grantAC(this.getMaidMasterEntity(), AC.Overprtct);
 		}
+	}
+	
+	/**
+	 * ランダムでメイドさんテクスチャを設定する
+	 */
+	public void setRandomLittleMaidTexture() {
+		//テクスチャをランダム設定
+		LMTextureBox textureBox = LMLibraryAPI.instance().getTextureManager().getRandomTexture(this.world.rand);
+		String littleMaidTexture = textureBox.getTextureModelName();
+		String armorTexture = textureBox.getTextureModelName();
+		if (!textureBox.hasArmor()) {
+			armorTexture = LMTextureBoxManager.defaultTextureModelName;
+		}
+		
+		dataManager.set(EntityLittleMaid.dataWatch_texture_LittleMaid, littleMaidTexture);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_head, armorTexture);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_chest, armorTexture);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_legs, armorTexture);
+		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_feet, armorTexture);
+		this.setColor((byte) textureBox.getRandomColor(this.world.rand).getColor());
 	}
 }
