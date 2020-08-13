@@ -97,21 +97,6 @@ public class LMRConfig {
 	/** 開発用テストモジュールの有効化設定 */
 	public static boolean cfg_developer_test_module = false;
 	
-	///** メイドアバター */
-	//public static boolean cfg_lmabatar_maid_avatar = false;
-	
-	///** ファイルローダー機能のキャッシュ機能のON/OFF設定 */
-	//public static boolean cfg_loader_is_cache = true;
-	
-	///** sounds.jsonファイルの出力設定 */
-	//public static boolean cfg_loader_output_sounds_json = false;
-	
-	///** テクスチャのリソースパックロードモード設定 */
-	//public static boolean cfg_loader_texture_load_from_resoucepack = false;
-	
-	///** LittleMaidAvatarに登録するLayer設定 */
-	//public static List<String> cfg_lmavatar_include_layer = null;
-	
 	/** メイドスポーンエッグのレシピ */
 	public static boolean cfg_general_recipe_maid_spawn_egg = true;
 	
@@ -141,6 +126,9 @@ public class LMRConfig {
 	
 	/** 雪合戦有効化設定 */
 	public static boolean cfg_job_secret_work_playing = false;
+	
+	/** 特殊アイテム発光設定 */
+	public static boolean cfg_general_item_glowing = true;
 	
 	/** 試験機能 ******************************/
 	/** 水上歩行術 */
@@ -223,6 +211,10 @@ public class LMRConfig {
 		//ボーナスチェストへのアイテム追加
 		cfg_general_bonus_chest_add_item = cfg.getBoolean("BounusChest.Add.LMRItem", GROUP_GENERAL, true,
 				"ボーナスチェストへLMRアイテムの追加を設定します。");
+		
+		//発光設定
+		cfg_general_item_glowing = cfg.getBoolean("Item.SpecialEntityItem.Glowing", GROUP_GENERAL, true,
+				"メイドの土産/メイドキャリーのEntityItemの発光状態を設定します。");
 		
 	}
 	

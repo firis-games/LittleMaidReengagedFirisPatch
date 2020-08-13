@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.LittleMaidHelper;
 import net.blacklab.lmr.LittleMaidReengaged.LMItems;
+import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -127,6 +128,11 @@ public class LMItemMaidSouvenir extends Item {
 		entity.motionX = location.motionX;
 		entity.motionY = location.motionY;
 		entity.motionZ = location.motionZ;
+		
+		//発光設定
+		if (LMRConfig.cfg_general_item_glowing) {
+			entity.setGlowing(true);
+		}
 		
         return entity;
     }
