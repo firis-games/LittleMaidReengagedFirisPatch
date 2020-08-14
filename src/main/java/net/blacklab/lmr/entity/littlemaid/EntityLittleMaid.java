@@ -1428,6 +1428,19 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //			mstatgotcha = null;
 //		}
 		
+		//setDeadの呼び出し元
+		try {
+			StackTraceElement stacktrace = Thread.currentThread().getStackTrace()[2];
+			LittleMaidReengaged.logger.info("EntityLittleMaid.setDead["
+					+ stacktrace.getClassName() + "."
+					+ stacktrace.getMethodName() + ":"
+					+ stacktrace.getLineNumber() + "("
+					+ (LittleMaidReengaged.proxy.getClientPlayer() == null ? "Client" : "Server")
+					+ ")]");
+		} catch (Exception e) {
+		} catch (Error e) {
+		}
+		
 		//PlayerAvatarも消去
 		if (this.maidAvatar != null) {
 			this.maidAvatar.setDead();
