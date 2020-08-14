@@ -10,7 +10,6 @@ import net.blacklab.lmr.config.LMRConfig;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.blacklab.lmr.network.LMRMessage;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
 /**
@@ -125,20 +124,14 @@ public class LMSoundController {
 			
 			EnumSound sound = iterator.next();
 			LittleMaidReengaged.Debug("REQ %s", sound);
-
-			//音声パックがロードされていない場合は通常音声として再生する
-			if (!LMLibraryAPI.instance().isSoundPack()) {
-				if (LMRConfig.cfg_default_voice) {
-					SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(sound.getDefaultVoice()));
-					if (soundEvent != null) {
-						this.maid.world.playSound(maid.posX, maid.posY, maid.posZ, 
-								soundEvent, maid.getSoundCategory(), maid.getSoundVolume(), 1.0F, false);
-					}
-				}
+			
+			//サウンドパックがロードされていない かつ デフォルト音声無効化
+			if (!LMLibraryAPI.instance().isSoundPack()
+					&& !LMRConfig.cfg_default_voice) {
 				playingSound.remove(sound);
 				continue;
 			}
-
+			
 			//ボイスパックから再生する
 			SoundEvent soundEvent = LMLibraryAPI.instance().getSoundEvent(sound, textureName, textureColor, true);
 			//対象が存在しない場合は次へ
