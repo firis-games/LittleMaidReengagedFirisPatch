@@ -137,6 +137,7 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 			if (isMotionSitting || (lmmotion == EnumMaidMotion.SIT)) {
 				return LMMotionSitdown.MOTION_ID;
 			}
+			if (!owner.isMaidWait()) return null;
 			return owner.getMotionId();
 		}
 		return super.getCapsValue(pIndex, pArg);
