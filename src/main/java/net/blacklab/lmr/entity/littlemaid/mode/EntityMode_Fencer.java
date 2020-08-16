@@ -1,5 +1,6 @@
 package net.blacklab.lmr.entity.littlemaid.mode;
 
+import java.util.List;
 import java.util.UUID;
 
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -13,6 +14,7 @@ import net.blacklab.lmr.inventory.InventoryLittleMaid;
 import net.blacklab.lmr.util.Counter;
 import net.blacklab.lmr.util.helper.CommonHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -24,6 +26,9 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 
 /**
  * 剣士とオノ
@@ -293,5 +298,46 @@ public class EntityMode_Fencer extends EntityModeBase {
 	@Override
 	public double getFreedomTrackingRangeSq() {
 		return 25 * 25;
+	}
+	
+	/**
+	 * 被ダメ時の処理
+	 */
+	@Override
+	public float attackEntityFrom(DamageSource damageSource, float amount) {
+		
+		//ブースト状態でないかつ
+		//ダメージが2以上かつ
+		//現HP- ダメージが10以下の場合
+		//mobからのダメージの場合
+		if (!owner.getMaidOverDriveTime().isEnable() 
+				&& 2.0F <= amount
+				&& owner.getHealth() - amount <= 10.0F
+				&& "mob".equals(damageSource.getDamageType())) {
+			
+			//ブースト発動
+			owner.getMaidOverDriveTime().setValue(100);
+			owner.playSound("mob.zombie.infect");
+			
+			//周辺の敵を吹き飛ばし
+			List<EntityLiving> entityList = owner.world.getEntitiesWithinAABB(EntityLiving.class, (new AxisAlignedBB(owner.getPosition()).grow(3.0D)));
+			for (EntityLiving entity : entityList) {
+				if (entity.getAttackTarget() instanceof EntityLittleMaid
+						|| entity.getRevengeTarget() instanceof EntityLittleMaid) {
+					entity.knockBack(owner, 1.5F, 
+							(double)MathHelper.sin(owner.rotationYaw * 0.017453292F), 
+							(double)(-MathHelper.cos(owner.rotationYaw * 0.017453292F)));
+					entity.setAttackTarget(null);
+					entity.setRevengeTarget(null);
+				}
+			}
+		} else if (!owner.getMaidOverDriveTime().isEnable()
+				&& owner.world.rand.nextInt(100) < 10) {
+			//ブースト発動
+			owner.getMaidOverDriveTime().setValue(60);
+			owner.playSound("mob.zombie.infect");
+		}
+		
+		return 0;
 	}
 }
