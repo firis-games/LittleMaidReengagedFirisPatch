@@ -39,4 +39,9 @@ public class LMMotionItemCarryer implements ILMMotion {
 		return true;
 	}
 
+	@Override
+	public String getMotionId() {
+		return null;
+	}
+
 }

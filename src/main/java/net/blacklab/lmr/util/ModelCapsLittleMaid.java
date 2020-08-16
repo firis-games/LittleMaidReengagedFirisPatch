@@ -1,9 +1,9 @@
 package net.blacklab.lmr.util;
 
 import firis.lmlib.api.caps.ModelCapsEntityBase;
+import firis.lmlib.api.motion.LMMotionSitdown;
 import firis.lmmm.api.caps.IModelCaps;
 import firis.lmmm.api.model.ModelMultiBase;
-import firis.lmmm.api.model.motion.LMMotionSitdown;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -135,9 +135,9 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 			boolean isMotionSitting = owner.isMotionSitting();
 			EnumMaidMotion lmmotion = owner.getMaidMotion();
 			if (isMotionSitting || (lmmotion == EnumMaidMotion.SIT)) {
-				return LMMotionSitdown.SITDOWN;
+				return LMMotionSitdown.MOTION_ID;
 			}
-			return null;
+			return owner.getMotionId();
 		}
 		return super.getCapsValue(pIndex, pArg);
 	}

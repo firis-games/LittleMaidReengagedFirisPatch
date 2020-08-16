@@ -3459,14 +3459,17 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 						else if (par3ItemStack.getItem() == Item.getItemFromBlock(Blocks.CARPET)) {
 							
 							//カーペットは消費しない
-
 							//♪の表示
 							getEntityWorld().setEntityState(this, (byte)11);
 							//効果音
 							playSound("entity.item.pickup");
 							
 							int maidWaitMotion = dataManager.get(EntityLittleMaid.dataWatch_WaitMotion);
-							maidWaitMotion = maidWaitMotion == 1 ? 0 : 1;
+							maidWaitMotion += 1;
+							String motion = LMLibraryAPI.instance().getLMMotionId(maidWaitMotion);
+							if (motion == null) {
+								maidWaitMotion = 0;
+							}
 							dataManager.set(EntityLittleMaid.dataWatch_WaitMotion, maidWaitMotion);
 							return true;
 						}
@@ -4991,6 +4994,14 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 			this.tickisMotionSitting = 0;
 		}
 		return false;
+	}
+	
+	/**
+	 * モーションIDを取得する
+	 * @return
+	 */
+	public String getMotionId() {
+		return LMLibraryAPI.instance().getLMMotionId(dataManager.get(EntityLittleMaid.dataWatch_WaitMotion));
 	}
 	
 	/**
