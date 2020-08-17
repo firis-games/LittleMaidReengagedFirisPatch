@@ -5314,5 +5314,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_legs, armorTexture);
 		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_feet, armorTexture);
 		this.setColor((byte) textureBox.getRandomColor(this.world.rand).getColor());
+		
+		//メイドモデルのサイズを更新するために呼び出す
+		this.refreshModels();
 	}
 }
