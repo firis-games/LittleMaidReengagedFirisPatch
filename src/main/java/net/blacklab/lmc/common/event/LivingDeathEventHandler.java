@@ -1,6 +1,5 @@
 package net.blacklab.lmc.common.event;
 
-import net.blacklab.lmc.common.entity.LMEntityItemAntiDamage;
 import net.blacklab.lmc.common.helper.LittleMaidHelper;
 import net.blacklab.lmc.common.item.LMItemMaidSugar;
 import net.blacklab.lmr.LittleMaidReengaged;
@@ -84,7 +83,7 @@ public class LivingDeathEventHandler {
 			World world = entityLiving.getEntityWorld();
 			
 			//Drop用EntityItem
-			EntityItem entityMaidSouvenir = new LMEntityItemAntiDamage(world, 
+			EntityItem entityMaidSouvenir = new EntityItem(world, 
 					entityLiving.posX, entityLiving.posY, entityLiving.posZ,
 					maidSouvenir);
 			entityMaidSouvenir.setDefaultPickupDelay();
