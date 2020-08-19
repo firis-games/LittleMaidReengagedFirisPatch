@@ -145,6 +145,7 @@ public class EntityMode_Playing extends EntityModeBase {
 				if (owner.maidInventory.addItemStackToInventory(new ItemStack(Items.SNOWBALL))) {
 					owner.playSound("entity.item.pickup");
 					owner.setSwing(30, EnumSound.COLLECT_SNOW, false);
+					owner.setSneaking(true);
 				} else {
 					this.fcounter = 6;
 				}
@@ -157,6 +158,9 @@ public class EntityMode_Playing extends EntityModeBase {
 			this.fcounter++;
 			return;
 		}
+		
+		//スニーク解除
+		owner.setSneaking(false);
 		
 		//射撃モード
 		if (PlayRole.QUICKSHOOTER.equals(playRole)) {
@@ -475,6 +479,8 @@ public class EntityMode_Playing extends EntityModeBase {
 				//野生メイドさん
 				this.owner.setMaidMode(EntityMode_Basic.mmode_Wild);
 			}
+			//スニーク解除
+			owner.setSneaking(false);
 		}
 	}
 	
