@@ -306,14 +306,19 @@ public class EntityMode_Fencer extends EntityModeBase {
 	@Override
 	public float attackEntityFrom(DamageSource damageSource, float amount) {
 		
+		//Fencer以外はスキップ
+		if (!mmode_Fencer.equals(owner.getMaidModeString())) return 0;
+		
+		//Mobからのダメージ以外はスキップ
+		if (!"mob".equals(damageSource.getDamageType())) return 0;
+		
 		//ブースト状態でないかつ
 		//ダメージが2以上かつ
 		//現HP- ダメージが10以下の場合
 		//mobからのダメージの場合
 		if (!owner.getMaidOverDriveTime().isEnable() 
 				&& 2.0F <= amount
-				&& owner.getHealth() - amount <= 10.0F
-				&& "mob".equals(damageSource.getDamageType())) {
+				&& owner.getHealth() - amount <= 10.0F) {
 			
 			//ブースト発動
 			owner.getMaidOverDriveTime().setValue(100);
