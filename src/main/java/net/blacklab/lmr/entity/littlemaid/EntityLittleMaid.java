@@ -293,6 +293,11 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 * 個体ごとに値をバラつかせるのに使う。
 	 */
 	public float entityIdFactor;
+	
+	/**
+	 * readEntityFromNBT初回フラグ
+	 */
+	private boolean isReadEntityFromNBT = false;
 
 //	public boolean weaponFullAuto;	// 装備がフルオート武器かどうか
 //	public boolean weaponReload;	// 装備がリロードを欲しているかどうか
@@ -1816,12 +1821,13 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		//メイドさんの職業
 		this.jobController.readEntityFromNBT(par1nbtTagCompound);
 
+		String modelLittleMaid = par1nbtTagCompound.getString("textureModelNameForClient");
 		String armorHead = par1nbtTagCompound.getString("textureArmorNameForClientHead");
 		String armorChest = par1nbtTagCompound.getString("textureArmorNameForClientChest");
 		String armorLegs = par1nbtTagCompound.getString("textureArmorNameForClientLegs");
 		String armorFeet = par1nbtTagCompound.getString("textureArmorNameForClientFeet");
 		
-		dataManager.set(EntityLittleMaid.dataWatch_texture_LittleMaid, par1nbtTagCompound.getString("textureModelNameForClient"));
+		dataManager.set(EntityLittleMaid.dataWatch_texture_LittleMaid, modelLittleMaid);
 		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_head, armorHead);
 		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_chest, armorChest);
 		dataManager.set(EntityLittleMaid.dataWatch_texture_Armor_legs, armorLegs);
@@ -1833,6 +1839,35 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		} else {
 			setColor(par1nbtTagCompound.getByte("ColorB"));
 		}
+		
+		//NBT初回読込のみ実施
+		//テクスチャの存在チェック
+		if (!isReadEntityFromNBT) {
+			boolean isTextureBox = false;
+			LMTextureBox textureBox = LMLibraryAPI.instance().getTextureManager().getLMTextureBox(modelLittleMaid);
+			//マルチモデルの存在チェック
+			if (this.isContract()) {
+				//通常メイドさん
+				if (textureBox.hasColor(this.getColor())) {
+					isTextureBox = true;
+				}
+			} else {
+				//野生メイドさん
+				if (textureBox.hasWildColor(this.getColor())) {
+					isTextureBox = true;
+				}
+			}
+			//存在しない場合はデフォルトテクスチャへ差し替え
+			if (!isTextureBox) {
+				LMLibraryAPI.instance().getTextureManager();
+				dataManager.set(EntityLittleMaid.dataWatch_texture_LittleMaid, LMTextureBoxManager.defaultTextureModelName);
+				if (!this.isContract()) {
+					this.setColor((byte) EnumColor.BROWN.getColor());
+				}
+			}
+			
+		}
+		isReadEntityFromNBT = true;
 		refreshModels();
 //		if (FMLCommonHandler.instance().getMinecraftServerInstance().isSinglePlayer()) {
 //			syncModelNames();
