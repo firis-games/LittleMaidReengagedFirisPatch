@@ -357,8 +357,23 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 	 */
 	private boolean isHarvesting(int px, int py, int pz) {
 		
+		//原木かつ下のブロックが苗木
 		if (this.isLog(px, py, pz)
 				&& this.isPlanting(px, py - 1, pz)) {
+			return true;
+		}
+		
+		BlockPos maidPos = owner.getPosition();
+		
+		//メイドさんの一つ下の座標 かつ 原木or葉ブロック
+		if (maidPos.getY() - 1 == py 
+				&& (this.isLog(px, py, pz) || this.isLeaf(px, py, pz))) {
+			return true;
+		}
+		
+		//メイドさんと被ってる葉or原木
+		if (maidPos.getX() == px && (maidPos.getY() == py || maidPos.getY() + 1 == py) && maidPos.getZ() == pz
+				&& (this.isLog(px, py, pz) || this.isLeaf(px, py, pz))) {
 			return true;
 		}
 		return false;
@@ -586,6 +601,23 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 		}
 		
 		return this.isTriggerItem(mode, stack);
+	}
+	
+	
+	/**
+	 * 有効射程距離を超えた時の処理
+	 */
+	@Override
+	public boolean outrangeBlock(String pMode, int pX, int pY, int pZ) {
+		//木こり時の特殊判定
+		if (mode_Lumberjack.equals(pMode)) {
+			BlockPos maidPos = owner.getPosition();
+			if (maidPos.getX() == pX && (maidPos.getY() == pY || maidPos.getY() + 1 == pY) && maidPos.getZ() == pZ) {
+				return true;
+			}
+		}
+		
+		return owner.getNavigator().tryMoveToXYZ(pX, pY, pZ, 1.0F);
 	}
 	
 }
