@@ -363,18 +363,21 @@ public class EntityMode_Lumberjack extends EntityModeBase {
 			return true;
 		}
 		
-		BlockPos maidPos = owner.getPosition();
-		
-		//メイドさんの一つ下の座標 かつ 原木or葉ブロック
-		if (maidPos.getY() - 1 == py 
-				&& (this.isLog(px, py, pz) || this.isLeaf(px, py, pz))) {
-			return true;
-		}
-		
-		//メイドさんと被ってる葉or原木
-		if (maidPos.getX() == px && (maidPos.getY() == py || maidPos.getY() + 1 == py) && maidPos.getZ() == pz
-				&& (this.isLog(px, py, pz) || this.isLeaf(px, py, pz))) {
-			return true;
+		//自由行動の場合の特殊条件
+		if (owner.isFreedom()) {
+			BlockPos maidPos = owner.getPosition();
+			
+			//メイドさんの一つ下の座標 かつ 原木or葉ブロック
+			if (maidPos.getY() - 1 == py
+					&& (this.isLog(px, py, pz) || this.isLeaf(px, py, pz))) {
+				return true;
+			}
+			
+			//メイドさんと被ってる葉or原木
+			if (maidPos.getX() == px && (maidPos.getY() == py || maidPos.getY() + 1 == py) && maidPos.getZ() == pz
+					&& (this.isLog(px, py, pz) || this.isLeaf(px, py, pz))) {
+				return true;
+			}
 		}
 		return false;
 	}
