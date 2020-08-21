@@ -101,6 +101,20 @@ public class EntityAILMTeleport extends EntityAIBase implements IEntityAILM {
 						tDest.getY(), 
 						((double)tDest.getZ()) + 0.5D);
 				
+				//ログ出力処理
+				LittleMaidReengaged.logger.info("EntityLittleMaid.Teleport[" 
+						+ theMaid.getName() + ":" 
+						+ theMaid.jobController.getMaidModeString() + "---" 
+						+ theMaid.getModelConfigCompound().getTextureModelNameLittleMaid() + "" 
+						+ "(" + theMaid.getModelConfigCompound().getColor() + ")" + "---"
+						+ "contract[" + theMaid.isContract() + "]:"
+						+ "wait[" + theMaid.isMaidWait() + "]:"
+						+ "freedom[" + theMaid.isFreedom() + "]:"
+						+ "hp[" + theMaid.getHealth() + "]:"
+						+ "[" + theMaid.getPosition().toString() + "]:"
+						+ theMaid.getUniqueID().toString() 
+						+ "]");
+				
 				resetTask();
 			}
 		}

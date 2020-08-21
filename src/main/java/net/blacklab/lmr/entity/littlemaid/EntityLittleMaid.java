@@ -1433,15 +1433,29 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //			mstatgotcha = null;
 //		}
 		
-		//setDeadの呼び出し元
+		//ログ出力処理
 		try {
-			StackTraceElement stacktrace = Thread.currentThread().getStackTrace()[2];
-			LittleMaidReengaged.logger.info("EntityLittleMaid.setDead["
-					+ stacktrace.getClassName() + "."
-					+ stacktrace.getMethodName() + ":"
-					+ stacktrace.getLineNumber() + "("
-					+ (LittleMaidReengaged.proxy.getClientPlayer() == null ? "Client" : "Server")
-					+ ")]");
+			LittleMaidReengaged.logger.info("EntityLittleMaid.setDead[" 
+					+ this.getName() + ":" 
+					+ this.jobController.getMaidModeString() + "---" 
+					+ this.getModelConfigCompound().getTextureModelNameLittleMaid() + "" 
+					+ "(" + this.getModelConfigCompound().getColor() + ")" + "---"
+					+ "contract[" + this.isContract() + "]:"
+					+ "wait[" + this.isMaidWait() + "]:"
+					+ "freedom[" + this.isFreedom() + "]:"
+					+ "hp[" + this.getHealth() + "]:"
+					+ "[" + this.getPosition().toString() + "]:"
+					+ this.getUniqueID().toString() 
+					+ "]");
+			
+			StackTraceElement[] stacktraces = Thread.currentThread().getStackTrace();
+			for (int i = 0; i < stacktraces.length; i++) {
+				StackTraceElement stacktrace = stacktraces[i];
+				LittleMaidReengaged.logger.info("    at " + stacktrace.getClassName() + "."
+						+ stacktrace.getMethodName() + ":"
+						+ stacktrace.getLineNumber() + "");
+			}
+			
 		} catch (Exception e) {
 		} catch (Error e) {
 		}
