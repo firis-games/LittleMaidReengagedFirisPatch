@@ -29,6 +29,7 @@ import firis.lmlib.api.manager.LMTextureBoxManager;
 import firis.lmlib.api.resource.LMTextureBox;
 import net.blacklab.lmc.common.event.SugarBoxHandler;
 import net.blacklab.lmr.LittleMaidReengaged;
+import net.blacklab.lmr.LittleMaidReengaged.LMItems;
 import net.blacklab.lmr.achievements.AchievementsLMRE;
 import net.blacklab.lmr.achievements.AchievementsLMRE.AC;
 import net.blacklab.lmr.client.entity.EntityLittleMaidAvatarSP;
@@ -3508,8 +3509,28 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 							}
 							return true;
 						}
-						//お座りモーション判定
-						else if (par3ItemStack.getItem() == Item.getItemFromBlock(Blocks.CARPET)) {
+						//モード切替のみ
+						else if (par3ItemStack.getItem() == LMItems.MAID_STICK) {
+							//効果音
+							playSound("entity.item.pickup");
+							getEntityWorld().setEntityState(this, (byte)11);
+							if (!getEntityWorld().isRemote) {
+								setFreedom(isFreedom());
+								if (isMaidWait()) {
+									// 動作モードの切替
+									refreshMaidMode(par1EntityPlayer);
+									setMaidWait(false);
+								} else {
+									// 待機
+									setMaidWait(true);
+								}
+							}
+							return true;
+						}
+						//モーション判定
+						else if (par3ItemStack.getItem() == Item.getItemFromBlock(Blocks.CARPET)
+								|| par3ItemStack.getItem() == Item.getItemFromBlock(Blocks.RED_FLOWER)
+								|| par3ItemStack.getItem() == Item.getItemFromBlock(Blocks.YELLOW_FLOWER)) {
 							
 							//カーペットは消費しない
 							//♪の表示
