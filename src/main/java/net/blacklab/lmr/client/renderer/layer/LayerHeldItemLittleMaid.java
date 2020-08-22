@@ -50,6 +50,10 @@ public class LayerHeldItemLittleMaid extends LMLayerHeldItemBase {
 	@Override
 	protected boolean isRenderHeldItem(EntityLivingBase entitylivingbaseIn, ItemStack stackIn, ItemCameraTransforms.TransformType transformType) {
 		EntityLittleMaid maid = (EntityLittleMaid) entitylivingbaseIn;
-    	return !maid.isMaidWait();
+		//モーション中は描画する
+		if (maid.getMotionId() != null && maid.isMaidWait()) {
+			return true;
+		}
+		return !maid.isMaidWait();
     }
 }

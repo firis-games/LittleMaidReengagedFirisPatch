@@ -3193,7 +3193,11 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 	 */
 	@Override
 	public ItemStack getHeldItem(EnumHand hand) {
+		//待機中はメインハンドのアイテムを描画する
 		if (hand == EnumHand.MAIN_HAND) {
+			if (this.isMaidWait() && this.getMotionId() != null) {
+				return maidInventory.getStackInSlot(InventoryLittleMaid.handInventoryOffset);
+			}
 			return maidInventory.getCurrentItem();
 		}
 		return maidInventory.getStackInSlot(InventoryLittleMaid.handInventoryOffset + 1);
