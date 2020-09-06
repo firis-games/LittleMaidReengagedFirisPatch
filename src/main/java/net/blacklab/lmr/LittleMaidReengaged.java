@@ -86,10 +86,10 @@ public class LittleMaidReengaged {
 
 	public static final String MODID = "lmreengaged";
 	public static final String NAME = "LittleMaidReengaged";
-	public static final String VERSION = "9.2.5.fp.049";
+	public static final String VERSION = "9.3.0.fp.050";
 	public static final String ACCEPTED_MCVERSION = "[1.12.2]";
 	public static final String DEPENDENCIES = "required-after:forge@[1.12.2-14.23.5.2768,);"
-			+ "required-after:lmlibrary@[1.0.8,);"
+			+ "required-after:lmlibrary@[1.1.0,);"
 			+ "before:gvclib@[1.12.2,);"
 			+ "before:generalguns@[1.,);";
 	
