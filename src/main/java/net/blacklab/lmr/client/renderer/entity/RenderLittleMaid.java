@@ -4,6 +4,7 @@ import firis.lmlib.api.caps.IModelCompound;
 import firis.lmlib.api.client.renderer.LMRenderMultiModel;
 import net.blacklab.lmr.api.client.event.ClientEventLMRE;
 import net.blacklab.lmr.client.renderer.layer.LayerArmorLittleMaid;
+import net.blacklab.lmr.client.renderer.layer.LayerHeadAccessoryLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldChestLittleMaid;
 import net.blacklab.lmr.client.renderer.layer.LayerHeldItemLittleMaid;
 import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
@@ -31,6 +32,7 @@ public class RenderLittleMaid extends LMRenderMultiModel<EntityLittleMaid> {
 		this.addLayer(new LayerHeldItemLittleMaid(this));
 		this.addLayer(new LayerArmorLittleMaid(this));
 		this.addLayer(new LayerHeldChestLittleMaid(this));
+		this.addLayer(new LayerHeadAccessoryLittleMaid(this));
 		
 		//Layer登録用イベント
 		MinecraftForge.EVENT_BUS.post(new ClientEventLMRE.RendererLittleMaidAddLayerEvent(this));

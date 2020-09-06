@@ -130,6 +130,9 @@ public class LMRConfig {
 	/** 特殊アイテム発光設定 */
 	public static boolean cfg_general_item_glowing = true;
 	
+	/** 頭に乗せる用の設定 */
+	public static int cfg_deco_head_accessory = 0;
+	
 	/** 試験機能 ******************************/
 	/** 水上歩行術 */
 	public static boolean cfg_test_water_walking  = true;
@@ -423,6 +426,10 @@ public class LMRConfig {
 		cfg_default_voice = cfg.getBoolean("DefaultVoice", GROUP_DECORATION, true,
 				"メイドさんのデフォルトボイスを有効化します。有効化するとガストの啼き声で啼きます。");
 		
+		//メイドさんの頭のアクセサリー
+		cfg_deco_head_accessory = cfg.getInt("HeadAccessory", GROUP_DECORATION, 0, -1, 17,
+				"メイドさんが設定スロットに特定のアイテムを持っている場合に頭の上に描画されます。"
+				+ "-1を設定すると無効化されます。");
 	}
 	
 	/**
