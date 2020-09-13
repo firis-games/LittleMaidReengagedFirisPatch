@@ -92,8 +92,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -1967,20 +1965,21 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 
 	@Override
 	public double getMountedYOffset() {
-		// TODO: Changed from 'riddenByEntity'. Is it correct?
-		if (getControllingPassenger() instanceof EntityChicken) {
-			return height + 0.03D;
-		}
-		if (getControllingPassenger() instanceof EntitySquid) {
-			return height - 0.2D;
-		}
-		return super.getMountedYOffset() + 0.35D;
+//		// TODO: Changed from 'riddenByEntity'. Is it correct?
+//		if (getControllingPassenger() instanceof EntityChicken) {
+//			return height + 0.03D;
+//		}
+//		if (getControllingPassenger() instanceof EntitySquid) {
+//			return height - 0.2D;
+//		}
+//		return super.getMountedYOffset() + 0.35D;
+		return super.getMountedYOffset();
 	}
 
 	@Override
 	public double getYOffset() {
-		double yOffset = -0.30D;
-
+//		double yOffset = -0.30D;
+//
 //		if(getRidingEntity() instanceof EntityPlayer) {
 //			// 姿勢制御
 //			// --------------------------------------------
@@ -1994,7 +1993,9 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 //				}
 //			}
 //		}
-		return yOffset;
+//		return yOffset;
+//		return super.getYOffset();
+		return -0.35D;
 	}
 
 	/*
