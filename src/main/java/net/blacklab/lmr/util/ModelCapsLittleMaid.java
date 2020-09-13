@@ -132,9 +132,9 @@ public class ModelCapsLittleMaid extends ModelCapsEntityBase<EntityLittleMaid> {
 		case caps_job:
 			return owner.jobController.getMaidModeString().toLowerCase();
 		case caps_multimodel_motion:
-			boolean isMotionSitting = owner.isMotionSitting();
+			if (owner.isRiding()) return null;
 			EnumMaidMotion lmmotion = owner.getMaidMotion();
-			if (isMotionSitting || (lmmotion == EnumMaidMotion.SIT)) {
+			if (lmmotion == EnumMaidMotion.SIT || owner.isMotionSitting()) {
 				return LMMotionSitdown.MOTION_ID;
 			}
 			if (!owner.isMaidWait()) return null;

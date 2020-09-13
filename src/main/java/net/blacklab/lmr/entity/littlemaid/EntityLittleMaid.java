@@ -5052,7 +5052,8 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 				return true;
 			}
 		} else if (this.maidFreedom 
-				&& EntityMode_Basic.mmode_Escort.equals(this.getMaidModeString())) {
+				&& EntityMode_Basic.mmode_Escort.equals(this.getMaidModeString())
+				&& !this.isRiding()) {
 			//自由モードでの判断
 			this.tickisMotionSitting += 1;
 			int coolTime = 20;
