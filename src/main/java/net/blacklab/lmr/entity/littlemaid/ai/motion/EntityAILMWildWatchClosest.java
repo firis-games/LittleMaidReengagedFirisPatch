@@ -1,7 +1,7 @@
 package net.blacklab.lmr.entity.littlemaid.ai.motion;
 
+import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 
 /**
  * 野生のメイドさんが近くのモブを見つめる
@@ -11,7 +11,7 @@ import net.minecraft.entity.EntityLiving;
  */
 public class EntityAILMWildWatchClosest extends EntityAILMWatchClosest {
 
-	public EntityAILMWildWatchClosest(EntityLiving entitylivingIn,
+	public EntityAILMWildWatchClosest(EntityLittleMaid entitylivingIn,
 			Class<? extends Entity> watchTargetClass, float maxDistance, float f) {
 		super(entitylivingIn, watchTargetClass, maxDistance);
 		setMutexBits(3);

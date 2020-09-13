@@ -31,6 +31,12 @@ public class EntityAILMBeg extends EntityAIBase {
 
 	@Override
 	public boolean shouldExecute() {
+		
+		//睡眠中は無効化
+		if (littleMaid.isSleep()) {
+			return false;
+		}
+		
 		if (littleMaid.isContract()) {
 			targetPlayer = littleMaid.getDistanceSqToMaster() > effectiveRangeSq ? null
 					: littleMaid.getMaidMasterEntity();

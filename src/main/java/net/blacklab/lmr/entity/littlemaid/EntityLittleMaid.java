@@ -5394,4 +5394,16 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 		//メイドモデルのサイズを更新するために呼び出す
 		this.refreshModels();
 	}
+	
+	/**
+	 * 睡眠中
+	 * お休み中はEntityや砂糖に反応しない
+	 * @return
+	 */
+	public boolean isSleep() {
+		if (this.isMaidWait() && this.getMotionId() != null && this.getMotionId().indexOf("sleep") >= 0) {
+			return true;
+		}
+		return false;
+	}
 }
