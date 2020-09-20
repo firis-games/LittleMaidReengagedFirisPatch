@@ -205,4 +205,5 @@ item.maid_stick.name=メイド指揮棒
 item.maid_stick.info=メイドさんに指示する棒
 item.maid_stick.details1=待機行動切替
 item.maid_stick.details2=自由行動切替（スニーク）
+item.maid_stick.details3=メイドさん探知（オフハンド）
 

@@ -10,11 +10,15 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -43,7 +47,17 @@ public class LMItemMaidStick extends Item {
 	 * 右クリック
 	 */
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-    	
+    	if (handIn == EnumHand.MAIN_HAND) {
+    		return onItemRightClickMainHand(worldIn, playerIn, handIn);
+    	} else {
+    		return onItemRightClickOffHand(worldIn, playerIn, handIn);
+    	}
+    }
+    
+    /**
+     * メインハンドの場合
+     */
+    protected ActionResult<ItemStack> onItemRightClickMainHand(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
     	//有効範囲
     	//デフォルト10ブロック
     	int range = LMRConfig.cfg_general_maid_stick_range;
@@ -80,6 +94,28 @@ public class LMItemMaidStick extends Item {
     	return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
     }
     
+    /**
+     * オフハンドの場合
+     */
+    protected ActionResult<ItemStack> onItemRightClickOffHand(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+    	//有効範囲100ブロック（設定なし）
+    	int range = 128;
+    	
+    	List<EntityLittleMaid> maidList = worldIn.getEntitiesWithinAABB(EntityLittleMaid.class, new AxisAlignedBB(
+    			playerIn.getPosition().add(-range, -range, -range), playerIn.getPosition().add(range, range, range)));
+    	
+    	playerIn.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.item.pickup")), 1.0F, 1.0F);
+    	
+    	for (EntityLittleMaid maid : maidList) {
+    		//5s発光状態を付与
+    		maid.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 0, false, false));
+    	}
+    	
+    	//クールタイム設定
+    	playerIn.getCooldownTracker().setCooldown(this, 20);
+    	return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+    }
+    
 	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
@@ -87,5 +123,6 @@ public class LMItemMaidStick extends Item {
 		tooltip.add(TextFormatting.LIGHT_PURPLE + I18n.format("item.maid_stick.info"));
 		tooltip.add(TextFormatting.DARK_AQUA.toString() + TextFormatting.ITALIC.toString() + I18n.format("item.maid_stick.details1"));
 		tooltip.add(TextFormatting.DARK_AQUA.toString() + TextFormatting.ITALIC.toString() + I18n.format("item.maid_stick.details2"));
+		tooltip.add(TextFormatting.DARK_AQUA.toString() + TextFormatting.ITALIC.toString() + I18n.format("item.maid_stick.details3"));
     }
 }
