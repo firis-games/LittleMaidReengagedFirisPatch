@@ -98,19 +98,21 @@ public class LMItemMaidStick extends Item {
      * オフハンドの場合
      */
     protected ActionResult<ItemStack> onItemRightClickOffHand(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-    	//有効範囲100ブロック（設定なし）
+    	//有効範囲128ブロック（設定なし）
     	int range = 128;
     	
     	List<EntityLittleMaid> maidList = worldIn.getEntitiesWithinAABB(EntityLittleMaid.class, new AxisAlignedBB(
     			playerIn.getPosition().add(-range, -range, -range), playerIn.getPosition().add(range, range, range)));
-    	
-    	playerIn.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.item.pickup")), 1.0F, 1.0F);
     	
     	for (EntityLittleMaid maid : maidList) {
     		//5s発光状態を付与
     		maid.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 0, false, false));
     	}
     	
+    	//対象がいる場合は効果音
+    	if (maidList.size() != 0) {
+    		playerIn.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.item.pickup")), 1.0F, 1.0F);
+    	}
     	//クールタイム設定
     	playerIn.getCooldownTracker().setCooldown(this, 20);
     	return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
