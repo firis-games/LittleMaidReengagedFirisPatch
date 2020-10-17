@@ -133,6 +133,9 @@ public class LMRConfig {
 	/** 頭に乗せる用の設定 */
 	public static int cfg_deco_head_accessory = 0;
 	
+	/** フレンドリーファイア設定 */
+	public static boolean cfg_general_friendly_fire = true;
+	
 	/** 試験機能 ******************************/
 	/** 水上歩行術 */
 	public static boolean cfg_test_water_walking  = true;
@@ -218,6 +221,10 @@ public class LMRConfig {
 		//発光設定
 		cfg_general_item_glowing = cfg.getBoolean("Item.SpecialEntityItem.Glowing", GROUP_GENERAL, true,
 				"メイドの土産/メイドキャリーのEntityItemの発光状態を設定します。");
+		
+		//フレンドリーファイア
+		cfg_general_friendly_fire = cfg.getBoolean("Combat.FriendlyFire", GROUP_GENERAL, true,
+				"メイドさんのフレンドリーファイアを有効にします。");
 		
 	}
 	
