@@ -63,3 +63,14 @@ LittleMaidReengaged Firis's Patchを使ったメイドさんのマルチモデ�
 1. Gradle実行の最後にbuildが表示されれば処理が完了です。
 1. [LittleMaidModelProject]フォルダ下のbuild/distributionsフォルダにメイドさんモデルのzipが生成されます。
 1. zipファイルをMinecraftのmodsフォルダに導入すればメイドさんのマルチモデルを導入できます。
+
+## ex.マルチモデルの旧バージョン対応
+1.12.2環境下で作成したマルチモデルを旧バージョンで利用できる形式に変換します。  
+但しMinecraftクラスやFiris's Patchに依存処理を含む場合は利用できません。  
+またテクスチャの命名規則や小文字大文字の設定などは旧バージョン方式のものに限ります。
+1. 開発環境の構築、実行、zipファイルの作成まで一通り実行した環境が前提です。
+1. [LittleMaidModelProject/run/config]フォルダ下のLMLibrary.cfgを開きB:EnableConvertBackwardMultiModel=falseをtrueへ変更します。
+1. [LittleMaidModelProject/run/LittleMaidResource]フォルダの下に変換対象のマルチモデルzipファイルを配置します。
+1. 開発環境で実行します。
+1. 実行後に[LittleMaidModelProject/run]フォルダの下にLittleMaidResouceDeveloperフォルダが作成されています。
+1. [LittleMaidModelProject/runLittleMaidResouceDeveloper]フォルダの下に旧バージョンのclassファイルが作成されているのでマルチモデルzip内の同名ファイルと差し替えます。
