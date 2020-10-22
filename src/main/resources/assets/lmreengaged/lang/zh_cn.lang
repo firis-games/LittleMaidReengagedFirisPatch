@@ -56,11 +56,11 @@ advancements.boost.desc="拿这个替代糖? ... 没门.
 advancements.myfavorite=我最喜欢的东西
 advancements.myfavorite.desc="是那最甘甜的物品 ..."
 
-advancements.lumberjack=我来帮主人砍树！
+advancements.lumberjack=小小的伐木工
 advancements.lumberjack.desc=开启伐木模式
-advancements.sugar_cane=我来帮主人种甘蔗啦~
+advancements.sugar_cane=甘蔗种植就交给我吧
 advancements.sugar_cane.desc=开启甘蔗种植模式
-advancements.angler=钓鱼达人女仆酱！
+advancements.angler=绝不空手而归！
 advancements.angler.desc=开启钓鱼模式
 
 littleMaidMob.mode.Torcher=照明模式
