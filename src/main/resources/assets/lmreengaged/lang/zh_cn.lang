@@ -1,8 +1,12 @@
 entity.lmreengaged.LittleMaid.name=女仆酱
+entity.littlemaid.name=女仆酱
 
 item.lmreengaged:spawn_littlemaid_egg.name=生成 女仆酱
 item.lmreengaged:registerkey.name=§e物品模式添加器
 item.lmreengaged:maidporter.name=女仆储存蛋
+
+advancements.root=欢迎回家，主人！
+advancements.root.desc=和女仆酱一起~
 
 advancements.contract=签订契约了！ 我的主人
 advancements.contract.desc=捕获一只女仆
@@ -51,6 +55,13 @@ advancements.boost.desc="拿这个替代糖? ... 没门.
 
 advancements.myfavorite=我最喜欢的东西
 advancements.myfavorite.desc="是那最甘甜的物品 ..."
+
+advancements.lumberjack=我来帮主人砍树！
+advancements.lumberjack.desc=开启伐木模式
+advancements.sugar_cane=我来帮主人种甘蔗啦~
+advancements.sugar_cane.desc=开启甘蔗种植模式
+advancements.angler=钓鱼大师女仆酱！
+advancements.angler.desc=开启钓鱼模式
 
 littleMaidMob.mode.Torcher=照明模式
 littleMaidMob.mode.F-Torcher=自由-照明模式
@@ -157,6 +168,24 @@ littleMaidMob.mode.SugarCane=甘蔗种植模式
 littleMaidMob.mode.F-SugarCane=自由-甘蔗种植模式
 littleMaidMob.mode.T-SugarCane=巡逻-甘蔗种植模式
 
+littleMaidMob.mode.Angler=钓鱼模式
+littleMaidMob.mode.F-Angler=自由-钓鱼模式
+littleMaidMob.mode.T-Angler=巡逻-钓鱼模式
+
+littleMaidMob.mode.F-FarmPort=自由-搬运-农场模式
+littleMaidMob.mode.F-LumberjackPort=自由-搬运-伐木模式
+littleMaidMob.mode.F-SugarCanePort=自由-搬运-甘蔗种植模式
+littleMaidMob.mode.F-ShearerPort=自由-搬运-剪刀模式
+littleMaidMob.mode.F-AnglerPort=自由-搬运-钓鱼模式
+
+littleMaidMob.mode.T-FarmPort=巡逻-搬运-农场模式
+littleMaidMob.mode.T-LumberjackPort=巡逻-搬运-伐木模式
+littleMaidMob.mode.T-SugarCanePort=巡逻-搬运-甘蔗种植模式
+littleMaidMob.mode.T-ShearerPort=巡逻-搬运-剪刀模式
+littleMaidMob.mode.T-AnglerPort=巡逻-搬运-钓鱼模式
+
+littlemaid.inventory.name=InsideSkirt
+
 item.maid_souvenir.name=女仆的纪念品
 item.maid_souvenir.info=使女仆酱复活
 
@@ -166,3 +195,29 @@ littleMaidMob.mode.T-Lumberjack=巡逻-伐木模式
 
 item.maid_carry.name=女仆储存蛋
 item.maid_carry.info=随身携带女仆酱
+
+commands.lmcommand.error=指令错误
+commands.lmcommand.call.success=主人我来啦~
+commands.lmcommand.call.failure=附近似乎没有女仆的样子
+commands.lmcommand.call.failure.maid=附近似乎没有 %s 的样子
+commands.lmcommand.list.failure=附近似乎没有女仆的样子
+
+item.maid_sugar.name=变身糖果
+item.maid_sugar.info=可以使宠物变成女仆
+
+entity.Villager.MaidBroker=女仆中介
+
+item.maid_spawn_egg.name=奇怪的刷怪蛋
+item.maid_spawn_egg.info=里面似乎有一只女仆酱...
+item.maid_contract.name=女仆的契约
+item.maid_contract.info=右击可以生成一只已驯服的女仆酱
+
+tile.sugar_box.name=砂糖供给机
+tile.sugar_box.info=可以给范围内女仆持续供给糖果
+tile.sugar_box.details=需将装有砂糖的箱子放在该方块上方
+
+item.maid_stick.name=女仆指挥权杖
+item.maid_stick.info=可以指挥附近女仆的行动
+item.maid_stick.details1=待机模式切换
+item.maid_stick.details2=自由模式切换（潜行模式下）
+item.maid_stick.details3=寻找女仆（副手）
