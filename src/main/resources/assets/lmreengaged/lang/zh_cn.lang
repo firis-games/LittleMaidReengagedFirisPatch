@@ -6,7 +6,7 @@ item.lmreengaged:registerkey.name=§e物品模式添加器
 item.lmreengaged:maidporter.name=女仆储存蛋
 
 advancements.root=欢迎回来~ 主人
-advancements.root.desc=和女仆一起来一场冒险吧~
+advancements.root.desc=和女仆一起来一场冒险吧
 
 advancements.contract=签订契约了！ 我的主人
 advancements.contract.desc=捕获一只女仆
@@ -58,9 +58,9 @@ advancements.myfavorite.desc="是那最甘甜的物品 ..."
 
 advancements.lumberjack=小小的伐木工
 advancements.lumberjack.desc=开启伐木模式
-advancements.sugar_cane=甘蔗种植就交给我吧
+advancements.sugar_cane=甘蔗种植就交给我吧!
 advancements.sugar_cane.desc=开启甘蔗种植模式
-advancements.angler=绝不空手而归！
+advancements.angler=绝不空手而归!
 advancements.angler.desc=开启钓鱼模式
 
 littleMaidMob.mode.Torcher=照明模式
@@ -187,17 +187,17 @@ littleMaidMob.mode.T-AnglerPort=巡逻-搬运-钓鱼模式
 littlemaid.inventory.name=InsideSkirt
 
 item.maid_souvenir.name=女仆的纪念品
-item.maid_souvenir.info=使女仆酱复活
+item.maid_souvenir.info=右击地面可复活女仆
 
 littleMaidMob.mode.Lumberjack=伐木模式
 littleMaidMob.mode.F-Lumberjack=自由-伐木模式
 littleMaidMob.mode.T-Lumberjack=巡逻-伐木模式
 
 item.maid_carry.name=女仆储存蛋
-item.maid_carry.info=随身携带女仆酱
+item.maid_carry.info=随身携带女仆
 
 commands.lmcommand.error=指令错误
-commands.lmcommand.call.success=主人我来啦~
+commands.lmcommand.call.success=主人我来啦
 commands.lmcommand.call.failure=附近似乎没有女仆的样子
 commands.lmcommand.call.failure.maid=附近似乎没有 %s 的样子
 commands.lmcommand.list.failure=附近似乎没有女仆的样子
@@ -207,10 +207,10 @@ item.maid_sugar.info=可以使宠物变成女仆（对该女仆潜行右键可�
 
 entity.Villager.MaidBroker=女仆中介商
 
-item.maid_spawn_egg.name=刷怪蛋
-item.maid_spawn_egg.info=里面似乎有一只女仆...
+item.maid_spawn_egg.name=合成的刷怪蛋
+item.maid_spawn_egg.info=里面似乎装有一只女仆...
 item.maid_contract.name=女仆的契约
-item.maid_contract.info=右击可以生成一只已驯服的女仆酱
+item.maid_contract.info=右击地面可以生成一只已驯服的女仆酱
 
 tile.sugar_box.name=砂糖供给机
 tile.sugar_box.info=可以给范围内女仆持续供给糖果
