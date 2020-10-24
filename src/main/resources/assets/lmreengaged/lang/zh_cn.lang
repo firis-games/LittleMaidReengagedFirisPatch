@@ -213,7 +213,7 @@ item.maid_contract.name=女仆的契约
 item.maid_contract.info=右击地面可以生成一只已驯服的女仆酱
 
 tile.sugar_box.name=砂糖供给机
-tile.sugar_box.info=可以给范围内女仆持续供给糖果
+tile.sugar_box.info=可以给范围内女仆持续提供砂糖
 tile.sugar_box.details=需将装有砂糖的箱子放在该方块上方
 
 item.maid_stick.name=女仆指挥权杖
