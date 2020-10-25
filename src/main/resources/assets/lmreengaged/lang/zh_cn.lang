@@ -5,7 +5,7 @@ item.lmreengaged:spawn_littlemaid_egg.name=生成 女仆酱
 item.lmreengaged:registerkey.name=§e物品模式添加器
 item.lmreengaged:maidporter.name=女仆储存蛋
 
-advancements.root=欢迎回来~ 主人
+advancements.root=欢迎回来 主人
 advancements.root.desc=和女仆一起来一场冒险吧
 
 advancements.contract=签订契约了！ 我的主人
@@ -187,7 +187,7 @@ littleMaidMob.mode.T-AnglerPort=巡逻-搬运工模式(钓鱼收获)
 littlemaid.inventory.name=InsideSkirt
 
 item.maid_souvenir.name=女仆的纪念品
-item.maid_souvenir.info=右击地面复活女仆
+item.maid_souvenir.info=让女仆复活吧
 
 littleMaidMob.mode.Lumberjack=伐木模式
 littleMaidMob.mode.F-Lumberjack=自由-伐木模式
@@ -203,17 +203,17 @@ commands.lmcommand.call.failure.maid=附近似乎没有 %s 的样子
 commands.lmcommand.list.failure=附近似乎没有女仆的样子
 
 item.maid_sugar.name=变身糖果
-item.maid_sugar.info=可使宠物变成女仆（对该女仆潜行右键可变回）
+item.maid_sugar.info=可以让宠物变身为女仆（潜行右键变回）
 
 entity.Villager.MaidBroker=女仆经纪人
 
 item.maid_spawn_egg.name=合成的刷怪蛋
 item.maid_spawn_egg.info=里面似乎装有一只女仆...
 item.maid_contract.name=女仆的契约
-item.maid_contract.info=可生成一位已签订契约的女仆
+item.maid_contract.info=生成一位已签订契约的女仆
 
 tile.sugar_box.name=砂糖供给机
-tile.sugar_box.info=可以给范围内女仆持续提供砂糖
+tile.sugar_box.info=可以给范围内的女仆持续提供砂糖
 tile.sugar_box.details=需将装有砂糖的箱子放在该方块上方
 
 item.maid_stick.name=女仆指挥权杖
