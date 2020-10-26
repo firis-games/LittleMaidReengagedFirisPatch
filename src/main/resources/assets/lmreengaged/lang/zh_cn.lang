@@ -5,7 +5,7 @@ item.lmreengaged:spawn_littlemaid_egg.name=生成 女仆酱
 item.lmreengaged:registerkey.name=§e物品模式添加器
 item.lmreengaged:maidporter.name=女仆储存蛋
 
-advancements.root=欢迎回来 主人
+advancements.root=欢迎回来，我的主人！
 advancements.root.desc=和女仆一起来一场冒险吧
 
 advancements.contract=签订契约了！ 我的主人
