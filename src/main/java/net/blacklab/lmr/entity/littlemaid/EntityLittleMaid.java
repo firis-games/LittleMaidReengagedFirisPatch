@@ -3491,7 +3491,7 @@ public class EntityLittleMaid extends EntityTameable implements IMultiModelEntit
 							//	cmode = ((IItemSpecialSugar)par3ItemStack.getItem()).onSugarInteract(getEntityWorld(), par1EntityPlayer, par3ItemStack, this);
 							//}
 							par3ItemStack.splitStack(1);
-							eatSugar(false, true, false);
+							eatSugar(true, true, false);
 							if(!cmode) return true;
 							getEntityWorld().setEntityState(this, (byte)11);
 
