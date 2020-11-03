@@ -4,10 +4,10 @@
             "item": "minecraft:sugar"
         },
         "title": {
-            "translate": "achievement.myfavorite"
+            "translate": "advancements.myfavorite"
         },
         "description": {
-            "translate": "achievement.myfavorite.desc"
+            "translate": "advancements.myfavorite.desc"
         }
     },
     "parent": "lmreengaged:contract",
