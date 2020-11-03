@@ -100,10 +100,12 @@ public class ClientInventoryLittleMaid extends InventoryLittleMaid {
 
 	@Override
 	public void openInventory(EntityPlayer player) {
+		entityLittleMaid.onGuiOpened();
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {		
+	public void closeInventory(EntityPlayer player) {
+		entityLittleMaid.onGuiClosed();
 	}
 
 	@Override
