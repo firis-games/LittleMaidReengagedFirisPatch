@@ -101,12 +101,27 @@ public class LMItemMaidStick extends Item {
     	//有効範囲128ブロック（設定なし）
     	int range = 128;
     	
+    	//集めるときは20
+    	if (playerIn.isSneaking()) {
+    		range = 20;
+    	}
+    	
     	List<EntityLittleMaid> maidList = worldIn.getEntitiesWithinAABB(EntityLittleMaid.class, new AxisAlignedBB(
     			playerIn.getPosition().add(-range, -range, -range), playerIn.getPosition().add(range, range, range)));
     	
     	for (EntityLittleMaid maid : maidList) {
-    		//5s発光状態を付与
-    		maid.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 0, false, false));
+    		if (!playerIn.isSneaking()) {
+        		//5s発光状態を付与
+        		maid.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 0, false, false));    			
+    		} else {
+    			//メイドさんのご主人様が自分であること
+				if (maid.isContract() && maid.isMaidContractOwner(playerIn)) {
+					//メイドさんをワープ
+					maid.setPosition(playerIn.posX + (worldIn.rand.nextDouble() - 0.5D) * 2.0D, 
+							playerIn.posY, 
+							playerIn.posZ + (worldIn.rand.nextDouble() - 0.5D) * 2.0D);
+				}
+    		}
     	}
     	
     	//対象がいる場合は効果音
@@ -125,6 +140,7 @@ public class LMItemMaidStick extends Item {
 		tooltip.add(TextFormatting.LIGHT_PURPLE + I18n.format("item.maid_stick.info"));
 		tooltip.add(TextFormatting.DARK_AQUA.toString() + TextFormatting.ITALIC.toString() + I18n.format("item.maid_stick.details1"));
 		tooltip.add(TextFormatting.DARK_AQUA.toString() + TextFormatting.ITALIC.toString() + I18n.format("item.maid_stick.details2"));
-		tooltip.add(TextFormatting.DARK_AQUA.toString() + TextFormatting.ITALIC.toString() + I18n.format("item.maid_stick.details3"));
+		tooltip.add(TextFormatting.DARK_GREEN.toString() + TextFormatting.ITALIC.toString() + I18n.format("item.maid_stick.details3"));
+		tooltip.add(TextFormatting.DARK_GREEN.toString() + TextFormatting.ITALIC.toString() + I18n.format("item.maid_stick.details4"));
     }
 }

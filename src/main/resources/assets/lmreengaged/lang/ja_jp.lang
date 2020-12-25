@@ -204,6 +204,7 @@ tile.sugar_box.details=砂糖の入ったチェストを上に置く
 item.maid_stick.name=メイド指揮棒
 item.maid_stick.info=メイドさんに指示する棒
 item.maid_stick.details1=待機行動切替
-item.maid_stick.details2=自由行動切替（スニーク）
-item.maid_stick.details3=メイドさん探知（オフハンド）
+item.maid_stick.details2=自由行動切替 [スニーク]
+item.maid_stick.details3=メイドさん探知 [オフ]
+item.maid_stick.details4=メイドさん招集 [オフ:スニーク]
 
