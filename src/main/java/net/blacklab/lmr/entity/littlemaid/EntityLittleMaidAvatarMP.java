@@ -244,7 +244,7 @@ public class EntityLittleMaidAvatarMP extends FakePlayer implements IEntityLittl
 
 	@Override
 	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
-		return avatar.getItemStackFromSlot(slotIn);
+		return avatar == null ? ItemStack.EMPTY : avatar.getItemStackFromSlot(slotIn);
 	}
 
 	/*
