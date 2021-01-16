@@ -17,7 +17,7 @@ repositories {
     }
     maven {
     	name = "HWYLA"
-        url = "http://tehnut.info/maven"
+        url = "https://maven.tehnut.info/"
     }
 }
 
