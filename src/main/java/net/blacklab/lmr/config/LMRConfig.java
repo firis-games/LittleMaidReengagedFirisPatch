@@ -1,12 +1,12 @@
 package net.blacklab.lmr.config;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import firis.lmlib.common.config.LMLConfig;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
 
@@ -42,13 +42,10 @@ public class LMRConfig {
 	public static boolean cfg_isResurrection = true;
 	
 	/** 砂糖アイテムID */
-	private static List<String> cfg_sugar_item_ids = null;
-	
-	/** 砂糖アイテムID */
-	public static Map<String, Integer> cfg_sugar_item_ids_map = null;
+	private static List<ItemStackInfo> cfg_sugar_item_ids_info = null;
 
 	/** ケーキアイテムID */
-	public static List<String> cfg_cake_item_ids = null;
+	private static List<ItemStackInfo> cfg_cake_item_ids = null;
 	
 	/** 原木ブロックID */
 	public static List<String> cfg_lj_log_block_ids = null;
@@ -72,10 +69,10 @@ public class LMRConfig {
 	public static float cfg_custom_riding_height_adjustment = 0.0F;
 	
 	/** 矢（弾丸）アイテムID */
-	public static List<String> cfg_ac_arrow_item_ids = null;
+	private static List<ItemStackInfo> cfg_ac_arrow_item_ids = null;
 	
 	/** かまどの料理対象外アイテム */
-	public static List<String> cfg_cock_no_cooking_item_ids = null;
+	private static List<ItemStackInfo> cfg_cock_no_cooking_item_ids = null;
 	
 	/** アニマルメイド判定 */
 	public static List<String> cfg_custom_animal_maid_mob_ids = null;
@@ -238,29 +235,38 @@ public class LMRConfig {
 		
 		//指定IDを砂糖として認識する
 		String[] sugarItemIds = new String[] {"minecraft:sugar*1"};
-		cfg_sugar_item_ids = Arrays.asList(cfg.getStringList("Favorite.Sugar", GROUP_LITTLE_MAID, sugarItemIds, 
-				"砂糖と同じ扱いとなるアイテムIDを設定できます。[アイテムID]*[数値]で回復量を設定できます。"));
+		List<String> cfg_sugar_item_ids_list = Arrays.asList(cfg.getStringList("Favorite.Sugar", GROUP_LITTLE_MAID, sugarItemIds, 
+				"砂糖と同じ扱いとなるアイテムIDを設定できます。[アイテムID]/[メタデータ]*[数値]で回復量を設定できます。"));
 		//Map形式へ変換する
-		cfg_sugar_item_ids_map = new HashMap<>();
-		for (String sugarItem : cfg_sugar_item_ids) {
+		cfg_sugar_item_ids_info = new ArrayList<>();
+		for (String sugarItem : cfg_sugar_item_ids_list) {
 			String[] works = sugarItem.split("\\*");
 			if (works.length == 1 || works.length == 2) {
 				String item = works[0];
 				Integer heal = 1;
+				Integer meta = null;
 				if (works.length == 2) {
 					try {
 						heal = Integer.parseInt(works[1]);
 					} catch (Exception e) {
 					}
 				}
-				cfg_sugar_item_ids_map.put(item, heal);
+				works = item.split("\\/");
+				if (works.length == 2) {
+					item = works[0];
+					try {
+						meta = Integer.parseInt(works[1]);
+					} catch (Exception e) {
+					}
+				}
+				cfg_sugar_item_ids_info.add(new ItemStackInfo(item, meta, heal));
 			}
 		}
 		
 		//指定IDをケーキとして認識する
 		String[] cakeItemIds = new String[] {"minecraft:cake"};
-		cfg_cake_item_ids = Arrays.asList(cfg.getStringList("Favorite.Cake", GROUP_LITTLE_MAID, cakeItemIds, 
-				"ケーキと同じ扱いとなるアイテムIDを設定できます。"));
+		cfg_cake_item_ids = createConfigItemStack(Arrays.asList(cfg.getStringList("Favorite.Cake", GROUP_LITTLE_MAID, cakeItemIds, 
+				"ケーキと同じ扱いとなるアイテムIDを設定できます。")));
 		
 		//メイドミルクの設定
 		cfg_custom_maid_milk = cfg.getBoolean("MaidMilk", GROUP_LITTLE_MAID, LMLConfig.DEVELOPER_MODE,
@@ -313,10 +319,10 @@ public class LMRConfig {
 		
 		//指定IDを矢として認識する
 		String[] arrowItemIds = new String[] {"minecraft:arrow"};
-		cfg_ac_arrow_item_ids = Arrays.asList(
+		cfg_ac_arrow_item_ids = createConfigItemStack(Arrays.asList(
 				cfg.getStringList("Archer.Arrow", GROUP_JOB, arrowItemIds, 
 						"弓兵メイドさんが矢と同じ扱いをするアイテムIDを設定できます。")
-		);
+		));
 		
 		//指定IDを原木として認識する
 		String[] logBlockIds = new String[] {"minecraft:log"};
@@ -341,8 +347,10 @@ public class LMRConfig {
 		
 		//指定IDを調理しない
 		String[] noCookingItemIds = new String[] {"minecraft:iron_sword", "minecraft:golden_sword"};
-		cfg_cock_no_cooking_item_ids = Arrays.asList(cfg.getStringList("Cook.NotCookingItemIds", GROUP_JOB, noCookingItemIds,
-				"コックメイドさんが料理対象としないアイテムIDを設定できます。"));
+		cfg_cock_no_cooking_item_ids = createConfigItemStack(Arrays.asList(
+				cfg.getStringList("Cook.NotCookingItemIds", GROUP_JOB, noCookingItemIds,
+				"コックメイドさんが料理対象としないアイテムIDを設定できます。")
+				));
 		
 		//triggerの設定化
 		String[] triggerItemIds = new String[] {
@@ -487,4 +495,139 @@ public class LMRConfig {
 		return loadedlittleMaidAvatar;
 	}
 	
+	
+	/**
+	 * アイテムIDリストからアイテム情報を生成する
+	 * @return
+	 */
+	private static List<ItemStackInfo> createConfigItemStack(List<String> ids) {
+		List<ItemStackInfo> infoList = new ArrayList<>();
+		for (String itemId : ids) {
+			String[] works = itemId.split("\\/");
+			String item = works[0];
+			Integer meta = null;
+			if (works.length == 2) {
+				item = works[0];
+				try {
+					meta = Integer.parseInt(works[1]);
+				} catch (Exception e) {
+				}
+			}
+			infoList.add(new ItemStackInfo(item, meta));
+		}
+		return infoList;
+	}
+	
+	/**
+	 * 設定のMAPから情報を引き出す（引き出した情報は変更しないこと）
+	 * @param stack
+	 * @param configMap
+	 * @return
+	 */
+	private static ItemStackInfo getConfigItemStack(ItemStack stack, List<ItemStackInfo> configMap) {
+		//アイテムのチェック
+		if (!stack.isEmpty()) {
+			String key = stack.getItem().getRegistryName().toString();
+			//
+			for (ItemStackInfo info : configMap) {
+				//ID + メタデータを制御
+				if (key.equals(info.item) 
+						&& (info.meta == null || info.meta == stack.getMetadata())) {
+					return info.clone();
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 砂糖扱いするアイテムか設定から判断する
+	 * @param stack
+	 * @return
+	 */
+	public static boolean isCfgSugarItemStack(ItemStack stack) {
+		//アイテムのチェック
+		if (getConfigItemStack(stack, cfg_sugar_item_ids_info) != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 砂糖扱いするアイテムか設定から判断しヒール数値を取得する
+	 * @param stack
+	 * @return
+	 */
+	public static Integer getCfgSugarHealItemStack(ItemStack stack) {
+		ItemStackInfo info = getConfigItemStack(stack, cfg_sugar_item_ids_info);
+		if (info == null) return 0;
+		return info.custom;
+	}
+	
+	/**
+	 * ケーキアイテムIDの判断
+	 * @param stack
+	 * @return
+	 */
+	public static boolean isCfgCakeItemStack(ItemStack stack) {
+		//アイテムのチェック
+		if (getConfigItemStack(stack, cfg_cake_item_ids) != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 矢（弾丸）アイテムIDの判断
+	 * @param stack
+	 * @return
+	 */
+	public static boolean isCfgArrowItemStack(ItemStack stack) {
+		//アイテムのチェック
+		if (getConfigItemStack(stack, cfg_ac_arrow_item_ids) != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * かまどの料理対象外アイテムの判断
+	 * @param stack
+	 * @return
+	 */
+	public static boolean isCfgNoCookingItemStack(ItemStack stack) {
+		//アイテムのチェック
+		if (getConfigItemStack(stack, cfg_cock_no_cooking_item_ids) != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * アイテムIDとメタデータを保持するクラス
+	 * @author firis-games
+	 *
+	 */
+	private static class ItemStackInfo {
+		
+		public String item = "";
+		public Integer meta = null;
+		public Integer custom = null;
+		
+		public ItemStackInfo(String item, Integer meta) {
+			this.item = item;
+			this.meta = meta;
+		}
+		
+		public ItemStackInfo(String item, Integer meta, Integer custom) {
+			this.item = item;
+			this.meta = meta;
+			this.custom = custom;
+		}
+		
+		public ItemStackInfo clone() {
+			return new ItemStackInfo(this.item, this.meta, this.custom);
+		}
+		
+	}
 }

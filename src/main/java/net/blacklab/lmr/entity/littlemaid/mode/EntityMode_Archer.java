@@ -303,10 +303,10 @@ public class EntityMode_Archer extends EntityModeBase {
 		}
 		
 		//ItemIdで判定
-		for (String itemId : LMRConfig.cfg_ac_arrow_item_ids) {
-			if (!(owner.maidInventory.getInventorySlotContainItemId(itemId) < 0)) {
+		for (int j = 0; j < owner.maidInventory.getSizeInventory(); j++) {
+			if (LMRConfig.isCfgArrowItemStack(owner.maidInventory.getStackInSlot(j))) {
 				return true;
-			}			
+			}
 		}
 		return false;
 	}

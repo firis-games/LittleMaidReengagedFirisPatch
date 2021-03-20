@@ -34,7 +34,7 @@ public class ItemHelper {
 		
 		//設定から判断
 		if (!sugar.isEmpty()) {
-			if (LMRConfig.cfg_sugar_item_ids_map.containsKey(sugar.getItem().getRegistryName().toString())) return true;
+			if (LMRConfig.isCfgSugarItemStack(sugar)) return true;
 		}
 		
 		return false;
@@ -55,9 +55,7 @@ public class ItemHelper {
 		
 		//設定から判断
 		if (!sugar.isEmpty()) {
-			if (LMRConfig.cfg_sugar_item_ids_map.containsKey(sugar.getItem().getRegistryName().toString())) {
-				return LMRConfig.cfg_sugar_item_ids_map.get(sugar.getItem().getRegistryName().toString());
-			}
+			return LMRConfig.getCfgSugarHealItemStack(sugar);
 		}
 		
 		//対象外の場合は0とする
@@ -151,7 +149,7 @@ public class ItemHelper {
 		
 		//設定から判断
 		if (!cake.isEmpty()) {
-			if (LMRConfig.cfg_cake_item_ids.contains(cake.getItem().getRegistryName().toString())) return true;
+			if (LMRConfig.isCfgCakeItemStack(cake)) return true;
 		}
 		return false;
 	}
@@ -165,7 +163,7 @@ public class ItemHelper {
 		
 		//料理対象外の場合は
 		if (!pItemstack.isEmpty()) {
-			if (LMRConfig.cfg_cock_no_cooking_item_ids.contains(pItemstack.getItem().getRegistryName().toString())) {
+			if (LMRConfig.isCfgNoCookingItemStack(pItemstack)) {
 				//料理対象外の場合はfalseを返す
 				return false;
 			}
