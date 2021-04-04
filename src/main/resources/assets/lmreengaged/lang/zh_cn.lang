@@ -56,7 +56,7 @@ advancements.boost.desc="拿这个替代糖? ... 没门.
 advancements.myfavorite=我最喜欢的东西
 advancements.myfavorite.desc="是那最甘甜的物品 ..."
 
-advancements.lumberjack=小小的伐木工
+advancements.lumberjack="嘿——嘿——嚯——"
 advancements.lumberjack.desc=开启伐木模式
 advancements.sugar_cane=甘蔗种植就交给我吧!
 advancements.sugar_cane.desc=开启甘蔗种植模式
@@ -65,7 +65,7 @@ advancements.angler.desc=开启钓鱼模式
 
 littleMaidMob.mode.Torcher=照明模式
 littleMaidMob.mode.F-Torcher=自由-照明模式
-littleMaidMob.mode.T-Torcher=巡逻—照明模式)
+littleMaidMob.mode.T-Torcher=巡逻—照明模式
 
 littleMaidMob.mode.Archer=弓箭模式
 littleMaidMob.mode.F-Archer=自由-弓箭模式
@@ -203,7 +203,7 @@ commands.lmcommand.call.failure.maid=附近似乎没有 %s 的样子
 commands.lmcommand.list.failure=附近似乎没有女仆的样子
 
 item.maid_sugar.name=变身糖果
-item.maid_sugar.info=可以让宠物变身为女仆（潜行右键变回）
+item.maid_sugar.info=这个不能吃
 
 entity.Villager.MaidBroker=女仆经纪人
 
@@ -221,3 +221,4 @@ item.maid_stick.info=可以指挥附近女仆的行动
 item.maid_stick.details1=切换待机模式
 item.maid_stick.details2=切换自由模式（潜行模式下）
 item.maid_stick.details3=寻找女仆（副手）
+item.maid_stick.details4=召唤女仆（副手并潜行）
