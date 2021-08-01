@@ -332,8 +332,6 @@ public class EntityMode_Fencer extends EntityModeBase {
 					entity.knockBack(owner, 1.5F, 
 							(double)MathHelper.sin(owner.rotationYaw * 0.017453292F), 
 							(double)(-MathHelper.cos(owner.rotationYaw * 0.017453292F)));
-					entity.setAttackTarget(null);
-					entity.setRevengeTarget(null);
 				}
 			}
 		} else if (!owner.getMaidOverDriveTime().isEnable()
